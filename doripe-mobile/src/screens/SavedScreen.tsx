@@ -5,14 +5,13 @@ type SavedScreenProps = {
   accessCodeId: string;
 };
 
-export function SavedScreen({ accessCodeId }: SavedScreenProps) {
+export function SavedScreen(_props: SavedScreenProps) {
   return (
     <View style={styles.screen}>
       <View style={styles.content}>
         <Text style={styles.kicker}>SAVED</Text>
         <Text style={styles.title}>저장함</Text>
         <Text style={styles.copy}>저장한 장소가 여기에 쌓입니다.</Text>
-        <Text style={styles.debug}>{accessCodeId}</Text>
       </View>
     </View>
   );
@@ -48,10 +47,5 @@ const styles = StyleSheet.create({
     color: colors.muted,
     fontSize: typography.body,
     lineHeight: 24,
-  },
-  debug: {
-    color: "#5F6C5F",
-    fontSize: typography.caption,
-    marginTop: spacing.md,
   },
 });

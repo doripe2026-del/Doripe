@@ -102,6 +102,7 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
           <Pressable
             accessibilityLabel="시작하기"
             accessibilityRole="button"
+            accessibilityState={{ disabled: !canSubmit }}
             disabled={!canSubmit}
             onPress={handleSubmit}
             style={({ pressed }) => [

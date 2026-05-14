@@ -5,14 +5,13 @@ type DiscoverScreenProps = {
   accessCodeId: string;
 };
 
-export function DiscoverScreen({ accessCodeId }: DiscoverScreenProps) {
+export function DiscoverScreen(_props: DiscoverScreenProps) {
   return (
     <View style={styles.screen}>
       <View style={styles.content}>
         <Text style={styles.kicker}>DORIPE</Text>
         <Text style={styles.title}>발견</Text>
         <Text style={styles.copy}>장소 카드를 넘기며 취향을 모아요.</Text>
-        <Text style={styles.debug}>{accessCodeId}</Text>
       </View>
     </View>
   );
@@ -48,10 +47,5 @@ const styles = StyleSheet.create({
     color: colors.muted,
     fontSize: typography.body,
     lineHeight: 24,
-  },
-  debug: {
-    color: "#5F6C5F",
-    fontSize: typography.caption,
-    marginTop: spacing.md,
   },
 });
