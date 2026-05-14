@@ -30,4 +30,23 @@ describe("saved place operations", () => {
     expect(next[0].placeId).toBe("hbc-002");
     expect(next[0].savedOrder).toBe(1);
   });
+
+  it("reorders only the target access code when removing interleaved saved places", () => {
+    const first = addSavedPlace([], "access-0529", "hbc-001", "2026-05-15T00:00:00.000Z");
+    const second = addSavedPlace(first, "access-9999", "hbc-003", "2026-05-15T00:01:00.000Z");
+    const third = addSavedPlace(second, "access-0529", "hbc-002", "2026-05-15T00:02:00.000Z");
+    const fourth = addSavedPlace(third, "access-9999", "hbc-004", "2026-05-15T00:03:00.000Z");
+    const next = removeSavedPlace(fourth, "access-0529", "hbc-001");
+
+    expect(next).toHaveLength(3);
+    expect(
+      next
+        .filter((savedPlace) => savedPlace.accessCodeId === "access-9999")
+        .map((savedPlace) => savedPlace.savedOrder),
+    ).toEqual([1, 2]);
+    expect(next.find((savedPlace) => savedPlace.accessCodeId === "access-0529")).toMatchObject({
+      placeId: "hbc-002",
+      savedOrder: 1,
+    });
+  });
 });
