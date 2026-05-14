@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { accessCodes } from "../domain/fixtures";
+import { recordEvent } from "../services/events";
 import { verifyAccessCode } from "../services/accessCodes";
 import { colors, radius, spacing, touch, typography } from "../theme/tokens";
 
@@ -16,25 +17,24 @@ type AccessCodeScreenProps = {
   onAccepted: (accessCodeId: string) => void;
 };
 
-function recordCodeVerified(accessCodeId: string) {
-  void import("../services/events")
-    .then(({ recordEvent }) => recordEvent({ accessCodeId, eventName: "code_verified" }))
-    .catch(() => undefined);
-}
-
 export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
   const [code, setCode] = useState("");
   const [message, setMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const normalizedCode = code.replace(/\D/g, "").slice(0, 4);
-  const canSubmit = normalizedCode.length === 4;
+  const canSubmit = normalizedCode.length === 4 && !isSubmitting;
 
   function handleCodeChange(value: string) {
     setCode(value.replace(/\D/g, "").slice(0, 4));
     setMessage(null);
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
+    if (!canSubmit) {
+      return;
+    }
+
     const result = verifyAccessCode(normalizedCode, accessCodes);
 
     if (result.status === "inactive") {
@@ -48,8 +48,15 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
     }
 
     const { accessCodeId } = result;
-    recordCodeVerified(accessCodeId);
-    onAccepted(accessCodeId);
+    setIsSubmitting(true);
+    try {
+      await recordEvent({ accessCodeId, eventName: "code_verified" });
+      onAccepted(accessCodeId);
+    } catch {
+      setMessage("코드를 확인해주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
