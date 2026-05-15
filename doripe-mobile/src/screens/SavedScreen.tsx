@@ -34,11 +34,6 @@ export function SavedScreen({ accessCodeId }: SavedScreenProps) {
           if (isActive) {
             setSavedPlaces(resolvedPlaces);
           }
-
-          await recordEvent({
-            accessCodeId,
-            eventName: "saved_list_opened",
-          });
         } catch (error) {
           if (isActive) {
             setSavedPlaces([]);
@@ -46,6 +41,17 @@ export function SavedScreen({ accessCodeId }: SavedScreenProps) {
 
           if (__DEV__) {
             console.warn("Failed to load saved places", error);
+          }
+        }
+
+        try {
+          await recordEvent({
+            accessCodeId,
+            eventName: "saved_list_opened",
+          });
+        } catch (error) {
+          if (__DEV__) {
+            console.warn("Failed to record saved list event", error);
           }
         }
       }

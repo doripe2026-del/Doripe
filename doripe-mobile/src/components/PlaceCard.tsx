@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ImageBackground, Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import type { Place } from "../domain/types";
 import { colors, radius, spacing, touch, typography } from "../theme/tokens";
@@ -10,8 +11,12 @@ type PlaceCardProps = {
   disabled?: boolean;
 };
 
+const fallbackCoverImageUrl =
+  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80";
+
 export function PlaceCard({ place, categoryName, onSave, onSkip, disabled = false }: PlaceCardProps) {
   const { height } = useWindowDimensions();
+  const [imageFailed, setImageFailed] = useState(false);
   const tags = place.moodTags.slice(0, 3);
   const meta = [place.subArea, categoryName].filter(Boolean).join(" · ");
   const cardHeight = Math.max(420, Math.min(560, height - 196));
@@ -19,7 +24,8 @@ export function PlaceCard({ place, categoryName, onSave, onSkip, disabled = fals
   return (
     <View style={[styles.shell, { height: cardHeight }]}>
       <ImageBackground
-        source={{ uri: place.coverImageUrl }}
+        source={{ uri: imageFailed ? fallbackCoverImageUrl : place.coverImageUrl }}
+        onError={() => setImageFailed(true)}
         resizeMode="cover"
         style={styles.image}
         imageStyle={styles.imageRadius}

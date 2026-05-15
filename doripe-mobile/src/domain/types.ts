@@ -33,7 +33,7 @@ export type Place = {
   naverPlaceUrl: string;
   coverImageUrl: string;
   imageUrls: string[];
-  imageCredit: "team";
+  imageCredit: "team" | "unsplash";
   photoQaStatus: "pending" | "approved" | "rejected";
   hoursText: string;
   priceHint: string;
