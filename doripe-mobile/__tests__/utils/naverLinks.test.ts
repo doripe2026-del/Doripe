@@ -14,9 +14,16 @@ describe("naver link helpers", () => {
       toLat: 37.2,
       toLng: 127.2,
     });
+    const parsedUrl = new URL(url);
 
-    expect(url).toContain("https://map.naver.com/");
-    expect(url).toContain("A");
-    expect(url).toContain("B");
+    expect(`${parsedUrl.origin}${parsedUrl.pathname}`).toBe("https://map.naver.com/v5/directions");
+    expect(parsedUrl.searchParams.get("slat")).toBe("37.1");
+    expect(parsedUrl.searchParams.get("slng")).toBe("127.1");
+    expect(parsedUrl.searchParams.get("sname")).toBe("A");
+    expect(parsedUrl.searchParams.get("dlat")).toBe("37.2");
+    expect(parsedUrl.searchParams.get("dlng")).toBe("127.2");
+    expect(parsedUrl.searchParams.get("dname")).toBe("B");
+    expect(parsedUrl.searchParams.get("appname")).toBe("com.doripe.app");
+    expect(url).not.toContain("%2C");
   });
 });

@@ -24,20 +24,30 @@ export function SavedScreen({ accessCodeId }: SavedScreenProps) {
       let isActive = true;
 
       async function loadSavedPlaces() {
-        const storedSavedPlaces = await readJson<SavedPlace[]>(SAVED_PLACES_STORAGE_KEY, []);
-        const savedPlaceIds = getSavedPlaceIds(storedSavedPlaces, accessCodeId);
-        const resolvedPlaces = savedPlaceIds
-          .map((placeId) => getPlaceById(places, placeId))
-          .filter((place): place is Place => Boolean(place));
+        try {
+          const storedSavedPlaces = await readJson<SavedPlace[]>(SAVED_PLACES_STORAGE_KEY, []);
+          const savedPlaceIds = getSavedPlaceIds(storedSavedPlaces, accessCodeId);
+          const resolvedPlaces = savedPlaceIds
+            .map((placeId) => getPlaceById(places, placeId))
+            .filter((place): place is Place => Boolean(place));
 
-        if (isActive) {
-          setSavedPlaces(resolvedPlaces);
+          if (isActive) {
+            setSavedPlaces(resolvedPlaces);
+          }
+
+          await recordEvent({
+            accessCodeId,
+            eventName: "saved_list_opened",
+          });
+        } catch (error) {
+          if (isActive) {
+            setSavedPlaces([]);
+          }
+
+          if (__DEV__) {
+            console.warn("Failed to load saved places", error);
+          }
         }
-
-        await recordEvent({
-          accessCodeId,
-          eventName: "saved_list_opened",
-        });
       }
 
       void loadSavedPlaces();
