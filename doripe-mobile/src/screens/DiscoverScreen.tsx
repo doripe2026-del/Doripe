@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { PlaceCard } from "../components/PlaceCard";
 import { categories, places } from "../domain/fixtures";
@@ -19,6 +19,7 @@ export function DiscoverScreen({ accessCodeId }: DiscoverScreenProps) {
   const readyPlaces = useMemo(() => getReadyPlaces(places), []);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const submittingRef = useRef(false);
   const currentPlace = readyPlaces[currentIndex];
 
   function advanceCard() {
@@ -26,10 +27,11 @@ export function DiscoverScreen({ accessCodeId }: DiscoverScreenProps) {
   }
 
   async function handleSave() {
-    if (!currentPlace || isSubmitting) {
+    if (!currentPlace || submittingRef.current) {
       return;
     }
 
+    submittingRef.current = true;
     setIsSubmitting(true);
 
     try {
@@ -49,15 +51,17 @@ export function DiscoverScreen({ accessCodeId }: DiscoverScreenProps) {
       });
       advanceCard();
     } finally {
+      submittingRef.current = false;
       setIsSubmitting(false);
     }
   }
 
   async function handleSkip() {
-    if (!currentPlace || isSubmitting) {
+    if (!currentPlace || submittingRef.current) {
       return;
     }
 
+    submittingRef.current = true;
     setIsSubmitting(true);
 
     try {
@@ -68,6 +72,7 @@ export function DiscoverScreen({ accessCodeId }: DiscoverScreenProps) {
       });
       advanceCard();
     } finally {
+      submittingRef.current = false;
       setIsSubmitting(false);
     }
   }
@@ -94,6 +99,7 @@ export function DiscoverScreen({ accessCodeId }: DiscoverScreenProps) {
             categoryName={categoryName}
             onSave={handleSave}
             onSkip={handleSkip}
+            disabled={isSubmitting}
           />
         ) : (
           <View style={styles.emptyState}>

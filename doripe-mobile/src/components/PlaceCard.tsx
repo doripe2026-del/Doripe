@@ -1,4 +1,4 @@
-import { ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
+import { ImageBackground, Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import type { Place } from "../domain/types";
 import { colors, radius, spacing, touch, typography } from "../theme/tokens";
 
@@ -7,14 +7,17 @@ type PlaceCardProps = {
   categoryName: string;
   onSave: () => void;
   onSkip: () => void;
+  disabled?: boolean;
 };
 
-export function PlaceCard({ place, categoryName, onSave, onSkip }: PlaceCardProps) {
+export function PlaceCard({ place, categoryName, onSave, onSkip, disabled = false }: PlaceCardProps) {
+  const { height } = useWindowDimensions();
   const tags = place.moodTags.slice(0, 3);
   const meta = [place.subArea, categoryName].filter(Boolean).join(" · ");
+  const cardHeight = Math.max(420, Math.min(560, height - 196));
 
   return (
-    <View style={styles.shell}>
+    <View style={[styles.shell, { height: cardHeight }]}>
       <ImageBackground
         source={{ uri: place.coverImageUrl }}
         resizeMode="cover"
@@ -43,19 +46,33 @@ export function PlaceCard({ place, categoryName, onSave, onSkip }: PlaceCardProp
           <View style={styles.actions}>
             <Pressable
               accessibilityRole="button"
+              accessibilityState={{ disabled }}
               accessibilityLabel={`${place.name} 스킵`}
+              disabled={disabled}
               onPress={onSkip}
-              style={({ pressed }) => [styles.actionButton, styles.skipButton, pressed && styles.pressed]}
+              style={({ pressed }) => [
+                styles.actionButton,
+                styles.skipButton,
+                pressed && !disabled && styles.pressed,
+                disabled && styles.disabledButton,
+              ]}
             >
-              <Text style={[styles.actionText, styles.skipText]}>스킵</Text>
+              <Text style={[styles.actionText, styles.skipText, disabled && styles.disabledText]}>스킵</Text>
             </Pressable>
             <Pressable
               accessibilityRole="button"
+              accessibilityState={{ disabled }}
               accessibilityLabel={`${place.name} 저장`}
+              disabled={disabled}
               onPress={onSave}
-              style={({ pressed }) => [styles.actionButton, styles.saveButton, pressed && styles.pressed]}
+              style={({ pressed }) => [
+                styles.actionButton,
+                styles.saveButton,
+                pressed && !disabled && styles.pressed,
+                disabled && styles.disabledButton,
+              ]}
             >
-              <Text style={[styles.actionText, styles.saveText]}>저장</Text>
+              <Text style={[styles.actionText, styles.saveText, disabled && styles.disabledText]}>저장</Text>
             </Pressable>
           </View>
         </View>
@@ -66,8 +83,7 @@ export function PlaceCard({ place, categoryName, onSave, onSkip }: PlaceCardProp
 
 const styles = StyleSheet.create({
   shell: {
-    flex: 1,
-    minHeight: 560,
+    width: "100%",
   },
   image: {
     flex: 1,
@@ -156,6 +172,9 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.72,
   },
+  disabledButton: {
+    opacity: 0.46,
+  },
   actionText: {
     fontSize: typography.body,
     fontWeight: "900",
@@ -165,5 +184,8 @@ const styles = StyleSheet.create({
   },
   saveText: {
     color: colors.background,
+  },
+  disabledText: {
+    opacity: 0.78,
   },
 });
