@@ -1,45 +1,29 @@
-import { readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { categories, neighborhoods, places } from "../src/domain/fixtures.ts";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const fixturesPath = resolve(__dirname, "../src/domain/fixtures.ts");
-const fixturesText = readFileSync(fixturesPath, "utf8");
 const strict = process.argv.includes("--strict");
 
 const requiredNeighborhoodIds = ["hbc", "mullae", "seochon"];
 const requiredCategoryIds = ["cafe", "food", "bar", "shop", "culture", "walk"];
 const errors = [];
 
-function requireId(kind, id) {
-  const pattern = new RegExp(`\\bid\\s*:\\s*["']${id}["']`);
-  if (!pattern.test(fixturesText)) {
+function requireId(kind, ids, id) {
+  if (!ids.has(id)) {
     errors.push(`Missing required ${kind} id: ${id}`);
   }
 }
 
+const neighborhoodIds = new Set(neighborhoods.map((neighborhood) => neighborhood.id));
+const categoryIds = new Set(categories.map((category) => category.id));
+
 for (const id of requiredNeighborhoodIds) {
-  requireId("neighborhood", id);
+  requireId("neighborhood", neighborhoodIds, id);
 }
 
 for (const id of requiredCategoryIds) {
-  requireId("category", id);
+  requireId("category", categoryIds, id);
 }
 
-const placesMatch = fixturesText.match(/export\s+const\s+places[\s\S]*?=\s*\[([\s\S]*)\]\s*;/);
-
-if (!placesMatch) {
-  errors.push("Could not find exported places array in src/domain/fixtures.ts");
-}
-
-const placeBlocks = placesMatch?.[1].match(/\{\s*[\s\S]*?\n\s{2}\}/g) ?? [];
-const readyPlaces = placeBlocks
-  .filter((place) => /\bstatus\s*:\s*["']ready["']/.test(place))
-  .map((place) => ({
-    id: place.match(/\bid\s*:\s*["']([^"']+)["']/)?.[1] ?? "unknown-id",
-    neighborhoodId: place.match(/\bneighborhoodId\s*:\s*["']([^"']+)["']/)?.[1] ?? "unknown-neighborhood",
-    photoQaStatus: place.match(/\bphotoQaStatus\s*:\s*["']([^"']+)["']/)?.[1] ?? "missing",
-  }));
+const readyPlaces = places.filter((place) => place.status === "ready");
 
 const readyCount = readyPlaces.length;
 const approvedReadyPlaces = readyPlaces.filter((place) => place.photoQaStatus === "approved");
