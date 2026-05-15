@@ -36,11 +36,6 @@ export function RouteScreen({ accessCodeId }: RouteScreenProps) {
           if (isActive) {
             setRoutePlaces(resolvedPlaces);
           }
-
-          await recordEvent({
-            accessCodeId,
-            eventName: "route_opened",
-          });
         } catch (error) {
           if (isActive) {
             setRoutePlaces([]);
@@ -48,6 +43,19 @@ export function RouteScreen({ accessCodeId }: RouteScreenProps) {
 
           if (__DEV__) {
             console.warn("Failed to load route places", error);
+          }
+
+          return;
+        }
+
+        try {
+          await recordEvent({
+            accessCodeId,
+            eventName: "route_opened",
+          });
+        } catch (error) {
+          if (__DEV__) {
+            console.warn("Failed to record route opened event", error);
           }
         }
       }
@@ -61,6 +69,15 @@ export function RouteScreen({ accessCodeId }: RouteScreenProps) {
   );
 
   async function handleOpenSegment(from: Place, to: Place) {
+    const directionsUrl = buildNaverDirectionsUrl({
+      fromName: from.name,
+      fromLat: from.lat,
+      fromLng: from.lng,
+      toName: to.name,
+      toLat: to.lat,
+      toLng: to.lng,
+    });
+
     try {
       await recordEvent({
         accessCodeId,
@@ -68,17 +85,14 @@ export function RouteScreen({ accessCodeId }: RouteScreenProps) {
         segmentFromPlaceId: from.id,
         segmentToPlaceId: to.id,
       });
+    } catch (error) {
+      if (__DEV__) {
+        console.warn("Failed to record route segment event", error);
+      }
+    }
 
-      await Linking.openURL(
-        buildNaverDirectionsUrl({
-          fromName: from.name,
-          fromLat: from.lat,
-          fromLng: from.lng,
-          toName: to.name,
-          toLat: to.lat,
-          toLng: to.lng,
-        }),
-      );
+    try {
+      await Linking.openURL(directionsUrl);
     } catch (error) {
       if (__DEV__) {
         console.warn("Failed to open route segment", error);
