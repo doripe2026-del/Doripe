@@ -9,7 +9,9 @@
     "web": "expo start --web",
     "test": "jest",
     "test:watch": "jest --watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "validate:content": "node scripts/validate-content.mjs",
+    "validate:content:strict": "node scripts/validate-content.mjs --strict"
   },
   "dependencies": {
     "@mj-studio/react-native-naver-map": "^2.8.0",

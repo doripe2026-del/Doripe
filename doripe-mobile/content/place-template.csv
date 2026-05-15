@@ -1,0 +1,2 @@
+id,status,neighborhoodId,subArea,categoryId,name,shortCopy,moodTags,bestFor,timeTags,routeRole,lat,lng,address,nearestStation,naverPlaceUrl,coverImageUrl,imageUrls,imageCredit,photoQaStatus,hoursText,priceHint,stayTimeMinutes,editorialNote,qaStatus,lastCheckedAt
+hbc-001,ready,hbc,해방촌,cafe,장소명,한 줄 문구,"조용한|로컬|혼자","혼자|친구","오후|저녁",start,37.54424,126.98574,서울 용산구...,녹사평역,https://map.naver.com/,https://example.com/photo.jpg,https://example.com/photo.jpg,team,approved,운영시간 확인 필요,1만원대,45,루트 메모,ready,2026-05-29
