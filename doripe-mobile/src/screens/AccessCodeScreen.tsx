@@ -43,7 +43,7 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
     }
 
     if (result.status !== "accepted") {
-      setMessage("코드를 확인해주세요.");
+      setMessage("코드를 확인해 주세요.");
       return;
     }
 
@@ -53,7 +53,7 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
       await recordEvent({ accessCodeId, eventName: "code_verified" });
       onAccepted(accessCodeId);
     } catch {
-      setMessage("코드를 확인해주세요.");
+      setMessage("코드를 확인해 주세요.");
     } finally {
       setIsSubmitting(false);
     }
@@ -72,13 +72,13 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
 
         <View style={styles.hero}>
           <Text style={styles.eyebrow}>초대받은 사람만 먼저</Text>
-          <Text style={styles.title}>취향의 루트를 여는 실행코드</Text>
-          <Text style={styles.copy}>전달받은 네 자리 코드를 입력하고 도리프를 시작하세요.</Text>
+          <Text style={styles.title}>초대 코드를{"\n"}입력하세요</Text>
+          <Text style={styles.copy}>이메일로 받은 네 자리 코드를 입력하고 Doripe를 시작하세요.</Text>
         </View>
 
         <View style={styles.form}>
           <TextInput
-            accessibilityLabel="실행코드 입력"
+            accessibilityLabel="초대 코드 입력"
             autoCapitalize="none"
             autoCorrect={false}
             inputMode="numeric"
@@ -100,7 +100,7 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
           </View>
 
           <Pressable
-            accessibilityLabel="시작하기"
+            accessibilityLabel="시작"
             accessibilityRole="button"
             accessibilityState={{ disabled: !canSubmit }}
             disabled={!canSubmit}
@@ -111,7 +111,7 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
               pressed && canSubmit && styles.buttonPressed,
             ]}
           >
-            <Text style={[styles.buttonText, !canSubmit && styles.buttonTextDisabled]}>시작하기</Text>
+            <Text style={[styles.buttonText, !canSubmit && styles.buttonTextDisabled]}>시작</Text>
           </Pressable>
         </View>
       </View>

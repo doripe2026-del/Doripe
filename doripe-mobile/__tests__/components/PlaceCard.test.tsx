@@ -13,7 +13,7 @@ describe("PlaceCard", () => {
     expect(screen.getByText("후암동 언덕 산책 전에 들르기 좋은 조용한 카페")).toBeTruthy();
 
     fireEvent.press(screen.getByText("저장"));
-    fireEvent.press(screen.getByText("스킵"));
+    fireEvent.press(screen.getByText("×"));
 
     expect(onSave).toHaveBeenCalledTimes(1);
     expect(onSkip).toHaveBeenCalledTimes(1);
@@ -34,12 +34,12 @@ describe("PlaceCard", () => {
     );
 
     fireEvent.press(screen.getByText("저장"));
-    fireEvent.press(screen.getByText("스킵"));
+    fireEvent.press(screen.getByText("×"));
 
     expect(screen.getByLabelText("오월의 커피 저장")).toHaveProp("accessibilityState", {
       disabled: true,
     });
-    expect(screen.getByLabelText("오월의 커피 스킵")).toHaveProp("accessibilityState", {
+    expect(screen.getByLabelText("오월의 커피 건너뛰기")).toHaveProp("accessibilityState", {
       disabled: true,
     });
     expect(onSave).not.toHaveBeenCalled();

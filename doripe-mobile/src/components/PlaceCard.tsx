@@ -53,7 +53,7 @@ export function PlaceCard({ place, categoryName, onSave, onSkip, disabled = fals
             <Pressable
               accessibilityRole="button"
               accessibilityState={{ disabled }}
-              accessibilityLabel={`${place.name} 스킵`}
+              accessibilityLabel={`${place.name} 건너뛰기`}
               disabled={disabled}
               onPress={onSkip}
               style={({ pressed }) => [
@@ -63,7 +63,7 @@ export function PlaceCard({ place, categoryName, onSave, onSkip, disabled = fals
                 disabled && styles.disabledButton,
               ]}
             >
-              <Text style={[styles.actionText, styles.skipText, disabled && styles.disabledText]}>스킵</Text>
+              <Text style={[styles.actionText, styles.skipText, disabled && styles.disabledText]}>×</Text>
             </Pressable>
             <Pressable
               accessibilityRole="button"

@@ -81,7 +81,7 @@ export function SavedScreen({ accessCodeId }: SavedScreenProps) {
 
       {savedPlaces.length === 0 ? (
         <View style={styles.emptyState}>
-          <Text style={styles.emptyCopy}>마음에 드는 장소를 저장하면 여기에 모여요.</Text>
+          <Text style={styles.emptyCopy}>마음에 드는 장소를 저장하면 여기에서 다시 볼 수 있어요.</Text>
         </View>
       ) : (
         <View style={styles.list}>
@@ -97,11 +97,11 @@ export function SavedScreen({ accessCodeId }: SavedScreenProps) {
 
               <Pressable
                 accessibilityRole="link"
-                accessibilityLabel={`${item.name} 네이버지도에서 보기`}
+                accessibilityLabel={`${item.name} 네이버 지도에서 보기`}
                 onPress={() => openNaverPlace(item.naverPlaceUrl)}
                 style={({ pressed }) => [styles.mapLink, pressed && styles.pressed]}
               >
-                <Text style={styles.mapLinkText}>네이버지도에서 보기</Text>
+                <Text style={styles.mapLinkText}>네이버 열기</Text>
               </Pressable>
             </View>
           ))}

@@ -26,11 +26,11 @@ describe("AccessCodeScreen", () => {
 
     render(<AccessCodeScreen onAccepted={onAccepted} />);
 
-    fireEvent.changeText(screen.getByLabelText("실행코드 입력"), "0529");
+    fireEvent.changeText(screen.getByLabelText("초대 코드 입력"), "0529");
     await waitFor(() => {
-      expect(screen.getByLabelText("실행코드 입력")).toHaveProp("value", "0529");
+      expect(screen.getByLabelText("초대 코드 입력")).toHaveProp("value", "0529");
     });
-    fireEvent.press(screen.getByText("시작하기"));
+    fireEvent.press(screen.getByText("시작"));
 
     expect(mockRecordEvent).toHaveBeenCalledWith({
       accessCodeId: "access-0529",
@@ -48,8 +48,8 @@ describe("AccessCodeScreen", () => {
   it("shows inactive code message", () => {
     render(<AccessCodeScreen onAccepted={jest.fn()} />);
 
-    fireEvent.changeText(screen.getByLabelText("실행코드 입력"), "9999");
-    fireEvent.press(screen.getByText("시작하기"));
+    fireEvent.changeText(screen.getByLabelText("초대 코드 입력"), "9999");
+    fireEvent.press(screen.getByText("시작"));
 
     expect(screen.getByText("현재 사용할 수 없는 코드입니다.")).toBeTruthy();
   });
