@@ -1,13 +1,23 @@
 export const colors = {
-  background: "#050605",
-  surface: "#101310",
-  surfaceElevated: "#171B17",
-  ink: "#F7FFF7",
-  muted: "#9EA99E",
-  line: "#273027",
-  primary: "#21F782",
+  background: "#F6F4EC",
+  surface: "#FFFFF9",
+  surfaceElevated: "#EEECE3",
+  ink: "#090B0A",
+  muted: "#5C6159",
+  line: "#D1D1C5",
+  primary: "#21F073",
   primaryDark: "#12B85C",
-  danger: "#FF6B5F",
+  primaryInk: "#052E14",
+  danger: "#E12E29",
+  dark: "#090B0A",
+  white: "#FFFFFF",
+};
+
+export const gradients = {
+  sunset: ["#F5995C", "#80A68C"],
+  lane: ["#B2C7B2", "#F5EBC7"],
+  night: ["#1F333D", "#AD7A47"],
+  lookout: ["#DBBA8C", "#6B8C75"],
 };
 
 export const spacing = {
