@@ -13,6 +13,7 @@ Generated: 2026-05-17
 - `WF 00 / Seoul map after access`
 - `WF 00B / Region deck picker`
 - `03 New Flow / Map to Deck to Discover`
+- Generated iOS-style status bars applied to all mobile frames
 - `WF 01 / Access code`
 - `WF 02 / Discover card`
 - `WF 03 / Saved list`
@@ -45,6 +46,8 @@ This file combines:
 ## Current Status
 
 The Figma file is a first structured design pass, not final production UI.
+
+All 393 x 852 mobile frames now include a generated iOS-style status bar. It is editable vector/text content inside Figma, not a pasted web screenshot.
 
 It is ready for:
 
