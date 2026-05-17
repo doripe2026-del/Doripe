@@ -1,26 +1,56 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { AppScaffold } from "../components/AppScaffold";
+import { BackButton } from "../components/BackButton";
 import { PlaceCard } from "../components/PlaceCard";
-import { categories, places } from "../domain/fixtures";
-import { getCategoryById, getReadyPlaces } from "../domain/selectors";
-import type { SavedPlace } from "../domain/types";
-import { addSavedPlace } from "../services/savedPlaces";
+import { StateMessage } from "../components/StateMessage";
+import { categories, deckPlaces, places } from "../domain/fixtures";
+import { getCategoryById, getPlacesForDeck } from "../domain/selectors";
+import type { MapStackParamList } from "../navigation/AppNavigator";
+import { addSelectedPlace, addSkippedPlace } from "../services/deckSession";
 import { recordEvent } from "../services/events";
-import { readJson, writeJson } from "../services/storage";
-import { colors, radius, spacing, typography } from "../theme/tokens";
+import { colors, spacing, typography } from "../theme/tokens";
 
-type DiscoverScreenProps = {
+type DiscoverScreenProps = NativeStackScreenProps<MapStackParamList, "Discover"> & {
   accessCodeId: string;
 };
 
-const SAVED_PLACES_STORAGE_KEY = "doripe.savedPlaces";
-
-export function DiscoverScreen({ accessCodeId }: DiscoverScreenProps) {
-  const readyPlaces = useMemo(() => getReadyPlaces(places), []);
+export function DiscoverScreen({ accessCodeId, navigation, route }: DiscoverScreenProps) {
+  const deckReadyPlaces = useMemo(
+    () => getPlacesForDeck(deckPlaces, places, route.params.deckId),
+    [route.params.deckId],
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submittingRef = useRef(false);
-  const currentPlace = readyPlaces[currentIndex];
+  const finishedRecordedRef = useRef(false);
+  const currentPlace = deckReadyPlaces[currentIndex];
+
+  useEffect(() => {
+    setCurrentIndex(0);
+    finishedRecordedRef.current = false;
+  }, [route.params.deckId]);
+
+  useEffect(() => {
+    if (
+      deckReadyPlaces.length === 0 ||
+      currentIndex < deckReadyPlaces.length ||
+      finishedRecordedRef.current
+    ) {
+      return;
+    }
+
+    finishedRecordedRef.current = true;
+    void recordEvent({
+      accessCodeId,
+      eventName: "deck_finished",
+    }).catch((error) => {
+      if (__DEV__) {
+        console.warn("Failed to record deck finished event", error);
+      }
+    });
+  }, [accessCodeId, currentIndex, deckReadyPlaces.length]);
 
   function advanceCard() {
     setCurrentIndex((index) => index + 1);
@@ -35,15 +65,7 @@ export function DiscoverScreen({ accessCodeId }: DiscoverScreenProps) {
     setIsSubmitting(true);
 
     try {
-      const savedPlaces = await readJson<SavedPlace[]>(SAVED_PLACES_STORAGE_KEY, []);
-      const nextSavedPlaces = addSavedPlace(
-        savedPlaces,
-        accessCodeId,
-        currentPlace.id,
-        new Date().toISOString(),
-      );
-
-      await writeJson(SAVED_PLACES_STORAGE_KEY, nextSavedPlaces);
+      await addSelectedPlace(accessCodeId, currentPlace.id, new Date().toISOString());
       await recordEvent({
         accessCodeId,
         eventName: "place_saved",
@@ -65,6 +87,7 @@ export function DiscoverScreen({ accessCodeId }: DiscoverScreenProps) {
     setIsSubmitting(true);
 
     try {
+      await addSkippedPlace(accessCodeId, currentPlace.id, new Date().toISOString());
       await recordEvent({
         accessCodeId,
         eventName: "place_skipped",
@@ -77,15 +100,16 @@ export function DiscoverScreen({ accessCodeId }: DiscoverScreenProps) {
     }
   }
 
-  const countLabel = `${Math.min(currentIndex + 1, readyPlaces.length)}/${readyPlaces.length}`;
+  const countLabel = `${Math.min(currentIndex + 1, deckReadyPlaces.length)}/${deckReadyPlaces.length}`;
   const categoryName = currentPlace
     ? getCategoryById(categories, currentPlace.categoryId)?.name ?? ""
     : "";
 
   return (
-    <View style={styles.screen}>
+    <AppScaffold>
       <View style={styles.header}>
-        <View>
+        <BackButton onPress={() => navigation.goBack()} />
+        <View style={styles.headerCopy}>
           <Text style={styles.brand}>Doripe</Text>
           <Text style={styles.subtitle}>오늘의 동네 취향 카드</Text>
         </View>
@@ -102,73 +126,64 @@ export function DiscoverScreen({ accessCodeId }: DiscoverScreenProps) {
             disabled={isSubmitting}
           />
         ) : (
-          <View style={styles.emptyState}>
-            <Text style={styles.emptyTitle}>오늘 볼 카드는 여기까지예요.</Text>
-            <Text style={styles.emptyCopy}>저장함과 루트에서 저장한 장소를 확인해보세요.</Text>
+          <View style={styles.finishedState}>
+            <StateMessage
+              title="이 덱의 카드를 모두 봤어요."
+              copy="마음에 든 장소를 한 번 더 보고 방문할 곳을 골라볼까요?"
+              actionLabel="고른 장소 보기"
+              onAction={() =>
+                navigation.navigate("PlaceGallery", {
+                  regionId: route.params.regionId,
+                  deckId: route.params.deckId,
+                })
+              }
+            />
           </View>
         )}
       </View>
-    </View>
+    </AppScaffold>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.background,
-    paddingBottom: spacing.lg,
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.xxl,
-  },
-  header: {
-    alignItems: "flex-end",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: spacing.md,
-    paddingHorizontal: spacing.sm,
-  },
   brand: {
     color: colors.primary,
     fontSize: typography.title,
     fontWeight: "900",
     lineHeight: 46,
   },
-  subtitle: {
-    color: colors.muted,
-    fontSize: typography.caption,
-    fontWeight: "800",
-    marginTop: spacing.xs,
+  cardStage: {
+    flex: 1,
   },
   count: {
     color: colors.ink,
     fontSize: typography.body,
     fontWeight: "900",
-    paddingBottom: spacing.xs,
   },
-  cardStage: {
-    flex: 1,
-  },
-  emptyState: {
-    alignItems: "flex-start",
+  finishedState: {
+    alignItems: "stretch",
     backgroundColor: colors.surface,
     borderColor: colors.line,
-    borderRadius: radius.lg,
+    borderRadius: 24,
     borderWidth: 1,
     flex: 1,
     justifyContent: "center",
-    gap: spacing.md,
     padding: spacing.lg,
   },
-  emptyTitle: {
-    color: colors.ink,
-    fontSize: typography.headline,
-    fontWeight: "900",
-    lineHeight: 36,
+  header: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.md,
+    justifyContent: "space-between",
+    paddingBottom: spacing.md,
   },
-  emptyCopy: {
+  headerCopy: {
+    flex: 1,
+  },
+  subtitle: {
     color: colors.muted,
-    fontSize: typography.body,
-    fontWeight: "700",
-    lineHeight: 24,
+    fontSize: typography.caption,
+    fontWeight: "800",
+    marginTop: spacing.xs,
   },
 });
