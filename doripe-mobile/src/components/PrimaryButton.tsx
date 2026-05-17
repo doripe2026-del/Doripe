@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.primary,
     borderRadius: 18,
-    height: touch.minimum + spacing.sm,
     justifyContent: "center",
+    minHeight: touch.minimum + spacing.sm,
     paddingHorizontal: spacing.lg,
   },
   disabled: {
