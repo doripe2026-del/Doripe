@@ -1,6 +1,7 @@
 import { deckPlaces, decks, places, regions } from "../../src/domain/fixtures";
 import {
   getActiveDecksByRegionId,
+  getDeckById,
   getDeckPlaces,
   getPlacesForDeck,
   getRegionById,
@@ -45,6 +46,10 @@ describe("deck domain fixtures", () => {
     ]);
   });
 
+  it("returns a deck by id", () => {
+    expect(getDeckById(decks, "yongsan-solo-afternoon")?.title).toBe("혼자 걷는 오후");
+  });
+
   it("returns deck place links in display order", () => {
     expect(
       getDeckPlaces(deckPlaces, "yongsan-solo-afternoon").map((deckPlace) => deckPlace.placeId),
@@ -55,5 +60,29 @@ describe("deck domain fixtures", () => {
     expect(
       getPlacesForDeck(deckPlaces, places, "yongsan-solo-afternoon").map((place) => place.name),
     ).toEqual(["오월의 커피", "소월길 산책", "신흥시장 와인바", "후암동 전망", "해방촌 바"]);
+  });
+
+  it("filters out non-ready and non-approved places for a deck", () => {
+    const validPlace = places[0]!;
+    const draftPlace: typeof validPlace = {
+      ...validPlace,
+      id: "draft-place",
+      status: "draft",
+    };
+    const pendingPhotoPlace: typeof validPlace = {
+      ...validPlace,
+      id: "pending-photo",
+      photoQaStatus: "pending",
+    };
+    const localPlaces = [validPlace, draftPlace, pendingPhotoPlace];
+    const localDeckPlaces: typeof deckPlaces = [
+      { deckId: "filter-test", placeId: validPlace.id, displayOrder: 1 },
+      { deckId: "filter-test", placeId: draftPlace.id, displayOrder: 2 },
+      { deckId: "filter-test", placeId: pendingPhotoPlace.id, displayOrder: 3 },
+    ];
+
+    expect(
+      getPlacesForDeck(localDeckPlaces, localPlaces, "filter-test").map((place) => place.id),
+    ).toEqual([validPlace.id]);
   });
 });
