@@ -8,7 +8,7 @@ import {
 
 describe("domain selectors", () => {
   it("resolves neighborhoods by id", () => {
-    expect(getNeighborhoodById(neighborhoods, "hbc")?.name).toBe("후암동/해방촌");
+    expect(getNeighborhoodById(neighborhoods, "yongsan_hbc")?.name).toBe("용산·후암·해방촌");
   });
 
   it("resolves categories by id", () => {
@@ -22,10 +22,10 @@ describe("domain selectors", () => {
   });
 
   it("derives route segments from saved place ids", () => {
-    const segments = getRouteSegments(["hbc-001", "hbc-002", "hbc-003"], places);
+    const segments = getRouteSegments(["yongsan-001", "yongsan-002", "yongsan-003"], places);
     expect(segments).toEqual([
-      { fromPlaceId: "hbc-001", toPlaceId: "hbc-002" },
-      { fromPlaceId: "hbc-002", toPlaceId: "hbc-003" },
+      { fromPlaceId: "yongsan-001", toPlaceId: "yongsan-002" },
+      { fromPlaceId: "yongsan-002", toPlaceId: "yongsan-003" },
     ]);
   });
 });

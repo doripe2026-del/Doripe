@@ -14,6 +14,38 @@ export type Category = {
   status: EntityStatus;
 };
 
+export type Region = {
+  id: "seongsu" | "yongsan_hbc" | "yeonnam_mangwon";
+  name: string;
+  shortName: string;
+  displayOrder: number;
+  status: EntityStatus;
+  mapPin: { x: number; y: number };
+};
+
+export type Deck = {
+  id: string;
+  regionId: Region["id"];
+  status: EntityStatus;
+  title: string;
+  shortCopy: string;
+  tags: string[];
+  tone: "sunset" | "lane" | "night" | "lookout";
+  displayOrder: number;
+};
+
+export type DeckPlace = { deckId: string; placeId: string; displayOrder: number; featured?: boolean };
+
+export type ActiveDeckSession = {
+  accessCodeId: string;
+  regionId: Region["id"];
+  deckId: string;
+  seenPlaceIds: string[];
+  selectedPlaceIds: string[];
+  skippedPlaceIds: string[];
+  updatedAt: string;
+};
+
 export type Place = {
   id: string;
   status: "draft" | "ready" | "inactive";
@@ -64,9 +96,14 @@ export type SavedPlace = {
 
 export type EventName =
   | "code_verified"
+  | "region_selected"
+  | "deck_selected"
+  | "deck_finished"
   | "place_seen"
   | "place_saved"
   | "place_skipped"
+  | "place_gallery_opened"
+  | "place_selection_confirmed"
   | "saved_list_opened"
   | "route_opened"
   | "route_segment_clicked";
