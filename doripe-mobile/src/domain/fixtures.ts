@@ -27,12 +27,17 @@ export const regions: Region[] = [
   },
 ];
 
-export const neighborhoods: Neighborhood[] = regions.map((region) => ({
-  id: region.id,
-  name: region.name,
-  displayOrder: region.displayOrder,
-  status: region.status,
-}));
+export const neighborhoods: Neighborhood[] = [
+  ...regions.map((region) => ({
+    id: region.id,
+    name: region.name,
+    displayOrder: region.displayOrder,
+    status: region.status,
+  })),
+  { id: "hbc", name: "해방촌", displayOrder: 101, status: "active" },
+  { id: "mullae", name: "문래", displayOrder: 102, status: "active" },
+  { id: "seochon", name: "서촌", displayOrder: 103, status: "active" },
+];
 
 export const categories: Category[] = [
   { id: "cafe", name: "카페", displayOrder: 1, status: "active" },
@@ -123,6 +128,16 @@ export const deckPlaces: DeckPlace[] = [
   { deckId: "yongsan-solo-afternoon", placeId: "yongsan-003", displayOrder: 3 },
   { deckId: "yongsan-solo-afternoon", placeId: "yongsan-004", displayOrder: 4 },
   { deckId: "yongsan-solo-afternoon", placeId: "yongsan-005", displayOrder: 5 },
+  { deckId: "yongsan-photo-lane", placeId: "yongsan-002", displayOrder: 1, featured: true },
+  { deckId: "yongsan-photo-lane", placeId: "yongsan-004", displayOrder: 2 },
+  { deckId: "yongsan-photo-lane", placeId: "yongsan-001", displayOrder: 3 },
+  { deckId: "yongsan-photo-lane", placeId: "yongsan-003", displayOrder: 4 },
+  { deckId: "yongsan-photo-lane", placeId: "yongsan-005", displayOrder: 5 },
+  { deckId: "yongsan-night", placeId: "yongsan-005", displayOrder: 1, featured: true },
+  { deckId: "yongsan-night", placeId: "yongsan-003", displayOrder: 2 },
+  { deckId: "yongsan-night", placeId: "yongsan-004", displayOrder: 3 },
+  { deckId: "yongsan-night", placeId: "yongsan-002", displayOrder: 4 },
+  { deckId: "yongsan-night", placeId: "yongsan-001", displayOrder: 5 },
 ];
 
 export const places: Place[] = [

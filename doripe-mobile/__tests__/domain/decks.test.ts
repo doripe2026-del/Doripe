@@ -62,6 +62,22 @@ describe("deck domain fixtures", () => {
     ).toEqual(["오월의 커피", "소월길 산책", "신흥시장 와인바", "후암동 전망", "해방촌 바"]);
   });
 
+  it("links every active deck to at least one ready approved place", () => {
+    const activeDecks = decks.filter((deck) => deck.status === "active");
+
+    expect(activeDecks.length).toBeGreaterThan(0);
+    for (const deck of activeDecks) {
+      const linkedPlaces = getPlacesForDeck(deckPlaces, places, deck.id);
+
+      expect(linkedPlaces.length).toBeGreaterThan(0);
+      expect(
+        linkedPlaces.every(
+          (place) => place.status === "ready" && place.photoQaStatus === "approved",
+        ),
+      ).toBe(true);
+    }
+  });
+
   it("filters out non-ready and non-approved places for a deck", () => {
     const validPlace = places[0]!;
     const draftPlace: typeof validPlace = {

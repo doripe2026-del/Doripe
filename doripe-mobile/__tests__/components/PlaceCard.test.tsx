@@ -10,7 +10,7 @@ describe("PlaceCard", () => {
     render(<PlaceCard place={places[0]} categoryName="카페" onSave={onSave} onSkip={onSkip} />);
 
     expect(screen.getByText("오월의 커피")).toBeTruthy();
-    expect(screen.getByText("언덕 산책 전에 들르기 좋은 조용한 카페")).toBeTruthy();
+    expect(screen.getByText("후암동 언덕 산책 전에 들르기 좋은 조용한 카페")).toBeTruthy();
 
     fireEvent.press(screen.getByText("저장"));
     fireEvent.press(screen.getByText("스킵"));
