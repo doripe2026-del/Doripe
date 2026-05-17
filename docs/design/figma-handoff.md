@@ -11,7 +11,8 @@ Generated: 2026-05-17
 - `00 Cover / UI strategy`
 - `01 Design System / Tokens`
 - `WF 00 / Seoul map after access`
-- `WF 00B / Region deck picker`
+- `WF 00B / Region deck gallery`
+- `WF 00C / Deck place picker`
 - `03 New Flow / Map to Deck to Discover`
 - Generated iOS-style status bars applied to all mobile frames
 - `WF 01 / Access code`
@@ -35,7 +36,7 @@ This file combines:
 ## Intended Workflow
 
 1. Review the Figma file.
-2. Review the updated `WF 00 / Seoul map after access` and `WF 00B / Region deck picker` frames.
+2. Review the updated `WF 00 / Seoul map after access`, `WF 00B / Region deck gallery`, and `WF 00C / Deck place picker` frames.
 3. Pick whether the map-first flow feels right.
 4. Pick whether the `HI-FI Direction / Discover editorial` screen feels right.
 5. Adjust references/colors/copy in Figma if needed.
@@ -65,7 +66,7 @@ After access code verification, Doripe should show a fixed Seoul map with three 
 - Yongsan / Huam / Haebangchon
 - Yeonnam / Mangwon
 
-Tapping a pin opens a deck picker. After the user chooses mood/visit conditions and starts a deck, Discover begins.
+Tapping a pin opens a full-screen deck gallery. Deck cards can show mood/visit-condition chips, but the chips are labels, not filters. After the user selects a deck, the app opens a gallery-style place picker for that deck. Confirming selected places starts the selected deck experience.
 
 It is not yet ready for:
 

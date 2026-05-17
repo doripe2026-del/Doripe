@@ -29,8 +29,10 @@ flowchart TD
   B -->|"valid code"| M["Fixed Seoul map"]
   B -->|"invalid/inactive code"| B1["Access error"]
   M -->|"tap region pin"| P["Region deck picker"]
-  P -->|"choose mood / visit condition"| P
-  P -->|"start deck"| C["Discover"]
+  P -->|"scroll deck cards"| P
+  P -->|"select deck"| G["Deck place gallery"]
+  G -->|"select places"| G
+  G -->|"confirm places"| C["Discover"]
   C -->|"save place"| C
   C -->|"skip place"| C
   M -->|"bottom tab"| D["Saved"]
@@ -81,28 +83,36 @@ Required states:
 - unavailable/future region if needed later
 - loading deck data
 
-## Screen 1B: Region Deck Picker
+## Screen 1B: Region Deck Gallery
 
 Purpose: let the user choose the type of route/deck before Discover begins.
 
-Deck selection can include:
+Interaction:
 
-- mood: calm, photo, night, walk
-- visit condition: solo, two people, light visit
-- optional time: afternoon, evening, night
+- Tapping a region pin opens a full-screen deck gallery.
+- User scrolls vertical deck cards.
+- Each deck card can show mood/condition chips, but the chips are labels, not filters.
+- User taps one deck card.
+- The app opens the deck place gallery.
+
+## Screen 1C: Deck Place Gallery
+
+Purpose: let the user choose places inside the selected deck before starting the place-card flow.
 
 Interaction:
 
-- Tapping a region pin opens a bottom sheet.
-- User selects conditions.
-- User taps a deck card or primary CTA.
-- Discover starts with places filtered by `selectedDeckId`.
+- Places are shown as image-led gallery cards, not checklist rows.
+- User can select/deselect place cards.
+- Selected cards show a clear check state.
+- Minimum selection for route preview is 2 places.
+- Confirming creates the active deck session and moves into Discover or the selected-place review flow.
 
 Data integrity rule:
 
 - Region is a canonical entity.
 - Deck stores `regionId` and condition tags.
-- Discover reads places through `selectedDeckId`.
+- Deck place selection stores selected `placeId` values under the active deck session.
+- Discover reads places through `selectedDeckId` and selected `placeIds`.
 - Saved/Route store place IDs only, not copied region/deck names.
 
 ## Screen 1: Access Code

@@ -129,7 +129,8 @@ Recommended direction:
 ### Core UI Principle
 
 The Map screen is the product entry.
-The Deck Picker is the personalization moment.
+The Deck Gallery is the personalization moment.
+The Deck Place Gallery is where the user chooses the places inside that deck.
 The Discover screen is the place-card experience.
 Saved and Route are utility screens.
 Access Code is a gate, not a landing page.
@@ -140,7 +141,8 @@ Do wireframe:
 
 - Access code entry
 - Fixed Seoul map with three region pins
-- Region deck picker
+- Region deck gallery
+- Deck place gallery
 - Discover/place card
 - Discover empty/end state
 - Saved list
@@ -182,18 +184,28 @@ Needs:
 - short instruction copy
 - bottom navigation with Map selected
 
-### Region Deck Picker
+### Region Deck Gallery
 
 Goal: choose the right discovery deck from a selected neighborhood.
 Needs:
 
 - selected region label
-- bottom sheet or panel
-- mood chips
-- visit condition chips
-- deck card
-- primary start CTA
-- clear transition into Discover
+- full-screen card gallery
+- vertical scroll of deck cards
+- mood/condition chips as labels, not active filters
+- clear transition into deck place selection
+
+### Deck Place Gallery
+
+Goal: choose places inside the selected deck before starting the route/discovery flow.
+Needs:
+
+- image-led place gallery cards
+- selected/unselected card states
+- selected count
+- minimum 2-place route guidance
+- sticky confirmation CTA
+- selected `placeId` list for the active deck session
 
 ### Discover
 
