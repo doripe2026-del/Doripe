@@ -10,6 +10,9 @@ Generated: 2026-05-17
 
 - `00 Cover / UI strategy`
 - `01 Design System / Tokens`
+- `WF 00 / Seoul map after access`
+- `WF 00B / Region deck picker`
+- `03 New Flow / Map to Deck to Discover`
 - `WF 01 / Access code`
 - `WF 02 / Discover card`
 - `WF 03 / Saved list`
@@ -31,11 +34,13 @@ This file combines:
 ## Intended Workflow
 
 1. Review the Figma file.
-2. Pick whether the `HI-FI Direction / Discover editorial` screen feels right.
-3. Adjust references/colors/copy in Figma if needed.
-4. Mark approved frames as ready for dev.
-5. Implement the approved direction in the React Native app.
-6. Compare real app screenshots against Figma and do design QA.
+2. Review the updated `WF 00 / Seoul map after access` and `WF 00B / Region deck picker` frames.
+3. Pick whether the map-first flow feels right.
+4. Pick whether the `HI-FI Direction / Discover editorial` screen feels right.
+5. Adjust references/colors/copy in Figma if needed.
+6. Mark approved frames as ready for dev.
+7. Implement the approved direction in the React Native app.
+8. Compare real app screenshots against Figma and do design QA.
 
 ## Current Status
 
@@ -45,12 +50,22 @@ It is ready for:
 
 - discussion
 - visual direction feedback
+- deciding the map-first product flow
 - deciding the Discover screen style
 - converting the approved structure into app code
+
+## Flow Update
+
+After access code verification, Doripe should show a fixed Seoul map with three region pins:
+
+- Seongsu
+- Yongsan / Huam / Haebangchon
+- Yeonnam / Mangwon
+
+Tapping a pin opens a deck picker. After the user chooses mood/visit conditions and starts a deck, Discover begins.
 
 It is not yet ready for:
 
 - final app store screenshots
 - complete brand system
 - full pixel QA across Android/iOS
-

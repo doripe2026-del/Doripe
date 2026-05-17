@@ -14,21 +14,28 @@ For MVP, we wireframe every screen in the critical path, plus the states that ca
 For Doripe, the order is:
 
 1. Wireframe all MVP flow screens.
-2. Make Discover/place-card screen high-fidelity.
-3. Extend the visual system to Access, Saved, and Route.
-4. Do design QA on real device screenshots.
+2. Make the map-first region/deck selection flow clear.
+3. Make Discover/place-card screen high-fidelity.
+4. Extend the visual system to Access, Map, Deck Picker, Saved, and Route.
+5. Do design QA on real device screenshots.
+
+Update 2026-05-17: the first product screen after access code is now a fixed Seoul map, not Discover.
 
 ## MVP Screen Map
 
 ```mermaid
 flowchart TD
   A["Open app"] --> B["Access code"]
-  B -->|"valid code"| C["Discover"]
+  B -->|"valid code"| M["Fixed Seoul map"]
   B -->|"invalid/inactive code"| B1["Access error"]
+  M -->|"tap region pin"| P["Region deck picker"]
+  P -->|"choose mood / visit condition"| P
+  P -->|"start deck"| C["Discover"]
   C -->|"save place"| C
   C -->|"skip place"| C
-  C -->|"bottom tab"| D["Saved"]
-  C -->|"bottom tab"| E["Route"]
+  M -->|"bottom tab"| D["Saved"]
+  M -->|"bottom tab"| E["Route"]
+  C -->|"bottom tab"| M
   D -->|"open place"| F["Naver place"]
   E -->|"open segment"| G["Naver directions"]
   D -->|"no saved places"| D1["Saved empty"]
@@ -39,15 +46,64 @@ flowchart TD
 
 Bottom tabs:
 
-- Discover
+- Map
 - Saved
 - Route
 
 Rules:
 
 - Tabs are always available after code verification.
-- Discover is the default first screen.
+- Map is the default first screen after access code verification.
+- Discover starts only after the user chooses a region pin and deck.
 - Route tab can show an empty state until at least two places are saved.
+
+## Screen 1A: Fixed Seoul Map
+
+Purpose: make Doripe feel like a map-based neighborhood product before the user starts swiping places.
+
+Regions shown:
+
+- Seongsu
+- Yongsan / Huam / Haebangchon
+- Yeonnam / Mangwon
+
+Interaction:
+
+- The map is fixed for MVP.
+- All three region pins are visible.
+- Tapping a pin opens the region deck picker.
+- The map does not need full pan/zoom in MVP.
+
+Required states:
+
+- default with all three pins
+- selected pin
+- unavailable/future region if needed later
+- loading deck data
+
+## Screen 1B: Region Deck Picker
+
+Purpose: let the user choose the type of route/deck before Discover begins.
+
+Deck selection can include:
+
+- mood: calm, photo, night, walk
+- visit condition: solo, two people, light visit
+- optional time: afternoon, evening, night
+
+Interaction:
+
+- Tapping a region pin opens a bottom sheet.
+- User selects conditions.
+- User taps a deck card or primary CTA.
+- Discover starts with places filtered by `selectedDeckId`.
+
+Data integrity rule:
+
+- Region is a canonical entity.
+- Deck stores `regionId` and condition tags.
+- Discover reads places through `selectedDeckId`.
+- Saved/Route store place IDs only, not copied region/deck names.
 
 ## Screen 1: Access Code
 
@@ -343,4 +399,3 @@ Copy rule:
 A simple visual wireframe preview is available at:
 
 `docs/design/wireframes/doripe-mvp-wireframe.html`
-

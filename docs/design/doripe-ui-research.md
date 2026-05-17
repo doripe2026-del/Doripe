@@ -5,11 +5,11 @@ Purpose: Decide how Doripe should approach UI design before rebuilding the MVP s
 
 ## Executive Summary
 
-Doripe should not start by polishing every screen. The better MVP path is to define the core flow, create mid-fidelity wireframes for the essential screens, then make one high-fidelity visual direction for the Discover/place-card screen and extend that system across the app.
+Doripe should not start by polishing every screen. The better MVP path is to define the core flow, create mid-fidelity wireframes for the essential screens, then make one high-fidelity visual direction for the map-to-deck-to-Discover flow and extend that system across the app.
 
 The evidence points to a practical workflow: wireframe structure first, define reusable design tokens and components, implement in React Native, then compare real device screenshots against the design. Figma is still the best handoff surface because Dev Mode exposes specs, annotations, variables, assets, and ready-for-development status for engineers.
 
-For Doripe, the UI must feel like an editorial local guide, not a generic travel/map app. The product memory should be: "a black, photo-led, premium local discovery app with neon green decisions." The current MVP should focus on four main screens: access code, discover, saved, route.
+For Doripe, the UI must feel like an editorial local guide, not a generic travel/map app. The product memory should be: "a black, map-led and photo-led premium local discovery app with neon green decisions." The current MVP should focus on six main surfaces: access code, fixed Seoul map, region deck picker, discover, saved, route.
 
 ## Research Questions
 
@@ -88,9 +88,9 @@ Source: [React Native - Accessibility](https://reactnative.dev/docs/accessibilit
 
 ### 8. Bottom tabs are appropriate for Doripe's MVP
 
-Doripe has three stable top-level destinations: Discover, Saved, and Route. React Navigation supports bottom tabs with labels, accessibility state, and custom tab bars. This fits the product better than a hidden menu because users need repeated access to saved places and route planning.
+Doripe has three stable top-level destinations after access: Map, Saved, and Route. Discover is a flow that starts from a selected region deck, not the default tab. React Navigation supports bottom tabs with labels, accessibility state, and custom tab bars. This fits the product better than a hidden menu because users need repeated access to the map, saved places, and route planning.
 
-Implication for Doripe: keep the bottom tab structure for MVP. Improve its visual design later, but do not replace it with a hamburger menu.
+Implication for Doripe: keep the bottom tab structure for MVP, but rename the first tab from Discover to Map. Improve its visual design later, but do not replace it with a hamburger menu.
 
 Source: [React Navigation - Bottom Tabs Navigator](https://reactnavigation.org/docs/bottom-tab-navigator/)
 
@@ -128,8 +128,10 @@ Recommended direction:
 
 ### Core UI Principle
 
-The Discover screen is the brand.  
-Saved and Route are utility screens.  
+The Map screen is the product entry.
+The Deck Picker is the personalization moment.
+The Discover screen is the place-card experience.
+Saved and Route are utility screens.
 Access Code is a gate, not a landing page.
 
 ## What To Wireframe Now
@@ -137,6 +139,8 @@ Access Code is a gate, not a landing page.
 Do wireframe:
 
 - Access code entry
+- Fixed Seoul map with three region pins
+- Region deck picker
 - Discover/place card
 - Discover empty/end state
 - Saved list
@@ -166,6 +170,30 @@ Needs:
 - single primary CTA
 - inactive/wrong code error
 - small trust copy
+
+### Fixed Seoul Map
+
+Goal: show the three active Doripe neighborhoods before any deck starts.
+Needs:
+
+- fixed Seoul map visual
+- three visible pins: Seongsu, Yongsan/Huam/Haebangchon, Yeonnam/Mangwon
+- selected pin state
+- short instruction copy
+- bottom navigation with Map selected
+
+### Region Deck Picker
+
+Goal: choose the right discovery deck from a selected neighborhood.
+Needs:
+
+- selected region label
+- bottom sheet or panel
+- mood chips
+- visit condition chips
+- deck card
+- primary start CTA
+- clear transition into Discover
 
 ### Discover
 
@@ -275,4 +303,3 @@ Also ran local `ui-ux-pro-max` recommendations for Doripe's product type and Rea
 4. [React Native - useWindowDimensions](https://reactnative.dev/docs/usewindowdimensions) - Screen and font-scale responsiveness.
 5. [React Native - Accessibility](https://reactnative.dev/docs/accessibility) - Accessibility labels, roles, states, VoiceOver/TalkBack support.
 6. [React Navigation - Bottom Tabs Navigator](https://reactnavigation.org/docs/bottom-tab-navigator/) - Bottom tab structure and accessibility state support.
-
