@@ -66,10 +66,14 @@ export function DiscoverScreen({ accessCodeId, navigation, route }: DiscoverScre
 
     try {
       await addSelectedPlace(accessCodeId, currentPlace.id, new Date().toISOString());
-      await recordEvent({
+      void recordEvent({
         accessCodeId,
         eventName: "place_saved",
         placeId: currentPlace.id,
+      }).catch((error) => {
+        if (__DEV__) {
+          console.warn("Failed to record place saved event", error);
+        }
       });
       advanceCard();
     } finally {
@@ -88,10 +92,14 @@ export function DiscoverScreen({ accessCodeId, navigation, route }: DiscoverScre
 
     try {
       await addSkippedPlace(accessCodeId, currentPlace.id, new Date().toISOString());
-      await recordEvent({
+      void recordEvent({
         accessCodeId,
         eventName: "place_skipped",
         placeId: currentPlace.id,
+      }).catch((error) => {
+        if (__DEV__) {
+          console.warn("Failed to record place skipped event", error);
+        }
       });
       advanceCard();
     } finally {

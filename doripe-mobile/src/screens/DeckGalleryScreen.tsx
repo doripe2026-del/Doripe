@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AppScaffold } from "../components/AppScaffold";
@@ -20,9 +21,19 @@ type DeckGalleryScreenProps = NativeStackScreenProps<MapStackParamList, "DeckGal
 export function DeckGalleryScreen({ accessCodeId, navigation, route }: DeckGalleryScreenProps) {
   const region = getRegionById(regions, route.params.regionId);
   const activeDecks = getActiveDecksByRegionId(decks, route.params.regionId);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const submittingRef = useRef(false);
 
   async function handleDeckPress(deck: Deck) {
+    if (submittingRef.current) {
+      return;
+    }
+
     const now = new Date().toISOString();
+    submittingRef.current = true;
+    setIsSubmitting(true);
+    setErrorMessage(null);
 
     try {
       await setDeckSession({
@@ -34,16 +45,27 @@ export function DeckGalleryScreen({ accessCodeId, navigation, route }: DeckGalle
         skippedPlaceIds: [],
         updatedAt: now,
       });
-
-      await recordEvent({
-        accessCodeId,
-        eventName: "deck_selected",
-      });
     } catch (error) {
+      setErrorMessage("덱을 시작하지 못했어요. 잠시 후 다시 시도해주세요.");
+
       if (__DEV__) {
         console.warn("Failed to start deck session", error);
       }
+
+      return;
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
     }
+
+    void recordEvent({
+      accessCodeId,
+      eventName: "deck_selected",
+    }).catch((error) => {
+      if (__DEV__) {
+        console.warn("Failed to record deck selected event", error);
+      }
+    });
 
     navigation.navigate("Discover", { regionId: route.params.regionId, deckId: deck.id });
   }
@@ -64,6 +86,7 @@ export function DeckGalleryScreen({ accessCodeId, navigation, route }: DeckGalle
           <Text style={styles.kicker}>DECK</Text>
           <Text style={styles.title}>{region?.name ?? "열린 동네"}</Text>
           <Text style={styles.copy}>오늘의 기분에 맞는 작은 여정을 골라보세요.</Text>
+          {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
         </View>
 
         {activeDecks.length === 0 ? (
@@ -79,6 +102,8 @@ export function DeckGalleryScreen({ accessCodeId, navigation, route }: DeckGalle
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={`${deck.title} 덱 선택`}
+                accessibilityState={{ disabled: isSubmitting }}
+                disabled={isSubmitting}
                 key={deck.id}
                 onPress={() => void handleDeckPress(deck)}
                 style={({ pressed }) => [pressed && styles.pressed]}
@@ -141,6 +166,12 @@ const styles = StyleSheet.create({
     fontSize: typography.headline,
     fontWeight: "900",
     lineHeight: 36,
+  },
+  error: {
+    color: colors.danger,
+    fontSize: typography.caption,
+    fontWeight: "700",
+    lineHeight: 20,
   },
   header: {
     gap: spacing.md,

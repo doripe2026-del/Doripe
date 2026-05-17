@@ -25,6 +25,8 @@ export function PlaceGalleryScreen({ accessCodeId, navigation, route }: PlaceGal
     [route.params.deckId],
   );
   const [selectedPlaceIds, setSelectedPlaceIdsState] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const selectedCount = selectedPlaceIds.length;
   const canConfirm = selectedCount >= 2;
 
@@ -75,6 +77,11 @@ export function PlaceGalleryScreen({ accessCodeId, navigation, route }: PlaceGal
   );
 
   function togglePlace(placeId: Place["id"]) {
+    if (isSubmitting) {
+      return;
+    }
+
+    setErrorMessage(null);
     setSelectedPlaceIdsState((current) =>
       current.includes(placeId)
         ? current.filter((selectedPlaceId) => selectedPlaceId !== placeId)
@@ -83,24 +90,37 @@ export function PlaceGalleryScreen({ accessCodeId, navigation, route }: PlaceGal
   }
 
   async function handleConfirm() {
-    if (!canConfirm) {
+    if (!canConfirm || isSubmitting) {
       return;
     }
 
     const now = new Date().toISOString();
+    setIsSubmitting(true);
+    setErrorMessage(null);
 
     try {
       await setSelectedPlaces(accessCodeId, selectedPlaceIds, now);
       await confirmSelectedPlaces(accessCodeId, selectedPlaceIds, now);
-      await recordEvent({
-        accessCodeId,
-        eventName: "place_selection_confirmed",
-      });
     } catch (error) {
+      setErrorMessage("선택한 장소를 저장하지 못했어요. 잠시 후 다시 시도해주세요.");
+
       if (__DEV__) {
         console.warn("Failed to confirm selected places", error);
       }
+
+      return;
+    } finally {
+      setIsSubmitting(false);
     }
+
+    void recordEvent({
+      accessCodeId,
+      eventName: "place_selection_confirmed",
+    }).catch((error) => {
+      if (__DEV__) {
+        console.warn("Failed to record place selection confirmed event", error);
+      }
+    });
 
     navigation.getParent<BottomTabNavigationProp<TabParamList>>()?.navigate("Saved");
   }
@@ -133,8 +153,9 @@ export function PlaceGalleryScreen({ accessCodeId, navigation, route }: PlaceGal
             return (
               <Pressable
                 accessibilityRole="checkbox"
-                accessibilityState={{ checked: isSelected }}
+                accessibilityState={{ checked: isSelected, disabled: isSubmitting }}
                 accessibilityLabel={`${place.name} 선택`}
+                disabled={isSubmitting}
                 key={place.id}
                 onPress={() => togglePlace(place.id)}
                 style={({ pressed }) => [
@@ -168,8 +189,9 @@ export function PlaceGalleryScreen({ accessCodeId, navigation, route }: PlaceGal
       </ScrollView>
 
       <View style={styles.footer}>
+        {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
         <PrimaryButton
-          disabled={!canConfirm}
+          disabled={!canConfirm || isSubmitting}
           label={canConfirm ? "선택한 장소로 보기" : "최소 2곳을 골라주세요"}
           onPress={() => void handleConfirm()}
         />
@@ -213,7 +235,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     borderTopColor: colors.line,
     borderTopWidth: 1,
+    gap: spacing.sm,
     padding: spacing.lg,
+  },
+  error: {
+    color: colors.danger,
+    fontSize: typography.caption,
+    fontWeight: "700",
+    lineHeight: 20,
+    textAlign: "center",
   },
   header: {
     gap: spacing.md,
