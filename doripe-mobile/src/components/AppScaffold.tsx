@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors, spacing } from "../theme/tokens";
 
 type AppScaffoldProps = {
@@ -16,12 +17,17 @@ export function AppScaffold({
   topPadding = true,
   style,
 }: AppScaffoldProps) {
+  const insets = useSafeAreaInsets();
+
   return (
     <View
       style={[
         styles.screen,
         horizontalPadding && styles.horizontalPadding,
-        topPadding && styles.topPadding,
+        {
+          paddingBottom: insets.bottom,
+          paddingTop: insets.top + (topPadding ? spacing.lg : 0),
+        },
         style,
       ]}
     >
@@ -37,8 +43,5 @@ const styles = StyleSheet.create({
   },
   horizontalPadding: {
     paddingHorizontal: spacing.lg,
-  },
-  topPadding: {
-    paddingTop: spacing.xxl,
   },
 });
