@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Doripe - 분위기로 고르고 루트로 꺼내 쓰는 장소 앱</title>
+<meta name="description" content="동네를 고르고, 분위기와 상황별 덱을 넘기고, 마음에 드는 장소를 저장한 뒤 갈 때 루트로 꺼내 쓰는 Doripe 베타입니다." />
+<meta name="robots" content="index,follow" />
+<meta name="google-site-verification" content="-0x5473PvEuPwcYQr9y5G7akJUHZrSOGGIQCGEbqXNI" />
+<meta name="naver-site-verification" content="55e51518b5114c32f9dd3d3d19c3ca24d6678ef0" />
+<link rel="canonical" href="https://doripe.vercel.app/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Doripe" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="Doripe - 오늘 갈 곳을 취향대로 고르는 방법" />
+<meta property="og:description" content="동네, 분위기, 스와이프, 저장, 루트까지. 장소를 고르는 흐름을 더 가볍게 만듭니다." />
+<meta property="og:url" content="https://doripe.vercel.app/" />
+<meta property="og:image" content="https://doripe.vercel.app/og-image-v2.png" />
+<meta property="og:image:alt" content="Doripe 앱 소개 이미지" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Doripe - 오늘 갈 곳을 취향대로 고르는 방법" />
+<meta name="twitter:description" content="분위기와 상황에 맞는 장소를 발견하고 저장하고 루트로 꺼내 쓰세요." />
+<meta name="twitter:image" content="https://doripe.vercel.app/og-image-v2.png" />
+<meta name="twitter:image:alt" content="Doripe 앱 소개 이미지" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="alternate icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://doripe.vercel.app/#organization",
+      "name": "Doripe",
+      "url": "https://doripe.vercel.app/",
+      "logo": "https://doripe.vercel.app/favicon.png",
+      "email": "cityboy@yonsei.ac.kr"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://doripe.vercel.app/#website",
+      "name": "Doripe",
+      "url": "https://doripe.vercel.app/",
+      "inLanguage": "ko-KR",
+      "publisher": { "@id": "https://doripe.vercel.app/#organization" },
+      "description": "분위기와 상황에 맞는 장소를 발견하고 저장하고 루트로 꺼내 쓰는 장소 취향 서비스"
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#000',
+          fg: '#f5f5f5',
+          card: '#0f0f0f',
+          muted: '#1f1f1f',
+          mutedfg: '#888',
+          border: '#292929',
+          primary: '#22ff88',
+          secondary: '#00d68f',
+          space: '#5eb3ff',
+          warm: '#f9a8d4',
+        },
+        fontFamily: { sans: ['Pretendard Variable','Pretendard','-apple-system','BlinkMacSystemFont','system-ui','Apple SD Gothic Neo','Noto Sans KR','sans-serif'] },
+      }
+    }
+  }
+</script>
+<style>
+  body { background:#000; color:#f5f5f5; font-family:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif; }
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:#000; }
+  ::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
+  img {
+    image-rendering:-webkit-optimize-contrast;
+    image-rendering:high-quality;
+    -ms-interpolation-mode:bicubic;
+    transform:translateZ(0);
+    backface-visibility:hidden;
+  }
+  .fade-in { animation: fadeIn .6s ease-out both; }
+  .fade-in-d1 { animation: fadeIn .6s ease-out .15s both; }
+  .fade-in-d2 { animation: fadeIn .6s ease-out .3s both; }
+  .fade-in-d3 { animation: fadeIn .6s ease-out .45s both; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(20px);} to { opacity:1; transform:translateY(0);} }
+  .reveal { opacity:0; transform:translateY(20px); transition:opacity .6s, transform .6s; }
+  .reveal.show { opacity:1; transform:translateY(0); }
+  .gradient-cta { background:linear-gradient(90deg,#00d68f,#22ff88); transition:filter .2s, transform .2s; }
+  .gradient-cta:hover { filter:brightness(1.1); transform:scale(1.02); }
+  .carousel-track { transition:transform .35s ease-in-out; }
+  @media (max-width:420px) {
+    .hero-title { font-size:2.45rem; line-height:1.12; }
+    .hero-phone { width:218px; }
+  }
+</style>
+</head>
+<body class="min-h-screen bg-bg">
+
+<!-- HERO: keep previous visual system -->
+<section class="relative min-h-[100dvh] flex flex-col items-center justify-center px-5 pt-16 pb-28 md:pb-16 overflow-hidden">
+  <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none" style="background:rgba(34,255,136,.05); filter:blur(120px);"></div>
+
+  <p class="fade-in text-2xl md:text-3xl font-extrabold text-primary text-center tracking-tight mb-3">Doripe.</p>
+  <h1 class="hero-title fade-in-d1 text-4xl md:text-6xl font-bold text-center leading-tight tracking-tight">
+    내 취향의 장소를<br />
+    <span class="text-primary">넘기고</span>, <span class="text-primary">저장하고</span>,<br />
+    갈 때 <span class="text-primary">꺼내세요</span>.
+  </h1>
+
+  <p class="fade-in-d1 mt-5 text-mutedfg text-base md:text-lg text-center max-w-md leading-relaxed">
+    <span class="block">인스타에서 저장한 감성 장소,</span>
+    <span class="block">지도에 묻혀 있던 후보들.</span>
+    <span class="block mt-2">Doripe에서 다시 꺼내고,</span>
+    <span class="block">갈 수 있는 루트로 이어보세요.</span>
+  </p>
+
+  <p class="fade-in-d1 mt-5 inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-primary/10 border border-primary/30 text-sm md:text-base">
+    <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+    <span class="text-fg">오늘의 기분에 맞는 <span class="text-primary font-bold">장소 카드</span>를 준비 중</span>
+  </p>
+
+  <div class="hero-phone fade-in-d2 mt-10 w-[240px] md:w-[280px] aspect-[9/16] rounded-3xl border-2 border-primary/40 bg-card overflow-hidden relative">
+    <div id="heroTrack" class="absolute inset-0 flex transition-transform duration-700 ease-in-out" style="transform:translateX(0%); width:500%;">
+      <div class="w-1/5 h-full relative shrink-0">
+        <img src="img/elliot-gouy-eEX3gK7vFqc-unsplash.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" fetchpriority="high" />
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(0,0,0,.1) 0%, transparent 30%, rgba(0,0,0,.75) 100%);"></div>
+        <div class="absolute bottom-5 left-0 right-0 px-5 z-10">
+          <div class="flex flex-wrap gap-1">
+            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium border border-primary/30 backdrop-blur-sm">산책</span>
+            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-space/20 text-space font-medium border border-space/40 backdrop-blur-sm">한강</span>
+          </div>
+          <p class="mt-2 text-fg text-base font-bold leading-tight">잔디밭 끝, 일몰 명당</p>
+          <p class="text-mutedfg text-[11px]">서울숲 · 도보 10분</p>
+        </div>
+      </div>
+      <div class="w-1/5 h-full relative shrink-0">
+        <img src="img/oguzhan-tasimaz-LdUQiz69jc4-unsplash.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(0,0,0,.1) 0%, transparent 30%, rgba(0,0,0,.75) 100%);"></div>
+        <div class="absolute bottom-5 left-0 right-0 px-5 z-10">
+          <div class="flex flex-wrap gap-1">
+            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium border border-primary/30 backdrop-blur-sm">아늑한</span>
+            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-space/20 text-space font-medium border border-space/40 backdrop-blur-sm">카페</span>
+          </div>
+          <p class="mt-2 text-fg text-base font-bold leading-tight">골목 끝, 창가 카페</p>
+          <p class="text-mutedfg text-[11px]">성수 · 도보 6분</p>
+        </div>
+      </div>
+      <div class="w-1/5 h-full relative shrink-0">
+        <img src="img/klara-kulikova-yjQDnOhGE34-unsplash.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(0,0,0,.1) 0%, transparent 30%, rgba(0,0,0,.75) 100%);"></div>
+        <div class="absolute bottom-5 left-0 right-0 px-5 z-10">
+          <div class="flex flex-wrap gap-1">
+            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium border border-primary/30 backdrop-blur-sm">대화</span>
+            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-space/20 text-space font-medium border border-space/40 backdrop-blur-sm">식당</span>
+          </div>
+          <p class="mt-2 text-fg text-base font-bold leading-tight">벨벳 부스, 작은 와인바</p>
+          <p class="text-mutedfg text-[11px]">이태원 · 도보 7분</p>
+        </div>
+      </div>
+      <div class="w-1/5 h-full relative shrink-0">
+        <img src="img/khamkeo-k24WR_faU3k-unsplash.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(0,0,0,.1) 0%, transparent 30%, rgba(0,0,0,.75) 100%);"></div>
+        <div class="absolute bottom-5 left-0 right-0 px-5 z-10">
+          <div class="flex flex-wrap gap-1">
+            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium border border-primary/30 backdrop-blur-sm">감성</span>
+            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-space/20 text-space font-medium border border-space/40 backdrop-blur-sm">전시</span>
+          </div>
+          <p class="mt-2 text-fg text-base font-bold leading-tight">가볍게 들를 작은 갤러리</p>
+          <p class="text-mutedfg text-[11px]">한남동 · 도보 4분</p>
+        </div>
+      </div>
+      <div class="w-1/5 h-full relative shrink-0">
+        <img src="img/elliot-gouy-rV6MMf398LE-unsplash.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(0,0,0,.1) 0%, transparent 30%, rgba(0,0,0,.75) 100%);"></div>
+        <div class="absolute bottom-5 left-0 right-0 px-5 z-10">
+          <div class="flex flex-wrap gap-1">
+            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium border border-primary/30 backdrop-blur-sm">로컬</span>
+            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-space/20 text-space font-medium border border-space/40 backdrop-blur-sm">볼거리</span>
+          </div>
+          <p class="mt-2 text-fg text-base font-bold leading-tight">도심 속 한옥 정자 연못</p>
+          <p class="text-mutedfg text-[11px]">서울숲 · 도보 10분</p>
+        </div>
+      </div>
+    </div>
+    <div class="absolute top-3 left-0 right-0 flex justify-center gap-1.5 z-20" id="heroDots">
+      <span class="w-5 h-1 rounded-full bg-primary transition-all duration-300"></span>
+      <span class="w-1 h-1 rounded-full bg-fg/30 transition-all duration-300"></span>
+      <span class="w-1 h-1 rounded-full bg-fg/30 transition-all duration-300"></span>
+      <span class="w-1 h-1 rounded-full bg-fg/30 transition-all duration-300"></span>
+      <span class="w-1 h-1 rounded-full bg-fg/30 transition-all duration-300"></span>
+    </div>
+  </div>
+
+  <a href="/notify" class="fade-in-d3 mt-10 inline-block px-8 py-4 rounded-full gradient-cta text-black font-semibold text-base">
+    내 장소 취향 세팅하기
+  </a>
+  <p id="socialProofHero" class="fade-in-d3 mt-5 text-mutedfg text-sm md:text-base flex items-center gap-2.5">
+    <span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+    <span><span id="signupCountHero" class="text-primary font-bold">14</span>명이 이미 Doripe를 먼저 확인하고 있어요</span>
+  </p>
+</section>
+
+<!-- PAIN POINTS -->
+<section class="px-5 py-16 md:py-24 border-y border-border/40">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="reveal text-2xl md:text-4xl font-black leading-tight tracking-tight">
+      <span class="mr-2" aria-hidden="true">😮‍💨</span>이런 적 있으시지 않으셨나요?
+    </h2>
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div class="reveal rounded-2xl border border-border bg-card/70 p-5 md:p-6">
+        <p class="text-lg md:text-xl font-bold leading-snug">
+          어디 갈지 정하려고<br />
+          <span class="text-primary">지도와 인스타</span>를 계속 오가던 날.
+        </p>
+      </div>
+      <div class="reveal rounded-2xl border border-border bg-card/70 p-5 md:p-6">
+        <p class="text-lg md:text-xl font-bold leading-snug">
+          오늘 <span class="text-primary">분위기</span>에 맞는 곳 하나<br />
+          찾는 데만 지쳐버릴 때.
+        </p>
+      </div>
+      <div class="reveal rounded-2xl border border-border bg-card/70 p-5 md:p-6">
+        <p class="text-lg md:text-xl font-bold leading-snug">
+          인스타에서 저장한 감성 장소,<br />
+          지도에서는 <span class="text-primary">이름만</span> 남아버릴 때.
+        </p>
+      </div>
+      <div class="reveal rounded-2xl border border-border bg-card/70 p-5 md:p-6">
+        <p class="text-lg md:text-xl font-bold leading-snug">
+          후보는 골라뒀는데<br />
+          어디부터 가야 할지 <span class="text-primary">동선</span>이 막막할 때.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="px-5 py-20 md:py-28">
+  <div class="max-w-5xl mx-auto">
+    <div class="max-w-3xl">
+      <p class="reveal text-primary text-sm font-semibold tracking-wide">그래서 Doripe는 이렇게 써요</p>
+      <h2 class="reveal mt-3 text-2xl md:text-4xl font-bold leading-snug">
+        장소 찾기부터 저장, 루트까지<br />
+        한 흐름으로 이어지게.
+      </h2>
+      <p class="reveal mt-4 text-mutedfg text-sm md:text-base leading-relaxed">
+        장소를 찾고 저장하는 일이 흩어지지 않게, 발견부터 방문까지 자연스럽게 이어지게 만들고 싶어요.
+      </p>
+    </div>
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+      <div class="reveal rounded-2xl border border-border bg-card/70 p-5">
+        <div class="flex items-baseline gap-3">
+          <p class="shrink-0 text-primary font-mono text-sm">01</p>
+          <h3 class="text-xl font-black leading-tight">장소 발견</h3>
+        </div>
+        <p class="mt-3 text-mutedfg text-sm leading-relaxed">마음에 걸리는 장소를 먼저 찾아요.</p>
+      </div>
+      <div class="reveal rounded-2xl border border-border bg-card/70 p-5">
+        <div class="flex items-baseline gap-3">
+          <p class="shrink-0 text-primary font-mono text-sm">02</p>
+          <h3 class="text-xl font-black leading-tight">저장 정리</h3>
+        </div>
+        <p class="mt-3 text-mutedfg text-sm leading-relaxed">흩어진 후보를 취향별로 모아요.</p>
+      </div>
+      <div class="reveal rounded-2xl border border-border bg-card/70 p-5">
+        <div class="flex items-baseline gap-3">
+          <p class="shrink-0 text-primary font-mono text-sm">03</p>
+          <h3 class="text-xl font-black leading-tight">조건 필터</h3>
+        </div>
+        <p class="mt-3 text-mutedfg text-sm leading-relaxed">거리와 분위기 같은 조건으로 좁혀요.</p>
+      </div>
+      <div class="reveal rounded-2xl border border-border bg-card/70 p-5">
+        <div class="flex items-baseline gap-3">
+          <p class="shrink-0 text-primary font-mono text-sm">04</p>
+          <h3 class="text-xl font-black leading-tight">후보 꺼내기</h3>
+        </div>
+        <p class="mt-3 text-mutedfg text-sm leading-relaxed">갈 만한 장소만 다시 꺼내요.</p>
+      </div>
+      <div class="reveal rounded-2xl border border-border bg-card/70 p-5">
+        <div class="flex items-baseline gap-3">
+          <p class="shrink-0 text-primary font-mono text-sm">05</p>
+          <h3 class="text-xl font-black leading-tight">루트로 이어가기</h3>
+        </div>
+        <p class="mt-3 text-mutedfg text-sm leading-relaxed">선택한 후보를 갈 수 있는 동선으로 이어요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP PREVIEW -->
+<section class="py-20 md:py-28 overflow-hidden">
+  <div class="max-w-5xl mx-auto px-5">
+    <h2 class="reveal text-2xl md:text-4xl font-bold leading-snug">
+      <span class="block md:inline">마음에 드는 곳을</span><span class="block text-primary md:inline md:ml-2">넘기고, 저장하고, 꺼내요.</span>
+    </h2>
+  </div>
+
+  <div class="relative mt-10 flex flex-col items-center" id="appPreview">
+    <div class="overflow-hidden w-full max-w-md md:max-w-3xl">
+      <div class="carousel-track flex" id="carouselTrack" style="transform:translateX(0%);">
+        <div class="w-full shrink-0 flex flex-col items-center text-center px-5">
+          <span class="text-primary font-mono text-sm tracking-wider mb-4">01</span>
+          <div class="w-[220px] md:w-[340px] aspect-[9/16] rounded-3xl border border-border bg-card overflow-hidden relative">
+            <img src="img/mockups/01-space.png" alt="서울숲 한강 다리 공간 카드" class="absolute inset-0 w-full h-full object-cover" />
+          </div>
+          <h3 class="mt-5 text-base md:text-2xl font-semibold">오늘 움직일 동네부터</h3>
+          <p class="mt-2 text-mutedfg text-sm md:text-base leading-relaxed max-w-[280px] md:max-w-[430px]">
+            <span class="block">멀리 있는 핫플보다,</span>
+            <span class="block">지금 갈 수 있는 범위 안에서 먼저 찾아요.</span>
+          </p>
+        </div>
+        <div class="w-full shrink-0 flex flex-col items-center text-center px-5">
+          <span class="text-primary font-mono text-sm tracking-wider mb-4">02</span>
+          <div class="w-[220px] md:w-[340px] aspect-[9/16] rounded-3xl border border-border bg-card overflow-hidden relative">
+            <img src="img/mockups/02-cafe.png" alt="창가 카페 카드" class="absolute inset-0 w-full h-full object-cover" />
+          </div>
+          <h3 class="mt-5 text-base md:text-2xl font-semibold">카드처럼 넘기며 발견하기</h3>
+          <p class="mt-2 text-mutedfg text-sm md:text-base leading-relaxed max-w-[280px] md:max-w-[430px]">
+            <span class="block">사진과 분위기를 먼저 보고,</span>
+            <span class="block">가격대와 거리로 가볍게 좁혀요.</span>
+          </p>
+        </div>
+        <div class="w-full shrink-0 flex flex-col items-center text-center px-5">
+          <span class="text-primary font-mono text-sm tracking-wider mb-4">03</span>
+          <div class="w-[220px] md:w-[340px] aspect-[9/16] rounded-3xl border border-border bg-card overflow-hidden relative">
+            <img src="img/mockups/03-collection.png" alt="저장한 장소 컬렉션" class="absolute inset-0 w-full h-full object-cover" />
+          </div>
+          <h3 class="mt-5 text-base md:text-2xl font-semibold">기억나게 저장하기</h3>
+          <p class="mt-2 text-mutedfg text-sm md:text-base leading-relaxed max-w-[280px] md:max-w-[430px]">
+            <span class="block">이름만 남기는 저장이 아니라,</span>
+            <span class="block">분위기와 상황별로 다시 꺼내요.</span>
+          </p>
+        </div>
+        <div class="w-full shrink-0 flex flex-col items-center text-center px-5">
+          <span class="text-primary font-mono text-sm tracking-wider mb-4">04</span>
+          <div class="w-[220px] md:w-[340px] aspect-[9/16] rounded-3xl border border-border bg-card overflow-hidden relative">
+            <img src="img/mockups/04-route.png" alt="지도와 루트 화면" class="absolute inset-0 w-full h-full object-cover" />
+          </div>
+          <h3 class="mt-5 text-base md:text-2xl font-semibold">갈 때는 루트로</h3>
+          <p class="mt-2 text-mutedfg text-sm md:text-base leading-relaxed max-w-[280px] md:max-w-[430px]">
+            <span class="block">저장해둔 후보 중 오늘 갈 곳만 골라,</span>
+            <span class="block">걷기 좋은 순서로 이어봐요.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-2 md:gap-3 mt-8 md:mt-16" id="dots">
+      <button data-idx="0" class="w-6 h-2 rounded-full bg-primary transition-all duration-300" aria-label="1"></button>
+      <button data-idx="1" class="w-2 h-2 rounded-full bg-mutedfg/30 hover:bg-mutedfg/60 transition-all duration-300" aria-label="2"></button>
+      <button data-idx="2" class="w-2 h-2 rounded-full bg-mutedfg/30 hover:bg-mutedfg/60 transition-all duration-300" aria-label="3"></button>
+      <button data-idx="3" class="w-2 h-2 rounded-full bg-mutedfg/30 hover:bg-mutedfg/60 transition-all duration-300" aria-label="4"></button>
+    </div>
+
+    <button id="prev" class="absolute left-2 md:left-1/2 md:-translate-x-[260px] top-[34%] w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-primary/70 bg-black/70 backdrop-blur-md flex items-center justify-center text-primary text-xl md:text-3xl font-bold hover:bg-primary hover:text-black hover:scale-110 transition-all disabled:opacity-25 disabled:hover:scale-100 disabled:hover:bg-black/70 disabled:hover:text-primary z-20" style="box-shadow:0 0 20px rgba(34,255,136,.35);" aria-label="prev">‹</button>
+    <button id="next" class="absolute right-2 md:right-auto md:left-1/2 md:translate-x-[196px] top-[34%] w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-primary/70 bg-black/70 backdrop-blur-md flex items-center justify-center text-primary text-xl md:text-3xl font-bold hover:bg-primary hover:text-black hover:scale-110 transition-all disabled:opacity-25 disabled:hover:scale-100 disabled:hover:bg-black/70 disabled:hover:text-primary z-20" style="box-shadow:0 0 20px rgba(34,255,136,.35);" aria-label="next">›</button>
+  </div>
+</section>
+
+<!-- NOTIFY CTA -->
+<section class="px-5 py-16 md:py-24 border-y border-border/40">
+  <div class="max-w-5xl mx-auto">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="reveal text-primary text-sm font-semibold tracking-wide">알림 신청</p>
+      <h2 class="reveal mt-3 text-2xl md:text-4xl font-bold leading-snug">
+        인스타에서 보고,<br />
+        지도에 저장해두고,<br />
+        결국 까먹던 흐름 대신.
+      </h2>
+      <p class="reveal mt-4 text-mutedfg text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
+        <span class="block">Doripe에서 마음에 드는 장소를 정리하고,</span>
+        <span class="block">이번엔 실제로 가볼 수 있게 준비해보세요.</span>
+      </p>
+      <div class="reveal mt-8">
+        <a href="/notify" class="inline-block px-8 py-4 rounded-full gradient-cta text-black font-semibold text-base">알림 신청하고 취향 세팅하기</a>
+      </div>
+      <p class="reveal mt-5 text-mutedfg text-sm md:text-base flex items-center justify-center gap-2.5">
+        <span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+        <span><span id="signupCountFinal" class="text-primary font-bold">14</span>명이 이미 Doripe를 먼저 확인하고 있어요</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS PILOT -->
+<section class="px-5 py-24 md:py-32">
+  <div class="max-w-3xl mx-auto rounded-3xl border border-primary/25 bg-primary/5 p-6 md:p-8">
+    <p class="reveal text-primary text-sm font-semibold tracking-wide">FOR LOCAL SPACES</p>
+    <h2 class="reveal mt-3 text-2xl md:text-3xl font-bold leading-snug">
+      분위기와 상황으로<br />
+      발견되고 싶은 공간이라면.
+    </h2>
+    <p class="reveal mt-4 text-mutedfg text-sm md:text-base leading-relaxed max-w-2xl">
+      <span class="block">카페, 식당, 전시, 산책 공간처럼</span>
+      <span class="block">사용자가 실제로 고르는 기준에 맞춰</span>
+      <span class="block">장소를 보여주는 베타를 준비하고 있어요.</span>
+    </p>
+    <div class="reveal mt-6 flex flex-col sm:flex-row gap-3">
+      <a href="/business" class="inline-flex items-center justify-center px-5 py-3 rounded-full border border-primary/60 text-primary font-semibold text-sm hover:bg-primary hover:text-black transition-colors">공간 제휴 문의</a>
+      <a href="/notify" class="inline-flex items-center justify-center px-5 py-3 rounded-full border border-border text-fg font-semibold text-sm hover:border-primary/60 transition-colors">유저 베타 신청</a>
+    </div>
+  </div>
+</section>
+
+<footer class="px-5 py-8 border-t border-border/40">
+  <div class="max-w-3xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div class="flex flex-col gap-1">
+      <span class="text-mutedfg text-xs">© 2026 Doripe</span>
+      <a href="mailto:cityboy@yonsei.ac.kr" class="text-mutedfg/70 text-[11px] hover:text-fg transition-colors">cityboy@yonsei.ac.kr</a>
+    </div>
+    <div class="flex items-center gap-3 text-[11px]">
+      <a href="/terms" class="text-mutedfg hover:text-fg transition-colors">이용약관</a>
+      <span class="text-mutedfg/40">·</span>
+      <a href="/privacy" class="text-mutedfg hover:text-fg transition-colors font-semibold">개인정보처리방침</a>
+      <span class="text-mutedfg/40">·</span>
+      <a href="/business" class="text-mutedfg hover:text-fg transition-colors">공간 제휴</a>
+      <span class="text-mutedfg/40">·</span>
+      <a href="/blog" class="text-mutedfg hover:text-fg transition-colors">블로그</a>
+    </div>
+  </div>
+</footer>
+
+<div class="fixed bottom-0 left-0 right-0 z-50 md:hidden">
+  <div class="pt-6 pb-4 px-5" style="background:linear-gradient(0deg, #000 30%, rgba(0,0,0,.95), transparent);">
+    <a href="/notify" class="block w-full py-3.5 rounded-full gradient-cta text-black font-semibold text-sm text-center">내 장소 취향 세팅하기</a>
+    <p class="mt-2.5 text-mutedfg text-xs text-center">
+      <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mr-1.5 align-middle animate-pulse"></span>
+      <span id="signupCountSticky" class="text-primary font-bold">14</span>명이 이미 Doripe를 먼저 확인하고 있어요
+    </p>
+  </div>
+</div>
+
+<script>
+  const CAMPAIGN_CODES = ['dori-001','dori-002','dori-003','dori-004','dori-005','dori-006','dori-007','dori-008','dori-009','dori-010','dori-011','dori-012','dori-013','dori-014','dori-015','dori-016','dori-017','dori-018','dori-019','dori-020'];
+  const campaignParam = new URLSearchParams(location.search).get('c');
+  const campaignCode = CAMPAIGN_CODES.includes(campaignParam) ? campaignParam : '';
+  if (campaignCode) {
+    localStorage.setItem('doripe_campaign_code', campaignCode);
+    document.querySelectorAll('a[href="/notify"]').forEach((link) => {
+      link.setAttribute('href', `/notify?c=${encodeURIComponent(campaignCode)}`);
+    });
+  }
+
+  fetch('/api/track', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ type:'page_view', route:'/', ...(campaignCode ? { campaignCode } : {}) }),
+    keepalive: true
+  }).catch(()=>{});
+
+  (function () {
+    const track = document.getElementById('heroTrack');
+    const dots = document.querySelectorAll('#heroDots span');
+    let i = 0;
+    const total = 5;
+    const step = 100 / total;
+    function tick() {
+      i = (i + 1) % total;
+      track.style.transform = `translateX(-${i * step}%)`;
+      dots.forEach((d, di) => {
+        d.className = di === i
+          ? 'w-5 h-1 rounded-full bg-primary transition-all duration-300'
+          : 'w-1 h-1 rounded-full bg-fg/30 transition-all duration-300';
+      });
+      setTimeout(tick, i === 0 ? 6000 : 3500);
+    }
+    setTimeout(tick, 6000);
+  })();
+
+  (function () {
+    fetch('/api/count').then(r => r.json()).then(j => {
+      if (j && typeof j.count === 'number') {
+        ['signupCountHero','signupCountSticky','signupCountFinal'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = String(j.count);
+        });
+      }
+    }).catch(()=>{});
+  })();
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+  }, { rootMargin: '-60px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  let idx = 0;
+  const track = document.getElementById('carouselTrack');
+  const dots = document.querySelectorAll('#dots button');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const lastIdx = dots.length - 1;
+  function go(i) {
+    idx = Math.max(0, Math.min(lastIdx, i));
+    track.style.transform = `translateX(-${idx * 100}%)`;
+    dots.forEach((d, di) => {
+      if (di === idx) d.className = 'w-6 h-2 rounded-full bg-primary transition-all duration-300';
+      else d.className = 'w-2 h-2 rounded-full bg-mutedfg/30 hover:bg-mutedfg/60 transition-all duration-300';
+    });
+    prev.disabled = idx === 0;
+    next.disabled = idx === lastIdx;
+  }
+  dots.forEach(d => d.addEventListener('click', () => go(parseInt(d.dataset.idx, 10))));
+  prev.addEventListener('click', () => go(idx - 1));
+  next.addEventListener('click', () => go(idx + 1));
+  go(0);
+
+  let startX = null;
+  track.parentElement.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  track.parentElement.addEventListener('touchend', e => {
+    if (startX === null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (dx < -50) go(idx + 1);
+    else if (dx > 50) go(idx - 1);
+    startX = null;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Doripe 공간 파일럿 - 조용한 로컬 공간 홍보</title>
+<meta name="description" content="조용한 카페, 서점, 전시, 스튜디오, 작은 바를 Doripe 취향 카드로 소개하는 공간 파일럿에 문의하세요." />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="https://doripe.vercel.app/business" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Doripe" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="Doripe 공간 파일럿" />
+<meta property="og:description" content="조용한 로컬 공간을 취향 카드로 소개하는 파일럿에 참여하세요." />
+<meta property="og:url" content="https://doripe.vercel.app/business" />
+<meta property="og:image" content="https://doripe.vercel.app/og-image-v2.png" />
+<meta property="og:image:alt" content="Doripe 앱 소개 이미지" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Doripe 공간 파일럿" />
+<meta name="twitter:description" content="조용한 로컬 공간을 취향 카드로 소개하는 파일럿에 참여하세요." />
+<meta name="twitter:image" content="https://doripe.vercel.app/og-image-v2.png" />
+<meta name="twitter:image:alt" content="Doripe 앱 소개 이미지" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="alternate icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg:'#000', fg:'#f5f5f5', card:'#0f0f0f', muted:'#1f1f1f',
+          mutedfg:'#888', border:'#292929', primary:'#22ff88', secondary:'#00d68f'
+        },
+        fontFamily: { sans: ['Pretendard Variable','Pretendard','-apple-system','BlinkMacSystemFont','system-ui','Apple SD Gothic Neo','Noto Sans KR','sans-serif'] },
+      }
+    }
+  }
+</script>
+<style>
+  body { background:#000; color:#f5f5f5; font-family:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif; }
+  .gradient-cta { background:linear-gradient(90deg,#00d68f,#22ff88); transition:filter .2s, transform .2s; }
+  .gradient-cta:hover { filter:brightness(1.08); transform:translateY(-1px); }
+  input, textarea {
+    width:100%; padding:.95rem 1rem; border-radius:1rem; background:#0d0d0d;
+    border:1px solid #292929; color:#f5f5f5; outline:none; transition:border-color .2s, box-shadow .2s;
+  }
+  textarea { min-height:7rem; resize:vertical; }
+  input:focus, textarea:focus { border-color:#22ff88; box-shadow:0 0 0 2px rgba(34,255,136,.18); }
+</style>
+</head>
+<body class="min-h-screen bg-bg">
+  <header class="px-5 py-5 border-b border-border/50">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-4">
+      <a href="/" class="text-primary font-extrabold text-xl">Doripe.</a>
+      <div class="flex items-center gap-4 text-xs">
+        <a href="/blog" class="text-mutedfg hover:text-fg transition-colors">블로그</a>
+        <a href="/" class="text-mutedfg hover:text-fg transition-colors">유저 페이지로</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="px-5 py-12 md:py-20">
+    <section class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_0.95fr] gap-10 lg:gap-16 items-start">
+      <div>
+        <p class="text-primary text-sm font-semibold tracking-wide">PROMOTED CARD PILOT</p>
+        <h1 class="mt-4 text-4xl md:text-6xl font-bold leading-tight">
+          조용한 공간을 찾는 손님에게<br />
+          <span class="text-primary">취향 카드로</span> 소개해요.
+        </h1>
+        <p class="mt-6 text-mutedfg text-base md:text-lg leading-relaxed max-w-xl">
+          Doripe는 네이버 플레이스나 인스타에 이미 있는 정보를 바탕으로 가게/공간의 취향 카드를 만들고, 혼자 조용한 공간을 찾는 유저에게 테스트 노출하는 파일럿을 준비 중입니다.
+        </p>
+
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="rounded-2xl border border-border bg-card p-4">
+            <p class="text-primary font-mono text-sm">01</p>
+            <p class="mt-2 font-semibold">링크만 전달</p>
+            <p class="mt-1 text-mutedfg text-sm leading-relaxed">네이버 플레이스나 인스타 URL을 보내주세요.</p>
+          </div>
+          <div class="rounded-2xl border border-border bg-card p-4">
+            <p class="text-primary font-mono text-sm">02</p>
+            <p class="mt-2 font-semibold">카드 제작</p>
+            <p class="mt-1 text-mutedfg text-sm leading-relaxed">Doripe가 분위기 태그와 소개 카피를 정리합니다.</p>
+          </div>
+          <div class="rounded-2xl border border-border bg-card p-4">
+            <p class="text-primary font-mono text-sm">03</p>
+            <p class="mt-2 font-semibold">반응 리포트</p>
+            <p class="mt-1 text-mutedfg text-sm leading-relaxed">저장, 클릭, 방문 의향 같은 초기 반응을 공유합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-3xl border border-primary/25 bg-primary/5 p-5 md:p-7">
+        <h2 class="text-xl font-bold">파일럿 문의</h2>
+        <p class="mt-2 text-mutedfg text-sm leading-relaxed">
+          제출하면 Doripe 운영 대시보드에 바로 접수됩니다. 네이버 플레이스나 인스타 링크 하나만 있어도 괜찮아요.
+        </p>
+
+        <form id="pilotForm" class="mt-6 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label class="block">
+              <span class="text-sm font-medium">가게 / 공간 이름</span>
+              <input id="storeName" class="mt-2" placeholder="예: 작은 창가 카페" autocomplete="organization" />
+            </label>
+            <label class="block">
+              <span class="text-sm font-medium">공간 유형</span>
+              <input id="spaceType" class="mt-2" placeholder="카페, 서점, 전시, 바..." />
+            </label>
+          </div>
+          <label class="block">
+            <span class="text-sm font-medium">네이버 플레이스 / 인스타 URL</span>
+            <input id="storeUrl" class="mt-2" placeholder="https://..." inputmode="url" />
+          </label>
+          <label class="block">
+            <span class="text-sm font-medium">연락처</span>
+            <input id="contact" class="mt-2" placeholder="이메일, 전화번호, 카카오톡 ID 중 편한 것" autocomplete="email" />
+          </label>
+          <label class="block">
+            <span class="text-sm font-medium">소개하고 싶은 포인트</span>
+            <textarea id="message" class="mt-2" placeholder="혼자 오기 좋은 좌석, 조용한 시간대, 대표 메뉴, 원하는 손님층 등을 적어주세요."></textarea>
+          </label>
+
+          <p id="errorMsg" class="hidden text-sm text-red-300"></p>
+          <button type="submit" id="submitBtn" class="w-full py-4 rounded-full gradient-cta text-black font-bold text-sm">파일럿 문의 제출</button>
+        </form>
+
+        <div id="thanks" class="hidden mt-5 rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <p class="text-primary font-semibold">문의가 접수됐어요.</p>
+          <p class="mt-2 text-sm text-mutedfg leading-relaxed">Doripe 팀이 확인한 뒤 연락드릴게요. 운영 대시보드에도 바로 반영됩니다.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('pilotForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    const thanks = document.getElementById('thanks');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorMsg.classList.add('hidden');
+      thanks.classList.add('hidden');
+      submitBtn.disabled = true;
+      submitBtn.textContent = '접수 중...';
+
+      const payload = {
+        storeName: document.getElementById('storeName').value.trim(),
+        storeUrl: document.getElementById('storeUrl').value.trim(),
+        contact: document.getElementById('contact').value.trim(),
+        spaceType: document.getElementById('spaceType').value.trim(),
+        message: document.getElementById('message').value.trim(),
+      };
+
+      try {
+        const res = await fetch('/api/business-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || '접수에 실패했어요');
+        form.reset();
+        thanks.classList.remove('hidden');
+      } catch (err) {
+        errorMsg.textContent = err.message || '접수에 실패했어요. 잠시 후 다시 시도해주세요.';
+        errorMsg.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '파일럿 문의 제출';
+      }
+    });
+  </script>
+</body>
+</html>
