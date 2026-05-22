@@ -677,10 +677,10 @@ const clusterGuides = {
 const defaultGuide = clusterGuides["신규 손님 유입"];
 
 const editors = [
-  { name: "Lena Han", role: "Content Marketer", initials: "LH", date: "2026년 5월 20일", theme: "green" },
-  { name: "Mina Kwon", role: "Local Search Editor", initials: "MK", date: "2026년 5월 21일", theme: "blue" },
-  { name: "Jae Park", role: "Store Growth Editor", initials: "JP", date: "2026년 5월 22일", theme: "yellow" },
-  { name: "Yuna Seo", role: "Brand Editor", initials: "YS", date: "2026년 5월 23일", theme: "rose" }
+  { name: "Lena Han", role: "Content Marketer", initials: "LH", avatar: "👩‍💻", date: "2026년 5월 20일", theme: "green" },
+  { name: "Mina Kwon", role: "Local Search Editor", initials: "MK", avatar: "🕵️‍♀️", date: "2026년 5월 21일", theme: "blue" },
+  { name: "Jae Park", role: "Store Growth Editor", initials: "JP", avatar: "👨‍🍳", date: "2026년 5월 22일", theme: "yellow" },
+  { name: "Yuna Seo", role: "Brand Editor", initials: "YS", avatar: "👩‍🎨", date: "2026년 5월 23일", theme: "rose" }
 ];
 
 const sourceLibrary = {
@@ -1633,8 +1633,9 @@ ${commonStyles}
     border-radius: 50%;
     background: var(--green-soft);
     color: var(--ink);
-    font-size: 9px;
+    font-size: 14px;
     font-weight: 900;
+    line-height: 1;
   }
   .mini-avatar.blue { background: var(--blue-soft); }
   .mini-avatar.yellow { background: var(--yellow-soft); }
@@ -1753,8 +1754,9 @@ ${commonStyles}
     border: 1px solid var(--line-strong);
     border-radius: 50%;
     color: #171714;
-    font-size: 11px;
+    font-size: 19px;
     font-weight: 900;
+    line-height: 1;
     background: var(--green-soft);
   }
   .avatar.blue { background: var(--blue-soft); }
@@ -1782,6 +1784,9 @@ ${commonStyles}
     font-weight: 750;
   }
   .toc a { padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  .mobile-toc {
+    display: none;
+  }
   .article-body { font-size: 18px; line-height: 1.85; color: #2c2a25; word-break: keep-all; }
   .article-body h2 {
     margin: 46px 0 14px;
@@ -1977,6 +1982,59 @@ ${commonStyles}
       overflow-wrap: anywhere;
     }
     .article-layout { padding: 38px 0; }
+    .toc { display: none; }
+    .mobile-toc {
+      display: block;
+      position: fixed;
+      right: 12px;
+      top: 48%;
+      z-index: 30;
+    }
+    .mobile-toc summary {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      background: rgba(255, 253, 248, 0.96);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      list-style: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mobile-toc summary::-webkit-details-marker { display: none; }
+    .mobile-toc summary::marker { content: ""; }
+    .mobile-toc[open] summary {
+      background: var(--ink);
+      color: #fffdf8;
+    }
+    .mobile-toc nav {
+      position: absolute;
+      right: 0;
+      top: 50px;
+      width: min(270px, calc(100vw - 28px));
+      max-height: 66vh;
+      overflow: auto;
+      padding: 10px;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: rgba(255, 253, 248, 0.98);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.16);
+    }
+    .mobile-toc a {
+      display: block;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 820;
+      line-height: 1.3;
+    }
+    .mobile-toc a:last-child { border-bottom: 0; }
     .article-body {
       font-size: 16px;
       line-height: 1.78;
@@ -1984,7 +2042,7 @@ ${commonStyles}
       overflow-wrap: anywhere;
     }
     .article-body h2 { font-size: 24px; }
-    .toc, .example, .mini-grid, .mini-table div { grid-template-columns: 1fr; }
+    .example, .mini-grid, .mini-table div { grid-template-columns: 1fr; }
     .flow div { grid-template-columns: 38px minmax(0, 1fr); }
   }
 `;
@@ -2014,7 +2072,7 @@ function renderIndex() {
                 <p>${escapeHtml(article.summary)}</p>
                 <div class="article-tags">${renderTags(article)}</div>
                 <div class="article-author-mini">
-                  <span class="mini-avatar ${escapeHtml(article.editor.theme)}">${escapeHtml(article.editor.initials)}</span>
+                  <span class="mini-avatar ${escapeHtml(article.editor.theme)}" aria-hidden="true">${escapeHtml(article.editor.avatar)}</span>
                   <span>${escapeHtml(article.editor.name)} · ${escapeHtml(article.editor.date)}</span>
                 </div>
               </div>
@@ -2265,7 +2323,7 @@ function renderArticle(article) {
         <p class="lead">${escapeHtml(article.lead)}</p>
         <div class="article-tags">${renderTags(article)}</div>
         <div class="byline">
-          <span class="avatar ${escapeHtml(editor.theme)}">${escapeHtml(editor.initials)}</span>
+          <span class="avatar ${escapeHtml(editor.theme)}" aria-hidden="true">${escapeHtml(editor.avatar)}</span>
           <span><strong>${escapeHtml(editor.name)}</strong> · ${escapeHtml(editor.role)}<br />${escapeHtml(editor.date)}</span>
         </div>
       </div>
@@ -2275,6 +2333,12 @@ function renderArticle(article) {
       <aside class="toc" aria-label="article sections">
         ${tocLinks}
       </aside>
+      <details class="mobile-toc">
+        <summary aria-label="목차 열기">☰</summary>
+        <nav aria-label="article sections">
+          ${tocLinks}
+        </nav>
+      </details>
 
       <article class="article-body">
         ${articleSections}
