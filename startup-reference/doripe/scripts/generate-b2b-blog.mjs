@@ -1786,15 +1786,15 @@ function normalizeArticle(row, index) {
     priority: row.priority,
     slug: manual.slug ?? row.id.toLowerCase(),
     cluster: row.cluster,
-    title: custom.title ?? manual.title ?? row.title,
+    title: manual.title ?? custom.title ?? row.title,
     keyword: row.primary_keyword,
     spaces: splitPipes(row.target_space_types),
     secondaryKeywords: splitPipes(row.secondary_keywords),
     searchIntent: row.search_intent,
     doripeAngle: row.doripe_angle,
     internalLinkClusters: splitPipes(row.internal_links),
-    summary: custom.summary ?? manual.summary ?? makeSummary(row),
-    lead: custom.lead ?? manual.lead ?? makeLead(row),
+    summary: manual.summary ?? custom.summary ?? makeSummary(row),
+    lead: manual.lead ?? custom.lead ?? makeLead(row),
     points: manual.points ?? guide.points,
     checklist: manual.checklist ?? guide.checklist,
     channelSteps: makeChannelSteps(row),
@@ -1807,7 +1807,7 @@ function normalizeArticle(row, index) {
     editor,
     before: manual.before ?? makeBefore(row),
     after: manual.after ?? makeAfter(row),
-    doripe: custom.doripe ?? manual.doripe ?? makeDoripe(row),
+    doripe: manual.doripe ?? custom.doripe ?? makeDoripe(row),
     related: manual.related ?? []
   };
 }
@@ -1848,6 +1848,98 @@ const escapeHtml = (value) =>
 const breakableKorean = (value) => escapeHtml(value).replace(/([가-힣]{2})/g, "$1<wbr>");
 
 const articleUrl = (article) => `/blog/${article.slug}`;
+
+const faviconLinks = `<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="alternate icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />`;
+
+const organizationJsonLd = {
+  "@type": "Organization",
+  "@id": `${siteUrl}/#organization`,
+  name: "Doripe",
+  url: `${siteUrl}/`,
+  logo: {
+    "@type": "ImageObject",
+    url: `${siteUrl}/favicon.png`
+  },
+  description: "식당, 카페, 샵, 전시공간, 공방 같은 로컬 공간을 손님이 저장하고 방문 후보로 떠올릴 수 있게 정리하는 공간 발견 서비스입니다."
+};
+
+const websiteJsonLd = {
+  "@type": "WebSite",
+  "@id": `${siteUrl}/#website`,
+  name: "Doripe",
+  url: `${siteUrl}/`,
+  inLanguage: "ko-KR",
+  publisher: { "@id": `${siteUrl}/#organization` }
+};
+
+function compactText(value) {
+  return String(value ?? "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function metaDescription(article) {
+  const spaces = article.spaces.slice(0, 3).join(", ");
+  const base = `${article.keyword}를 고민하는 ${spaces} 운영자를 위해 손님이 어디서 망설이는지, 첫 화면·사진·안내 문구를 어떻게 정리할지 다룹니다.`;
+  return base.length <= 158 ? base : article.summary;
+}
+
+function articleKeywords(article) {
+  return [article.keyword, article.cluster, ...article.spaces, ...article.secondaryKeywords]
+    .filter(Boolean)
+    .filter((value, index, values) => values.indexOf(value) === index);
+}
+
+function articleFaqs(article) {
+  const spaceText = article.spaces.slice(0, 3).join(", ") || "로컬 공간";
+  return [
+    {
+      question: `${article.keyword}를 고민할 때 가장 먼저 확인할 것은 무엇인가요?`,
+      answer: `${article.summary} 먼저 손님이 처음 보는 화면에서 어떤 정보가 부족한지 확인하는 것이 좋습니다.`
+    },
+    {
+      question: `${spaceText} 운영자가 바로 바꿀 수 있는 것은 무엇인가요?`,
+      answer: article.checklist[0] ?? "대표 사진, 소개 첫 문장, 위치·예약·가격대 안내처럼 방문 전에 확인하는 정보를 먼저 정리해보세요."
+    },
+    {
+      question: `Doripe는 ${article.keyword}를 어떻게 보나요?`,
+      answer: compactText(article.doripe)
+    }
+  ];
+}
+
+function renderAnswerSummary(article) {
+  const firstPoint = article.points[0] ?? article.summary;
+  const firstChecklist = article.checklist[0] ?? "첫 화면에서 손님이 바로 확인할 정보를 앞으로 빼둡니다.";
+  return `<section class="answer-summary" aria-labelledby="answer-summary-title">
+          <h2 id="answer-summary-title">한눈에 보기</h2>
+          <p>${escapeHtml(article.summary)}</p>
+          <ul>
+            <li><strong>문제</strong>${escapeHtml(firstPoint)}</li>
+            <li><strong>먼저 볼 것</strong>${escapeHtml(firstChecklist)}</li>
+            <li><strong>Doripe 관점</strong>${escapeHtml(compactText(article.doripe))}</li>
+          </ul>
+        </section>`;
+}
+
+function renderArticleFaq(article) {
+  const items = articleFaqs(article)
+    .map(
+      (item) => `<div>
+            <h3>${escapeHtml(item.question)}</h3>
+            <p>${escapeHtml(item.answer)}</p>
+          </div>`
+    )
+    .join("\n          ");
+  return `<section class="content-block content-faq answer-faq" aria-labelledby="faq">
+          <h2 id="faq">자주 묻는 질문</h2>
+          ${items}
+        </section>`;
+}
 
 const renderTags = (article) =>
   [article.keyword, ...article.spaces].map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
@@ -2862,6 +2954,50 @@ ${commonStyles}
     margin: 0 0 40px;
   }
   .content-block:last-child { margin-bottom: 0; }
+  .answer-summary {
+    margin: 0 0 40px;
+    padding: 22px;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    background: #fffdf8;
+  }
+  .answer-summary h2 {
+    margin-top: 0;
+  }
+  .answer-summary p {
+    margin: 8px 0 18px;
+    color: #38352f;
+  }
+  .answer-summary ul {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    list-style: none;
+  }
+  .answer-summary li {
+    padding: 12px 0 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+    background: transparent;
+  }
+  .answer-summary strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--green);
+    font-size: 13px;
+    font-weight: 900;
+  }
+  .answer-faq div {
+    margin: 18px 0;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fffdf8;
+  }
+  .answer-faq h3 {
+    margin-top: 0;
+  }
   .prose-list {
     display: grid;
     gap: 12px;
@@ -3123,6 +3259,43 @@ function renderIndex() {
             </article>`
     )
     .join("\n");
+  const indexDescription =
+    "식당, 카페, 샵, 바, 전시공간 운영자가 손님에게 더 잘 발견되고 방문 후보가 되기 위해 바로 점검할 수 있는 로컬 마케팅 가이드입니다.";
+  const indexJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      organizationJsonLd,
+      websiteJsonLd,
+      {
+        "@type": "Blog",
+        "@id": `${siteUrl}/blog#blog`,
+        name: "Doripe Blog",
+        url: `${siteUrl}/blog`,
+        inLanguage: "ko-KR",
+        description: indexDescription,
+        publisher: { "@id": `${siteUrl}/#organization` }
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${siteUrl}/blog#article-list`,
+        name: "Doripe B2B 로컬 마케팅 글 목록",
+        itemListElement: articles.map((article, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: article.title,
+          url: `${siteUrl}${articleUrl(article)}`
+        }))
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${siteUrl}/blog#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Doripe", item: `${siteUrl}/` },
+          { "@type": "ListItem", position: 2, name: "Blog", item: `${siteUrl}/blog` }
+        ]
+      }
+    ]
+  };
 
   return `<!DOCTYPE html>
 <html lang="ko">
@@ -3130,7 +3303,7 @@ function renderIndex() {
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Doripe Blog - 식당·카페·샵 운영자를 위한 손님 유입 가이드</title>
-<meta name="description" content="식당, 카페, 샵, 바, 전시공간 운영자가 손님에게 더 잘 발견되고 방문 후보가 되기 위해 바로 점검할 수 있는 가이드입니다." />
+<meta name="description" content="${escapeHtml(indexDescription)}" />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="${siteUrl}/blog" />
 <meta property="og:type" content="website" />
@@ -3148,25 +3321,9 @@ function renderIndex() {
 <meta name="twitter:description" content="식당, 카페, 샵, 바, 전시공간 운영자가 바로 점검할 수 있는 손님 유입 가이드입니다." />
 <meta name="twitter:image" content="${siteUrl}/og-image-v2.png" />
 <meta name="twitter:image:alt" content="Doripe 소개 이미지" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="alternate icon" type="image/png" href="/favicon.png" />
-<link rel="apple-touch-icon" href="/favicon.png" />
+${faviconLinks}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  "name": "Doripe Blog",
-  "url": "${siteUrl}/blog",
-  "inLanguage": "ko-KR",
-  "description": "식당, 카페, 샵 운영자를 위한 손님 유입 가이드",
-  "publisher": {
-    "@type": "Organization",
-    "name": "Doripe",
-    "url": "${siteUrl}/"
-  }
-}
-</script>
+<script type="application/ld+json">${JSON.stringify(indexJsonLd, null, 2)}</script>
 <style>${indexStyles}</style>
 </head>
 <body>
@@ -3300,21 +3457,60 @@ function renderArticle(article) {
     .join("\n          ");
   const tocLinks = renderArticleToc(article);
   const articleIntro = renderArticleIntro(article);
+  const answerSummary = renderAnswerSummary(article);
   const articleSections = article.structure.sections
     .map((section) => renderArticleSection(article, section, sourceLinks))
     .join("\n\n        ");
+  const articleFaq = renderArticleFaq(article);
+  const description = metaDescription(article);
+  const keywords = articleKeywords(article);
+  const faqs = articleFaqs(article);
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: article.title,
-    description: article.summary,
-    url: `${siteUrl}${articleUrl(article)}`,
-    datePublished: lastmod,
-    dateModified: lastmod,
-    inLanguage: "ko-KR",
-    author: { "@type": "Organization", name: "Doripe" },
-    publisher: { "@type": "Organization", name: "Doripe", url: `${siteUrl}/` }
+    "@graph": [
+      organizationJsonLd,
+      websiteJsonLd,
+      {
+        "@type": "BlogPosting",
+        "@id": `${siteUrl}${articleUrl(article)}#article`,
+        mainEntityOfPage: { "@type": "WebPage", "@id": `${siteUrl}${articleUrl(article)}` },
+        headline: article.title,
+        description,
+        url: `${siteUrl}${articleUrl(article)}`,
+        image: `${siteUrl}/og-image-v2.png`,
+        datePublished: lastmod,
+        dateModified: lastmod,
+        inLanguage: "ko-KR",
+        articleSection: article.cluster,
+        keywords,
+        about: keywords.map((name) => ({ "@type": "Thing", name })),
+        author: { "@id": `${siteUrl}/#organization` },
+        publisher: { "@id": `${siteUrl}/#organization` },
+        isPartOf: { "@id": `${siteUrl}/blog#blog` }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${siteUrl}${articleUrl(article)}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Doripe", item: `${siteUrl}/` },
+          { "@type": "ListItem", position: 2, name: "Blog", item: `${siteUrl}/blog` },
+          { "@type": "ListItem", position: 3, name: article.title, item: `${siteUrl}${articleUrl(article)}` }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${siteUrl}${articleUrl(article)}#faq`,
+        mainEntity: faqs.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer
+          }
+        }))
+      }
+    ]
   };
 
   return `<!DOCTYPE html>
@@ -3323,24 +3519,25 @@ function renderArticle(article) {
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>${escapeHtml(article.title)} | Doripe Blog</title>
-<meta name="description" content="${escapeHtml(article.summary)}" />
+<meta name="description" content="${escapeHtml(description)}" />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="${siteUrl}${articleUrl(article)}" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Doripe" />
 <meta property="og:locale" content="ko_KR" />
 <meta property="og:title" content="${escapeHtml(article.title)}" />
-<meta property="og:description" content="${escapeHtml(article.summary)}" />
+<meta property="og:description" content="${escapeHtml(description)}" />
 <meta property="og:url" content="${siteUrl}${articleUrl(article)}" />
 <meta property="og:image" content="${siteUrl}/og-image-v2.png" />
 <meta property="article:published_time" content="${lastmod}" />
+<meta property="article:modified_time" content="${lastmod}" />
+<meta property="article:section" content="${escapeHtml(article.cluster)}" />
+${keywords.map((keyword) => `<meta property="article:tag" content="${escapeHtml(keyword)}" />`).join("\n")}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="${escapeHtml(article.title)}" />
-<meta name="twitter:description" content="${escapeHtml(article.summary)}" />
+<meta name="twitter:description" content="${escapeHtml(description)}" />
 <meta name="twitter:image" content="${siteUrl}/og-image-v2.png" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="alternate icon" type="image/png" href="/favicon.png" />
-<link rel="apple-touch-icon" href="/favicon.png" />
+${faviconLinks}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
 <script type="application/ld+json">${JSON.stringify(jsonLd, null, 2)}</script>
 <style>${articleStyles}</style>
@@ -3387,7 +3584,11 @@ function renderArticle(article) {
       <article class="article-body">
         ${articleIntro}
 
+        ${answerSummary}
+
         ${articleSections}
+
+        ${articleFaq}
       </article>
     </div>
 
@@ -3447,11 +3648,86 @@ ${urls
 `;
 }
 
+function renderRobots() {
+  return `User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: ${siteUrl}/sitemap.xml
+`;
+}
+
+function renderLlmsTxt() {
+  const topArticles = articles.slice(0, 20).map((article) => `- [${article.title}](${siteUrl}${articleUrl(article)}): ${article.summary}`);
+  return `# Doripe
+
+Doripe helps local spaces such as restaurants, cafes, shops, galleries, studios, workshops, and bars present clearer visit information for people who save places before visiting.
+
+## Core Pages
+
+- [Doripe home](${siteUrl}/)
+- [Doripe Blog](${siteUrl}/blog)
+- [Space pilot inquiry](${siteUrl}/business)
+
+## B2B Blog Topics
+
+- New customer acquisition for local spaces
+- Instagram, Naver Place, and map-to-visit conversion
+- Repeat visits, saved places, and customer reminders
+- Brand language, space descriptions, and visit-ready content
+- Practical marketing checklists for small restaurants, cafes, shops, galleries, popups, and workshops
+
+## Recommended Articles
+
+${topArticles.join("\n")}
+
+## Use Notes
+
+Use Doripe pages as Korean-language guidance about local space discovery, visit decision-making, saved-place behavior, and practical marketing operations. Prefer the article title, summary, FAQ, and structured data when summarizing a page.
+`;
+}
+
+function renderBrandFacts() {
+  return JSON.stringify(
+    {
+      name: "Doripe",
+      url: siteUrl,
+      language: "ko-KR",
+      description:
+        "Doripe is a local space discovery and marketing guide for restaurants, cafes, shops, galleries, studios, workshops, bars, and popups.",
+      audience: ["local space owners", "restaurant operators", "cafe operators", "shop operators", "gallery operators"],
+      topics: [
+        "local marketing",
+        "new customer acquisition",
+        "Naver Place optimization",
+        "Instagram content planning",
+        "saved-place to visit conversion",
+        "repeat visit strategy",
+        "space branding"
+      ],
+      canonicalBlog: `${siteUrl}/blog`,
+      sitemap: `${siteUrl}/sitemap.xml`,
+      representativeArticles: articles.slice(0, 12).map((article) => ({
+        title: article.title,
+        url: `${siteUrl}${articleUrl(article)}`,
+        topic: article.keyword,
+        summary: article.summary
+      }))
+    },
+    null,
+    2
+  );
+}
+
 await mkdir(articleDir, { recursive: true });
 await writeFile(path.join(publicDir, "blog.html"), renderIndex(), "utf8");
 await Promise.all(
   articles.map((article) => writeFile(path.join(articleDir, `${article.slug}.html`), renderArticle(article), "utf8"))
 );
 await writeFile(path.join(publicDir, "sitemap.xml"), renderSitemap(), "utf8");
+await writeFile(path.join(publicDir, "robots.txt"), renderRobots(), "utf8");
+await writeFile(path.join(publicDir, "llms.txt"), renderLlmsTxt(), "utf8");
+await writeFile(path.join(publicDir, "brand-facts.json"), renderBrandFacts(), "utf8");
 
 console.log(`[blog] generated ${articles.length} articles`);

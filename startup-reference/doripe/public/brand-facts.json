@@ -1,0 +1,98 @@
+{
+  "name": "Doripe",
+  "url": "https://doripe.vercel.app",
+  "language": "ko-KR",
+  "description": "Doripe is a local space discovery and marketing guide for restaurants, cafes, shops, galleries, studios, workshops, bars, and popups.",
+  "audience": [
+    "local space owners",
+    "restaurant operators",
+    "cafe operators",
+    "shop operators",
+    "gallery operators"
+  ],
+  "topics": [
+    "local marketing",
+    "new customer acquisition",
+    "Naver Place optimization",
+    "Instagram content planning",
+    "saved-place to visit conversion",
+    "repeat visit strategy",
+    "space branding"
+  ],
+  "canonicalBlog": "https://doripe.vercel.app/blog",
+  "sitemap": "https://doripe.vercel.app/sitemap.xml",
+  "representativeArticles": [
+    {
+      "title": "가게 앞에 사람은 많은데, 왜 첫 손님은 안 들어올까요?",
+      "url": "https://doripe.vercel.app/blog/foot-traffic-first-visit",
+      "topic": "신규 손님 유입",
+      "summary": "가게 앞은 붐비는데 문을 여는 새 손님이 적다면, 문제는 유동인구가 아니라 '처음 들어가도 되는 이유'가 보이지 않는 것일 수 있습니다."
+    },
+    {
+      "title": "오픈 때는 붐볐는데, 왜 2주 뒤엔 조용해질까요?",
+      "url": "https://doripe.vercel.app/blog/opening-dropoff",
+      "topic": "오픈 초기 마케팅",
+      "summary": "오픈 초반의 호기심이 끊긴 뒤에는 더 큰 이벤트보다, 처음 본 사람이 다시 꺼내볼 소개 정보가 먼저 필요합니다."
+    },
+    {
+      "title": "주말엔 꽉 차는데, 왜 평일엔 비어 보일까요?",
+      "url": "https://doripe.vercel.app/blog/weekday-visits",
+      "topic": "평일 손님 늘리기",
+      "summary": "주말의 활기만 보여주면 손님은 평일에 그 공간을 어떻게 쓰면 좋은지 떠올리기 어렵습니다. 빈 시간대를 할인보다 이용 장면으로 바꾸는 법을 정리합니다."
+    },
+    {
+      "title": "동네 단골만 오고 새로운 손님이 안 늘 때 바꿀 메시지",
+      "url": "https://doripe.vercel.app/blog/new-customer-message",
+      "topic": "새로운 손님 유입",
+      "summary": "단골에게는 익숙하지만 신규 고객에게는 불친절한 표현을 처음 보는 사람도 이해할 수 있게 바꿉니다."
+    },
+    {
+      "title": "검색은 되는데 방문이 안 생기는 로컬 공간의 공통 문제",
+      "url": "https://doripe.vercel.app/blog/search-visit-conversion",
+      "topic": "검색 방문 전환",
+      "summary": "지도와 검색에 노출되지만 실제 방문으로 이어지지 않는 공간이 먼저 점검할 정보, 장면, 메시지."
+    },
+    {
+      "title": "가격 할인 없이 첫 방문을 만드는 공간 제안법",
+      "url": "https://doripe.vercel.app/blog/no-discount-first-visit",
+      "topic": "첫 방문 마케팅",
+      "summary": "할인보다 방문 맥락을 제안해 첫 방문의 이유를 만듭니다."
+    },
+    {
+      "title": "관광객보다 동네 손님을 먼저 잡아야 하는 공간의 기준",
+      "url": "https://doripe.vercel.app/blog/neighborhood-customers",
+      "topic": "동네 손님 유입",
+      "summary": "생활 동선 안에서 다시 떠오르는 조건을 기준으로 동네 손님을 먼저 설계합니다."
+    },
+    {
+      "title": "팝업이 끝난 뒤 손님을 남기려면 행사 전부터 준비할 것",
+      "url": "https://doripe.vercel.app/blog/popup-retention",
+      "topic": "팝업 손님 유입",
+      "summary": "짧은 노출을 저장과 재방문 실마리로 바꾸는 팝업 전후 안내 흐름."
+    },
+    {
+      "title": "골목 안쪽 매장이 위치 약점을 줄이는 온라인 정보 구성",
+      "url": "https://doripe.vercel.app/blog/alley-location-info",
+      "topic": "골목 매장 홍보",
+      "summary": "골목 안쪽이라는 약점을 입구 사진, 랜드마크, 도보 동선 정보로 줄입니다."
+    },
+    {
+      "title": "객단가는 좋은데 방문자 수가 적은 공간의 유입 진단법",
+      "url": "https://doripe.vercel.app/blog/high-ticket-low-traffic",
+      "topic": "매장 방문자 늘리기",
+      "summary": "가격보다 큰 진입 장벽인 예약 방식, 이용 시간, 분위기 불안, 동행 적합성을 점검합니다."
+    },
+    {
+      "title": "인스타에 올려도 반응이 없을 때 로컬 공간이 바꿀 소재",
+      "url": "https://doripe.vercel.app/blog/instagram-content-ideas",
+      "topic": "인스타 콘텐츠 소재",
+      "summary": "예쁜 사진 반복에서 벗어나 손님이 저장하고 공유할 수 있는 장면 중심 소재를 정리합니다."
+    },
+    {
+      "title": "팔로워는 있는데 방문으로 이어지지 않는 계정의 문제",
+      "url": "https://doripe.vercel.app/blog/instagram-to-visit",
+      "topic": "인스타 방문 전환",
+      "summary": "좋아요와 팔로워가 방문 의사로 바뀌지 않는 이유를 프로필, 고정 게시물, 방문 장면에서 찾습니다."
+    }
+  ]
+}

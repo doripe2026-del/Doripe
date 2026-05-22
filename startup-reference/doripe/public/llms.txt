@@ -1,0 +1,44 @@
+# Doripe
+
+Doripe helps local spaces such as restaurants, cafes, shops, galleries, studios, workshops, and bars present clearer visit information for people who save places before visiting.
+
+## Core Pages
+
+- [Doripe home](https://doripe.vercel.app/)
+- [Doripe Blog](https://doripe.vercel.app/blog)
+- [Space pilot inquiry](https://doripe.vercel.app/business)
+
+## B2B Blog Topics
+
+- New customer acquisition for local spaces
+- Instagram, Naver Place, and map-to-visit conversion
+- Repeat visits, saved places, and customer reminders
+- Brand language, space descriptions, and visit-ready content
+- Practical marketing checklists for small restaurants, cafes, shops, galleries, popups, and workshops
+
+## Recommended Articles
+
+- [가게 앞에 사람은 많은데, 왜 첫 손님은 안 들어올까요?](https://doripe.vercel.app/blog/foot-traffic-first-visit): 가게 앞은 붐비는데 문을 여는 새 손님이 적다면, 문제는 유동인구가 아니라 '처음 들어가도 되는 이유'가 보이지 않는 것일 수 있습니다.
+- [오픈 때는 붐볐는데, 왜 2주 뒤엔 조용해질까요?](https://doripe.vercel.app/blog/opening-dropoff): 오픈 초반의 호기심이 끊긴 뒤에는 더 큰 이벤트보다, 처음 본 사람이 다시 꺼내볼 소개 정보가 먼저 필요합니다.
+- [주말엔 꽉 차는데, 왜 평일엔 비어 보일까요?](https://doripe.vercel.app/blog/weekday-visits): 주말의 활기만 보여주면 손님은 평일에 그 공간을 어떻게 쓰면 좋은지 떠올리기 어렵습니다. 빈 시간대를 할인보다 이용 장면으로 바꾸는 법을 정리합니다.
+- [동네 단골만 오고 새로운 손님이 안 늘 때 바꿀 메시지](https://doripe.vercel.app/blog/new-customer-message): 단골에게는 익숙하지만 신규 고객에게는 불친절한 표현을 처음 보는 사람도 이해할 수 있게 바꿉니다.
+- [검색은 되는데 방문이 안 생기는 로컬 공간의 공통 문제](https://doripe.vercel.app/blog/search-visit-conversion): 지도와 검색에 노출되지만 실제 방문으로 이어지지 않는 공간이 먼저 점검할 정보, 장면, 메시지.
+- [가격 할인 없이 첫 방문을 만드는 공간 제안법](https://doripe.vercel.app/blog/no-discount-first-visit): 할인보다 방문 맥락을 제안해 첫 방문의 이유를 만듭니다.
+- [관광객보다 동네 손님을 먼저 잡아야 하는 공간의 기준](https://doripe.vercel.app/blog/neighborhood-customers): 생활 동선 안에서 다시 떠오르는 조건을 기준으로 동네 손님을 먼저 설계합니다.
+- [팝업이 끝난 뒤 손님을 남기려면 행사 전부터 준비할 것](https://doripe.vercel.app/blog/popup-retention): 짧은 노출을 저장과 재방문 실마리로 바꾸는 팝업 전후 안내 흐름.
+- [골목 안쪽 매장이 위치 약점을 줄이는 온라인 정보 구성](https://doripe.vercel.app/blog/alley-location-info): 골목 안쪽이라는 약점을 입구 사진, 랜드마크, 도보 동선 정보로 줄입니다.
+- [객단가는 좋은데 방문자 수가 적은 공간의 유입 진단법](https://doripe.vercel.app/blog/high-ticket-low-traffic): 가격보다 큰 진입 장벽인 예약 방식, 이용 시간, 분위기 불안, 동행 적합성을 점검합니다.
+- [인스타에 올려도 반응이 없을 때 로컬 공간이 바꿀 소재](https://doripe.vercel.app/blog/instagram-content-ideas): 예쁜 사진 반복에서 벗어나 손님이 저장하고 공유할 수 있는 장면 중심 소재를 정리합니다.
+- [팔로워는 있는데 방문으로 이어지지 않는 계정의 문제](https://doripe.vercel.app/blog/instagram-to-visit): 좋아요와 팔로워가 방문 의사로 바뀌지 않는 이유를 프로필, 고정 게시물, 방문 장면에서 찾습니다.
+- [예쁜 사진만 올리는데 저장이 안 되는 이유](https://doripe.vercel.app/blog/instagram-saveable-photos): 저장되는 사진에는 분위기뿐 아니라 다시 찾아볼 정보 단서가 있어야 합니다.
+- [네이버 플레이스 조회수는 있는데 예약과 방문이 적을 때](https://doripe.vercel.app/blog/naver-place-conversion): 조회수 다음 단계에서 손님이 멈추는 지점을 사진 순서, 소개 문구, 예약 동선으로 나눠 봅니다.
+- [지도에서 가게가 비슷해 보일 때 차별점을 보여주는 방법](https://doripe.vercel.app/blog/map-differentiation): 같은 업종 비교 화면에서 한 문장 차별점과 첫 사진이 해야 할 일을 정리합니다.
+- [저장은 많은데 방문이 적을 때 고객이 망설이는 지점](https://doripe.vercel.app/blog/saves-to-visits): 저장 이후에도 방문이 일어나지 않을 때 부족한 정보와 망설임을 줄이는 운영자 메시지.
+- [공간 분위기는 좋은데 설명이 어려울 때 쓰는 언어 정리법](https://doripe.vercel.app/blog/brand-language): 감성, 조용함, 아늑함 같은 단어를 손님이 실제로 선택할 수 있는 방문 상황으로 바꾸는 방법.
+- [한 번 온 손님이 다시 올 이유를 만들지 못하는 공간의 문제](https://doripe.vercel.app/blog/repeat-visit-reason): 첫 방문 후 다시 떠올릴 계기를 계절 메뉴, 모임, 책/전시 교체, 단골 루틴으로 만듭니다.
+- [저장되는 공간과 스쳐 지나가는 공간은 무엇이 다른가](https://doripe.vercel.app/blog/saved-space-report): Doripe가 공간 카드를 만들며 관찰한, 저장할 이유를 만드는 사진, 문구, 상황의 차이.
+- [운영자가 직접 말하지 않아도 분위기가 전해지는 공간 사례](https://doripe.vercel.app/blog/atmosphere-case): 가상의 공간 카드 예시로 사진 순서와 짧은 문장 조합이 분위기를 전달하는 방식을 보여줍니다.
+
+## Use Notes
+
+Use Doripe pages as Korean-language guidance about local space discovery, visit decision-making, saved-place behavior, and practical marketing operations. Prefer the article title, summary, FAQ, and structured data when summarizing a page.
