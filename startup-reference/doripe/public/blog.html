@@ -58,16 +58,18 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; max-width: 100%; overflow-x: hidden; }
   body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
     font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
     letter-spacing: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
   a { color: inherit; text-decoration: none; }
-  .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+  .shell { width: min(1180px, calc(100vw - 40px)); margin: 0 auto; }
   .topbar {
     position: sticky;
     top: 0;
@@ -436,7 +438,7 @@
             </div>
             <div class="panel-body">
               <p class="panel-label">FEATURED ARTICLE</p>
-              <h2 class="panel-title">가게 앞에 사람은 많은데, 왜 첫 손님은 안 들어올까요?</h2>
+              <h2 class="panel-title">가게 앞 유동인구는 많은데 첫 방문이 적을 때 점검할 지점, 어디서부터 봐야 할까요?</h2>
               <p class="panel-meta">B2B001 · 식당, 카페, 샵 · 신규 손님 유입</p>
             </div>
           </a>
@@ -493,8 +495,8 @@
             <article class="article" id="B2B001">
               <div class="article-meta">B2B001<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/foot-traffic-first-visit">가게 앞에 사람은 많은데, 왜 첫 손님은 안 들어올까요?</a></h3>
-                <p>가게 앞은 붐비는데 문을 여는 새 손님이 적다면, 문제는 유동인구가 아니라 '처음 들어가도 되는 이유'가 보이지 않는 것일 수 있습니다.</p>
+                <h3><a href="/blog/foot-traffic-first-visit">가게 앞 유동인구는 많은데 첫 방문이 적을 때 점검할 지점, 어디서부터 봐야 할까요?</a></h3>
+                <p>신규 손님 유입 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">신규 손님 유입</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -507,8 +509,8 @@
             <article class="article" id="B2B002">
               <div class="article-meta">B2B002<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/opening-dropoff">오픈 때는 붐볐는데, 왜 2주 뒤엔 조용해질까요?</a></h3>
-                <p>오픈 초반의 호기심이 끊긴 뒤에는 더 큰 이벤트보다, 처음 본 사람이 다시 꺼내볼 소개 정보가 먼저 필요합니다.</p>
+                <h3><a href="/blog/opening-dropoff">오픈 초기 마케팅이 막힐 때 먼저 볼 한 가지</a></h3>
+                <p>오픈 초기 마케팅 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">오픈 초기 마케팅</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -521,8 +523,8 @@
             <article class="article" id="B2B003">
               <div class="article-meta">B2B003<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/weekday-visits">주말엔 꽉 차는데, 왜 평일엔 비어 보일까요?</a></h3>
-                <p>주말의 활기만 보여주면 손님은 평일에 그 공간을 어떻게 쓰면 좋은지 떠올리기 어렵습니다. 빈 시간대를 할인보다 이용 장면으로 바꾸는 법을 정리합니다.</p>
+                <h3><a href="/blog/weekday-visits">주말에는 붐비는데 평일 손님이 부족한 공간 운영방법라면, 손님이 멈추는 지점을 봐야 합니다</a></h3>
+                <p>평일 손님 늘리기 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">평일 손님 늘리기</span><span class="tag">카페</span><span class="tag">서점</span><span class="tag">스튜디오</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -577,8 +579,8 @@
             <article class="article" id="B2B007">
               <div class="article-meta">B2B007<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/neighborhood-customers">관광객보다 동네 손님을 먼저 잡아야 하는 공간의 기준</a></h3>
-                <p>생활 동선 안에서 다시 떠오르는 조건을 기준으로 동네 손님을 먼저 설계합니다.</p>
+                <h3><a href="/blog/neighborhood-customers">관광객보다 동네 손님을 먼저 봐야 하는 가게가 있습니다</a></h3>
+                <p>동네 손님 유입 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">동네 손님 유입</span><span class="tag">서점</span><span class="tag">공방</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -591,8 +593,8 @@
             <article class="article" id="B2B008">
               <div class="article-meta">B2B008<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/popup-retention">팝업이 끝난 뒤 손님을 남기려면 행사 전부터 준비할 것</a></h3>
-                <p>짧은 노출을 저장과 재방문 실마리로 바꾸는 팝업 전후 안내 흐름.</p>
+                <h3><a href="/blog/popup-retention">팝업은 끝났는데, 손님을 남기려면 무엇을 해야 할까요?</a></h3>
+                <p>팝업 손님 유입 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">팝업 손님 유입</span><span class="tag">팝업</span><span class="tag">갤러리</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -605,8 +607,8 @@
             <article class="article" id="B2B009">
               <div class="article-meta">B2B009<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/alley-location-info">골목 안쪽 매장이 위치 약점을 줄이는 온라인 정보 구성</a></h3>
-                <p>골목 안쪽이라는 약점을 입구 사진, 랜드마크, 도보 동선 정보로 줄입니다.</p>
+                <h3><a href="/blog/alley-location-info">골목 안쪽 가게는 온라인에서 길을 먼저 알려줘야 합니다</a></h3>
+                <p>골목 매장 홍보 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">골목 매장 홍보</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -619,8 +621,8 @@
             <article class="article" id="B2B010">
               <div class="article-meta">B2B010<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/high-ticket-low-traffic">객단가는 좋은데 방문자 수가 적은 공간의 유입 진단법</a></h3>
-                <p>가격보다 큰 진입 장벽인 예약 방식, 이용 시간, 분위기 불안, 동행 적합성을 점검합니다.</p>
+                <h3><a href="/blog/high-ticket-low-traffic">객단가는 괜찮은데, 왜 들어오는 손님은 적을까요?</a></h3>
+                <p>매장 방문자 늘리기 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 방문자 늘리기</span><span class="tag">바</span><span class="tag">스튜디오</span><span class="tag">전시공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -633,8 +635,8 @@
             <article class="article" id="B2B011">
               <div class="article-meta">B2B011<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/instagram-content-ideas">인스타에 올려도 반응이 없을 때 로컬 공간이 바꿀 소재</a></h3>
-                <p>예쁜 사진 반복에서 벗어나 손님이 저장하고 공유할 수 있는 장면 중심 소재를 정리합니다.</p>
+                <h3><a href="/blog/instagram-content-ideas">인스타에 올려도 조용하다면, 소재보다 먼저 저장할 이유를 봐야 합니다</a></h3>
+                <p>인스타 콘텐츠 소재 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">인스타 콘텐츠 소재</span><span class="tag">카페</span><span class="tag">샵</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -647,8 +649,8 @@
             <article class="article" id="B2B012">
               <div class="article-meta">B2B012<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/instagram-to-visit">팔로워는 있는데 방문으로 이어지지 않는 계정의 문제</a></h3>
-                <p>좋아요와 팔로워가 방문 의사로 바뀌지 않는 이유를 프로필, 고정 게시물, 방문 장면에서 찾습니다.</p>
+                <h3><a href="/blog/instagram-to-visit">팔로워는 있는데 손님이 늘지 않는 계정에는 방문 안내가 빠져 있습니다</a></h3>
+                <p>인스타 방문 전환 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">인스타 방문 전환</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">서점</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -661,8 +663,8 @@
             <article class="article" id="B2B014">
               <div class="article-meta">B2B014<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/instagram-saveable-photos">예쁜 사진만 올리는데 저장이 안 되는 이유</a></h3>
-                <p>저장되는 사진에는 분위기뿐 아니라 다시 찾아볼 정보 단서가 있어야 합니다.</p>
+                <h3><a href="/blog/instagram-saveable-photos">예쁜 사진인데 저장이 안 된다면, 다시 볼 이유가 빠진 겁니다</a></h3>
+                <p>인스타 저장 늘리기 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">인스타 저장 늘리기</span><span class="tag">갤러리</span><span class="tag">전시공간</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -675,8 +677,8 @@
             <article class="article" id="B2B016">
               <div class="article-meta">B2B016<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/naver-place-conversion">네이버 플레이스 조회수는 있는데 예약과 방문이 적을 때</a></h3>
-                <p>조회수 다음 단계에서 손님이 멈추는 지점을 사진 순서, 소개 문구, 예약 동선으로 나눠 봅니다.</p>
+                <h3><a href="/blog/naver-place-conversion">플레이스 조회수는 있는데 예약이 없다면, 상세페이지 안에서 멈추고 있을 수 있습니다</a></h3>
+                <p>네이버 플레이스 전환 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">네이버 플레이스 전환</span><span class="tag">식당</span><span class="tag">스튜디오</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -689,8 +691,8 @@
             <article class="article" id="B2B017">
               <div class="article-meta">B2B017<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/map-differentiation">지도에서 가게가 비슷해 보일 때 차별점을 보여주는 방법</a></h3>
-                <p>같은 업종 비교 화면에서 한 문장 차별점과 첫 사진이 해야 할 일을 정리합니다.</p>
+                <h3><a href="/blog/map-differentiation">지도에서 다 비슷해 보인다면, 첫 문장과 첫 사진부터 바꿔야 합니다</a></h3>
+                <p>네이버 지도 마케팅 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">네이버 지도 마케팅</span><span class="tag">카페</span><span class="tag">바</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -703,8 +705,8 @@
             <article class="article" id="B2B068">
               <div class="article-meta">B2B068<br />리뷰/저장/방문 전환</div>
               <div>
-                <h3><a href="/blog/saves-to-visits">저장은 많은데 방문이 적을 때 고객이 망설이는 지점</a></h3>
-                <p>저장 이후에도 방문이 일어나지 않을 때 부족한 정보와 망설임을 줄이는 운영자 메시지.</p>
+                <h3><a href="/blog/saves-to-visits">저장은 많은데 방문이 적다면, 손님은 어디서 망설이고 있을까요?</a></h3>
+                <p>저장 방문 전환 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">저장 방문 전환</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">갤러리</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -717,8 +719,8 @@
             <article class="article" id="B2B078">
               <div class="article-meta">B2B078<br />공간 브랜딩/분위기</div>
               <div>
-                <h3><a href="/blog/brand-language">공간 분위기는 좋은데 설명이 어려울 때 쓰는 언어 정리법</a></h3>
-                <p>감성, 조용함, 아늑함 같은 단어를 손님이 실제로 선택할 수 있는 방문 상황으로 바꾸는 방법.</p>
+                <h3><a href="/blog/brand-language">공간 분위기는 좋은데 설명이 어렵다면, 쓰임부터 말해보세요</a></h3>
+                <p>공간 브랜딩 문구 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">공간 브랜딩 문구</span><span class="tag">카페</span><span class="tag">갤러리</span><span class="tag">서점</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -731,8 +733,8 @@
             <article class="article" id="B2B088">
               <div class="article-meta">B2B088<br />재방문/단골/커뮤니티</div>
               <div>
-                <h3><a href="/blog/repeat-visit-reason">한 번 온 손님이 다시 올 이유를 만들지 못하는 공간의 문제</a></h3>
-                <p>첫 방문 후 다시 떠올릴 계기를 계절 메뉴, 모임, 책/전시 교체, 단골 루틴으로 만듭니다.</p>
+                <h3><a href="/blog/repeat-visit-reason">한 번 온 손님이 다시 오지 않는다면, 다음 이유가 보이지 않는 겁니다</a></h3>
+                <p>재방문 유도 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">재방문 유도</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">서점</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -745,8 +747,8 @@
             <article class="article" id="B2B096">
               <div class="article-meta">B2B096<br />Doripe 리포트/케이스</div>
               <div>
-                <h3><a href="/blog/saved-space-report">저장되는 공간과 스쳐 지나가는 공간은 무엇이 다른가</a></h3>
-                <p>Doripe가 공간 카드를 만들며 관찰한, 저장할 이유를 만드는 사진, 문구, 상황의 차이.</p>
+                <h3><a href="/blog/saved-space-report">저장되는 공간과 스쳐 지나가는 공간은 무엇이 다를까요?</a></h3>
+                <p>Doripe 공간 저장 리포트 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">Doripe 공간 저장 리포트</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -759,8 +761,8 @@
             <article class="article" id="B2B100">
               <div class="article-meta">B2B100<br />Doripe 리포트/케이스</div>
               <div>
-                <h3><a href="/blog/atmosphere-case">운영자가 직접 말하지 않아도 분위기가 전해지는 공간 사례</a></h3>
-                <p>가상의 공간 카드 예시로 사진 순서와 짧은 문장 조합이 분위기를 전달하는 방식을 보여줍니다.</p>
+                <h3><a href="/blog/atmosphere-case">운영자가 직접 말하지 않아도 분위기가 전해지는 공간의 구조</a></h3>
+                <p>Doripe 공간 사례 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">Doripe 공간 사례</span><span class="tag">서점</span><span class="tag">카페</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -773,8 +775,8 @@
             <article class="article" id="B2B021">
               <div class="article-meta">B2B021<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/b2b021">비 오는 날 손님이 줄어드는 공간이 준비할 온라인 안내</a></h3>
-                <p>식당, 카페, 바 운영자가 우천시 매장 운영 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b021">비 오는 날만 되면 손님이 줄어드는 가게가 먼저 바꿔야 할 안내</a></h3>
+                <p>우천시 매장 운영 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">우천시 매장 운영</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">바</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -787,8 +789,8 @@
             <article class="article" id="B2B022">
               <div class="article-meta">B2B022<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/b2b022">단체 손님을 받고 싶은 작은 공간의 사전 정보 정리법</a></h3>
-                <p>식당, 바, 스튜디오 운영자가 단체 손님 유치 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b022">단체 손님을 받고 싶은데 문의가 안 온다면, 공간 소개부터 다시 봐야 합니다</a></h3>
+                <p>단체 손님 유치 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">단체 손님 유치</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">스튜디오</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -801,8 +803,8 @@
             <article class="article" id="B2B023">
               <div class="article-meta">B2B023<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/b2b023">혼자 오는 손님을 늘리고 싶은 공간이 보여줘야 할 장면</a></h3>
-                <p>식당, 바, 서점 운영자가 혼밥 혼술 마케팅 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b023">혼자 오는 손님을 늘리고 싶다면, 혼자 있어도 괜찮은 장면을 보여주세요</a></h3>
+                <p>혼밥 혼술 마케팅 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">혼밥 혼술 마케팅</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">서점</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -815,8 +817,8 @@
             <article class="article" id="B2B024">
               <div class="article-meta">B2B024<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/b2b024">외지인이 찾기 어려운 매장이 방문 전 불안을 줄이는 법</a></h3>
-                <p>공방, 갤러리, 팝업 운영자가 찾기 어려운 매장 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b024">매장이 찾기 어렵다면, 예쁜 소개보다 도착 안내가 먼저입니다</a></h3>
+                <p>찾기 어려운 매장 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">찾기 어려운 매장</span><span class="tag">공방</span><span class="tag">갤러리</span><span class="tag">팝업</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -829,8 +831,8 @@
             <article class="article" id="B2B025">
               <div class="article-meta">B2B025<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/b2b025">신메뉴를 냈는데 신규 손님이 늘지 않을 때 점검할 홍보 흐름</a></h3>
-                <p>식당, 카페, 샵 운영자가 신메뉴 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b025">신메뉴를 냈는데 조용하다면, 메뉴보다 먹어야 할 이유가 부족한 걸 수 있습니다</a></h3>
+                <p>신메뉴 홍보 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">신메뉴 홍보</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -843,8 +845,8 @@
             <article class="article" id="B2B026">
               <div class="article-meta">B2B026<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/b2b026">예약제를 시작했는데 문의가 적을 때 설명해야 할 것</a></h3>
-                <p>스튜디오, 공방, 전시공간 운영자가 예약제 매장 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b026">예약제를 시작했는데 문의가 적다면, 손님은 아직 이용법을 모르는 겁니다</a></h3>
+                <p>예약제 매장 홍보 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">예약제 매장 홍보</span><span class="tag">스튜디오</span><span class="tag">공방</span><span class="tag">전시공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -857,8 +859,8 @@
             <article class="article" id="B2B027">
               <div class="article-meta">B2B027<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/b2b027">동네 행사에 참여해도 손님이 남지 않을 때 연결할 채널</a></h3>
-                <p>서점, 샵, 팝업 운영자가 동네 행사 마케팅 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b027">동네 행사에 참여했는데 손님이 남지 않는다면, 행사 다음 연결이 빠진 겁니다</a></h3>
+                <p>동네 행사 마케팅 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">동네 행사 마케팅</span><span class="tag">서점</span><span class="tag">샵</span><span class="tag">팝업</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -871,8 +873,8 @@
             <article class="article" id="B2B028">
               <div class="article-meta">B2B028<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/b2b028">매장 앞 입간판과 온라인 소개가 다를 때 생기는 손실</a></h3>
-                <p>식당, 카페, 공방 운영자가 매장 소개 일관성 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b028">입간판과 온라인 소개가 다르면, 손님은 같은 가게라고 느끼지 못합니다</a></h3>
+                <p>매장 소개 일관성 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 소개 일관성</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -885,8 +887,8 @@
             <article class="article" id="B2B029">
               <div class="article-meta">B2B029<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/b2b029">인근 경쟁 매장이 늘었을 때 신규 손님에게 보여줄 기준</a></h3>
-                <p>식당, 카페, 바 운영자가 상권 경쟁 마케팅 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b029">근처에 비슷한 가게가 많아졌다면, 더 크게 외치기보다 선택 기준을 만들어야 합니다</a></h3>
+                <p>상권 경쟁 마케팅 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">상권 경쟁 마케팅</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">바</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -899,8 +901,8 @@
             <article class="article" id="B2B030">
               <div class="article-meta">B2B030<br />신규 손님 유입</div>
               <div>
-                <h3><a href="/blog/b2b030">방문 목적이 모호한 공간이 검색 키워드를 정리하는 법</a></h3>
-                <p>갤러리, 전시공간, 로컬 공간 운영자가 매장 키워드 정리 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b030">우리 공간을 뭐라고 검색해야 할지 애매하다면, 키워드보다 방문 목적부터 정리하세요</a></h3>
+                <p>매장 키워드 정리 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 키워드 정리</span><span class="tag">갤러리</span><span class="tag">전시공간</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -913,8 +915,8 @@
             <article class="article" id="B2B031">
               <div class="article-meta">B2B031<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b031">운영자가 얼굴을 드러내기 부담스러울 때 가능한 숏폼 소재</a></h3>
-                <p>카페, 공방, 서점 운영자가 얼굴 없는 숏폼 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b031">얼굴을 드러내기 부담스럽다면, 공간의 손과 동선을 찍어도 됩니다</a></h3>
+                <p>얼굴 없는 숏폼 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">얼굴 없는 숏폼</span><span class="tag">카페</span><span class="tag">공방</span><span class="tag">서점</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -927,8 +929,8 @@
             <article class="article" id="B2B032">
               <div class="article-meta">B2B032<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b032">릴스 조회수는 높은데 실제 손님이 늘지 않을 때</a></h3>
-                <p>식당, 바, 팝업 운영자가 릴스 방문 전환 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b032">릴스 조회수는 높은데 손님이 늘지 않는다면, 마지막 장면이 빠진 겁니다</a></h3>
+                <p>릴스 방문 전환 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">릴스 방문 전환</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">팝업</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -941,8 +943,8 @@
             <article class="article" id="B2B033">
               <div class="article-meta">B2B033<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b033">매일 올리기 힘든 공간을 위한 주간 콘텐츠 루틴</a></h3>
-                <p>샵, 스튜디오, 갤러리 운영자가 매장 콘텐츠 루틴 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b033">매일 올리기 힘들다면, 주간 콘텐츠는 세 가지 코너면 충분합니다</a></h3>
+                <p>매장 콘텐츠 루틴 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 콘텐츠 루틴</span><span class="tag">샵</span><span class="tag">스튜디오</span><span class="tag">갤러리</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -955,8 +957,8 @@
             <article class="article" id="B2B034">
               <div class="article-meta">B2B034<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b034">감성 계정처럼 보이지만 정보가 부족한 공간 계정의 보완법</a></h3>
-                <p>카페, 갤러리, 전시공간 운영자가 공간 인스타 정보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b034">감성 계정처럼 보이는데 방문이 적다면, 정보가 너무 뒤에 있을 수 있습니다</a></h3>
+                <p>공간 인스타 정보 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">공간 인스타 정보</span><span class="tag">카페</span><span class="tag">갤러리</span><span class="tag">전시공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -969,8 +971,8 @@
             <article class="article" id="B2B035">
               <div class="article-meta">B2B035<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b035">해시태그를 많이 써도 노출이 늘지 않을 때 바꿀 기준</a></h3>
-                <p>식당, 샵, 공방 운영자가 로컬 해시태그 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b035">해시태그를 많이 써도 조용하다면, 키워드보다 상황이 먼저입니다</a></h3>
+                <p>로컬 해시태그 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">로컬 해시태그</span><span class="tag">식당</span><span class="tag">샵</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -983,8 +985,8 @@
             <article class="article" id="B2B036">
               <div class="article-meta">B2B036<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b036">스토리는 많이 올리는데 신규 손님에게 남는 정보가 없을 때</a></h3>
-                <p>카페, 바, 서점 운영자가 인스타 스토리 운영 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b036">스토리는 많이 올리는데 남는 게 없다면, 하루짜리 정보를 저장형으로 바꿔보세요</a></h3>
+                <p>인스타 스토리 운영 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">인스타 스토리 운영</span><span class="tag">카페</span><span class="tag">바</span><span class="tag">서점</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -997,8 +999,8 @@
             <article class="article" id="B2B037">
               <div class="article-meta">B2B037<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b037">비주얼이 약한 업종이 인스타에서 보여줄 수 있는 강점</a></h3>
-                <p>식당, 공방, 로컬 공간 운영자가 비주얼 약한 매장 SNS 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b037">비주얼이 약해 보여도, 손님이 궁금해하는 장면은 만들 수 있습니다</a></h3>
+                <p>비주얼 약한 매장 SNS 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">비주얼 약한 매장 SNS</span><span class="tag">식당</span><span class="tag">공방</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1011,8 +1013,8 @@
             <article class="article" id="B2B038">
               <div class="article-meta">B2B038<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b038">행사 공지를 올려도 신청이 적은 공간의 게시물 구조</a></h3>
-                <p>서점, 갤러리, 스튜디오 운영자가 인스타 행사 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b038">행사 공지를 올려도 신청이 적다면, 일정 전에 불안부터 줄여야 합니다</a></h3>
+                <p>인스타 행사 홍보 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">인스타 행사 홍보</span><span class="tag">서점</span><span class="tag">갤러리</span><span class="tag">스튜디오</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1025,8 +1027,8 @@
             <article class="article" id="B2B039">
               <div class="article-meta">B2B039<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b039">손님이 찍은 사진을 콘텐츠로 활용할 때 놓치기 쉬운 기준</a></h3>
-                <p>식당, 카페, 샵 운영자가 UGC 활용 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b039">손님 사진을 콘텐츠로 쓸 때는 예쁜 컷보다 허락과 맥락이 먼저입니다</a></h3>
+                <p>UGC 활용 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">UGC 활용</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1039,8 +1041,8 @@
             <article class="article" id="B2B040">
               <div class="article-meta">B2B040<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b040">브랜드 톤을 지키려다 게시물이 딱딱해질 때 푸는 법</a></h3>
-                <p>바, 서점, 갤러리 운영자가 매장 SNS 톤앤매너 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b040">브랜드 톤을 지키려다 글이 딱딱해졌다면, 손님 언어를 한 줄 섞어보세요</a></h3>
+                <p>매장 SNS 톤앤매너 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 SNS 톤앤매너</span><span class="tag">바</span><span class="tag">서점</span><span class="tag">갤러리</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1053,8 +1055,8 @@
             <article class="article" id="B2B041">
               <div class="article-meta">B2B041<br />재방문/단골/커뮤니티</div>
               <div>
-                <h3><a href="/blog/b2b041">예약 마감 공지만 반복하는 계정이 놓치는 재방문 정보</a></h3>
-                <p>스튜디오, 공방, 팝업 운영자가 예약제 단골 관리 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b041">예약 마감 공지만 반복하면, 다음 방문 이유는 남지 않습니다</a></h3>
+                <p>예약제 단골 관리 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">예약제 단골 관리</span><span class="tag">스튜디오</span><span class="tag">공방</span><span class="tag">팝업</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1067,8 +1069,8 @@
             <article class="article" id="B2B042">
               <div class="article-meta">B2B042<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b042">상호명 검색만 되는 매장이 키워드 검색에 잡히는 방법</a></h3>
-                <p>식당, 카페, 샵 운영자가 네이버 키워드 검색 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b042">상호명 검색만 되는 매장은, 손님이 찾는 상황어를 놓치고 있을 수 있습니다</a></h3>
+                <p>네이버 키워드 검색 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">네이버 키워드 검색</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1081,8 +1083,8 @@
             <article class="article" id="B2B043">
               <div class="article-meta">B2B043<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b043">지도 리뷰 답글을 쓰기 어려운 운영자를 위한 기본 원칙</a></h3>
-                <p>식당, 바, 공방 운영자가 네이버 리뷰 답글 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b043">리뷰 답글이 어렵다면, 방어보다 다음 방문 안내부터 쓰세요</a></h3>
+                <p>네이버 리뷰 답글 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">네이버 리뷰 답글</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1095,8 +1097,8 @@
             <article class="article" id="B2B044">
               <div class="article-meta">B2B044<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b044">대표 메뉴가 여러 개인 매장이 플레이스에서 선택을 돕는 법</a></h3>
-                <p>식당, 카페, 바 운영자가 대표 메뉴 설정 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b044">대표 메뉴가 여러 개라면, 더 많이 보여주기보다 첫 선택지를 정해야 합니다</a></h3>
+                <p>대표 메뉴 설정 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">대표 메뉴 설정</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">바</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1109,8 +1111,8 @@
             <article class="article" id="B2B045">
               <div class="article-meta">B2B045<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b045">카테고리가 애매한 공간이 지도에서 오해를 줄이는 방법</a></h3>
-                <p>서점, 갤러리, 로컬 공간 운영자가 플레이스 카테고리 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b045">카테고리가 애매한 공간은, 업종보다 이용 목적을 먼저 설명해야 합니다</a></h3>
+                <p>플레이스 카테고리 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">플레이스 카테고리</span><span class="tag">서점</span><span class="tag">갤러리</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1123,8 +1125,8 @@
             <article class="article" id="B2B046">
               <div class="article-meta">B2B046<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b046">임시 휴무와 조기 마감이 잦은 공간의 안내 운영법</a></h3>
-                <p>팝업, 공방, 전시공간 운영자가 임시 휴무 안내 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b046">임시 휴무와 조기 마감이 잦다면, 공지보다 기준 채널이 먼저입니다</a></h3>
+                <p>임시 휴무 안내 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">임시 휴무 안내</span><span class="tag">팝업</span><span class="tag">공방</span><span class="tag">전시공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1137,8 +1139,8 @@
             <article class="article" id="B2B047">
               <div class="article-meta">B2B047<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b047">지도 사진이 오래되어 현재 분위기와 다를 때 생기는 문제</a></h3>
-                <p>카페, 샵, 갤러리 운영자가 플레이스 사진 업데이트 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b047">지도 사진이 오래됐다면, 손님은 지금의 공간을 상상하지 못합니다</a></h3>
+                <p>플레이스 사진 업데이트 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">플레이스 사진 업데이트</span><span class="tag">카페</span><span class="tag">샵</span><span class="tag">갤러리</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1151,8 +1153,8 @@
             <article class="article" id="B2B048">
               <div class="article-meta">B2B048<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b048">찾아오는 길 설명이 길어질수록 방문이 줄어드는 이유</a></h3>
-                <p>식당, 스튜디오, 공방 운영자가 찾아오는 길 안내 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b048">찾아오는 길 설명이 길어진다면, 손님은 이미 불안해지고 있습니다</a></h3>
+                <p>찾아오는 길 안내 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">찾아오는 길 안내</span><span class="tag">식당</span><span class="tag">스튜디오</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1165,8 +1167,8 @@
             <article class="article" id="B2B049">
               <div class="article-meta">B2B049<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b049">예약 링크와 문의 채널이 흩어진 공간이 정리할 우선순위</a></h3>
-                <p>스튜디오, 식당, 전시공간 운영자가 매장 예약 링크 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b049">예약 링크와 문의 채널이 흩어져 있으면, 마음먹은 손님도 멈춥니다</a></h3>
+                <p>매장 예약 링크 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 예약 링크</span><span class="tag">스튜디오</span><span class="tag">식당</span><span class="tag">전시공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1180,7 +1182,7 @@
               <div class="article-meta">B2B050<br />네이버 플레이스/지도</div>
               <div>
                 <h3><a href="/blog/b2b050">신규 매장이 플레이스 등록 후 한 달 안에 해야 할 일</a></h3>
-                <p>카페, 샵, 공방 운영자가 네이버 플레이스 등록 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <p>네이버 플레이스 등록 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">네이버 플레이스 등록</span><span class="tag">카페</span><span class="tag">샵</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1193,8 +1195,8 @@
             <article class="article" id="B2B051">
               <div class="article-meta">B2B051<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b051">주차 정보가 애매한 공간이 방문 포기를 줄이는 법</a></h3>
-                <p>식당, 갤러리, 전시공간 운영자가 매장 주차 안내 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b051">주차 정보가 애매하면, 좋은 가게도 약속 장소에서 빠질 수 있습니다</a></h3>
+                <p>매장 주차 안내 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 주차 안내</span><span class="tag">식당</span><span class="tag">갤러리</span><span class="tag">전시공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1207,8 +1209,8 @@
             <article class="article" id="B2B052">
               <div class="article-meta">B2B052<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b052">반려동물 동반 여부처럼 민감한 정보를 명확히 쓰는 법</a></h3>
-                <p>카페, 샵, 로컬 공간 운영자가 매장 이용 안내 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b052">반려동물 동반 같은 조건은 친절하게, 그리고 단호하게 써야 합니다</a></h3>
+                <p>매장 이용 안내 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 이용 안내</span><span class="tag">카페</span><span class="tag">샵</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1221,8 +1223,8 @@
             <article class="article" id="B2B053">
               <div class="article-meta">B2B053<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b053">어두운 매장이 사진에서 답답해 보일 때 살릴 수 있는 장면</a></h3>
-                <p>바, 갤러리, 식당 운영자가 어두운 매장 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b053">어두운 매장은 밝게 보이려 하지 말고, 머무는 장면을 보여줘야 합니다</a></h3>
+                <p>어두운 매장 사진 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">어두운 매장 사진</span><span class="tag">바</span><span class="tag">갤러리</span><span class="tag">식당</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1235,8 +1237,8 @@
             <article class="article" id="B2B054">
               <div class="article-meta">B2B054<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b054">작은 공간이 넓어 보이게 찍으려다 잃는 매력</a></h3>
-                <p>카페, 공방, 서점 운영자가 작은 매장 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b054">작은 공간을 넓어 보이게 찍으려다, 오히려 매력을 잃을 수 있습니다</a></h3>
+                <p>작은 매장 사진 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">작은 매장 사진</span><span class="tag">카페</span><span class="tag">공방</span><span class="tag">서점</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1249,8 +1251,8 @@
             <article class="article" id="B2B055">
               <div class="article-meta">B2B055<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b055">신제품 사진이 매번 비슷해질 때 바꿀 배경과 맥락</a></h3>
-                <p>샵, 카페, 공방 운영자가 상품 사진 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b055">신제품 사진이 매번 비슷하다면, 상품보다 쓰는 순간을 바꿔보세요</a></h3>
+                <p>상품 사진 콘텐츠 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">상품 사진 콘텐츠</span><span class="tag">샵</span><span class="tag">카페</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1263,8 +1265,8 @@
             <article class="article" id="B2B056">
               <div class="article-meta">B2B056<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b056">손님 없는 시간대에도 공간이 살아 보이게 찍는 방법</a></h3>
-                <p>식당, 스튜디오, 갤러리 운영자가 매장 빈공간 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b056">손님 없는 시간대도 비어 보이지 않게 찍는 방법이 있습니다</a></h3>
+                <p>매장 빈공간 사진 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 빈공간 사진</span><span class="tag">식당</span><span class="tag">스튜디오</span><span class="tag">갤러리</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1277,8 +1279,8 @@
             <article class="article" id="B2B057">
               <div class="article-meta">B2B057<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b057">계절 장식이 과해 보이지 않게 콘텐츠에 담는 법</a></h3>
-                <p>카페, 샵, 전시공간 운영자가 계절 매장 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b057">계절 장식이 과해 보인다면, 장식보다 이용 장면을 앞에 두세요</a></h3>
+                <p>계절 매장 사진 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">계절 매장 사진</span><span class="tag">카페</span><span class="tag">샵</span><span class="tag">전시공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1291,8 +1293,8 @@
             <article class="article" id="B2B058">
               <div class="article-meta">B2B058<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b058">메뉴판과 가격표를 콘텐츠로 올릴 때 촌스러워 보이지 않는 기준</a></h3>
-                <p>식당, 바, 카페 운영자가 메뉴판 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b058">메뉴판과 가격표도 잘 올리면 저장할 정보가 됩니다</a></h3>
+                <p>메뉴판 사진 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">메뉴판 사진</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">카페</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1305,8 +1307,8 @@
             <article class="article" id="B2B059">
               <div class="article-meta">B2B059<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b059">공방 수업 사진이 매번 결과물만 보일 때 담아야 할 과정</a></h3>
-                <p>공방, 스튜디오, 팝업 운영자가 공방 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b059">공방 수업 사진이 결과물만 보인다면, 손님은 과정을 상상하지 못합니다</a></h3>
+                <p>공방 콘텐츠 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">공방 콘텐츠</span><span class="tag">공방</span><span class="tag">스튜디오</span><span class="tag">팝업</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1319,8 +1321,8 @@
             <article class="article" id="B2B060">
               <div class="article-meta">B2B060<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b060">전시공간이 작품 사진만 올릴 때 놓치는 방문 정보</a></h3>
-                <p>갤러리, 전시공간, 서점 운영자가 전시공간 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b060">전시공간이 작품 사진만 올리면, 방문 경험은 보이지 않습니다</a></h3>
+                <p>전시공간 콘텐츠 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">전시공간 콘텐츠</span><span class="tag">갤러리</span><span class="tag">전시공간</span><span class="tag">서점</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1333,8 +1335,8 @@
             <article class="article" id="B2B013">
               <div class="article-meta">B2B013<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b013">숏폼을 찍을 시간이 부족한 운영자를 위한 반복 포맷</a></h3>
-                <p>식당, 카페, 스튜디오 운영자가 매장 숏폼 아이디어 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b013">숏폼 찍을 시간이 없다면, 매일 새로 만들지 않아도 됩니다</a></h3>
+                <p>매장 숏폼 아이디어 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 숏폼 아이디어</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">스튜디오</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1347,8 +1349,8 @@
             <article class="article" id="B2B015">
               <div class="article-meta">B2B015<br />인스타/숏폼 운영</div>
               <div>
-                <h3><a href="/blog/b2b015">메뉴 소개가 지루해 보일 때 방문 욕구를 만드는 글쓰기</a></h3>
-                <p>식당, 카페, 바 운영자가 매장 인스타 글쓰기 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b015">메뉴 소개가 지루해 보인다면, 맛보다 먼저 고르는 순간을 써보세요</a></h3>
+                <p>매장 인스타 글쓰기 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 인스타 글쓰기</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">바</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1361,8 +1363,8 @@
             <article class="article" id="B2B018">
               <div class="article-meta">B2B018<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b018">영업시간과 휴무 정보 오류가 방문 손실로 이어지는 과정</a></h3>
-                <p>서점, 식당, 전시공간 운영자가 플레이스 영업시간 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b018">영업시간이 조금만 헷갈려도, 손님은 방문을 미룹니다</a></h3>
+                <p>플레이스 영업시간 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">플레이스 영업시간</span><span class="tag">서점</span><span class="tag">식당</span><span class="tag">전시공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1375,8 +1377,8 @@
             <article class="article" id="B2B019">
               <div class="article-meta">B2B019<br />네이버 플레이스/지도</div>
               <div>
-                <h3><a href="/blog/b2b019">사진 순서만 바꿔도 달라지는 지도 검색 첫인상</a></h3>
-                <p>카페, 갤러리, 공방 운영자가 네이버 플레이스 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b019">지도 첫 사진이 애매하면, 손님은 들어와서 더 보지 않습니다</a></h3>
+                <p>네이버 플레이스 사진 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">네이버 플레이스 사진</span><span class="tag">카페</span><span class="tag">갤러리</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1389,8 +1391,8 @@
             <article class="article" id="B2B020">
               <div class="article-meta">B2B020<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b020">사진은 많은데 홍보에 쓸 만한 장면이 없을 때 고르는 기준</a></h3>
-                <p>식당, 카페, 스튜디오 운영자가 매장 사진 소재 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b020">사진은 많은데 올릴 게 없다면, 손님이 궁금해할 컷부터 고르세요</a></h3>
+                <p>매장 사진 소재 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 사진 소재</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">스튜디오</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1403,8 +1405,8 @@
             <article class="article" id="B2B061">
               <div class="article-meta">B2B061<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b061">서점이 책 표지만 올릴 때 공간성이 사라지는 문제</a></h3>
-                <p>서점, 카페, 로컬 공간 운영자가 서점 인스타 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b061">서점이 책 표지만 올리면, 머무는 이유가 사라집니다</a></h3>
+                <p>서점 인스타 콘텐츠 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">서점 인스타 콘텐츠</span><span class="tag">서점</span><span class="tag">카페</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1417,8 +1419,8 @@
             <article class="article" id="B2B062">
               <div class="article-meta">B2B062<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b062">바의 분위기를 과장하지 않고 매력적으로 보여주는 촬영 기준</a></h3>
-                <p>바, 식당, 스튜디오 운영자가 바 사진 촬영 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b062">바의 분위기는 과장보다 좌석감과 첫 잔으로 전달됩니다</a></h3>
+                <p>바 사진 촬영 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">바 사진 촬영</span><span class="tag">바</span><span class="tag">식당</span><span class="tag">스튜디오</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1431,8 +1433,8 @@
             <article class="article" id="B2B063">
               <div class="article-meta">B2B063<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b063">샵이 제품보다 공간 취향을 보여줘야 할 때</a></h3>
-                <p>샵, 갤러리, 팝업 운영자가 샵 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b063">샵이 제품만 보여주면, 취향을 고르는 재미가 보이지 않습니다</a></h3>
+                <p>샵 콘텐츠 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">샵 콘텐츠</span><span class="tag">샵</span><span class="tag">갤러리</span><span class="tag">팝업</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1445,8 +1447,8 @@
             <article class="article" id="B2B064">
               <div class="article-meta">B2B064<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b064">촬영 장비가 없어도 공간 콘텐츠 품질을 높이는 체크리스트</a></h3>
-                <p>식당, 카페, 공방 운영자가 공간 콘텐츠 체크리스트 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b064">촬영 장비가 없어도 콘텐츠 품질을 높이는 체크리스트가 있습니다</a></h3>
+                <p>공간 콘텐츠 체크리스트 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">공간 콘텐츠 체크리스트</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1459,8 +1461,8 @@
             <article class="article" id="B2B065">
               <div class="article-meta">B2B065<br />재방문/단골/커뮤니티</div>
               <div>
-                <h3><a href="/blog/b2b065">이벤트 현장을 다음 방문 자산으로 남기는 기록법</a></h3>
-                <p>팝업, 전시공간, 서점 운영자가 이벤트 후 재방문 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b065">이벤트 현장은 끝난 뒤 다시 찾아올 이유로 기록해야 합니다</a></h3>
+                <p>이벤트 후 재방문 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">이벤트 후 재방문</span><span class="tag">팝업</span><span class="tag">전시공간</span><span class="tag">서점</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1473,8 +1475,8 @@
             <article class="article" id="B2B066">
               <div class="article-meta">B2B066<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b066">스튜디오 포트폴리오가 전문가에게만 보일 때 고객용으로 바꾸는 법</a></h3>
-                <p>스튜디오, 샵, 로컬 공간 운영자가 스튜디오 포트폴리오 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b066">스튜디오 포트폴리오가 전문가에게만 보인다면, 고객의 첫 질문으로 바꿔야 합니다</a></h3>
+                <p>스튜디오 포트폴리오 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">스튜디오 포트폴리오</span><span class="tag">스튜디오</span><span class="tag">샵</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1487,8 +1489,8 @@
             <article class="article" id="B2B067">
               <div class="article-meta">B2B067<br />사진/콘텐츠 소재</div>
               <div>
-                <h3><a href="/blog/b2b067">로컬 공간이 매달 촬영해야 할 기본 사진 목록</a></h3>
-                <p>식당, 카페, 로컬 공간 운영자가 매장 사진 목록 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b067">로컬 공간이 매달 꼭 찍어야 할 기본 사진 목록</a></h3>
+                <p>매장 사진 목록 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 사진 목록</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1501,8 +1503,8 @@
             <article class="article" id="B2B069">
               <div class="article-meta">B2B069<br />리뷰/저장/방문 전환</div>
               <div>
-                <h3><a href="/blog/b2b069">리뷰 요청이 부담스러운 운영자가 자연스럽게 후기를 모으는 법</a></h3>
-                <p>식당, 샵, 공방 운영자가 리뷰 요청 방법 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b069">리뷰 요청이 부담스럽다면, 질문을 더 구체적으로 바꿔보세요</a></h3>
+                <p>리뷰 요청 방법 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">리뷰 요청 방법</span><span class="tag">식당</span><span class="tag">샵</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1515,8 +1517,8 @@
             <article class="article" id="B2B070">
               <div class="article-meta">B2B070<br />리뷰/저장/방문 전환</div>
               <div>
-                <h3><a href="/blog/b2b070">방문 전 질문이 반복될 때 콘텐츠로 줄일 수 있는 문의</a></h3>
-                <p>스튜디오, 전시공간, 바 운영자가 방문 전 문의 줄이기 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b070">방문 전 질문이 반복된다면, 그건 콘텐츠로 줄일 수 있습니다</a></h3>
+                <p>방문 전 문의 줄이기 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">방문 전 문의 줄이기</span><span class="tag">스튜디오</span><span class="tag">전시공간</span><span class="tag">바</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1529,8 +1531,8 @@
             <article class="article" id="B2B071">
               <div class="article-meta">B2B071<br />리뷰/저장/방문 전환</div>
               <div>
-                <h3><a href="/blog/b2b071">좋은 후기가 있는데 홍보에 못 쓰는 공간의 정리법</a></h3>
-                <p>카페, 서점, 샵 운영자가 후기 콘텐츠 활용 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b071">좋은 후기가 있는데 홍보에 못 쓴다면, 문장보다 장면을 뽑아야 합니다</a></h3>
+                <p>후기 콘텐츠 활용 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">후기 콘텐츠 활용</span><span class="tag">카페</span><span class="tag">서점</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1543,8 +1545,8 @@
             <article class="article" id="B2B072">
               <div class="article-meta">B2B072<br />리뷰/저장/방문 전환</div>
               <div>
-                <h3><a href="/blog/b2b072">저장하고 잊힌 공간이 다시 떠오르게 만드는 리마인드 소재</a></h3>
-                <p>식당, 바, 팝업 운영자가 저장 고객 리마인드 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b072">저장하고 잊힌 공간은, 다시 꺼내 볼 이유를 만들어야 합니다</a></h3>
+                <p>저장 고객 리마인드 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">저장 고객 리마인드</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">팝업</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1557,8 +1559,8 @@
             <article class="article" id="B2B073">
               <div class="article-meta">B2B073<br />리뷰/저장/방문 전환</div>
               <div>
-                <h3><a href="/blog/b2b073">예약 전 이탈이 생기는 공간이 점검할 설명 요소</a></h3>
-                <p>스튜디오, 공방, 식당 운영자가 예약 이탈 줄이기 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b073">예약 전 이탈이 생긴다면, 가격보다 절차가 흐린 걸 수 있습니다</a></h3>
+                <p>예약 이탈 줄이기 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">예약 이탈 줄이기</span><span class="tag">스튜디오</span><span class="tag">공방</span><span class="tag">식당</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1571,8 +1573,8 @@
             <article class="article" id="B2B074">
               <div class="article-meta">B2B074<br />리뷰/저장/방문 전환</div>
               <div>
-                <h3><a href="/blog/b2b074">처음 방문한 손님이 사진만 찍고 다시 오지 않을 때</a></h3>
-                <p>카페, 갤러리, 전시공간 운영자가 첫 방문 재방문 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b074">사진만 찍고 다시 오지 않는 손님에게는 다음 장면이 필요합니다</a></h3>
+                <p>첫 방문 재방문 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">첫 방문 재방문</span><span class="tag">카페</span><span class="tag">갤러리</span><span class="tag">전시공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1585,8 +1587,8 @@
             <article class="article" id="B2B075">
               <div class="article-meta">B2B075<br />리뷰/저장/방문 전환</div>
               <div>
-                <h3><a href="/blog/b2b075">고객이 저장할 만한 정보와 바로 예약할 정보의 차이</a></h3>
-                <p>식당, 스튜디오, 로컬 공간 운영자가 저장 콘텐츠 예약 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b075">저장할 정보와 바로 예약할 정보는 서로 다르게 써야 합니다</a></h3>
+                <p>저장 콘텐츠 예약 콘텐츠 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">저장 콘텐츠 예약 콘텐츠</span><span class="tag">식당</span><span class="tag">스튜디오</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1599,8 +1601,8 @@
             <article class="article" id="B2B076">
               <div class="article-meta">B2B076<br />리뷰/저장/방문 전환</div>
               <div>
-                <h3><a href="/blog/b2b076">단골 리뷰만 쌓여 신규 고객이 거리감을 느낄 때</a></h3>
-                <p>바, 서점, 샵 운영자가 리뷰 신뢰도 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b076">단골 리뷰만 쌓이면, 새 손님은 거리감을 느낄 수 있습니다</a></h3>
+                <p>리뷰 신뢰도 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">리뷰 신뢰도</span><span class="tag">바</span><span class="tag">서점</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1613,8 +1615,8 @@
             <article class="article" id="B2B077">
               <div class="article-meta">B2B077<br />리뷰/저장/방문 전환</div>
               <div>
-                <h3><a href="/blog/b2b077">방문 후 팔로우만 받고 관계가 끊기는 공간의 다음 행동</a></h3>
-                <p>공방, 카페, 팝업 운영자가 방문 후 고객 관리 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b077">방문 후 팔로우에서 관계가 끊긴다면, 다음 행동이 없었던 겁니다</a></h3>
+                <p>방문 후 고객 관리 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">방문 후 고객 관리</span><span class="tag">공방</span><span class="tag">카페</span><span class="tag">팝업</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1627,8 +1629,8 @@
             <article class="article" id="B2B079">
               <div class="article-meta">B2B079<br />공간 브랜딩/분위기</div>
               <div>
-                <h3><a href="/blog/b2b079">인테리어는 예쁜데 브랜드 기억이 남지 않는 공간의 문제</a></h3>
-                <p>샵, 카페, 스튜디오 운영자가 공간 브랜딩 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b079">인테리어는 예쁜데 브랜드 기억이 남지 않는 이유</a></h3>
+                <p>공간 브랜딩 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">공간 브랜딩</span><span class="tag">샵</span><span class="tag">카페</span><span class="tag">스튜디오</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1641,8 +1643,8 @@
             <article class="article" id="B2B080">
               <div class="article-meta">B2B080<br />공간 브랜딩/분위기</div>
               <div>
-                <h3><a href="/blog/b2b080">메뉴와 공간 톤이 따로 노는 매장이 맞춰야 할 기준</a></h3>
-                <p>식당, 바, 카페 운영자가 매장 톤앤매너 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b080">메뉴와 공간 톤이 따로 놀면, 손님은 무엇을 기억해야 할지 모릅니다</a></h3>
+                <p>매장 톤앤매너 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">매장 톤앤매너</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">카페</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1655,8 +1657,8 @@
             <article class="article" id="B2B081">
               <div class="article-meta">B2B081<br />공간 브랜딩/분위기</div>
               <div>
-                <h3><a href="/blog/b2b081">조용한 공간을 홍보할 때 과장 없이 매력을 전달하는 법</a></h3>
-                <p>서점, 갤러리, 공방 운영자가 조용한 공간 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b081">조용한 공간은 과장하지 않아도 충분히 매력적으로 말할 수 있습니다</a></h3>
+                <p>조용한 공간 홍보 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">조용한 공간 홍보</span><span class="tag">서점</span><span class="tag">갤러리</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1669,8 +1671,8 @@
             <article class="article" id="B2B082">
               <div class="article-meta">B2B082<br />공간 브랜딩/분위기</div>
               <div>
-                <h3><a href="/blog/b2b082">힙하다는 말만으로는 부족한 로컬 공간의 차별화 문장</a></h3>
-                <p>바, 샵, 팝업 운영자가 로컬 공간 차별화 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b082">멋지다는 말만으로는 부족합니다. 언제 좋은지가 보여야 합니다</a></h3>
+                <p>로컬 공간 차별화 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">로컬 공간 차별화</span><span class="tag">바</span><span class="tag">샵</span><span class="tag">팝업</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1683,8 +1685,8 @@
             <article class="article" id="B2B083">
               <div class="article-meta">B2B083<br />공간 브랜딩/분위기</div>
               <div>
-                <h3><a href="/blog/b2b083">오래된 공간이 낡아 보이지 않고 깊이 있어 보이게 만드는 콘텐츠</a></h3>
-                <p>식당, 서점, 로컬 공간 운영자가 오래된 가게 브랜딩 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b083">오래된 공간은 낡음보다 쌓인 시간을 보여줘야 합니다</a></h3>
+                <p>오래된 가게 브랜딩 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">오래된 가게 브랜딩</span><span class="tag">식당</span><span class="tag">서점</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1697,8 +1699,8 @@
             <article class="article" id="B2B084">
               <div class="article-meta">B2B084<br />공간 브랜딩/분위기</div>
               <div>
-                <h3><a href="/blog/b2b084">작가와 브랜드가 함께 쓰는 공간의 정체성을 흐리지 않는 법</a></h3>
-                <p>갤러리, 팝업, 전시공간 운영자가 복합 공간 브랜딩 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b084">여러 브랜드가 함께 쓰는 공간은, 먼저 한 문장으로 정리되어야 합니다</a></h3>
+                <p>복합 공간 브랜딩 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">복합 공간 브랜딩</span><span class="tag">갤러리</span><span class="tag">팝업</span><span class="tag">전시공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1711,8 +1713,8 @@
             <article class="article" id="B2B085">
               <div class="article-meta">B2B085<br />공간 브랜딩/분위기</div>
               <div>
-                <h3><a href="/blog/b2b085">친절함이 강점인 공간이 온라인에서 그 느낌을 전하는 법</a></h3>
-                <p>식당, 공방, 샵 운영자가 친절한 매장 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b085">친절함이 강점인 공간은, 온라인에서도 안내가 친절해야 합니다</a></h3>
+                <p>친절한 매장 홍보 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">친절한 매장 홍보</span><span class="tag">식당</span><span class="tag">공방</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1725,8 +1727,8 @@
             <article class="article" id="B2B086">
               <div class="article-meta">B2B086<br />공간 브랜딩/분위기</div>
               <div>
-                <h3><a href="/blog/b2b086">공간 콘셉트를 바꾸기 전 기존 고객이 혼란스럽지 않게 알리는 법</a></h3>
-                <p>카페, 바, 스튜디오 운영자가 공간 리브랜딩 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b086">공간 콘셉트를 바꾸기 전, 기존 손님에게 먼저 이어지는 이유를 말해야 합니다</a></h3>
+                <p>공간 리브랜딩 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">공간 리브랜딩</span><span class="tag">카페</span><span class="tag">바</span><span class="tag">스튜디오</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1739,8 +1741,8 @@
             <article class="article" id="B2B087">
               <div class="article-meta">B2B087<br />공간 브랜딩/분위기</div>
               <div>
-                <h3><a href="/blog/b2b087">로컬 공간이 자기소개를 길게 쓰지 않아도 기억되는 구조</a></h3>
-                <p>전시공간, 서점, 카페 운영자가 공간 소개 문구 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b087">자기소개를 길게 쓰지 않아도 기억되는 공간 구조가 있습니다</a></h3>
+                <p>공간 소개 문구 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">공간 소개 문구</span><span class="tag">전시공간</span><span class="tag">서점</span><span class="tag">카페</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1753,8 +1755,8 @@
             <article class="article" id="B2B089">
               <div class="article-meta">B2B089<br />재방문/단골/커뮤니티</div>
               <div>
-                <h3><a href="/blog/b2b089">단골에게만 통하는 공지가 신규 손님을 막을 때</a></h3>
-                <p>바, 공방, 샵 운영자가 단골 공지 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b089">단골에게만 통하는 공지는, 새 손님에게는 문턱이 될 수 있습니다</a></h3>
+                <p>단골 공지 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">단골 공지</span><span class="tag">바</span><span class="tag">공방</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1767,8 +1769,8 @@
             <article class="article" id="B2B090">
               <div class="article-meta">B2B090<br />재방문/단골/커뮤니티</div>
               <div>
-                <h3><a href="/blog/b2b090">멤버십 없이도 재방문을 늘리는 작은 약속 만들기</a></h3>
-                <p>카페, 식당, 스튜디오 운영자가 멤버십 없이 재방문 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b090">멤버십 없이도 재방문을 만드는 작은 약속이 있습니다</a></h3>
+                <p>멤버십 없이 재방문 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">멤버십 없이 재방문</span><span class="tag">카페</span><span class="tag">식당</span><span class="tag">스튜디오</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1781,8 +1783,8 @@
             <article class="article" id="B2B091">
               <div class="article-meta">B2B091<br />재방문/단골/커뮤니티</div>
               <div>
-                <h3><a href="/blog/b2b091">클래스와 모임을 열어도 커뮤니티가 쌓이지 않을 때</a></h3>
-                <p>공방, 서점, 갤러리 운영자가 공간 커뮤니티 운영 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b091">클래스와 모임을 열어도 커뮤니티가 쌓이지 않는 이유</a></h3>
+                <p>공간 커뮤니티 운영 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">공간 커뮤니티 운영</span><span class="tag">공방</span><span class="tag">서점</span><span class="tag">갤러리</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1795,8 +1797,8 @@
             <article class="article" id="B2B092">
               <div class="article-meta">B2B092<br />재방문/단골/커뮤니티</div>
               <div>
-                <h3><a href="/blog/b2b092">단골 이벤트가 할인 행사처럼 보일 때 바꿀 메시지</a></h3>
-                <p>식당, 바, 샵 운영자가 단골 이벤트 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b092">단골 이벤트가 할인 행사처럼 보인다면, 관계의 언어가 빠진 겁니다</a></h3>
+                <p>단골 이벤트 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">단골 이벤트</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">샵</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1809,8 +1811,8 @@
             <article class="article" id="B2B093">
               <div class="article-meta">B2B093<br />재방문/단골/커뮤니티</div>
               <div>
-                <h3><a href="/blog/b2b093">로컬 손님과 멀리서 오는 손님의 재방문 이유가 다를 때</a></h3>
-                <p>전시공간, 카페, 팝업 운영자가 재방문 이유 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b093">동네 손님과 멀리서 오는 손님은 다시 오는 이유가 다릅니다</a></h3>
+                <p>재방문 이유 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">재방문 이유</span><span class="tag">전시공간</span><span class="tag">카페</span><span class="tag">팝업</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1823,8 +1825,8 @@
             <article class="article" id="B2B094">
               <div class="article-meta">B2B094<br />재방문/단골/커뮤니티</div>
               <div>
-                <h3><a href="/blog/b2b094">조용한 단골을 온라인 커뮤니티로 끌어내지 않고 관계를 유지하는 법</a></h3>
-                <p>서점, 공방, 로컬 공간 운영자가 조용한 단골 관리 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b094">조용한 단골을 억지로 커뮤니티에 끌어내지 않아도 됩니다</a></h3>
+                <p>조용한 단골 관리 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">조용한 단골 관리</span><span class="tag">서점</span><span class="tag">공방</span><span class="tag">로컬 공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -1837,8 +1839,8 @@
             <article class="article" id="B2B095">
               <div class="article-meta">B2B095<br />재방문/단골/커뮤니티</div>
               <div>
-                <h3><a href="/blog/b2b095">시즌마다 다시 찾는 공간이 되려면 기록해야 할 것</a></h3>
-                <p>카페, 갤러리, 식당 운영자가 시즌 재방문 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b095">시즌마다 다시 찾는 공간은, 계절의 기억을 기록합니다</a></h3>
+                <p>시즌 재방문 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">시즌 재방문</span><span class="tag">카페</span><span class="tag">갤러리</span><span class="tag">식당</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar green" aria-hidden="true">👩‍💻</span>
@@ -1851,8 +1853,8 @@
             <article class="article" id="B2B097">
               <div class="article-meta">B2B097<br />Doripe 리포트/케이스</div>
               <div>
-                <h3><a href="/blog/b2b097">로컬 공간 카드에서 사람들이 먼저 확인하는 정보</a></h3>
-                <p>샵, 서점, 공방 운영자가 Doripe 공간 카드 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b097">공간 카드에서 손님이 먼저 확인하는 정보는 따로 있습니다</a></h3>
+                <p>Doripe 공간 카드 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">Doripe 공간 카드</span><span class="tag">샵</span><span class="tag">서점</span><span class="tag">공방</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -1865,8 +1867,8 @@
             <article class="article" id="B2B098">
               <div class="article-meta">B2B098<br />Doripe 리포트/케이스</div>
               <div>
-                <h3><a href="/blog/b2b098">카페가 아니어도 저장되는 공간의 공통점</a></h3>
-                <p>바, 갤러리, 전시공간 운영자가 Doripe 로컬 공간 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <h3><a href="/blog/b2b098">카페가 아니어도 저장되는 공간에는 공통점이 있습니다</a></h3>
+                <p>Doripe 로컬 공간 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">Doripe 로컬 공간</span><span class="tag">바</span><span class="tag">갤러리</span><span class="tag">전시공간</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -1880,7 +1882,7 @@
               <div class="article-meta">B2B099<br />Doripe 리포트/케이스</div>
               <div>
                 <h3><a href="/blog/b2b099">방문 전 망설임을 줄이는 공간 정보의 최소 조건</a></h3>
-                <p>식당, 스튜디오, 팝업 운영자가 Doripe 방문 전환 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
+                <p>Doripe 방문 전환 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.</p>
                 <div class="article-tags"><span class="tag">Doripe 방문 전환</span><span class="tag">식당</span><span class="tag">스튜디오</span><span class="tag">팝업</span></div>
                 <div class="article-author-mini">
                   <span class="mini-avatar rose" aria-hidden="true">👩‍🎨</span>

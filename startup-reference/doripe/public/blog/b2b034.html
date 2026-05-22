@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>감성 계정처럼 보이지만 정보가 부족한 공간 계정의 보완법 | Doripe Blog</title>
-<meta name="description" content="카페, 갤러리, 전시공간 운영자가 공간 인스타 정보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다." />
+<title>감성 계정처럼 보이는데 방문이 적다면, 정보가 너무 뒤에 있을 수 있습니다 | Doripe Blog</title>
+<meta name="description" content="공간 인스타 정보 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="https://doripe.vercel.app/blog/b2b034" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Doripe" />
 <meta property="og:locale" content="ko_KR" />
-<meta property="og:title" content="감성 계정처럼 보이지만 정보가 부족한 공간 계정의 보완법" />
-<meta property="og:description" content="카페, 갤러리, 전시공간 운영자가 공간 인스타 정보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다." />
+<meta property="og:title" content="감성 계정처럼 보이는데 방문이 적다면, 정보가 너무 뒤에 있을 수 있습니다" />
+<meta property="og:description" content="공간 인스타 정보 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta property="og:url" content="https://doripe.vercel.app/blog/b2b034" />
 <meta property="og:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <meta property="article:published_time" content="2026-05-23" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="감성 계정처럼 보이지만 정보가 부족한 공간 계정의 보완법" />
-<meta name="twitter:description" content="카페, 갤러리, 전시공간 운영자가 공간 인스타 정보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다." />
+<meta name="twitter:title" content="감성 계정처럼 보이는데 방문이 적다면, 정보가 너무 뒤에 있을 수 있습니다" />
+<meta name="twitter:description" content="공간 인스타 정보 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta name="twitter:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="alternate icon" type="image/png" href="/favicon.png" />
@@ -26,8 +26,8 @@
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "감성 계정처럼 보이지만 정보가 부족한 공간 계정의 보완법",
-  "description": "카페, 갤러리, 전시공간 운영자가 공간 인스타 정보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.",
+  "headline": "감성 계정처럼 보이는데 방문이 적다면, 정보가 너무 뒤에 있을 수 있습니다",
+  "description": "공간 인스타 정보 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.",
   "url": "https://doripe.vercel.app/blog/b2b034",
   "datePublished": "2026-05-23",
   "dateModified": "2026-05-23",
@@ -59,16 +59,18 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; max-width: 100%; overflow-x: hidden; }
   body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
     font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
     letter-spacing: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
   a { color: inherit; text-decoration: none; }
-  .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+  .shell { width: min(1180px, calc(100vw - 40px)); margin: 0 auto; }
   .topbar {
     position: sticky;
     top: 0;
@@ -454,8 +456,8 @@
     .article-hero { padding: 42px 0 32px; }
     h1 {
       max-width: 100%;
-      font-size: clamp(26px, 7.2vw, 32px);
-      line-height: 1.12;
+      font-size: clamp(24px, 6.2vw, 28px);
+      line-height: 1.16;
       word-break: break-all;
       overflow-wrap: anywhere;
     }
@@ -557,8 +559,8 @@
       <div class="shell">
         <a class="crumb" href="/blog">← 블로그 홈</a>
         <p class="article-kicker"><span>B2B034</span><span>인스타/숏폼 운영</span><span>공간 인스타 정보</span></p>
-        <h1>감성<wbr> 계정<wbr>처럼<wbr> 보이<wbr>지만<wbr> 정보<wbr>가 부족<wbr>한 공간<wbr> 계정<wbr>의 보완<wbr>법</h1>
-        <p class="lead">감성 계정처럼 보이지만 정보가 부족한 공간 계정의 보완법라는 고민은 카페, 갤러리, 전시공간처럼 작은 로컬 공간에서 자주 생깁니다. 문제를 크게 잡으면 광고나 할인으로만 풀게 되지만, 실제로는 손님이 방문 전에 확인하는 정보와 장면을 정리하는 것부터 시작할 수 있습니다.</p>
+        <h1>감성<wbr> 계정<wbr>처럼<wbr> 보이<wbr>는데<wbr> 방문<wbr>이 적다<wbr>면, 정보<wbr>가 너무<wbr> 뒤에<wbr> 있을<wbr> 수 있습<wbr>니다<wbr></h1>
+        <p class="lead">&quot;공간 인스타 정보&quot;를 고민할 때 먼저 봐야 할 것은 홍보량이 아니라 손님이 판단하는 순서입니다. 카페, 갤러리, 전시공간 같은 공간에서 바로 고칠 수 있는 문장, 사진, 안내 기준을 정리합니다.</p>
         <div class="article-tags"><span class="tag">공간 인스타 정보</span><span class="tag">카페</span><span class="tag">갤러리</span><span class="tag">전시공간</span></div>
         <div class="byline">
           <span class="avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -569,95 +571,60 @@
 
     <div class="shell article-layout">
       <aside class="toc" aria-label="article sections">
-        <a href="#insideOutsideWords">언어 번역</a>
-        <a href="#captionRewrite">캡션 실험</a>
-        <a href="#focus-b2b034">핵심 질문</a>
-        <a href="#sceneMenu">상황 메뉴</a>
-        <a href="#mistakeMap">실수 지도</a>
-        <a href="#ownerCheck">운영자 점검</a>
+        <a href="#b2b034-not-reaction">반응 이전</a>
+        <a href="#b2b034-material">소재 전환</a>
+        <a href="#b2b034-first-line">첫 문장</a>
+        <a href="#b2b034-repeat">반복 포맷</a>
+        <a href="#b2b034-test">7일 실험</a>
         <a href="#doripe">Doripe 관점</a>
       </aside>
       <details class="mobile-toc">
-        <summary aria-label="목차 열기">☰</summary>
+        <summary aria-label="Table of contents">&#9776;</summary>
         <nav aria-label="article sections">
-          <a href="#insideOutsideWords">언어 번역</a>
-        <a href="#captionRewrite">캡션 실험</a>
-        <a href="#focus-b2b034">핵심 질문</a>
-        <a href="#sceneMenu">상황 메뉴</a>
-        <a href="#mistakeMap">실수 지도</a>
-        <a href="#ownerCheck">운영자 점검</a>
+          <a href="#b2b034-not-reaction">반응 이전</a>
+        <a href="#b2b034-material">소재 전환</a>
+        <a href="#b2b034-first-line">첫 문장</a>
+        <a href="#b2b034-repeat">반복 포맷</a>
+        <a href="#b2b034-test">7일 실험</a>
         <a href="#doripe">Doripe 관점</a>
         </nav>
       </details>
 
       <article class="article-body">
         <section class="article-intro">
-        <p>'공간 인스타 정보' 문제가 떠올라 이 글을 열었다면, 아마 지금 운영하는 공간을 더 알리고 싶은데 어디부터 손대야 할지 애매한 상태일 가능성이 큽니다. 더 많이 올리거나 광고를 켜기 전에, 손님이 방문 직전에 무엇을 확인하지 못하고 멈추는지 먼저 봐야 합니다.</p>
-        <p>카페, 갤러리, 전시공간에서는 큰 캠페인보다 첫 화면의 문장, 대표 사진, 예약/위치 안내처럼 작은 정보가 방문 결정을 가릅니다. 손님은 공간이 좋아 보여도 "오늘 가도 되나", "처음 가도 어색하지 않나", "어떻게 이용하면 되나"가 안 보이면 다시 미룹니다.</p>
-        <p>그래서 아래 내용은 한 번에 다 바꾸는 목록이 아니라, 오늘 바로 바꿀 한 문장과 사진 한 장을 고르는 순서로 읽으면 좋습니다.</p>
+        <p>카페, 갤러리, 전시공간 같은 공간을 운영하다 보면 &quot;공간 인스타 정보&quot; 문제가 생각보다 조용히 쌓입니다. 겉으로는 콘텐츠도 올리고 정보도 적어둔 것 같은데, 처음 보는 손님 입장에서는 아직 판단할 단서가 부족할 수 있습니다.</p>
+        <p>손님은 운영자가 중요하게 여기는 순서대로 읽지 않습니다. 자기 상황에 맞는지, 실패할 가능성은 낮은지, 지금 움직여도 괜찮은지를 아주 빠르게 확인합니다.</p>
+        <p>그래서 이 글에서는 &quot;공간 인스타 정보&quot;를 더 세게 밀어붙이는 대신, 손님이 멈추는 질문을 줄이고 방문에 가까워지게 만드는 정리법을 봅니다. 🎬</p>
       </section>
 
-        <section class="content-block content-insideOutsideWords">
-        <h2 id="insideOutsideWords">우리끼리 아는 말을 바깥말로</h2>
-        <p>문구는 멋있게 쓰기보다 손님이 판단할 수 있게 바꾸는 작업입니다.</p><div class="example">
-          <div>
-            <strong>Before</strong>
-            <p>카페을 더 많은 분께 알리고 싶습니다.</p>
-          </div>
-          <div>
-            <strong>After</strong>
-            <p>카페을 처음 보는 손님도 공간 인스타 정보 상황에서 바로 떠올릴 수 있도록, 방문 장면과 확인 정보를 함께 보여줍니다.</p>
-          </div>
-        </div>
+        <section class="content-block content-b2b034-not-reaction">
+        <h2 id="b2b034-not-reaction">반응이 적을 때는 소재보다 손님이 다시 볼 이유를 먼저 봐야 합니다</h2>
+        <p>인스타에서 공간 인스타 정보을 고민하면 사진 퀄리티나 업로드 시간부터 떠올리기 쉽습니다. 하지만 로컬 공간에서는 예쁜 게시물보다 &quot;나중에 다시 볼 이유&quot;가 더 중요할 때가 많습니다.</p><p>카페의 메뉴 사진, 갤러리의 분위기 사진, 전시공간의 행사 공지는 모두 필요합니다. 다만 손님이 자기 일정 안에 넣을 수 있는 정보가 없다면 좋아요에서 멈추기 쉽습니다.</p><p>게시물은 운영자의 기록이 아니라 손님의 방문 전 메모가 되어야 합니다.</p>
       </section>
 
-        <section class="content-block content-captionRewrite">
-        <h2 id="captionRewrite">첫 줄을 방문 장면으로 바꾸기</h2>
-        <p>문구는 멋있게 쓰기보다 손님이 판단할 수 있게 바꾸는 작업입니다.</p><div class="example">
-          <div>
-            <strong>Before</strong>
-            <p>카페을 더 많은 분께 알리고 싶습니다.</p>
-          </div>
-          <div>
-            <strong>After</strong>
-            <p>카페을 처음 보는 손님도 공간 인스타 정보 상황에서 바로 떠올릴 수 있도록, 방문 장면과 확인 정보를 함께 보여줍니다.</p>
-          </div>
-        </div>
+        <section class="content-block content-b2b034-material">
+        <h2 id="b2b034-material">소재는 메뉴나 공간이 아니라 이용 상황에서 시작하면 좋아요</h2>
+        <p>&quot;오늘의 카페&quot;보다 &quot;처음 온 손님이 실패하지 않을 선택&quot;, &quot;퇴근 후 조용히 들를 수 있는 시간&quot;, &quot;선물 고르기 부담이 적은 코너&quot;처럼 손님 상황에서 시작해보세요.</p><p>감성 콘텐츠, 방문 정보, SNS 개선을 한꺼번에 다 설명하려고 하면 글이 길어집니다. 한 게시물에는 한 가지 상황만 잡는 편이 읽기 쉽습니다.</p><p>같은 사진도 문장을 바꾸면 완전히 다른 소재가 됩니다. 운영자가 새로 만들어야 할 것은 사진보다 관점일 때가 많습니다.</p>
       </section>
 
-        <section class="content-block content-focus-b2b034">
-        <h2 id="focus-b2b034">공간 인스타 정보: 이 글에서 먼저 볼 질문</h2>
-        <p>카페, 갤러리, 전시공간 운영자가 공간 인스타 정보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p><div class="mini-grid"><div><p><strong>1. 증상부터 보면 좋아요.</strong> 예쁜 장면은 있지만 저장하거나 방문할 이유가 같이 보이지 않는다.</p></div>
-          <div><p><strong>2. 손님 질문부터 보면 좋아요.</strong> 처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
-          <div><p><strong>3. 오늘 바꿀 것부터 보면 좋아요.</strong> 게시물마다 손님이 저장할 정보 하나를 붙입니다.</p></div></div>
+        <section class="content-block content-b2b034-first-line">
+        <h2 id="b2b034-first-line">첫 문장은 감성보다 판단 기준을 먼저 줘야 합니다</h2>
+        <p>첫 줄에서 분위기만 말하면 손님은 잠깐 보고 지나갈 수 있습니다. 반대로 어떤 사람에게, 어떤 시간에, 어떤 선택이 쉬운지 말하면 저장할 이유가 생깁니다.</p><p>카페이라면 첫 주문 기준을, 갤러리이라면 예약이나 방문 시간을, 전시공간이라면 둘러보는 방법을 앞쪽에 두세요.</p><p>감성은 빼자는 뜻이 아닙니다. 감성이 손님에게 닿으려면 먼저 쓰임이 보여야 합니다.</p>
       </section>
 
-        <section class="content-block content-sceneMenu">
-        <h2 id="sceneMenu">상황별로 추천할 장면</h2>
-        <div class="mini-grid"><div><p><strong>1. 카페부터 보면 좋아요.</strong> 카페에서는 '공간 인스타 정보' 문제를 한 문장 설명보다 실제 이용 장면, 확인 정보, 사진 순서로 나눠 보여주는 편이 좋습니다.</p></div>
-          <div><p><strong>2. 갤러리부터 보면 좋아요.</strong> 갤러리에서는 '공간 인스타 정보' 문제를 한 문장 설명보다 실제 이용 장면, 확인 정보, 사진 순서로 나눠 보여주는 편이 좋습니다.</p></div>
-          <div><p><strong>3. 전시공간부터 보면 좋아요.</strong> 전시공간에서는 '공간 인스타 정보' 문제를 한 문장 설명보다 실제 이용 장면, 확인 정보, 사진 순서로 나눠 보여주는 편이 좋습니다.</p></div></div>
+        <section class="content-block content-b2b034-repeat">
+        <h2 id="b2b034-repeat">매번 새 기획을 만들기보다 반복 코너를 정해두세요</h2>
+        <p>운영자는 콘텐츠 팀이 아닙니다. 매번 새로운 아이디어를 찾으려 하면 금방 지칩니다.</p><div class="flow"><div><p><strong>1.</strong> 처음 오는 손님을 위한 선택지</p></div><div><p><strong>2.</strong> 특정 시간대에 좋은 장면</p></div><div><p><strong>3.</strong> 자주 묻는 질문에 대한 짧은 답</p></div></div><p>이 세 가지를 돌리면 공간 인스타 정보도 훨씬 덜 막힙니다. 반복은 지루함이 아니라 손님이 이해하기 쉬운 리듬이 될 수 있습니다.</p>
       </section>
 
-        <section class="content-block content-mistakeMap">
-        <h2 id="mistakeMap">자주 어긋나는 지점</h2>
-        <p>좋은 공간일수록 추상적인 말로 뭉뚱그리기 쉽습니다. 아래 지점만 피해도 처음 보는 손님에게 더 친절해집니다.</p><div class="prose-list"><p><strong>1.</strong> 릴스 조회수만 보고 성공으로 판단하지 않습니다. 프로필 방문 후 위치, 예약, 문의로 이어지는지 같이 봐야 합니다.</p>
-          <p><strong>2.</strong> 해시태그를 많이 붙이는 것보다 첫 문장과 고정 게시물에서 방문 정보를 정리하는 편이 더 실무적입니다.</p>
-          <p><strong>3.</strong> 고객 얼굴이나 개인정보가 보이는 장면은 동의 없이 쓰지 않습니다.</p></div>
-      </section>
-
-        <section class="content-block content-ownerCheck">
-        <h2 id="ownerCheck">운영자가 먼저 확인할 질문</h2>
-        <p>운영자가 먼저 볼 것은 더 많은 홍보 채널이 아니라, 이미 열려 있는 정보의 순서입니다.</p><div class="prose-list"><p><strong>1.</strong> 게시물마다 손님이 저장할 정보 하나를 붙입니다.</p>
-          <p><strong>2.</strong> 프로필, 고정 게시물, 하이라이트에 첫 방문 안내를 나눠 둡니다.</p>
-          <p><strong>3.</strong> 상품이나 메뉴 단독컷보다 이용 장면을 함께 보여줍니다.</p>
-          <p><strong>4.</strong> 캡션 마지막에는 다음 행동을 구체적으로 적습니다.</p>
-          <p><strong>5.</strong> 반응이 낮은 게시물은 소재, 정보, 방문 장면 중 무엇이 빠졌는지 나눠 봅니다.</p></div>
+        <section class="content-block content-b2b034-test">
+        <h2 id="b2b034-test">기존 게시물 3개를 방문 장면 중심으로 다시 써보세요</h2>
+        <p>새 사진을 찍기 전에 기존 게시물 3개를 고릅니다. 하나는 처음 방문용, 하나는 특정 상황용, 하나는 자주 묻는 질문용으로 바꿔보세요.</p><p>반응을 볼 때는 좋아요만 보지 말고 저장, 프로필 이동, DM 질문이 달라졌는지 함께 봅니다.</p><p>공간 인스타 정보의 목적은 계정 안에서 오래 머무르게 하는 것보다, 손님이 다음 행동을 쉽게 떠올리게 하는 데 있습니다.</p>
       </section>
 
         <section class="content-block content-doripe">
         <h2 id="doripe">Doripe 관점 🌿</h2>
-        <div class="note"><p>Doripe는 이 주제를 분위기와 방문 정보를 함께 저장하게 만드는 균형 관점에서 봅니다. 공간을 업종으로만 설명하기보다 손님이 저장하고 다시 꺼내볼 장면으로 바꾸는 일이 핵심입니다.</p></div><p>핵심은 큰 캠페인을 만드는 것이 아니라 손님이 이미 보는 화면과 현장 안내를 같은 장면으로 맞추는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p>
+        <div class="note"><p>Doripe는 &quot;공간 인스타 정보&quot;를 더 크게 포장하기보다, 손님이 저장하고 다시 확인할 수 있는 장면으로 정리하는 쪽에 가깝게 봅니다. 카페, 갤러리, 전시공간 같은 공간에서는 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p></div><p>핵심은 큰 캠페인을 만드는 것이 아니라 손님이 이미 보는 화면과 현장 안내를 같은 장면으로 맞추는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p>
       </section>
       </article>
     </div>
@@ -667,17 +634,17 @@
       <div class="related-grid">
           <a class="related-card" href="/blog/b2b053">
             <span>B2B053 · 사진/콘텐츠 소재</span>
-            <strong>어두운 매장이 사진에서 답답해 보일 때 살릴 수 있는 장면</strong>
+            <strong>어두운 매장은 밝게 보이려 하지 말고, 머무는 장면을 보여줘야 합니다</strong>
           </a>
 
           <a class="related-card" href="/blog/naver-place-conversion">
             <span>B2B016 · 네이버 플레이스/지도</span>
-            <strong>네이버 플레이스 조회수는 있는데 예약과 방문이 적을 때</strong>
+            <strong>플레이스 조회수는 있는데 예약이 없다면, 상세페이지 안에서 멈추고 있을 수 있습니다</strong>
           </a>
 
           <a class="related-card" href="/blog/saves-to-visits">
             <span>B2B068 · 리뷰/저장/방문 전환</span>
-            <strong>저장은 많은데 방문이 적을 때 고객이 망설이는 지점</strong>
+            <strong>저장은 많은데 방문이 적다면, 손님은 어디서 망설이고 있을까요?</strong>
           </a>
       </div>
     </section>

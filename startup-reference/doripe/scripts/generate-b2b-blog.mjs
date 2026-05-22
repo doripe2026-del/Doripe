@@ -683,6 +683,618 @@ const customArticleContent = new Map(
   })
 );
 
+const customTitleOverrides = {
+  B2B007: "관광객보다 동네 손님을 먼저 봐야 하는 가게가 있습니다",
+  B2B008: "팝업은 끝났는데, 손님을 남기려면 무엇을 해야 할까요?",
+  B2B009: "골목 안쪽 가게는 온라인에서 길을 먼저 알려줘야 합니다",
+  B2B010: "객단가는 괜찮은데, 왜 들어오는 손님은 적을까요?",
+  B2B011: "인스타에 올려도 조용하다면, 소재보다 먼저 저장할 이유를 봐야 합니다",
+  B2B012: "팔로워는 있는데 손님이 늘지 않는 계정에는 방문 안내가 빠져 있습니다",
+  B2B013: "숏폼 찍을 시간이 없다면, 매일 새로 만들지 않아도 됩니다",
+  B2B014: "예쁜 사진인데 저장이 안 된다면, 다시 볼 이유가 빠진 겁니다",
+  B2B015: "메뉴 소개가 지루해 보인다면, 맛보다 먼저 고르는 순간을 써보세요",
+  B2B016: "플레이스 조회수는 있는데 예약이 없다면, 상세페이지 안에서 멈추고 있을 수 있습니다",
+  B2B017: "지도에서 다 비슷해 보인다면, 첫 문장과 첫 사진부터 바꿔야 합니다",
+  B2B018: "영업시간이 조금만 헷갈려도, 손님은 방문을 미룹니다",
+  B2B019: "지도 첫 사진이 애매하면, 손님은 들어와서 더 보지 않습니다",
+  B2B020: "사진은 많은데 올릴 게 없다면, 손님이 궁금해할 컷부터 고르세요",
+  B2B021: "비 오는 날만 되면 손님이 줄어드는 가게가 먼저 바꿔야 할 안내",
+  B2B022: "단체 손님을 받고 싶은데 문의가 안 온다면, 공간 소개부터 다시 봐야 합니다",
+  B2B023: "혼자 오는 손님을 늘리고 싶다면, 혼자 있어도 괜찮은 장면을 보여주세요",
+  B2B024: "매장이 찾기 어렵다면, 예쁜 소개보다 도착 안내가 먼저입니다",
+  B2B025: "신메뉴를 냈는데 조용하다면, 메뉴보다 먹어야 할 이유가 부족한 걸 수 있습니다",
+  B2B026: "예약제를 시작했는데 문의가 적다면, 손님은 아직 이용법을 모르는 겁니다",
+  B2B027: "동네 행사에 참여했는데 손님이 남지 않는다면, 행사 다음 연결이 빠진 겁니다",
+  B2B028: "입간판과 온라인 소개가 다르면, 손님은 같은 가게라고 느끼지 못합니다",
+  B2B029: "근처에 비슷한 가게가 많아졌다면, 더 크게 외치기보다 선택 기준을 만들어야 합니다",
+  B2B030: "우리 공간을 뭐라고 검색해야 할지 애매하다면, 키워드보다 방문 목적부터 정리하세요",
+  B2B031: "얼굴을 드러내기 부담스럽다면, 공간의 손과 동선을 찍어도 됩니다",
+  B2B032: "릴스 조회수는 높은데 손님이 늘지 않는다면, 마지막 장면이 빠진 겁니다",
+  B2B033: "매일 올리기 힘들다면, 주간 콘텐츠는 세 가지 코너면 충분합니다",
+  B2B034: "감성 계정처럼 보이는데 방문이 적다면, 정보가 너무 뒤에 있을 수 있습니다",
+  B2B035: "해시태그를 많이 써도 조용하다면, 키워드보다 상황이 먼저입니다",
+  B2B036: "스토리는 많이 올리는데 남는 게 없다면, 하루짜리 정보를 저장형으로 바꿔보세요",
+  B2B037: "비주얼이 약해 보여도, 손님이 궁금해하는 장면은 만들 수 있습니다",
+  B2B038: "행사 공지를 올려도 신청이 적다면, 일정 전에 불안부터 줄여야 합니다",
+  B2B039: "손님 사진을 콘텐츠로 쓸 때는 예쁜 컷보다 허락과 맥락이 먼저입니다",
+  B2B040: "브랜드 톤을 지키려다 글이 딱딱해졌다면, 손님 언어를 한 줄 섞어보세요",
+  B2B041: "예약 마감 공지만 반복하면, 다음 방문 이유는 남지 않습니다",
+  B2B042: "상호명 검색만 되는 매장은, 손님이 찾는 상황어를 놓치고 있을 수 있습니다",
+  B2B043: "리뷰 답글이 어렵다면, 방어보다 다음 방문 안내부터 쓰세요",
+  B2B044: "대표 메뉴가 여러 개라면, 더 많이 보여주기보다 첫 선택지를 정해야 합니다",
+  B2B045: "카테고리가 애매한 공간은, 업종보다 이용 목적을 먼저 설명해야 합니다",
+  B2B046: "임시 휴무와 조기 마감이 잦다면, 공지보다 기준 채널이 먼저입니다",
+  B2B047: "지도 사진이 오래됐다면, 손님은 지금의 공간을 상상하지 못합니다",
+  B2B048: "찾아오는 길 설명이 길어진다면, 손님은 이미 불안해지고 있습니다",
+  B2B049: "예약 링크와 문의 채널이 흩어져 있으면, 마음먹은 손님도 멈춥니다",
+  B2B050: "신규 매장이 플레이스 등록 후 한 달 안에 해야 할 일",
+  B2B051: "주차 정보가 애매하면, 좋은 가게도 약속 장소에서 빠질 수 있습니다",
+  B2B052: "반려동물 동반 같은 조건은 친절하게, 그리고 단호하게 써야 합니다",
+  B2B053: "어두운 매장은 밝게 보이려 하지 말고, 머무는 장면을 보여줘야 합니다",
+  B2B054: "작은 공간을 넓어 보이게 찍으려다, 오히려 매력을 잃을 수 있습니다",
+  B2B055: "신제품 사진이 매번 비슷하다면, 상품보다 쓰는 순간을 바꿔보세요",
+  B2B056: "손님 없는 시간대도 비어 보이지 않게 찍는 방법이 있습니다",
+  B2B057: "계절 장식이 과해 보인다면, 장식보다 이용 장면을 앞에 두세요",
+  B2B058: "메뉴판과 가격표도 잘 올리면 저장할 정보가 됩니다",
+  B2B059: "공방 수업 사진이 결과물만 보인다면, 손님은 과정을 상상하지 못합니다",
+  B2B060: "전시공간이 작품 사진만 올리면, 방문 경험은 보이지 않습니다",
+  B2B061: "서점이 책 표지만 올리면, 머무는 이유가 사라집니다",
+  B2B062: "바의 분위기는 과장보다 좌석감과 첫 잔으로 전달됩니다",
+  B2B063: "샵이 제품만 보여주면, 취향을 고르는 재미가 보이지 않습니다",
+  B2B064: "촬영 장비가 없어도 콘텐츠 품질을 높이는 체크리스트가 있습니다",
+  B2B065: "이벤트 현장은 끝난 뒤 다시 찾아올 이유로 기록해야 합니다",
+  B2B066: "스튜디오 포트폴리오가 전문가에게만 보인다면, 고객의 첫 질문으로 바꿔야 합니다",
+  B2B067: "로컬 공간이 매달 꼭 찍어야 할 기본 사진 목록",
+  B2B068: "저장은 많은데 방문이 적다면, 손님은 어디서 망설이고 있을까요?",
+  B2B069: "리뷰 요청이 부담스럽다면, 질문을 더 구체적으로 바꿔보세요",
+  B2B070: "방문 전 질문이 반복된다면, 그건 콘텐츠로 줄일 수 있습니다",
+  B2B071: "좋은 후기가 있는데 홍보에 못 쓴다면, 문장보다 장면을 뽑아야 합니다",
+  B2B072: "저장하고 잊힌 공간은, 다시 꺼내 볼 이유를 만들어야 합니다",
+  B2B073: "예약 전 이탈이 생긴다면, 가격보다 절차가 흐린 걸 수 있습니다",
+  B2B074: "사진만 찍고 다시 오지 않는 손님에게는 다음 장면이 필요합니다",
+  B2B075: "저장할 정보와 바로 예약할 정보는 서로 다르게 써야 합니다",
+  B2B076: "단골 리뷰만 쌓이면, 새 손님은 거리감을 느낄 수 있습니다",
+  B2B077: "방문 후 팔로우에서 관계가 끊긴다면, 다음 행동이 없었던 겁니다",
+  B2B078: "공간 분위기는 좋은데 설명이 어렵다면, 쓰임부터 말해보세요",
+  B2B079: "인테리어는 예쁜데 브랜드 기억이 남지 않는 이유",
+  B2B080: "메뉴와 공간 톤이 따로 놀면, 손님은 무엇을 기억해야 할지 모릅니다",
+  B2B081: "조용한 공간은 과장하지 않아도 충분히 매력적으로 말할 수 있습니다",
+  B2B082: "멋지다는 말만으로는 부족합니다. 언제 좋은지가 보여야 합니다",
+  B2B083: "오래된 공간은 낡음보다 쌓인 시간을 보여줘야 합니다",
+  B2B084: "여러 브랜드가 함께 쓰는 공간은, 먼저 한 문장으로 정리되어야 합니다",
+  B2B085: "친절함이 강점인 공간은, 온라인에서도 안내가 친절해야 합니다",
+  B2B086: "공간 콘셉트를 바꾸기 전, 기존 손님에게 먼저 이어지는 이유를 말해야 합니다",
+  B2B087: "자기소개를 길게 쓰지 않아도 기억되는 공간 구조가 있습니다",
+  B2B088: "한 번 온 손님이 다시 오지 않는다면, 다음 이유가 보이지 않는 겁니다",
+  B2B089: "단골에게만 통하는 공지는, 새 손님에게는 문턱이 될 수 있습니다",
+  B2B090: "멤버십 없이도 재방문을 만드는 작은 약속이 있습니다",
+  B2B091: "클래스와 모임을 열어도 커뮤니티가 쌓이지 않는 이유",
+  B2B092: "단골 이벤트가 할인 행사처럼 보인다면, 관계의 언어가 빠진 겁니다",
+  B2B093: "동네 손님과 멀리서 오는 손님은 다시 오는 이유가 다릅니다",
+  B2B094: "조용한 단골을 억지로 커뮤니티에 끌어내지 않아도 됩니다",
+  B2B095: "시즌마다 다시 찾는 공간은, 계절의 기억을 기록합니다",
+  B2B096: "저장되는 공간과 스쳐 지나가는 공간은 무엇이 다를까요?",
+  B2B097: "공간 카드에서 손님이 먼저 확인하는 정보는 따로 있습니다",
+  B2B098: "카페가 아니어도 저장되는 공간에는 공통점이 있습니다",
+  B2B099: "방문 전 망설임을 줄이는 공간 정보의 최소 조건",
+  B2B100: "운영자가 직접 말하지 않아도 분위기가 전해지는 공간의 구조"
+};
+
+const contentEmojiByCluster = {
+  "신규 손님 유입": "🧭",
+  "인스타/숏폼 운영": "🎬",
+  "네이버 플레이스/지도": "📍",
+  "사진/콘텐츠 소재": "📸",
+  "리뷰/저장/방문 전환": "📝",
+  "공간 브랜딩/분위기": "🪧",
+  "재방문/단골/커뮤니티": "🔁",
+  "Doripe 리포트/케이스": "🗂️"
+};
+
+const generatedHtmlEscape = (value) =>
+  String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+
+const generatedParagraphs = (...items) => items.map((item) => `<p>${generatedHtmlEscape(item)}</p>`).join("");
+
+function generatedCleanText(value) {
+  return String(value ?? "")
+    .replaceAll("힙한", "멋진")
+    .replaceAll("촌스러워", "어색해")
+    .replaceAll("촌스럽", "어색");
+}
+
+function generatedHasBatchim(value) {
+  const clean = generatedCleanText(value).trim();
+  const char = [...clean].reverse().find((item) => /[가-힣]/.test(item));
+  if (!char) return true;
+  const code = char.charCodeAt(0) - 0xac00;
+  return code >= 0 && code <= 11171 ? code % 28 !== 0 : true;
+}
+
+function generatedObject(value) {
+  const clean = generatedCleanText(value);
+  return `"${clean}"${generatedHasBatchim(clean) ? "을" : "를"}`;
+}
+
+function generatedSectionKey(row, suffix) {
+  return `${row.id.toLowerCase()}-${suffix}`;
+}
+
+function generatedSpaces(row) {
+  const spaces = splitPipes(row.target_space_types);
+  return spaces.length ? spaces : ["식당", "카페", "샵"];
+}
+
+function generatedSpaceText(row) {
+  const spaces = generatedSpaces(row).slice(0, 3);
+  if (spaces.length <= 1) return spaces[0];
+  return `${spaces.join(", ")} 같은 공간`;
+}
+
+function generatedShortTitle(row, index) {
+  const base = row.title.replace(/의 문제$/, "").replace(/법$/, "방법").replace(/것$/, "지점");
+  const patterns = [
+    `${base}, 어디서부터 봐야 할까요?`,
+    `${row.primary_keyword}이 막힐 때 먼저 볼 한 가지`,
+    `${base}라면, 손님이 멈추는 지점을 봐야 합니다`,
+    `${row.primary_keyword}은 더 크게 알리기보다 더 쉽게 이해되어야 합니다`
+  ];
+  return patterns[index % patterns.length];
+}
+
+function generatedOpening(row) {
+  const spaces = generatedSpaceText(row);
+  const emoji = contentEmojiByCluster[row.cluster] ?? "🧭";
+  return [
+    `${spaces}을 운영하다 보면 "${row.primary_keyword}" 문제가 생각보다 조용히 쌓입니다. 겉으로는 콘텐츠도 올리고 정보도 적어둔 것 같은데, 처음 보는 손님 입장에서는 아직 판단할 단서가 부족할 수 있습니다.`,
+    `손님은 운영자가 중요하게 여기는 순서대로 읽지 않습니다. 자기 상황에 맞는지, 실패할 가능성은 낮은지, 지금 움직여도 괜찮은지를 아주 빠르게 확인합니다.`,
+    `그래서 이 글에서는 ${generatedObject(row.primary_keyword)} 더 세게 밀어붙이는 대신, 손님이 멈추는 질문을 줄이고 방문에 가까워지게 만드는 정리법을 봅니다. ${emoji}`
+  ];
+}
+
+function generatedLead(row) {
+  return `${generatedObject(row.primary_keyword)} 고민할 때 먼저 봐야 할 것은 홍보량이 아니라 손님이 판단하는 순서입니다. ${generatedSpaceText(row)}에서 바로 고칠 수 있는 문장, 사진, 안내 기준을 정리합니다.`;
+}
+
+function generatedSummary(row) {
+  return `${row.primary_keyword} 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.`;
+}
+
+function generatedSectionsForCluster(row, index) {
+  const topic = generatedCleanText(row.primary_keyword);
+  const spaces = generatedSpaces(row);
+  const first = spaces[0] ?? "공간";
+  const second = spaces[1] ?? "매장";
+  const third = spaces[2] ?? "로컬 공간";
+  const keywordBits = splitPipes(row.secondary_keywords).slice(0, 3).map(generatedCleanText);
+  const related = keywordBits.length ? keywordBits.join(", ") : topic;
+  const key = (suffix) => generatedSectionKey(row, suffix);
+
+  const sectionSets = {
+    "신규 손님 유입": [
+      {
+        key: key("hesitation"),
+        label: "멈추는 지점",
+        title: "손님은 관심이 없어서가 아니라, 아직 안심하지 못해서 멈춥니다",
+        html: generatedParagraphs(
+          `${generatedObject(topic)} 해결하려고 하면 더 많이 알리는 방법부터 떠올리기 쉽습니다. 하지만 처음 보는 손님은 가게를 싫어해서 멈추는 것이 아니라, 아직 자기에게 맞는지 확인하지 못해서 멈춥니다.`,
+          `${first}이라면 첫 주문이 어렵지 않은지, ${second}이라면 혼자 들어가도 괜찮은지, ${third}이라면 얼마나 머물 수 있는지를 봅니다. 이 질문에 답이 보이면 방문 장벽은 훨씬 낮아집니다.`,
+          `그래서 첫 번째 점검은 광고 문구가 아니라 손님의 첫 질문입니다. "${related}" 같은 단어도 결국 손님 입장에서는 "내가 지금 가도 되는 곳인가?"로 번역됩니다.`
+        )
+      },
+      {
+        key: key("first-screen"),
+        label: "첫 화면",
+        title: "첫 화면은 멋진 소개보다 방문 판단에 필요한 정보를 먼저 보여줘야 합니다",
+        html: generatedParagraphs(
+          `처음 들어온 손님은 모든 글을 다 읽지 않습니다. 첫 사진, 첫 문장, 태그 몇 개를 보고 더 볼지 말지 정합니다.`,
+          `이때 "좋은 공간입니다"보다 "언제, 누구에게, 어떻게 좋은지"가 먼저 보여야 합니다. ${first}은 대표 선택지, ${second}은 이용 방식, ${third}은 위치나 예약 같은 현실 정보를 앞쪽에 두는 편이 좋습니다.`,
+          `첫 화면의 역할은 감탄을 만드는 것이 아니라 판단을 돕는 것입니다. 감탄은 그다음 사진과 글에서 천천히 만들어도 늦지 않습니다.`
+        )
+      },
+      {
+        key: key("rewrite"),
+        label: "문장 수정",
+        title: "내부자에게 익숙한 말을 처음 보는 손님 언어로 바꿔보세요",
+        html: `<p>${generatedHtmlEscape("운영자에게 익숙한 표현은 손님에게 빈칸으로 보일 수 있습니다. '편안한 분위기', '정성껏 준비한', '취향 있는 공간' 같은 말은 틀리지 않지만 행동으로 이어지기에는 정보가 부족합니다.")}</p><div class="example"><div><strong>Before</strong><p>${generatedHtmlEscape(`${topic}에 좋은 ${first}입니다.`)}</p></div><div><strong>After</strong><p>${generatedHtmlEscape(`처음 오신다면 ${related}을 확인하고, ${first}에서 어떤 선택부터 하면 좋은지 바로 볼 수 있게 안내합니다.`)}</p></div></div><p>${generatedHtmlEscape("좋은 문장은 더 멋진 말이 아니라 덜 헷갈리는 말입니다. 손님이 자기 상황을 대입할 수 있으면 그때부터 방문 후보가 됩니다.")}</p>`
+      },
+      {
+        key: key("scene"),
+        label: "장면 설계",
+        title: "방문 이유는 업종 설명보다 하루의 장면에서 만들어집니다",
+        html: generatedParagraphs(
+          `${generatedObject(topic)} 말할 때 업종부터 설명하면 비슷한 공간들과 함께 묶이기 쉽습니다. 대신 손님의 하루에서 어떤 순간에 쓰이는지 보여주면 훨씬 빠르게 이해됩니다.`,
+          `점심 전후, 퇴근길, 주말 오전, 비 오는 날, 약속 전 30분처럼 구체적인 시간이 붙으면 ${first}도 추상적인 장소가 아니라 선택 가능한 장면이 됩니다.`,
+          `사진도 같은 기준으로 고르면 좋습니다. 대표 컷 하나보다 손님이 실제로 앉고, 고르고, 걸어 들어오는 장면이 더 방문에 가깝습니다.`
+        )
+      },
+      {
+        key: key("test"),
+        label: "7일 실험",
+        title: "이번 주에는 손님 질문 하나만 줄여보세요",
+        html: generatedParagraphs(
+          `일주일 동안 ${topic}과 관련해 손님이 가장 많이 망설일 질문 하나를 고릅니다. 위치인지, 첫 선택지인지, 예약인지, 가격대인지 하나만 잡으면 됩니다.`,
+          `그 질문에 답하는 사진 1장과 문장 1개를 프로필, 플레이스, 고정 게시물 중 한 곳에 넣어보세요. 모든 채널을 동시에 바꾸려 하지 않아도 됩니다.`,
+          `확인할 것은 큰 수치가 아니라 질문의 변화입니다. 손님이 더 구체적으로 묻기 시작하면 안내가 조금씩 작동하고 있다는 뜻입니다.`
+        )
+      }
+    ],
+    "인스타/숏폼 운영": [
+      {
+        key: key("not-reaction"),
+        label: "반응 이전",
+        title: "반응이 적을 때는 소재보다 손님이 다시 볼 이유를 먼저 봐야 합니다",
+        html: generatedParagraphs(
+          `인스타에서 ${topic}을 고민하면 사진 퀄리티나 업로드 시간부터 떠올리기 쉽습니다. 하지만 로컬 공간에서는 예쁜 게시물보다 "나중에 다시 볼 이유"가 더 중요할 때가 많습니다.`,
+          `${first}의 메뉴 사진, ${second}의 분위기 사진, ${third}의 행사 공지는 모두 필요합니다. 다만 손님이 자기 일정 안에 넣을 수 있는 정보가 없다면 좋아요에서 멈추기 쉽습니다.`,
+          `게시물은 운영자의 기록이 아니라 손님의 방문 전 메모가 되어야 합니다.`
+        )
+      },
+      {
+        key: key("material"),
+        label: "소재 전환",
+        title: "소재는 메뉴나 공간이 아니라 이용 상황에서 시작하면 좋아요",
+        html: generatedParagraphs(
+          `"오늘의 ${first}"보다 "처음 온 손님이 실패하지 않을 선택", "퇴근 후 조용히 들를 수 있는 시간", "선물 고르기 부담이 적은 코너"처럼 손님 상황에서 시작해보세요.`,
+          `${related}을 한꺼번에 다 설명하려고 하면 글이 길어집니다. 한 게시물에는 한 가지 상황만 잡는 편이 읽기 쉽습니다.`,
+          `같은 사진도 문장을 바꾸면 완전히 다른 소재가 됩니다. 운영자가 새로 만들어야 할 것은 사진보다 관점일 때가 많습니다.`
+        )
+      },
+      {
+        key: key("first-line"),
+        label: "첫 문장",
+        title: "첫 문장은 감성보다 판단 기준을 먼저 줘야 합니다",
+        html: generatedParagraphs(
+          `첫 줄에서 분위기만 말하면 손님은 잠깐 보고 지나갈 수 있습니다. 반대로 어떤 사람에게, 어떤 시간에, 어떤 선택이 쉬운지 말하면 저장할 이유가 생깁니다.`,
+          `${first}이라면 첫 주문 기준을, ${second}이라면 예약이나 방문 시간을, ${third}이라면 둘러보는 방법을 앞쪽에 두세요.`,
+          `감성은 빼자는 뜻이 아닙니다. 감성이 손님에게 닿으려면 먼저 쓰임이 보여야 합니다.`
+        )
+      },
+      {
+        key: key("repeat"),
+        label: "반복 포맷",
+        title: "매번 새 기획을 만들기보다 반복 코너를 정해두세요",
+        html: `<p>${generatedHtmlEscape("운영자는 콘텐츠 팀이 아닙니다. 매번 새로운 아이디어를 찾으려 하면 금방 지칩니다.")}</p><div class="flow"><div><p><strong>1.</strong> ${generatedHtmlEscape("처음 오는 손님을 위한 선택지")}</p></div><div><p><strong>2.</strong> ${generatedHtmlEscape("특정 시간대에 좋은 장면")}</p></div><div><p><strong>3.</strong> ${generatedHtmlEscape("자주 묻는 질문에 대한 짧은 답")}</p></div></div><p>${generatedHtmlEscape(`이 세 가지를 돌리면 ${topic}도 훨씬 덜 막힙니다. 반복은 지루함이 아니라 손님이 이해하기 쉬운 리듬이 될 수 있습니다.`)}</p>`
+      },
+      {
+        key: key("test"),
+        label: "7일 실험",
+        title: "기존 게시물 3개를 방문 장면 중심으로 다시 써보세요",
+        html: generatedParagraphs(
+          `새 사진을 찍기 전에 기존 게시물 3개를 고릅니다. 하나는 처음 방문용, 하나는 특정 상황용, 하나는 자주 묻는 질문용으로 바꿔보세요.`,
+          `반응을 볼 때는 좋아요만 보지 말고 저장, 프로필 이동, DM 질문이 달라졌는지 함께 봅니다.`,
+          `${topic}의 목적은 계정 안에서 오래 머무르게 하는 것보다, 손님이 다음 행동을 쉽게 떠올리게 하는 데 있습니다.`
+        )
+      }
+    ],
+    "네이버 플레이스/지도": [
+      {
+        key: key("after-search"),
+        label: "검색 이후",
+        title: "검색된 뒤에는 손님이 비교하고 확인하는 시간이 시작됩니다",
+        html: generatedParagraphs(
+          `${topic}은 노출만의 문제가 아닙니다. 손님이 지도에서 우리 공간을 본 뒤, 실제로 가도 되는지 판단하는 과정이 더 중요할 때가 많습니다.`,
+          `지도 화면에서 손님은 사진, 영업 정보, 위치, 예약이나 문의 경로를 빠르게 확인합니다. 이 중 하나가 흐리면 다시 목록으로 돌아갑니다.`,
+          `그래서 지도 정보는 홍보 문구라기보다 방문 전 안내서에 가깝게 정리해야 합니다.`
+        )
+      },
+      {
+        key: key("photo-order"),
+        label: "사진 순서",
+        title: "사진은 예쁜 순서보다 손님 질문 순서로 놓아야 합니다",
+        html: generatedParagraphs(
+          `${first}의 첫 사진은 내부 분위기만 보여주기보다 입구, 대표 선택지, 이용 장면 중 하나를 분명히 말해야 합니다.`,
+          `${second}이나 ${third}처럼 예약, 체류, 이동이 중요한 공간은 사진 한 장이 안내 역할을 합니다. 손님은 모든 사진을 보지 않을 수 있기 때문에 앞쪽 사진의 역할이 큽니다.`,
+          `앞쪽 5장은 "여기가 어떤 곳인지", "처음 가도 되는지", "어떻게 이용하는지"에 답하는 순서로 정리해보세요.`
+        )
+      },
+      {
+        key: key("info"),
+        label: "정보 정리",
+        title: "영업시간, 예약, 위치 같은 현실 정보는 뒤로 밀리면 안 됩니다",
+        html: generatedParagraphs(
+          `운영자에게는 당연한 정보가 손님에게는 방문을 결정하는 핵심 정보일 수 있습니다. 특히 ${related}와 연결된 글이라면 더 그렇습니다.`,
+          `영업시간, 휴무, 예약 필요 여부, 주차, 길찾기, 첫 주문 기준은 멋진 소개보다 먼저 확인됩니다.`,
+          `정보가 많을 필요는 없습니다. 손님이 헷갈리지 않게 한 줄씩 선명하게 쓰는 것이 좋습니다.`
+        )
+      },
+      {
+        key: key("path"),
+        label: "다음 행동",
+        title: "예약, 전화, 길찾기 중 무엇을 해야 하는지 분명해야 합니다",
+        html: generatedParagraphs(
+          `페이지를 보고 마음에 들어도 다음 행동이 흐리면 손님은 미룹니다. 예약해야 하는지, 전화해야 하는지, 그냥 찾아가도 되는지 바로 보여야 합니다.`,
+          `${first}은 당일 방문 가능 여부를, ${second}은 문의 경로를, ${third}은 길찾기 기준을 앞에 두면 좋습니다.`,
+          `버튼보다 중요한 것은 문장입니다. "처음 오시면 예약 없이도 가능합니다", "6인 이상은 DM보다 전화가 빠릅니다"처럼 행동 기준을 말해주세요.`
+        )
+      },
+      {
+        key: key("audit"),
+        label: "7일 점검",
+        title: "이번 주에는 지도 첫 화면만 손님 눈으로 다시 봐보세요",
+        html: generatedParagraphs(
+          `첫 사진 5장, 소개 첫 문장, 영업 정보, 예약/문의 경로를 순서대로 확인합니다.`,
+          `반복해서 들어오는 문의가 있다면 그 정보는 페이지에서 잘 보이지 않는다는 뜻일 수 있습니다.`,
+          `${generatedObject(topic)} 한 번에 완성하는 작업이 아닙니다. 손님이 헷갈리는 지점을 발견할 때마다 앞쪽 정보에 반영하는 운영 루틴에 가깝습니다.`
+        )
+      }
+    ],
+    "사진/콘텐츠 소재": [
+      {
+        key: key("photo-role"),
+        label: "사진 역할",
+        title: "사진은 분위기보다 손님 질문에 답할 때 더 오래 남습니다",
+        html: generatedParagraphs(
+          `${generatedObject(topic)} 고민할 때 더 예쁜 컷을 찾기 쉽습니다. 하지만 손님에게 필요한 사진은 예쁜 사진만이 아닙니다.`,
+          `${first}에서는 선택을 돕는 사진, ${second}에서는 이용 방식을 보여주는 사진, ${third}에서는 도착이나 체류를 상상하게 하는 사진이 중요할 수 있습니다.`,
+          `사진을 고르기 전에 "이 사진이 어떤 질문에 답하지?"를 먼저 물어보면 소재가 훨씬 선명해집니다.`
+        )
+      },
+      {
+        key: key("question"),
+        label: "손님 질문",
+        title: "운영자가 평범하다고 느끼는 컷이 손님에게는 가장 유용할 수 있습니다",
+        html: generatedParagraphs(
+          `입구, 좌석 간격, 메뉴 크기, 상품 진열, 포장 상태, 수업 과정 같은 컷은 운영자에게 너무 평범해 보일 수 있습니다.`,
+          `하지만 처음 보는 손님은 바로 그런 장면으로 판단합니다. 내가 들어가도 되는지, 어느 정도 비용과 시간이 필요한지, 혼자 가도 괜찮은지 알 수 있기 때문입니다.`,
+          `${related}을 설명할 때도 결과물만 반복하지 말고 손님이 결정하는 데 필요한 중간 장면을 함께 보여주세요.`
+        )
+      },
+      {
+        key: key("sequence"),
+        label: "장면 순서",
+        title: "한 장보다 순서가 읽히면 콘텐츠가 좋아집니다",
+        html: generatedParagraphs(
+          `사진을 여러 장 올릴 때는 예쁜 순서가 아니라 이해되는 순서가 좋습니다. 도착, 선택, 이용, 마무리처럼 손님이 실제로 경험할 흐름을 따라가면 됩니다.`,
+          `${first}의 콘텐츠라면 들어오는 장면부터, ${second}의 콘텐츠라면 고르는 장면부터, ${third}의 콘텐츠라면 머무는 장면부터 보여주는 식입니다.`,
+          `손님은 사진 묶음을 보며 "아, 이렇게 이용하면 되겠구나"라고 느낄 때 저장할 가능성이 커집니다.`
+        )
+      },
+      {
+        key: key("folder"),
+        label: "정리법",
+        title: "사진첩을 감성별이 아니라 용도별로 나눠보세요",
+        html: `<p>${generatedHtmlEscape("사진이 많아도 올릴 게 없다고 느끼는 이유는 분류 기준이 없어서일 때가 많습니다.")}</p><div class="flow"><div><p><strong>도착</strong><br>${generatedHtmlEscape("외관, 입구, 길찾기")}</p></div><div><p><strong>선택</strong><br>${generatedHtmlEscape("메뉴, 상품, 가격대")}</p></div><div><p><strong>이용</strong><br>${generatedHtmlEscape("좌석, 동선, 과정")}</p></div></div><p>${generatedHtmlEscape(`이렇게 나누면 ${topic} 콘텐츠를 만들 때 매번 처음부터 고민하지 않아도 됩니다.`)}</p>`
+      },
+      {
+        key: key("test"),
+        label: "7일 실험",
+        title: "이번 주에는 새 촬영보다 기존 사진 재분류부터 해보세요",
+        html: generatedParagraphs(
+          `기존 사진 20장을 골라 도착, 선택, 이용, 다시 방문 이유 네 칸으로 나눕니다.`,
+          `비어 있는 칸이 있다면 그게 다음 촬영 주제입니다. 모든 사진을 한 번에 잘 찍으려 하지 말고 빠진 질문부터 채워보세요.`,
+          `이 방식은 ${generatedObject(topic)} 막연한 촬영 문제가 아니라 손님 이해를 돕는 자료 정리로 바꿔줍니다.`
+        )
+      }
+    ],
+    "리뷰/저장/방문 전환": [
+      {
+        key: key("after-save"),
+        label: "저장 이후",
+        title: "저장과 방문 사이에는 다시 확인하는 시간이 있습니다",
+        html: generatedParagraphs(
+          `${generatedObject(topic)} 볼 때 중요한 것은 관심을 받은 뒤 손님이 무엇을 다시 확인하는지입니다. 저장은 방문 확정이 아니라 나중에 볼 후보에 들어갔다는 뜻에 가깝습니다.`,
+          `손님은 다시 볼 때 위치, 동행, 시간, 예약, 가격대, 첫 선택지를 확인합니다. 이 정보가 없으면 좋은 기억도 다음 행동으로 이어지기 어렵습니다.`,
+          `그래서 저장 이후 콘텐츠는 감탄보다 확인을 도와야 합니다.`
+        )
+      },
+      {
+        key: key("hesitation"),
+        label: "망설임",
+        title: "손님이 망설이는 이유는 좋아 보이지 않아서가 아닐 수 있습니다",
+        html: generatedParagraphs(
+          `${first}이 마음에 들어도 혼자 가기 애매하면 미룹니다. ${second}이 좋아 보여도 예약 방식이 헷갈리면 멈춥니다. ${third}이 궁금해도 비용이나 시간이 보이지 않으면 나중으로 갑니다.`,
+          `이런 망설임은 작은 정보로 줄일 수 있습니다. "처음이면 이것부터", "예약 없이 가능한 시간", "둘이 오면 좋은 구성"처럼 결정 직전 정보를 앞에 둬보세요.`,
+          `방문 전환은 설득보다 불안 제거에 가까울 때가 많습니다.`
+        )
+      },
+      {
+        key: key("review"),
+        label: "후기 활용",
+        title: "후기는 자랑보다 다음 손님의 질문에 답할 때 유용합니다",
+        html: generatedParagraphs(
+          `좋은 후기를 그대로 캡처해서 올리는 것만으로는 부족할 수 있습니다. 후기가 어떤 망설임을 줄여주는지 읽어야 합니다.`,
+          `예를 들어 "혼자 가도 편했어요"는 1인 방문 안내가 되고, "설명을 잘 해줘서 쉬웠어요"는 첫 방문 부담을 줄이는 문장이 됩니다.`,
+          `후기를 콘텐츠로 쓸 때는 칭찬의 강도보다 손님이 다시 확인할 정보에 집중하세요.`
+        )
+      },
+      {
+        key: key("next"),
+        label: "다음 행동",
+        title: "좋았다는 감정 다음에 무엇을 하면 되는지 보여주세요",
+        html: generatedParagraphs(
+          `관심을 받은 뒤 다음 행동이 없으면 관계는 끊깁니다. 저장, 예약, 문의, 재방문, 리뷰 중 무엇을 원하는지 운영자부터 정해야 합니다.`,
+          `${generatedObject(topic)} 통해 예약을 만들고 싶다면 절차를, 재방문을 만들고 싶다면 다음 계기를, 리뷰를 남기게 하고 싶다면 어떤 경험을 남기면 좋은지 안내합니다.`,
+          `강한 CTA보다 자연스러운 다음 문장이 더 잘 읽힐 때가 많습니다.`
+        )
+      },
+      {
+        key: key("test"),
+        label: "7일 점검",
+        title: "이번 주에는 저장 후 다시 볼 정보를 한 곳에 모아보세요",
+        html: generatedParagraphs(
+          `위치, 영업시간, 첫 선택지, 예약 필요 여부, 추천 방문 상황을 한 게시물이나 고정 영역에 정리합니다.`,
+          `새로운 홍보를 하기 전에 이미 관심을 가진 손님이 다시 확인할 정보를 먼저 정리하는 실험입니다.`,
+          `일주일 동안 문의가 더 구체적으로 바뀌는지, 현장에서 어떤 정보를 보고 왔다고 말하는지 확인해보세요.`
+        )
+      }
+    ],
+    "공간 브랜딩/분위기": [
+      {
+        key: key("vague"),
+        label: "흐린 표현",
+        title: "분위기는 좋은데 설명이 흐리면 손님은 선택하기 어렵습니다",
+        html: generatedParagraphs(
+          `${generatedObject(topic)} 말할 때 "감성적인", "따뜻한", "멋진", "조용한" 같은 표현을 쓰기 쉽습니다. 틀린 말은 아니지만 혼자 있으면 손님이 무엇을 해야 할지 알기 어렵습니다.`,
+          `${first}의 분위기는 어떤 시간에 좋은지, ${second}의 취향은 어떤 선택을 도와주는지, ${third}의 조용함은 어떤 사람에게 편한지까지 이어져야 합니다.`,
+          `분위기는 설명의 끝이 아니라 시작입니다.`
+        )
+      },
+      {
+        key: key("use"),
+        label: "쓰임",
+        title: "좋은 분위기는 손님이 쓰는 장면으로 번역되어야 합니다",
+        html: generatedParagraphs(
+          `"조용하다"는 말은 "혼자 책 읽기 좋다"로, "감각적이다"는 말은 "선물 고르기 좋다"로, "깊이 있다"는 말은 "천천히 둘러볼 이유가 있다"로 바꿔볼 수 있습니다.`,
+          `"${related}" 같은 표현을 설명할 때도 추상어를 줄이고 손님이 실제로 하는 행동을 붙이면 훨씬 빨리 이해됩니다.`,
+          `브랜딩 문장은 멋져야 하지만, 먼저 쓸 수 있어야 합니다.`
+        )
+      },
+      {
+        key: key("one-line"),
+        label: "한 문장",
+        title: "자기소개는 길게보다 선명하게 기억되어야 합니다",
+        html: generatedParagraphs(
+          `공간 소개가 길어질수록 핵심이 흐려질 수 있습니다. 먼저 한 문장으로 "누가, 언제, 왜 오는 공간인지" 정리해보세요.`,
+          `${first}이라면 대표 이용 상황, ${second}이라면 선택 기준, ${third}이라면 머무는 이유가 들어가면 좋습니다.`,
+          `한 문장이 선명하면 사진, 메뉴, 후기, 지도 정보도 같은 방향으로 맞추기 쉬워집니다.`
+        )
+      },
+      {
+        key: key("proof"),
+        label: "증거",
+        title: "분위기는 말보다 사진과 안내에서 증명됩니다",
+        html: generatedParagraphs(
+          `친절한 공간이라면 안내 문장이 친절해야 합니다. 조용한 공간이라면 조용한 시간대와 좌석이 보여야 합니다. 취향 있는 공간이라면 고르는 기준이 드러나야 합니다.`,
+          `말과 화면이 맞으면 손님은 공간의 톤을 더 빨리 이해합니다. 반대로 소개는 멋진데 정보가 불친절하면 분위기도 약해집니다.`,
+          `브랜드는 큰 슬로건보다 작은 일관성에서 느껴질 때가 많습니다.`
+        )
+      },
+      {
+        key: key("test"),
+        label: "7일 실험",
+        title: "이번 주에는 분위기 단어 하나를 행동 문장으로 바꿔보세요",
+        html: generatedParagraphs(
+          `가장 자주 쓰는 분위기 단어 하나를 고릅니다. 조용한, 따뜻한, 감각적인, 오래된, 친절한 같은 단어면 됩니다.`,
+          `그 단어를 손님 행동으로 바꿉니다. "조용한"은 "평일 오후에 혼자 읽기 좋은", "친절한"은 "처음 오면 메뉴를 같이 골라주는"처럼요.`,
+          `이 문장을 첫 소개, 사진 설명, 고정 게시물 중 한 곳에 넣어보세요.`
+        )
+      }
+    ],
+    "재방문/단골/커뮤니티": [
+      {
+        key: key("again"),
+        label: "다시 떠올림",
+        title: "한 번 좋았던 경험도 다시 떠올릴 이유가 없으면 흐려집니다",
+        html: generatedParagraphs(
+          `${topic}은 단순히 혜택을 주는 문제가 아닙니다. 손님이 언제 다시 오면 좋은지 떠올릴 수 있어야 합니다.`,
+          `${first}에서는 요일이나 메뉴, ${second}에서는 새 입고나 모임, ${third}에서는 다음 일정이나 시즌 변화가 재방문 단서가 될 수 있습니다.`,
+          `좋았다는 기억을 다음 행동으로 바꾸려면 반복 가능한 약속이 필요합니다.`
+        )
+      },
+      {
+        key: key("promise"),
+        label: "작은 약속",
+        title: "재방문은 큰 이벤트보다 작은 반복에서 생길 수 있습니다",
+        html: generatedParagraphs(
+          `매번 새로운 이벤트를 만들 필요는 없습니다. 매주 같은 날의 작은 메뉴, 매달 바뀌는 진열, 계절마다 돌아오는 자리처럼 기억하기 쉬운 반복이면 충분합니다.`,
+          `${related}도 너무 크게 말하면 운영자가 지칩니다. 손님이 "그때쯤 다시 보면 되겠다"라고 느낄 정도의 약속부터 시작해보세요.`,
+          `작은 약속은 단골에게는 익숙함이 되고, 새 손님에게는 들어올 이유가 됩니다.`
+        )
+      },
+      {
+        key: key("language"),
+        label: "커뮤니티 언어",
+        title: "단골에게만 통하는 말은 새 손님에게 문턱이 될 수 있습니다",
+        html: generatedParagraphs(
+          `커뮤니티가 있는 공간일수록 내부 언어가 생깁니다. 친근하지만 처음 보는 손님에게는 무슨 뜻인지 모를 수 있습니다.`,
+          `공지나 이벤트를 쓸 때는 단골의 온도를 유지하되, 처음 보는 사람도 따라올 수 있는 설명을 함께 넣어주세요.`,
+          `관계는 닫힌 느낌보다 초대받는 느낌으로 보일 때 더 건강하게 넓어집니다.`
+        )
+      },
+      {
+        key: key("content"),
+        label: "콘텐츠",
+        title: "다음 방문 이유는 콘텐츠 안에서 미리 남겨야 합니다",
+        html: generatedParagraphs(
+          `방문이 끝난 뒤에만 관계를 이어가려고 하면 늦을 수 있습니다. 방문 전부터 다음에 다시 볼 이유를 남겨두면 좋습니다.`,
+          `다음 입고, 다음 클래스, 다음 계절 메뉴, 다음 모임처럼 손님이 저장해둘 만한 단서를 콘텐츠에 넣어보세요.`,
+          `재방문 콘텐츠는 "또 오세요"보다 "다음에는 이것을 보러 오세요"가 더 구체적입니다.`
+        )
+      },
+      {
+        key: key("test"),
+        label: "7일 실험",
+        title: "이번 주에는 다음 방문 약속 하나만 만들어보세요",
+        html: generatedParagraphs(
+          `이번 주에 반복 가능한 약속 하나를 정합니다. 요일, 시간대, 메뉴, 입고, 모임 중 하나면 됩니다.`,
+          `그 약속을 프로필, 스토리, 현장 안내 중 두 곳에 같은 말로 넣어보세요.`,
+          `확인할 것은 손님이 그 약속을 기억하는지입니다. "다음에도 이때 오면 되나요?"라는 질문이 생기면 좋은 신호입니다.`
+        )
+      }
+    ],
+    "Doripe 리포트/케이스": [
+      {
+        key: key("lens"),
+        label: "관찰 기준",
+        title: "저장되는 공간은 예쁜 공간이 아니라 다시 확인할 이유가 있는 공간입니다",
+        html: generatedParagraphs(
+          `Doripe 관점에서 ${generatedObject(topic)} 볼 때 중요한 것은 손님이 왜 다시 꺼내 보는지입니다. 분위기, 위치, 메뉴, 후기 중 무엇이든 다시 확인할 이유가 있어야 저장이 의미를 갖습니다.`,
+          `${first}, ${second}, ${third}처럼 업종이 달라도 손님이 확인하는 질문은 비슷합니다. 언제 가면 좋은지, 누구와 가면 좋은지, 처음 가도 괜찮은지가 핵심입니다.`,
+          `이 글은 실제 수치나 검증된 성과를 주장하기보다, 운영자가 자기 공간을 점검할 수 있는 관찰 기준으로 읽으면 좋습니다.`
+        )
+      },
+      {
+        key: key("priority"),
+        label: "정보 우선순위",
+        title: "공간 정보는 운영자 소개보다 손님 질문 순서로 정리되어야 합니다",
+        html: generatedParagraphs(
+          `운영자는 브랜드의 배경부터 말하고 싶지만 손님은 방문 판단부터 합니다. 첫 화면에서는 감탄보다 이해가 먼저일 때가 많습니다.`,
+          `위치, 첫 선택지, 이용 방식, 분위기, 다음 행동이 자연스럽게 이어지면 손님은 공간을 저장할 이유를 더 쉽게 찾습니다.`,
+          `${related}도 결국 이 순서 안에서 정리될 때 덜 복잡해집니다.`
+        )
+      },
+      {
+        key: key("example"),
+        label: "가상 장면",
+        title: "가상의 공간 카드로 보면 차이가 더 쉽게 보입니다",
+        html: `<p>${generatedHtmlEscape("두 공간이 모두 좋아 보여도 저장되는 이유는 다를 수 있습니다.")}</p><div class="example"><div><strong>${generatedHtmlEscape("흐린 소개")}</strong><p>${generatedHtmlEscape(`${first}의 분위기를 즐길 수 있는 공간입니다.`)}</p></div><div><strong>${generatedHtmlEscape("저장되는 소개")}</strong><p>${generatedHtmlEscape(`처음 방문이라면 ${generatedObject(topic)} 두고 무엇을 먼저 보면 좋은지 한 화면에서 확인할 수 있는 ${first}입니다.`)}</p></div></div><p>${generatedHtmlEscape("이 차이는 문장의 화려함이 아니라 판단 가능성에서 생깁니다.")}</p>`
+      },
+      {
+        key: key("checklist"),
+        label: "점검표",
+        title: "저장 전에 손님이 확인할 정보를 세 칸으로 나눠보세요",
+        html: `<div class="flow"><div><p><strong>상황</strong><br>${generatedHtmlEscape("언제, 누구와, 왜 가는지")}</p></div><div><p><strong>안심</strong><br>${generatedHtmlEscape("위치, 시간, 예약, 가격대")}</p></div><div><p><strong>다음</strong><br>${generatedHtmlEscape("저장, 길찾기, 문의, 재방문")}</p></div></div><p>${generatedHtmlEscape(`이 세 칸을 채우면 ${generatedObject(topic)} 훨씬 덜 추상적으로 다룰 수 있습니다.`)}</p>`
+      },
+      {
+        key: key("doripe-note"),
+        label: "Doripe 관점",
+        title: "Doripe의 역할은 공간의 매력을 손님 질문 순서로 다시 정리하는 것입니다",
+        html: generatedParagraphs(
+          `좋은 공간을 더 크게 포장하는 것보다, 손님이 이미 궁금해하는 정보를 더 읽기 쉽게 놓는 일이 중요합니다.`,
+          `${generatedObject(topic)} 다룰 때도 결국 손님이 저장하고 다시 확인할 이유를 만드는 문제입니다.`,
+          `작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다. 그래서 정보의 순서가 곧 마케팅이 됩니다.`
+        )
+      }
+    ]
+  };
+
+  return sectionSets[row.cluster] ?? sectionSets["신규 손님 유입"];
+}
+
+function buildGeneratedCustomArticle(row, index) {
+  return {
+    title: customTitleOverrides[row.id] ?? generatedShortTitle(row, index),
+    summary: generatedSummary(row),
+    lead: generatedLead(row),
+    intro: generatedOpening(row),
+    sections: generatedSectionsForCluster(row, index),
+    doripe: `Doripe는 ${generatedObject(row.primary_keyword)} 더 크게 포장하기보다, 손님이 저장하고 다시 확인할 수 있는 장면으로 정리하는 쪽에 가깝게 봅니다. ${generatedSpaceText(row)}에서는 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.`
+  };
+}
+
+function fillGeneratedCustomContent(rows) {
+  rows.forEach((row, index) => {
+    if (!customArticleContent.has(row.id)) {
+      customArticleContent.set(row.id, buildGeneratedCustomArticle(row, index));
+    }
+  });
+}
+
 function parseCsv(content) {
   const [headerLine, ...lines] = content.trim().split(/\r?\n/);
   const headers = headerLine.split(",");
@@ -1195,7 +1807,7 @@ function normalizeArticle(row, index) {
     editor,
     before: manual.before ?? makeBefore(row),
     after: manual.after ?? makeAfter(row),
-    doripe: manual.doripe ?? makeDoripe(row),
+    doripe: custom.doripe ?? manual.doripe ?? makeDoripe(row),
     related: manual.related ?? []
   };
 }
@@ -1221,6 +1833,7 @@ function attachRelated(article, allArticles) {
 }
 
 const rows = parseCsv(await readFile(contentMapPath, "utf8"));
+fillGeneratedCustomContent(rows);
 const normalizedArticles = rows.map((row, index) => normalizeArticle(row, index));
 const articles = normalizedArticles.map((article) => attachRelated(article, normalizedArticles));
 const byId = new Map(articles.map((article) => [article.id, article]));
@@ -1756,16 +2369,18 @@ const commonStyles = `
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; max-width: 100%; overflow-x: hidden; }
   body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
     font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
     letter-spacing: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
   a { color: inherit; text-decoration: none; }
-  .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+  .shell { width: min(1180px, calc(100vw - 40px)); margin: 0 auto; }
   .topbar {
     position: sticky;
     top: 0;
@@ -2390,8 +3005,8 @@ ${commonStyles}
     .article-hero { padding: 42px 0 32px; }
     h1 {
       max-width: 100%;
-      font-size: clamp(26px, 7.2vw, 32px);
-      line-height: 1.12;
+      font-size: clamp(24px, 6.2vw, 28px);
+      line-height: 1.16;
       word-break: break-all;
       overflow-wrap: anywhere;
     }
@@ -2763,7 +3378,7 @@ function renderArticle(article) {
         ${tocLinks}
       </aside>
       <details class="mobile-toc">
-        <summary aria-label="목차 열기">☰</summary>
+        <summary aria-label="Table of contents">&#9776;</summary>
         <nav aria-label="article sections">
           ${tocLinks}
         </nav>

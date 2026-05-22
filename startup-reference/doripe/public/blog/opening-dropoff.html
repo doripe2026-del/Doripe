@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>오픈 때는 붐볐는데, 왜 2주 뒤엔 조용해질까요? | Doripe Blog</title>
-<meta name="description" content="오픈 초반의 호기심이 끊긴 뒤에는 더 큰 이벤트보다, 처음 본 사람이 다시 꺼내볼 소개 정보가 먼저 필요합니다." />
+<title>오픈 초기 마케팅이 막힐 때 먼저 볼 한 가지 | Doripe Blog</title>
+<meta name="description" content="오픈 초기 마케팅 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="https://doripe.vercel.app/blog/opening-dropoff" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Doripe" />
 <meta property="og:locale" content="ko_KR" />
-<meta property="og:title" content="오픈 때는 붐볐는데, 왜 2주 뒤엔 조용해질까요?" />
-<meta property="og:description" content="오픈 초반의 호기심이 끊긴 뒤에는 더 큰 이벤트보다, 처음 본 사람이 다시 꺼내볼 소개 정보가 먼저 필요합니다." />
+<meta property="og:title" content="오픈 초기 마케팅이 막힐 때 먼저 볼 한 가지" />
+<meta property="og:description" content="오픈 초기 마케팅 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta property="og:url" content="https://doripe.vercel.app/blog/opening-dropoff" />
 <meta property="og:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <meta property="article:published_time" content="2026-05-23" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="오픈 때는 붐볐는데, 왜 2주 뒤엔 조용해질까요?" />
-<meta name="twitter:description" content="오픈 초반의 호기심이 끊긴 뒤에는 더 큰 이벤트보다, 처음 본 사람이 다시 꺼내볼 소개 정보가 먼저 필요합니다." />
+<meta name="twitter:title" content="오픈 초기 마케팅이 막힐 때 먼저 볼 한 가지" />
+<meta name="twitter:description" content="오픈 초기 마케팅 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta name="twitter:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="alternate icon" type="image/png" href="/favicon.png" />
@@ -26,8 +26,8 @@
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "오픈 때는 붐볐는데, 왜 2주 뒤엔 조용해질까요?",
-  "description": "오픈 초반의 호기심이 끊긴 뒤에는 더 큰 이벤트보다, 처음 본 사람이 다시 꺼내볼 소개 정보가 먼저 필요합니다.",
+  "headline": "오픈 초기 마케팅이 막힐 때 먼저 볼 한 가지",
+  "description": "오픈 초기 마케팅 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.",
   "url": "https://doripe.vercel.app/blog/opening-dropoff",
   "datePublished": "2026-05-23",
   "dateModified": "2026-05-23",
@@ -59,16 +59,18 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; max-width: 100%; overflow-x: hidden; }
   body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
     font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
     letter-spacing: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
   a { color: inherit; text-decoration: none; }
-  .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+  .shell { width: min(1180px, calc(100vw - 40px)); margin: 0 auto; }
   .topbar {
     position: sticky;
     top: 0;
@@ -454,8 +456,8 @@
     .article-hero { padding: 42px 0 32px; }
     h1 {
       max-width: 100%;
-      font-size: clamp(26px, 7.2vw, 32px);
-      line-height: 1.12;
+      font-size: clamp(24px, 6.2vw, 28px);
+      line-height: 1.16;
       word-break: break-all;
       overflow-wrap: anywhere;
     }
@@ -557,8 +559,8 @@
       <div class="shell">
         <a class="crumb" href="/blog">← 블로그 홈</a>
         <p class="article-kicker"><span>B2B002</span><span>신규 손님 유입</span><span>오픈 초기 마케팅</span></p>
-        <h1>오픈<wbr> 때는<wbr> 붐볐<wbr>는데<wbr>, 왜 2주 뒤엔<wbr> 조용<wbr>해질<wbr>까요<wbr>?</h1>
-        <p class="lead">오픈 초반에는 지인, 동네 호기심, 새 매장 효과가 한꺼번에 옵니다. 문제는 그 다음입니다. 첫 파도가 지나간 뒤에도 손님이 다시 떠올릴 이유를 남겨두지 않으면, 좋은 오픈 반응은 금방 지나간 소식이 됩니다.</p>
+        <h1>오픈<wbr> 초기<wbr> 마케<wbr>팅이<wbr> 막힐<wbr> 때 먼저<wbr> 볼 한 가지<wbr></h1>
+        <p class="lead">&quot;오픈 초기 마케팅&quot;을 고민할 때 먼저 봐야 할 것은 홍보량이 아니라 손님이 판단하는 순서입니다. 식당, 바, 공방 같은 공간에서 바로 고칠 수 있는 문장, 사진, 안내 기준을 정리합니다.</p>
         <div class="article-tags"><span class="tag">오픈 초기 마케팅</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">공방</span></div>
         <div class="byline">
           <span class="avatar blue" aria-hidden="true">🕵️‍♀️</span>
@@ -569,23 +571,21 @@
 
     <div class="shell article-layout">
       <aside class="toc" aria-label="article sections">
-        <a href="#openingWave">오픈 효과</a>
-        <a href="#secondWaveProblem">두 번째 파도</a>
-        <a href="#saveableOpeningInfo">저장 정보</a>
-        <a href="#focus-b2b002">핵심 질문</a>
-        <a href="#openingMessageFix">수정 기준</a>
-        <a href="#openingWeekTest">7일 실험</a>
+        <a href="#b2b002-hesitation">멈추는 지점</a>
+        <a href="#b2b002-first-screen">첫 화면</a>
+        <a href="#b2b002-rewrite">문장 수정</a>
+        <a href="#b2b002-scene">장면 설계</a>
+        <a href="#b2b002-test">7일 실험</a>
         <a href="#doripe">Doripe 관점</a>
       </aside>
       <details class="mobile-toc">
-        <summary aria-label="목차 열기">☰</summary>
+        <summary aria-label="Table of contents">&#9776;</summary>
         <nav aria-label="article sections">
-          <a href="#openingWave">오픈 효과</a>
-        <a href="#secondWaveProblem">두 번째 파도</a>
-        <a href="#saveableOpeningInfo">저장 정보</a>
-        <a href="#focus-b2b002">핵심 질문</a>
-        <a href="#openingMessageFix">수정 기준</a>
-        <a href="#openingWeekTest">7일 실험</a>
+          <a href="#b2b002-hesitation">멈추는 지점</a>
+        <a href="#b2b002-first-screen">첫 화면</a>
+        <a href="#b2b002-rewrite">문장 수정</a>
+        <a href="#b2b002-scene">장면 설계</a>
+        <a href="#b2b002-test">7일 실험</a>
         <a href="#doripe">Doripe 관점</a>
         </nav>
       </details>
@@ -597,79 +597,34 @@
         <p>그래서 오픈 초기 손님이 끊길 때는 광고를 더 켜기 전에, 오픈 효과가 끝난 뒤에도 다시 꺼내볼 수 있는 소개 정보가 남아 있는지부터 봐야 합니다.</p>
       </section>
 
-        <section class="content-block content-openingWave">
-        <h2 id="openingWave">오픈 효과는 생각보다 빨리 지나갑니다</h2>
-        <p>오픈 효과는 좋은 출발이지만 오래 가지는 않습니다. 새로 생겼다는 사실 자체가 콘텐츠가 되는 기간은 짧고, 그다음부터 손님은 다른 기준으로 공간을 봅니다.</p>
-        <p>첫 주에 온 손님은 "새로 생겼다"는 이유로 들어올 수 있습니다. 하지만 그다음 손님은 메뉴, 가격대, 예약 방식, 혼자 가도 되는지, 누구와 가면 좋은지 같은 정보를 확인합니다.</p>
-        <p>그래서 오픈 초반 반응이 좋았는데 금방 조용해졌다면, 손님이 줄었다고만 보기보다 오픈 이후의 소개 문장이 준비되어 있었는지를 먼저 봐야 합니다.</p>
+        <section class="content-block content-b2b002-hesitation">
+        <h2 id="b2b002-hesitation">손님은 관심이 없어서가 아니라, 아직 안심하지 못해서 멈춥니다</h2>
+        <p>&quot;오픈 초기 마케팅&quot;을 해결하려고 하면 더 많이 알리는 방법부터 떠올리기 쉽습니다. 하지만 처음 보는 손님은 가게를 싫어해서 멈추는 것이 아니라, 아직 자기에게 맞는지 확인하지 못해서 멈춥니다.</p><p>식당이라면 첫 주문이 어렵지 않은지, 바이라면 혼자 들어가도 괜찮은지, 공방이라면 얼마나 머물 수 있는지를 봅니다. 이 질문에 답이 보이면 방문 장벽은 훨씬 낮아집니다.</p><p>그래서 첫 번째 점검은 광고 문구가 아니라 손님의 첫 질문입니다. &quot;신규 매장 홍보, 동네 고객 유입, 가게 알리기&quot; 같은 단어도 결국 손님 입장에서는 &quot;내가 지금 가도 되는 곳인가?&quot;로 번역됩니다.</p>
       </section>
 
-        <section class="content-block content-secondWaveProblem">
-        <h2 id="secondWaveProblem">첫 방문의 다음 이유가 없으면 조용해집니다</h2>
-        <p>오픈 초반에는 운영자도 바쁩니다. 사진을 올리고, 감사 인사를 남기고, 찾아와준 분들에게 답하다 보면 정작 "처음 보는 손님을 위한 기본 안내"가 뒤로 밀립니다.</p>
-        <p>하지만 두 번째 파도는 지인보다 낯선 사람에게서 옵니다. 이 사람들은 공간을 잘 모르기 때문에, 오픈 축하 글보다 실패하지 않을 첫 선택지를 더 필요로 합니다.</p>
-        <div class="prose-list"><p><strong>1.</strong> 처음 오면 무엇을 고르면 좋을까?</p>
-          <p><strong>2.</strong> 예약이 필요한 곳일까, 그냥 가도 되는 곳일까?</p>
-          <p><strong>3.</strong> 오픈 이벤트가 끝난 뒤에도 갈 이유가 남아 있을까?</p>
-          <p><strong>4.</strong> 다른 비슷한 공간 대신 여기를 기억할 단서가 있을까?</p></div>
+        <section class="content-block content-b2b002-first-screen">
+        <h2 id="b2b002-first-screen">첫 화면은 멋진 소개보다 방문 판단에 필요한 정보를 먼저 보여줘야 합니다</h2>
+        <p>처음 들어온 손님은 모든 글을 다 읽지 않습니다. 첫 사진, 첫 문장, 태그 몇 개를 보고 더 볼지 말지 정합니다.</p><p>이때 &quot;좋은 공간입니다&quot;보다 &quot;언제, 누구에게, 어떻게 좋은지&quot;가 먼저 보여야 합니다. 식당은 대표 선택지, 바은 이용 방식, 공방은 위치나 예약 같은 현실 정보를 앞쪽에 두는 편이 좋습니다.</p><p>첫 화면의 역할은 감탄을 만드는 것이 아니라 판단을 돕는 것입니다. 감탄은 그다음 사진과 글에서 천천히 만들어도 늦지 않습니다.</p>
       </section>
 
-        <section class="content-block content-saveableOpeningInfo">
-        <h2 id="saveableOpeningInfo">지나간 오픈 소식을 다시 꺼내볼 정보로 바꾸세요</h2>
-        <p>오픈 소식은 시간순으로 흘러가지만, 저장되는 정보는 다시 열어볼 이유를 남깁니다. 고정 게시물이나 지도 소개를 오픈 인사로만 채워두면 시간이 지날수록 힘이 빠집니다.</p>
-        <p>대신 처음 보는 손님이 다음 주에도 참고할 수 있는 정보를 앞으로 꺼내야 합니다. 식당이라면 첫 방문 메뉴, 바이라면 첫 잔 추천과 예약 가능 시간, 공방이라면 첫 수업 난이도와 소요 시간이 여기에 들어갑니다.</p>
-        <div class="example">
-          <div>
-            <strong>오픈 인사</strong>
-            <p>새로 오픈했습니다. 많은 관심 부탁드립니다.</p>
-          </div>
-          <div>
-            <strong>저장되는 소개</strong>
-            <p>처음 오신 분은 예약 없이 가능한 기본 메뉴부터 시작해보세요. 가장 많이 묻는 이용 시간과 추천 선택지를 앞에 정리해두었습니다.</p>
-          </div>
-        </div>
+        <section class="content-block content-b2b002-rewrite">
+        <h2 id="b2b002-rewrite">내부자에게 익숙한 말을 처음 보는 손님 언어로 바꿔보세요</h2>
+        <p>운영자에게 익숙한 표현은 손님에게 빈칸으로 보일 수 있습니다. '편안한 분위기', '정성껏 준비한', '취향 있는 공간' 같은 말은 틀리지 않지만 행동으로 이어지기에는 정보가 부족합니다.</p><div class="example"><div><strong>Before</strong><p>오픈 초기 마케팅에 좋은 식당입니다.</p></div><div><strong>After</strong><p>처음 오신다면 신규 매장 홍보, 동네 고객 유입, 가게 알리기을 확인하고, 식당에서 어떤 선택부터 하면 좋은지 바로 볼 수 있게 안내합니다.</p></div></div><p>좋은 문장은 더 멋진 말이 아니라 덜 헷갈리는 말입니다. 손님이 자기 상황을 대입할 수 있으면 그때부터 방문 후보가 됩니다.</p>
       </section>
 
-        <section class="content-block content-focus-b2b002">
-        <h2 id="focus-b2b002">오픈 초기 마케팅: 이 글에서 먼저 볼 질문</h2>
-        <p>이 글의 핵심은 오픈 소식을 한 번 더 크게 알리는 것이 아닙니다. 이미 지나간 오픈 이슈를, 처음 보는 손님이 저장하고 다시 확인할 수 있는 방문 정보로 바꾸는 것입니다.</p>
-        <div class="example">
-          <div>
-            <strong>그냥 지나간 오픈 소식</strong>
-            <p>"새로 오픈했습니다"는 첫 주에는 통하지만, 시간이 지나면 손님에게 지금 방문해야 할 이유를 설명하지 못합니다.</p>
-          </div>
-          <div>
-            <strong>다시 꺼내볼 소개 정보</strong>
-            <p>"처음 오면 이 메뉴부터", "예약 없이 가능한 시간", "오픈 한 달 동안 가장 많이 고른 선택지"처럼 다음 방문 판단에 필요한 정보를 남깁니다.</p>
-          </div>
-        </div>
+        <section class="content-block content-b2b002-scene">
+        <h2 id="b2b002-scene">방문 이유는 업종 설명보다 하루의 장면에서 만들어집니다</h2>
+        <p>&quot;오픈 초기 마케팅&quot;을 말할 때 업종부터 설명하면 비슷한 공간들과 함께 묶이기 쉽습니다. 대신 손님의 하루에서 어떤 순간에 쓰이는지 보여주면 훨씬 빠르게 이해됩니다.</p><p>점심 전후, 퇴근길, 주말 오전, 비 오는 날, 약속 전 30분처럼 구체적인 시간이 붙으면 식당도 추상적인 장소가 아니라 선택 가능한 장면이 됩니다.</p><p>사진도 같은 기준으로 고르면 좋습니다. 대표 컷 하나보다 손님이 실제로 앉고, 고르고, 걸어 들어오는 장면이 더 방문에 가깝습니다.</p>
       </section>
 
-        <section class="content-block content-openingMessageFix">
-        <h2 id="openingMessageFix">오픈 인사보다 먼저 바꿀 세 가지</h2>
-        <p>오픈 초반 글을 전부 지울 필요는 없습니다. 다만 첫 화면에 남아 있는 순서를 바꿔야 합니다. 축하와 감사는 뒤로 보내고, 처음 보는 손님이 바로 판단할 정보를 앞으로 가져오세요.</p>
-        <h3>첫 문장은 '오픈했습니다'보다 '처음 오면 이렇게 이용하세요'가 낫습니다</h3>
-        <p>오픈 사실은 이미 지난 정보가 됩니다. 대신 처음 방문자가 무엇을 고르면 좋은지, 어느 시간대가 편한지, 예약이 필요한지부터 말하면 다음 행동이 쉬워집니다.</p>
-        <h3>초기 방문자의 사진을 다음 손님의 안내로 바꾸세요</h3>
-        <p>손님이 찍은 음식, 좌석, 작업물, 입구 사진은 단순 후기보다 강한 안내가 될 수 있습니다. "많이 찾아주셨어요"보다 "처음 오신 분들이 이 장면을 가장 많이 확인했어요"처럼 설명을 붙여보세요.</p>
-        <h3>현장에도 같은 문장을 남겨야 합니다</h3>
-        <p>지도와 인스타에서 본 문장을 입구, 메뉴판, 예약 안내에서도 다시 만나면 손님은 공간을 더 빨리 이해합니다. 온라인 소개와 현장 경험이 끊기지 않아야 오픈 이후의 낯선 손님도 덜 망설입니다.</p>
-      </section>
-
-        <section class="content-block content-openingWeekTest">
-        <h2 id="openingWeekTest">이번 주에는 오픈 소식을 이렇게 다시 정리하세요</h2>
-        <p>이번 주에는 새 이벤트를 만들기보다, 이미 올린 오픈 콘텐츠를 처음 보는 손님 기준으로 다시 정리해보세요.</p>
-        <div class="flow"><div><p><strong>1.</strong> 1일차: 지도, 인스타, 현장 안내에서 아직 '오픈했습니다'가 첫 메시지인지 확인합니다.</p></div>
-          <div><p><strong>2.</strong> 2일차: 처음 오는 손님이 고르면 좋은 메뉴, 좌석, 수업, 상품을 1~2개만 고릅니다.</p></div>
-          <div><p><strong>3.</strong> 3일차: 고정 게시물과 지도 소개 첫 문장을 '처음 오면 이렇게 이용하세요' 형식으로 바꿉니다.</p></div>
-          <div><p><strong>4.</strong> 4일차: 초기 방문자가 남긴 사진이나 리뷰 중 다음 손님에게 도움이 되는 장면을 하나 골라 설명을 붙입니다.</p></div>
-          <div><p><strong>5.</strong> 7일차: 새 문의에서 반복되는 질문을 모아, 가격대/예약/소요 시간/추천 선택지 중 빠진 정보를 앞으로 빼냅니다.</p></div></div>
-        <p>이 작업의 목표는 오픈 열기를 억지로 연장하는 것이 아닙니다. 오픈 이후에도 낯선 손님이 다시 꺼내볼 만한 이유를 남기는 것입니다.</p>
+        <section class="content-block content-b2b002-test">
+        <h2 id="b2b002-test">이번 주에는 손님 질문 하나만 줄여보세요</h2>
+        <p>일주일 동안 오픈 초기 마케팅과 관련해 손님이 가장 많이 망설일 질문 하나를 고릅니다. 위치인지, 첫 선택지인지, 예약인지, 가격대인지 하나만 잡으면 됩니다.</p><p>그 질문에 답하는 사진 1장과 문장 1개를 프로필, 플레이스, 고정 게시물 중 한 곳에 넣어보세요. 모든 채널을 동시에 바꾸려 하지 않아도 됩니다.</p><p>확인할 것은 큰 수치가 아니라 질문의 변화입니다. 손님이 더 구체적으로 묻기 시작하면 안내가 조금씩 작동하고 있다는 뜻입니다.</p>
       </section>
 
         <section class="content-block content-doripe">
         <h2 id="doripe">Doripe 관점 🌿</h2>
-        <div class="note"><p>Doripe 관점에서 오픈 마케팅의 목표는 한 번의 관심이 아니라 저장 가능한 첫인상입니다. 저장된 공간은 다음 주말이나 다음 약속 때 다시 후보가 됩니다.</p></div><p>핵심은 큰 캠페인을 만드는 것이 아니라 손님이 이미 보는 화면과 현장 안내를 같은 장면으로 맞추는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p>
+        <div class="note"><p>Doripe는 &quot;오픈 초기 마케팅&quot;을 더 크게 포장하기보다, 손님이 저장하고 다시 확인할 수 있는 장면으로 정리하는 쪽에 가깝게 봅니다. 식당, 바, 공방 같은 공간에서는 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p></div><p>핵심은 큰 캠페인을 만드는 것이 아니라 손님이 이미 보는 화면과 현장 안내를 같은 장면으로 맞추는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p>
       </section>
       </article>
     </div>
@@ -679,17 +634,17 @@
       <div class="related-grid">
           <a class="related-card" href="/blog/popup-retention">
             <span>B2B008 · 신규 손님 유입</span>
-            <strong>팝업이 끝난 뒤 손님을 남기려면 행사 전부터 준비할 것</strong>
+            <strong>팝업은 끝났는데, 손님을 남기려면 무엇을 해야 할까요?</strong>
           </a>
 
           <a class="related-card" href="/blog/instagram-to-visit">
             <span>B2B012 · 인스타/숏폼 운영</span>
-            <strong>팔로워는 있는데 방문으로 이어지지 않는 계정의 문제</strong>
+            <strong>팔로워는 있는데 손님이 늘지 않는 계정에는 방문 안내가 빠져 있습니다</strong>
           </a>
 
           <a class="related-card" href="/blog/repeat-visit-reason">
             <span>B2B088 · 재방문/단골/커뮤니티</span>
-            <strong>한 번 온 손님이 다시 올 이유를 만들지 못하는 공간의 문제</strong>
+            <strong>한 번 온 손님이 다시 오지 않는다면, 다음 이유가 보이지 않는 겁니다</strong>
           </a>
       </div>
     </section>

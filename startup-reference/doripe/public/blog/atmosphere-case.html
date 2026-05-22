@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>운영자가 직접 말하지 않아도 분위기가 전해지는 공간 사례 | Doripe Blog</title>
-<meta name="description" content="가상의 공간 카드 예시로 사진 순서와 짧은 문장 조합이 분위기를 전달하는 방식을 보여줍니다." />
+<title>운영자가 직접 말하지 않아도 분위기가 전해지는 공간의 구조 | Doripe Blog</title>
+<meta name="description" content="Doripe 공간 사례 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="https://doripe.vercel.app/blog/atmosphere-case" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Doripe" />
 <meta property="og:locale" content="ko_KR" />
-<meta property="og:title" content="운영자가 직접 말하지 않아도 분위기가 전해지는 공간 사례" />
-<meta property="og:description" content="가상의 공간 카드 예시로 사진 순서와 짧은 문장 조합이 분위기를 전달하는 방식을 보여줍니다." />
+<meta property="og:title" content="운영자가 직접 말하지 않아도 분위기가 전해지는 공간의 구조" />
+<meta property="og:description" content="Doripe 공간 사례 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta property="og:url" content="https://doripe.vercel.app/blog/atmosphere-case" />
 <meta property="og:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <meta property="article:published_time" content="2026-05-23" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="운영자가 직접 말하지 않아도 분위기가 전해지는 공간 사례" />
-<meta name="twitter:description" content="가상의 공간 카드 예시로 사진 순서와 짧은 문장 조합이 분위기를 전달하는 방식을 보여줍니다." />
+<meta name="twitter:title" content="운영자가 직접 말하지 않아도 분위기가 전해지는 공간의 구조" />
+<meta name="twitter:description" content="Doripe 공간 사례 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta name="twitter:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="alternate icon" type="image/png" href="/favicon.png" />
@@ -26,8 +26,8 @@
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "운영자가 직접 말하지 않아도 분위기가 전해지는 공간 사례",
-  "description": "가상의 공간 카드 예시로 사진 순서와 짧은 문장 조합이 분위기를 전달하는 방식을 보여줍니다.",
+  "headline": "운영자가 직접 말하지 않아도 분위기가 전해지는 공간의 구조",
+  "description": "Doripe 공간 사례 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.",
   "url": "https://doripe.vercel.app/blog/atmosphere-case",
   "datePublished": "2026-05-23",
   "dateModified": "2026-05-23",
@@ -59,16 +59,18 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; max-width: 100%; overflow-x: hidden; }
   body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
     font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
     letter-spacing: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
   a { color: inherit; text-decoration: none; }
-  .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+  .shell { width: min(1180px, calc(100vw - 40px)); margin: 0 auto; }
   .topbar {
     position: sticky;
     top: 0;
@@ -454,8 +456,8 @@
     .article-hero { padding: 42px 0 32px; }
     h1 {
       max-width: 100%;
-      font-size: clamp(26px, 7.2vw, 32px);
-      line-height: 1.12;
+      font-size: clamp(24px, 6.2vw, 28px);
+      line-height: 1.16;
       word-break: break-all;
       overflow-wrap: anywhere;
     }
@@ -557,8 +559,8 @@
       <div class="shell">
         <a class="crumb" href="/blog">← 블로그 홈</a>
         <p class="article-kicker"><span>B2B100</span><span>Doripe 리포트/케이스</span><span>Doripe 공간 사례</span></p>
-        <h1>운영<wbr>자가<wbr> 직접<wbr> 말하<wbr>지 않아<wbr>도 분위<wbr>기가<wbr> 전해<wbr>지는<wbr> 공간<wbr> 사례<wbr></h1>
-        <p class="lead">이 글의 사례는 실제 매장 성과를 주장하는 고객 사례가 아니라, Doripe가 공간 카드를 만들 때 사용하는 가상 예시입니다. 핵심은 운영자가 많은 설명을 하지 않아도 손님이 분위기를 상상하게 만드는 구성입니다.</p>
+        <h1>운영<wbr>자가<wbr> 직접<wbr> 말하<wbr>지 않아<wbr>도 분위<wbr>기가<wbr> 전해<wbr>지는<wbr> 공간<wbr>의 구조<wbr></h1>
+        <p class="lead">&quot;Doripe 공간 사례&quot;를 고민할 때 먼저 봐야 할 것은 홍보량이 아니라 손님이 판단하는 순서입니다. 서점, 카페, 공방 같은 공간에서 바로 고칠 수 있는 문장, 사진, 안내 기준을 정리합니다.</p>
         <div class="article-tags"><span class="tag">Doripe 공간 사례</span><span class="tag">서점</span><span class="tag">카페</span><span class="tag">공방</span></div>
         <div class="byline">
           <span class="avatar rose" aria-hidden="true">👩‍🎨</span>
@@ -569,64 +571,60 @@
 
     <div class="shell article-layout">
       <aside class="toc" aria-label="article sections">
-        <a href="#saveCaseLens">저장 렌즈</a>
-        <a href="#sceneInventory">장면 목록</a>
-        <a href="#focus-b2b100">핵심 질문</a>
-        <a href="#decisionFlow">결정 흐름</a>
+        <a href="#b2b100-lens">관찰 기준</a>
+        <a href="#b2b100-priority">정보 우선순위</a>
+        <a href="#b2b100-example">가상 장면</a>
+        <a href="#b2b100-checklist">점검표</a>
+        <a href="#b2b100-doripe-note">Doripe 관점</a>
         <a href="#doripe">Doripe 관점</a>
       </aside>
       <details class="mobile-toc">
-        <summary aria-label="목차 열기">☰</summary>
+        <summary aria-label="Table of contents">&#9776;</summary>
         <nav aria-label="article sections">
-          <a href="#saveCaseLens">저장 렌즈</a>
-        <a href="#sceneInventory">장면 목록</a>
-        <a href="#focus-b2b100">핵심 질문</a>
-        <a href="#decisionFlow">결정 흐름</a>
+          <a href="#b2b100-lens">관찰 기준</a>
+        <a href="#b2b100-priority">정보 우선순위</a>
+        <a href="#b2b100-example">가상 장면</a>
+        <a href="#b2b100-checklist">점검표</a>
+        <a href="#b2b100-doripe-note">Doripe 관점</a>
         <a href="#doripe">Doripe 관점</a>
         </nav>
       </details>
 
       <article class="article-body">
         <section class="article-intro">
-        <p>'Doripe 공간 사례' 문제가 떠올라 이 글을 열었다면, 아마 지금 운영하는 공간을 더 알리고 싶은데 어디부터 손대야 할지 애매한 상태일 가능성이 큽니다. 더 많이 올리거나 광고를 켜기 전에, 손님이 방문 직전에 무엇을 확인하지 못하고 멈추는지 먼저 봐야 합니다.</p>
-        <p>서점, 카페, 공방에서는 큰 캠페인보다 첫 화면의 문장, 대표 사진, 예약/위치 안내처럼 작은 정보가 방문 결정을 가릅니다. 손님은 공간이 좋아 보여도 "오늘 가도 되나", "처음 가도 어색하지 않나", "어떻게 이용하면 되나"가 안 보이면 다시 미룹니다.</p>
-        <p>그래서 아래 내용은 한 번에 다 바꾸는 목록이 아니라, 오늘 바로 바꿀 한 문장과 사진 한 장을 고르는 순서로 읽으면 좋습니다.</p>
+        <p>서점, 카페, 공방 같은 공간을 운영하다 보면 &quot;Doripe 공간 사례&quot; 문제가 생각보다 조용히 쌓입니다. 겉으로는 콘텐츠도 올리고 정보도 적어둔 것 같은데, 처음 보는 손님 입장에서는 아직 판단할 단서가 부족할 수 있습니다.</p>
+        <p>손님은 운영자가 중요하게 여기는 순서대로 읽지 않습니다. 자기 상황에 맞는지, 실패할 가능성은 낮은지, 지금 움직여도 괜찮은지를 아주 빠르게 확인합니다.</p>
+        <p>그래서 이 글에서는 &quot;Doripe 공간 사례&quot;를 더 세게 밀어붙이는 대신, 손님이 멈추는 질문을 줄이고 방문에 가까워지게 만드는 정리법을 봅니다. 🗂️</p>
       </section>
 
-        <section class="content-block content-saveCaseLens">
-        <h2 id="saveCaseLens">왜 어떤 공간은 저장되는가</h2>
-        <p>이 글은 실제 수치처럼 꾸미지 않고, Doripe가 공간 카드를 설계할 때 쓰는 관찰 질문으로 접근합니다.</p><div class="prose-list"><p><strong>1.</strong> 이 공간은 언제 떠올리기 쉬운가?</p>
-          <p><strong>2.</strong> 사진과 문구가 같은 장면을 말하는가?</p>
-          <p><strong>3.</strong> 저장한 사람이 다시 열었을 때 결정할 정보가 남아 있는가?</p>
-          <p><strong>4.</strong> 업종명이 아니라 방문 이유가 먼저 보이는가?</p></div>
+        <section class="content-block content-b2b100-lens">
+        <h2 id="b2b100-lens">저장되는 공간은 예쁜 공간이 아니라 다시 확인할 이유가 있는 공간입니다</h2>
+        <p>Doripe 관점에서 &quot;Doripe 공간 사례&quot;를 볼 때 중요한 것은 손님이 왜 다시 꺼내 보는지입니다. 분위기, 위치, 메뉴, 후기 중 무엇이든 다시 확인할 이유가 있어야 저장이 의미를 갖습니다.</p><p>서점, 카페, 공방처럼 업종이 달라도 손님이 확인하는 질문은 비슷합니다. 언제 가면 좋은지, 누구와 가면 좋은지, 처음 가도 괜찮은지가 핵심입니다.</p><p>이 글은 실제 수치나 검증된 성과를 주장하기보다, 운영자가 자기 공간을 점검할 수 있는 관찰 기준으로 읽으면 좋습니다.</p>
       </section>
 
-        <section class="content-block content-sceneInventory">
-        <h2 id="sceneInventory">공간 안의 장면을 재고처럼 세기</h2>
-        <p>소재가 부족할 때는 새로운 이벤트보다 공간 안에 이미 있는 장면을 다시 세는 편이 빠릅니다.</p><div class="prose-list"><p><strong>1.</strong> 입구에서 보이는 첫 장면</p>
-          <p><strong>2.</strong> 손이 닿는 메뉴, 제품, 작품</p>
-          <p><strong>3.</strong> 머무는 좌석과 조도</p>
-          <p><strong>4.</strong> 나갈 때 가져가는 기억이나 카드</p></div>
+        <section class="content-block content-b2b100-priority">
+        <h2 id="b2b100-priority">공간 정보는 운영자 소개보다 손님 질문 순서로 정리되어야 합니다</h2>
+        <p>운영자는 브랜드의 배경부터 말하고 싶지만 손님은 방문 판단부터 합니다. 첫 화면에서는 감탄보다 이해가 먼저일 때가 많습니다.</p><p>위치, 첫 선택지, 이용 방식, 분위기, 다음 행동이 자연스럽게 이어지면 손님은 공간을 저장할 이유를 더 쉽게 찾습니다.</p><p>공간 분위기, 로컬 사례, 공간 브랜딩도 결국 이 순서 안에서 정리될 때 덜 복잡해집니다.</p>
       </section>
 
-        <section class="content-block content-focus-b2b100">
-        <h2 id="focus-b2b100">Doripe 공간 사례: 이 글에서 먼저 볼 질문</h2>
-        <p>가상의 공간 카드 예시로 사진 순서와 짧은 문장 조합이 분위기를 전달하는 방식을 보여줍니다.</p><div class="mini-grid"><div><p><strong>1. 증상부터 보면 좋아요.</strong> 첫 사진이 공간의 온도와 사용 방식을 동시에 보여준다.</p></div>
-          <div><p><strong>2. 손님 질문부터 보면 좋아요.</strong> 처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
-          <div><p><strong>3. 오늘 바꿀 것부터 보면 좋아요.</strong> 첫 장에는 가장 예쁜 컷보다 가장 이해가 빠른 컷을 둡니다.</p></div></div>
+        <section class="content-block content-b2b100-example">
+        <h2 id="b2b100-example">가상의 공간 카드로 보면 차이가 더 쉽게 보입니다</h2>
+        <p>두 공간이 모두 좋아 보여도 저장되는 이유는 다를 수 있습니다.</p><div class="example"><div><strong>흐린 소개</strong><p>서점의 분위기를 즐길 수 있는 공간입니다.</p></div><div><strong>저장되는 소개</strong><p>처음 방문이라면 &quot;Doripe 공간 사례&quot;를 두고 무엇을 먼저 보면 좋은지 한 화면에서 확인할 수 있는 서점입니다.</p></div></div><p>이 차이는 문장의 화려함이 아니라 판단 가능성에서 생깁니다.</p>
       </section>
 
-        <section class="content-block content-decisionFlow">
-        <h2 id="decisionFlow">본 뒤에 무엇을 확인하게 할까</h2>
-        <div class="flow"><div><p><strong>1.</strong> 발견: 이름과 사진을 봅니다.</p></div>
-          <div><p><strong>2.</strong> 비교: 비슷한 후보와 다른 점을 찾습니다.</p></div>
-          <div><p><strong>3.</strong> 확인: 위치, 예약, 가격, 이용 방식을 봅니다.</p></div>
-          <div><p><strong>4.</strong> 행동: 저장, 문의, 예약, 방문 중 하나로 넘어갑니다.</p></div></div>
+        <section class="content-block content-b2b100-checklist">
+        <h2 id="b2b100-checklist">저장 전에 손님이 확인할 정보를 세 칸으로 나눠보세요</h2>
+        <div class="flow"><div><p><strong>상황</strong><br>언제, 누구와, 왜 가는지</p></div><div><p><strong>안심</strong><br>위치, 시간, 예약, 가격대</p></div><div><p><strong>다음</strong><br>저장, 길찾기, 문의, 재방문</p></div></div><p>이 세 칸을 채우면 &quot;Doripe 공간 사례&quot;를 훨씬 덜 추상적으로 다룰 수 있습니다.</p>
+      </section>
+
+        <section class="content-block content-b2b100-doripe-note">
+        <h2 id="b2b100-doripe-note">Doripe의 역할은 공간의 매력을 손님 질문 순서로 다시 정리하는 것입니다</h2>
+        <p>좋은 공간을 더 크게 포장하는 것보다, 손님이 이미 궁금해하는 정보를 더 읽기 쉽게 놓는 일이 중요합니다.</p><p>&quot;Doripe 공간 사례&quot;를 다룰 때도 결국 손님이 저장하고 다시 확인할 이유를 만드는 문제입니다.</p><p>작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다. 그래서 정보의 순서가 곧 마케팅이 됩니다.</p>
       </section>
 
         <section class="content-block content-doripe">
         <h2 id="doripe">Doripe 관점 🌿</h2>
-        <div class="note"><p>Doripe의 공간 카드는 운영자의 설명을 줄이고 손님의 상상을 늘리는 방향을 지향합니다. 좋은 소개는 많은 말을 하지 않아도 ‘나에게 맞을지’를 떠올리게 합니다.</p></div><p>핵심은 큰 캠페인을 만드는 것이 아니라 손님이 이미 보는 화면과 현장 안내를 같은 장면으로 맞추는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p>
+        <div class="note"><p>Doripe는 &quot;Doripe 공간 사례&quot;를 더 크게 포장하기보다, 손님이 저장하고 다시 확인할 수 있는 장면으로 정리하는 쪽에 가깝게 봅니다. 서점, 카페, 공방 같은 공간에서는 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p></div><p>핵심은 큰 캠페인을 만드는 것이 아니라 손님이 이미 보는 화면과 현장 안내를 같은 장면으로 맞추는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p>
       </section>
       </article>
     </div>
@@ -636,17 +634,17 @@
       <div class="related-grid">
           <a class="related-card" href="/blog/brand-language">
             <span>B2B078 · 공간 브랜딩/분위기</span>
-            <strong>공간 분위기는 좋은데 설명이 어려울 때 쓰는 언어 정리법</strong>
+            <strong>공간 분위기는 좋은데 설명이 어렵다면, 쓰임부터 말해보세요</strong>
           </a>
 
           <a class="related-card" href="/blog/saved-space-report">
             <span>B2B096 · Doripe 리포트/케이스</span>
-            <strong>저장되는 공간과 스쳐 지나가는 공간은 무엇이 다른가</strong>
+            <strong>저장되는 공간과 스쳐 지나가는 공간은 무엇이 다를까요?</strong>
           </a>
 
           <a class="related-card" href="/blog/instagram-saveable-photos">
             <span>B2B014 · 인스타/숏폼 운영</span>
-            <strong>예쁜 사진만 올리는데 저장이 안 되는 이유</strong>
+            <strong>예쁜 사진인데 저장이 안 된다면, 다시 볼 이유가 빠진 겁니다</strong>
           </a>
       </div>
     </section>

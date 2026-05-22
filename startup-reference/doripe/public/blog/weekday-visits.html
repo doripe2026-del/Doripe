@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>주말엔 꽉 차는데, 왜 평일엔 비어 보일까요? | Doripe Blog</title>
-<meta name="description" content="주말의 활기만 보여주면 손님은 평일에 그 공간을 어떻게 쓰면 좋은지 떠올리기 어렵습니다. 빈 시간대를 할인보다 이용 장면으로 바꾸는 법을 정리합니다." />
+<title>주말에는 붐비는데 평일 손님이 부족한 공간 운영방법라면, 손님이 멈추는 지점을 봐야 합니다 | Doripe Blog</title>
+<meta name="description" content="평일 손님 늘리기 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="https://doripe.vercel.app/blog/weekday-visits" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Doripe" />
 <meta property="og:locale" content="ko_KR" />
-<meta property="og:title" content="주말엔 꽉 차는데, 왜 평일엔 비어 보일까요?" />
-<meta property="og:description" content="주말의 활기만 보여주면 손님은 평일에 그 공간을 어떻게 쓰면 좋은지 떠올리기 어렵습니다. 빈 시간대를 할인보다 이용 장면으로 바꾸는 법을 정리합니다." />
+<meta property="og:title" content="주말에는 붐비는데 평일 손님이 부족한 공간 운영방법라면, 손님이 멈추는 지점을 봐야 합니다" />
+<meta property="og:description" content="평일 손님 늘리기 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta property="og:url" content="https://doripe.vercel.app/blog/weekday-visits" />
 <meta property="og:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <meta property="article:published_time" content="2026-05-23" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="주말엔 꽉 차는데, 왜 평일엔 비어 보일까요?" />
-<meta name="twitter:description" content="주말의 활기만 보여주면 손님은 평일에 그 공간을 어떻게 쓰면 좋은지 떠올리기 어렵습니다. 빈 시간대를 할인보다 이용 장면으로 바꾸는 법을 정리합니다." />
+<meta name="twitter:title" content="주말에는 붐비는데 평일 손님이 부족한 공간 운영방법라면, 손님이 멈추는 지점을 봐야 합니다" />
+<meta name="twitter:description" content="평일 손님 늘리기 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다." />
 <meta name="twitter:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="alternate icon" type="image/png" href="/favicon.png" />
@@ -26,8 +26,8 @@
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "주말엔 꽉 차는데, 왜 평일엔 비어 보일까요?",
-  "description": "주말의 활기만 보여주면 손님은 평일에 그 공간을 어떻게 쓰면 좋은지 떠올리기 어렵습니다. 빈 시간대를 할인보다 이용 장면으로 바꾸는 법을 정리합니다.",
+  "headline": "주말에는 붐비는데 평일 손님이 부족한 공간 운영방법라면, 손님이 멈추는 지점을 봐야 합니다",
+  "description": "평일 손님 늘리기 상황에서 손님이 어디서 망설이는지 보고, 첫 화면과 콘텐츠를 더 읽기 쉽게 바꾸는 방법을 다룹니다.",
   "url": "https://doripe.vercel.app/blog/weekday-visits",
   "datePublished": "2026-05-23",
   "dateModified": "2026-05-23",
@@ -59,16 +59,18 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; max-width: 100%; overflow-x: hidden; }
   body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
     font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
     letter-spacing: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
   a { color: inherit; text-decoration: none; }
-  .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+  .shell { width: min(1180px, calc(100vw - 40px)); margin: 0 auto; }
   .topbar {
     position: sticky;
     top: 0;
@@ -454,8 +456,8 @@
     .article-hero { padding: 42px 0 32px; }
     h1 {
       max-width: 100%;
-      font-size: clamp(26px, 7.2vw, 32px);
-      line-height: 1.12;
+      font-size: clamp(24px, 6.2vw, 28px);
+      line-height: 1.16;
       word-break: break-all;
       overflow-wrap: anywhere;
     }
@@ -557,8 +559,8 @@
       <div class="shell">
         <a class="crumb" href="/blog">← 블로그 홈</a>
         <p class="article-kicker"><span>B2B003</span><span>신규 손님 유입</span><span>평일 손님 늘리기</span></p>
-        <h1>주말<wbr>엔 꽉 차는<wbr>데, 왜 평일<wbr>엔 비어<wbr> 보일<wbr>까요<wbr>?</h1>
-        <p class="lead">주말에는 자리가 없을 만큼 붐비는데 평일에는 조용한 공간이 있습니다. 이때 문제는 평일에 올 사람이 전혀 없다는 뜻이 아니라, 손님이 평일에 이 공간을 어떻게 써야 할지 아직 떠올리지 못한다는 뜻일 수 있습니다.</p>
+        <h1>주말<wbr>에는<wbr> 붐비<wbr>는데<wbr> 평일<wbr> 손님<wbr>이 부족<wbr>한 공간<wbr> 운영<wbr>방법<wbr>라면<wbr>, 손님<wbr>이 멈추<wbr>는 지점<wbr>을 봐야<wbr> 합니<wbr>다</h1>
+        <p class="lead">&quot;평일 손님 늘리기&quot;를 고민할 때 먼저 봐야 할 것은 홍보량이 아니라 손님이 판단하는 순서입니다. 카페, 서점, 스튜디오 같은 공간에서 바로 고칠 수 있는 문장, 사진, 안내 기준을 정리합니다.</p>
         <div class="article-tags"><span class="tag">평일 손님 늘리기</span><span class="tag">카페</span><span class="tag">서점</span><span class="tag">스튜디오</span></div>
         <div class="byline">
           <span class="avatar yellow" aria-hidden="true">👨‍🍳</span>
@@ -569,23 +571,21 @@
 
     <div class="shell article-layout">
       <aside class="toc" aria-label="article sections">
-        <a href="#weekendShadow">주말 그림자</a>
-        <a href="#weekdayUseMoment">평일 쓰임</a>
-        <a href="#quietTimeQuestions">평일 질문</a>
-        <a href="#weekdaySceneFix">수정 기준</a>
-        <a href="#focus-b2b003">핵심 질문</a>
-        <a href="#weekdayWeekTest">7일 실험</a>
+        <a href="#b2b003-hesitation">멈추는 지점</a>
+        <a href="#b2b003-first-screen">첫 화면</a>
+        <a href="#b2b003-rewrite">문장 수정</a>
+        <a href="#b2b003-scene">장면 설계</a>
+        <a href="#b2b003-test">7일 실험</a>
         <a href="#doripe">Doripe 관점</a>
       </aside>
       <details class="mobile-toc">
-        <summary aria-label="목차 열기">☰</summary>
+        <summary aria-label="Table of contents">&#9776;</summary>
         <nav aria-label="article sections">
-          <a href="#weekendShadow">주말 그림자</a>
-        <a href="#weekdayUseMoment">평일 쓰임</a>
-        <a href="#quietTimeQuestions">평일 질문</a>
-        <a href="#weekdaySceneFix">수정 기준</a>
-        <a href="#focus-b2b003">핵심 질문</a>
-        <a href="#weekdayWeekTest">7일 실험</a>
+          <a href="#b2b003-hesitation">멈추는 지점</a>
+        <a href="#b2b003-first-screen">첫 화면</a>
+        <a href="#b2b003-rewrite">문장 수정</a>
+        <a href="#b2b003-scene">장면 설계</a>
+        <a href="#b2b003-test">7일 실험</a>
         <a href="#doripe">Doripe 관점</a>
         </nav>
       </details>
@@ -597,78 +597,34 @@
         <p>이 글에서는 평일을 비어 있는 시간으로 팔기보다, 다른 손님에게 맞는 이용 장면으로 바꾸는 방법을 정리해보겠습니다.</p>
       </section>
 
-        <section class="content-block content-weekendShadow">
-        <h2 id="weekendShadow">주말의 활기가 평일의 쓰임을 가릴 수 있습니다</h2>
-        <p>주말에 사람이 많다는 건 좋은 신호입니다. 하지만 온라인에 주말의 붐비는 장면만 남으면, 평일의 장점은 잘 보이지 않습니다.</p>
-        <p>손님은 사진을 보고 그 공간의 기본 상태를 상상합니다. 늘 붐비는 사진만 보면 조용히 머물고 싶은 사람은 망설이고, 평일 낮에 갈 이유가 있는 사람도 자기 상황을 대입하기 어렵습니다.</p>
-        <p>평일 손님을 만들고 싶다면 먼저 "평일에는 이 공간이 어떻게 달라지는지"를 보여줘야 합니다. 같은 공간이라도 시간대가 바뀌면 쓰임이 달라집니다.</p>
+        <section class="content-block content-b2b003-hesitation">
+        <h2 id="b2b003-hesitation">손님은 관심이 없어서가 아니라, 아직 안심하지 못해서 멈춥니다</h2>
+        <p>&quot;평일 손님 늘리기&quot;를 해결하려고 하면 더 많이 알리는 방법부터 떠올리기 쉽습니다. 하지만 처음 보는 손님은 가게를 싫어해서 멈추는 것이 아니라, 아직 자기에게 맞는지 확인하지 못해서 멈춥니다.</p><p>카페이라면 첫 주문이 어렵지 않은지, 서점이라면 혼자 들어가도 괜찮은지, 스튜디오이라면 얼마나 머물 수 있는지를 봅니다. 이 질문에 답이 보이면 방문 장벽은 훨씬 낮아집니다.</p><p>그래서 첫 번째 점검은 광고 문구가 아니라 손님의 첫 질문입니다. &quot;비수기 마케팅, 요일별 매출, 로컬 공간 운영&quot; 같은 단어도 결국 손님 입장에서는 &quot;내가 지금 가도 되는 곳인가?&quot;로 번역됩니다.</p>
       </section>
 
-        <section class="content-block content-weekdayUseMoment">
-        <h2 id="weekdayUseMoment">평일에는 다른 이유로 찾아옵니다</h2>
-        <p>평일 손님은 주말 손님과 같은 이유로 오지 않을 수 있습니다. 주말에는 약속, 구경, 데이트가 이유가 되지만 평일에는 짧은 작업, 조용한 독서, 낮 시간 촬영, 혼자 쉬는 시간이 더 중요해질 수 있습니다.</p>
-        <p>카페라면 콘센트와 창가 좌석, 서점이라면 오래 머물러도 부담 없는 조용한 시간, 스튜디오라면 자연광이 좋은 시간대가 평일의 이유가 됩니다.</p>
-        <div class="prose-list"><p><strong>1.</strong> 월요일 오전에 혼자 와도 어색하지 않은가?</p>
-          <p><strong>2.</strong> 평일 낮에 머물 수 있는 좌석이나 이용 시간이 보이는가?</p>
-          <p><strong>3.</strong> 작업, 독서, 촬영, 짧은 미팅처럼 구체적인 쓰임이 떠오르는가?</p>
-          <p><strong>4.</strong> 주말과 다른 사진이나 문장이 실제로 첫 화면에 있는가?</p></div>
+        <section class="content-block content-b2b003-first-screen">
+        <h2 id="b2b003-first-screen">첫 화면은 멋진 소개보다 방문 판단에 필요한 정보를 먼저 보여줘야 합니다</h2>
+        <p>처음 들어온 손님은 모든 글을 다 읽지 않습니다. 첫 사진, 첫 문장, 태그 몇 개를 보고 더 볼지 말지 정합니다.</p><p>이때 &quot;좋은 공간입니다&quot;보다 &quot;언제, 누구에게, 어떻게 좋은지&quot;가 먼저 보여야 합니다. 카페은 대표 선택지, 서점은 이용 방식, 스튜디오은 위치나 예약 같은 현실 정보를 앞쪽에 두는 편이 좋습니다.</p><p>첫 화면의 역할은 감탄을 만드는 것이 아니라 판단을 돕는 것입니다. 감탄은 그다음 사진과 글에서 천천히 만들어도 늦지 않습니다.</p>
       </section>
 
-        <section class="content-block content-quietTimeQuestions">
-        <h2 id="quietTimeQuestions">평일 손님은 무엇을 확인하고 싶을까요?</h2>
-        <p>빈 시간대를 콘텐츠로 만들 때는 "한가합니다"라고 말하는 것보다, 그 시간에 어떤 손님이 편한지 말하는 편이 좋습니다. 비어 있다는 말은 운영자 입장이고, 쓰임은 손님 입장입니다.</p>
-        <div class="example">
-          <div>
-            <strong>운영자 문장</strong>
-            <p>평일에는 비교적 여유가 있습니다. 많이 방문해주세요.</p>
-          </div>
-          <div>
-            <strong>손님 문장</strong>
-            <p>화요일 오후 2시에는 창가 좌석이 가장 조용합니다. 책 한 권 읽거나 1시간 작업하고 가기 좋은 시간입니다.</p>
-          </div>
-        </div>
+        <section class="content-block content-b2b003-rewrite">
+        <h2 id="b2b003-rewrite">내부자에게 익숙한 말을 처음 보는 손님 언어로 바꿔보세요</h2>
+        <p>운영자에게 익숙한 표현은 손님에게 빈칸으로 보일 수 있습니다. '편안한 분위기', '정성껏 준비한', '취향 있는 공간' 같은 말은 틀리지 않지만 행동으로 이어지기에는 정보가 부족합니다.</p><div class="example"><div><strong>Before</strong><p>평일 손님 늘리기에 좋은 카페입니다.</p></div><div><strong>After</strong><p>처음 오신다면 비수기 마케팅, 요일별 매출, 로컬 공간 운영을 확인하고, 카페에서 어떤 선택부터 하면 좋은지 바로 볼 수 있게 안내합니다.</p></div></div><p>좋은 문장은 더 멋진 말이 아니라 덜 헷갈리는 말입니다. 손님이 자기 상황을 대입할 수 있으면 그때부터 방문 후보가 됩니다.</p>
       </section>
 
-        <section class="content-block content-weekdaySceneFix">
-        <h2 id="weekdaySceneFix">빈 시간대를 방문 장면으로 바꾸는 세 가지</h2>
-        <p>평일 유입을 만들 때는 새로운 이벤트를 크게 만들기보다, 실제로 비는 시간대 하나를 골라 그 시간의 장점을 또렷하게 보여주는 편이 좋습니다.</p>
-        <h3>시간대를 먼저 고르세요</h3>
-        <p>"평일" 전체를 말하면 너무 넓습니다. 월요일 오전, 수요일 오후, 금요일 낮처럼 실제로 비는 시간을 하나 고르면 문장이 구체적이 됩니다.</p>
-        <h3>그 시간에 맞는 손님 상황을 붙이세요</h3>
-        <p>카페는 작업과 휴식, 서점은 독서와 책 고르기, 스튜디오는 촬영과 준비 시간처럼 손님이 그 시간에 할 행동을 붙여야 합니다.</p>
-        <h3>사진은 붐비는 장면보다 판단 정보를 보여주세요</h3>
-        <p>좌석 간격, 조명, 콘센트, 소음이 적은 구역, 예약 가능 여부처럼 평일 방문자가 확인하고 싶은 정보를 사진과 캡션에 같이 넣어보세요.</p>
+        <section class="content-block content-b2b003-scene">
+        <h2 id="b2b003-scene">방문 이유는 업종 설명보다 하루의 장면에서 만들어집니다</h2>
+        <p>&quot;평일 손님 늘리기&quot;를 말할 때 업종부터 설명하면 비슷한 공간들과 함께 묶이기 쉽습니다. 대신 손님의 하루에서 어떤 순간에 쓰이는지 보여주면 훨씬 빠르게 이해됩니다.</p><p>점심 전후, 퇴근길, 주말 오전, 비 오는 날, 약속 전 30분처럼 구체적인 시간이 붙으면 카페도 추상적인 장소가 아니라 선택 가능한 장면이 됩니다.</p><p>사진도 같은 기준으로 고르면 좋습니다. 대표 컷 하나보다 손님이 실제로 앉고, 고르고, 걸어 들어오는 장면이 더 방문에 가깝습니다.</p>
       </section>
 
-        <section class="content-block content-focus-b2b003">
-        <h2 id="focus-b2b003">평일 손님 늘리기: 이 글에서 먼저 볼 질문</h2>
-        <p>이 글의 핵심은 평일을 싸게 파는 것이 아닙니다. 주말과 다른 쓰임을 분명하게 보여줘서, 손님이 "이 시간에는 이렇게 쓰면 되겠다"라고 떠올리게 만드는 것입니다.</p>
-        <div class="example">
-          <div>
-            <strong>비어 보이는 평일</strong>
-            <p>주말 사진만 쌓여 있으면 평일의 조용함은 인기 없는 시간처럼 보입니다. 손님은 굳이 그 시간에 가야 할 이유를 찾지 못합니다.</p>
-          </div>
-          <div>
-            <strong>쓰임이 보이는 평일</strong>
-            <p>창가 좌석, 조용한 독서 시간, 촬영 가능한 오후처럼 시간대별 장면을 보여주면 평일이 다른 손님에게 맞는 선택지가 됩니다.</p>
-          </div>
-        </div>
-      </section>
-
-        <section class="content-block content-weekdayWeekTest">
-        <h2 id="weekdayWeekTest">이번 주에는 평일 한 시간대만 정리해보세요</h2>
-        <p>이번 주에는 평일 전체를 살리려고 하지 말고, 한 시간대만 골라 작은 실험을 해보세요.</p>
-        <div class="flow"><div><p><strong>1.</strong> 1일차: 최근 한 달 동안 가장 조용했던 평일 시간대 하나를 고릅니다.</p></div>
-          <div><p><strong>2.</strong> 2일차: 그 시간에 어울리는 손님 상황을 하나 정합니다. 예: 조용한 작업, 책 읽기, 자연광 촬영, 짧은 미팅.</p></div>
-          <div><p><strong>3.</strong> 3일차: 그 장면을 보여주는 사진 한 장을 찍고, 첫 문장을 손님 상황으로 씁니다.</p></div>
-          <div><p><strong>4.</strong> 4일차: 지도 소개나 인스타 프로필에 평일 이용 정보를 한 줄 추가합니다.</p></div>
-          <div><p><strong>5.</strong> 7일차: 문의, 저장, 현장 질문을 보고 손님이 아직 확인하지 못한 정보를 다음 게시물에 반영합니다.</p></div></div>
-        <p>평일 콘텐츠의 목표는 빈 시간을 티 내는 것이 아닙니다. 그 시간에 맞는 손님이 자기 장면을 발견하게 만드는 것입니다.</p>
+        <section class="content-block content-b2b003-test">
+        <h2 id="b2b003-test">이번 주에는 손님 질문 하나만 줄여보세요</h2>
+        <p>일주일 동안 평일 손님 늘리기과 관련해 손님이 가장 많이 망설일 질문 하나를 고릅니다. 위치인지, 첫 선택지인지, 예약인지, 가격대인지 하나만 잡으면 됩니다.</p><p>그 질문에 답하는 사진 1장과 문장 1개를 프로필, 플레이스, 고정 게시물 중 한 곳에 넣어보세요. 모든 채널을 동시에 바꾸려 하지 않아도 됩니다.</p><p>확인할 것은 큰 수치가 아니라 질문의 변화입니다. 손님이 더 구체적으로 묻기 시작하면 안내가 조금씩 작동하고 있다는 뜻입니다.</p>
       </section>
 
         <section class="content-block content-doripe">
         <h2 id="doripe">Doripe 관점 🌿</h2>
-        <div class="note"><p>Doripe는 공간을 시간대와 함께 보여주는 쪽이 저장에 유리하다고 봅니다. 평일 콘텐츠는 빈 시간을 파는 것이 아니라, 그 시간에 어울리는 쓰임을 보여주는 일입니다.</p></div><p>핵심은 큰 캠페인을 만드는 것이 아니라 손님이 이미 보는 화면과 현장 안내를 같은 장면으로 맞추는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p>
+        <div class="note"><p>Doripe는 &quot;평일 손님 늘리기&quot;를 더 크게 포장하기보다, 손님이 저장하고 다시 확인할 수 있는 장면으로 정리하는 쪽에 가깝게 봅니다. 카페, 서점, 스튜디오 같은 공간에서는 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p></div><p>핵심은 큰 캠페인을 만드는 것이 아니라 손님이 이미 보는 화면과 현장 안내를 같은 장면으로 맞추는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p>
       </section>
       </article>
     </div>
@@ -678,17 +634,17 @@
       <div class="related-grid">
           <a class="related-card" href="/blog/repeat-visit-reason">
             <span>B2B088 · 재방문/단골/커뮤니티</span>
-            <strong>한 번 온 손님이 다시 올 이유를 만들지 못하는 공간의 문제</strong>
+            <strong>한 번 온 손님이 다시 오지 않는다면, 다음 이유가 보이지 않는 겁니다</strong>
           </a>
 
           <a class="related-card" href="/blog/brand-language">
             <span>B2B078 · 공간 브랜딩/분위기</span>
-            <strong>공간 분위기는 좋은데 설명이 어려울 때 쓰는 언어 정리법</strong>
+            <strong>공간 분위기는 좋은데 설명이 어렵다면, 쓰임부터 말해보세요</strong>
           </a>
 
           <a class="related-card" href="/blog/instagram-content-ideas">
             <span>B2B011 · 인스타/숏폼 운영</span>
-            <strong>인스타에 올려도 반응이 없을 때 로컬 공간이 바꿀 소재</strong>
+            <strong>인스타에 올려도 조용하다면, 소재보다 먼저 저장할 이유를 봐야 합니다</strong>
           </a>
       </div>
     </section>
