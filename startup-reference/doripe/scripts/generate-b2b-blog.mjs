@@ -806,6 +806,204 @@ function makeMiniPlan(row) {
   ];
 }
 
+const structurePools = {
+  "신규 손님 유입": [
+    "doorAudit",
+    "launchDropoff",
+    "weekdayUse",
+    "messageBridge",
+    "searchGap",
+    "noDiscountOffer",
+    "neighborhoodRoutine",
+    "popupAftercare",
+    "routeFriction",
+    "highValueBarrier"
+  ],
+  "인스타/숏폼 운영": [
+    "contentLab",
+    "profilePath",
+    "saveReason",
+    "captionRewrite",
+    "reelStoryboard",
+    "commentToVisit",
+    "feedShelf",
+    "weeklySeries"
+  ],
+  "네이버 플레이스/지도": [
+    "mapConversion",
+    "comparisonFix",
+    "placeProfileAudit",
+    "bookingFriction",
+    "photoOrder",
+    "routeFriction",
+    "localSearchIntent",
+    "ownerInfoDesk"
+  ],
+  "사진/콘텐츠 소재": [
+    "photoBrief",
+    "sceneInventory",
+    "menuStory",
+    "spaceAngle",
+    "beforeAfterPhoto",
+    "contentLab",
+    "seasonalShelf",
+    "firstVisitVisual"
+  ],
+  "리뷰/저장/방문 전환": [
+    "saveToVisit",
+    "reviewReplyDesk",
+    "hesitationMap",
+    "trustRepair",
+    "decisionFlow",
+    "faqFromReviews",
+    "returnTrigger",
+    "smallPromise"
+  ],
+  "공간 브랜딩/분위기": [
+    "brandLanguage",
+    "moodTranslation",
+    "senseToUse",
+    "toneBoard",
+    "oneLinePosition",
+    "doDontCopy",
+    "sceneInventory",
+    "spaceAngle"
+  ],
+  "재방문/단골/커뮤니티": [
+    "returnTrigger",
+    "regularRoutine",
+    "communityLoop",
+    "eventMemory",
+    "nextVisitScript",
+    "seasonalShelf",
+    "reviewReplyDesk",
+    "smallPromise"
+  ],
+  "Doripe 리포트/케이스": [
+    "reportRead",
+    "cardTeardown",
+    "patternMemo",
+    "operatorBrief",
+    "saveCaseLens"
+  ]
+};
+
+const manualStructureById = {
+  B2B001: "doorAudit",
+  B2B002: "launchDropoff",
+  B2B003: "weekdayUse",
+  B2B004: "messageBridge",
+  B2B005: "searchGap",
+  B2B006: "noDiscountOffer",
+  B2B007: "neighborhoodRoutine",
+  B2B008: "popupAftercare",
+  B2B009: "routeFriction",
+  B2B010: "highValueBarrier",
+  B2B011: "contentLab",
+  B2B012: "profilePath",
+  B2B014: "saveReason",
+  B2B016: "mapConversion",
+  B2B017: "comparisonFix",
+  B2B019: "photoOrder",
+  B2B032: "reelStoryboard",
+  B2B048: "routeFriction",
+  B2B051: "bookingFriction",
+  B2B053: "moodTranslation",
+  B2B056: "photoBrief",
+  B2B058: "menuStory",
+  B2B060: "firstVisitVisual",
+  B2B063: "spaceAngle",
+  B2B068: "saveToVisit",
+  B2B069: "reviewReplyDesk",
+  B2B070: "faqFromReviews",
+  B2B073: "bookingFriction",
+  B2B074: "returnTrigger",
+  B2B078: "brandLanguage",
+  B2B080: "toneBoard",
+  B2B084: "operatorBrief",
+  B2B088: "returnTrigger",
+  B2B091: "communityLoop",
+  B2B096: "reportRead",
+  B2B098: "saveCaseLens"
+};
+
+const structureBlueprints = {
+  doorAudit: ["visitorMoment", "outsideInsideGap", "firstScreenAudit", "doDont", "fieldTest", "doripe", "sources"],
+  launchDropoff: ["timeline", "memoryHook", "channelMap", "smallScript", "nextSevenDays", "doripe", "sources"],
+  weekdayUse: ["timeMap", "sceneMenu", "photoBrief", "contentCalendar", "ownerCheck", "doripe", "sources"],
+  messageBridge: ["insideOutsideWords", "visitorQuestion", "copyRewrite", "doDont", "fieldTest", "doripe", "sources"],
+  searchGap: ["searchIntent", "firstScreenAudit", "decisionFlow", "channelMap", "mistakeMap", "doripe", "sources"],
+  noDiscountOffer: ["offerFrame", "sceneMenu", "copyRewrite", "smallPromise", "nextSevenDays", "doripe", "sources"],
+  neighborhoodRoutine: ["localRoutine", "visitorQuestion", "routineIdeas", "handoff", "ownerCheck", "doripe", "sources"],
+  popupAftercare: ["eventFlow", "saveHook", "channelMap", "smallScript", "afterEventPlan", "doripe", "sources"],
+  routeFriction: ["routeRisk", "mapInfoDesk", "photoBrief", "handoff", "fieldTest", "doripe", "sources"],
+  highValueBarrier: ["barrierMap", "visitorQuestion", "decisionFlow", "copyRewrite", "ownerCheck", "doripe", "sources"],
+  contentLab: ["contentHypothesis", "sceneInventory", "captionRewrite", "contentCalendar", "mistakeMap", "doripe", "sources"],
+  profilePath: ["profilePath", "visitorQuestion", "channelMap", "smallScript", "fieldTest", "doripe", "sources"],
+  saveReason: ["saveReason", "photoBrief", "doDont", "nextSevenDays", "sources", "doripe"],
+  captionRewrite: ["insideOutsideWords", "captionRewrite", "sceneMenu", "mistakeMap", "ownerCheck", "doripe", "sources"],
+  reelStoryboard: ["storyboard", "sceneInventory", "smallScript", "handoff", "fieldTest", "doripe", "sources"],
+  commentToVisit: ["visitorQuestion", "faqFromSignals", "smallScript", "decisionFlow", "nextSevenDays", "doripe", "sources"],
+  feedShelf: ["feedShelf", "photoBrief", "contentCalendar", "doDont", "sources", "doripe"],
+  weeklySeries: ["seriesPlan", "routineIdeas", "contentCalendar", "handoff", "ownerCheck", "doripe", "sources"],
+  mapConversion: ["mapInfoDesk", "decisionFlow", "firstScreenAudit", "smallScript", "fieldTest", "doripe", "sources"],
+  comparisonFix: ["comparisonTable", "oneLinePosition", "photoBrief", "copyRewrite", "mistakeMap", "doripe", "sources"],
+  placeProfileAudit: ["profileScorecard", "mapInfoDesk", "visitorQuestion", "photoBrief", "nextSevenDays", "doripe", "sources"],
+  bookingFriction: ["barrierMap", "bookingPath", "smallScript", "doDont", "fieldTest", "doripe", "sources"],
+  photoOrder: ["photoOrder", "firstVisitVisual", "mapInfoDesk", "ownerCheck", "sources", "doripe"],
+  localSearchIntent: ["searchIntent", "visitorQuestion", "comparisonTable", "handoff", "nextSevenDays", "doripe", "sources"],
+  ownerInfoDesk: ["ownerCheck", "profileScorecard", "smallScript", "fieldTest", "sources", "doripe"],
+  photoBrief: ["photoBrief", "sceneInventory", "firstVisitVisual", "captionRewrite", "ownerCheck", "doripe", "sources"],
+  sceneInventory: ["sceneInventory", "timeMap", "doDont", "contentCalendar", "doripe", "sources"],
+  menuStory: ["menuStory", "visitorQuestion", "photoBrief", "copyRewrite", "handoff", "doripe", "sources"],
+  spaceAngle: ["spaceAngle", "senseToUse", "photoBrief", "oneLinePosition", "fieldTest", "doripe", "sources"],
+  beforeAfterPhoto: ["outsideInsideGap", "photoBrief", "captionRewrite", "mistakeMap", "nextSevenDays", "doripe", "sources"],
+  seasonalShelf: ["seasonalShelf", "routineIdeas", "contentCalendar", "smallScript", "ownerCheck", "doripe", "sources"],
+  firstVisitVisual: ["firstVisitVisual", "visitorQuestion", "photoOrder", "handoff", "fieldTest", "doripe", "sources"],
+  saveToVisit: ["saveReason", "hesitationMap", "decisionFlow", "smallScript", "fieldTest", "doripe", "sources"],
+  reviewReplyDesk: ["reviewReplyDesk", "faqFromSignals", "doDont", "smallPromise", "sources", "doripe"],
+  hesitationMap: ["hesitationMap", "visitorQuestion", "firstScreenAudit", "copyRewrite", "nextSevenDays", "doripe", "sources"],
+  trustRepair: ["trustRepair", "reviewReplyDesk", "ownerCheck", "smallScript", "doripe", "sources"],
+  decisionFlow: ["decisionFlow", "channelMap", "smallPromise", "fieldTest", "doripe", "sources"],
+  faqFromReviews: ["faqFromSignals", "reviewReplyDesk", "profileScorecard", "handoff", "sources", "doripe"],
+  returnTrigger: ["returnTrigger", "routineIdeas", "smallScript", "contentCalendar", "ownerCheck", "doripe", "sources"],
+  smallPromise: ["smallPromise", "doDont", "copyRewrite", "fieldTest", "sources", "doripe"],
+  brandLanguage: ["moodTranslation", "insideOutsideWords", "oneLinePosition", "copyRewrite", "doripe", "sources"],
+  moodTranslation: ["moodTranslation", "senseToUse", "sceneMenu", "doDont", "fieldTest", "doripe", "sources"],
+  senseToUse: ["senseToUse", "visitorQuestion", "photoBrief", "oneLinePosition", "sources", "doripe"],
+  toneBoard: ["toneBoard", "insideOutsideWords", "captionRewrite", "ownerCheck", "doripe", "sources"],
+  oneLinePosition: ["oneLinePosition", "comparisonTable", "copyRewrite", "smallPromise", "fieldTest", "doripe", "sources"],
+  doDontCopy: ["doDont", "insideOutsideWords", "copyRewrite", "mistakeMap", "doripe", "sources"],
+  regularRoutine: ["regularRoutine", "returnTrigger", "routineIdeas", "handoff", "contentCalendar", "doripe", "sources"],
+  communityLoop: ["communityLoop", "smallScript", "reviewReplyDesk", "nextSevenDays", "doripe", "sources"],
+  eventMemory: ["eventFlow", "saveHook", "smallScript", "afterEventPlan", "doripe", "sources"],
+  nextVisitScript: ["nextVisitScript", "routineIdeas", "smallPromise", "fieldTest", "sources", "doripe"],
+  reportRead: ["reportRead", "patternMemo", "decisionFlow", "ownerCheck", "doripe", "sources"],
+  cardTeardown: ["cardTeardown", "firstScreenAudit", "photoBrief", "oneLinePosition", "sources", "doripe"],
+  patternMemo: ["patternMemo", "comparisonTable", "mistakeMap", "fieldTest", "doripe", "sources"],
+  operatorBrief: ["operatorBrief", "ownerCheck", "smallScript", "nextSevenDays", "sources", "doripe"],
+  saveCaseLens: ["saveCaseLens", "sceneInventory", "decisionFlow", "doripe", "sources"]
+};
+
+function structureKeyFor(row, index) {
+  if (manualStructureById[row.id]) return manualStructureById[row.id];
+  const pool = structurePools[row.cluster] ?? structurePools["신규 손님 유입"];
+  const number = Number.parseInt(String(row.id).replace(/\D/g, ""), 10) || index + 1;
+  return pool[(number + index) % pool.length];
+}
+
+function buildStructure(row, index) {
+  const key = structureKeyFor(row, index);
+  const sections = [...(structureBlueprints[key] ?? structureBlueprints.doorAudit)];
+  const focusSection = `focus-${row.id.toLowerCase()}`;
+  const insertAt = Math.min(2 + (index % 3), Math.max(1, sections.length - 2));
+  sections.splice(insertAt, 0, focusSection);
+  return {
+    key,
+    sections
+  };
+}
+
 function normalizeArticle(row, index) {
   const manual = manualById.get(row.id) ?? {};
   const guide = clusterGuides[row.cluster] ?? defaultGuide;
@@ -829,6 +1027,7 @@ function normalizeArticle(row, index) {
     channelSteps: makeChannelSteps(row),
     mistakes: makeMistakes(row),
     miniPlan: makeMiniPlan(row),
+    structure: buildStructure(row, index),
     sources: sourceKeysForCluster(row.cluster).map((key) => sourceLibrary[key]),
     editor,
     before: manual.before ?? makeBefore(row),
@@ -876,6 +1075,263 @@ const articleUrl = (article) => `/blog/${article.slug}`;
 
 const renderTags = (article) =>
   [article.keyword, ...article.spaces].map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
+
+const sectionMeta = {
+  afterEventPlan: ["사후 연결", "끝난 뒤에도 남겨야 할 것"],
+  barrierMap: ["방문 장벽", "가격보다 먼저 막히는 것"],
+  bookingPath: ["예약 동선", "예약 직전에 필요한 안내"],
+  captionRewrite: ["캡션 실험", "첫 줄을 방문 장면으로 바꾸기"],
+  cardTeardown: ["카드 해부", "저장되는 공간 카드 뜯어보기"],
+  channelMap: ["채널 연결", "지도, 인스타, 현장이 같은 말을 하게"],
+  communityLoop: ["커뮤니티", "처음 온 사람도 들어올 수 있는 구조"],
+  comparisonTable: ["비교 기준", "비슷해 보이는 순간에 남길 차이"],
+  contentCalendar: ["콘텐츠 루틴", "이번 달에 반복할 기록"],
+  contentHypothesis: ["소재 가설", "반응보다 먼저 세울 질문"],
+  copyRewrite: ["문구 변환", "운영자 문장을 방문자 문장으로"],
+  decisionFlow: ["결정 흐름", "본 뒤에 무엇을 확인하게 할까"],
+  doDont: ["주의할 점", "하면 좋은 것과 피할 것"],
+  doripe: ["Doripe 관점", "Doripe 관점 🌿"],
+  eventFlow: ["전후 흐름", "행사 전, 당일, 이후를 나눠보기"],
+  faqFromSignals: ["반복 질문", "자주 묻는 말은 콘텐츠 신호입니다"],
+  feedShelf: ["피드 진열", "피드를 작은 진열대로 보기"],
+  fieldTest: ["작은 실험", "이번 주에 해볼 작은 실험"],
+  firstScreenAudit: ["첫 화면", "첫 화면에서 빠지면 안 되는 정보"],
+  firstVisitVisual: ["첫 방문 사진", "처음 오는 사람이 봐야 할 장면"],
+  handoff: ["연결 장치", "온라인에서 현장으로 넘겨주는 말"],
+  hesitationMap: ["망설임 지도", "저장 뒤 방문을 미루는 이유"],
+  insideOutsideWords: ["언어 번역", "우리끼리 아는 말을 바깥말로"],
+  localRoutine: ["생활 동선", "동네 손님이 다시 떠올리는 순간"],
+  mapInfoDesk: ["지도 정보", "지도에서 먼저 정리할 안내"],
+  memoryHook: ["기억 단서", "한 번 본 손님에게 남길 단서"],
+  menuStory: ["메뉴 이야기", "메뉴를 선택 장면으로 보여주기"],
+  mistakeMap: ["실수 지도", "자주 어긋나는 지점"],
+  moodTranslation: ["분위기 번역", "감성어를 판단 정보로 바꾸기"],
+  nextSevenDays: ["7일 루틴", "7일 안에 순서대로 바꿀 것"],
+  nextVisitScript: ["다음 방문", "다시 올 이유를 말로 남기기"],
+  offerFrame: ["제안 설계", "할인 대신 방문 맥락을 제안하기"],
+  oneLinePosition: ["한 문장", "비교될 때 남는 한 문장"],
+  ownerCheck: ["운영자 점검", "운영자가 먼저 확인할 질문"],
+  outsideInsideGap: ["온·오프 차이", "밖에서 보이는 모습과 안의 경험"],
+  patternMemo: ["패턴 메모", "저장되는 공간에서 반복되는 단서"],
+  photoBrief: ["사진 브리프", "이번 주에 찍어야 할 컷"],
+  photoOrder: ["사진 순서", "1번 사진부터 다시 배열하기"],
+  profilePath: ["프로필 동선", "프로필에서 방문까지 이어지는 길"],
+  profileScorecard: ["프로필 점수표", "플레이스/계정 점수표"],
+  regularRoutine: ["단골 루틴", "다시 오게 만드는 작은 반복"],
+  reportRead: ["관찰 질문", "데이터처럼 말하지 않고 관찰하기"],
+  returnTrigger: ["재방문 단서", "만족한 손님이 다시 떠올릴 이유"],
+  reviewReplyDesk: ["리뷰 답변", "리뷰 답변을 다음 손님 정보로"],
+  routeRisk: ["길찾기", "찾아오는 길에서 불안을 줄이기"],
+  routineIdeas: ["루틴 아이디어", "업종별로 만들 수 있는 반복"],
+  saveCaseLens: ["저장 렌즈", "왜 어떤 공간은 저장되는가"],
+  saveHook: ["저장 장치", "나중에 다시 찾을 이유 남기기"],
+  saveReason: ["저장 이유", "저장은 관심, 방문은 다른 단계"],
+  sceneInventory: ["장면 목록", "공간 안의 장면을 재고처럼 세기"],
+  sceneMenu: ["상황 메뉴", "상황별로 추천할 장면"],
+  searchIntent: ["검색 의도", "검색한 사람은 무엇을 확인하려 할까"],
+  seasonalShelf: ["계절 진열", "계절마다 다시 꺼낼 소재"],
+  senseToUse: ["감각 단서", "빛, 소리, 거리감을 쓰임으로"],
+  seriesPlan: ["연재 계획", "한 번 올리고 끝내지 않는 법"],
+  smallPromise: ["작은 약속", "손님이 기대해도 되는 한 가지"],
+  smallScript: ["짧은 문장", "그대로 쓸 수 있는 안내 문장"],
+  sources: ["참고 기준", "참고한 기준 📚"],
+  spaceAngle: ["공간 각도", "공간의 각도를 하나로 좁히기"],
+  storyboard: ["릴스 흐름", "영상 끝에 방문 단서를 남기기"],
+  timeMap: ["시간대", "시간대별로 다르게 보이는 공간"],
+  timeline: ["타임라인", "오픈 전후 흐름을 다시 보기"],
+  toneBoard: ["톤 보드", "사진, 문구, 응대의 톤 맞추기"],
+  trustRepair: ["신뢰 보강", "불확실한 정보를 먼저 지우기"],
+  visitorMoment: ["고객 순간", "손님이 멈추는 순간"],
+  visitorQuestion: ["고객 질문", "처음 보는 손님이 묻는 것"]
+};
+
+function renderList(items) {
+  return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n          ")}</ul>`;
+}
+
+function renderCards(items) {
+  return `<div class="mini-grid">${items.map((item) => `<div><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.body)}</p></div>`).join("\n          ")}</div>`;
+}
+
+function renderTable(rows) {
+  return `<div class="mini-table">${rows
+    .map((row) => `<div><strong>${escapeHtml(row[0])}</strong><span>${escapeHtml(row[1])}</span></div>`)
+    .join("\n          ")}</div>`;
+}
+
+function renderFlow(items) {
+  return `<div class="flow">${items
+    .map((item, index) => `<div><span>${String(index + 1).padStart(2, "0")}</span><p>${escapeHtml(item)}</p></div>`)
+    .join("\n          ")}</div>`;
+}
+
+function renderBeforeAfter(before, after) {
+  return `<div class="example">
+          <div>
+            <strong>Before</strong>
+            <p>${escapeHtml(before)}</p>
+          </div>
+          <div>
+            <strong>After</strong>
+            <p>${escapeHtml(after)}</p>
+          </div>
+        </div>`;
+}
+
+function spaceVariantRows(article) {
+  const fallbacks = ["식당", "카페", "샵"];
+  return (article.spaces.length ? article.spaces : fallbacks).slice(0, 3).map((space) => [
+    space,
+    `${space}에서는 '${article.keyword}' 문제를 한 문장 설명보다 실제 이용 장면, 확인 정보, 사진 순서로 나눠 보여주는 편이 좋습니다.`
+  ]);
+}
+
+function sectionInfo(article, section) {
+  if (section.startsWith("focus-")) {
+    return ["핵심 질문", `${article.keyword}: 이 글에서 먼저 볼 질문`];
+  }
+  return sectionMeta[section] ?? ["점검", "지금 볼 것"];
+}
+
+function sectionBody(article, section, sourceLinks) {
+  if (section.startsWith("focus-")) {
+    return `<p>${escapeHtml(article.summary)}</p>${renderCards([
+      { title: "증상", body: article.points[0] ?? `${article.keyword} 문제가 반복됩니다.` },
+      { title: "손님 질문", body: "처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다." },
+      { title: "오늘 바꿀 것", body: article.checklist[0] ?? "첫 화면의 정보와 대표 장면을 하나씩 정리합니다." }
+    ])}`;
+  }
+  switch (section) {
+    case "doripe":
+      return `<div class="note"><p>${escapeHtml(article.doripe)}</p></div><p>핵심은 큰 캠페인을 만드는 것이 아니라 손님이 이미 보는 화면과 현장 안내를 같은 장면으로 맞추는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p>`;
+    case "sources":
+      return `<p>아래 자료는 글을 만들 때 확인한 공식 도움말과 리서치입니다. 플랫폼 화면은 바뀔 수 있으니, 실제 적용 전에는 각 서비스의 현재 안내를 한 번 더 확인하는 편이 좋습니다.</p><div class="source-list">${sourceLinks}</div>`;
+    case "timeline":
+    case "eventFlow":
+      return `<p>${escapeHtml(article.title)}은 한 시점의 문제가 아니라 전후 흐름에서 생기는 경우가 많습니다.</p>${renderFlow(["방문 전: 손님이 저장하거나 비교할 정보를 먼저 봅니다.", "방문 중: 현장에서 다음 행동으로 이어지는 작은 단서를 만납니다.", "방문 후: 다시 확인할 채널, 다음 일정, 관련 콘텐츠가 남아 있어야 합니다."])}`;
+    case "afterEventPlan":
+      return `${renderFlow(["감사 인사보다 먼저 다시 확인할 링크를 남깁니다.", "현장에서 본 메뉴, 작품, 상품을 온라인에서 찾을 수 있게 묶습니다.", "다음 방문 장면을 하나만 정해 짧게 안내합니다."])}`;
+    case "timeMap":
+      return `<p>같은 공간도 시간대가 바뀌면 쓰임이 달라집니다. 빈 시간은 약점이 아니라 다른 손님에게 맞는 장면이 될 수 있습니다.</p>${renderTable([["오전", "조용한 좌석, 준비되는 메뉴, 짧은 방문에 맞는 정보"], ["오후", "머무는 시간, 작업/대화 가능 여부, 밝은 사진"], ["저녁", "예약 필요 여부, 조도와 분위기, 동행 추천"]])}`;
+    case "contentCalendar":
+    case "seriesPlan":
+      return `${renderFlow(["월요일에는 이번 주 이용 장면을 하나 고릅니다.", "수요일에는 사진 한 장과 캡션 첫 문장을 바꿔 봅니다.", "주말 전에는 위치, 예약, 첫 방문 추천을 다시 앞으로 끌어옵니다."])}`;
+    case "sceneMenu":
+    case "routineIdeas":
+      return `${renderCards(spaceVariantRows(article).map(([title, body]) => ({ title, body })))}`;
+    case "visitorMoment":
+    case "visitorQuestion":
+      return `<p>손님은 공간을 충분히 이해한 뒤 고민하는 것이 아니라, 몇 가지 질문에 답을 얻지 못할 때 조용히 이탈합니다.</p>${renderList(["처음 가도 어색하지 않은가?", "가격, 예약, 위치 같은 기본 정보가 바로 보이는가?", "내 상황에 맞는 이용 장면이 떠오르는가?"])}`;
+    case "searchIntent":
+      return `<p>'${escapeHtml(article.keyword)}'를 검색한 사람은 브랜드 설명보다 지금 결정에 필요한 정보를 먼저 찾습니다.</p>${renderTable([["확인", "영업시간, 위치, 예약/문의, 가격대"], ["비교", "비슷한 공간과 다른 한 문장"], ["결정", "오늘 가도 되는 이유와 실패하지 않을 첫 선택지"]])}`;
+    case "firstScreenAudit":
+    case "profileScorecard":
+      return `${renderCards([{ title: "첫 사진", body: "입구, 내부, 대표 장면 중 하나가 첫 방문 불안을 줄이는지 봅니다." }, { title: "첫 문장", body: "운영자 소개가 아니라 손님이 언제 쓰면 좋은지 말합니다." }, { title: "첫 행동", body: "예약, 길찾기, 저장, 문의 중 다음 행동이 바로 보이게 합니다." }])}`;
+    case "mapInfoDesk":
+    case "ownerInfoDesk":
+      return `<p>지도와 플레이스 정보는 검색 순위보다 먼저 기본 정보의 정확성과 갱신 상태를 정리하는 공간입니다.</p>${renderList(article.checklist.slice(0, 5))}`;
+    case "photoBrief":
+    case "firstVisitVisual":
+      return `${renderTable([["1컷", "입구나 첫 화면에서 알아볼 수 있는 대표 장면"], ["2컷", "처음 앉거나 둘러볼 내부 장면"], ["3컷", "메뉴, 상품, 작품, 이용 방식이 보이는 디테일"], ["4컷", "혼자/동행/예약 등 방문 조건을 상상하게 하는 장면"]])}`;
+    case "photoOrder":
+      return `${renderFlow(["첫 장은 분위기보다 확인 가능한 대표 장면으로 둡니다.", "두 번째에는 내부 동선이나 좌석감을 보여줍니다.", "세 번째부터 메뉴, 상품, 작품, 디테일을 배치합니다.", "오래된 사진은 뒤로 보내거나 교체합니다."])}`;
+    case "sceneInventory":
+      return `<p>소재가 부족할 때는 새로운 이벤트보다 공간 안에 이미 있는 장면을 다시 세는 편이 빠릅니다.</p>${renderList(["입구에서 보이는 첫 장면", "손이 닿는 메뉴, 제품, 작품", "머무는 좌석과 조도", "나갈 때 가져가는 기억이나 카드"])}`;
+    case "captionRewrite":
+    case "copyRewrite":
+    case "insideOutsideWords":
+      return `<p>문구는 멋있게 쓰기보다 손님이 판단할 수 있게 바꾸는 작업입니다.</p>${renderBeforeAfter(article.before, article.after)}`;
+    case "doDont":
+    case "mistakeMap":
+      return `<p>좋은 공간일수록 추상적인 말로 뭉뚱그리기 쉽습니다. 아래 지점만 피해도 처음 보는 손님에게 더 친절해집니다.</p>${renderList(article.mistakes)}`;
+    case "fieldTest":
+    case "nextSevenDays":
+      return renderFlow(article.miniPlan);
+    case "channelMap":
+    case "handoff":
+      return `<p>같은 말을 모든 채널에 복사하기보다, 각 채널에서 손님이 하려는 행동에 맞춰 연결해야 합니다.</p>${renderList(article.channelSteps)}`;
+    case "smallScript":
+    case "smallPromise":
+    case "nextVisitScript":
+      return `${renderCards([{ title: "지도/플레이스", body: `${article.keyword} 상황에서 바로 확인할 수 있는 정보를 첫 문장에 둡니다.` }, { title: "인스타", body: "사진 설명보다 방문 상황을 먼저 말합니다." }, { title: "현장", body: "온라인에서 본 문구를 입구나 계산대에서 한 번 더 만나게 합니다." }])}`;
+    case "comparisonTable":
+    case "oneLinePosition":
+      return `${renderTable([["흔한 말", "좋은 분위기, 감성적인 공간, 편안한 매장"], ["남는 말", `${article.spaces[0] ?? "공간"}을 처음 보는 손님도 ${article.keyword} 상황에서 바로 떠올릴 수 있는 문장`], ["검증법", "그 문장만 보고 방문 시간, 동행, 이용 방식을 상상할 수 있는지 봅니다."]])}`;
+    case "decisionFlow":
+      return `${renderFlow(["발견: 이름과 사진을 봅니다.", "비교: 비슷한 후보와 다른 점을 찾습니다.", "확인: 위치, 예약, 가격, 이용 방식을 봅니다.", "행동: 저장, 문의, 예약, 방문 중 하나로 넘어갑니다."])}`;
+    case "barrierMap":
+    case "hesitationMap":
+    case "trustRepair":
+      return `<p>방문을 막는 것은 가격 하나가 아닙니다. 처음 보는 손님은 작은 불확실성이 여러 개 겹칠 때 미룹니다.</p>${renderTable([["정보 장벽", "영업시간, 가격, 예약 방식이 흐림"], ["심리 장벽", "혼자 가도 되는지, 처음 가도 어색하지 않은지 모름"], ["동선 장벽", "입구, 주차, 찾아오는 길이 불안함"]])}`;
+    case "bookingPath":
+      return `${renderFlow(["예약 전에 필요한 정보를 먼저 공개합니다.", "문의해야만 알 수 있는 조건을 줄입니다.", "예약 후 도착 전 안내를 한 번 더 보냅니다."])}`;
+    case "reviewReplyDesk":
+      return `<p>리뷰 답변은 작성자에게만 보이는 말이 아닙니다. 다음 손님이 방문 전 확인하는 작은 안내문이 될 수 있습니다.</p>${renderList(["고맙다는 말 뒤에 다음 손님에게 도움이 되는 정보를 한 줄 붙입니다.", "과한 홍보보다 이용 팁, 추천 시간, 주의할 점을 짧게 남깁니다.", "불편 리뷰에는 방어보다 정보 보완을 먼저 합니다."])}`;
+    case "faqFromSignals":
+      return `${renderTable([["반복 문의", "FAQ, 하이라이트, 플레이스 소개로 빼야 할 신호"], ["반복 리뷰", "손님이 실제로 좋아한 장면을 다음 콘텐츠로 옮길 신호"], ["반복 저장", "다시 열어볼 정보가 있다는 신호"]])}`;
+    case "saveReason":
+    case "saveHook":
+      return `<p>저장은 방문 결정이 아니라 후보에 넣는 행동입니다. 저장한 사람이 다시 열었을 때 결정할 정보가 있어야 합니다.</p>${renderTable([["저장 정보", "나중에 다시 보고 싶은 분위기, 메뉴, 위치"], ["방문 정보", "언제, 누구와, 어떻게 이용하면 좋은지"], ["리마인드", "다음 일정, 계절 메뉴, 새 입고, 전시 교체"]])}`;
+    case "returnTrigger":
+    case "regularRoutine":
+      return `<p>한 번 만족한 손님도 다시 올 이유가 없으면 기억에서 흐려집니다. 재방문은 혜택보다 반복 가능한 약속에서 생깁니다.</p>${renderCards([{ title: "식당/바", body: "요일 메뉴, 첫 잔 추천, 계절 안주처럼 다시 확인할 이유를 둡니다." }, { title: "샵/서점", body: "새 입고, 추천 코너, 선물 상황처럼 다시 들를 핑계를 만듭니다." }, { title: "전시/공방", body: "교체 일정, 다음 클래스, 짧은 체험으로 다음 장면을 남깁니다." }])}`;
+    case "communityLoop":
+      return `<p>커뮤니티가 강한 공간일수록 처음 온 사람에게는 문턱이 생길 수 있습니다. 기존 손님과 신규 손님이 같이 이해할 공지가 필요합니다.</p>${renderFlow(["처음 참여하는 사람이 알아야 할 기본 정보를 앞에 둡니다.", "기존 단골에게만 통하는 별명과 약어는 풀어 씁니다.", "행사 후 다음 모임으로 이어지는 기록을 남깁니다."])}`;
+    case "moodTranslation":
+    case "senseToUse":
+    case "toneBoard":
+      return `<p>분위기는 형용사만으로 전달되지 않습니다. 손님이 느낄 수 있는 요소를 쓰임과 함께 적어야 합니다.</p>${renderTable([["빛", "밝다/어둡다보다 언제 머물기 좋은지"], ["소리", "조용함, 대화 가능성, 집중 가능성"], ["거리감", "혼자, 둘이, 모임 중 어떤 상황에 맞는지"], ["응대", "처음 온 손님이 따라가기 쉬운 안내인지"]])}`;
+    case "spaceAngle":
+      return `<p>여러 매력이 있을수록 한 글에서는 각도를 하나로 좁혀야 합니다. 그래야 손님이 저장할 이유도 선명해집니다.</p>${renderCards([{ title: "방문 상황", body: "언제 가면 좋은지부터 정합니다." }, { title: "대표 장면", body: "그 상황을 보여주는 사진을 고릅니다." }, { title: "확인 정보", body: "예약, 위치, 가격, 체류 시간을 붙입니다." }])}`;
+    case "offerFrame":
+      return `<p>할인 없이 첫 방문을 만들려면 가격보다 먼저 방문 맥락을 제안해야 합니다.</p>${renderCards([{ title: "처음이라면", body: "실패하지 않을 첫 선택지를 좁혀줍니다." }, { title: "이럴 때", body: "데이트 전, 혼자 한 잔, 선물 고르기처럼 상황을 말합니다." }, { title: "이만큼", body: "체류 시간과 준비물을 알려 부담을 줄입니다." }])}`;
+    case "localRoutine":
+    case "seasonalShelf":
+      return `<p>동네 손님은 거창한 이벤트보다 생활 동선 안에서 다시 떠올릴 이유를 찾습니다.</p>${renderTable([["퇴근길", "가볍게 들를 수 있는 메뉴나 상품"], ["주말 오전", "천천히 둘러볼 수 있는 장면"], ["계절 변화", "새 입고, 교체 전시, 시즌 메뉴"]])}`;
+    case "profilePath":
+      return `${renderFlow(["프로필 첫 줄에서 방문 상황을 말합니다.", "고정 게시물에는 처음 오는 사람이 볼 안내를 둡니다.", "하이라이트에는 예약, 위치, FAQ를 분리합니다.", "게시물 말미에는 저장/문의/길찾기 중 하나만 남깁니다."])}`;
+    case "storyboard":
+      return `${renderFlow(["첫 2초: 공간의 대표 장면을 보여줍니다.", "중간: 이용 방식이나 메뉴 선택을 보여줍니다.", "마지막: 위치, 예약, 저장 이유 중 하나를 남깁니다."])}`;
+    case "feedShelf":
+      return `<p>피드는 예쁜 사진 모음이 아니라 처음 온 손님이 훑는 작은 진열대입니다.</p>${renderTable([["상단", "처음 방문 안내와 대표 장면"], ["중간", "메뉴, 상품, 작품, 좌석 같은 선택 정보"], ["반복", "계절/요일/새 소식처럼 다시 볼 이유"]])}`;
+    case "contentHypothesis":
+      return `<p>반응을 보기 전에 먼저 가설을 세워야 합니다. 이 글의 가설은 '${escapeHtml(article.keyword)}' 문제를 겪는 손님이 무엇을 확인하면 한 단계 움직일지입니다.</p>${renderList(article.points)}`;
+    case "menuStory":
+      return `<p>메뉴나 상품은 이름만으로 선택되지 않습니다. 처음 보는 사람에게는 맛, 양, 시간, 상황이 함께 보여야 합니다.</p>${renderCards(spaceVariantRows(article).map(([title, body]) => ({ title, body })))}`;
+    case "reportRead":
+    case "patternMemo":
+    case "saveCaseLens":
+    case "cardTeardown":
+      return `<p>이 글은 실제 수치처럼 꾸미지 않고, Doripe가 공간 카드를 설계할 때 쓰는 관찰 질문으로 접근합니다.</p>${renderList(["이 공간은 언제 떠올리기 쉬운가?", "사진과 문구가 같은 장면을 말하는가?", "저장한 사람이 다시 열었을 때 결정할 정보가 남아 있는가?", "업종명이 아니라 방문 이유가 먼저 보이는가?"])}`;
+    case "operatorBrief":
+    case "ownerCheck":
+      return `<p>운영자가 먼저 볼 것은 더 많은 홍보 채널이 아니라, 이미 열려 있는 정보의 순서입니다.</p>${renderList(article.checklist.slice(0, 5))}`;
+    case "memoryHook":
+      return `<p>손님이 공간을 기억하는 단서는 대개 거대한 슬로건이 아니라 작고 구체적인 장면입니다.</p>${renderCards([{ title: "장면", body: "어떤 시간과 상황에 떠올릴지 정합니다." }, { title: "물건", body: "메뉴, 상품, 작품 중 기억될 대상을 고릅니다." }, { title: "다음", body: "다시 확인할 채널이나 일정을 남깁니다." }])}`;
+    case "outsideInsideGap":
+    case "routeRisk":
+      return `<p>온라인에서 기대한 모습과 현장에서 만나는 모습이 다르면 첫 방문의 불안이 커집니다.</p>${renderTable([["밖", "입구, 찾아오는 길, 첫 사진"], ["안", "좌석, 주문 방식, 이용 흐름"], ["연결", "온라인 문구와 현장 안내가 같은 장면을 말하는지"]])}`;
+    default:
+      return `<p>${escapeHtml(article.summary)}</p>${renderList(article.points)}`;
+  }
+}
+
+function renderArticleSection(article, section, sourceLinks) {
+  const [, title] = sectionInfo(article, section);
+  return `<section class="content-block content-${escapeHtml(section)}">
+        <h2 id="${escapeHtml(section)}">${escapeHtml(title)}</h2>
+        ${sectionBody(article, section, sourceLinks)}
+      </section>`;
+}
+
+function renderArticleToc(article) {
+  return article.structure.sections
+    .map((section) => {
+      const [label] = sectionInfo(article, section);
+      return `<a href="#${escapeHtml(section)}">${escapeHtml(label)}</a>`;
+    })
+    .join("\n        ");
+}
 
 const commonStyles = `
   :root {
@@ -1349,6 +1805,85 @@ ${commonStyles}
     border-radius: 8px;
     background: #fffdf8;
   }
+  .content-block {
+    margin: 0 0 40px;
+  }
+  .content-block:last-child { margin-bottom: 0; }
+  .mini-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 18px 0 28px;
+  }
+  .mini-grid div,
+  .mini-table div,
+  .flow div {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fffdf8;
+  }
+  .mini-grid div {
+    padding: 18px;
+  }
+  .mini-grid strong,
+  .mini-table strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #11110f;
+    font-size: 15px;
+    font-weight: 900;
+  }
+  .mini-grid p {
+    margin: 0;
+    color: #4f4b43;
+    font-size: 16px;
+    line-height: 1.62;
+  }
+  .mini-table {
+    display: grid;
+    gap: 10px;
+    margin: 18px 0 28px;
+  }
+  .mini-table div {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 12px;
+    padding: 16px;
+  }
+  .mini-table span {
+    color: #4f4b43;
+    font-size: 16px;
+    line-height: 1.62;
+  }
+  .flow {
+    display: grid;
+    gap: 10px;
+    margin: 18px 0 28px;
+    counter-reset: flow;
+  }
+  .flow div {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    padding: 16px;
+  }
+  .flow span {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--green-soft);
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 900;
+  }
+  .flow p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+  }
   .example {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1449,7 +1984,8 @@ ${commonStyles}
       overflow-wrap: anywhere;
     }
     .article-body h2 { font-size: 24px; }
-    .toc, .example { grid-template-columns: 1fr; }
+    .toc, .example, .mini-grid, .mini-table div { grid-template-columns: 1fr; }
+    .flow div { grid-template-columns: 38px minmax(0, 1fr); }
   }
 `;
 
@@ -1661,6 +2197,10 @@ function renderArticle(article) {
   const sourceLinks = article.sources
     .map((source) => `<a href="${source.url}" target="_blank" rel="noopener">${escapeHtml(source.label)}</a>`)
     .join("\n          ");
+  const tocLinks = renderArticleToc(article);
+  const articleSections = article.structure.sections
+    .map((section) => renderArticleSection(article, section, sourceLinks))
+    .join("\n\n        ");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -1733,71 +2273,11 @@ function renderArticle(article) {
 
     <div class="shell article-layout">
       <aside class="toc" aria-label="article sections">
-        <a href="#problem">문제 보기</a>
-        <a href="#checklist">점검할 것</a>
-        <a href="#channels">채널별 적용</a>
-        <a href="#example">문구 예시</a>
-        <a href="#mistakes">주의할 점</a>
-        <a href="#plan">7일 실험</a>
-        <a href="#doripe">Doripe 관점</a>
-        <a href="#sources">참고 기준</a>
+        ${tocLinks}
       </aside>
 
       <article class="article-body">
-        <h2 id="problem">먼저 문제를 좁혀야 합니다 🔎</h2>
-        <p>${escapeHtml(article.summary)}</p>
-        <p>운영자가 보기에는 이미 충분히 설명했다고 느낄 수 있습니다. 하지만 처음 보는 손님은 훨씬 적은 정보로 판단합니다. 그래서 이 문제는 더 많이 말하는 방식이 아니라, 손님이 실제로 망설이는 지점을 먼저 보여주는 방식으로 풀어야 합니다.</p>
-        <ul>
-          ${article.points.map((point) => `<li>${escapeHtml(point)}</li>`).join("\n          ")}
-        </ul>
-
-        <h2 id="checklist">이번 주에 바로 점검할 것 🧰</h2>
-        <p>아래 항목은 광고비를 쓰기 전에 먼저 확인할 수 있는 기본 정리입니다. Google Business Profile은 완전하고 정확한 업체 정보, 현재 영업시간, 사진, 리뷰 답변 같은 기본 정보를 강조하고, 네이버 스마트플레이스도 업체정보의 정확성과 갱신 상태 유지를 사업주의 책임으로 봅니다.</p>
-        <ul>
-          ${article.checklist.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n          ")}
-        </ul>
-
-        <h2 id="channels">채널별로 이렇게 바꿔보기 🗺️</h2>
-        <p>같은 메시지를 모든 채널에 복사하지 말고, 손님이 그 채널에서 하려는 행동에 맞춰 조금씩 바꿔야 합니다.</p>
-        <ul>
-          ${article.channelSteps.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n          ")}
-        </ul>
-
-        <h2 id="example">운영자 문구를 방문자 문구로 바꾸기 ✍️</h2>
-        <p>좋은 공간일수록 운영자는 많은 맥락을 알고 있습니다. 하지만 손님은 그 맥락을 모릅니다. 문구는 운영자가 하고 싶은 설명보다 손님이 판단할 수 있는 장면에 가까워야 합니다.</p>
-        <div class="example">
-          <div>
-            <strong>Before</strong>
-            <p>${escapeHtml(article.before)}</p>
-          </div>
-          <div>
-            <strong>After</strong>
-            <p>${escapeHtml(article.after)}</p>
-          </div>
-        </div>
-
-        <h2 id="mistakes">자주 놓치는 함정 ⚠️</h2>
-        <p>로컬 마케팅은 크게 한 번 터뜨리는 일보다, 손님이 확인하는 작은 정보들을 덜 헷갈리게 만드는 일에 가깝습니다.</p>
-        <ul>
-          ${article.mistakes.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n          ")}
-        </ul>
-
-        <h2 id="plan">7일 안에 해볼 작은 실험 🗓️</h2>
-        <ul>
-          ${article.miniPlan.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n          ")}
-        </ul>
-
-        <h2 id="doripe">Doripe 관점 🌿</h2>
-        <div class="note">
-          <p>${escapeHtml(article.doripe)}</p>
-        </div>
-        <p>핵심은 큰 캠페인을 만드는 것이 아닙니다. 손님이 이미 보고 있는 지도, 인스타, 소개 문구, 현장 안내에서 같은 장면을 반복해서 발견하게 만드는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정에 가까운 역할을 합니다.</p>
-
-        <h2 id="sources">참고한 기준 📚</h2>
-        <p>아래 자료는 글을 만들 때 확인한 공식 도움말과 리서치입니다. 플랫폼 화면은 바뀔 수 있으니, 실제 적용 전에는 각 서비스의 현재 안내를 한 번 더 확인하는 편이 좋습니다.</p>
-        <div class="source-list">
-          ${sourceLinks}
-        </div>
+        ${articleSections}
       </article>
     </div>
 
