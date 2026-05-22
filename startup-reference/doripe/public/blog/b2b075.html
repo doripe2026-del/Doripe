@@ -259,6 +259,25 @@
     display: none;
   }
   .article-body { font-size: 18px; line-height: 1.85; color: #2c2a25; word-break: keep-all; }
+  .article-intro {
+    margin: 0 0 44px;
+    padding-bottom: 34px;
+    border-bottom: 1px solid var(--line);
+  }
+  .article-intro p {
+    margin: 0 0 18px;
+    max-width: 720px;
+    color: #38352f;
+    font-size: 19px;
+    line-height: 1.82;
+    font-weight: 540;
+  }
+  .article-intro p:first-child {
+    color: var(--ink);
+    font-size: 21px;
+    line-height: 1.72;
+    font-weight: 760;
+  }
   .article-body h2 {
     margin: 46px 0 14px;
     font-size: 30px;
@@ -285,80 +304,66 @@
     margin: 0 0 40px;
   }
   .content-block:last-child { margin-bottom: 0; }
+  .prose-list {
+    display: grid;
+    gap: 12px;
+    margin: 18px 0 28px;
+  }
+  .prose-list p {
+    margin: 0;
+    padding-left: 18px;
+    border-left: 2px solid var(--line-strong);
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
+  }
+  .prose-list strong {
+    color: var(--green);
+    font-weight: 900;
+  }
   .mini-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-grid div,
   .mini-table div,
   .flow div {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #fffdf8;
+    padding: 0 0 0 18px;
+    border-left: 2px solid var(--line-strong);
   }
   .mini-grid div {
-    padding: 18px;
+    padding-left: 18px;
+  }
+  .mini-grid p,
+  .mini-table p,
+  .flow p {
+    margin: 0;
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
   }
   .mini-grid strong,
-  .mini-table strong {
-    display: block;
-    margin-bottom: 8px;
+  .mini-table strong,
+  .flow strong {
     color: #11110f;
-    font-size: 15px;
     font-weight: 900;
-  }
-  .mini-grid p {
-    margin: 0;
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
   }
   .mini-table {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-table div {
-    display: grid;
-    grid-template-columns: 150px minmax(0, 1fr);
-    gap: 12px;
-    padding: 16px;
-  }
-  .mini-table span {
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
+    padding-left: 18px;
   }
   .flow {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
-    counter-reset: flow;
   }
   .flow div {
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 12px;
-    align-items: start;
-    padding: 16px;
-  }
-  .flow span {
-    display: inline-grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--green-soft);
-    color: var(--green);
-    font-size: 12px;
-    font-weight: 900;
-  }
-  .flow p {
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.65;
+    padding-left: 18px;
   }
   .example {
     display: grid;
@@ -512,9 +517,17 @@
       word-break: normal;
       overflow-wrap: anywhere;
     }
+    .article-intro {
+      margin-bottom: 34px;
+      padding-bottom: 28px;
+    }
+    .article-intro p,
+    .article-intro p:first-child {
+      font-size: 17px;
+      line-height: 1.75;
+    }
     .article-body h2 { font-size: 24px; }
-    .example, .mini-grid, .mini-table div { grid-template-columns: 1fr; }
-    .flow div { grid-template-columns: 38px minmax(0, 1fr); }
+    .example { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -570,39 +583,45 @@
       </details>
 
       <article class="article-body">
+        <section class="article-intro">
+        <p>'저장 콘텐츠 예약 콘텐츠' 문제가 떠올라 이 글을 열었다면, 아마 지금 운영하는 공간을 더 알리고 싶은데 어디부터 손대야 할지 애매한 상태일 가능성이 큽니다. 더 많이 올리거나 광고를 켜기 전에, 손님이 방문 직전에 무엇을 확인하지 못하고 멈추는지 먼저 봐야 합니다.</p>
+        <p>식당, 스튜디오, 로컬 공간에서는 큰 캠페인보다 첫 화면의 문장, 대표 사진, 예약/위치 안내처럼 작은 정보가 방문 결정을 가릅니다. 손님은 공간이 좋아 보여도 "오늘 가도 되나", "처음 가도 어색하지 않나", "어떻게 이용하면 되나"가 안 보이면 다시 미룹니다.</p>
+        <p>그래서 아래 내용은 한 번에 다 바꾸는 목록이 아니라, 오늘 바로 바꿀 한 문장과 사진 한 장을 고르는 순서로 읽으면 좋습니다.</p>
+      </section>
+
         <section class="content-block content-reviewReplyDesk">
         <h2 id="reviewReplyDesk">리뷰 답변을 다음 손님 정보로</h2>
-        <p>리뷰 답변은 작성자에게만 보이는 말이 아닙니다. 다음 손님이 방문 전 확인하는 작은 안내문이 될 수 있습니다.</p><ul><li>고맙다는 말 뒤에 다음 손님에게 도움이 되는 정보를 한 줄 붙입니다.</li>
-          <li>과한 홍보보다 이용 팁, 추천 시간, 주의할 점을 짧게 남깁니다.</li>
-          <li>불편 리뷰에는 방어보다 정보 보완을 먼저 합니다.</li></ul>
+        <p>리뷰 답변은 작성자에게만 보이는 말이 아닙니다. 다음 손님이 방문 전 확인하는 작은 안내문이 될 수 있습니다.</p><div class="prose-list"><p><strong>1.</strong> 고맙다는 말 뒤에 다음 손님에게 도움이 되는 정보를 한 줄 붙입니다.</p>
+          <p><strong>2.</strong> 과한 홍보보다 이용 팁, 추천 시간, 주의할 점을 짧게 남깁니다.</p>
+          <p><strong>3.</strong> 불편 리뷰에는 방어보다 정보 보완을 먼저 합니다.</p></div>
       </section>
 
         <section class="content-block content-faqFromSignals">
         <h2 id="faqFromSignals">자주 묻는 말은 콘텐츠 신호입니다</h2>
-        <div class="mini-table"><div><strong>반복 문의</strong><span>FAQ, 하이라이트, 플레이스 소개로 빼야 할 신호</span></div>
-          <div><strong>반복 리뷰</strong><span>손님이 실제로 좋아한 장면을 다음 콘텐츠로 옮길 신호</span></div>
-          <div><strong>반복 저장</strong><span>다시 열어볼 정보가 있다는 신호</span></div></div>
+        <div class="mini-table"><div><p><strong>1. 반복 문의부터 정리해보면 좋아요.</strong> FAQ, 하이라이트, 플레이스 소개로 빼야 할 신호</p></div>
+          <div><p><strong>2. 반복 리뷰부터 정리해보면 좋아요.</strong> 손님이 실제로 좋아한 장면을 다음 콘텐츠로 옮길 신호</p></div>
+          <div><p><strong>3. 반복 저장부터 정리해보면 좋아요.</strong> 다시 열어볼 정보가 있다는 신호</p></div></div>
       </section>
 
         <section class="content-block content-focus-b2b075">
         <h2 id="focus-b2b075">저장 콘텐츠 예약 콘텐츠: 이 글에서 먼저 볼 질문</h2>
-        <p>식당, 스튜디오, 로컬 공간 운영자가 저장 콘텐츠 예약 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p><div class="mini-grid"><div><strong>증상</strong><p>저장과 리뷰가 방문 직전의 결정 정보로 이어지지 않는다.</p></div>
-          <div><strong>손님 질문</strong><p>처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
-          <div><strong>오늘 바꿀 것</strong><p>저장한 사람이 다시 볼 정보를 소개 문구와 캡션에 반복합니다.</p></div></div>
+        <p>식당, 스튜디오, 로컬 공간 운영자가 저장 콘텐츠 예약 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p><div class="mini-grid"><div><p><strong>1. 증상부터 보면 좋아요.</strong> 저장과 리뷰가 방문 직전의 결정 정보로 이어지지 않는다.</p></div>
+          <div><p><strong>2. 손님 질문부터 보면 좋아요.</strong> 처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
+          <div><p><strong>3. 오늘 바꿀 것부터 보면 좋아요.</strong> 저장한 사람이 다시 볼 정보를 소개 문구와 캡션에 반복합니다.</p></div></div>
       </section>
 
         <section class="content-block content-doDont">
         <h2 id="doDont">하면 좋은 것과 피할 것</h2>
-        <p>좋은 공간일수록 추상적인 말로 뭉뚱그리기 쉽습니다. 아래 지점만 피해도 처음 보는 손님에게 더 친절해집니다.</p><ul><li>리뷰를 대가로 할인이나 혜택을 약속하지 않습니다.</li>
-          <li>좋은 리뷰에만 답하지 말고, 다음 손님에게 도움이 되는 정보가 있으면 짧게 보강합니다.</li>
-          <li>저장 수 자체보다 저장한 사람이 다시 열었을 때 결정할 수 있는 정보를 남기는지 봅니다.</li></ul>
+        <p>좋은 공간일수록 추상적인 말로 뭉뚱그리기 쉽습니다. 아래 지점만 피해도 처음 보는 손님에게 더 친절해집니다.</p><div class="prose-list"><p><strong>1.</strong> 리뷰를 대가로 할인이나 혜택을 약속하지 않습니다.</p>
+          <p><strong>2.</strong> 좋은 리뷰에만 답하지 말고, 다음 손님에게 도움이 되는 정보가 있으면 짧게 보강합니다.</p>
+          <p><strong>3.</strong> 저장 수 자체보다 저장한 사람이 다시 열었을 때 결정할 수 있는 정보를 남기는지 봅니다.</p></div>
       </section>
 
         <section class="content-block content-smallPromise">
         <h2 id="smallPromise">손님이 기대해도 되는 한 가지</h2>
-        <div class="mini-grid"><div><strong>지도/플레이스</strong><p>저장 콘텐츠 예약 콘텐츠 상황에서 바로 확인할 수 있는 정보를 첫 문장에 둡니다.</p></div>
-          <div><strong>인스타</strong><p>사진 설명보다 방문 상황을 먼저 말합니다.</p></div>
-          <div><strong>현장</strong><p>온라인에서 본 문구를 입구나 계산대에서 한 번 더 만나게 합니다.</p></div></div>
+        <div class="mini-grid"><div><p><strong>1. 지도/플레이스부터 보면 좋아요.</strong> 저장 콘텐츠 예약 콘텐츠 상황에서 바로 확인할 수 있는 정보를 첫 문장에 둡니다.</p></div>
+          <div><p><strong>2. 인스타부터 보면 좋아요.</strong> 사진 설명보다 방문 상황을 먼저 말합니다.</p></div>
+          <div><p><strong>3. 현장부터 보면 좋아요.</strong> 온라인에서 본 문구를 입구나 계산대에서 한 번 더 만나게 합니다.</p></div></div>
       </section>
 
         <section class="content-block content-sources">

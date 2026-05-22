@@ -259,6 +259,25 @@
     display: none;
   }
   .article-body { font-size: 18px; line-height: 1.85; color: #2c2a25; word-break: keep-all; }
+  .article-intro {
+    margin: 0 0 44px;
+    padding-bottom: 34px;
+    border-bottom: 1px solid var(--line);
+  }
+  .article-intro p {
+    margin: 0 0 18px;
+    max-width: 720px;
+    color: #38352f;
+    font-size: 19px;
+    line-height: 1.82;
+    font-weight: 540;
+  }
+  .article-intro p:first-child {
+    color: var(--ink);
+    font-size: 21px;
+    line-height: 1.72;
+    font-weight: 760;
+  }
   .article-body h2 {
     margin: 46px 0 14px;
     font-size: 30px;
@@ -285,80 +304,66 @@
     margin: 0 0 40px;
   }
   .content-block:last-child { margin-bottom: 0; }
+  .prose-list {
+    display: grid;
+    gap: 12px;
+    margin: 18px 0 28px;
+  }
+  .prose-list p {
+    margin: 0;
+    padding-left: 18px;
+    border-left: 2px solid var(--line-strong);
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
+  }
+  .prose-list strong {
+    color: var(--green);
+    font-weight: 900;
+  }
   .mini-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-grid div,
   .mini-table div,
   .flow div {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #fffdf8;
+    padding: 0 0 0 18px;
+    border-left: 2px solid var(--line-strong);
   }
   .mini-grid div {
-    padding: 18px;
+    padding-left: 18px;
+  }
+  .mini-grid p,
+  .mini-table p,
+  .flow p {
+    margin: 0;
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
   }
   .mini-grid strong,
-  .mini-table strong {
-    display: block;
-    margin-bottom: 8px;
+  .mini-table strong,
+  .flow strong {
     color: #11110f;
-    font-size: 15px;
     font-weight: 900;
-  }
-  .mini-grid p {
-    margin: 0;
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
   }
   .mini-table {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-table div {
-    display: grid;
-    grid-template-columns: 150px minmax(0, 1fr);
-    gap: 12px;
-    padding: 16px;
-  }
-  .mini-table span {
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
+    padding-left: 18px;
   }
   .flow {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
-    counter-reset: flow;
   }
   .flow div {
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 12px;
-    align-items: start;
-    padding: 16px;
-  }
-  .flow span {
-    display: inline-grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--green-soft);
-    color: var(--green);
-    font-size: 12px;
-    font-weight: 900;
-  }
-  .flow p {
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.65;
+    padding-left: 18px;
   }
   .example {
     display: grid;
@@ -512,9 +517,17 @@
       word-break: normal;
       overflow-wrap: anywhere;
     }
+    .article-intro {
+      margin-bottom: 34px;
+      padding-bottom: 28px;
+    }
+    .article-intro p,
+    .article-intro p:first-child {
+      font-size: 17px;
+      line-height: 1.75;
+    }
     .article-body h2 { font-size: 24px; }
-    .example, .mini-grid, .mini-table div { grid-template-columns: 1fr; }
-    .flow div { grid-template-columns: 38px minmax(0, 1fr); }
+    .example { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -572,33 +585,39 @@
       </details>
 
       <article class="article-body">
+        <section class="article-intro">
+        <p>'매장 방문자 늘리기' 문제가 떠올라 이 글을 열었다면, 아마 지금 운영하는 공간을 더 알리고 싶은데 어디부터 손대야 할지 애매한 상태일 가능성이 큽니다. 더 많이 올리거나 광고를 켜기 전에, 손님이 방문 직전에 무엇을 확인하지 못하고 멈추는지 먼저 봐야 합니다.</p>
+        <p>바, 스튜디오, 전시공간에서는 큰 캠페인보다 첫 화면의 문장, 대표 사진, 예약/위치 안내처럼 작은 정보가 방문 결정을 가릅니다. 손님은 공간이 좋아 보여도 "오늘 가도 되나", "처음 가도 어색하지 않나", "어떻게 이용하면 되나"가 안 보이면 다시 미룹니다.</p>
+        <p>그래서 아래 내용은 한 번에 다 바꾸는 목록이 아니라, 오늘 바로 바꿀 한 문장과 사진 한 장을 고르는 순서로 읽으면 좋습니다.</p>
+      </section>
+
         <section class="content-block content-barrierMap">
         <h2 id="barrierMap">가격보다 먼저 막히는 것</h2>
-        <p>방문을 막는 것은 가격 하나가 아닙니다. 처음 보는 손님은 작은 불확실성이 여러 개 겹칠 때 미룹니다.</p><div class="mini-table"><div><strong>정보 장벽</strong><span>영업시간, 가격, 예약 방식이 흐림</span></div>
-          <div><strong>심리 장벽</strong><span>혼자 가도 되는지, 처음 가도 어색하지 않은지 모름</span></div>
-          <div><strong>동선 장벽</strong><span>입구, 주차, 찾아오는 길이 불안함</span></div></div>
+        <p>방문을 막는 것은 가격 하나가 아닙니다. 처음 보는 손님은 작은 불확실성이 여러 개 겹칠 때 미룹니다.</p><div class="mini-table"><div><p><strong>1. 정보 장벽부터 정리해보면 좋아요.</strong> 영업시간, 가격, 예약 방식이 흐림</p></div>
+          <div><p><strong>2. 심리 장벽부터 정리해보면 좋아요.</strong> 혼자 가도 되는지, 처음 가도 어색하지 않은지 모름</p></div>
+          <div><p><strong>3. 동선 장벽부터 정리해보면 좋아요.</strong> 입구, 주차, 찾아오는 길이 불안함</p></div></div>
       </section>
 
         <section class="content-block content-visitorQuestion">
         <h2 id="visitorQuestion">처음 보는 손님이 묻는 것</h2>
-        <p>손님은 공간을 충분히 이해한 뒤 고민하는 것이 아니라, 몇 가지 질문에 답을 얻지 못할 때 조용히 이탈합니다.</p><ul><li>처음 가도 어색하지 않은가?</li>
-          <li>가격, 예약, 위치 같은 기본 정보가 바로 보이는가?</li>
-          <li>내 상황에 맞는 이용 장면이 떠오르는가?</li></ul>
+        <p>손님은 공간을 충분히 이해한 뒤 고민하는 것이 아니라, 몇 가지 질문에 답을 얻지 못할 때 조용히 이탈합니다.</p><div class="prose-list"><p><strong>1.</strong> 처음 가도 어색하지 않은가?</p>
+          <p><strong>2.</strong> 가격, 예약, 위치 같은 기본 정보가 바로 보이는가?</p>
+          <p><strong>3.</strong> 내 상황에 맞는 이용 장면이 떠오르는가?</p></div>
       </section>
 
         <section class="content-block content-focus-b2b010">
         <h2 id="focus-b2b010">매장 방문자 늘리기: 이 글에서 먼저 볼 질문</h2>
-        <p>가격보다 큰 진입 장벽인 예약 방식, 이용 시간, 분위기 불안, 동행 적합성을 점검합니다.</p><div class="mini-grid"><div><strong>증상</strong><p>가격보다 예약 방식이나 이용 규칙이 더 큰 장벽일 수 있다.</p></div>
-          <div><strong>손님 질문</strong><p>처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
-          <div><strong>오늘 바꿀 것</strong><p>처음 방문자를 위한 추천 시간, 추천 좌석, 추천 이용 방식을 적습니다.</p></div></div>
+        <p>가격보다 큰 진입 장벽인 예약 방식, 이용 시간, 분위기 불안, 동행 적합성을 점검합니다.</p><div class="mini-grid"><div><p><strong>1. 증상부터 보면 좋아요.</strong> 가격보다 예약 방식이나 이용 규칙이 더 큰 장벽일 수 있다.</p></div>
+          <div><p><strong>2. 손님 질문부터 보면 좋아요.</strong> 처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
+          <div><p><strong>3. 오늘 바꿀 것부터 보면 좋아요.</strong> 처음 방문자를 위한 추천 시간, 추천 좌석, 추천 이용 방식을 적습니다.</p></div></div>
       </section>
 
         <section class="content-block content-decisionFlow">
         <h2 id="decisionFlow">본 뒤에 무엇을 확인하게 할까</h2>
-        <div class="flow"><div><span>01</span><p>발견: 이름과 사진을 봅니다.</p></div>
-          <div><span>02</span><p>비교: 비슷한 후보와 다른 점을 찾습니다.</p></div>
-          <div><span>03</span><p>확인: 위치, 예약, 가격, 이용 방식을 봅니다.</p></div>
-          <div><span>04</span><p>행동: 저장, 문의, 예약, 방문 중 하나로 넘어갑니다.</p></div></div>
+        <div class="flow"><div><p><strong>1.</strong> 발견: 이름과 사진을 봅니다.</p></div>
+          <div><p><strong>2.</strong> 비교: 비슷한 후보와 다른 점을 찾습니다.</p></div>
+          <div><p><strong>3.</strong> 확인: 위치, 예약, 가격, 이용 방식을 봅니다.</p></div>
+          <div><p><strong>4.</strong> 행동: 저장, 문의, 예약, 방문 중 하나로 넘어갑니다.</p></div></div>
       </section>
 
         <section class="content-block content-copyRewrite">
@@ -617,11 +636,11 @@
 
         <section class="content-block content-ownerCheck">
         <h2 id="ownerCheck">운영자가 먼저 확인할 질문</h2>
-        <p>운영자가 먼저 볼 것은 더 많은 홍보 채널이 아니라, 이미 열려 있는 정보의 순서입니다.</p><ul><li>처음 방문자를 위한 추천 시간, 추천 좌석, 추천 이용 방식을 적습니다.</li>
-          <li>바는 첫 잔 추천, 스튜디오는 준비물, 전시공간은 관람 시간을 안내합니다.</li>
-          <li>예약이 필수라면 이유와 가장 쉬운 예약 경로를 함께 보여줍니다.</li>
-          <li>가격표를 숨기기보다 선택의 기준을 설명합니다.</li>
-          <li>고급스러움만 강조하지 말고 처음 와도 어색하지 않은 장면을 보여줍니다.</li></ul>
+        <p>운영자가 먼저 볼 것은 더 많은 홍보 채널이 아니라, 이미 열려 있는 정보의 순서입니다.</p><div class="prose-list"><p><strong>1.</strong> 처음 방문자를 위한 추천 시간, 추천 좌석, 추천 이용 방식을 적습니다.</p>
+          <p><strong>2.</strong> 바는 첫 잔 추천, 스튜디오는 준비물, 전시공간은 관람 시간을 안내합니다.</p>
+          <p><strong>3.</strong> 예약이 필수라면 이유와 가장 쉬운 예약 경로를 함께 보여줍니다.</p>
+          <p><strong>4.</strong> 가격표를 숨기기보다 선택의 기준을 설명합니다.</p>
+          <p><strong>5.</strong> 고급스러움만 강조하지 말고 처음 와도 어색하지 않은 장면을 보여줍니다.</p></div>
       </section>
 
         <section class="content-block content-doripe">

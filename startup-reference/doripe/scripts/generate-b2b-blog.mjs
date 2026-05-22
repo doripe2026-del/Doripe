@@ -1146,22 +1146,32 @@ const sectionMeta = {
 };
 
 function renderList(items) {
-  return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n          ")}</ul>`;
+  return `<div class="prose-list">${items
+    .map((item, index) => `<p><strong>${index + 1}.</strong> ${escapeHtml(item)}</p>`)
+    .join("\n          ")}</div>`;
 }
 
 function renderCards(items) {
-  return `<div class="mini-grid">${items.map((item) => `<div><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.body)}</p></div>`).join("\n          ")}</div>`;
+  return `<div class="mini-grid">${items
+    .map(
+      (item, index) =>
+        `<div><p><strong>${index + 1}. ${escapeHtml(item.title)}부터 보면 좋아요.</strong> ${escapeHtml(item.body)}</p></div>`
+    )
+    .join("\n          ")}</div>`;
 }
 
 function renderTable(rows) {
   return `<div class="mini-table">${rows
-    .map((row) => `<div><strong>${escapeHtml(row[0])}</strong><span>${escapeHtml(row[1])}</span></div>`)
+    .map(
+      (row, index) =>
+        `<div><p><strong>${index + 1}. ${escapeHtml(row[0])}부터 정리해보면 좋아요.</strong> ${escapeHtml(row[1])}</p></div>`
+    )
     .join("\n          ")}</div>`;
 }
 
 function renderFlow(items) {
   return `<div class="flow">${items
-    .map((item, index) => `<div><span>${String(index + 1).padStart(2, "0")}</span><p>${escapeHtml(item)}</p></div>`)
+    .map((item, index) => `<div><p><strong>${index + 1}.</strong> ${escapeHtml(item)}</p></div>`)
     .join("\n          ")}</div>`;
 }
 
@@ -1191,6 +1201,16 @@ function sectionInfo(article, section) {
     return ["핵심 질문", `${article.keyword}: 이 글에서 먼저 볼 질문`];
   }
   return sectionMeta[section] ?? ["점검", "지금 볼 것"];
+}
+
+function renderArticleIntro(article) {
+  const spaces = article.spaces.length ? article.spaces.join(", ") : "로컬 공간";
+  const topic = article.keyword || article.title;
+  return `<section class="article-intro">
+        <p>'${escapeHtml(topic)}' 문제가 떠올라 이 글을 열었다면, 아마 지금 운영하는 공간을 더 알리고 싶은데 어디부터 손대야 할지 애매한 상태일 가능성이 큽니다. 더 많이 올리거나 광고를 켜기 전에, 손님이 방문 직전에 무엇을 확인하지 못하고 멈추는지 먼저 봐야 합니다.</p>
+        <p>${escapeHtml(spaces)}에서는 큰 캠페인보다 첫 화면의 문장, 대표 사진, 예약/위치 안내처럼 작은 정보가 방문 결정을 가릅니다. 손님은 공간이 좋아 보여도 "오늘 가도 되나", "처음 가도 어색하지 않나", "어떻게 이용하면 되나"가 안 보이면 다시 미룹니다.</p>
+        <p>그래서 아래 내용은 한 번에 다 바꾸는 목록이 아니라, 오늘 바로 바꿀 한 문장과 사진 한 장을 고르는 순서로 읽으면 좋습니다.</p>
+      </section>`;
 }
 
 function sectionBody(article, section, sourceLinks) {
@@ -1788,6 +1808,25 @@ ${commonStyles}
     display: none;
   }
   .article-body { font-size: 18px; line-height: 1.85; color: #2c2a25; word-break: keep-all; }
+  .article-intro {
+    margin: 0 0 44px;
+    padding-bottom: 34px;
+    border-bottom: 1px solid var(--line);
+  }
+  .article-intro p {
+    margin: 0 0 18px;
+    max-width: 720px;
+    color: #38352f;
+    font-size: 19px;
+    line-height: 1.82;
+    font-weight: 540;
+  }
+  .article-intro p:first-child {
+    color: var(--ink);
+    font-size: 21px;
+    line-height: 1.72;
+    font-weight: 760;
+  }
   .article-body h2 {
     margin: 46px 0 14px;
     font-size: 30px;
@@ -1814,80 +1853,66 @@ ${commonStyles}
     margin: 0 0 40px;
   }
   .content-block:last-child { margin-bottom: 0; }
+  .prose-list {
+    display: grid;
+    gap: 12px;
+    margin: 18px 0 28px;
+  }
+  .prose-list p {
+    margin: 0;
+    padding-left: 18px;
+    border-left: 2px solid var(--line-strong);
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
+  }
+  .prose-list strong {
+    color: var(--green);
+    font-weight: 900;
+  }
   .mini-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-grid div,
   .mini-table div,
   .flow div {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #fffdf8;
+    padding: 0 0 0 18px;
+    border-left: 2px solid var(--line-strong);
   }
   .mini-grid div {
-    padding: 18px;
+    padding-left: 18px;
+  }
+  .mini-grid p,
+  .mini-table p,
+  .flow p {
+    margin: 0;
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
   }
   .mini-grid strong,
-  .mini-table strong {
-    display: block;
-    margin-bottom: 8px;
+  .mini-table strong,
+  .flow strong {
     color: #11110f;
-    font-size: 15px;
     font-weight: 900;
-  }
-  .mini-grid p {
-    margin: 0;
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
   }
   .mini-table {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-table div {
-    display: grid;
-    grid-template-columns: 150px minmax(0, 1fr);
-    gap: 12px;
-    padding: 16px;
-  }
-  .mini-table span {
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
+    padding-left: 18px;
   }
   .flow {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
-    counter-reset: flow;
   }
   .flow div {
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 12px;
-    align-items: start;
-    padding: 16px;
-  }
-  .flow span {
-    display: inline-grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--green-soft);
-    color: var(--green);
-    font-size: 12px;
-    font-weight: 900;
-  }
-  .flow p {
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.65;
+    padding-left: 18px;
   }
   .example {
     display: grid;
@@ -2041,9 +2066,17 @@ ${commonStyles}
       word-break: normal;
       overflow-wrap: anywhere;
     }
+    .article-intro {
+      margin-bottom: 34px;
+      padding-bottom: 28px;
+    }
+    .article-intro p,
+    .article-intro p:first-child {
+      font-size: 17px;
+      line-height: 1.75;
+    }
     .article-body h2 { font-size: 24px; }
-    .example, .mini-grid, .mini-table div { grid-template-columns: 1fr; }
-    .flow div { grid-template-columns: 38px minmax(0, 1fr); }
+    .example { grid-template-columns: 1fr; }
   }
 `;
 
@@ -2256,6 +2289,7 @@ function renderArticle(article) {
     .map((source) => `<a href="${source.url}" target="_blank" rel="noopener">${escapeHtml(source.label)}</a>`)
     .join("\n          ");
   const tocLinks = renderArticleToc(article);
+  const articleIntro = renderArticleIntro(article);
   const articleSections = article.structure.sections
     .map((section) => renderArticleSection(article, section, sourceLinks))
     .join("\n\n        ");
@@ -2341,6 +2375,8 @@ function renderArticle(article) {
       </details>
 
       <article class="article-body">
+        ${articleIntro}
+
         ${articleSections}
       </article>
     </div>

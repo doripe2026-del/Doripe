@@ -259,6 +259,25 @@
     display: none;
   }
   .article-body { font-size: 18px; line-height: 1.85; color: #2c2a25; word-break: keep-all; }
+  .article-intro {
+    margin: 0 0 44px;
+    padding-bottom: 34px;
+    border-bottom: 1px solid var(--line);
+  }
+  .article-intro p {
+    margin: 0 0 18px;
+    max-width: 720px;
+    color: #38352f;
+    font-size: 19px;
+    line-height: 1.82;
+    font-weight: 540;
+  }
+  .article-intro p:first-child {
+    color: var(--ink);
+    font-size: 21px;
+    line-height: 1.72;
+    font-weight: 760;
+  }
   .article-body h2 {
     margin: 46px 0 14px;
     font-size: 30px;
@@ -285,80 +304,66 @@
     margin: 0 0 40px;
   }
   .content-block:last-child { margin-bottom: 0; }
+  .prose-list {
+    display: grid;
+    gap: 12px;
+    margin: 18px 0 28px;
+  }
+  .prose-list p {
+    margin: 0;
+    padding-left: 18px;
+    border-left: 2px solid var(--line-strong);
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
+  }
+  .prose-list strong {
+    color: var(--green);
+    font-weight: 900;
+  }
   .mini-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-grid div,
   .mini-table div,
   .flow div {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #fffdf8;
+    padding: 0 0 0 18px;
+    border-left: 2px solid var(--line-strong);
   }
   .mini-grid div {
-    padding: 18px;
+    padding-left: 18px;
+  }
+  .mini-grid p,
+  .mini-table p,
+  .flow p {
+    margin: 0;
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
   }
   .mini-grid strong,
-  .mini-table strong {
-    display: block;
-    margin-bottom: 8px;
+  .mini-table strong,
+  .flow strong {
     color: #11110f;
-    font-size: 15px;
     font-weight: 900;
-  }
-  .mini-grid p {
-    margin: 0;
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
   }
   .mini-table {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-table div {
-    display: grid;
-    grid-template-columns: 150px minmax(0, 1fr);
-    gap: 12px;
-    padding: 16px;
-  }
-  .mini-table span {
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
+    padding-left: 18px;
   }
   .flow {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
-    counter-reset: flow;
   }
   .flow div {
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 12px;
-    align-items: start;
-    padding: 16px;
-  }
-  .flow span {
-    display: inline-grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--green-soft);
-    color: var(--green);
-    font-size: 12px;
-    font-weight: 900;
-  }
-  .flow p {
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.65;
+    padding-left: 18px;
   }
   .example {
     display: grid;
@@ -512,9 +517,17 @@
       word-break: normal;
       overflow-wrap: anywhere;
     }
+    .article-intro {
+      margin-bottom: 34px;
+      padding-bottom: 28px;
+    }
+    .article-intro p,
+    .article-intro p:first-child {
+      font-size: 17px;
+      line-height: 1.75;
+    }
     .article-body h2 { font-size: 24px; }
-    .example, .mini-grid, .mini-table div { grid-template-columns: 1fr; }
-    .flow div { grid-template-columns: 38px minmax(0, 1fr); }
+    .example { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -572,26 +585,32 @@
       </details>
 
       <article class="article-body">
+        <section class="article-intro">
+        <p>'매장 사진 목록' 문제가 떠올라 이 글을 열었다면, 아마 지금 운영하는 공간을 더 알리고 싶은데 어디부터 손대야 할지 애매한 상태일 가능성이 큽니다. 더 많이 올리거나 광고를 켜기 전에, 손님이 방문 직전에 무엇을 확인하지 못하고 멈추는지 먼저 봐야 합니다.</p>
+        <p>식당, 카페, 로컬 공간에서는 큰 캠페인보다 첫 화면의 문장, 대표 사진, 예약/위치 안내처럼 작은 정보가 방문 결정을 가릅니다. 손님은 공간이 좋아 보여도 "오늘 가도 되나", "처음 가도 어색하지 않나", "어떻게 이용하면 되나"가 안 보이면 다시 미룹니다.</p>
+        <p>그래서 아래 내용은 한 번에 다 바꾸는 목록이 아니라, 오늘 바로 바꿀 한 문장과 사진 한 장을 고르는 순서로 읽으면 좋습니다.</p>
+      </section>
+
         <section class="content-block content-menuStory">
         <h2 id="menuStory">메뉴를 선택 장면으로 보여주기</h2>
-        <p>메뉴나 상품은 이름만으로 선택되지 않습니다. 처음 보는 사람에게는 맛, 양, 시간, 상황이 함께 보여야 합니다.</p><div class="mini-grid"><div><strong>식당</strong><p>식당에서는 '매장 사진 목록' 문제를 한 문장 설명보다 실제 이용 장면, 확인 정보, 사진 순서로 나눠 보여주는 편이 좋습니다.</p></div>
-          <div><strong>카페</strong><p>카페에서는 '매장 사진 목록' 문제를 한 문장 설명보다 실제 이용 장면, 확인 정보, 사진 순서로 나눠 보여주는 편이 좋습니다.</p></div>
-          <div><strong>로컬 공간</strong><p>로컬 공간에서는 '매장 사진 목록' 문제를 한 문장 설명보다 실제 이용 장면, 확인 정보, 사진 순서로 나눠 보여주는 편이 좋습니다.</p></div></div>
+        <p>메뉴나 상품은 이름만으로 선택되지 않습니다. 처음 보는 사람에게는 맛, 양, 시간, 상황이 함께 보여야 합니다.</p><div class="mini-grid"><div><p><strong>1. 식당부터 보면 좋아요.</strong> 식당에서는 '매장 사진 목록' 문제를 한 문장 설명보다 실제 이용 장면, 확인 정보, 사진 순서로 나눠 보여주는 편이 좋습니다.</p></div>
+          <div><p><strong>2. 카페부터 보면 좋아요.</strong> 카페에서는 '매장 사진 목록' 문제를 한 문장 설명보다 실제 이용 장면, 확인 정보, 사진 순서로 나눠 보여주는 편이 좋습니다.</p></div>
+          <div><p><strong>3. 로컬 공간부터 보면 좋아요.</strong> 로컬 공간에서는 '매장 사진 목록' 문제를 한 문장 설명보다 실제 이용 장면, 확인 정보, 사진 순서로 나눠 보여주는 편이 좋습니다.</p></div></div>
       </section>
 
         <section class="content-block content-visitorQuestion">
         <h2 id="visitorQuestion">처음 보는 손님이 묻는 것</h2>
-        <p>손님은 공간을 충분히 이해한 뒤 고민하는 것이 아니라, 몇 가지 질문에 답을 얻지 못할 때 조용히 이탈합니다.</p><ul><li>처음 가도 어색하지 않은가?</li>
-          <li>가격, 예약, 위치 같은 기본 정보가 바로 보이는가?</li>
-          <li>내 상황에 맞는 이용 장면이 떠오르는가?</li></ul>
+        <p>손님은 공간을 충분히 이해한 뒤 고민하는 것이 아니라, 몇 가지 질문에 답을 얻지 못할 때 조용히 이탈합니다.</p><div class="prose-list"><p><strong>1.</strong> 처음 가도 어색하지 않은가?</p>
+          <p><strong>2.</strong> 가격, 예약, 위치 같은 기본 정보가 바로 보이는가?</p>
+          <p><strong>3.</strong> 내 상황에 맞는 이용 장면이 떠오르는가?</p></div>
       </section>
 
         <section class="content-block content-photoBrief">
         <h2 id="photoBrief">이번 주에 찍어야 할 컷</h2>
-        <div class="mini-table"><div><strong>1컷</strong><span>입구나 첫 화면에서 알아볼 수 있는 대표 장면</span></div>
-          <div><strong>2컷</strong><span>처음 앉거나 둘러볼 내부 장면</span></div>
-          <div><strong>3컷</strong><span>메뉴, 상품, 작품, 이용 방식이 보이는 디테일</span></div>
-          <div><strong>4컷</strong><span>혼자/동행/예약 등 방문 조건을 상상하게 하는 장면</span></div></div>
+        <div class="mini-table"><div><p><strong>1. 1컷부터 정리해보면 좋아요.</strong> 입구나 첫 화면에서 알아볼 수 있는 대표 장면</p></div>
+          <div><p><strong>2. 2컷부터 정리해보면 좋아요.</strong> 처음 앉거나 둘러볼 내부 장면</p></div>
+          <div><p><strong>3. 3컷부터 정리해보면 좋아요.</strong> 메뉴, 상품, 작품, 이용 방식이 보이는 디테일</p></div>
+          <div><p><strong>4. 4컷부터 정리해보면 좋아요.</strong> 혼자/동행/예약 등 방문 조건을 상상하게 하는 장면</p></div></div>
       </section>
 
         <section class="content-block content-copyRewrite">
@@ -610,17 +629,17 @@
 
         <section class="content-block content-focus-b2b067">
         <h2 id="focus-b2b067">매장 사진 목록: 이 글에서 먼저 볼 질문</h2>
-        <p>식당, 카페, 로컬 공간 운영자가 매장 사진 목록 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p><div class="mini-grid"><div><strong>증상</strong><p>사진은 많지만 손님이 어떤 경험을 하게 되는지 보이지 않는다.</p></div>
-          <div><strong>손님 질문</strong><p>처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
-          <div><strong>오늘 바꿀 것</strong><p>사진 한 장마다 손님이 알게 되는 정보를 하나씩 정합니다.</p></div></div>
+        <p>식당, 카페, 로컬 공간 운영자가 매장 사진 목록 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p><div class="mini-grid"><div><p><strong>1. 증상부터 보면 좋아요.</strong> 사진은 많지만 손님이 어떤 경험을 하게 되는지 보이지 않는다.</p></div>
+          <div><p><strong>2. 손님 질문부터 보면 좋아요.</strong> 처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
+          <div><p><strong>3. 오늘 바꿀 것부터 보면 좋아요.</strong> 사진 한 장마다 손님이 알게 되는 정보를 하나씩 정합니다.</p></div></div>
       </section>
 
         <section class="content-block content-handoff">
         <h2 id="handoff">온라인에서 현장으로 넘겨주는 말</h2>
-        <p>같은 말을 모든 채널에 복사하기보다, 각 채널에서 손님이 하려는 행동에 맞춰 연결해야 합니다.</p><ul><li>네이버/지도: '매장 사진 목록' 문제를 떠올린 사람이 첫 화면에서 영업시간, 위치, 대표 장면을 바로 확인할 수 있게 정리합니다.</li>
-          <li>인스타: 예쁜 사진만 올리기보다 식당을 어떤 상황에서 이용하면 좋은지 캡션 첫 문장에 씁니다.</li>
-          <li>현장: 입구, 테이블, 계산대, 포장 카드 중 한 곳에 온라인에서 본 문구와 같은 안내를 반복합니다.</li>
-          <li>리뷰/저장: 손님이 다시 확인할 정보가 있다면 리뷰 답변이나 고정 게시물에서 한 번 더 알려줍니다.</li></ul>
+        <p>같은 말을 모든 채널에 복사하기보다, 각 채널에서 손님이 하려는 행동에 맞춰 연결해야 합니다.</p><div class="prose-list"><p><strong>1.</strong> 네이버/지도: '매장 사진 목록' 문제를 떠올린 사람이 첫 화면에서 영업시간, 위치, 대표 장면을 바로 확인할 수 있게 정리합니다.</p>
+          <p><strong>2.</strong> 인스타: 예쁜 사진만 올리기보다 식당을 어떤 상황에서 이용하면 좋은지 캡션 첫 문장에 씁니다.</p>
+          <p><strong>3.</strong> 현장: 입구, 테이블, 계산대, 포장 카드 중 한 곳에 온라인에서 본 문구와 같은 안내를 반복합니다.</p>
+          <p><strong>4.</strong> 리뷰/저장: 손님이 다시 확인할 정보가 있다면 리뷰 답변이나 고정 게시물에서 한 번 더 알려줍니다.</p></div>
       </section>
 
         <section class="content-block content-doripe">

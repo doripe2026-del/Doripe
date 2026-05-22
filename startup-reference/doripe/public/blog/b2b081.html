@@ -259,6 +259,25 @@
     display: none;
   }
   .article-body { font-size: 18px; line-height: 1.85; color: #2c2a25; word-break: keep-all; }
+  .article-intro {
+    margin: 0 0 44px;
+    padding-bottom: 34px;
+    border-bottom: 1px solid var(--line);
+  }
+  .article-intro p {
+    margin: 0 0 18px;
+    max-width: 720px;
+    color: #38352f;
+    font-size: 19px;
+    line-height: 1.82;
+    font-weight: 540;
+  }
+  .article-intro p:first-child {
+    color: var(--ink);
+    font-size: 21px;
+    line-height: 1.72;
+    font-weight: 760;
+  }
   .article-body h2 {
     margin: 46px 0 14px;
     font-size: 30px;
@@ -285,80 +304,66 @@
     margin: 0 0 40px;
   }
   .content-block:last-child { margin-bottom: 0; }
+  .prose-list {
+    display: grid;
+    gap: 12px;
+    margin: 18px 0 28px;
+  }
+  .prose-list p {
+    margin: 0;
+    padding-left: 18px;
+    border-left: 2px solid var(--line-strong);
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
+  }
+  .prose-list strong {
+    color: var(--green);
+    font-weight: 900;
+  }
   .mini-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-grid div,
   .mini-table div,
   .flow div {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #fffdf8;
+    padding: 0 0 0 18px;
+    border-left: 2px solid var(--line-strong);
   }
   .mini-grid div {
-    padding: 18px;
+    padding-left: 18px;
+  }
+  .mini-grid p,
+  .mini-table p,
+  .flow p {
+    margin: 0;
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
   }
   .mini-grid strong,
-  .mini-table strong {
-    display: block;
-    margin-bottom: 8px;
+  .mini-table strong,
+  .flow strong {
     color: #11110f;
-    font-size: 15px;
     font-weight: 900;
-  }
-  .mini-grid p {
-    margin: 0;
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
   }
   .mini-table {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-table div {
-    display: grid;
-    grid-template-columns: 150px minmax(0, 1fr);
-    gap: 12px;
-    padding: 16px;
-  }
-  .mini-table span {
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
+    padding-left: 18px;
   }
   .flow {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
-    counter-reset: flow;
   }
   .flow div {
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 12px;
-    align-items: start;
-    padding: 16px;
-  }
-  .flow span {
-    display: inline-grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--green-soft);
-    color: var(--green);
-    font-size: 12px;
-    font-weight: 900;
-  }
-  .flow p {
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.65;
+    padding-left: 18px;
   }
   .example {
     display: grid;
@@ -512,9 +517,17 @@
       word-break: normal;
       overflow-wrap: anywhere;
     }
+    .article-intro {
+      margin-bottom: 34px;
+      padding-bottom: 28px;
+    }
+    .article-intro p,
+    .article-intro p:first-child {
+      font-size: 17px;
+      line-height: 1.75;
+    }
     .article-body h2 { font-size: 24px; }
-    .example, .mini-grid, .mini-table div { grid-template-columns: 1fr; }
-    .flow div { grid-template-columns: 38px minmax(0, 1fr); }
+    .example { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -572,18 +585,24 @@
       </details>
 
       <article class="article-body">
+        <section class="article-intro">
+        <p>'조용한 공간 홍보' 문제가 떠올라 이 글을 열었다면, 아마 지금 운영하는 공간을 더 알리고 싶은데 어디부터 손대야 할지 애매한 상태일 가능성이 큽니다. 더 많이 올리거나 광고를 켜기 전에, 손님이 방문 직전에 무엇을 확인하지 못하고 멈추는지 먼저 봐야 합니다.</p>
+        <p>서점, 갤러리, 공방에서는 큰 캠페인보다 첫 화면의 문장, 대표 사진, 예약/위치 안내처럼 작은 정보가 방문 결정을 가릅니다. 손님은 공간이 좋아 보여도 "오늘 가도 되나", "처음 가도 어색하지 않나", "어떻게 이용하면 되나"가 안 보이면 다시 미룹니다.</p>
+        <p>그래서 아래 내용은 한 번에 다 바꾸는 목록이 아니라, 오늘 바로 바꿀 한 문장과 사진 한 장을 고르는 순서로 읽으면 좋습니다.</p>
+      </section>
+
         <section class="content-block content-oneLinePosition">
         <h2 id="oneLinePosition">비교될 때 남는 한 문장</h2>
-        <div class="mini-table"><div><strong>흔한 말</strong><span>좋은 분위기, 감성적인 공간, 편안한 매장</span></div>
-          <div><strong>남는 말</strong><span>서점을 처음 보는 손님도 조용한 공간 홍보 상황에서 바로 떠올릴 수 있는 문장</span></div>
-          <div><strong>검증법</strong><span>그 문장만 보고 방문 시간, 동행, 이용 방식을 상상할 수 있는지 봅니다.</span></div></div>
+        <div class="mini-table"><div><p><strong>1. 흔한 말부터 정리해보면 좋아요.</strong> 좋은 분위기, 감성적인 공간, 편안한 매장</p></div>
+          <div><p><strong>2. 남는 말부터 정리해보면 좋아요.</strong> 서점을 처음 보는 손님도 조용한 공간 홍보 상황에서 바로 떠올릴 수 있는 문장</p></div>
+          <div><p><strong>3. 검증법부터 정리해보면 좋아요.</strong> 그 문장만 보고 방문 시간, 동행, 이용 방식을 상상할 수 있는지 봅니다.</p></div></div>
       </section>
 
         <section class="content-block content-comparisonTable">
         <h2 id="comparisonTable">비슷해 보이는 순간에 남길 차이</h2>
-        <div class="mini-table"><div><strong>흔한 말</strong><span>좋은 분위기, 감성적인 공간, 편안한 매장</span></div>
-          <div><strong>남는 말</strong><span>서점을 처음 보는 손님도 조용한 공간 홍보 상황에서 바로 떠올릴 수 있는 문장</span></div>
-          <div><strong>검증법</strong><span>그 문장만 보고 방문 시간, 동행, 이용 방식을 상상할 수 있는지 봅니다.</span></div></div>
+        <div class="mini-table"><div><p><strong>1. 흔한 말부터 정리해보면 좋아요.</strong> 좋은 분위기, 감성적인 공간, 편안한 매장</p></div>
+          <div><p><strong>2. 남는 말부터 정리해보면 좋아요.</strong> 서점을 처음 보는 손님도 조용한 공간 홍보 상황에서 바로 떠올릴 수 있는 문장</p></div>
+          <div><p><strong>3. 검증법부터 정리해보면 좋아요.</strong> 그 문장만 보고 방문 시간, 동행, 이용 방식을 상상할 수 있는지 봅니다.</p></div></div>
       </section>
 
         <section class="content-block content-copyRewrite">
@@ -602,25 +621,25 @@
 
         <section class="content-block content-smallPromise">
         <h2 id="smallPromise">손님이 기대해도 되는 한 가지</h2>
-        <div class="mini-grid"><div><strong>지도/플레이스</strong><p>조용한 공간 홍보 상황에서 바로 확인할 수 있는 정보를 첫 문장에 둡니다.</p></div>
-          <div><strong>인스타</strong><p>사진 설명보다 방문 상황을 먼저 말합니다.</p></div>
-          <div><strong>현장</strong><p>온라인에서 본 문구를 입구나 계산대에서 한 번 더 만나게 합니다.</p></div></div>
+        <div class="mini-grid"><div><p><strong>1. 지도/플레이스부터 보면 좋아요.</strong> 조용한 공간 홍보 상황에서 바로 확인할 수 있는 정보를 첫 문장에 둡니다.</p></div>
+          <div><p><strong>2. 인스타부터 보면 좋아요.</strong> 사진 설명보다 방문 상황을 먼저 말합니다.</p></div>
+          <div><p><strong>3. 현장부터 보면 좋아요.</strong> 온라인에서 본 문구를 입구나 계산대에서 한 번 더 만나게 합니다.</p></div></div>
       </section>
 
         <section class="content-block content-focus-b2b081">
         <h2 id="focus-b2b081">조용한 공간 홍보: 이 글에서 먼저 볼 질문</h2>
-        <p>서점, 갤러리, 공방 운영자가 조용한 공간 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p><div class="mini-grid"><div><strong>증상</strong><p>분위기 단어는 많지만 손님이 선택할 수 있는 상황으로 번역되지 않는다.</p></div>
-          <div><strong>손님 질문</strong><p>처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
-          <div><strong>오늘 바꿀 것</strong><p>분위기 단어 하나를 고른 뒤 언제 좋은지로 바꿔 씁니다.</p></div></div>
+        <p>서점, 갤러리, 공방 운영자가 조용한 공간 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p><div class="mini-grid"><div><p><strong>1. 증상부터 보면 좋아요.</strong> 분위기 단어는 많지만 손님이 선택할 수 있는 상황으로 번역되지 않는다.</p></div>
+          <div><p><strong>2. 손님 질문부터 보면 좋아요.</strong> 처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
+          <div><p><strong>3. 오늘 바꿀 것부터 보면 좋아요.</strong> 분위기 단어 하나를 고른 뒤 언제 좋은지로 바꿔 씁니다.</p></div></div>
       </section>
 
         <section class="content-block content-fieldTest">
         <h2 id="fieldTest">이번 주에 해볼 작은 실험</h2>
-        <div class="flow"><div><span>01</span><p>1일차: '조용한 공간 홍보' 관점으로 지도와 계정을 처음 보는 손님 입장에서 첫 화면을 캡처합니다.</p></div>
-          <div><span>02</span><p>2일차: 영업시간, 예약/문의, 위치, 대표 사진, 첫 방문 추천을 한 문서에 모읍니다.</p></div>
-          <div><span>03</span><p>3일차: 지도 소개 문구와 인스타 프로필 문구를 같은 방문 장면으로 맞춥니다.</p></div>
-          <div><span>04</span><p>4일차: 현장 안내물 한 곳에 같은 메시지를 작게 붙여 온라인과 오프라인을 연결합니다.</p></div>
-          <div><span>05</span><p>7일차: 문의 내용, 저장 반응, 자주 묻는 질문을 보고 다음 글감이나 안내 문구를 고칩니다.</p></div></div>
+        <div class="flow"><div><p><strong>1.</strong> 1일차: '조용한 공간 홍보' 관점으로 지도와 계정을 처음 보는 손님 입장에서 첫 화면을 캡처합니다.</p></div>
+          <div><p><strong>2.</strong> 2일차: 영업시간, 예약/문의, 위치, 대표 사진, 첫 방문 추천을 한 문서에 모읍니다.</p></div>
+          <div><p><strong>3.</strong> 3일차: 지도 소개 문구와 인스타 프로필 문구를 같은 방문 장면으로 맞춥니다.</p></div>
+          <div><p><strong>4.</strong> 4일차: 현장 안내물 한 곳에 같은 메시지를 작게 붙여 온라인과 오프라인을 연결합니다.</p></div>
+          <div><p><strong>5.</strong> 7일차: 문의 내용, 저장 반응, 자주 묻는 질문을 보고 다음 글감이나 안내 문구를 고칩니다.</p></div></div>
       </section>
 
         <section class="content-block content-doripe">

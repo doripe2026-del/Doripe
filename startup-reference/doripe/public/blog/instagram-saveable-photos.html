@@ -259,6 +259,25 @@
     display: none;
   }
   .article-body { font-size: 18px; line-height: 1.85; color: #2c2a25; word-break: keep-all; }
+  .article-intro {
+    margin: 0 0 44px;
+    padding-bottom: 34px;
+    border-bottom: 1px solid var(--line);
+  }
+  .article-intro p {
+    margin: 0 0 18px;
+    max-width: 720px;
+    color: #38352f;
+    font-size: 19px;
+    line-height: 1.82;
+    font-weight: 540;
+  }
+  .article-intro p:first-child {
+    color: var(--ink);
+    font-size: 21px;
+    line-height: 1.72;
+    font-weight: 760;
+  }
   .article-body h2 {
     margin: 46px 0 14px;
     font-size: 30px;
@@ -285,80 +304,66 @@
     margin: 0 0 40px;
   }
   .content-block:last-child { margin-bottom: 0; }
+  .prose-list {
+    display: grid;
+    gap: 12px;
+    margin: 18px 0 28px;
+  }
+  .prose-list p {
+    margin: 0;
+    padding-left: 18px;
+    border-left: 2px solid var(--line-strong);
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
+  }
+  .prose-list strong {
+    color: var(--green);
+    font-weight: 900;
+  }
   .mini-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-grid div,
   .mini-table div,
   .flow div {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #fffdf8;
+    padding: 0 0 0 18px;
+    border-left: 2px solid var(--line-strong);
   }
   .mini-grid div {
-    padding: 18px;
+    padding-left: 18px;
+  }
+  .mini-grid p,
+  .mini-table p,
+  .flow p {
+    margin: 0;
+    color: #38352f;
+    font-size: 17px;
+    line-height: 1.76;
   }
   .mini-grid strong,
-  .mini-table strong {
-    display: block;
-    margin-bottom: 8px;
+  .mini-table strong,
+  .flow strong {
     color: #11110f;
-    font-size: 15px;
     font-weight: 900;
-  }
-  .mini-grid p {
-    margin: 0;
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
   }
   .mini-table {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
   }
   .mini-table div {
-    display: grid;
-    grid-template-columns: 150px minmax(0, 1fr);
-    gap: 12px;
-    padding: 16px;
-  }
-  .mini-table span {
-    color: #4f4b43;
-    font-size: 16px;
-    line-height: 1.62;
+    padding-left: 18px;
   }
   .flow {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin: 18px 0 28px;
-    counter-reset: flow;
   }
   .flow div {
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 12px;
-    align-items: start;
-    padding: 16px;
-  }
-  .flow span {
-    display: inline-grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--green-soft);
-    color: var(--green);
-    font-size: 12px;
-    font-weight: 900;
-  }
-  .flow p {
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.65;
+    padding-left: 18px;
   }
   .example {
     display: grid;
@@ -512,9 +517,17 @@
       word-break: normal;
       overflow-wrap: anywhere;
     }
+    .article-intro {
+      margin-bottom: 34px;
+      padding-bottom: 28px;
+    }
+    .article-intro p,
+    .article-intro p:first-child {
+      font-size: 17px;
+      line-height: 1.75;
+    }
     .article-body h2 { font-size: 24px; }
-    .example, .mini-grid, .mini-table div { grid-template-columns: 1fr; }
-    .flow div { grid-template-columns: 38px minmax(0, 1fr); }
+    .example { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -570,42 +583,48 @@
       </details>
 
       <article class="article-body">
+        <section class="article-intro">
+        <p>'인스타 저장 늘리기' 문제가 떠올라 이 글을 열었다면, 아마 지금 운영하는 공간을 더 알리고 싶은데 어디부터 손대야 할지 애매한 상태일 가능성이 큽니다. 더 많이 올리거나 광고를 켜기 전에, 손님이 방문 직전에 무엇을 확인하지 못하고 멈추는지 먼저 봐야 합니다.</p>
+        <p>갤러리, 전시공간, 샵에서는 큰 캠페인보다 첫 화면의 문장, 대표 사진, 예약/위치 안내처럼 작은 정보가 방문 결정을 가릅니다. 손님은 공간이 좋아 보여도 "오늘 가도 되나", "처음 가도 어색하지 않나", "어떻게 이용하면 되나"가 안 보이면 다시 미룹니다.</p>
+        <p>그래서 아래 내용은 한 번에 다 바꾸는 목록이 아니라, 오늘 바로 바꿀 한 문장과 사진 한 장을 고르는 순서로 읽으면 좋습니다.</p>
+      </section>
+
         <section class="content-block content-saveReason">
         <h2 id="saveReason">저장은 관심, 방문은 다른 단계</h2>
-        <p>저장은 방문 결정이 아니라 후보에 넣는 행동입니다. 저장한 사람이 다시 열었을 때 결정할 정보가 있어야 합니다.</p><div class="mini-table"><div><strong>저장 정보</strong><span>나중에 다시 보고 싶은 분위기, 메뉴, 위치</span></div>
-          <div><strong>방문 정보</strong><span>언제, 누구와, 어떻게 이용하면 좋은지</span></div>
-          <div><strong>리마인드</strong><span>다음 일정, 계절 메뉴, 새 입고, 전시 교체</span></div></div>
+        <p>저장은 방문 결정이 아니라 후보에 넣는 행동입니다. 저장한 사람이 다시 열었을 때 결정할 정보가 있어야 합니다.</p><div class="mini-table"><div><p><strong>1. 저장 정보부터 정리해보면 좋아요.</strong> 나중에 다시 보고 싶은 분위기, 메뉴, 위치</p></div>
+          <div><p><strong>2. 방문 정보부터 정리해보면 좋아요.</strong> 언제, 누구와, 어떻게 이용하면 좋은지</p></div>
+          <div><p><strong>3. 리마인드부터 정리해보면 좋아요.</strong> 다음 일정, 계절 메뉴, 새 입고, 전시 교체</p></div></div>
       </section>
 
         <section class="content-block content-photoBrief">
         <h2 id="photoBrief">이번 주에 찍어야 할 컷</h2>
-        <div class="mini-table"><div><strong>1컷</strong><span>입구나 첫 화면에서 알아볼 수 있는 대표 장면</span></div>
-          <div><strong>2컷</strong><span>처음 앉거나 둘러볼 내부 장면</span></div>
-          <div><strong>3컷</strong><span>메뉴, 상품, 작품, 이용 방식이 보이는 디테일</span></div>
-          <div><strong>4컷</strong><span>혼자/동행/예약 등 방문 조건을 상상하게 하는 장면</span></div></div>
+        <div class="mini-table"><div><p><strong>1. 1컷부터 정리해보면 좋아요.</strong> 입구나 첫 화면에서 알아볼 수 있는 대표 장면</p></div>
+          <div><p><strong>2. 2컷부터 정리해보면 좋아요.</strong> 처음 앉거나 둘러볼 내부 장면</p></div>
+          <div><p><strong>3. 3컷부터 정리해보면 좋아요.</strong> 메뉴, 상품, 작품, 이용 방식이 보이는 디테일</p></div>
+          <div><p><strong>4. 4컷부터 정리해보면 좋아요.</strong> 혼자/동행/예약 등 방문 조건을 상상하게 하는 장면</p></div></div>
       </section>
 
         <section class="content-block content-focus-b2b014">
         <h2 id="focus-b2b014">인스타 저장 늘리기: 이 글에서 먼저 볼 질문</h2>
-        <p>저장되는 사진에는 분위기뿐 아니라 다시 찾아볼 정보 단서가 있어야 합니다.</p><div class="mini-grid"><div><strong>증상</strong><p>사진은 좋지만 위치, 기간, 이용 상황이 함께 기억되지 않는다.</p></div>
-          <div><strong>손님 질문</strong><p>처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
-          <div><strong>오늘 바꿀 것</strong><p>사진마다 손님이 다시 확인할 정보 하나를 붙입니다.</p></div></div>
+        <p>저장되는 사진에는 분위기뿐 아니라 다시 찾아볼 정보 단서가 있어야 합니다.</p><div class="mini-grid"><div><p><strong>1. 증상부터 보면 좋아요.</strong> 사진은 좋지만 위치, 기간, 이용 상황이 함께 기억되지 않는다.</p></div>
+          <div><p><strong>2. 손님 질문부터 보면 좋아요.</strong> 처음 보는 손님이 방문 전에 무엇을 확인하지 못했는지 봅니다.</p></div>
+          <div><p><strong>3. 오늘 바꿀 것부터 보면 좋아요.</strong> 사진마다 손님이 다시 확인할 정보 하나를 붙입니다.</p></div></div>
       </section>
 
         <section class="content-block content-doDont">
         <h2 id="doDont">하면 좋은 것과 피할 것</h2>
-        <p>좋은 공간일수록 추상적인 말로 뭉뚱그리기 쉽습니다. 아래 지점만 피해도 처음 보는 손님에게 더 친절해집니다.</p><ul><li>릴스 조회수만 보고 성공으로 판단하지 않습니다. 프로필 방문 후 위치, 예약, 문의로 이어지는지 같이 봐야 합니다.</li>
-          <li>해시태그를 많이 붙이는 것보다 첫 문장과 고정 게시물에서 방문 정보를 정리하는 편이 더 실무적입니다.</li>
-          <li>고객 얼굴이나 개인정보가 보이는 장면은 동의 없이 쓰지 않습니다.</li></ul>
+        <p>좋은 공간일수록 추상적인 말로 뭉뚱그리기 쉽습니다. 아래 지점만 피해도 처음 보는 손님에게 더 친절해집니다.</p><div class="prose-list"><p><strong>1.</strong> 릴스 조회수만 보고 성공으로 판단하지 않습니다. 프로필 방문 후 위치, 예약, 문의로 이어지는지 같이 봐야 합니다.</p>
+          <p><strong>2.</strong> 해시태그를 많이 붙이는 것보다 첫 문장과 고정 게시물에서 방문 정보를 정리하는 편이 더 실무적입니다.</p>
+          <p><strong>3.</strong> 고객 얼굴이나 개인정보가 보이는 장면은 동의 없이 쓰지 않습니다.</p></div>
       </section>
 
         <section class="content-block content-nextSevenDays">
         <h2 id="nextSevenDays">7일 안에 순서대로 바꿀 것</h2>
-        <div class="flow"><div><span>01</span><p>1일차: '인스타 저장 늘리기' 관점으로 지도와 계정을 처음 보는 손님 입장에서 첫 화면을 캡처합니다.</p></div>
-          <div><span>02</span><p>2일차: 영업시간, 예약/문의, 위치, 대표 사진, 첫 방문 추천을 한 문서에 모읍니다.</p></div>
-          <div><span>03</span><p>3일차: 지도 소개 문구와 인스타 프로필 문구를 같은 방문 장면으로 맞춥니다.</p></div>
-          <div><span>04</span><p>4일차: 현장 안내물 한 곳에 같은 메시지를 작게 붙여 온라인과 오프라인을 연결합니다.</p></div>
-          <div><span>05</span><p>7일차: 문의 내용, 저장 반응, 자주 묻는 질문을 보고 다음 글감이나 안내 문구를 고칩니다.</p></div></div>
+        <div class="flow"><div><p><strong>1.</strong> 1일차: '인스타 저장 늘리기' 관점으로 지도와 계정을 처음 보는 손님 입장에서 첫 화면을 캡처합니다.</p></div>
+          <div><p><strong>2.</strong> 2일차: 영업시간, 예약/문의, 위치, 대표 사진, 첫 방문 추천을 한 문서에 모읍니다.</p></div>
+          <div><p><strong>3.</strong> 3일차: 지도 소개 문구와 인스타 프로필 문구를 같은 방문 장면으로 맞춥니다.</p></div>
+          <div><p><strong>4.</strong> 4일차: 현장 안내물 한 곳에 같은 메시지를 작게 붙여 온라인과 오프라인을 연결합니다.</p></div>
+          <div><p><strong>5.</strong> 7일차: 문의 내용, 저장 반응, 자주 묻는 질문을 보고 다음 글감이나 안내 문구를 고칩니다.</p></div></div>
       </section>
 
         <section class="content-block content-sources">
