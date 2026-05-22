@@ -92,25 +92,25 @@ const manualArticles = [
     id: "B2B003",
     slug: "weekday-visits",
     cluster: "신규 손님 유입",
-    title: "주말에는 붐비는데 평일 손님이 부족한 공간 운영법",
+    title: "주말엔 꽉 차는데, 왜 평일엔 비어 보일까요?",
     keyword: "평일 손님 늘리기",
     spaces: ["카페", "서점", "스튜디오"],
-    summary: "평일 방문 이유를 만드는 시간대, 좌석, 이용 상황 중심의 콘텐츠 운영법.",
-    lead: "주말에 붐비는 공간이 평일에는 비는 이유는 수요가 없어서만은 아닙니다. 손님이 평일에 그 공간을 어떻게 써야 하는지 떠올리지 못하는 경우가 많습니다.",
+    summary: "주말의 활기만 보여주면 손님은 평일에 그 공간을 어떻게 쓰면 좋은지 떠올리기 어렵습니다. 빈 시간대를 할인보다 이용 장면으로 바꾸는 법을 정리합니다.",
+    lead: "주말에는 자리가 없을 만큼 붐비는데 평일에는 조용한 공간이 있습니다. 이때 문제는 평일에 올 사람이 전혀 없다는 뜻이 아니라, 손님이 평일에 이 공간을 어떻게 써야 할지 아직 떠올리지 못한다는 뜻일 수 있습니다.",
     points: [
-      "주말의 활기만 보여줘 평일의 장점을 손님이 모른다.",
-      "작업, 독서, 촬영, 짧은 미팅처럼 평일 이용 상황이 소개되지 않는다.",
-      "시간대별로 다른 손님에게 맞는 메시지가 없다."
+      "주말의 붐비는 장면만 보여주면 평일의 조용함이 장점으로 보이지 않는다.",
+      "작업, 독서, 촬영, 짧은 미팅처럼 평일에 맞는 이용 상황이 정리되지 않았다.",
+      "월요일 오전, 수요일 오후, 평일 저녁처럼 시간대별로 다른 손님에게 말하지 않는다."
     ],
     checklist: [
-      "월요일 오전, 수요일 저녁처럼 실제로 비는 시간대를 콘텐츠 주제로 잡습니다.",
-      "좌석, 조명, 소음, 콘센트, 예약 가능 여부처럼 평일 이용 판단 정보를 보여줍니다.",
-      "서점은 새 책 입고, 스튜디오는 촬영 가능 시간, 카페는 조용한 좌석처럼 업종별 이유를 분리합니다.",
-      "평일 전용 할인보다 평일에 누릴 수 있는 장면을 먼저 제안합니다.",
-      "매주 반복 가능한 고정 코너를 만들어 다시 떠올릴 계기를 만듭니다."
+      "실제로 비는 평일 시간대를 하나 고르고, 그 시간에 어울리는 손님 상황을 붙입니다.",
+      "좌석, 조명, 소음, 콘센트, 예약 가능 여부처럼 평일 판단 정보를 사진과 함께 보여줍니다.",
+      "카페는 조용한 좌석, 서점은 천천히 읽는 시간, 스튜디오는 촬영 가능한 시간처럼 업종별 이유를 분리합니다.",
+      "평일 할인보다 평일에만 누릴 수 있는 장면을 먼저 말합니다.",
+      "매주 반복 가능한 요일 코너를 만들어 손님이 다시 떠올릴 계기를 남깁니다."
     ],
     before: "평일에도 정상 영업합니다.",
-    after: "화요일 오후에는 창가 좌석이 가장 조용합니다. 책 한 권 읽고 가기 좋은 시간대로 비워두고 있어요.",
+    after: "화요일 오후 2시에는 창가 좌석이 가장 조용합니다. 책 한 권 읽거나 1시간 작업하고 가기 좋은 시간으로 비워두고 있어요.",
     doripe: "Doripe는 공간을 시간대와 함께 보여주는 쪽이 저장에 유리하다고 봅니다. 평일 콘텐츠는 빈 시간을 파는 것이 아니라, 그 시간에 어울리는 쓰임을 보여주는 일입니다.",
     related: ["B2B088", "B2B078", "B2B011"]
   },
@@ -534,6 +534,155 @@ const manualArticles = [
 
 const manualById = new Map(manualArticles.map((article) => [article.id, article]));
 
+const customArticleContent = new Map(
+  Object.entries({
+    B2B004: {
+      title: "단골은 있는데, 새로운 손님은 왜 안 늘어날까요?",
+      summary: "이미 아는 사람에게는 통하지만 처음 보는 손님에게는 닿지 않는 메시지를 어떻게 바꿀지 정리합니다.",
+      lead:
+        "동네 단골이 꾸준히 오는 가게는 분명 힘이 있습니다. 그런데 처음 보는 손님이 늘지 않는다면, 문제는 매력이 부족해서가 아니라 처음 보는 사람이 이해할 수 있는 말이 부족해서일 수 있습니다.",
+      intro: [
+        "단골은 많은 설명이 없어도 압니다. 어떤 메뉴가 좋은지, 언제 가면 편한지, 사장님이 어떤 분위기인지 이미 경험했기 때문입니다.",
+        "하지만 새로운 손님은 다릅니다. 사진 몇 장과 소개 문장만 보고 내가 가도 되는 곳인지 판단해야 합니다. 이때 내부자에게만 익숙한 말이 많으면 방문이 멈춥니다.",
+        "새 손님을 늘리려면 가게를 새로 꾸미기보다, 처음 보는 사람이 이해할 수 있는 순서로 다시 말해줘야 합니다."
+      ],
+      sections: [
+        {
+          key: "insiderLanguage",
+          label: "진단",
+          title: "단골에게 익숙한 말이 새 손님에게는 빈칸일 수 있어요",
+          html:
+            "<p>늘 먹던 그 메뉴, 아는 사람은 아는 분위기, 우리만의 감성 같은 말은 단골에게는 통합니다. 하지만 처음 보는 손님에게는 정보가 부족합니다.</p><p>새 손님은 아직 맥락을 모릅니다. 어떤 상황에 가면 좋은지, 대표 메뉴는 무엇인지, 혼자 가도 되는지, 예약이 필요한지 같은 기본 질문부터 해결해야 합니다.</p><p>그래서 소개 문장은 내부자의 애정 표현보다 외부자의 첫 질문에 답하는 방식으로 바꾸는 것이 좋습니다.</p>"
+        },
+        {
+          key: "firstTimeReader",
+          label: "시점 전환",
+          title: "처음 보는 사람은 좋다보다 나한테 맞나를 먼저 봅니다",
+          html:
+            "<p>새 손님은 가게의 모든 매력을 천천히 읽어주지 않습니다. 짧은 시간 안에 자기와 맞는지 봅니다.</p><p>식당이라면 가격대, 대표 메뉴, 대기 부담을 봅니다. 카페라면 좌석, 소음, 작업 가능 여부를 봅니다. 샵이라면 상품 범위와 선물하기 좋은지, 둘러보기 부담은 없는지 봅니다.</p><p>이 질문에 답이 보이면 방문 가능성이 생깁니다. 답이 없으면 나중에 가봐야지에서 멈춥니다.</p>"
+        },
+        {
+          key: "messageBeforeAfter",
+          label: "수정 예시",
+          title: "소개 문장은 이렇게 바꾸면 이해가 빨라져요",
+          html:
+            "<p>동네에서 사랑받는 작은 식당은 따뜻하지만, 처음 보는 사람에게는 아직 흐립니다.</p><div class=\"example\"><div><strong>Before</strong><p>동네에서 사랑받는 작은 식당입니다.</p></div><div><strong>After</strong><p>혼자 와도 부담 없는 1인 정식과 제철 반찬을 내는 동네 식당입니다.</p></div></div><p>감각적인 라이프스타일 숍보다 집들이 선물을 2만 원대부터 고를 수 있는 작은 소품 가게가 더 행동에 가깝습니다. 좋은 소개 문장은 멋진 단어보다 선택에 필요한 정보를 먼저 줍니다.</p>"
+        },
+        {
+          key: "bridgeContent",
+          label: "번역",
+          title: "단골의 언어와 새 손님의 언어를 이어주세요",
+          html:
+            "<p>단골을 버리고 새 손님만 말하자는 뜻은 아닙니다. 단골이 좋아하는 이유를 새 손님도 이해할 수 있게 번역해야 합니다.</p><p>예를 들어 단골이 여긴 편해서 좋아요라고 말한다면, 운영자는 그 편함이 무엇인지 풀어야 합니다. 자리 간격이 넓은지, 오래 있어도 눈치가 안 보이는지, 메뉴 선택이 쉬운지 구체화해야 합니다.</p><p>이렇게 쓰면 기존 단골의 감정은 유지하면서도 새 손님이 들어올 문이 생깁니다.</p>"
+        },
+        {
+          key: "newCustomerTest",
+          label: "7일 실험",
+          title: "처음 오는 손님용 문장 3개를 테스트해보세요",
+          html:
+            "<p>일주일 동안 소개 문장 세 개를 준비해봅니다. 하나는 대표 메뉴 중심, 하나는 방문 상황 중심, 하나는 부담을 줄이는 정보 중심으로 씁니다.</p><div class=\"flow\"><div><p><strong>1.</strong> 첫 방문이라면 이 메뉴부터 보세요.</p></div><div><p><strong>2.</strong> 퇴근 후 조용히 들르기 좋은 시간은 평일 저녁입니다.</p></div><div><p><strong>3.</strong> 예약 없이 30분 정도 머물기 좋은 좌석을 앞쪽에 안내합니다.</p></div></div><p>게시물과 스토리에서 반응을 보고, 손님이 어떤 표현에 더 많이 질문하는지 확인해보세요. 새 손님은 보통 자기 상황과 가까운 문장에 먼저 반응합니다.</p>"
+        }
+      ]
+    },
+    B2B005: {
+      title: "검색은 되는데, 왜 방문으로 이어지지 않을까요?",
+      summary: "검색 결과에 노출된 뒤 손님이 어떤 정보를 확인하다 멈추는지, 첫 화면과 다음 행동을 기준으로 정리합니다.",
+      lead:
+        "검색이 된다는 건 손님이 가게를 발견했다는 뜻입니다. 하지만 발견과 방문 사이에는 아직 몇 개의 확인 단계가 남아 있습니다.",
+      intro: [
+        "네이버나 지도에서 조회가 잡히면 일단 안심하게 됩니다. 우리 가게가 보이고 있다는 뜻이니까요. 그런데 조회수는 있는데 전화, 저장, 예약, 실제 방문이 약하다면 검색 이후 화면에서 손님이 멈추고 있을 수 있습니다.",
+        "손님은 검색 결과에서 가게 이름을 본 뒤 곧바로 방문하지 않습니다. 첫 사진을 보고, 영업 중인지 보고, 가격대와 위치를 보고, 리뷰 몇 개를 훑습니다. 이 짧은 확인 과정에서 답이 없으면 다른 가게로 넘어갑니다.",
+        "그래서 검색 전환은 상위 노출만의 문제가 아닙니다. 검색된 뒤 손님이 안심하고 다음 행동을 할 수 있게 정보 순서를 정리하는 일입니다. 🧭"
+      ],
+      sections: [
+        {
+          key: "searchIsStart",
+          label: "검색 이후",
+          title: "검색 노출은 도착이 아니라 확인의 시작입니다",
+          html:
+            "<p>검색 결과에 나온 순간 손님은 가게를 평가하기 시작합니다. 이때 손님이 보는 것은 멋진 소개문 전체가 아니라 방문 판단에 필요한 몇 가지 정보입니다.</p><p>지금 영업하는지, 어디에 있는지, 처음 가도 어색하지 않은지, 내가 원하는 상황에 맞는지 빠르게 확인합니다. 이 정보가 흩어져 있으면 검색은 되었지만 방문까지 가지 못합니다.</p><p>검색 전환을 높이고 싶다면 먼저 손님이 검색 뒤 10초 안에 무엇을 확인하는지부터 봐야 합니다.</p>"
+        },
+        {
+          key: "firstScreenAnswer",
+          label: "첫 화면",
+          title: "첫 화면에는 분위기보다 방문 판단 정보가 먼저 보여야 합니다",
+          html:
+            "<p>분위기 사진은 중요합니다. 하지만 검색으로 들어온 손님에게는 분위기보다 먼저 확인할 정보가 있습니다.</p><p>대표 사진이 너무 감성적이어서 입구, 좌석, 메뉴 구성이 보이지 않으면 손님은 좋다보다 모르겠다고 느낍니다. 첫 문장도 마찬가지입니다. 우리만의 무드보다 언제, 누구에게, 어떻게 좋은지가 먼저 보여야 합니다.</p><p>식당이라면 대표 메뉴와 가격대, 카페라면 좌석과 체류 분위기, 샵이라면 상품 범위와 선물 가능 여부가 첫 화면에 가까워야 합니다.</p>"
+        },
+        {
+          key: "hiddenSearchQuestion",
+          label: "숨은 질문",
+          title: "손님은 키워드를 검색하지만, 마음속에는 질문을 넣습니다",
+          html:
+            "<p>손님이 검색창에 넣는 말은 단어입니다. 하지만 실제로 알고 싶은 것은 질문입니다.</p><div class=\"example\"><div><strong>검색어</strong><p>성수 점심</p></div><div><strong>마음속 질문</strong><p>혼자 빠르게 먹어도 괜찮은 곳일까?</p></div></div><p>검색어 뒤에 있는 질문을 읽어야 콘텐츠가 좋아집니다. 데이트 카페라는 키워드 뒤에는 좌석 간격, 소음, 사진 찍기 좋은 자리, 대기 부담 같은 질문이 숨어 있을 수 있습니다.</p>"
+        },
+        {
+          key: "nextActionOne",
+          label: "다음 행동",
+          title: "예약, 길찾기, 저장 중 하나는 바로 할 수 있어야 합니다",
+          html:
+            "<p>정보를 다 보고 마음에 들어도 다음 행동이 흐리면 전환은 약해집니다. 손님이 길찾기를 눌러야 하는지, 예약해야 하는지, 일단 저장하면 되는지 헷갈리면 다시 미룹니다.</p><p>모든 행동을 한 번에 밀 필요는 없습니다. 우리 가게의 방문 방식에 맞춰 하나를 가장 선명하게 두면 됩니다. 예약제 공간은 예약 링크, 골목 안쪽 매장은 길찾기, 나중에 방문할 가능성이 큰 공간은 저장 안내가 먼저입니다.</p><p>작은 버튼 하나보다 중요한 건 문장입니다. ‘예약은 네이버에서’, ‘초행이면 길찾기를 켜고 오세요’, ‘다음 전시 일정은 저장해두면 편해요’처럼 행동을 알려주세요.</p>"
+        },
+        {
+          key: "searchWeekTest",
+          label: "7일 실험",
+          title: "일주일 동안 검색 첫 화면만 고쳐보세요",
+          html:
+            "<p>첫째, 대표 사진 1장을 처음 오는 사람이 이해하기 쉬운 사진으로 바꿉니다. 입구, 메뉴 구성, 좌석처럼 판단 정보가 있는 컷이면 좋습니다.</p><p>둘째, 소개 첫 문장을 업종 소개에서 방문 상황으로 바꿉니다. ‘작은 와인바입니다’보다 ‘퇴근 후 둘이 조용히 한 잔 하기 좋은 12석 와인바입니다’가 더 빠릅니다.</p><p>셋째, 다음 행동을 하나만 정합니다. 예약, 길찾기, 저장 중 무엇을 먼저 원하는지 정하고 그 행동이 화면 안에서 바로 보이게 해보세요.</p>"
+        }
+      ]
+    },
+    B2B006: {
+      title: "할인 없이도 첫 방문을 만들 수 있을까요?",
+      summary: "가격을 낮추기 전에 손님이 처음 방문에서 느끼는 선택 부담을 줄이는 제안 방식과 문구를 정리합니다.",
+      lead:
+        "첫 방문이 적으면 할인부터 떠올리기 쉽습니다. 하지만 처음 보는 손님이 망설이는 이유가 항상 가격 때문은 아닙니다.",
+      intro: [
+        "할인은 빠르게 눈에 띕니다. 그래서 신규 손님이 부족할 때 가장 먼저 생각나는 카드입니다. 그런데 할인은 방문 이유를 만들기도 하지만, 가게가 원래 어떤 곳인지 흐리게 만들 수도 있습니다.",
+        "처음 오는 손님은 가격만 보고 움직이지 않습니다. 실패하지 않을 메뉴가 있는지, 혼자 들어가도 되는지, 얼마쯤 쓰게 될지, 얼마나 머물 수 있는지 확인합니다.",
+        "할인 없이 첫 방문을 만들려면 더 크게 외치는 대신 선택을 쉽게 만들어야 합니다. 손님이 ‘이 정도면 한번 가봐도 되겠다’고 느낄 작은 제안이 필요합니다. 🪧"
+      ],
+      sections: [
+        {
+          key: "discountIsNotFirst",
+          label: "할인 전에",
+          title: "가격보다 먼저 줄여야 할 것은 선택 부담입니다",
+          html:
+            "<p>손님이 처음 방문을 미루는 이유는 비싸서가 아니라 애매해서일 때가 많습니다. 뭘 주문해야 할지 모르겠고, 얼마나 시간을 잡아야 할지 모르겠고, 처음 들어가도 괜찮을지 모르기 때문입니다.</p><p>이럴 때 할인만 앞세우면 손님은 싸다는 건 알지만 여전히 어떻게 이용할지는 모릅니다. 방문 전 불안을 줄이지 못하면 할인도 저장이나 캡처에서 멈출 수 있습니다.</p><p>먼저 선택 부담을 줄인 뒤, 필요할 때 혜택을 붙이는 편이 좋습니다.</p>"
+        },
+        {
+          key: "starterChoice",
+          label: "첫 선택지",
+          title: "처음 온 사람에게는 고를 것을 줄여주는 게 친절합니다",
+          html:
+            "<p>메뉴가 많고 상품이 많고 프로그램이 다양하면 운영자는 풍성하다고 느낍니다. 하지만 처음 보는 손님에게는 어렵게 보일 수 있습니다.</p><p>첫 방문 추천 메뉴, 30분 코스, 2만 원대 선물 세트, 혼자 오기 좋은 좌석처럼 시작점을 하나 만들어보세요. 선택지가 적어지는 것이 아니라 첫 발이 쉬워지는 것입니다.</p><div class=\"flow\"><div><p><strong>식당</strong><br>처음이면 대표 메뉴와 사이드 하나만 추천합니다.</p></div><div><p><strong>카페</strong><br>작업, 대화, 사진 중 어떤 목적에 맞는지 나눕니다.</p></div><div><p><strong>샵</strong><br>선물 예산별로 처음 보는 코너를 정리합니다.</p></div></div>"
+        },
+        {
+          key: "smallPromiseWithoutDiscount",
+          label: "작은 약속",
+          title: "혜택보다 ‘실패하지 않을 약속’이 더 강할 때가 있습니다",
+          html:
+            "<p>첫 방문 제안은 꼭 할인일 필요가 없습니다. 손님이 안심할 수 있는 약속이면 됩니다.</p><p>‘처음 오시면 취향에 맞춰 2가지 메뉴를 추천해드려요’, ‘10분만 둘러봐도 부담 없이 나가셔도 됩니다’, ‘예약 없이도 평일 오후에는 바로 앉을 수 있어요’ 같은 문장이 첫 방문 장벽을 낮춥니다.</p><p>이런 문장은 가격을 깎지 않아도 손님에게 리스크가 낮아졌다는 느낌을 줍니다.</p>"
+        },
+        {
+          key: "offerSentence",
+          label: "제안 문장",
+          title: "이벤트 문구보다 이용 장면 문구로 써보세요",
+          html:
+            "<p>‘첫 방문 이벤트’라는 말은 익숙하지만, 가게의 쓰임을 충분히 설명하지 못합니다. 대신 손님 상황에서 시작하면 더 자연스럽습니다.</p><div class=\"example\"><div><strong>Before</strong><p>신규 고객 이벤트 진행 중입니다.</p></div><div><strong>After</strong><p>처음 오신다면 평일 2~5시에 대표 메뉴를 천천히 골라드릴 수 있어요.</p></div></div><p>문구가 조금 덜 화려해도 괜찮습니다. 손님은 혜택보다 내가 어떻게 이용하면 되는지 먼저 알고 싶어 합니다.</p>"
+        },
+        {
+          key: "noDiscountWeekTest",
+          label: "7일 실험",
+          title: "이번 주에는 할인 대신 첫 방문 제안 하나만 만들어보세요",
+          html:
+            "<p>가게에 처음 오는 사람이 가장 많이 망설이는 지점을 하나 고릅니다. 메뉴 선택, 자리, 가격대, 예약, 길찾기 중 하나면 충분합니다.</p><p>그 지점에 답하는 문장을 프로필, 첫 게시물, 플레이스 소개 중 한 곳에 넣어보세요. 예를 들어 ‘처음이면 이 메뉴부터’, ‘혼자 오면 바 자리 추천’, ‘30분만 둘러봐도 괜찮아요’처럼 씁니다.</p><p>일주일 동안 손님이 그 문장을 보고 질문이 줄었는지, 더 구체적인 문의를 하는지 확인하면 됩니다.</p>"
+        }
+      ]
+    }
+  })
+);
+
 function parseCsv(content) {
   const [headerLine, ...lines] = content.trim().split(/\r?\n/);
   const headers = headerLine.split(",");
@@ -891,7 +1040,7 @@ const structurePools = {
 const manualStructureById = {
   B2B001: "footTrafficGuide",
   B2B002: "openingDropoffGuide",
-  B2B003: "weekdayUse",
+  B2B003: "weekdayGuide",
   B2B004: "messageBridge",
   B2B005: "searchGap",
   B2B006: "noDiscountOffer",
@@ -930,6 +1079,7 @@ const manualStructureById = {
 const structureBlueprints = {
   footTrafficGuide: ["walkByGap", "firstVisitRisk", "streetToScreen", "threeFixes", "sevenDayDoorTest", "doripe", "sources"],
   openingDropoffGuide: ["openingWave", "secondWaveProblem", "saveableOpeningInfo", "openingMessageFix", "openingWeekTest", "doripe", "sources"],
+  weekdayGuide: ["weekendShadow", "weekdayUseMoment", "quietTimeQuestions", "weekdaySceneFix", "weekdayWeekTest", "doripe", "sources"],
   doorAudit: ["visitorMoment", "outsideInsideGap", "firstScreenAudit", "doDont", "fieldTest", "doripe", "sources"],
   launchDropoff: ["timeline", "memoryHook", "channelMap", "smallScript", "nextSevenDays", "doripe", "sources"],
   weekdayUse: ["timeMap", "sceneMenu", "photoBrief", "contentCalendar", "ownerCheck", "doripe", "sources"],
@@ -995,8 +1145,16 @@ function structureKeyFor(row, index) {
 }
 
 function buildStructure(row, index) {
+  const custom = customArticleContent.get(row.id);
+  if (custom?.sections?.length) {
+    return {
+      key: `custom-${row.id.toLowerCase()}`,
+      sections: [...custom.sections.map((section) => section.key), "doripe"]
+    };
+  }
+
   const key = structureKeyFor(row, index);
-  const sections = [...(structureBlueprints[key] ?? structureBlueprints.doorAudit)];
+  const sections = [...(structureBlueprints[key] ?? structureBlueprints.doorAudit)].filter((section) => section !== "sources");
   const focusSection = `focus-${row.id.toLowerCase()}`;
   const insertAt = Math.min(2 + (index % 3), Math.max(1, sections.length - 2));
   sections.splice(insertAt, 0, focusSection);
@@ -1008,6 +1166,7 @@ function buildStructure(row, index) {
 
 function normalizeArticle(row, index) {
   const manual = manualById.get(row.id) ?? {};
+  const custom = customArticleContent.get(row.id) ?? {};
   const guide = clusterGuides[row.cluster] ?? defaultGuide;
   const editor = editors[index % editors.length];
   return {
@@ -1015,21 +1174,23 @@ function normalizeArticle(row, index) {
     priority: row.priority,
     slug: manual.slug ?? row.id.toLowerCase(),
     cluster: row.cluster,
-    title: manual.title ?? row.title,
+    title: custom.title ?? manual.title ?? row.title,
     keyword: row.primary_keyword,
     spaces: splitPipes(row.target_space_types),
     secondaryKeywords: splitPipes(row.secondary_keywords),
     searchIntent: row.search_intent,
     doripeAngle: row.doripe_angle,
     internalLinkClusters: splitPipes(row.internal_links),
-    summary: manual.summary ?? makeSummary(row),
-    lead: manual.lead ?? makeLead(row),
+    summary: custom.summary ?? manual.summary ?? makeSummary(row),
+    lead: custom.lead ?? manual.lead ?? makeLead(row),
     points: manual.points ?? guide.points,
     checklist: manual.checklist ?? guide.checklist,
     channelSteps: makeChannelSteps(row),
     mistakes: makeMistakes(row),
     miniPlan: makeMiniPlan(row),
     structure: buildStructure(row, index),
+    customIntro: custom.intro ?? [],
+    customSections: custom.sections ?? [],
     sources: sourceKeysForCluster(row.cluster).map((key) => sourceLibrary[key]),
     editor,
     before: manual.before ?? makeBefore(row),
@@ -1151,10 +1312,15 @@ const sectionMeta = {
   visitorQuestion: ["고객 질문", "처음 보는 손님이 묻는 것"],
   saveableOpeningInfo: ["저장 정보", "지나간 오픈 소식을 다시 꺼내볼 정보로 바꾸세요"],
   secondWaveProblem: ["두 번째 파도", "첫 방문의 다음 이유가 없으면 조용해집니다"],
+  quietTimeQuestions: ["평일 질문", "평일 손님은 무엇을 확인하고 싶을까요?"],
   walkByGap: ["문 앞 문제", "사람이 많은 길과 들어가기 쉬운 가게는 다릅니다"],
   streetToScreen: ["첫 화면 연결", "문 앞 안내와 온라인 첫 화면을 같은 말로 맞추세요"],
   threeFixes: ["수정 기준", "처음 보는 손님에게 필요한 세 가지 단서"],
-  sevenDayDoorTest: ["7일 실험", "이번 주에는 이렇게 확인해보세요"]
+  sevenDayDoorTest: ["7일 실험", "이번 주에는 이렇게 확인해보세요"],
+  weekdaySceneFix: ["수정 기준", "빈 시간대를 방문 장면으로 바꾸는 세 가지"],
+  weekdayUseMoment: ["평일 쓰임", "평일에는 다른 이유로 찾아옵니다"],
+  weekdayWeekTest: ["7일 실험", "이번 주에는 평일 한 시간대만 정리해보세요"],
+  weekendShadow: ["주말 그림자", "주말의 활기가 평일의 쓰임을 가릴 수 있습니다"]
 };
 
 function renderList(items) {
@@ -1209,6 +1375,9 @@ function spaceVariantRows(article) {
 }
 
 function sectionInfo(article, section) {
+  const customSection = article.customSections?.find((item) => item.key === section);
+  if (customSection) return [customSection.label, customSection.title];
+
   if (section.startsWith("focus-")) {
     return ["핵심 질문", `${article.keyword}: 이 글에서 먼저 볼 질문`];
   }
@@ -1232,6 +1401,20 @@ function renderArticleIntro(article) {
       </section>`;
   }
 
+  if (article.id === "B2B003") {
+    return `<section class="article-intro">
+        <p>주말에는 매장이 꽉 차는데, 월요일 오후나 수요일 낮에는 유난히 조용할 때가 있습니다. 이런 상황에서는 평일 할인이나 쿠폰부터 떠올리기 쉽습니다.</p>
+        <p>하지만 평일 손님이 부족한 이유가 꼭 가격 때문만은 아닙니다. 손님이 주말의 활기찬 장면만 보고 있다면, 평일에 그 공간을 어떻게 쓰면 좋은지 떠올리기 어렵습니다.</p>
+        <p>이 글에서는 평일을 비어 있는 시간으로 팔기보다, 다른 손님에게 맞는 이용 장면으로 바꾸는 방법을 정리해보겠습니다.</p>
+      </section>`;
+  }
+
+  if (article.customIntro?.length) {
+    return `<section class="article-intro">
+        ${article.customIntro.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("\n        ")}
+      </section>`;
+  }
+
   const spaces = article.spaces.length ? article.spaces.join(", ") : "로컬 공간";
   const topic = article.keyword || article.title;
   return `<section class="article-intro">
@@ -1242,6 +1425,9 @@ function renderArticleIntro(article) {
 }
 
 function sectionBody(article, section, sourceLinks) {
+  const customSection = article.customSections?.find((item) => item.key === section);
+  if (customSection) return customSection.html;
+
   if (article.id === "B2B001" && section === "focus-b2b001") {
     return `<p>이 글의 핵심은 간단합니다. 유동인구가 있는데 첫 방문이 적다면, 더 많은 사람에게 보이는 것보다 '처음 보는 사람이 덜 망설이게 만드는 것'이 먼저입니다.</p>
         <div class="example">
@@ -1266,6 +1452,20 @@ function sectionBody(article, section, sourceLinks) {
           <div>
             <strong>다시 꺼내볼 소개 정보</strong>
             <p>"처음 오면 이 메뉴부터", "예약 없이 가능한 시간", "오픈 한 달 동안 가장 많이 고른 선택지"처럼 다음 방문 판단에 필요한 정보를 남깁니다.</p>
+          </div>
+        </div>`;
+  }
+
+  if (article.id === "B2B003" && section === "focus-b2b003") {
+    return `<p>이 글의 핵심은 평일을 싸게 파는 것이 아닙니다. 주말과 다른 쓰임을 분명하게 보여줘서, 손님이 "이 시간에는 이렇게 쓰면 되겠다"라고 떠올리게 만드는 것입니다.</p>
+        <div class="example">
+          <div>
+            <strong>비어 보이는 평일</strong>
+            <p>주말 사진만 쌓여 있으면 평일의 조용함은 인기 없는 시간처럼 보입니다. 손님은 굳이 그 시간에 가야 할 이유를 찾지 못합니다.</p>
+          </div>
+          <div>
+            <strong>쓰임이 보이는 평일</strong>
+            <p>창가 좌석, 조용한 독서 시간, 촬영 가능한 오후처럼 시간대별 장면을 보여주면 평일이 다른 손님에게 맞는 선택지가 됩니다.</p>
           </div>
         </div>`;
   }
@@ -1370,6 +1570,49 @@ function sectionBody(article, section, sourceLinks) {
           "7일차: 새 문의에서 반복되는 질문을 모아, 가격대/예약/소요 시간/추천 선택지 중 빠진 정보를 앞으로 빼냅니다."
         ])}
         <p>이 작업의 목표는 오픈 열기를 억지로 연장하는 것이 아닙니다. 오픈 이후에도 낯선 손님이 다시 꺼내볼 만한 이유를 남기는 것입니다.</p>`;
+    case "weekendShadow":
+      return `<p>주말에 사람이 많다는 건 좋은 신호입니다. 하지만 온라인에 주말의 붐비는 장면만 남으면, 평일의 장점은 잘 보이지 않습니다.</p>
+        <p>손님은 사진을 보고 그 공간의 기본 상태를 상상합니다. 늘 붐비는 사진만 보면 조용히 머물고 싶은 사람은 망설이고, 평일 낮에 갈 이유가 있는 사람도 자기 상황을 대입하기 어렵습니다.</p>
+        <p>평일 손님을 만들고 싶다면 먼저 "평일에는 이 공간이 어떻게 달라지는지"를 보여줘야 합니다. 같은 공간이라도 시간대가 바뀌면 쓰임이 달라집니다.</p>`;
+    case "weekdayUseMoment":
+      return `<p>평일 손님은 주말 손님과 같은 이유로 오지 않을 수 있습니다. 주말에는 약속, 구경, 데이트가 이유가 되지만 평일에는 짧은 작업, 조용한 독서, 낮 시간 촬영, 혼자 쉬는 시간이 더 중요해질 수 있습니다.</p>
+        <p>카페라면 콘센트와 창가 좌석, 서점이라면 오래 머물러도 부담 없는 조용한 시간, 스튜디오라면 자연광이 좋은 시간대가 평일의 이유가 됩니다.</p>
+        ${renderList([
+          "월요일 오전에 혼자 와도 어색하지 않은가?",
+          "평일 낮에 머물 수 있는 좌석이나 이용 시간이 보이는가?",
+          "작업, 독서, 촬영, 짧은 미팅처럼 구체적인 쓰임이 떠오르는가?",
+          "주말과 다른 사진이나 문장이 실제로 첫 화면에 있는가?"
+        ])}`;
+    case "quietTimeQuestions":
+      return `<p>빈 시간대를 콘텐츠로 만들 때는 "한가합니다"라고 말하는 것보다, 그 시간에 어떤 손님이 편한지 말하는 편이 좋습니다. 비어 있다는 말은 운영자 입장이고, 쓰임은 손님 입장입니다.</p>
+        <div class="example">
+          <div>
+            <strong>운영자 문장</strong>
+            <p>평일에는 비교적 여유가 있습니다. 많이 방문해주세요.</p>
+          </div>
+          <div>
+            <strong>손님 문장</strong>
+            <p>화요일 오후 2시에는 창가 좌석이 가장 조용합니다. 책 한 권 읽거나 1시간 작업하고 가기 좋은 시간입니다.</p>
+          </div>
+        </div>`;
+    case "weekdaySceneFix":
+      return `<p>평일 유입을 만들 때는 새로운 이벤트를 크게 만들기보다, 실제로 비는 시간대 하나를 골라 그 시간의 장점을 또렷하게 보여주는 편이 좋습니다.</p>
+        <h3>시간대를 먼저 고르세요</h3>
+        <p>"평일" 전체를 말하면 너무 넓습니다. 월요일 오전, 수요일 오후, 금요일 낮처럼 실제로 비는 시간을 하나 고르면 문장이 구체적이 됩니다.</p>
+        <h3>그 시간에 맞는 손님 상황을 붙이세요</h3>
+        <p>카페는 작업과 휴식, 서점은 독서와 책 고르기, 스튜디오는 촬영과 준비 시간처럼 손님이 그 시간에 할 행동을 붙여야 합니다.</p>
+        <h3>사진은 붐비는 장면보다 판단 정보를 보여주세요</h3>
+        <p>좌석 간격, 조명, 콘센트, 소음이 적은 구역, 예약 가능 여부처럼 평일 방문자가 확인하고 싶은 정보를 사진과 캡션에 같이 넣어보세요.</p>`;
+    case "weekdayWeekTest":
+      return `<p>이번 주에는 평일 전체를 살리려고 하지 말고, 한 시간대만 골라 작은 실험을 해보세요.</p>
+        ${renderFlow([
+          "1일차: 최근 한 달 동안 가장 조용했던 평일 시간대 하나를 고릅니다.",
+          "2일차: 그 시간에 어울리는 손님 상황을 하나 정합니다. 예: 조용한 작업, 책 읽기, 자연광 촬영, 짧은 미팅.",
+          "3일차: 그 장면을 보여주는 사진 한 장을 찍고, 첫 문장을 손님 상황으로 씁니다.",
+          "4일차: 지도 소개나 인스타 프로필에 평일 이용 정보를 한 줄 추가합니다.",
+          "7일차: 문의, 저장, 현장 질문을 보고 손님이 아직 확인하지 못한 정보를 다음 게시물에 반영합니다."
+        ])}
+        <p>평일 콘텐츠의 목표는 빈 시간을 티 내는 것이 아닙니다. 그 시간에 맞는 손님이 자기 장면을 발견하게 만드는 것입니다.</p>`;
     case "timeline":
     case "eventFlow":
       return `<p>${escapeHtml(article.title)}은 한 시점의 문제가 아니라 전후 흐름에서 생기는 경우가 많습니다.</p>${renderFlow(["방문 전: 손님이 저장하거나 비교할 정보를 먼저 봅니다.", "방문 중: 현장에서 다음 행동으로 이어지는 작은 단서를 만납니다.", "방문 후: 다시 확인할 채널, 다음 일정, 관련 콘텐츠가 남아 있어야 합니다."])}`;
