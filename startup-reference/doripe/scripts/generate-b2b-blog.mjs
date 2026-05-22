@@ -676,6 +676,55 @@ const clusterGuides = {
 
 const defaultGuide = clusterGuides["신규 손님 유입"];
 
+const editors = [
+  { name: "Lena Han", role: "Content Marketer", initials: "LH", date: "2026년 5월 20일", theme: "green" },
+  { name: "Mina Kwon", role: "Local Search Editor", initials: "MK", date: "2026년 5월 21일", theme: "blue" },
+  { name: "Jae Park", role: "Store Growth Editor", initials: "JP", date: "2026년 5월 22일", theme: "yellow" },
+  { name: "Yuna Seo", role: "Brand Editor", initials: "YS", date: "2026년 5월 23일", theme: "rose" }
+];
+
+const sourceLibrary = {
+  googleLocal: {
+    label: "Google Business Profile: local ranking basics",
+    url: "https://support.google.com/business/answer/7091?hl=en"
+  },
+  googleReviews: {
+    label: "Google Business Profile: review request and reply guidance",
+    url: "https://support.google.com/business/answer/3474122?hl=en"
+  },
+  googlePhotos: {
+    label: "Google Business Profile: photo and video guidance",
+    url: "https://support.google.com/business/answer/6031953?hl=en"
+  },
+  naverPolicy: {
+    label: "Naver SmartPlace: information management policy",
+    url: "https://smartplace.naver.com/help/policy"
+  },
+  naverModify: {
+    label: "Naver SmartPlace: business info and photo criteria",
+    url: "https://smartplace.naver.com/help/policy?menu=modify"
+  },
+  instagramActions: {
+    label: "Instagram Help: business profile action buttons",
+    url: "https://www.facebook.com/help/instagram/122793804938499?locale=en_GB"
+  },
+  nearMe: {
+    label: "Think with Google: near-me search intent",
+    url: "https://business.google.com/in/think/marketing-strategies/near-me-searches/"
+  }
+};
+
+function sourceKeysForCluster(cluster) {
+  if (cluster === "인스타/숏폼 운영") return ["instagramActions", "nearMe", "googleLocal"];
+  if (cluster === "네이버 플레이스/지도") return ["naverPolicy", "naverModify", "googleLocal"];
+  if (cluster === "사진/콘텐츠 소재") return ["googlePhotos", "naverModify", "nearMe"];
+  if (cluster === "리뷰/저장/방문 전환") return ["googleReviews", "googleLocal", "naverPolicy"];
+  if (cluster === "공간 브랜딩/분위기") return ["googlePhotos", "nearMe", "naverModify"];
+  if (cluster === "재방문/단골/커뮤니티") return ["googleReviews", "instagramActions", "nearMe"];
+  if (cluster === "Doripe 리포트/케이스") return ["googleLocal", "googlePhotos", "naverPolicy"];
+  return ["googleLocal", "nearMe", "naverPolicy"];
+}
+
 function splitPipes(value) {
   return value ? value.split("|").map((item) => item.trim()).filter(Boolean) : [];
 }
@@ -707,9 +756,60 @@ function makeDoripe(row) {
   return `Doripe는 이 주제를 ${angle} 관점에서 봅니다. 공간을 업종으로만 설명하기보다 손님이 저장하고 다시 꺼내볼 장면으로 바꾸는 일이 핵심입니다.`;
 }
 
-function normalizeArticle(row) {
+function makeChannelSteps(row) {
+  const spaces = splitPipes(row.target_space_types);
+  const mainSpace = spaces[0] ?? "공간";
+  return [
+    `네이버/지도: '${row.primary_keyword}' 문제를 떠올린 사람이 첫 화면에서 영업시간, 위치, 대표 장면을 바로 확인할 수 있게 정리합니다.`,
+    `인스타: 예쁜 사진만 올리기보다 ${mainSpace}을 어떤 상황에서 이용하면 좋은지 캡션 첫 문장에 씁니다.`,
+    "현장: 입구, 테이블, 계산대, 포장 카드 중 한 곳에 온라인에서 본 문구와 같은 안내를 반복합니다.",
+    "리뷰/저장: 손님이 다시 확인할 정보가 있다면 리뷰 답변이나 고정 게시물에서 한 번 더 알려줍니다."
+  ];
+}
+
+function makeMistakes(row) {
+  if (row.cluster === "인스타/숏폼 운영") {
+    return [
+      "릴스 조회수만 보고 성공으로 판단하지 않습니다. 프로필 방문 후 위치, 예약, 문의로 이어지는지 같이 봐야 합니다.",
+      "해시태그를 많이 붙이는 것보다 첫 문장과 고정 게시물에서 방문 정보를 정리하는 편이 더 실무적입니다.",
+      "고객 얼굴이나 개인정보가 보이는 장면은 동의 없이 쓰지 않습니다."
+    ];
+  }
+  if (row.cluster === "네이버 플레이스/지도") {
+    return [
+      "전화 문의를 유도하려고 가격이나 이용 조건을 일부러 흐리지 않습니다.",
+      "대표 사진을 분위기 컷만으로 채우면 처음 오는 손님은 입구와 이용 방식을 놓칩니다.",
+      "순위 조작이나 순위 약속형 광고 제안은 피하고, 업체 정보의 정확성과 갱신 상태를 먼저 확인합니다."
+    ];
+  }
+  if (row.cluster === "리뷰/저장/방문 전환") {
+    return [
+      "리뷰를 대가로 할인이나 혜택을 약속하지 않습니다.",
+      "좋은 리뷰에만 답하지 말고, 다음 손님에게 도움이 되는 정보가 있으면 짧게 보강합니다.",
+      "저장 수 자체보다 저장한 사람이 다시 열었을 때 결정할 수 있는 정보를 남기는지 봅니다."
+    ];
+  }
+  return [
+    "좋은 분위기, 감성, 힙함 같은 단어만 반복하면 처음 보는 손님에게 선택 기준이 되지 않습니다.",
+    "업종 전체에 맞는 조언처럼 쓰지 말고 우리 공간의 시간대, 좌석, 예약 방식으로 좁혀야 합니다.",
+    "성과를 약속하는 표현보다 이번 주에 바꿀 수 있는 정보와 장면을 먼저 정리합니다."
+  ];
+}
+
+function makeMiniPlan(row) {
+  return [
+    `1일차: '${row.primary_keyword}' 관점으로 지도와 계정을 처음 보는 손님 입장에서 첫 화면을 캡처합니다.`,
+    "2일차: 영업시간, 예약/문의, 위치, 대표 사진, 첫 방문 추천을 한 문서에 모읍니다.",
+    "3일차: 지도 소개 문구와 인스타 프로필 문구를 같은 방문 장면으로 맞춥니다.",
+    "4일차: 현장 안내물 한 곳에 같은 메시지를 작게 붙여 온라인과 오프라인을 연결합니다.",
+    "7일차: 문의 내용, 저장 반응, 자주 묻는 질문을 보고 다음 글감이나 안내 문구를 고칩니다."
+  ];
+}
+
+function normalizeArticle(row, index) {
   const manual = manualById.get(row.id) ?? {};
   const guide = clusterGuides[row.cluster] ?? defaultGuide;
+  const editor = editors[index % editors.length];
   return {
     id: row.id,
     priority: row.priority,
@@ -726,6 +826,11 @@ function normalizeArticle(row) {
     lead: manual.lead ?? makeLead(row),
     points: manual.points ?? guide.points,
     checklist: manual.checklist ?? guide.checklist,
+    channelSteps: makeChannelSteps(row),
+    mistakes: makeMistakes(row),
+    miniPlan: makeMiniPlan(row),
+    sources: sourceKeysForCluster(row.cluster).map((key) => sourceLibrary[key]),
+    editor,
     before: manual.before ?? makeBefore(row),
     after: manual.after ?? makeAfter(row),
     doripe: manual.doripe ?? makeDoripe(row),
@@ -754,7 +859,7 @@ function attachRelated(article, allArticles) {
 }
 
 const rows = parseCsv(await readFile(contentMapPath, "utf8"));
-const normalizedArticles = rows.map(normalizeArticle);
+const normalizedArticles = rows.map((row, index) => normalizeArticle(row, index));
 const articles = normalizedArticles.map((article) => attachRelated(article, normalizedArticles));
 const byId = new Map(articles.map((article) => [article.id, article]));
 
@@ -924,13 +1029,13 @@ ${commonStyles}
   }
   h1 {
     margin: 0;
-    max-width: 840px;
-    font-size: clamp(42px, 7vw, 86px);
-    line-height: 0.98;
+    max-width: 880px;
+    font-size: clamp(42px, 6.1vw, 78px);
+    line-height: 1.02;
     font-weight: 920;
     letter-spacing: 0;
-    word-break: break-all;
-    overflow-wrap: anywhere;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   .hero-copy {
     margin: 26px 0 0;
@@ -1054,6 +1159,30 @@ ${commonStyles}
   .article h3 a:hover { border-bottom-color: var(--ink); }
   .article p { margin: 14px 0 0; color: var(--muted); font-size: 15px; line-height: 1.7; word-break: keep-all; }
   .article-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  .article-author-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 740;
+  }
+  .mini-avatar {
+    width: 24px;
+    height: 24px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: var(--green-soft);
+    color: var(--ink);
+    font-size: 9px;
+    font-weight: 900;
+  }
+  .mini-avatar.blue { background: var(--blue-soft); }
+  .mini-avatar.yellow { background: var(--yellow-soft); }
+  .mini-avatar.rose { background: var(--rose-soft); }
   .read-link {
     align-self: start;
     justify-self: end;
@@ -1150,6 +1279,35 @@ ${commonStyles}
     word-break: keep-all;
   }
   .article-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 24px; }
+  .byline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 24px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 720;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    color: #171714;
+    font-size: 11px;
+    font-weight: 900;
+    background: var(--green-soft);
+  }
+  .avatar.blue { background: var(--blue-soft); }
+  .avatar.yellow { background: var(--yellow-soft); }
+  .avatar.rose { background: var(--rose-soft); }
+  .byline strong {
+    color: var(--ink);
+    font-weight: 850;
+  }
   .article-layout {
     display: grid;
     grid-template-columns: 240px minmax(0, 760px);
@@ -1215,6 +1373,21 @@ ${commonStyles}
     border-radius: 8px;
     border: 1px solid #b9d8c5;
     background: var(--green-soft);
+  }
+  .source-list {
+    margin-top: 18px;
+    display: grid;
+    gap: 10px;
+  }
+  .source-list a {
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    color: #2d3f35;
+    font-size: 15px;
+    font-weight: 780;
   }
   .related {
     padding: 44px 0 60px;
@@ -1304,6 +1477,10 @@ function renderIndex() {
                 <h3><a href="${articleUrl(article)}">${escapeHtml(article.title)}</a></h3>
                 <p>${escapeHtml(article.summary)}</p>
                 <div class="article-tags">${renderTags(article)}</div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar ${escapeHtml(article.editor.theme)}">${escapeHtml(article.editor.initials)}</span>
+                  <span>${escapeHtml(article.editor.name)} · ${escapeHtml(article.editor.date)}</span>
+                </div>
               </div>
               <a class="read-link" href="${articleUrl(article)}">읽기</a>
             </article>`
@@ -1315,23 +1492,23 @@ function renderIndex() {
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Doripe Blog - 작은 공간을 위한 로컬 마케팅 플레이북</title>
-<meta name="description" content="식당, 카페, 샵, 바, 전시공간처럼 작은 로컬 공간이 더 잘 발견되고 저장되고 방문 후보가 되기 위한 마케팅 플레이북입니다." />
+<title>Doripe Blog - 식당·카페·샵 운영자를 위한 손님 유입 가이드</title>
+<meta name="description" content="식당, 카페, 샵, 바, 전시공간 운영자가 손님에게 더 잘 발견되고 방문 후보가 되기 위해 바로 점검할 수 있는 가이드입니다." />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="${siteUrl}/blog" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Doripe" />
 <meta property="og:locale" content="ko_KR" />
-<meta property="og:title" content="Doripe Blog - 작은 공간을 위한 로컬 마케팅 플레이북" />
-<meta property="og:description" content="작은 로컬 공간이 더 잘 발견되고 저장되고 방문 후보가 되기 위한 마케팅 플레이북입니다." />
+<meta property="og:title" content="Doripe Blog - 식당·카페·샵 운영자를 위한 손님 유입 가이드" />
+<meta property="og:description" content="식당, 카페, 샵, 바, 전시공간 운영자가 손님에게 더 잘 발견되고 방문 후보가 되기 위해 바로 점검할 수 있는 가이드입니다." />
 <meta property="og:url" content="${siteUrl}/blog" />
 <meta property="og:image" content="${siteUrl}/og-image-v2.png" />
 <meta property="og:image:alt" content="Doripe 소개 이미지" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Doripe Blog - 작은 공간을 위한 로컬 마케팅 플레이북" />
-<meta name="twitter:description" content="식당, 카페, 샵, 바, 전시공간을 위한 로컬 마케팅 자료실입니다." />
+<meta name="twitter:title" content="Doripe Blog - 식당·카페·샵 운영자를 위한 손님 유입 가이드" />
+<meta name="twitter:description" content="식당, 카페, 샵, 바, 전시공간 운영자가 바로 점검할 수 있는 손님 유입 가이드입니다." />
 <meta name="twitter:image" content="${siteUrl}/og-image-v2.png" />
 <meta name="twitter:image:alt" content="Doripe 소개 이미지" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -1345,7 +1522,7 @@ function renderIndex() {
   "name": "Doripe Blog",
   "url": "${siteUrl}/blog",
   "inLanguage": "ko-KR",
-  "description": "작은 로컬 공간을 위한 로컬 마케팅 플레이북",
+  "description": "식당, 카페, 샵 운영자를 위한 손님 유입 가이드",
   "publisher": {
     "@type": "Organization",
     "name": "Doripe",
@@ -1373,12 +1550,12 @@ function renderIndex() {
       <div class="shell hero-grid">
         <div>
           <p class="eyebrow">Doripe Blog</p>
-          <h1>작은 공간을 위한 로컬 마케팅 플레이북</h1>
+          <h1>식당·카페·샵 운영자를 위한 손님 유입 가이드</h1>
           <p class="hero-copy">
-            식당, 카페, 샵, 바, 전시공간이 더 잘 발견되고 저장되고 방문 후보가 되기 위한 실무 노트를 모았습니다. 노출 순위보다, 손님이 공간을 기억하는 장면을 먼저 다룹니다.
+            지나가는 사람은 많은데 들어오는 손님이 적을 때, 인스타 반응은 있는데 방문으로 이어지지 않을 때, 지도 조회는 있는데 예약이 적을 때 바로 점검할 내용을 모았습니다.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#articles">발행 글 읽기</a>
+            <a class="button primary" href="#articles">가이드 읽기</a>
             <a class="button" href="#topics">주제 둘러보기</a>
           </div>
         </div>
@@ -1469,6 +1646,7 @@ function renderIndex() {
 }
 
 function renderArticle(article) {
+  const editor = article.editor;
   const relatedCards = article.related
     .map((id) => byId.get(id))
     .filter(Boolean)
@@ -1480,6 +1658,9 @@ function renderArticle(article) {
           </a>`
     )
     .join("\n");
+  const sourceLinks = article.sources
+    .map((source) => `<a href="${source.url}" target="_blank" rel="noopener">${escapeHtml(source.label)}</a>`)
+    .join("\n          ");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -1543,6 +1724,10 @@ function renderArticle(article) {
         <h1>${breakableKorean(article.title)}</h1>
         <p class="lead">${escapeHtml(article.lead)}</p>
         <div class="article-tags">${renderTags(article)}</div>
+        <div class="byline">
+          <span class="avatar ${escapeHtml(editor.theme)}">${escapeHtml(editor.initials)}</span>
+          <span><strong>${escapeHtml(editor.name)}</strong> · ${escapeHtml(editor.role)}<br />${escapeHtml(editor.date)}</span>
+        </div>
       </div>
     </section>
 
@@ -1550,25 +1735,35 @@ function renderArticle(article) {
       <aside class="toc" aria-label="article sections">
         <a href="#problem">문제 보기</a>
         <a href="#checklist">점검할 것</a>
+        <a href="#channels">채널별 적용</a>
         <a href="#example">문구 예시</a>
+        <a href="#mistakes">주의할 점</a>
+        <a href="#plan">7일 실험</a>
         <a href="#doripe">Doripe 관점</a>
+        <a href="#sources">참고 기준</a>
       </aside>
 
       <article class="article-body">
-        <h2 id="problem">먼저 문제를 좁혀야 합니다</h2>
+        <h2 id="problem">먼저 문제를 좁혀야 합니다 🔎</h2>
         <p>${escapeHtml(article.summary)}</p>
         <p>운영자가 보기에는 이미 충분히 설명했다고 느낄 수 있습니다. 하지만 처음 보는 손님은 훨씬 적은 정보로 판단합니다. 그래서 이 문제는 더 많이 말하는 방식이 아니라, 손님이 실제로 망설이는 지점을 먼저 보여주는 방식으로 풀어야 합니다.</p>
         <ul>
           ${article.points.map((point) => `<li>${escapeHtml(point)}</li>`).join("\n          ")}
         </ul>
 
-        <h2 id="checklist">이번 주에 바로 점검할 것</h2>
-        <p>아래 항목은 광고비를 쓰기 전에 먼저 확인할 수 있는 기본 정리입니다. 모든 항목을 한 번에 고치기보다, 손님이 처음 보는 화면부터 순서대로 고치는 편이 좋습니다.</p>
+        <h2 id="checklist">이번 주에 바로 점검할 것 🧰</h2>
+        <p>아래 항목은 광고비를 쓰기 전에 먼저 확인할 수 있는 기본 정리입니다. Google Business Profile은 완전하고 정확한 업체 정보, 현재 영업시간, 사진, 리뷰 답변 같은 기본 정보를 강조하고, 네이버 스마트플레이스도 업체정보의 정확성과 갱신 상태 유지를 사업주의 책임으로 봅니다.</p>
         <ul>
           ${article.checklist.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n          ")}
         </ul>
 
-        <h2 id="example">운영자 문구를 방문자 문구로 바꾸기</h2>
+        <h2 id="channels">채널별로 이렇게 바꿔보기 🗺️</h2>
+        <p>같은 메시지를 모든 채널에 복사하지 말고, 손님이 그 채널에서 하려는 행동에 맞춰 조금씩 바꿔야 합니다.</p>
+        <ul>
+          ${article.channelSteps.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n          ")}
+        </ul>
+
+        <h2 id="example">운영자 문구를 방문자 문구로 바꾸기 ✍️</h2>
         <p>좋은 공간일수록 운영자는 많은 맥락을 알고 있습니다. 하지만 손님은 그 맥락을 모릅니다. 문구는 운영자가 하고 싶은 설명보다 손님이 판단할 수 있는 장면에 가까워야 합니다.</p>
         <div class="example">
           <div>
@@ -1581,11 +1776,28 @@ function renderArticle(article) {
           </div>
         </div>
 
-        <h2 id="doripe">Doripe 관점</h2>
+        <h2 id="mistakes">자주 놓치는 함정 ⚠️</h2>
+        <p>로컬 마케팅은 크게 한 번 터뜨리는 일보다, 손님이 확인하는 작은 정보들을 덜 헷갈리게 만드는 일에 가깝습니다.</p>
+        <ul>
+          ${article.mistakes.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n          ")}
+        </ul>
+
+        <h2 id="plan">7일 안에 해볼 작은 실험 🗓️</h2>
+        <ul>
+          ${article.miniPlan.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n          ")}
+        </ul>
+
+        <h2 id="doripe">Doripe 관점 🌿</h2>
         <div class="note">
           <p>${escapeHtml(article.doripe)}</p>
         </div>
         <p>핵심은 큰 캠페인을 만드는 것이 아닙니다. 손님이 이미 보고 있는 지도, 인스타, 소개 문구, 현장 안내에서 같은 장면을 반복해서 발견하게 만드는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정에 가까운 역할을 합니다.</p>
+
+        <h2 id="sources">참고한 기준 📚</h2>
+        <p>아래 자료는 글을 만들 때 확인한 공식 도움말과 리서치입니다. 플랫폼 화면은 바뀔 수 있으니, 실제 적용 전에는 각 서비스의 현재 안내를 한 번 더 확인하는 편이 좋습니다.</p>
+        <div class="source-list">
+          ${sourceLinks}
+        </div>
       </article>
     </div>
 

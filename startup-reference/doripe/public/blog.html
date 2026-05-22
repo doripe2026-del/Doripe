@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Doripe Blog - 작은 공간을 위한 로컬 마케팅 플레이북</title>
-<meta name="description" content="식당, 카페, 샵, 바, 전시공간처럼 작은 로컬 공간이 더 잘 발견되고 저장되고 방문 후보가 되기 위한 마케팅 플레이북입니다." />
+<title>Doripe Blog - 식당·카페·샵 운영자를 위한 손님 유입 가이드</title>
+<meta name="description" content="식당, 카페, 샵, 바, 전시공간 운영자가 손님에게 더 잘 발견되고 방문 후보가 되기 위해 바로 점검할 수 있는 가이드입니다." />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="https://doripe.vercel.app/blog" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Doripe" />
 <meta property="og:locale" content="ko_KR" />
-<meta property="og:title" content="Doripe Blog - 작은 공간을 위한 로컬 마케팅 플레이북" />
-<meta property="og:description" content="작은 로컬 공간이 더 잘 발견되고 저장되고 방문 후보가 되기 위한 마케팅 플레이북입니다." />
+<meta property="og:title" content="Doripe Blog - 식당·카페·샵 운영자를 위한 손님 유입 가이드" />
+<meta property="og:description" content="식당, 카페, 샵, 바, 전시공간 운영자가 손님에게 더 잘 발견되고 방문 후보가 되기 위해 바로 점검할 수 있는 가이드입니다." />
 <meta property="og:url" content="https://doripe.vercel.app/blog" />
 <meta property="og:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <meta property="og:image:alt" content="Doripe 소개 이미지" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Doripe Blog - 작은 공간을 위한 로컬 마케팅 플레이북" />
-<meta name="twitter:description" content="식당, 카페, 샵, 바, 전시공간을 위한 로컬 마케팅 자료실입니다." />
+<meta name="twitter:title" content="Doripe Blog - 식당·카페·샵 운영자를 위한 손님 유입 가이드" />
+<meta name="twitter:description" content="식당, 카페, 샵, 바, 전시공간 운영자가 바로 점검할 수 있는 손님 유입 가이드입니다." />
 <meta name="twitter:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <meta name="twitter:image:alt" content="Doripe 소개 이미지" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -33,7 +33,7 @@
   "name": "Doripe Blog",
   "url": "https://doripe.vercel.app/blog",
   "inLanguage": "ko-KR",
-  "description": "작은 로컬 공간을 위한 로컬 마케팅 플레이북",
+  "description": "식당, 카페, 샵 운영자를 위한 손님 유입 가이드",
   "publisher": {
     "@type": "Organization",
     "name": "Doripe",
@@ -191,13 +191,13 @@
   }
   h1 {
     margin: 0;
-    max-width: 840px;
-    font-size: clamp(42px, 7vw, 86px);
-    line-height: 0.98;
+    max-width: 880px;
+    font-size: clamp(42px, 6.1vw, 78px);
+    line-height: 1.02;
     font-weight: 920;
     letter-spacing: 0;
-    word-break: break-all;
-    overflow-wrap: anywhere;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   .hero-copy {
     margin: 26px 0 0;
@@ -321,6 +321,30 @@
   .article h3 a:hover { border-bottom-color: var(--ink); }
   .article p { margin: 14px 0 0; color: var(--muted); font-size: 15px; line-height: 1.7; word-break: keep-all; }
   .article-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  .article-author-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 740;
+  }
+  .mini-avatar {
+    width: 24px;
+    height: 24px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: var(--green-soft);
+    color: var(--ink);
+    font-size: 9px;
+    font-weight: 900;
+  }
+  .mini-avatar.blue { background: var(--blue-soft); }
+  .mini-avatar.yellow { background: var(--yellow-soft); }
+  .mini-avatar.rose { background: var(--rose-soft); }
   .read-link {
     align-self: start;
     justify-self: end;
@@ -393,12 +417,12 @@
       <div class="shell hero-grid">
         <div>
           <p class="eyebrow">Doripe Blog</p>
-          <h1>작은 공간을 위한 로컬 마케팅 플레이북</h1>
+          <h1>식당·카페·샵 운영자를 위한 손님 유입 가이드</h1>
           <p class="hero-copy">
-            식당, 카페, 샵, 바, 전시공간이 더 잘 발견되고 저장되고 방문 후보가 되기 위한 실무 노트를 모았습니다. 노출 순위보다, 손님이 공간을 기억하는 장면을 먼저 다룹니다.
+            지나가는 사람은 많은데 들어오는 손님이 적을 때, 인스타 반응은 있는데 방문으로 이어지지 않을 때, 지도 조회는 있는데 예약이 적을 때 바로 점검할 내용을 모았습니다.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#articles">발행 글 읽기</a>
+            <a class="button primary" href="#articles">가이드 읽기</a>
             <a class="button" href="#topics">주제 둘러보기</a>
           </div>
         </div>
@@ -471,6 +495,10 @@
                 <h3><a href="/blog/foot-traffic-first-visit">가게 앞 유동인구는 많은데 첫 방문이 적을 때 점검할 것</a></h3>
                 <p>지나가는 사람은 많지만 들어오는 사람이 적을 때, 간판보다 먼저 온라인 첫인상과 방문 이유를 점검합니다.</p>
                 <div class="article-tags"><span class="tag">신규 손님 유입</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/foot-traffic-first-visit">읽기</a>
             </article>
@@ -481,6 +509,10 @@
                 <h3><a href="/blog/opening-dropoff">오픈 초기 손님이 끊길 때 로컬 공간이 먼저 해야 할 일</a></h3>
                 <p>오픈 직후의 관심을 오래 남기려면 이벤트보다 발견 후 저장까지 이어지는 소개 정보가 먼저 필요합니다.</p>
                 <div class="article-tags"><span class="tag">오픈 초기 마케팅</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/opening-dropoff">읽기</a>
             </article>
@@ -491,6 +523,10 @@
                 <h3><a href="/blog/weekday-visits">주말에는 붐비는데 평일 손님이 부족한 공간 운영법</a></h3>
                 <p>평일 방문 이유를 만드는 시간대, 좌석, 이용 상황 중심의 콘텐츠 운영법.</p>
                 <div class="article-tags"><span class="tag">평일 손님 늘리기</span><span class="tag">카페</span><span class="tag">서점</span><span class="tag">스튜디오</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/weekday-visits">읽기</a>
             </article>
@@ -501,6 +537,10 @@
                 <h3><a href="/blog/new-customer-message">동네 단골만 오고 새로운 손님이 안 늘 때 바꿀 메시지</a></h3>
                 <p>단골에게는 익숙하지만 신규 고객에게는 불친절한 표현을 처음 보는 사람도 이해할 수 있게 바꿉니다.</p>
                 <div class="article-tags"><span class="tag">새로운 손님 유입</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">바</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/new-customer-message">읽기</a>
             </article>
@@ -511,6 +551,10 @@
                 <h3><a href="/blog/search-visit-conversion">검색은 되는데 방문이 안 생기는 로컬 공간의 공통 문제</a></h3>
                 <p>지도와 검색에 노출되지만 실제 방문으로 이어지지 않는 공간이 먼저 점검할 정보, 장면, 메시지.</p>
                 <div class="article-tags"><span class="tag">검색 방문 전환</span><span class="tag">샵</span><span class="tag">갤러리</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/search-visit-conversion">읽기</a>
             </article>
@@ -521,6 +565,10 @@
                 <h3><a href="/blog/no-discount-first-visit">가격 할인 없이 첫 방문을 만드는 공간 제안법</a></h3>
                 <p>할인보다 방문 맥락을 제안해 첫 방문의 이유를 만듭니다.</p>
                 <div class="article-tags"><span class="tag">첫 방문 마케팅</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">스튜디오</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/no-discount-first-visit">읽기</a>
             </article>
@@ -531,6 +579,10 @@
                 <h3><a href="/blog/neighborhood-customers">관광객보다 동네 손님을 먼저 잡아야 하는 공간의 기준</a></h3>
                 <p>생활 동선 안에서 다시 떠오르는 조건을 기준으로 동네 손님을 먼저 설계합니다.</p>
                 <div class="article-tags"><span class="tag">동네 손님 유입</span><span class="tag">서점</span><span class="tag">공방</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/neighborhood-customers">읽기</a>
             </article>
@@ -541,6 +593,10 @@
                 <h3><a href="/blog/popup-retention">팝업이 끝난 뒤 손님을 남기려면 행사 전부터 준비할 것</a></h3>
                 <p>짧은 노출을 저장과 재방문 실마리로 바꾸는 팝업 전후 안내 흐름.</p>
                 <div class="article-tags"><span class="tag">팝업 손님 유입</span><span class="tag">팝업</span><span class="tag">갤러리</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/popup-retention">읽기</a>
             </article>
@@ -551,6 +607,10 @@
                 <h3><a href="/blog/alley-location-info">골목 안쪽 매장이 위치 약점을 줄이는 온라인 정보 구성</a></h3>
                 <p>골목 안쪽이라는 약점을 입구 사진, 랜드마크, 도보 동선 정보로 줄입니다.</p>
                 <div class="article-tags"><span class="tag">골목 매장 홍보</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/alley-location-info">읽기</a>
             </article>
@@ -561,6 +621,10 @@
                 <h3><a href="/blog/high-ticket-low-traffic">객단가는 좋은데 방문자 수가 적은 공간의 유입 진단법</a></h3>
                 <p>가격보다 큰 진입 장벽인 예약 방식, 이용 시간, 분위기 불안, 동행 적합성을 점검합니다.</p>
                 <div class="article-tags"><span class="tag">매장 방문자 늘리기</span><span class="tag">바</span><span class="tag">스튜디오</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/high-ticket-low-traffic">읽기</a>
             </article>
@@ -571,6 +635,10 @@
                 <h3><a href="/blog/instagram-content-ideas">인스타에 올려도 반응이 없을 때 로컬 공간이 바꿀 소재</a></h3>
                 <p>예쁜 사진 반복에서 벗어나 손님이 저장하고 공유할 수 있는 장면 중심 소재를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">인스타 콘텐츠 소재</span><span class="tag">카페</span><span class="tag">샵</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/instagram-content-ideas">읽기</a>
             </article>
@@ -581,6 +649,10 @@
                 <h3><a href="/blog/instagram-to-visit">팔로워는 있는데 방문으로 이어지지 않는 계정의 문제</a></h3>
                 <p>좋아요와 팔로워가 방문 의사로 바뀌지 않는 이유를 프로필, 고정 게시물, 방문 장면에서 찾습니다.</p>
                 <div class="article-tags"><span class="tag">인스타 방문 전환</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">서점</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/instagram-to-visit">읽기</a>
             </article>
@@ -591,6 +663,10 @@
                 <h3><a href="/blog/instagram-saveable-photos">예쁜 사진만 올리는데 저장이 안 되는 이유</a></h3>
                 <p>저장되는 사진에는 분위기뿐 아니라 다시 찾아볼 정보 단서가 있어야 합니다.</p>
                 <div class="article-tags"><span class="tag">인스타 저장 늘리기</span><span class="tag">갤러리</span><span class="tag">전시공간</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/instagram-saveable-photos">읽기</a>
             </article>
@@ -601,6 +677,10 @@
                 <h3><a href="/blog/naver-place-conversion">네이버 플레이스 조회수는 있는데 예약과 방문이 적을 때</a></h3>
                 <p>조회수 다음 단계에서 손님이 멈추는 지점을 사진 순서, 소개 문구, 예약 동선으로 나눠 봅니다.</p>
                 <div class="article-tags"><span class="tag">네이버 플레이스 전환</span><span class="tag">식당</span><span class="tag">스튜디오</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/naver-place-conversion">읽기</a>
             </article>
@@ -611,6 +691,10 @@
                 <h3><a href="/blog/map-differentiation">지도에서 가게가 비슷해 보일 때 차별점을 보여주는 방법</a></h3>
                 <p>같은 업종 비교 화면에서 한 문장 차별점과 첫 사진이 해야 할 일을 정리합니다.</p>
                 <div class="article-tags"><span class="tag">네이버 지도 마케팅</span><span class="tag">카페</span><span class="tag">바</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/map-differentiation">읽기</a>
             </article>
@@ -621,6 +705,10 @@
                 <h3><a href="/blog/saves-to-visits">저장은 많은데 방문이 적을 때 고객이 망설이는 지점</a></h3>
                 <p>저장 이후에도 방문이 일어나지 않을 때 부족한 정보와 망설임을 줄이는 운영자 메시지.</p>
                 <div class="article-tags"><span class="tag">저장 방문 전환</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">갤러리</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/saves-to-visits">읽기</a>
             </article>
@@ -631,6 +719,10 @@
                 <h3><a href="/blog/brand-language">공간 분위기는 좋은데 설명이 어려울 때 쓰는 언어 정리법</a></h3>
                 <p>감성, 조용함, 아늑함 같은 단어를 손님이 실제로 선택할 수 있는 방문 상황으로 바꾸는 방법.</p>
                 <div class="article-tags"><span class="tag">공간 브랜딩 문구</span><span class="tag">카페</span><span class="tag">갤러리</span><span class="tag">서점</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/brand-language">읽기</a>
             </article>
@@ -641,6 +733,10 @@
                 <h3><a href="/blog/repeat-visit-reason">한 번 온 손님이 다시 올 이유를 만들지 못하는 공간의 문제</a></h3>
                 <p>첫 방문 후 다시 떠올릴 계기를 계절 메뉴, 모임, 책/전시 교체, 단골 루틴으로 만듭니다.</p>
                 <div class="article-tags"><span class="tag">재방문 유도</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">서점</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/repeat-visit-reason">읽기</a>
             </article>
@@ -651,6 +747,10 @@
                 <h3><a href="/blog/saved-space-report">저장되는 공간과 스쳐 지나가는 공간은 무엇이 다른가</a></h3>
                 <p>Doripe가 공간 카드를 만들며 관찰한, 저장할 이유를 만드는 사진, 문구, 상황의 차이.</p>
                 <div class="article-tags"><span class="tag">Doripe 공간 저장 리포트</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/saved-space-report">읽기</a>
             </article>
@@ -661,6 +761,10 @@
                 <h3><a href="/blog/atmosphere-case">운영자가 직접 말하지 않아도 분위기가 전해지는 공간 사례</a></h3>
                 <p>가상의 공간 카드 예시로 사진 순서와 짧은 문장 조합이 분위기를 전달하는 방식을 보여줍니다.</p>
                 <div class="article-tags"><span class="tag">Doripe 공간 사례</span><span class="tag">서점</span><span class="tag">카페</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/atmosphere-case">읽기</a>
             </article>
@@ -671,6 +775,10 @@
                 <h3><a href="/blog/b2b021">비 오는 날 손님이 줄어드는 공간이 준비할 온라인 안내</a></h3>
                 <p>식당, 카페, 바 운영자가 우천시 매장 운영 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">우천시 매장 운영</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">바</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b021">읽기</a>
             </article>
@@ -681,6 +789,10 @@
                 <h3><a href="/blog/b2b022">단체 손님을 받고 싶은 작은 공간의 사전 정보 정리법</a></h3>
                 <p>식당, 바, 스튜디오 운영자가 단체 손님 유치 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">단체 손님 유치</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">스튜디오</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b022">읽기</a>
             </article>
@@ -691,6 +803,10 @@
                 <h3><a href="/blog/b2b023">혼자 오는 손님을 늘리고 싶은 공간이 보여줘야 할 장면</a></h3>
                 <p>식당, 바, 서점 운영자가 혼밥 혼술 마케팅 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">혼밥 혼술 마케팅</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">서점</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b023">읽기</a>
             </article>
@@ -701,6 +817,10 @@
                 <h3><a href="/blog/b2b024">외지인이 찾기 어려운 매장이 방문 전 불안을 줄이는 법</a></h3>
                 <p>공방, 갤러리, 팝업 운영자가 찾기 어려운 매장 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">찾기 어려운 매장</span><span class="tag">공방</span><span class="tag">갤러리</span><span class="tag">팝업</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b024">읽기</a>
             </article>
@@ -711,6 +831,10 @@
                 <h3><a href="/blog/b2b025">신메뉴를 냈는데 신규 손님이 늘지 않을 때 점검할 홍보 흐름</a></h3>
                 <p>식당, 카페, 샵 운영자가 신메뉴 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">신메뉴 홍보</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b025">읽기</a>
             </article>
@@ -721,6 +845,10 @@
                 <h3><a href="/blog/b2b026">예약제를 시작했는데 문의가 적을 때 설명해야 할 것</a></h3>
                 <p>스튜디오, 공방, 전시공간 운영자가 예약제 매장 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">예약제 매장 홍보</span><span class="tag">스튜디오</span><span class="tag">공방</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b026">읽기</a>
             </article>
@@ -731,6 +859,10 @@
                 <h3><a href="/blog/b2b027">동네 행사에 참여해도 손님이 남지 않을 때 연결할 채널</a></h3>
                 <p>서점, 샵, 팝업 운영자가 동네 행사 마케팅 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">동네 행사 마케팅</span><span class="tag">서점</span><span class="tag">샵</span><span class="tag">팝업</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b027">읽기</a>
             </article>
@@ -741,6 +873,10 @@
                 <h3><a href="/blog/b2b028">매장 앞 입간판과 온라인 소개가 다를 때 생기는 손실</a></h3>
                 <p>식당, 카페, 공방 운영자가 매장 소개 일관성 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 소개 일관성</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b028">읽기</a>
             </article>
@@ -751,6 +887,10 @@
                 <h3><a href="/blog/b2b029">인근 경쟁 매장이 늘었을 때 신규 손님에게 보여줄 기준</a></h3>
                 <p>식당, 카페, 바 운영자가 상권 경쟁 마케팅 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">상권 경쟁 마케팅</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">바</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b029">읽기</a>
             </article>
@@ -761,6 +901,10 @@
                 <h3><a href="/blog/b2b030">방문 목적이 모호한 공간이 검색 키워드를 정리하는 법</a></h3>
                 <p>갤러리, 전시공간, 로컬 공간 운영자가 매장 키워드 정리 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 키워드 정리</span><span class="tag">갤러리</span><span class="tag">전시공간</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b030">읽기</a>
             </article>
@@ -771,6 +915,10 @@
                 <h3><a href="/blog/b2b031">운영자가 얼굴을 드러내기 부담스러울 때 가능한 숏폼 소재</a></h3>
                 <p>카페, 공방, 서점 운영자가 얼굴 없는 숏폼 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">얼굴 없는 숏폼</span><span class="tag">카페</span><span class="tag">공방</span><span class="tag">서점</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b031">읽기</a>
             </article>
@@ -781,6 +929,10 @@
                 <h3><a href="/blog/b2b032">릴스 조회수는 높은데 실제 손님이 늘지 않을 때</a></h3>
                 <p>식당, 바, 팝업 운영자가 릴스 방문 전환 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">릴스 방문 전환</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">팝업</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b032">읽기</a>
             </article>
@@ -791,6 +943,10 @@
                 <h3><a href="/blog/b2b033">매일 올리기 힘든 공간을 위한 주간 콘텐츠 루틴</a></h3>
                 <p>샵, 스튜디오, 갤러리 운영자가 매장 콘텐츠 루틴 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 콘텐츠 루틴</span><span class="tag">샵</span><span class="tag">스튜디오</span><span class="tag">갤러리</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b033">읽기</a>
             </article>
@@ -801,6 +957,10 @@
                 <h3><a href="/blog/b2b034">감성 계정처럼 보이지만 정보가 부족한 공간 계정의 보완법</a></h3>
                 <p>카페, 갤러리, 전시공간 운영자가 공간 인스타 정보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">공간 인스타 정보</span><span class="tag">카페</span><span class="tag">갤러리</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b034">읽기</a>
             </article>
@@ -811,6 +971,10 @@
                 <h3><a href="/blog/b2b035">해시태그를 많이 써도 노출이 늘지 않을 때 바꿀 기준</a></h3>
                 <p>식당, 샵, 공방 운영자가 로컬 해시태그 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">로컬 해시태그</span><span class="tag">식당</span><span class="tag">샵</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b035">읽기</a>
             </article>
@@ -821,6 +985,10 @@
                 <h3><a href="/blog/b2b036">스토리는 많이 올리는데 신규 손님에게 남는 정보가 없을 때</a></h3>
                 <p>카페, 바, 서점 운영자가 인스타 스토리 운영 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">인스타 스토리 운영</span><span class="tag">카페</span><span class="tag">바</span><span class="tag">서점</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b036">읽기</a>
             </article>
@@ -831,6 +999,10 @@
                 <h3><a href="/blog/b2b037">비주얼이 약한 업종이 인스타에서 보여줄 수 있는 강점</a></h3>
                 <p>식당, 공방, 로컬 공간 운영자가 비주얼 약한 매장 SNS 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">비주얼 약한 매장 SNS</span><span class="tag">식당</span><span class="tag">공방</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b037">읽기</a>
             </article>
@@ -841,6 +1013,10 @@
                 <h3><a href="/blog/b2b038">행사 공지를 올려도 신청이 적은 공간의 게시물 구조</a></h3>
                 <p>서점, 갤러리, 스튜디오 운영자가 인스타 행사 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">인스타 행사 홍보</span><span class="tag">서점</span><span class="tag">갤러리</span><span class="tag">스튜디오</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b038">읽기</a>
             </article>
@@ -851,6 +1027,10 @@
                 <h3><a href="/blog/b2b039">손님이 찍은 사진을 콘텐츠로 활용할 때 놓치기 쉬운 기준</a></h3>
                 <p>식당, 카페, 샵 운영자가 UGC 활용 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">UGC 활용</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b039">읽기</a>
             </article>
@@ -861,6 +1041,10 @@
                 <h3><a href="/blog/b2b040">브랜드 톤을 지키려다 게시물이 딱딱해질 때 푸는 법</a></h3>
                 <p>바, 서점, 갤러리 운영자가 매장 SNS 톤앤매너 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 SNS 톤앤매너</span><span class="tag">바</span><span class="tag">서점</span><span class="tag">갤러리</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b040">읽기</a>
             </article>
@@ -871,6 +1055,10 @@
                 <h3><a href="/blog/b2b041">예약 마감 공지만 반복하는 계정이 놓치는 재방문 정보</a></h3>
                 <p>스튜디오, 공방, 팝업 운영자가 예약제 단골 관리 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">예약제 단골 관리</span><span class="tag">스튜디오</span><span class="tag">공방</span><span class="tag">팝업</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b041">읽기</a>
             </article>
@@ -881,6 +1069,10 @@
                 <h3><a href="/blog/b2b042">상호명 검색만 되는 매장이 키워드 검색에 잡히는 방법</a></h3>
                 <p>식당, 카페, 샵 운영자가 네이버 키워드 검색 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">네이버 키워드 검색</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b042">읽기</a>
             </article>
@@ -891,6 +1083,10 @@
                 <h3><a href="/blog/b2b043">지도 리뷰 답글을 쓰기 어려운 운영자를 위한 기본 원칙</a></h3>
                 <p>식당, 바, 공방 운영자가 네이버 리뷰 답글 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">네이버 리뷰 답글</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b043">읽기</a>
             </article>
@@ -901,6 +1097,10 @@
                 <h3><a href="/blog/b2b044">대표 메뉴가 여러 개인 매장이 플레이스에서 선택을 돕는 법</a></h3>
                 <p>식당, 카페, 바 운영자가 대표 메뉴 설정 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">대표 메뉴 설정</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">바</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b044">읽기</a>
             </article>
@@ -911,6 +1111,10 @@
                 <h3><a href="/blog/b2b045">카테고리가 애매한 공간이 지도에서 오해를 줄이는 방법</a></h3>
                 <p>서점, 갤러리, 로컬 공간 운영자가 플레이스 카테고리 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">플레이스 카테고리</span><span class="tag">서점</span><span class="tag">갤러리</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b045">읽기</a>
             </article>
@@ -921,6 +1125,10 @@
                 <h3><a href="/blog/b2b046">임시 휴무와 조기 마감이 잦은 공간의 안내 운영법</a></h3>
                 <p>팝업, 공방, 전시공간 운영자가 임시 휴무 안내 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">임시 휴무 안내</span><span class="tag">팝업</span><span class="tag">공방</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b046">읽기</a>
             </article>
@@ -931,6 +1139,10 @@
                 <h3><a href="/blog/b2b047">지도 사진이 오래되어 현재 분위기와 다를 때 생기는 문제</a></h3>
                 <p>카페, 샵, 갤러리 운영자가 플레이스 사진 업데이트 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">플레이스 사진 업데이트</span><span class="tag">카페</span><span class="tag">샵</span><span class="tag">갤러리</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b047">읽기</a>
             </article>
@@ -941,6 +1153,10 @@
                 <h3><a href="/blog/b2b048">찾아오는 길 설명이 길어질수록 방문이 줄어드는 이유</a></h3>
                 <p>식당, 스튜디오, 공방 운영자가 찾아오는 길 안내 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">찾아오는 길 안내</span><span class="tag">식당</span><span class="tag">스튜디오</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b048">읽기</a>
             </article>
@@ -951,6 +1167,10 @@
                 <h3><a href="/blog/b2b049">예약 링크와 문의 채널이 흩어진 공간이 정리할 우선순위</a></h3>
                 <p>스튜디오, 식당, 전시공간 운영자가 매장 예약 링크 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 예약 링크</span><span class="tag">스튜디오</span><span class="tag">식당</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b049">읽기</a>
             </article>
@@ -961,6 +1181,10 @@
                 <h3><a href="/blog/b2b050">신규 매장이 플레이스 등록 후 한 달 안에 해야 할 일</a></h3>
                 <p>카페, 샵, 공방 운영자가 네이버 플레이스 등록 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">네이버 플레이스 등록</span><span class="tag">카페</span><span class="tag">샵</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b050">읽기</a>
             </article>
@@ -971,6 +1195,10 @@
                 <h3><a href="/blog/b2b051">주차 정보가 애매한 공간이 방문 포기를 줄이는 법</a></h3>
                 <p>식당, 갤러리, 전시공간 운영자가 매장 주차 안내 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 주차 안내</span><span class="tag">식당</span><span class="tag">갤러리</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b051">읽기</a>
             </article>
@@ -981,6 +1209,10 @@
                 <h3><a href="/blog/b2b052">반려동물 동반 여부처럼 민감한 정보를 명확히 쓰는 법</a></h3>
                 <p>카페, 샵, 로컬 공간 운영자가 매장 이용 안내 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 이용 안내</span><span class="tag">카페</span><span class="tag">샵</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b052">읽기</a>
             </article>
@@ -991,6 +1223,10 @@
                 <h3><a href="/blog/b2b053">어두운 매장이 사진에서 답답해 보일 때 살릴 수 있는 장면</a></h3>
                 <p>바, 갤러리, 식당 운영자가 어두운 매장 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">어두운 매장 사진</span><span class="tag">바</span><span class="tag">갤러리</span><span class="tag">식당</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b053">읽기</a>
             </article>
@@ -1001,6 +1237,10 @@
                 <h3><a href="/blog/b2b054">작은 공간이 넓어 보이게 찍으려다 잃는 매력</a></h3>
                 <p>카페, 공방, 서점 운영자가 작은 매장 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">작은 매장 사진</span><span class="tag">카페</span><span class="tag">공방</span><span class="tag">서점</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b054">읽기</a>
             </article>
@@ -1011,6 +1251,10 @@
                 <h3><a href="/blog/b2b055">신제품 사진이 매번 비슷해질 때 바꿀 배경과 맥락</a></h3>
                 <p>샵, 카페, 공방 운영자가 상품 사진 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">상품 사진 콘텐츠</span><span class="tag">샵</span><span class="tag">카페</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b055">읽기</a>
             </article>
@@ -1021,6 +1265,10 @@
                 <h3><a href="/blog/b2b056">손님 없는 시간대에도 공간이 살아 보이게 찍는 방법</a></h3>
                 <p>식당, 스튜디오, 갤러리 운영자가 매장 빈공간 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 빈공간 사진</span><span class="tag">식당</span><span class="tag">스튜디오</span><span class="tag">갤러리</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b056">읽기</a>
             </article>
@@ -1031,6 +1279,10 @@
                 <h3><a href="/blog/b2b057">계절 장식이 과해 보이지 않게 콘텐츠에 담는 법</a></h3>
                 <p>카페, 샵, 전시공간 운영자가 계절 매장 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">계절 매장 사진</span><span class="tag">카페</span><span class="tag">샵</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b057">읽기</a>
             </article>
@@ -1041,6 +1293,10 @@
                 <h3><a href="/blog/b2b058">메뉴판과 가격표를 콘텐츠로 올릴 때 촌스러워 보이지 않는 기준</a></h3>
                 <p>식당, 바, 카페 운영자가 메뉴판 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">메뉴판 사진</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">카페</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b058">읽기</a>
             </article>
@@ -1051,6 +1307,10 @@
                 <h3><a href="/blog/b2b059">공방 수업 사진이 매번 결과물만 보일 때 담아야 할 과정</a></h3>
                 <p>공방, 스튜디오, 팝업 운영자가 공방 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">공방 콘텐츠</span><span class="tag">공방</span><span class="tag">스튜디오</span><span class="tag">팝업</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b059">읽기</a>
             </article>
@@ -1061,6 +1321,10 @@
                 <h3><a href="/blog/b2b060">전시공간이 작품 사진만 올릴 때 놓치는 방문 정보</a></h3>
                 <p>갤러리, 전시공간, 서점 운영자가 전시공간 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">전시공간 콘텐츠</span><span class="tag">갤러리</span><span class="tag">전시공간</span><span class="tag">서점</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b060">읽기</a>
             </article>
@@ -1071,6 +1335,10 @@
                 <h3><a href="/blog/b2b013">숏폼을 찍을 시간이 부족한 운영자를 위한 반복 포맷</a></h3>
                 <p>식당, 카페, 스튜디오 운영자가 매장 숏폼 아이디어 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 숏폼 아이디어</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">스튜디오</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b013">읽기</a>
             </article>
@@ -1081,6 +1349,10 @@
                 <h3><a href="/blog/b2b015">메뉴 소개가 지루해 보일 때 방문 욕구를 만드는 글쓰기</a></h3>
                 <p>식당, 카페, 바 운영자가 매장 인스타 글쓰기 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 인스타 글쓰기</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">바</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b015">읽기</a>
             </article>
@@ -1091,6 +1363,10 @@
                 <h3><a href="/blog/b2b018">영업시간과 휴무 정보 오류가 방문 손실로 이어지는 과정</a></h3>
                 <p>서점, 식당, 전시공간 운영자가 플레이스 영업시간 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">플레이스 영업시간</span><span class="tag">서점</span><span class="tag">식당</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b018">읽기</a>
             </article>
@@ -1101,6 +1377,10 @@
                 <h3><a href="/blog/b2b019">사진 순서만 바꿔도 달라지는 지도 검색 첫인상</a></h3>
                 <p>카페, 갤러리, 공방 운영자가 네이버 플레이스 사진 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">네이버 플레이스 사진</span><span class="tag">카페</span><span class="tag">갤러리</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b019">읽기</a>
             </article>
@@ -1111,6 +1391,10 @@
                 <h3><a href="/blog/b2b020">사진은 많은데 홍보에 쓸 만한 장면이 없을 때 고르는 기준</a></h3>
                 <p>식당, 카페, 스튜디오 운영자가 매장 사진 소재 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 사진 소재</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">스튜디오</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b020">읽기</a>
             </article>
@@ -1121,6 +1405,10 @@
                 <h3><a href="/blog/b2b061">서점이 책 표지만 올릴 때 공간성이 사라지는 문제</a></h3>
                 <p>서점, 카페, 로컬 공간 운영자가 서점 인스타 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">서점 인스타 콘텐츠</span><span class="tag">서점</span><span class="tag">카페</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b061">읽기</a>
             </article>
@@ -1131,6 +1419,10 @@
                 <h3><a href="/blog/b2b062">바의 분위기를 과장하지 않고 매력적으로 보여주는 촬영 기준</a></h3>
                 <p>바, 식당, 스튜디오 운영자가 바 사진 촬영 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">바 사진 촬영</span><span class="tag">바</span><span class="tag">식당</span><span class="tag">스튜디오</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b062">읽기</a>
             </article>
@@ -1141,6 +1433,10 @@
                 <h3><a href="/blog/b2b063">샵이 제품보다 공간 취향을 보여줘야 할 때</a></h3>
                 <p>샵, 갤러리, 팝업 운영자가 샵 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">샵 콘텐츠</span><span class="tag">샵</span><span class="tag">갤러리</span><span class="tag">팝업</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b063">읽기</a>
             </article>
@@ -1151,6 +1447,10 @@
                 <h3><a href="/blog/b2b064">촬영 장비가 없어도 공간 콘텐츠 품질을 높이는 체크리스트</a></h3>
                 <p>식당, 카페, 공방 운영자가 공간 콘텐츠 체크리스트 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">공간 콘텐츠 체크리스트</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b064">읽기</a>
             </article>
@@ -1161,6 +1461,10 @@
                 <h3><a href="/blog/b2b065">이벤트 현장을 다음 방문 자산으로 남기는 기록법</a></h3>
                 <p>팝업, 전시공간, 서점 운영자가 이벤트 후 재방문 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">이벤트 후 재방문</span><span class="tag">팝업</span><span class="tag">전시공간</span><span class="tag">서점</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b065">읽기</a>
             </article>
@@ -1171,6 +1475,10 @@
                 <h3><a href="/blog/b2b066">스튜디오 포트폴리오가 전문가에게만 보일 때 고객용으로 바꾸는 법</a></h3>
                 <p>스튜디오, 샵, 로컬 공간 운영자가 스튜디오 포트폴리오 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">스튜디오 포트폴리오</span><span class="tag">스튜디오</span><span class="tag">샵</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b066">읽기</a>
             </article>
@@ -1181,6 +1489,10 @@
                 <h3><a href="/blog/b2b067">로컬 공간이 매달 촬영해야 할 기본 사진 목록</a></h3>
                 <p>식당, 카페, 로컬 공간 운영자가 매장 사진 목록 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 사진 목록</span><span class="tag">식당</span><span class="tag">카페</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b067">읽기</a>
             </article>
@@ -1191,6 +1503,10 @@
                 <h3><a href="/blog/b2b069">리뷰 요청이 부담스러운 운영자가 자연스럽게 후기를 모으는 법</a></h3>
                 <p>식당, 샵, 공방 운영자가 리뷰 요청 방법 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">리뷰 요청 방법</span><span class="tag">식당</span><span class="tag">샵</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b069">읽기</a>
             </article>
@@ -1201,6 +1517,10 @@
                 <h3><a href="/blog/b2b070">방문 전 질문이 반복될 때 콘텐츠로 줄일 수 있는 문의</a></h3>
                 <p>스튜디오, 전시공간, 바 운영자가 방문 전 문의 줄이기 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">방문 전 문의 줄이기</span><span class="tag">스튜디오</span><span class="tag">전시공간</span><span class="tag">바</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b070">읽기</a>
             </article>
@@ -1211,6 +1531,10 @@
                 <h3><a href="/blog/b2b071">좋은 후기가 있는데 홍보에 못 쓰는 공간의 정리법</a></h3>
                 <p>카페, 서점, 샵 운영자가 후기 콘텐츠 활용 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">후기 콘텐츠 활용</span><span class="tag">카페</span><span class="tag">서점</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b071">읽기</a>
             </article>
@@ -1221,6 +1545,10 @@
                 <h3><a href="/blog/b2b072">저장하고 잊힌 공간이 다시 떠오르게 만드는 리마인드 소재</a></h3>
                 <p>식당, 바, 팝업 운영자가 저장 고객 리마인드 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">저장 고객 리마인드</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">팝업</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b072">읽기</a>
             </article>
@@ -1231,6 +1559,10 @@
                 <h3><a href="/blog/b2b073">예약 전 이탈이 생기는 공간이 점검할 설명 요소</a></h3>
                 <p>스튜디오, 공방, 식당 운영자가 예약 이탈 줄이기 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">예약 이탈 줄이기</span><span class="tag">스튜디오</span><span class="tag">공방</span><span class="tag">식당</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b073">읽기</a>
             </article>
@@ -1241,6 +1573,10 @@
                 <h3><a href="/blog/b2b074">처음 방문한 손님이 사진만 찍고 다시 오지 않을 때</a></h3>
                 <p>카페, 갤러리, 전시공간 운영자가 첫 방문 재방문 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">첫 방문 재방문</span><span class="tag">카페</span><span class="tag">갤러리</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b074">읽기</a>
             </article>
@@ -1251,6 +1587,10 @@
                 <h3><a href="/blog/b2b075">고객이 저장할 만한 정보와 바로 예약할 정보의 차이</a></h3>
                 <p>식당, 스튜디오, 로컬 공간 운영자가 저장 콘텐츠 예약 콘텐츠 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">저장 콘텐츠 예약 콘텐츠</span><span class="tag">식당</span><span class="tag">스튜디오</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b075">읽기</a>
             </article>
@@ -1261,6 +1601,10 @@
                 <h3><a href="/blog/b2b076">단골 리뷰만 쌓여 신규 고객이 거리감을 느낄 때</a></h3>
                 <p>바, 서점, 샵 운영자가 리뷰 신뢰도 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">리뷰 신뢰도</span><span class="tag">바</span><span class="tag">서점</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b076">읽기</a>
             </article>
@@ -1271,6 +1615,10 @@
                 <h3><a href="/blog/b2b077">방문 후 팔로우만 받고 관계가 끊기는 공간의 다음 행동</a></h3>
                 <p>공방, 카페, 팝업 운영자가 방문 후 고객 관리 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">방문 후 고객 관리</span><span class="tag">공방</span><span class="tag">카페</span><span class="tag">팝업</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b077">읽기</a>
             </article>
@@ -1281,6 +1629,10 @@
                 <h3><a href="/blog/b2b079">인테리어는 예쁜데 브랜드 기억이 남지 않는 공간의 문제</a></h3>
                 <p>샵, 카페, 스튜디오 운영자가 공간 브랜딩 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">공간 브랜딩</span><span class="tag">샵</span><span class="tag">카페</span><span class="tag">스튜디오</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b079">읽기</a>
             </article>
@@ -1291,6 +1643,10 @@
                 <h3><a href="/blog/b2b080">메뉴와 공간 톤이 따로 노는 매장이 맞춰야 할 기준</a></h3>
                 <p>식당, 바, 카페 운영자가 매장 톤앤매너 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">매장 톤앤매너</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">카페</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b080">읽기</a>
             </article>
@@ -1301,6 +1657,10 @@
                 <h3><a href="/blog/b2b081">조용한 공간을 홍보할 때 과장 없이 매력을 전달하는 법</a></h3>
                 <p>서점, 갤러리, 공방 운영자가 조용한 공간 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">조용한 공간 홍보</span><span class="tag">서점</span><span class="tag">갤러리</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b081">읽기</a>
             </article>
@@ -1311,6 +1671,10 @@
                 <h3><a href="/blog/b2b082">힙하다는 말만으로는 부족한 로컬 공간의 차별화 문장</a></h3>
                 <p>바, 샵, 팝업 운영자가 로컬 공간 차별화 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">로컬 공간 차별화</span><span class="tag">바</span><span class="tag">샵</span><span class="tag">팝업</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b082">읽기</a>
             </article>
@@ -1321,6 +1685,10 @@
                 <h3><a href="/blog/b2b083">오래된 공간이 낡아 보이지 않고 깊이 있어 보이게 만드는 콘텐츠</a></h3>
                 <p>식당, 서점, 로컬 공간 운영자가 오래된 가게 브랜딩 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">오래된 가게 브랜딩</span><span class="tag">식당</span><span class="tag">서점</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b083">읽기</a>
             </article>
@@ -1331,6 +1699,10 @@
                 <h3><a href="/blog/b2b084">작가와 브랜드가 함께 쓰는 공간의 정체성을 흐리지 않는 법</a></h3>
                 <p>갤러리, 팝업, 전시공간 운영자가 복합 공간 브랜딩 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">복합 공간 브랜딩</span><span class="tag">갤러리</span><span class="tag">팝업</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b084">읽기</a>
             </article>
@@ -1341,6 +1713,10 @@
                 <h3><a href="/blog/b2b085">친절함이 강점인 공간이 온라인에서 그 느낌을 전하는 법</a></h3>
                 <p>식당, 공방, 샵 운영자가 친절한 매장 홍보 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">친절한 매장 홍보</span><span class="tag">식당</span><span class="tag">공방</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b085">읽기</a>
             </article>
@@ -1351,6 +1727,10 @@
                 <h3><a href="/blog/b2b086">공간 콘셉트를 바꾸기 전 기존 고객이 혼란스럽지 않게 알리는 법</a></h3>
                 <p>카페, 바, 스튜디오 운영자가 공간 리브랜딩 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">공간 리브랜딩</span><span class="tag">카페</span><span class="tag">바</span><span class="tag">스튜디오</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b086">읽기</a>
             </article>
@@ -1361,6 +1741,10 @@
                 <h3><a href="/blog/b2b087">로컬 공간이 자기소개를 길게 쓰지 않아도 기억되는 구조</a></h3>
                 <p>전시공간, 서점, 카페 운영자가 공간 소개 문구 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">공간 소개 문구</span><span class="tag">전시공간</span><span class="tag">서점</span><span class="tag">카페</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b087">읽기</a>
             </article>
@@ -1371,6 +1755,10 @@
                 <h3><a href="/blog/b2b089">단골에게만 통하는 공지가 신규 손님을 막을 때</a></h3>
                 <p>바, 공방, 샵 운영자가 단골 공지 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">단골 공지</span><span class="tag">바</span><span class="tag">공방</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b089">읽기</a>
             </article>
@@ -1381,6 +1769,10 @@
                 <h3><a href="/blog/b2b090">멤버십 없이도 재방문을 늘리는 작은 약속 만들기</a></h3>
                 <p>카페, 식당, 스튜디오 운영자가 멤버십 없이 재방문 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">멤버십 없이 재방문</span><span class="tag">카페</span><span class="tag">식당</span><span class="tag">스튜디오</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b090">읽기</a>
             </article>
@@ -1391,6 +1783,10 @@
                 <h3><a href="/blog/b2b091">클래스와 모임을 열어도 커뮤니티가 쌓이지 않을 때</a></h3>
                 <p>공방, 서점, 갤러리 운영자가 공간 커뮤니티 운영 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">공간 커뮤니티 운영</span><span class="tag">공방</span><span class="tag">서점</span><span class="tag">갤러리</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b091">읽기</a>
             </article>
@@ -1401,6 +1797,10 @@
                 <h3><a href="/blog/b2b092">단골 이벤트가 할인 행사처럼 보일 때 바꿀 메시지</a></h3>
                 <p>식당, 바, 샵 운영자가 단골 이벤트 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">단골 이벤트</span><span class="tag">식당</span><span class="tag">바</span><span class="tag">샵</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b092">읽기</a>
             </article>
@@ -1411,6 +1811,10 @@
                 <h3><a href="/blog/b2b093">로컬 손님과 멀리서 오는 손님의 재방문 이유가 다를 때</a></h3>
                 <p>전시공간, 카페, 팝업 운영자가 재방문 이유 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">재방문 이유</span><span class="tag">전시공간</span><span class="tag">카페</span><span class="tag">팝업</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b093">읽기</a>
             </article>
@@ -1421,6 +1825,10 @@
                 <h3><a href="/blog/b2b094">조용한 단골을 온라인 커뮤니티로 끌어내지 않고 관계를 유지하는 법</a></h3>
                 <p>서점, 공방, 로컬 공간 운영자가 조용한 단골 관리 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">조용한 단골 관리</span><span class="tag">서점</span><span class="tag">공방</span><span class="tag">로컬 공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b094">읽기</a>
             </article>
@@ -1431,6 +1839,10 @@
                 <h3><a href="/blog/b2b095">시즌마다 다시 찾는 공간이 되려면 기록해야 할 것</a></h3>
                 <p>카페, 갤러리, 식당 운영자가 시즌 재방문 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">시즌 재방문</span><span class="tag">카페</span><span class="tag">갤러리</span><span class="tag">식당</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar green">LH</span>
+                  <span>Lena Han · 2026년 5월 20일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b095">읽기</a>
             </article>
@@ -1441,6 +1853,10 @@
                 <h3><a href="/blog/b2b097">로컬 공간 카드에서 사람들이 먼저 확인하는 정보</a></h3>
                 <p>샵, 서점, 공방 운영자가 Doripe 공간 카드 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">Doripe 공간 카드</span><span class="tag">샵</span><span class="tag">서점</span><span class="tag">공방</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar blue">MK</span>
+                  <span>Mina Kwon · 2026년 5월 21일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b097">읽기</a>
             </article>
@@ -1451,6 +1867,10 @@
                 <h3><a href="/blog/b2b098">카페가 아니어도 저장되는 공간의 공통점</a></h3>
                 <p>바, 갤러리, 전시공간 운영자가 Doripe 로컬 공간 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">Doripe 로컬 공간</span><span class="tag">바</span><span class="tag">갤러리</span><span class="tag">전시공간</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar yellow">JP</span>
+                  <span>Jae Park · 2026년 5월 22일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b098">읽기</a>
             </article>
@@ -1461,6 +1881,10 @@
                 <h3><a href="/blog/b2b099">방문 전 망설임을 줄이는 공간 정보의 최소 조건</a></h3>
                 <p>식당, 스튜디오, 팝업 운영자가 Doripe 방문 전환 문제를 점검할 때 먼저 볼 정보, 장면, 메시지를 정리합니다.</p>
                 <div class="article-tags"><span class="tag">Doripe 방문 전환</span><span class="tag">식당</span><span class="tag">스튜디오</span><span class="tag">팝업</span></div>
+                <div class="article-author-mini">
+                  <span class="mini-avatar rose">YS</span>
+                  <span>Yuna Seo · 2026년 5월 23일</span>
+                </div>
               </div>
               <a class="read-link" href="/blog/b2b099">읽기</a>
             </article>
