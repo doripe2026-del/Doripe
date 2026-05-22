@@ -40,25 +40,25 @@ const manualArticles = [
     id: "B2B001",
     slug: "foot-traffic-first-visit",
     cluster: "신규 손님 유입",
-    title: "가게 앞 유동인구는 많은데 첫 방문이 적을 때 점검할 것",
+    title: "가게 앞에 사람은 많은데, 왜 첫 손님은 안 들어올까요?",
     keyword: "신규 손님 유입",
     spaces: ["식당", "카페", "샵"],
-    summary: "지나가는 사람은 많지만 들어오는 사람이 적을 때, 간판보다 먼저 온라인 첫인상과 방문 이유를 점검합니다.",
-    lead: "유동인구가 많은데 첫 방문이 적다면 문제는 지나가는 사람이 아니라 들어갈 명분입니다. 손님은 문 앞에서 결정하기 전에 이미 지도, 인스타, 리뷰로 이 공간이 자기 상황에 맞는지 확인합니다.",
+    summary: "가게 앞은 붐비는데 문을 여는 새 손님이 적다면, 문제는 유동인구가 아니라 '처음 들어가도 되는 이유'가 보이지 않는 것일 수 있습니다.",
+    lead: "가게 앞을 지나는 사람은 많은데 첫 방문이 적다면, 더 큰 간판이나 할인보다 먼저 봐야 할 것이 있습니다. 처음 보는 손님이 문 앞과 휴대폰 화면에서 '여긴 지금 들어가도 되겠다'고 판단할 단서를 충분히 얻고 있는지입니다.",
     points: [
-      "밖에서 보이는 정보와 온라인에서 보이는 정보가 서로 다른 인상을 준다.",
-      "가격, 메뉴, 분위기 중 무엇을 기대하면 되는지 첫 화면에서 알기 어렵다.",
-      "단골에게는 익숙한 표현이 처음 보는 사람에게는 아무 단서가 되지 않는다."
+      "사람이 많이 지나는 길에 있다고 해서, 손님이 들어갈 이유까지 자동으로 생기지는 않습니다.",
+      "첫 방문자는 메뉴보다 먼저 가격대, 분위기, 이용 방식, 어색함 같은 실패 가능성을 확인합니다.",
+      "문 앞 안내와 지도/인스타 첫 화면이 같은 방문 장면을 말해야 망설임이 줄어듭니다."
     ],
     checklist: [
-      "첫 방문자가 가장 먼저 볼 대표 메뉴, 대표 상품, 대표 좌석을 하나씩 정리합니다.",
-      "입구 사진과 내부 사진을 함께 보여줘 들어가기 전의 불안을 줄입니다.",
-      "‘혼밥 가능’, ‘선물 포장 가능’, ‘30분 식사 가능’처럼 상황형 단서를 붙입니다.",
-      "지도 소개와 인스타 프로필의 첫 문장을 같은 방향으로 맞춥니다.",
-      "단골만 아는 별명, 내부 용어, 메뉴 축약어는 첫 화면에서 풀어 씁니다."
+      "지도 첫 사진을 입구, 내부, 대표 메뉴/상품 중 하나로 정리합니다.",
+      "소개 첫 문장에 업종 설명이 아니라 첫 방문 상황을 씁니다.",
+      "처음 온 사람이 고르면 실패하지 않을 선택지를 1~2개만 앞으로 뺍니다.",
+      "문 앞 안내, 지도 소개, 인스타 프로필이 같은 약속을 말하게 맞춥니다.",
+      "가격대, 예약, 포장, 혼자 방문 가능 여부처럼 묻기 전 알고 싶은 정보를 숨기지 않습니다."
     ],
     before: "편안한 분위기의 동네 식당입니다.",
-    after: "퇴근길에 혼자 들러도 부담 없는 1인 좌석과 따뜻한 한 끼가 있는 동네 식당입니다.",
+    after: "퇴근길에 혼자 들어와도 어색하지 않게, 1인 좌석과 15분 안에 나오는 따뜻한 한 끼를 준비해요.",
     doripe: "Doripe의 공간 카드는 ‘좋다’보다 ‘나에게 맞다’를 먼저 보여주려 합니다. 첫 방문은 설득보다 자기 상황과 맞는 단서를 발견할 때 생깁니다.",
     related: ["B2B004", "B2B006", "B2B009"]
   },
@@ -889,7 +889,7 @@ const structurePools = {
 };
 
 const manualStructureById = {
-  B2B001: "doorAudit",
+  B2B001: "footTrafficGuide",
   B2B002: "launchDropoff",
   B2B003: "weekdayUse",
   B2B004: "messageBridge",
@@ -928,6 +928,7 @@ const manualStructureById = {
 };
 
 const structureBlueprints = {
+  footTrafficGuide: ["walkByGap", "firstVisitRisk", "streetToScreen", "threeFixes", "sevenDayDoorTest", "doripe", "sources"],
   doorAudit: ["visitorMoment", "outsideInsideGap", "firstScreenAudit", "doDont", "fieldTest", "doripe", "sources"],
   launchDropoff: ["timeline", "memoryHook", "channelMap", "smallScript", "nextSevenDays", "doripe", "sources"],
   weekdayUse: ["timeMap", "sceneMenu", "photoBrief", "contentCalendar", "ownerCheck", "doripe", "sources"],
@@ -1013,7 +1014,7 @@ function normalizeArticle(row, index) {
     priority: row.priority,
     slug: manual.slug ?? row.id.toLowerCase(),
     cluster: row.cluster,
-    title: row.title,
+    title: manual.title ?? row.title,
     keyword: row.primary_keyword,
     spaces: splitPipes(row.target_space_types),
     secondaryKeywords: splitPipes(row.secondary_keywords),
@@ -1141,8 +1142,13 @@ const sectionMeta = {
   timeline: ["타임라인", "오픈 전후 흐름을 다시 보기"],
   toneBoard: ["톤 보드", "사진, 문구, 응대의 톤 맞추기"],
   trustRepair: ["신뢰 보강", "불확실한 정보를 먼저 지우기"],
+  firstVisitRisk: ["첫 방문 불안", "첫 손님은 메뉴보다 실패 가능성을 먼저 봅니다"],
   visitorMoment: ["고객 순간", "손님이 멈추는 순간"],
-  visitorQuestion: ["고객 질문", "처음 보는 손님이 묻는 것"]
+  visitorQuestion: ["고객 질문", "처음 보는 손님이 묻는 것"],
+  walkByGap: ["문 앞 문제", "사람이 많은 길과 들어가기 쉬운 가게는 다릅니다"],
+  streetToScreen: ["첫 화면 연결", "문 앞 안내와 온라인 첫 화면을 같은 말로 맞추세요"],
+  threeFixes: ["수정 기준", "처음 보는 손님에게 필요한 세 가지 단서"],
+  sevenDayDoorTest: ["7일 실험", "이번 주에는 이렇게 확인해보세요"]
 };
 
 function renderList(items) {
@@ -1204,6 +1210,14 @@ function sectionInfo(article, section) {
 }
 
 function renderArticleIntro(article) {
+  if (article.id === "B2B001") {
+    return `<section class="article-intro">
+        <p>점심시간마다 가게 앞은 붐비는데 문을 열고 들어오는 새 손님은 적을 때가 있습니다. 이런 상황에서는 보통 간판을 더 크게 바꾸거나, 전단을 돌리거나, 할인 이벤트를 먼저 떠올리게 됩니다.</p>
+        <p>그런데 첫 방문이 적은 가게를 보면 문제는 사람 수보다 '들어가도 되는 이유'에 가까운 경우가 많습니다. 지나가던 손님은 길 위에서 몇 초만 고민합니다. 그리고 그 짧은 시간 안에 휴대폰으로 지도, 사진, 리뷰, 인스타 첫 화면을 훑으며 자기 질문에 답을 찾습니다.</p>
+        <p>이 글에서는 유동인구를 더 모으는 방법이 아니라, 이미 지나가고 있는 사람이 첫 방문으로 넘어가기 전에 확인하는 단서들을 정리해보겠습니다.</p>
+      </section>`;
+  }
+
   const spaces = article.spaces.length ? article.spaces.join(", ") : "로컬 공간";
   const topic = article.keyword || article.title;
   return `<section class="article-intro">
@@ -1214,6 +1228,20 @@ function renderArticleIntro(article) {
 }
 
 function sectionBody(article, section, sourceLinks) {
+  if (article.id === "B2B001" && section === "focus-b2b001") {
+    return `<p>이 글의 핵심은 간단합니다. 유동인구가 있는데 첫 방문이 적다면, 더 많은 사람에게 보이는 것보다 '처음 보는 사람이 덜 망설이게 만드는 것'이 먼저입니다.</p>
+        <div class="example">
+          <div>
+            <strong>손님이 보는 것</strong>
+            <p>문은 열려 있고 사람도 지나가지만, 안이 어떤 분위기인지, 가격대가 어떤지, 혼자 들어가도 되는지 확신이 없습니다.</p>
+          </div>
+          <div>
+            <strong>운영자가 바꿀 것</strong>
+            <p>첫 사진, 첫 문장, 첫 선택지를 정리해서 "나 같은 사람이 지금 들어가도 되겠다"는 판단을 돕습니다.</p>
+          </div>
+        </div>`;
+  }
+
   if (section.startsWith("focus-")) {
     return `<p>${escapeHtml(article.summary)}</p>${renderCards([
       { title: "증상", body: article.points[0] ?? `${article.keyword} 문제가 반복됩니다.` },
@@ -1226,6 +1254,50 @@ function sectionBody(article, section, sourceLinks) {
       return `<div class="note"><p>${escapeHtml(article.doripe)}</p></div><p>핵심은 큰 캠페인을 만드는 것이 아니라 손님이 이미 보는 화면과 현장 안내를 같은 장면으로 맞추는 일입니다. 작은 공간일수록 한 문장과 한 장의 사진이 방문 결정 가까이에 놓입니다.</p>`;
     case "sources":
       return `<p>아래 자료는 글을 만들 때 확인한 공식 도움말과 리서치입니다. 플랫폼 화면은 바뀔 수 있으니, 실제 적용 전에는 각 서비스의 현재 안내를 한 번 더 확인하는 편이 좋습니다.</p><div class="source-list">${sourceLinks}</div>`;
+    case "walkByGap":
+      return `<p>유동인구는 가능성이지 방문이 아닙니다. 가게 앞을 지나는 사람은 이미 어딘가로 가는 중이고, 손에는 휴대폰이 있고, 머릿속에는 실패하고 싶지 않다는 생각이 있습니다.</p>
+        <p>특히 처음 보는 가게라면 "맛있을까?"보다 먼저 "내가 지금 들어가도 괜찮을까?"를 생각합니다. 식당이라면 혼자 먹어도 어색하지 않은지, 카페라면 자리가 편한지, 샵이라면 구경만 해도 부담스럽지 않은지가 먼저 걸립니다.</p>
+        <p>그래서 문 앞에 사람이 많은데 첫 방문이 적을 때는, 사람을 더 세게 붙잡기보다 들어가기 전 불안을 줄이는 단서가 보이는지부터 봐야 합니다.</p>`;
+    case "firstVisitRisk":
+      return `<p>첫 방문자는 좋은 점을 다 알기 전에 먼저 위험을 줄입니다. 메뉴가 다양하다는 말보다 가격대가 보이는지, 분위기가 좋다는 말보다 내부가 어떻게 생겼는지, 친절하다는 말보다 처음 왔을 때 무엇을 하면 되는지가 더 중요할 때가 많습니다.</p>
+        <p>이 질문에 답이 없으면 손님은 싫어서 떠나는 것이 아니라, 판단을 미룹니다. "다음에 와봐야지"라고 생각하고 지나가지만, 다음에 다시 떠올릴 단서가 없으면 그대로 잊힙니다.</p>
+        ${renderList([
+          "여기 혼자 들어가도 괜찮을까?",
+          "대충 얼마 정도 쓰게 될까?",
+          "처음이면 무엇을 고르면 실패하지 않을까?",
+          "들어가서 바로 주문하면 되는 곳일까, 예약이나 문의가 필요한 곳일까?"
+        ])}`;
+    case "streetToScreen":
+      return `<p>문 앞 안내와 온라인 첫 화면은 따로 보이지만, 손님에게는 하나의 경험입니다. 길을 걷다가 마음에 걸리면 지도에서 이름을 검색하고, 사진을 넘겨보고, 인스타나 리뷰를 열어봅니다. 이때 각 채널이 다른 이야기를 하면 첫 방문은 더 어려워집니다.</p>
+        <p>예를 들어 문 앞에는 "수제 디저트"라고 쓰여 있는데 지도 첫 사진은 어두운 내부 사진뿐이고, 인스타 프로필에는 영업시간이나 포장 가능 여부가 없다면 손님은 아직 들어갈 이유보다 확인할 일이 더 많다고 느낍니다.</p>
+        <div class="example">
+          <div>
+            <strong>흩어진 상태</strong>
+            <p>간판은 분위기를 말하고, 지도는 위치만 말하고, 인스타는 예쁜 사진만 보여줍니다. 처음 보는 손님은 이 공간을 어떻게 쓰면 좋은지 직접 추측해야 합니다.</p>
+          </div>
+          <div>
+            <strong>맞춘 상태</strong>
+            <p>문 앞, 지도, 인스타가 모두 "퇴근길에 20분 들르기 좋은 1인 좌석"처럼 같은 방문 장면을 반복합니다.</p>
+          </div>
+        </div>`;
+    case "threeFixes":
+      return `<p>처음부터 모든 채널을 새로 만들 필요는 없습니다. 첫 방문을 막는 정보 공백은 대개 첫 사진, 첫 문장, 첫 선택지에서 생깁니다.</p>
+        <h3>첫 사진은 '예쁜 컷'보다 들어가기 쉬운 컷이 좋습니다</h3>
+        <p>입구, 내부 좌석, 대표 메뉴나 상품처럼 처음 온 사람이 실제로 마주칠 장면을 먼저 보여주세요. 너무 클로즈업된 감성 사진만 있으면 공간의 크기, 분위기, 이용 방식을 상상하기 어렵습니다.</p>
+        <h3>첫 문장은 업종보다 상황을 말해야 합니다</h3>
+        <p>"동네 카페입니다"보다 "혼자 와서 30분 쉬기 좋은 창가 좌석이 있는 카페입니다"가 더 빨리 판단됩니다. 식당이라면 혼밥, 빠른 식사, 예약 가능 여부를, 샵이라면 구경만 가능한지와 선물 포장 가능 여부를 앞에 둘 수 있습니다.</p>
+        <h3>첫 선택지는 하나만 정해줘도 충분합니다</h3>
+        <p>처음 온 손님은 전체 메뉴판을 다 이해하고 싶어 하지 않습니다. "처음이라면 이 메뉴", "선물용이면 이 구성", "짧게 둘러볼 땐 이 코너"처럼 실패하지 않을 선택지를 작게 안내해도 문턱이 낮아집니다.</p>`;
+    case "sevenDayDoorTest":
+      return `<p>이번 주에는 큰 캠페인을 시작하기보다, 처음 보는 손님 한 명이 문 앞에서 휴대폰을 열었다고 생각하고 아래 순서대로 점검해보세요.</p>
+        ${renderFlow([
+          "1일차: 지도와 인스타 첫 화면을 캡처해서, 가격대/분위기/이용 방식이 10초 안에 보이는지 확인합니다.",
+          "2일차: 문 앞에서 보이는 안내와 온라인 소개 문장이 같은 약속을 말하는지 비교합니다.",
+          "3일차: 처음 온 사람이 고르면 좋은 메뉴, 상품, 좌석, 코너를 하나만 정합니다.",
+          "4일차: 첫 사진을 입구나 내부처럼 들어가기 전 불안을 줄이는 사진으로 바꿔봅니다.",
+          "7일차: 새로 들어온 문의나 현장 질문을 모아, 아직 숨겨져 있는 정보를 한 줄 더 앞으로 빼냅니다."
+        ])}
+        <p>이 실험의 목표는 바로 방문을 폭발시키는 것이 아닙니다. 처음 보는 사람이 망설이는 이유를 하나씩 줄여, 지나가던 관심이 저장이나 방문으로 이어질 가능성을 만드는 것입니다.</p>`;
     case "timeline":
     case "eventFlow":
       return `<p>${escapeHtml(article.title)}은 한 시점의 문제가 아니라 전후 흐름에서 생기는 경우가 많습니다.</p>${renderFlow(["방문 전: 손님이 저장하거나 비교할 정보를 먼저 봅니다.", "방문 중: 현장에서 다음 행동으로 이어지는 작은 단서를 만납니다.", "방문 후: 다시 확인할 채널, 다음 일정, 관련 콘텐츠가 남아 있어야 합니다."])}`;
@@ -1835,6 +1907,13 @@ ${commonStyles}
     letter-spacing: 0;
   }
   .article-body h2:first-child { margin-top: 0; }
+  .article-body h3 {
+    margin: 28px 0 10px;
+    font-size: 21px;
+    line-height: 1.36;
+    font-weight: 900;
+    letter-spacing: 0;
+  }
   .article-body p { margin: 0 0 18px; }
   .article-body ul {
     margin: 16px 0 24px;
@@ -2076,6 +2155,7 @@ ${commonStyles}
       line-height: 1.75;
     }
     .article-body h2 { font-size: 24px; }
+    .article-body h3 { font-size: 19px; }
     .example { grid-template-columns: 1fr; }
   }
 `;
