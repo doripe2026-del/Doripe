@@ -3,25 +3,26 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Doripe 공간 파일럿 - 조용한 로컬 공간 홍보</title>
-<meta name="description" content="조용한 카페, 서점, 전시, 스튜디오, 작은 바를 Doripe 취향 카드로 소개하는 공간 파일럿에 문의하세요." />
+<title>Doripe 파트너 문의 - 공간을 저장되는 소개로 바꾸세요</title>
+<meta name="description" content="식당, 카페, 샵, 바, 갤러리, 서점, 공방 운영자를 위한 Doripe 파트너 문의. 방문 전 손님이 확인하는 정보를 저장하기 쉬운 공간 카드로 정리합니다." />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="https://doripe.vercel.app/business" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Doripe" />
 <meta property="og:locale" content="ko_KR" />
-<meta property="og:title" content="Doripe 공간 파일럿" />
-<meta property="og:description" content="조용한 로컬 공간을 취향 카드로 소개하는 파일럿에 참여하세요." />
+<meta property="og:title" content="Doripe 파트너 문의" />
+<meta property="og:description" content="방문 전 망설임을 줄이고, 저장되는 공간 소개로 바꾸는 Doripe 파트너 문의." />
 <meta property="og:url" content="https://doripe.vercel.app/business" />
 <meta property="og:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <meta property="og:image:alt" content="Doripe 앱 소개 이미지" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Doripe 공간 파일럿" />
-<meta name="twitter:description" content="조용한 로컬 공간을 취향 카드로 소개하는 파일럿에 참여하세요." />
+<meta name="twitter:title" content="Doripe 파트너 문의" />
+<meta name="twitter:description" content="방문 전 망설임을 줄이고, 저장되는 공간 소개로 바꾸는 Doripe 파트너 문의." />
 <meta name="twitter:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <meta name="twitter:image:alt" content="Doripe 앱 소개 이미지" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="alternate icon" type="image/png" href="/favicon.png" />
 <link rel="apple-touch-icon" href="/favicon.png" />
@@ -32,136 +33,224 @@
     theme: {
       extend: {
         colors: {
-          bg:'#000', fg:'#f5f5f5', card:'#0f0f0f', muted:'#1f1f1f',
-          mutedfg:'#888', border:'#292929', primary:'#22ff88', secondary:'#00d68f'
+          paper: '#f8f7f3',
+          ink: '#151515',
+          sub: '#68635b',
+          line: '#ded8cc',
+          field: '#fffdf8',
+          green: '#13c47f',
+          navy: '#233044',
+          clay: '#a96b4f'
         },
-        fontFamily: { sans: ['Pretendard Variable','Pretendard','-apple-system','BlinkMacSystemFont','system-ui','Apple SD Gothic Neo','Noto Sans KR','sans-serif'] },
+        fontFamily: {
+          sans: ['Pretendard Variable','Pretendard','-apple-system','BlinkMacSystemFont','system-ui','Apple SD Gothic Neo','Noto Sans KR','sans-serif']
+        },
+        boxShadow: {
+          soft: '0 24px 70px rgba(35, 48, 68, .12)'
+        }
       }
     }
   }
 </script>
 <style>
-  body { background:#000; color:#f5f5f5; font-family:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif; }
-  .gradient-cta { background:linear-gradient(90deg,#00d68f,#22ff88); transition:filter .2s, transform .2s; }
-  .gradient-cta:hover { filter:brightness(1.08); transform:translateY(-1px); }
-  input, textarea {
-    width:100%; padding:.95rem 1rem; border-radius:1rem; background:#0d0d0d;
-    border:1px solid #292929; color:#f5f5f5; outline:none; transition:border-color .2s, box-shadow .2s;
+  body {
+    background:#f8f7f3;
+    color:#151515;
+    font-family:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    overflow-x:hidden;
   }
-  textarea { min-height:7rem; resize:vertical; }
-  input:focus, textarea:focus { border-color:#22ff88; box-shadow:0 0 0 2px rgba(34,255,136,.18); }
+  h1, h2, p, span, a, label { overflow-wrap:anywhere; }
+  input:not([type="checkbox"]) {
+    width:100%;
+    padding:1rem 1.05rem;
+    border-radius:14px;
+    background:#fffdf8;
+    border:1px solid #d9d2c5;
+    color:#151515;
+    outline:none;
+    transition:border-color .2s, box-shadow .2s, background .2s;
+  }
+  input:not([type="checkbox"]):focus {
+    border-color:#13c47f;
+    box-shadow:0 0 0 4px rgba(19,196,127,.14);
+    background:#fff;
+  }
+  input[type="checkbox"] {
+    width:18px;
+    height:18px;
+    accent-color:#13c47f;
+    flex:0 0 auto;
+    margin-top:2px;
+  }
+  .cta {
+    background:#151515;
+    color:#fffdf8;
+    transition:transform .2s, background .2s, opacity .2s;
+  }
+  .cta:hover { transform:translateY(-1px); background:#233044; }
+  .cta:disabled { opacity:.55; cursor:not-allowed; transform:none; }
 </style>
 </head>
-<body class="min-h-screen bg-bg">
-  <header class="px-5 py-5 border-b border-border/50">
-    <div class="max-w-5xl mx-auto flex items-center justify-between gap-4">
-      <a href="/" class="text-primary font-extrabold text-xl">Doripe.</a>
-      <div class="flex items-center gap-4 text-xs">
-        <a href="/blog" class="text-mutedfg hover:text-fg transition-colors">블로그</a>
-        <a href="/" class="text-mutedfg hover:text-fg transition-colors">유저 페이지로</a>
+<body class="min-h-screen bg-paper">
+  <header class="px-5 py-5 border-b border-line/80 bg-paper/90 backdrop-blur">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+      <a href="/" class="text-ink font-extrabold text-xl">Doripe.</a>
+      <div class="flex items-center gap-5 text-sm">
+        <a href="/blog" class="text-sub hover:text-ink transition-colors">블로그</a>
+        <a href="/" class="text-sub hover:text-ink transition-colors">유저 페이지</a>
       </div>
     </div>
   </header>
 
-  <main class="px-5 py-12 md:py-20">
-    <section class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_0.95fr] gap-10 lg:gap-16 items-start">
-      <div>
-        <p class="text-primary text-sm font-semibold tracking-wide">PROMOTED CARD PILOT</p>
-        <h1 class="mt-4 text-4xl md:text-6xl font-bold leading-tight">
-          조용한 공간을 찾는 손님에게<br />
-          <span class="text-primary">취향 카드로</span> 소개해요.
-        </h1>
-        <p class="mt-6 text-mutedfg text-base md:text-lg leading-relaxed max-w-xl">
-          Doripe는 네이버 플레이스나 인스타에 이미 있는 정보를 바탕으로 가게/공간의 취향 카드를 만들고, 혼자 조용한 공간을 찾는 유저에게 테스트 노출하는 파일럿을 준비 중입니다.
-        </p>
+  <main>
+    <section class="px-5 pt-14 pb-16 md:pt-20 md:pb-24">
+      <div class="max-w-6xl mx-auto grid min-w-0 grid-cols-1 lg:grid-cols-[1.05fr_0.78fr] gap-10 lg:gap-16 items-start">
+        <div class="min-w-0">
+          <p class="text-green text-sm font-bold tracking-[.16em] uppercase">Doripe for Business</p>
+          <h1 class="mt-5 max-w-3xl text-3xl sm:text-4xl md:text-6xl font-extrabold leading-[1.08] md:leading-[1.04]">
+            손님이 고르는 이유를 한눈에 보이게.
+          </h1>
+          <p class="mt-6 max-w-2xl text-sub text-base md:text-xl leading-relaxed">
+            네이버와 인스타에 정보는 충분히 있어도, 처음 보는 손님은 아직 고민합니다.
+            Doripe는 식당, 카페, 샵, 바, 갤러리, 서점, 공방의 방문 정보를 손님 입장에서 다시 정리해
+            저장하고 다시 꺼내보기 쉬운 공간 소개로 바꿉니다.
+          </p>
 
-        <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div class="rounded-2xl border border-border bg-card p-4">
-            <p class="text-primary font-mono text-sm">01</p>
-            <p class="mt-2 font-semibold">링크만 전달</p>
-            <p class="mt-1 text-mutedfg text-sm leading-relaxed">네이버 플레이스나 인스타 URL을 보내주세요.</p>
+          <div class="mt-7 flex flex-wrap gap-2 text-sm font-semibold text-navy">
+            <span class="rounded-full border border-line bg-white/70 px-3 py-2">식당</span>
+            <span class="rounded-full border border-line bg-white/70 px-3 py-2">카페</span>
+            <span class="rounded-full border border-line bg-white/70 px-3 py-2">샵</span>
+            <span class="rounded-full border border-line bg-white/70 px-3 py-2">바</span>
+            <span class="rounded-full border border-line bg-white/70 px-3 py-2">갤러리</span>
+            <span class="rounded-full border border-line bg-white/70 px-3 py-2">서점</span>
+            <span class="rounded-full border border-line bg-white/70 px-3 py-2">공방</span>
           </div>
-          <div class="rounded-2xl border border-border bg-card p-4">
-            <p class="text-primary font-mono text-sm">02</p>
-            <p class="mt-2 font-semibold">카드 제작</p>
-            <p class="mt-1 text-mutedfg text-sm leading-relaxed">Doripe가 분위기 태그와 소개 카피를 정리합니다.</p>
-          </div>
-          <div class="rounded-2xl border border-border bg-card p-4">
-            <p class="text-primary font-mono text-sm">03</p>
-            <p class="mt-2 font-semibold">반응 리포트</p>
-            <p class="mt-1 text-mutedfg text-sm leading-relaxed">저장, 클릭, 방문 의향 같은 초기 반응을 공유합니다.</p>
+
+          <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <article class="min-w-0 rounded-[8px] border border-line bg-white/75 p-5">
+              <p class="text-sm font-bold text-green">01</p>
+              <h2 class="mt-3 text-base font-bold">방문 전 고민을 줄입니다</h2>
+              <p class="mt-2 text-sm leading-relaxed text-sub">
+                가격대, 예약, 혼자 방문, 추천 시간대처럼 손님이 들어가기 전에 확인하는 정보를 먼저 정리합니다.
+              </p>
+            </article>
+            <article class="min-w-0 rounded-[8px] border border-line bg-white/75 p-5">
+              <p class="text-sm font-bold text-green">02</p>
+              <h2 class="mt-3 text-base font-bold">저장되는 소개를 만듭니다</h2>
+              <p class="mt-2 text-sm leading-relaxed text-sub">
+                메뉴나 상품만 나열하지 않고, 어떤 상황의 손님에게 맞는 공간인지 문장과 카드로 보여줍니다.
+              </p>
+            </article>
+            <article class="min-w-0 rounded-[8px] border border-line bg-white/75 p-5">
+              <p class="text-sm font-bold text-green">03</p>
+              <h2 class="mt-3 text-base font-bold">반응을 보고 다듬습니다</h2>
+              <p class="mt-2 text-sm leading-relaxed text-sub">
+                저장, 클릭, 문의 반응을 보며 첫 문장과 대표 장면을 바꿔봅니다. 감으로만 운영하지 않게요.
+              </p>
+            </article>
           </div>
         </div>
-      </div>
 
-      <div class="rounded-3xl border border-primary/25 bg-primary/5 p-5 md:p-7">
-        <h2 class="text-xl font-bold">파일럿 문의</h2>
-        <p class="mt-2 text-mutedfg text-sm leading-relaxed">
-          제출하면 Doripe 운영 대시보드에 바로 접수됩니다. 네이버 플레이스나 인스타 링크 하나만 있어도 괜찮아요.
-        </p>
+        <aside class="min-w-0 w-full rounded-[8px] border border-line bg-white shadow-soft p-5 md:p-7 lg:sticky lg:top-6">
+          <p class="text-sm font-bold text-green">파트너 문의</p>
+          <h2 class="mt-2 text-2xl md:text-3xl font-extrabold leading-tight">전화번호만 남겨주세요.</h2>
+          <p class="mt-3 text-sub text-sm leading-relaxed">
+            공간 이름, 링크, 고민은 첫 통화에서 같이 정리해도 됩니다.
+            Doripe 팀이 확인 후 파일럿 가능 여부와 진행 방식을 안내드릴게요.
+          </p>
 
-        <form id="pilotForm" class="mt-6 space-y-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <form id="pilotForm" class="mt-7 space-y-5" novalidate>
             <label class="block">
-              <span class="text-sm font-medium">가게 / 공간 이름</span>
-              <input id="storeName" class="mt-2" placeholder="예: 작은 창가 카페" autocomplete="organization" />
+              <span class="text-sm font-bold">전화번호</span>
+              <input
+                id="phone"
+                class="mt-2"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel"
+                required
+                maxlength="13"
+                pattern="^01[016789]-?[0-9]{3,4}-?[0-9]{4}$"
+                placeholder="010-1234-5678"
+                aria-describedby="phoneHelp"
+              />
+              <span id="phoneHelp" class="mt-2 block text-xs leading-relaxed text-sub">
+                하이픈 없이 입력해도 자동으로 정리해서 접수됩니다.
+              </span>
             </label>
-            <label class="block">
-              <span class="text-sm font-medium">공간 유형</span>
-              <input id="spaceType" class="mt-2" placeholder="카페, 서점, 전시, 바..." />
+
+            <label class="flex gap-3 rounded-[8px] border border-line bg-paper/70 p-4 text-sm leading-relaxed text-sub">
+              <input id="consentPrivacy" type="checkbox" required />
+              <span>
+                <strong class="text-ink">[필수] 개인정보 수집 및 이용에 동의합니다.</strong><br />
+                수집 항목은 전화번호이며, 상담 및 파일럿 안내 목적으로 사용합니다.
+                <a href="/privacy" class="font-semibold text-ink underline underline-offset-4">개인정보처리방침</a>
+              </span>
             </label>
+
+            <p id="errorMsg" class="hidden text-sm font-semibold text-red-600"></p>
+            <button type="submit" id="submitBtn" class="cta w-full rounded-full px-5 py-4 text-sm font-bold">
+              전화 상담 요청하기
+            </button>
+          </form>
+
+          <div id="thanks" class="hidden mt-5 rounded-[8px] border border-green/35 bg-green/10 p-5">
+            <p class="font-bold text-ink">전화번호가 접수됐어요.</p>
+            <p class="mt-2 text-sm text-sub leading-relaxed">Doripe 팀이 확인 후 연락드릴게요.</p>
           </div>
-          <label class="block">
-            <span class="text-sm font-medium">네이버 플레이스 / 인스타 URL</span>
-            <input id="storeUrl" class="mt-2" placeholder="https://..." inputmode="url" />
-          </label>
-          <label class="block">
-            <span class="text-sm font-medium">연락처</span>
-            <input id="contact" class="mt-2" placeholder="이메일, 전화번호, 카카오톡 ID 중 편한 것" autocomplete="email" />
-          </label>
-          <label class="block">
-            <span class="text-sm font-medium">소개하고 싶은 포인트</span>
-            <textarea id="message" class="mt-2" placeholder="혼자 오기 좋은 좌석, 조용한 시간대, 대표 메뉴, 원하는 손님층 등을 적어주세요."></textarea>
-          </label>
-
-          <p id="errorMsg" class="hidden text-sm text-red-300"></p>
-          <button type="submit" id="submitBtn" class="w-full py-4 rounded-full gradient-cta text-black font-bold text-sm">파일럿 문의 제출</button>
-        </form>
-
-        <div id="thanks" class="hidden mt-5 rounded-2xl border border-primary/40 bg-primary/10 p-5">
-          <p class="text-primary font-semibold">문의가 접수됐어요.</p>
-          <p class="mt-2 text-sm text-mutedfg leading-relaxed">Doripe 팀이 확인한 뒤 연락드릴게요. 운영 대시보드에도 바로 반영됩니다.</p>
-        </div>
+        </aside>
       </div>
     </section>
   </main>
 
   <script>
     const form = document.getElementById('pilotForm');
+    const phoneInput = document.getElementById('phone');
+    const consentInput = document.getElementById('consentPrivacy');
     const submitBtn = document.getElementById('submitBtn');
     const errorMsg = document.getElementById('errorMsg');
     const thanks = document.getElementById('thanks');
+    const phonePattern = /^01[016789]-?[0-9]{3,4}-?[0-9]{4}$/;
+
+    function formatPhone(value) {
+      const digits = value.replace(/\D/g, '').slice(0, 11);
+      if (digits.length <= 3) return digits;
+      if (digits.length <= 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+      return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+    }
+
+    phoneInput.addEventListener('input', () => {
+      phoneInput.value = formatPhone(phoneInput.value);
+    });
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       errorMsg.classList.add('hidden');
       thanks.classList.add('hidden');
+
+      const phone = phoneInput.value.trim();
+      if (!phonePattern.test(phone)) {
+        errorMsg.textContent = '전화번호를 010-1234-5678 형식으로 입력해주세요.';
+        errorMsg.classList.remove('hidden');
+        phoneInput.focus();
+        return;
+      }
+
+      if (!consentInput.checked) {
+        errorMsg.textContent = '개인정보 수집 및 이용에 동의해주세요.';
+        errorMsg.classList.remove('hidden');
+        consentInput.focus();
+        return;
+      }
+
       submitBtn.disabled = true;
       submitBtn.textContent = '접수 중...';
-
-      const payload = {
-        storeName: document.getElementById('storeName').value.trim(),
-        storeUrl: document.getElementById('storeUrl').value.trim(),
-        contact: document.getElementById('contact').value.trim(),
-        spaceType: document.getElementById('spaceType').value.trim(),
-        message: document.getElementById('message').value.trim(),
-      };
 
       try {
         const res = await fetch('/api/business-lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ phone, consentPrivacy: true }),
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data.error || '접수에 실패했어요');
@@ -172,7 +261,7 @@
         errorMsg.classList.remove('hidden');
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = '파일럿 문의 제출';
+        submitBtn.textContent = '전화 상담 요청하기';
       }
     });
   </script>
