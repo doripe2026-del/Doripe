@@ -9,6 +9,7 @@ export const AUTH_ACCOUNTS_STORAGE_KEY = "doripe.auth.accounts";
 export const AUTH_SESSION_STORAGE_KEY = "doripe.auth.session";
 
 const AUTH_REDIRECT_URI = "doripe://auth/callback";
+const KAKAO_OAUTH_PROVIDER = "custom:kakao";
 const TEST_AUTH_ENABLED = process.env?.NODE_ENV === "test";
 const AUTH_BOOT_TIMEOUT_MS = 4_000;
 const OAUTH_TIMEOUT_MS = 120_000;
@@ -221,7 +222,7 @@ export async function signInWithProvider(provider: Exclude<AuthProvider, "email"
 
   if (supabase) {
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "kakao",
+      provider: KAKAO_OAUTH_PROVIDER,
       options: {
         redirectTo: AUTH_REDIRECT_URI,
         skipBrowserRedirect: true,
