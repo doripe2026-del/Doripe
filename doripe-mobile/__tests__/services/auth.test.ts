@@ -17,7 +17,7 @@ describe("auth service", () => {
     await AsyncStorage.clear();
   });
 
-  it("creates an email account and restores its session", async () => {
+  it("creates an email account and restores its session in tests", async () => {
     const result = await signUpWithEmail("Founder@Doripe.kr", "doripe123");
 
     expect(result.ok).toBe(true);
@@ -36,10 +36,10 @@ describe("auth service", () => {
     });
   });
 
-  it("stores social provider sessions", async () => {
-    const result = await signInWithProvider("naver");
+  it("stores Kakao provider sessions in tests", async () => {
+    const result = await signInWithProvider("kakao");
 
     expect(result.ok).toBe(true);
-    await expect(AsyncStorage.getItem(AUTH_SESSION_STORAGE_KEY)).resolves.toContain("access-social-naver");
+    await expect(AsyncStorage.getItem(AUTH_SESSION_STORAGE_KEY)).resolves.toContain("access-social-kakao");
   });
 });

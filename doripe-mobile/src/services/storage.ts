@@ -1,11 +1,13 @@
 declare const require: (moduleName: string) => {
   default?: AsyncStorageLike;
   getItem?: AsyncStorageLike["getItem"];
+  removeItem?: AsyncStorageLike["removeItem"];
   setItem?: AsyncStorageLike["setItem"];
 };
 
 type AsyncStorageLike = {
   getItem: (key: string) => Promise<string | null>;
+  removeItem: (key: string) => Promise<void>;
   setItem: (key: string, value: string) => Promise<void>;
 };
 
@@ -31,4 +33,9 @@ export async function readJson<T>(key: string, fallback: T): Promise<T> {
 export async function writeJson<T>(key: string, value: T): Promise<void> {
   const AsyncStorage = getAsyncStorage();
   await AsyncStorage.setItem(key, JSON.stringify(value));
+}
+
+export async function removeJson(key: string): Promise<void> {
+  const AsyncStorage = getAsyncStorage();
+  await AsyncStorage.removeItem(key);
 }

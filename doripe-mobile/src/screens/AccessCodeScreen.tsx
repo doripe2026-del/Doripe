@@ -3,19 +3,13 @@ import { Pressable, StyleSheet, TextInput, View } from "react-native";
 import { BackCircle, DesignCanvas, HomeIndicator, StatusBarReference, TextBox } from "../components/DesignCanvas";
 import { recordEvent } from "../services/events";
 import { signInWithEmail, signInWithProvider, signUpWithEmail } from "../services/auth";
-import type { AuthProvider, AuthResult } from "../services/auth";
+import type { AuthResult } from "../services/auth";
 
 type AccessCodeScreenProps = {
   onAccepted: (accessCodeId: string) => void;
 };
 
 type AuthMode = "landing" | "login" | "signup" | "welcome";
-
-const SOCIAL_PROVIDERS = {
-  apple: { color: "#090A09", label: "Apple로 계속하기", mark: "A", textColor: "#FEFDF6" },
-  kakao: { color: "#FFDB00", label: "카카오로 계속하기", mark: "K", textColor: "#090A09" },
-  naver: { color: "#05C752", label: "네이버로 계속하기", mark: "N", textColor: "#FEFDF6" },
-} as const;
 
 export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
   const [mode, setMode] = useState<AuthMode>("landing");
@@ -49,7 +43,7 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
     try {
       await action();
     } catch {
-      setMessage("로그인을 완료하지 못했어요. 다시 시도해 주세요.");
+      setMessage("로그인을 완료하지 못했어요. 잠시 뒤 다시 시도해 주세요.");
     } finally {
       setIsSubmitting(false);
     }
@@ -59,9 +53,9 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
   }
 
-  function submitSocial(provider: Exclude<AuthProvider, "email">) {
+  function submitKakao() {
     void submitWithGuard(async () => {
-      await completeAuth(await signInWithProvider(provider));
+      await completeAuth(await signInWithProvider("kakao"));
     });
   }
 
@@ -100,6 +94,7 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
         setMessage(result.message);
         return;
       }
+
       setWelcomeAccessCodeId(result.session.accessCodeId);
       go("welcome");
     });
@@ -121,7 +116,7 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
           setPassword(value);
           setMessage(null);
         }}
-        onForgotPassword={() => setMessage("비밀번호 재설정은 아직 준비 중이에요. 회원가입이나 소셜 로그인을 이용해 주세요.")}
+        onForgotPassword={() => setMessage("비밀번호 재설정은 다음 단계에서 붙일게요. 지금은 회원가입 또는 카카오 로그인을 사용해 주세요.")}
         onSignup={() => go("signup")}
         onSubmit={submitLogin}
       />
@@ -165,6 +160,7 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
             go("signup");
             return;
           }
+
           void submitWithGuard(async () => {
             await recordEvent({ accessCodeId: welcomeAccessCodeId, eventName: "code_verified" });
             onAccepted(welcomeAccessCodeId);
@@ -181,69 +177,46 @@ export function AccessCodeScreen({ onAccepted }: AccessCodeScreenProps) {
         <View style={styles.logoDot} />
       </View>
       <TextBox style={styles.landingTitle}>로그인</TextBox>
-      <TextBox style={styles.landingCopy}>저장한 장소와 루트를 계속 이어서 볼 수 있어요.</TextBox>
+      <TextBox style={styles.landingCopy}>저장한 장소와 루트를 계정으로 이어서 볼 수 있어요.</TextBox>
 
-      <LoginButton {...SOCIAL_PROVIDERS.apple} disabled={isSubmitting} top={332} onPress={() => submitSocial("apple")} />
-      <LoginButton {...SOCIAL_PROVIDERS.kakao} disabled={isSubmitting} top={394} onPress={() => submitSocial("kakao")} />
-      <LoginButton {...SOCIAL_PROVIDERS.naver} disabled={isSubmitting} top={456} onPress={() => submitSocial("naver")} />
-      <LoginButton
-        color="#FEFDF6"
+      <Pressable
+        accessibilityLabel="카카오로 계속하기"
+        accessibilityRole="button"
         disabled={isSubmitting}
-        label="이메일로 로그인"
-        mark="@"
-        outlined
-        textColor="#090A09"
-        top={518}
+        onPress={submitKakao}
+        style={({ pressed }) => [
+          styles.loginButton,
+          styles.kakaoButton,
+          pressed && styles.pressed,
+          isSubmitting && styles.disabled,
+        ]}
+      >
+        <View style={styles.loginMark}>
+          <TextBox style={styles.loginMarkText}>K</TextBox>
+        </View>
+        <TextBox style={styles.kakaoLabel}>{isSubmitting ? "연결 중..." : "카카오로 계속하기"}</TextBox>
+      </Pressable>
+
+      <Pressable
+        accessibilityLabel="이메일로 로그인"
+        accessibilityRole="button"
+        disabled={isSubmitting}
         onPress={() => go("login")}
-      />
+        style={({ pressed }) => [styles.emailButton, pressed && styles.pressed, isSubmitting && styles.disabled]}
+      >
+        <View style={styles.emailMark}>
+          <TextBox style={styles.emailMarkText}>@</TextBox>
+        </View>
+        <TextBox style={styles.emailLabel}>이메일로 로그인</TextBox>
+      </Pressable>
 
       <Pressable accessibilityRole="button" disabled={isSubmitting} onPress={() => go("signup")} style={styles.signupLinkHit}>
         <TextBox style={styles.signupLink}>처음이라면 이메일로 회원가입</TextBox>
       </Pressable>
-      <TextBox style={styles.legal}>계속하면 Doripe의 서비스 안내와 개인정보 처리방침에 동의합니다.</TextBox>
+      <TextBox style={styles.legal}>계속하면 Doripe 서비스 이용약관과 개인정보 처리방침에 동의하게 됩니다.</TextBox>
       {message ? <TextBox style={styles.error}>{message}</TextBox> : null}
       <HomeIndicator color="#474A45" height={4} />
     </DesignCanvas>
-  );
-}
-
-function LoginButton({
-  color,
-  disabled = false,
-  label,
-  mark,
-  outlined = false,
-  textColor,
-  top,
-  onPress,
-}: {
-  color: string;
-  disabled?: boolean;
-  label: string;
-  mark: string;
-  outlined?: boolean;
-  textColor: string;
-  top: number;
-  onPress: () => void;
-}) {
-  return (
-    <Pressable
-      accessibilityRole="button"
-      disabled={disabled}
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.loginButton,
-        { backgroundColor: color, top },
-        outlined && styles.loginButtonOutlined,
-        pressed && styles.pressed,
-        disabled && styles.disabled,
-      ]}
-    >
-      <View style={[styles.loginMark, { backgroundColor: outlined ? "#EEEDE5" : "rgba(255,255,255,0.22)" }]}>
-        <TextBox style={[styles.loginMarkText, { color: textColor }]}>{mark}</TextBox>
-      </View>
-      <TextBox style={[styles.loginLabel, { color: textColor }]}>{label}</TextBox>
-    </Pressable>
   );
 }
 
@@ -270,8 +243,8 @@ function EmailLoginScreen({
   onSignup: () => void;
   onSubmit: () => void;
 }) {
-  const forgotTop = message ? 570 : 552;
-  const signupTop = message ? 612 : 590;
+  const forgotTop = message ? 574 : 552;
+  const signupTop = message ? 616 : 590;
 
   return (
     <DesignCanvas>
@@ -380,7 +353,7 @@ function EmailSignupScreen({
         value={passwordConfirm}
         onChangeText={onPasswordConfirmChange}
       />
-      <TextBox style={styles.passwordHint}>영문, 숫자 포함 8자 이상을 권장합니다.</TextBox>
+      <TextBox style={styles.passwordHint}>영문과 숫자를 섞어 8자 이상으로 만드는 걸 권장해요.</TextBox>
       <Pressable
         accessibilityLabel="이메일 회원가입 완료"
         accessibilityRole="button"
@@ -408,7 +381,7 @@ function WelcomeScreen({ isSubmitting, onStart }: { isSubmitting: boolean; onSta
         <TextBox style={styles.welcomeCheck}>✓</TextBox>
       </View>
       <TextBox style={styles.welcomeTitle}>환영합니다!</TextBox>
-      <TextBox style={styles.welcomeCopy}>이제 저장한 장소와 루트를 Doripe에서 계속 이어서 볼 수 있어요.</TextBox>
+      <TextBox style={styles.welcomeCopy}>이제 저장한 장소와 루트를 Doripe 계정으로 이어서 볼 수 있어요.</TextBox>
       <Pressable
         accessibilityRole="button"
         disabled={isSubmitting}
@@ -504,52 +477,95 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     borderRadius: 16,
-    height: 52,
+    height: 54,
     left: 24,
     position: "absolute",
+    top: 344,
     width: 345,
   },
-  loginButtonOutlined: {
-    borderColor: "#C7C4B5",
-    borderWidth: 1,
+  kakaoButton: {
+    backgroundColor: "#FEE500",
   },
   loginMark: {
     alignItems: "center",
+    backgroundColor: "rgba(9,10,9,0.08)",
     borderRadius: 14,
     height: 28,
     justifyContent: "center",
     left: 20,
     position: "absolute",
-    top: 12,
+    top: 13,
     width: 28,
   },
   loginMarkText: {
+    color: "#090A09",
     fontSize: 11,
-    fontWeight: "800",
+    fontWeight: "900",
     lineHeight: 14,
     textAlign: "center",
   },
-  loginLabel: {
+  kakaoLabel: {
+    color: "#090A09",
     fontSize: 15,
-    fontWeight: "700",
+    fontWeight: "800",
     left: 0,
     lineHeight: 18,
     position: "absolute",
     textAlign: "center",
-    top: 17,
+    top: 18,
+    width: 345,
+  },
+  emailButton: {
+    backgroundColor: "#FEFDF6",
+    borderColor: "#C7C4B5",
+    borderRadius: 16,
+    borderWidth: 1,
+    height: 54,
+    left: 24,
+    position: "absolute",
+    top: 412,
+    width: 345,
+  },
+  emailMark: {
+    alignItems: "center",
+    backgroundColor: "#EEEDE5",
+    borderRadius: 14,
+    height: 28,
+    justifyContent: "center",
+    left: 20,
+    position: "absolute",
+    top: 13,
+    width: 28,
+  },
+  emailMarkText: {
+    color: "#090A09",
+    fontSize: 13,
+    fontWeight: "900",
+    lineHeight: 16,
+    textAlign: "center",
+  },
+  emailLabel: {
+    color: "#090A09",
+    fontSize: 15,
+    fontWeight: "800",
+    left: 0,
+    lineHeight: 18,
+    position: "absolute",
+    textAlign: "center",
+    top: 18,
     width: 345,
   },
   signupLinkHit: {
     height: 42,
     left: 24,
     position: "absolute",
-    top: 580,
+    top: 494,
     width: 345,
   },
   signupLink: {
     color: "#090A09",
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "800",
     lineHeight: 18,
     position: "absolute",
     textAlign: "center",
@@ -564,7 +580,7 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     position: "absolute",
     textAlign: "center",
-    top: 636,
+    top: 618,
     width: 305,
   },
   error: {
@@ -575,7 +591,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     position: "absolute",
     textAlign: "center",
-    top: 678,
+    top: 672,
     width: 305,
   },
   formTitle: {
@@ -662,14 +678,12 @@ const styles = StyleSheet.create({
     height: 44,
     left: 24,
     position: "absolute",
-    top: 578,
     width: 345,
   },
   forgotHit: {
     height: 36,
     left: 24,
     position: "absolute",
-    top: 542,
     width: 345,
   },
   formLoginHit: {

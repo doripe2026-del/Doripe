@@ -1,6 +1,7 @@
 import "react-native-url-polyfill/auto";
 
-import { createClient } from "@supabase/supabase-js";
+import { AppState } from "react-native";
+import { createClient, processLock } from "@supabase/supabase-js";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 declare const process: {
@@ -21,6 +22,8 @@ function createSupabaseClient(): SupabaseClient | null {
     auth: {
       autoRefreshToken: true,
       detectSessionInUrl: false,
+      flowType: "pkce",
+      lock: processLock,
       persistSession: true,
       storage: AsyncStorage as never,
     },
@@ -28,6 +31,17 @@ function createSupabaseClient(): SupabaseClient | null {
 }
 
 export const supabase = createSupabaseClient();
+
+if (supabase) {
+  AppState.addEventListener("change", (state) => {
+    if (state === "active") {
+      void supabase.auth.startAutoRefresh();
+      return;
+    }
+
+    void supabase.auth.stopAutoRefresh();
+  });
+}
 
 export async function getCurrentUserId(): Promise<string | null> {
   if (!supabase) return null;

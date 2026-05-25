@@ -35,6 +35,9 @@
         "projectId": "ea49f106-0148-456b-81fa-d4c298b09316"
       }
     },
-    "owner": "doripe"
+    "owner": "doripe",
+    "plugins": [
+      "expo-web-browser"
+    ]
   }
 }

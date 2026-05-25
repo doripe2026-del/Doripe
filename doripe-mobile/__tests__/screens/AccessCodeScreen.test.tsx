@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
-import { recordEvent } from "../../src/services/events";
 import { AccessCodeScreen } from "../../src/screens/AccessCodeScreen";
+import { recordEvent } from "../../src/services/events";
 
 jest.mock(
   "@react-native-async-storage/async-storage",
@@ -21,7 +21,7 @@ describe("AccessCodeScreen", () => {
     mockRecordEvent.mockResolvedValue(undefined);
   });
 
-  it("accepts social login after recording a verification event", async () => {
+  it("accepts Kakao login after recording a verification event", async () => {
     const onAccepted = jest.fn();
     render(<AccessCodeScreen onAccepted={onAccepted} />);
 
