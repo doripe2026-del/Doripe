@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ImageBackground, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { ImageBackground, Platform, Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 export const FIGMA_WIDTH = 393;
@@ -11,9 +11,28 @@ type DesignCanvasProps = {
 };
 
 export function DesignCanvas({ children, backgroundColor = "#F6F4EC" }: DesignCanvasProps) {
+  const { height, width } = useWindowDimensions();
+  const scale = Math.min(width / FIGMA_WIDTH, height / FIGMA_HEIGHT);
+  const scaledWidth = FIGMA_WIDTH * scale;
+  const scaledHeight = FIGMA_HEIGHT * scale;
+
   return (
     <View style={styles.viewport}>
-      <View style={[styles.canvas, { backgroundColor }]}>{children}</View>
+      <View style={[styles.scaledCanvasFrame, { height: scaledHeight, width: scaledWidth }]}>
+        <View
+          style={[
+            styles.canvas,
+            {
+              backgroundColor,
+              left: (scaledWidth - FIGMA_WIDTH) / 2,
+              top: (scaledHeight - FIGMA_HEIGHT) / 2,
+              transform: [{ scale }],
+            },
+          ]}
+        >
+          {children}
+        </View>
+      </View>
     </View>
   );
 }
@@ -282,8 +301,12 @@ const styles = StyleSheet.create({
   canvas: {
     height: FIGMA_HEIGHT,
     overflow: "hidden",
-    position: "relative",
+    position: "absolute",
     width: FIGMA_WIDTH,
+  },
+  scaledCanvasFrame: {
+    overflow: "hidden",
+    position: "relative",
   },
   absolute: {
     position: "absolute",
