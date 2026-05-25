@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ImageBackground, Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import type { Place } from "../domain/types";
 import { colors, radius, spacing, touch, typography } from "../theme/tokens";
+import { Chip } from "./Chip";
 
 type PlaceCardProps = {
   place: Place;
@@ -17,181 +18,150 @@ const fallbackCoverImageUrl =
 export function PlaceCard({ place, categoryName, onSave, onSkip, disabled = false }: PlaceCardProps) {
   const { height } = useWindowDimensions();
   const [imageFailed, setImageFailed] = useState(false);
-  const tags = place.moodTags.slice(0, 3);
-  const meta = [place.subArea, categoryName].filter(Boolean).join(" · ");
-  const cardHeight = Math.max(420, Math.min(560, height - 196));
+  const cardHeight = Math.max(560, Math.min(642, height - 210));
+  const tags = Array.from(new Set([categoryName, ...place.moodTags].filter(Boolean))).slice(0, 3);
 
   return (
-    <View style={[styles.shell, { height: cardHeight }]}>
+    <View style={styles.shell}>
       <ImageBackground
-        source={{ uri: imageFailed ? fallbackCoverImageUrl : place.coverImageUrl }}
+        imageStyle={styles.imageRadius}
         onError={() => setImageFailed(true)}
         resizeMode="cover"
-        style={styles.image}
-        imageStyle={styles.imageRadius}
+        source={{ uri: imageFailed ? fallbackCoverImageUrl : place.coverImageUrl }}
+        style={[styles.card, { height: cardHeight }]}
       >
-        <View style={styles.scrim} />
-        <View style={styles.content}>
-          <View style={styles.metaRow}>
-            <Text style={styles.meta}>{meta}</Text>
-          </View>
-
-          <View style={styles.copyBlock}>
-            <Text style={styles.name}>{place.name}</Text>
-            <Text style={styles.shortCopy}>{place.shortCopy}</Text>
-          </View>
-
+        <View style={styles.bottomScrim} />
+        <View style={styles.copyArea}>
           <View style={styles.tags}>
             {tags.map((tag) => (
-              <Text key={tag} style={styles.tag}>
-                {tag}
-              </Text>
+              <Chip key={tag} label={tag} />
             ))}
           </View>
-
-          <View style={styles.actions}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityState={{ disabled }}
-              accessibilityLabel={`${place.name} 건너뛰기`}
-              disabled={disabled}
-              onPress={onSkip}
-              style={({ pressed }) => [
-                styles.actionButton,
-                styles.skipButton,
-                pressed && !disabled && styles.pressed,
-                disabled && styles.disabledButton,
-              ]}
-            >
-              <Text style={[styles.actionText, styles.skipText, disabled && styles.disabledText]}>×</Text>
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityState={{ disabled }}
-              accessibilityLabel={`${place.name} 저장`}
-              disabled={disabled}
-              onPress={onSave}
-              style={({ pressed }) => [
-                styles.actionButton,
-                styles.saveButton,
-                pressed && !disabled && styles.pressed,
-                disabled && styles.disabledButton,
-              ]}
-            >
-              <Text style={[styles.actionText, styles.saveText, disabled && styles.disabledText]}>저장</Text>
-            </Pressable>
-          </View>
+          <Text style={styles.name}>{place.name}</Text>
+          <Text style={styles.shortCopy}>{place.shortCopy}</Text>
+          <Chip label="리뷰 295" style={styles.reviewChip} />
         </View>
       </ImageBackground>
+
+      <View style={styles.actions}>
+        <Pressable
+          accessibilityLabel={`${place.name} 건너뛰기`}
+          accessibilityRole="button"
+          accessibilityState={{ disabled }}
+          disabled={disabled}
+          onPress={onSkip}
+          style={({ pressed }) => [
+            styles.actionButton,
+            styles.skipButton,
+            pressed && !disabled && styles.pressed,
+            disabled && styles.disabledButton,
+          ]}
+        >
+          <Text style={styles.skipText}>×</Text>
+        </Pressable>
+        <Pressable
+          accessibilityLabel={`${place.name} 저장`}
+          accessibilityRole="button"
+          accessibilityState={{ disabled }}
+          disabled={disabled}
+          onPress={onSave}
+          style={({ pressed }) => [
+            styles.actionButton,
+            styles.saveButton,
+            pressed && !disabled && styles.pressed,
+            disabled && styles.disabledButton,
+          ]}
+        >
+          <Text style={styles.saveText}>저장</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   shell: {
+    flex: 1,
+    gap: 2,
     width: "100%",
   },
-  image: {
-    flex: 1,
+  card: {
     justifyContent: "flex-end",
     overflow: "hidden",
+    width: "100%",
   },
   imageRadius: {
-    borderRadius: radius.lg,
+    borderRadius: radius.xl,
   },
-  scrim: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.42)",
+  bottomScrim: {
+    backgroundColor: "rgba(5, 12, 7, 0.88)",
+    bottom: 0,
+    height: 258,
+    left: 0,
+    position: "absolute",
+    right: 0,
   },
-  content: {
-    flex: 1,
-    justifyContent: "flex-end",
+  copyArea: {
     gap: spacing.md,
-    padding: spacing.lg,
-  },
-  metaRow: {
-    alignSelf: "flex-start",
-    backgroundColor: "rgba(5, 6, 5, 0.64)",
-    borderColor: "rgba(33, 247, 130, 0.44)",
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-  },
-  meta: {
-    color: colors.primary,
-    fontSize: typography.caption,
-    fontWeight: "900",
-  },
-  copyBlock: {
-    gap: spacing.sm,
-  },
-  name: {
-    color: colors.ink,
-    fontSize: 40,
-    fontWeight: "900",
-    lineHeight: 46,
-  },
-  shortCopy: {
-    color: colors.ink,
-    fontSize: typography.body,
-    fontWeight: "700",
-    lineHeight: 24,
+    paddingBottom: 22,
+    paddingHorizontal: 20,
   },
   tags: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: spacing.sm,
   },
-  tag: {
-    backgroundColor: "rgba(247, 255, 247, 0.14)",
-    borderColor: "rgba(247, 255, 247, 0.2)",
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    color: colors.ink,
-    fontSize: typography.caption,
-    fontWeight: "800",
-    overflow: "hidden",
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+  name: {
+    color: colors.white,
+    fontSize: 34,
+    fontWeight: "900",
+    lineHeight: 38,
+  },
+  shortCopy: {
+    color: colors.white,
+    fontSize: 16,
+    fontWeight: "500",
+    lineHeight: 22,
+    maxWidth: 285,
+  },
+  reviewChip: {
+    alignSelf: "flex-start",
   },
   actions: {
     flexDirection: "row",
     gap: spacing.md,
-    paddingTop: spacing.sm,
+    height: 52,
   },
   actionButton: {
     alignItems: "center",
-    borderRadius: radius.pill,
+    borderRadius: radius.md,
     flex: 1,
     justifyContent: "center",
-    minHeight: touch.minimum + 10,
+    minHeight: touch.minimum,
   },
   skipButton: {
-    backgroundColor: "rgba(247, 255, 247, 0.12)",
-    borderColor: "rgba(247, 255, 247, 0.22)",
+    backgroundColor: colors.surface,
+    borderColor: colors.line,
     borderWidth: 1,
   },
   saveButton: {
     backgroundColor: colors.primary,
   },
+  skipText: {
+    color: colors.ink,
+    fontSize: 28,
+    fontWeight: "900",
+    lineHeight: 32,
+  },
+  saveText: {
+    color: colors.primaryInk,
+    fontSize: typography.body,
+    fontWeight: "800",
+  },
   pressed: {
     opacity: 0.72,
   },
   disabledButton: {
-    opacity: 0.46,
-  },
-  actionText: {
-    fontSize: typography.body,
-    fontWeight: "900",
-  },
-  skipText: {
-    color: colors.ink,
-  },
-  saveText: {
-    color: colors.background,
-  },
-  disabledText: {
-    opacity: 0.78,
+    opacity: 0.5,
   },
 });

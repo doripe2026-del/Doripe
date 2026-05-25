@@ -11,7 +11,9 @@ type ChipProps = {
 export function Chip({ label, active = false, style }: ChipProps) {
   return (
     <View style={[styles.chip, active ? styles.activeChip : styles.inactiveChip, style]}>
-      <Text style={[styles.label, active ? styles.activeLabel : styles.inactiveLabel]}>{label}</Text>
+      <Text numberOfLines={1} style={[styles.label, active ? styles.activeLabel : styles.inactiveLabel]}>
+        {label}
+      </Text>
     </View>
   );
 }
@@ -23,10 +25,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     minHeight: 30,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
   },
   activeChip: {
-    backgroundColor: colors.dark,
+    backgroundColor: colors.ink,
   },
   inactiveChip: {
     backgroundColor: colors.surface,
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: typography.caption,
     fontWeight: "800",
+    lineHeight: 14,
   },
   activeLabel: {
     color: colors.white,

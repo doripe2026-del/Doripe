@@ -1,0 +1,31 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# dependencies
+node_modules/
+
+# local environment files
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# logs
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# Expo / React Native local output
+.expo/
+dist/
+.next/
+web-build/
+ios/
+android/
+*.tsbuildinfo
+
+# generated local preview captures
+doripe-mobile/doripe-preview-*.png
+doripe-mobile/expo-web.log

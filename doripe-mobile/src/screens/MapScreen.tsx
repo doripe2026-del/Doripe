@@ -1,202 +1,100 @@
-import { useMemo, useState } from "react";
-import { Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AppScaffold } from "../components/AppScaffold";
-import { Chip } from "../components/Chip";
-import { regions } from "../domain/fixtures";
+import { StyleSheet, View } from "react-native";
+import { DesignCanvas, HomeIndicator, PlacePin, QuickNav, StatusBarReference, TextBox } from "../components/DesignCanvas";
 import type { Region } from "../domain/types";
 import type { MapStackParamList } from "../navigation/AppNavigator";
+import { useContent } from "../services/contentContext";
 import { recordEvent } from "../services/events";
-import { colors, radius, spacing, touch, typography } from "../theme/tokens";
 
 type MapScreenProps = NativeStackScreenProps<MapStackParamList, "MapHome"> & {
   accessCodeId: string;
 };
 
-const mapBaseWidth = 320;
-const mapBaseHeight = 520;
-
 export function MapScreen({ accessCodeId, navigation }: MapScreenProps) {
-  const { width } = useWindowDimensions();
-  const [selectedRegionId, setSelectedRegionId] = useState<Region["id"] | null>(null);
-  const activeRegions = useMemo(
-    () =>
-      regions
-        .filter((region) => region.status === "active")
-        .sort((left, right) => left.displayOrder - right.displayOrder),
-    [],
-  );
-  const mapWidth = Math.min(width - spacing.lg * 2, mapBaseWidth);
-  const mapHeight = (mapWidth / mapBaseWidth) * mapBaseHeight;
+  const { regions } = useContent();
 
-  async function handleRegionPress(region: Region) {
-    setSelectedRegionId(region.id);
-
-    try {
-      await recordEvent({
-        accessCodeId,
-        eventName: "region_selected",
-      });
-    } catch (error) {
-      if (__DEV__) {
-        console.warn("Failed to record region selection", error);
-      }
-    }
-
-    navigation.navigate("DeckGallery", { regionId: region.id });
+  async function handleRegionPress(regionId: Region["id"]) {
+    void recordEvent({ accessCodeId, eventName: "region_selected" }).catch((error) => {
+      if (__DEV__) console.warn("Failed to record region selection", error);
+    });
+    navigation.navigate("DeckGallery", { regionId });
   }
 
+  const seongsu = regions.find((region) => region.id === "seongsu")?.id ?? "seongsu";
+  const yongsan = regions.find((region) => region.id === "yongsan_hbc")?.id ?? "yongsan_hbc";
+  const yeonnam = regions.find((region) => region.id === "yeonnam_mangwon")?.id ?? "yeonnam_mangwon";
+
   return (
-    <AppScaffold>
-      <View style={styles.header}>
-        <Text style={styles.kicker}>MAP</Text>
-        <Text style={styles.title}>오늘은 어느 동네로{"\n"}가볼까요?</Text>
-        <Text style={styles.copy}>서울 지도에서 지금 열려 있는 동네를 선택해요.</Text>
+    <DesignCanvas>
+      <StatusBarReference />
+      <TextBox style={styles.title}>오늘은 어느 동네로{"\n"}가볼까요?</TextBox>
+      <TextBox style={styles.copy}>서울 지도에서 지금 열려 있는 동네를 선택해요.</TextBox>
+      <View style={styles.mapCard}>
+        <View style={styles.river} />
       </View>
-
-      <View style={styles.mapWrap}>
-        <View style={[styles.mapSurface, { height: mapHeight, width: mapWidth }]}>
-          <View style={styles.riverLine} />
-          <View style={styles.cityCore} />
-          <View style={styles.greenPatch} />
-
-          {activeRegions.map((region) => {
-            const isSelected = selectedRegionId === region.id;
-
-            return (
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={`${region.name} 선택`}
-                key={region.id}
-                onPress={() => void handleRegionPress(region)}
-                style={({ pressed }) => [
-                  styles.pin,
-                  {
-                    left: `${(region.mapPin.x / mapBaseWidth) * 100}%`,
-                    top: `${(region.mapPin.y / mapBaseHeight) * 100}%`,
-                  },
-                  isSelected && styles.selectedPin,
-                  pressed && styles.pressed,
-                ]}
-              >
-                <View style={styles.pinDot} />
-                <Text style={styles.pinLabel}>{region.shortName}</Text>
-              </Pressable>
-            );
-          })}
-        </View>
-      </View>
-
-      <View style={styles.regionChips}>
-        {activeRegions.map((region) => (
-          <Chip key={region.id} label={region.shortName} active={selectedRegionId === region.id} />
-        ))}
-      </View>
-    </AppScaffold>
+      <PlacePin label="연남·망원" left={48} top={312} onPress={() => void handleRegionPress(yeonnam)} />
+      <PlacePin label="성수" left={215} top={273} onPress={() => void handleRegionPress(seongsu)} />
+      <PlacePin label="용산·해방촌" left={148} top={398} onPress={() => void handleRegionPress(yongsan)} />
+      <TextBox style={styles.note}>핀을 누르면 그 동네의 덱을 고를 수 있어요.</TextBox>
+      <QuickNav
+        active="home"
+        onHome={() => navigation.navigate("MapHome")}
+        onRoute={() => navigation.getParent()?.navigate("Route")}
+        onSaved={() => navigation.getParent()?.navigate("Saved")}
+      />
+      <HomeIndicator />
+    </DesignCanvas>
   );
 }
 
 const styles = StyleSheet.create({
-  cityCore: {
-    backgroundColor: "rgba(255, 255, 249, 0.74)",
-    borderColor: "rgba(209, 209, 197, 0.7)",
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    height: "34%",
-    left: "24%",
+  title: {
+    color: "#090B0A",
+    fontSize: 27,
+    fontWeight: "800",
+    left: 28,
+    lineHeight: 33,
     position: "absolute",
-    top: "31%",
-    transform: [{ rotate: "-12deg" }],
-    width: "48%",
+    top: 82,
+    width: 310,
   },
   copy: {
-    color: colors.muted,
-    fontSize: typography.body,
-    fontWeight: "700",
-    lineHeight: 24,
-  },
-  greenPatch: {
-    backgroundColor: "rgba(33, 240, 115, 0.18)",
-    borderRadius: radius.lg,
-    bottom: "10%",
-    height: "22%",
+    color: "#5C6159",
+    fontSize: 13,
+    fontWeight: "500",
+    left: 28,
+    lineHeight: 18,
     position: "absolute",
-    right: "10%",
-    width: "30%",
+    top: 158,
+    width: 320,
   },
-  header: {
-    gap: spacing.md,
-    paddingBottom: spacing.lg,
-  },
-  kicker: {
-    color: colors.primaryDark,
-    fontSize: typography.caption,
-    fontWeight: "900",
-    letterSpacing: 1.4,
-  },
-  mapSurface: {
-    backgroundColor: "#E8E6DA",
-    borderColor: colors.line,
-    borderRadius: radius.lg,
-    borderWidth: 1,
+  mapCard: {
+    backgroundColor: "#E5EBDB",
+    borderRadius: 18,
+    height: 438,
+    left: 28,
     overflow: "hidden",
-  },
-  mapWrap: {
-    alignItems: "center",
-    flex: 1,
-    justifyContent: "center",
-    minHeight: 420,
-  },
-  pin: {
-    alignItems: "center",
-    backgroundColor: colors.surface,
-    borderColor: colors.ink,
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    flexDirection: "row",
-    gap: spacing.xs,
-    minHeight: touch.minimum,
-    minWidth: 76,
-    paddingHorizontal: spacing.md,
     position: "absolute",
-    transform: [{ translateX: -38 }, { translateY: -22 }],
+    top: 206,
+    width: 337,
   },
-  pinDot: {
-    backgroundColor: colors.primaryDark,
-    borderRadius: 5,
-    height: 10,
-    width: 10,
-  },
-  pinLabel: {
-    color: colors.ink,
-    fontSize: typography.caption,
-    fontWeight: "900",
-  },
-  pressed: {
-    opacity: 0.72,
-  },
-  regionChips: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: spacing.sm,
-    paddingTop: spacing.lg,
-  },
-  riverLine: {
-    backgroundColor: "rgba(116, 168, 194, 0.34)",
-    height: 28,
-    left: "-12%",
+  river: {
+    backgroundColor: "rgba(163,199,184,0.8)",
+    height: 44,
+    left: 0,
     position: "absolute",
-    top: "55%",
-    transform: [{ rotate: "-16deg" }],
-    width: "126%",
+    top: 249,
+    width: 337,
   },
-  selectedPin: {
-    backgroundColor: colors.primary,
-  },
-  title: {
-    color: colors.ink,
-    fontSize: typography.title,
-    fontWeight: "900",
-    lineHeight: 48,
+  note: {
+    color: "#5C6159",
+    fontSize: 13,
+    fontWeight: "500",
+    left: 28,
+    lineHeight: 18,
+    position: "absolute",
+    textAlign: "center",
+    top: 684,
+    width: 337,
   },
 });

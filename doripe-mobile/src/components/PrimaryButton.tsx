@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
-import { colors, spacing, touch, typography } from "../theme/tokens";
+import { colors, radius, spacing, touch, typography } from "../theme/tokens";
 
 type PrimaryButtonProps = {
   label: string;
@@ -33,12 +33,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.primary,
     borderRadius: 18,
+    height: 52,
     justifyContent: "center",
-    minHeight: touch.minimum + spacing.sm,
+    minHeight: touch.minimum,
     paddingHorizontal: spacing.lg,
   },
   disabled: {
     backgroundColor: colors.surfaceElevated,
+    borderColor: colors.line,
+    borderWidth: 1,
   },
   disabledLabel: {
     color: colors.muted,
@@ -46,7 +49,8 @@ const styles = StyleSheet.create({
   label: {
     color: colors.primaryInk,
     fontSize: typography.body,
-    fontWeight: "900",
+    fontWeight: "800",
+    lineHeight: 18,
   },
   pressed: {
     opacity: 0.72,

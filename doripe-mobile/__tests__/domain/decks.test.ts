@@ -47,7 +47,7 @@ describe("deck domain fixtures", () => {
   });
 
   it("returns a deck by id", () => {
-    expect(getDeckById(decks, "yongsan-solo-afternoon")?.title).toBe("혼자 걷는 오후");
+    expect(getDeckById(decks, "yongsan-solo-afternoon")?.title).toBe("창가에 앉는 카페");
   });
 
   it("returns deck place links in display order", () => {
@@ -59,7 +59,7 @@ describe("deck domain fixtures", () => {
   it("returns ready approved places for a deck in deck order", () => {
     expect(
       getPlacesForDeck(deckPlaces, places, "yongsan-solo-afternoon").map((place) => place.name),
-    ).toEqual(["오월의 커피", "소월길 산책", "신흥시장 와인바", "후암동 전망", "해방촌 바"]);
+    ).toEqual(["오르에르", "피크닉", "테디뵈르하우스", "음레코드", "해방식당"]);
   });
 
   it("links every active deck to at least one ready approved place", () => {

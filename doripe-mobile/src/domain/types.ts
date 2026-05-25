@@ -15,7 +15,7 @@ export type Category = {
 };
 
 export type Region = {
-  id: "seongsu" | "yongsan_hbc" | "yeonnam_mangwon";
+  id: string;
   name: string;
   shortName: string;
   displayOrder: number;
@@ -65,7 +65,7 @@ export type Place = {
   naverPlaceUrl: string;
   coverImageUrl: string;
   imageUrls: string[];
-  imageCredit: "team" | "unsplash";
+  imageCredit: "team" | "owner" | "creator" | "licensed" | "unsplash";
   photoQaStatus: "pending" | "approved" | "rejected";
   hoursText: string;
   priceHint: string;
@@ -106,6 +106,9 @@ export type EventName =
   | "place_selection_confirmed"
   | "saved_list_opened"
   | "route_opened"
+  | "route_order_confirmed"
+  | "route_shared"
+  | "route_navigation_started"
   | "route_segment_clicked";
 
 export type EventLog = {

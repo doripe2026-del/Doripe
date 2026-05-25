@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
-import { radius, spacing } from "../theme/tokens";
+import { colors, gradients, radius, spacing } from "../theme/tokens";
 
-type GradientTone = "sunset" | "lane" | "night" | "lookout";
+type GradientTone = keyof typeof gradients;
 
 type GradientCardProps = {
   children: ReactNode;
@@ -12,23 +12,16 @@ type GradientCardProps = {
   style?: StyleProp<ViewStyle>;
 };
 
-const toneColors: Record<GradientTone, string> = {
-  sunset: "#D9875C",
-  lane: "#B8C9B2",
-  night: "#2A3541",
-  lookout: "#C6A06E",
-};
-
 export function GradientCard({ children, imageUrl, tone = "sunset", style }: GradientCardProps) {
-  const cardStyle = [styles.card, { backgroundColor: toneColors[tone] }, style];
+  const cardStyle = [styles.card, { backgroundColor: gradients[tone][1] }, style];
 
   if (imageUrl) {
     return (
       <ImageBackground
-        source={{ uri: imageUrl }}
-        resizeMode="cover"
-        style={cardStyle}
         imageStyle={styles.imageRadius}
+        resizeMode="cover"
+        source={{ uri: imageUrl }}
+        style={cardStyle}
       >
         <View style={styles.scrim} />
         <View style={styles.content}>{children}</View>
@@ -38,6 +31,8 @@ export function GradientCard({ children, imageUrl, tone = "sunset", style }: Gra
 
   return (
     <View style={cardStyle}>
+      <View style={[styles.colorWash, { backgroundColor: gradients[tone][0] }]} />
+      <View style={styles.scrim} />
       <View style={styles.content}>{children}</View>
     </View>
   );
@@ -45,20 +40,28 @@ export function GradientCard({ children, imageUrl, tone = "sunset", style }: Gra
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: radius.md,
-    minHeight: 148,
+    borderRadius: radius.lg,
+    minHeight: 150,
     overflow: "hidden",
+  },
+  colorWash: {
+    bottom: 0,
+    left: 0,
+    opacity: 0.46,
+    position: "absolute",
+    right: 0,
+    top: 0,
   },
   content: {
     flex: 1,
-    justifyContent: "flex-end",
-    padding: spacing.lg,
+    justifyContent: "space-between",
+    padding: 18,
   },
   imageRadius: {
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
   },
   scrim: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.28)",
+    backgroundColor: "rgba(5, 6, 5, 0.36)",
   },
 });

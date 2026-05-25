@@ -1,37 +1,31 @@
 import type { ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors, spacing } from "../theme/tokens";
+import { HomeIndicator, StatusBarReference } from "./SystemBars";
 
 type AppScaffoldProps = {
   children: ReactNode;
   horizontalPadding?: boolean;
-  topPadding?: boolean;
+  showHomeIndicator?: boolean;
   style?: StyleProp<ViewStyle>;
+  contentStyle?: StyleProp<ViewStyle>;
 };
 
 export function AppScaffold({
   children,
   horizontalPadding = true,
-  topPadding = true,
+  showHomeIndicator = false,
   style,
+  contentStyle,
 }: AppScaffoldProps) {
-  const insets = useSafeAreaInsets();
-
   return (
-    <View
-      style={[
-        styles.screen,
-        horizontalPadding && styles.horizontalPadding,
-        {
-          paddingBottom: insets.bottom,
-          paddingTop: insets.top + (topPadding ? spacing.lg : 0),
-        },
-        style,
-      ]}
-    >
-      {children}
+    <View style={[styles.screen, style]}>
+      <StatusBarReference />
+      <View style={[styles.content, horizontalPadding && styles.horizontalPadding, contentStyle]}>
+        {children}
+      </View>
+      {showHomeIndicator ? <HomeIndicator /> : null}
     </View>
   );
 }
@@ -39,6 +33,9 @@ export function AppScaffold({
 const styles = StyleSheet.create({
   screen: {
     backgroundColor: colors.background,
+    flex: 1,
+  },
+  content: {
     flex: 1,
   },
   horizontalPadding: {

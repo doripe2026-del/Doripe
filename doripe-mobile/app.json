@@ -2,11 +2,12 @@
   "expo": {
     "name": "Doripe",
     "slug": "doripe-mobile",
+    "scheme": "doripe",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
-    "newArchEnabled": true,
+    "userInterfaceStyle": "light",
+    "newArchEnabled": false,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -29,7 +30,11 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "naverMapClientId": "$NAVER_MAP_CLIENT_ID"
-    }
+      "naverMapClientId": "$NAVER_MAP_CLIENT_ID",
+      "eas": {
+        "projectId": "ea49f106-0148-456b-81fa-d4c298b09316"
+      }
+    },
+    "owner": "doripe"
   }
 }

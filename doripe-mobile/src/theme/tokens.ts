@@ -9,8 +9,9 @@ export const colors = {
   primaryDark: "#12B85C",
   primaryInk: "#052E14",
   danger: "#E12E29",
-  dark: "#090B0A",
+  dark: "#050605",
   white: "#FFFFFF",
+  river: "#BFD5D4",
 };
 
 export const gradients = {
@@ -31,18 +32,20 @@ export const spacing = {
 
 export const radius = {
   sm: 8,
-  md: 14,
-  lg: 24,
+  md: 16,
+  lg: 22,
+  xl: 28,
   pill: 999,
 };
 
 export const typography = {
-  title: 42,
-  headline: 30,
-  body: 16,
-  caption: 13,
+  display: 34,
+  title: 32,
+  headline: 24,
+  body: 15,
+  caption: 12,
 };
 
 export const touch = {
-  minimum: 44,
+  minimum: 48,
 };

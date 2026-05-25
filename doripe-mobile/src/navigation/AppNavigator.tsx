@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import type { NavigatorScreenParams } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { DesignCanvas, TextBox } from "../components/DesignCanvas";
 import { AccessCodeScreen } from "../screens/AccessCodeScreen";
 import { DeckGalleryScreen } from "../screens/DeckGalleryScreen";
 import { DiscoverScreen } from "../screens/DiscoverScreen";
@@ -10,7 +12,7 @@ import { PlaceGalleryScreen } from "../screens/PlaceGalleryScreen";
 import { RouteScreen } from "../screens/RouteScreen";
 import { SavedScreen } from "../screens/SavedScreen";
 import type { Deck, Region } from "../domain/types";
-import { colors, spacing, typography } from "../theme/tokens";
+import { getStoredAuthSession } from "../services/auth";
 
 export type MapStackParamList = {
   MapHome: undefined;
@@ -20,9 +22,9 @@ export type MapStackParamList = {
 };
 
 export type TabParamList = {
-  Map: undefined;
+  Map: NavigatorScreenParams<MapStackParamList> | undefined;
   Saved: undefined;
-  Route: undefined;
+  Route: { selectedAt?: string } | undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -51,8 +53,55 @@ function MapStackNavigator({ accessCodeId }: MapStackScreenProps) {
   );
 }
 
+function AppLoadingScreen() {
+  return (
+    <DesignCanvas>
+      <TextBox
+        style={{
+          color: "#090B0A",
+          fontSize: 20,
+          fontWeight: "800",
+          left: 24,
+          lineHeight: 26,
+          position: "absolute",
+          textAlign: "center",
+          top: 390,
+          width: 345,
+        }}
+      >
+        Doripe 준비 중...
+      </TextBox>
+    </DesignCanvas>
+  );
+}
+
 export function AppNavigator() {
   const [accessCodeId, setAccessCodeId] = useState<string | null>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    getStoredAuthSession()
+      .then((session) => {
+        if (isMounted) {
+          setAccessCodeId(session?.accessCodeId ?? null);
+        }
+      })
+      .finally(() => {
+        if (isMounted) {
+          setIsCheckingAuth(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (isCheckingAuth) {
+    return <AppLoadingScreen />;
+  }
 
   if (!accessCodeId) {
     return <AccessCodeScreen onAccepted={setAccessCodeId} />;
@@ -60,33 +109,15 @@ export function AppNavigator() {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarActiveTintColor: colors.primary,
-          tabBarInactiveTintColor: colors.muted,
-          tabBarLabelStyle: {
-            fontSize: typography.caption,
-            fontWeight: "800",
-          },
-          tabBarStyle: {
-            backgroundColor: colors.surface,
-            borderTopColor: colors.line,
-            borderTopWidth: 1,
-            minHeight: 72,
-            paddingBottom: spacing.md,
-            paddingTop: spacing.sm,
-          },
-        }}
-      >
+      <Tab.Navigator tabBar={() => null} screenOptions={{ headerShown: false }}>
         <Tab.Screen name="Map" options={{ title: "지도" }}>
           {() => <MapStackNavigator accessCodeId={accessCodeId} />}
         </Tab.Screen>
         <Tab.Screen name="Saved" options={{ title: "저장함" }}>
           {() => <SavedScreen accessCodeId={accessCodeId} />}
         </Tab.Screen>
-        <Tab.Screen name="Route" options={{ title: "방문 순서" }}>
-          {() => <RouteScreen accessCodeId={accessCodeId} />}
+        <Tab.Screen name="Route" options={{ title: "루트" }}>
+          {(props) => <RouteScreen {...props} accessCodeId={accessCodeId} />}
         </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>

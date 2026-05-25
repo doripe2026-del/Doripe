@@ -1,5 +1,6 @@
 import type { EventLog, EventName } from "../domain/types";
 import { readJson, writeJson } from "./storage";
+import { getCurrentUserId, supabase } from "./supabase";
 
 export const EVENTS_STORAGE_KEY = "doripe.events";
 
@@ -18,6 +19,36 @@ function createEventId(): string {
 }
 
 export async function recordEvent(input: EventInput): Promise<EventLog> {
+  const userId = await getCurrentUserId();
+
+  if (supabase && userId) {
+    const { data, error } = await supabase
+      .from("event_logs")
+      .insert({
+        user_id: userId,
+        event_name: input.eventName,
+        place_id: input.placeId,
+        segment_from_place_id: input.segmentFromPlaceId,
+        segment_to_place_id: input.segmentToPlaceId,
+      })
+      .select("id, created_at")
+      .single();
+
+    if (!error && data) {
+      return {
+        id: String(data.id),
+        accessCodeId: input.accessCodeId,
+        eventName: input.eventName,
+        placeId: input.placeId,
+        segmentFromPlaceId: input.segmentFromPlaceId,
+        segmentToPlaceId: input.segmentToPlaceId,
+        createdAt: String(data.created_at),
+      };
+    }
+
+    if (__DEV__) console.warn("Failed to record remote event", error);
+  }
+
   const writeOperation = eventWriteQueue.then(async () => {
     const existing = await readJson<EventLog[]>(EVENTS_STORAGE_KEY, []);
     const event: EventLog = {

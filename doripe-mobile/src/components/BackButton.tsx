@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
-import { colors, radius, touch, typography } from "../theme/tokens";
+import { colors, radius, touch } from "../theme/tokens";
 
 type BackButtonProps = {
   onPress: () => void;
@@ -11,8 +11,8 @@ type BackButtonProps = {
 export function BackButton({ onPress, accessibilityLabel = "뒤로", style }: BackButtonProps) {
   return (
     <Pressable
-      accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
+      accessibilityRole="button"
       onPress={onPress}
       style={({ pressed }) => [styles.button, pressed && styles.pressed, style]}
     >
@@ -24,19 +24,21 @@ export function BackButton({ onPress, accessibilityLabel = "뒤로", style }: Ba
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
-    backgroundColor: "rgba(9, 11, 10, 0.08)",
+    backgroundColor: colors.surface,
+    borderColor: colors.line,
     borderRadius: radius.pill,
-    height: touch.minimum,
+    borderWidth: 1,
+    height: 36,
     justifyContent: "center",
-    minHeight: touch.minimum,
-    minWidth: touch.minimum,
-    width: touch.minimum,
+    minHeight: 36,
+    minWidth: 36,
+    width: 36,
   },
   icon: {
     color: colors.ink,
-    fontSize: typography.headline,
+    fontSize: 28,
     fontWeight: "800",
-    lineHeight: typography.headline,
+    lineHeight: 30,
   },
   pressed: {
     opacity: 0.72,
