@@ -12,11 +12,41 @@ import { renderApp, currentDiscoverPlace } from "./render.js";
 const root = document.getElementById("app");
 let state = loadState();
 let data = { places: [], neighborhoods: [], categories: [], regions: [], config: {} };
+let activeCardExposure = null;
+let isCardActionAnimating = false;
+let sessionStartedAt = Date.now();
 
 function commit(nextState, options = {}) {
-  state = nextState;
-  saveState(state);
-  render();
+  const previousState = state;
+  const previousCard = cardForState(previousState);
+  const nextCard = cardForState(nextState);
+
+  if (previousCard?.id !== nextCard?.id || nextState.screen !== "discover") {
+    closeCardExposure(previousCard?.id, "card_hidden");
+  }
+  if (nextState.alert && nextState.alert !== previousState.alert) {
+    track("error_shown", {
+      screen: nextState.screen,
+      metadata: { message: nextState.alert }
+    });
+  }
+
+  const transition = options.transition || transitionFor(previousState, nextState);
+  const applyState = () => {
+    root.dataset.transition = transition;
+    state = nextState;
+    saveState(state);
+    render();
+  };
+
+  if (!options.noTransition && typeof document.startViewTransition === "function") {
+    document.startViewTransition(applyState);
+  } else {
+    root.classList.remove("fallback-transition");
+    applyState();
+    if (!options.noTransition) requestAnimationFrame(() => root.classList.add("fallback-transition"));
+  }
+
   if (state.alert && !options.keepAlert) {
     window.clearTimeout(commit.alertTimer);
     commit.alertTimer = window.setTimeout(() => {
@@ -27,6 +57,16 @@ function commit(nextState, options = {}) {
   }
 }
 
+function transitionFor(previousState, nextState) {
+  if (previousState.screen === nextState.screen && previousState.tab === nextState.tab) return "state";
+  if (nextState.screen === "placeDetail" || nextState.screen === "savedPlaceDetail") return "detail";
+  if (previousState.screen === "placeDetail" || previousState.screen === "savedPlaceDetail") return "back";
+  if (nextState.screen === "regionTransition" || nextState.screen === "tagSetup") return "forward";
+  if (previousState.tab !== nextState.tab) return "tab";
+  if (nextState.screen === "routeBlocked") return "modal";
+  return "forward";
+}
+
 function selectedPlace(placeId) {
   return data.places.find((place) => place.id === placeId);
 }
@@ -35,10 +75,64 @@ function currentPlace() {
   return currentDiscoverPlace(data.places, state);
 }
 
-function moveToTagSetup() {
-  commit({ ...state, screen: "regionTransition", tab: "discover", selectedNeighborhoodId: CONFIG.activeNeighborhoodId, alert: null });
+function cardForState(targetState) {
+  if (targetState.screen !== "discover") return null;
+  return currentDiscoverPlace(data.places, targetState);
+}
+
+function closeCardExposure(placeId, reason) {
+  if (!activeCardExposure) return;
+  if (placeId && activeCardExposure.placeId !== placeId) return;
+  const durationMs = Math.max(0, Date.now() - activeCardExposure.startedAt);
+  track("session_heartbeat", {
+    screen: "discover",
+    placeId: activeCardExposure.placeId,
+    durationMs,
+    metadata: { kind: "discover_card_dwell", reason }
+  });
+  activeCardExposure = null;
+}
+
+function syncVisibleCardExposure() {
+  const place = currentPlace();
+  if (state.screen !== "discover" || !place || state.cardActionCount >= (data.config.cardActionLimit || CONFIG.cardActionLimit)) return;
+  if (activeCardExposure?.placeId === place.id) return;
+  closeCardExposure(null, "card_replaced");
+  activeCardExposure = { placeId: place.id, startedAt: Date.now() };
+  track("discover_card_view", {
+    screen: "discover",
+    placeId: place.id,
+    categoryId: place.categoryId,
+    neighborhoodId: place.neighborhoodId,
+    metadata: {
+      actionCount: state.cardActionCount,
+      photoCount: place.images?.length || 0,
+      selectedTags: state.selectedTags || []
+    }
+  });
+}
+
+function animateCardOut(direction, done) {
+  if (isCardActionAnimating) return;
+  isCardActionAnimating = true;
+  const card = root.querySelector(".place-card:not(.is-detail)");
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  if (!card || reducedMotion) {
+    isCardActionAnimating = false;
+    done();
+    return;
+  }
+  card.classList.add(direction === "right" ? "swipe-out-right" : "swipe-out-left");
   window.setTimeout(() => {
-    commit({ ...state, screen: "tagSetup", tab: "discover", alert: null });
+    isCardActionAnimating = false;
+    done();
+  }, 230);
+}
+
+function moveToTagSetup() {
+  commit({ ...state, screen: "regionTransition", tab: "discover", selectedNeighborhoodId: CONFIG.activeNeighborhoodId, alert: null }, { transition: "forward" });
+  window.setTimeout(() => {
+    commit({ ...state, screen: "tagSetup", tab: "discover", alert: null }, { transition: "forward" });
   }, 850);
 }
 
@@ -101,7 +195,8 @@ const handlers = {
     commit({ ...state, screen: "discover", tab: "discover", currentIndex: 0, currentPhotoIndex: 0 });
   },
 
-  saveCurrentPlace() {
+  saveCurrentPlace(source = "button") {
+    if (isCardActionAnimating) return;
     if (state.cardActionCount >= (data.config.cardActionLimit || CONFIG.cardActionLimit)) return;
     const place = currentPlace();
     if (!place) return;
@@ -110,12 +205,14 @@ const handlers = {
       placeId: place.id,
       categoryId: place.categoryId,
       neighborhoodId: place.neighborhoodId,
-      metadata: { actionCount: state.cardActionCount + 1 }
+      metadata: { actionCount: state.cardActionCount + 1, source }
     });
-    commit(rememberSavedPlace(state, place.id));
+    const nextState = rememberSavedPlace(state, place.id);
+    animateCardOut("right", () => commit(nextState, { transition: "card" }));
   },
 
-  skipCurrentPlace() {
+  skipCurrentPlace(source = "button") {
+    if (isCardActionAnimating) return;
     if (state.cardActionCount >= (data.config.cardActionLimit || CONFIG.cardActionLimit)) return;
     const place = currentPlace();
     if (!place) return;
@@ -124,9 +221,15 @@ const handlers = {
       placeId: place.id,
       categoryId: place.categoryId,
       neighborhoodId: place.neighborhoodId,
-      metadata: { actionCount: state.cardActionCount + 1 }
+      metadata: { actionCount: state.cardActionCount + 1, source }
     });
-    commit(rememberSkippedPlace(state, place.id));
+    const nextState = rememberSkippedPlace(state, place.id);
+    animateCardOut("left", () => commit(nextState, { transition: "card" }));
+  },
+
+  swipeCurrentPlace(direction) {
+    if (direction === "right") handlers.saveCurrentPlace("drag");
+    if (direction === "left") handlers.skipCurrentPlace("drag");
   },
 
   nextPhoto() {
@@ -135,7 +238,12 @@ const handlers = {
     const next = Math.min((place.images?.length || 1) - 1, state.currentPhotoIndex + 1);
     if (next === state.currentPhotoIndex) return;
     track("discover_photo_next", { screen: state.screen, placeId: place.id });
-    commit({ ...state, currentPhotoIndex: next });
+    commit({ ...state, currentPhotoIndex: next, photoDirection: "next" }, { transition: "photo" });
+    window.setTimeout(() => {
+      if (state.currentPhotoIndex === next && state.photoDirection === "next") {
+        commit({ ...state, photoDirection: "" }, { noTransition: true });
+      }
+    }, 180);
   },
 
   previousPhoto() {
@@ -144,7 +252,12 @@ const handlers = {
     const next = Math.max(0, state.currentPhotoIndex - 1);
     if (next === state.currentPhotoIndex) return;
     track("discover_photo_previous", { screen: state.screen, placeId: place.id });
-    commit({ ...state, currentPhotoIndex: next });
+    commit({ ...state, currentPhotoIndex: next, photoDirection: "previous" }, { transition: "photo" });
+    window.setTimeout(() => {
+      if (state.currentPhotoIndex === next && state.photoDirection === "previous") {
+        commit({ ...state, photoDirection: "" }, { noTransition: true });
+      }
+    }, 180);
   },
 
   openPlaceDetail(placeId) {
@@ -241,6 +354,7 @@ function render() {
     data,
     cardActionLimit: data.config.cardActionLimit || CONFIG.cardActionLimit
   }, handlers);
+  syncVisibleCardExposure();
 }
 
 async function applySharedContext() {
@@ -251,6 +365,7 @@ async function applySharedContext() {
 
   const response = await loadShareLink(shareId);
   const share = response.share;
+  track("share_link_open", { screen: "share", shareId, metadata: { shareType } });
   if (share.content_type === "place" && share.place_id) {
     track("shared_place_open", { screen: "share", placeId: share.place_id, shareId });
     state = {
@@ -279,7 +394,22 @@ async function boot() {
   track("app_open", { screen: state.screen });
   track("session_start", { screen: state.screen });
   render();
+  window.setInterval(() => {
+    track("session_heartbeat", {
+      screen: state.screen,
+      durationMs: Date.now() - sessionStartedAt,
+      metadata: { kind: "session" }
+    });
+  }, 30000);
 }
+
+window.addEventListener("beforeunload", () => {
+  closeCardExposure(null, "page_unload");
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") closeCardExposure(null, "page_hidden");
+});
 
 boot().catch((error) => {
   root.innerHTML = `

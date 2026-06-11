@@ -28,6 +28,8 @@ body {
   background: #e8e5dc;
   color: var(--doripe-ink);
   font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
 }
 
 button,
@@ -38,6 +40,9 @@ input {
 button {
   border: 0;
   cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .app-shell {
@@ -47,12 +52,47 @@ button {
   background: var(--doripe-bg);
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .screen {
   min-height: 100svh;
   padding: max(34px, env(safe-area-inset-top)) 24px max(22px, env(safe-area-inset-bottom));
   position: relative;
+  view-transition-name: doripe-screen;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 240ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: viewOut;
+}
+
+::view-transition-new(root) {
+  animation-name: viewIn;
+}
+
+@keyframes viewOut {
+  from { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  to { opacity: 0; transform: translate3d(-10px, 0, 0) scale(0.985); }
+}
+
+@keyframes viewIn {
+  from { opacity: 0; transform: translate3d(14px, 0, 0) scale(0.99); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+.app-shell.fallback-transition .screen {
+  animation: fallbackScreenIn 230ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes fallbackScreenIn {
+  from { opacity: 0; transform: translate3d(16px, 0, 0) scale(0.99); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 
 .screen-loading {
@@ -284,6 +324,14 @@ button {
   font-size: 15px;
   font-weight: 800;
   box-shadow: 0 16px 30px rgba(20, 199, 98, 0.22);
+  transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+}
+
+.primary-cta:active,
+.tag-apply:active,
+.route-action:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: 0 9px 20px rgba(20, 199, 98, 0.18);
 }
 
 .region-start {
@@ -313,6 +361,11 @@ button {
   box-shadow: 0 8px 20px rgba(8, 17, 31, 0.06);
   font-size: 15px;
   font-weight: 800;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.region-selector:active {
+  transform: scale(0.97);
 }
 
 .mini-pin {
@@ -360,6 +413,74 @@ button {
   overflow: hidden;
   background: #ddd;
   box-shadow: 0 20px 55px rgba(8, 17, 31, 0.18);
+  transform: translate3d(var(--drag-x, 0), var(--drag-y, 0), 0) rotate(var(--drag-rotate, 0deg));
+  transition: transform 190ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 190ms ease;
+  touch-action: pan-y;
+  will-change: transform;
+}
+
+.place-card.is-dragging {
+  transition: none;
+  box-shadow: 0 28px 70px rgba(8, 17, 31, 0.22);
+}
+
+.place-card.is-returning {
+  transition: transform 170ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.place-card::before,
+.place-card::after {
+  position: absolute;
+  top: 42px;
+  z-index: 7;
+  min-width: 82px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 14px 32px rgba(8, 17, 31, 0.14);
+  font-size: 15px;
+  font-weight: 900;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 120ms ease, transform 120ms ease;
+  pointer-events: none;
+}
+
+.place-card::before {
+  content: "저장";
+  right: 26px;
+  color: var(--doripe-green);
+}
+
+.place-card::after {
+  content: "패스";
+  left: 26px;
+  color: #e64e57;
+}
+
+.place-card.is-dragging[data-swipe-direction="right"]::before,
+.place-card.is-dragging[data-swipe-direction="left"]::after {
+  opacity: var(--drag-intensity, 0);
+  transform: scale(calc(0.92 + (var(--drag-intensity, 0) * 0.08)));
+}
+
+.place-card.swipe-out-right {
+  animation: cardSwipeRight 230ms cubic-bezier(0.22, 0.88, 0.28, 1) forwards;
+}
+
+.place-card.swipe-out-left {
+  animation: cardSwipeLeft 230ms cubic-bezier(0.22, 0.88, 0.28, 1) forwards;
+}
+
+@keyframes cardSwipeRight {
+  to { opacity: 0; transform: translate3d(132%, -16px, 0) rotate(14deg); }
+}
+
+@keyframes cardSwipeLeft {
+  to { opacity: 0; transform: translate3d(-132%, -16px, 0) rotate(-14deg); }
 }
 
 .place-image {
@@ -369,6 +490,24 @@ button {
   height: 100%;
   object-fit: cover;
   background: #d8d8d8;
+}
+
+.place-card.photo-next .place-image {
+  animation: photoNext 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.place-card.photo-previous .place-image {
+  animation: photoPrevious 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes photoNext {
+  from { opacity: 0.78; transform: translate3d(24px, 0, 0) scale(1.01); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes photoPrevious {
+  from { opacity: 0.78; transform: translate3d(-24px, 0, 0) scale(1.01); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 
 .photo-tap-zone {
@@ -514,6 +653,16 @@ button {
   box-shadow: 0 12px 30px rgba(8, 17, 31, 0.14);
   font-size: 22px;
   font-weight: 900;
+  transition: transform 130ms ease, background 130ms ease;
+}
+
+.card-action:active,
+.share-option:active,
+.nav-item:active,
+.tag-button:active,
+.saved-card:active,
+.route-card:active {
+  transform: scale(0.94);
 }
 
 .card-action.heart {
@@ -535,6 +684,7 @@ button {
   background: #fff;
   border: 1px solid var(--doripe-line);
   box-shadow: 0 16px 44px rgba(8, 17, 31, 0.12);
+  animation: navRise 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .nav-item {
@@ -545,6 +695,7 @@ button {
   color: #696a61;
   font-size: 13px;
   font-weight: 800;
+  transition: transform 150ms ease, background 150ms ease, color 150ms ease;
 }
 
 .nav-item.is-active {
@@ -561,6 +712,7 @@ button {
   background: #fff;
   padding: 26px 30px;
   box-shadow: 0 16px 50px rgba(8, 17, 31, 0.08);
+  animation: sheetRise 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .tag-sheet {
@@ -648,6 +800,11 @@ button {
   position: relative;
   background: #ddd;
   box-shadow: 0 10px 28px rgba(8, 17, 31, 0.11);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.saved-card:active {
+  box-shadow: 0 8px 22px rgba(8, 17, 31, 0.09);
 }
 
 .saved-card img {
@@ -702,6 +859,8 @@ button {
   border-radius: 28px;
   background: #fff;
   padding: 28px 22px 34px;
+  animation: sheetRise 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 18px 60px rgba(8, 17, 31, 0.1);
 }
 
 .detail-title {
@@ -757,6 +916,7 @@ button {
   padding: 70px 18px 20px;
   position: relative;
   box-shadow: 0 16px 46px rgba(8, 17, 31, 0.08);
+  animation: sheetRise 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .route-grid {
@@ -771,6 +931,11 @@ button {
   overflow: hidden;
   position: relative;
   background: #ddd;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.route-card.is-selected {
+  box-shadow: 0 0 0 3px rgba(20, 199, 98, 0.32);
 }
 
 .route-card.is-selected::after {
@@ -842,6 +1007,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 14px;
+  animation: popoverIn 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .share-option {
@@ -874,6 +1040,32 @@ button {
   font-size: 15px;
   line-height: 1.5;
   font-weight: 650;
+}
+
+@keyframes sheetRise {
+  from { opacity: 0; transform: translate3d(0, 22px, 0) scale(0.985); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes navRise {
+  from { opacity: 0; transform: translate3d(-50%, 14px, 0); }
+  to { opacity: 1; transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes popoverIn {
+  from { opacity: 0; transform: translate3d(-50%, 12px, 0) scale(0.96); }
+  to { opacity: 1; transform: translate3d(-50%, 0, 0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
 }
 
 @media (min-width: 520px) {

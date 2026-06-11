@@ -82,7 +82,18 @@ function screenHeader(title, subtitle, options = {}) {
 
 export function visibleDiscoverPlaces(places, state) {
   const hidden = new Set([...(state.savedPlaceIds || []), ...(state.skippedPlaceIds || [])]);
-  return (places || []).filter((place) => !hidden.has(place.id));
+  const selectedTags = new Set(state.selectedTags || []);
+  return (places || [])
+    .filter((place) => !hidden.has(place.id))
+    .filter((place) => {
+      if (!selectedTags.size) return true;
+      const placeTags = [
+        place.categoryName,
+        ...(place.moodTags || []),
+        ...(place.bestFor || [])
+      ].filter(Boolean);
+      return placeTags.some((tag) => selectedTags.has(tag));
+    });
 }
 
 export function currentDiscoverPlace(places, state) {
@@ -136,11 +147,7 @@ function renderTransition() {
 }
 
 function renderTagSetup(model) {
-  const tags = [
-    ["type", "카페"], ["type", "식당"], ["type", "샵"], ["type", "사진스팟"],
-    ["mood", "조용한"], ["mood", "감각적인"], ["mood", "따뜻한"], ["mood", "힙한"], ["mood", "차분한"],
-    ["situation", "혼자"], ["situation", "데이트"], ["situation", "친구와"], ["situation", "가볍게"], ["situation", "오래 머물기"]
-  ];
+  const tagGroups = tagGroupsFor(model);
   const selected = new Set(model.state.selectedTags || []);
   return `
     <section class="screen">
@@ -150,21 +157,47 @@ function renderTagSetup(model) {
         <p class="screen-subtitle" style="margin-top:12px;">끌리는 태그를 골라주시면 장소카드를 더 잘 맞춰볼게요.</p>
         <div class="tag-section">
           <div class="tag-section-title">장소 유형</div>
-          <div class="tag-picker">${tags.filter(([k]) => k === "type").map(([, label]) => tagButton(label, selected, "type")).join("")}</div>
+          <div class="tag-picker">${tagGroups.type.map((label) => tagButton(label, selected, "type")).join("")}</div>
         </div>
         <div class="tag-section">
           <div class="tag-section-title">분위기</div>
-          <div class="tag-picker">${tags.filter(([k]) => k === "mood").map(([, label]) => tagButton(label, selected, "mood")).join("")}</div>
+          <div class="tag-picker">${tagGroups.mood.map((label) => tagButton(label, selected, "mood")).join("")}</div>
         </div>
         <div class="tag-section">
           <div class="tag-section-title">상황</div>
-          <div class="tag-picker">${tags.filter(([k]) => k === "situation").map(([, label]) => tagButton(label, selected, "situation")).join("")}</div>
+          <div class="tag-picker">${tagGroups.situation.map((label) => tagButton(label, selected, "situation")).join("")}</div>
         </div>
         <button class="tag-apply" data-action="apply-tags">장소카드 보기</button>
       </div>
       ${bottomNav("discover")}
     </section>
   `;
+}
+
+function uniqueLabels(labels, fallback) {
+  const unique = Array.from(new Set(labels.filter(Boolean).map((label) => String(label).trim()).filter(Boolean)));
+  return unique.length ? unique.slice(0, 8) : fallback;
+}
+
+function tagGroupsFor(model) {
+  const places = model.data.places || [];
+  return {
+    type: uniqueLabels(
+      [
+        ...(model.data.categories || []).map((category) => category.name),
+        ...places.map((place) => place.categoryName)
+      ],
+      ["카페", "식당", "샵", "사진스팟"]
+    ),
+    mood: uniqueLabels(
+      places.flatMap((place) => place.moodTags || []),
+      ["조용한", "감각적인", "따뜻한", "힙한", "차분한"]
+    ),
+    situation: uniqueLabels(
+      places.flatMap((place) => place.bestFor || []),
+      ["혼자", "데이트", "친구와", "가볍게", "오래 머물기"]
+    )
+  };
 }
 
 function tagButton(label, selected, kind) {
@@ -174,8 +207,10 @@ function tagButton(label, selected, kind) {
 function renderPlaceCard(place, state, options = {}) {
   const images = place.images?.length ? place.images : [firstImage(place)];
   const index = Math.min(state.currentPhotoIndex || 0, images.length - 1);
+  const photoDirection = state.photoDirection ? `photo-${state.photoDirection}` : "";
+  const gestureAttrs = options.detail ? "" : `data-gesture-card="true" data-place-id="${esc(place.id)}"`;
   return `
-    <article class="place-card ${options.detail ? "is-detail" : ""}">
+    <article class="place-card ${options.detail ? "is-detail" : ""} ${photoDirection}" ${gestureAttrs}>
       <img class="place-image" src="${esc(images[index])}" alt="${esc(place.name)} 사진" />
       <div class="photo-dots" aria-label="사진 ${index + 1}/${images.length}">
         ${images.map((_, dotIndex) => `<span class="photo-dot ${dotIndex === index ? "is-active" : ""}"></span>`).join("")}
@@ -385,6 +420,7 @@ export function renderApp(root, model, handlers) {
 
   root.innerHTML = `${topAlert(state.alert)}${html}${state.shareOpen ? sharePopover() : ""}`;
   bindActions(root, handlers, model);
+  bindCardGesture(root, handlers);
 }
 
 function bindActions(root, handlers, model) {
@@ -416,4 +452,86 @@ function bindActions(root, handlers, model) {
       else if (action === "close-share") handlers.closeShare();
     });
   });
+}
+
+function bindCardGesture(root, handlers) {
+  const card = root.querySelector('[data-gesture-card="true"]');
+  if (!card) return;
+
+  let pointerId = null;
+  let startX = 0;
+  let startY = 0;
+  let dragX = 0;
+  let dragY = 0;
+  let isDragging = false;
+  let suppressClick = false;
+
+  function resetCard() {
+    card.classList.add("is-returning");
+    card.style.setProperty("--drag-x", "0px");
+    card.style.setProperty("--drag-y", "0px");
+    card.style.setProperty("--drag-rotate", "0deg");
+    card.style.setProperty("--drag-intensity", "0");
+    delete card.dataset.swipeDirection;
+    window.setTimeout(() => card.classList.remove("is-returning", "is-dragging"), 170);
+  }
+
+  card.addEventListener("pointerdown", (event) => {
+    if (event.button !== undefined && event.button !== 0) return;
+    if (event.target.closest(".card-action")) return;
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startY = event.clientY;
+    dragX = 0;
+    dragY = 0;
+    isDragging = false;
+    suppressClick = false;
+    card.setPointerCapture?.(event.pointerId);
+  }, true);
+
+  card.addEventListener("pointermove", (event) => {
+    if (pointerId !== event.pointerId) return;
+    dragX = event.clientX - startX;
+    dragY = event.clientY - startY;
+    if (!isDragging && Math.abs(dragX) > 10 && Math.abs(dragX) > Math.abs(dragY)) {
+      isDragging = true;
+      card.classList.add("is-dragging");
+    }
+    if (!isDragging) return;
+    event.preventDefault();
+    const limitedX = Math.max(-170, Math.min(170, dragX));
+    const limitedY = Math.max(-28, Math.min(28, dragY));
+    const intensity = Math.min(Math.abs(limitedX) / 112, 1);
+    card.dataset.swipeDirection = limitedX >= 0 ? "right" : "left";
+    card.style.setProperty("--drag-x", `${limitedX}px`);
+    card.style.setProperty("--drag-y", `${limitedY}px`);
+    card.style.setProperty("--drag-rotate", `${limitedX / 18}deg`);
+    card.style.setProperty("--drag-intensity", String(intensity));
+  }, true);
+
+  card.addEventListener("pointerup", (event) => {
+    if (pointerId !== event.pointerId) return;
+    pointerId = null;
+    if (!isDragging) return;
+    suppressClick = true;
+    event.preventDefault();
+    const threshold = 106;
+    if (dragX > threshold) handlers.swipeCurrentPlace("right");
+    else if (dragX < -threshold) handlers.swipeCurrentPlace("left");
+    else resetCard();
+    window.setTimeout(() => {
+      suppressClick = false;
+    }, 120);
+  }, true);
+
+  card.addEventListener("pointercancel", () => {
+    pointerId = null;
+    if (isDragging) resetCard();
+  }, true);
+
+  card.addEventListener("click", (event) => {
+    if (!suppressClick) return;
+    event.preventDefault();
+    event.stopPropagation();
+  }, true);
 }

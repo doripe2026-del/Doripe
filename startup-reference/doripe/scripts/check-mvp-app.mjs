@@ -27,6 +27,8 @@ const requiredFiles = [
   "public/app/api.js",
   "public/app/render.js",
   "public/app/main.js",
+  "public/app/manifest.webmanifest",
+  "public/app/sw.js",
   "api/share.ts",
   "vercel.json",
 ];
@@ -44,6 +46,8 @@ const render = read("public/app/render.js");
 const main = read("public/app/main.js");
 const api = read("public/app/api.js");
 const share = read("api/share.ts");
+const index = read("public/app/index.html");
+const styles = read("public/app/styles.css");
 const vercel = JSON.parse(read("vercel.json"));
 
 assertIncludes(config, 'cardActionLimit: 12', "12 card-action limit");
@@ -69,10 +73,24 @@ assertIncludes(main, "loadBootstrap", "bootstrap loader");
 assertIncludes(main, "place_save", "save tracking");
 assertIncludes(main, "place_skip", "skip tracking");
 assertIncludes(main, "share_button_tap", "share tracking");
+assertIncludes(main, "discover_card_view", "card view tracking");
+assertIncludes(main, "session_heartbeat", "session heartbeat tracking");
+assertIncludes(main, "share_link_open", "share link open tracking");
+assertIncludes(main, "error_shown", "error tracking");
 assertIncludes(main, "shared_place_open", "shared place deep link handling");
 assertIncludes(main, "route_create_blocked", "route blocked tracking");
+assertIncludes(main, "startViewTransition", "View Transition API usage");
 
 assertIncludes(config, 'adminApiBase: "/admin/api/public/app"', "admin public API base");
+
+assertIncludes(index, 'rel="manifest"', "PWA manifest link");
+assertIncludes(index, "serviceWorker", "service worker registration");
+
+assertIncludes(render, "bindCardGesture", "card gesture binding");
+assertIncludes(render, "pointerdown", "pointer events");
+assertIncludes(styles, "swipe-out-right", "right swipe animation");
+assertIncludes(styles, "swipe-out-left", "left swipe animation");
+assertIncludes(styles, "@media (prefers-reduced-motion: reduce)", "reduced motion support");
 
 assertIncludes(share, "og:title", "share page title meta");
 assertIncludes(share, "og:image", "share page image meta");

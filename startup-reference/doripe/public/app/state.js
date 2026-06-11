@@ -51,6 +51,7 @@ export function initialState() {
     currentIndex: 0,
     currentPhotoIndex: 0,
     cardActionCount: 0,
+    photoDirection: "",
     savedPlaceIds: [],
     skippedPlaceIds: [],
     routePlaceIds: [],
