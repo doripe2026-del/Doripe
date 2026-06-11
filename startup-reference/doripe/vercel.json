@@ -1,0 +1,30 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/admin", "destination": "https://doripe-admin.vercel.app/admin" },
+    { "source": "/admin/:path*", "destination": "https://doripe-admin.vercel.app/admin/:path*" },
+    { "source": "/app", "destination": "/app/index.html" },
+    { "source": "/app/:path*", "destination": "/app/index.html" },
+    { "source": "/p/:shareId", "destination": "/api/share?type=place&shareId=:shareId" },
+    { "source": "/r/:shareId", "destination": "/api/share?type=route&shareId=:shareId" },
+    { "source": "/s/:shareId", "destination": "/share.html" },
+    { "source": "/open", "destination": "/share.html" },
+    { "source": "/", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/img/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/(.*).html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    }
+  ]
+}
