@@ -1,0 +1,22 @@
+{
+  "name": "doripe",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "migrate": "node --env-file=.env.local scripts/migrate.mjs",
+    "check:mvp-app": "node scripts/check-mvp-app.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@vercel/postgres": "^0.10.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "@vercel/node": "^5.1.0",
+    "typescript": "^5.8.2",
+    "vercel": "^54.11.1"
+  }
+}
