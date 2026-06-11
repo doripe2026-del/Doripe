@@ -1,0 +1,499 @@
+{
+  "sourceFile": "Doripe MVP UI",
+  "sourceUrl": "https://www.figma.com/design/m8pKPheVZTmaVVAUcnr0jh/Doripe-MVP-UI?node-id=179-17",
+  "capturedAt": "2026-06-11",
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "rules": [
+    "Figma is the visual source of truth for /app.",
+    "Use the captured Figma frame IDs as the implementation map.",
+    "Only Yeonnam-dong is active in the web MVP.",
+    "Do not introduce a new visual system outside the current Figma design.",
+    "If app UI and Figma disagree, Figma wins unless a product override is listed here."
+  ],
+  "productOverrides": {
+    "entryScreen": "C1 / First Region Setup",
+    "activeNeighborhood": {
+      "id": "yeonnam",
+      "label": "연남",
+      "feedFilter": "Only places whose neighborhood/sub_area/address indicates Yeonnam-dong."
+    },
+    "disabledNeighborhoods": [
+      {
+        "id": "seongsu",
+        "label": "성수",
+        "alert": "이 동네는 곧 열릴 예정이에요."
+      },
+      {
+        "id": "yongsan-huam-haebangchon",
+        "label": "용산·후암·해방촌",
+        "alert": "이 동네는 곧 열릴 예정이에요."
+      },
+      {
+        "id": "mangwon",
+        "label": "망원",
+        "alert": "이 동네는 곧 열릴 예정이에요."
+      }
+    ],
+    "cardActionLimit": 12,
+    "login": "No login in web MVP. Use anonymous browser cache.",
+    "data": "No dummy public place data. Use admin/Supabase ready place data."
+  },
+  "tokens": {
+    "viewportWidth": 393,
+    "viewportHeight": 852,
+    "background": "#FAF8F1",
+    "ink": "#0E131E",
+    "muted": "#736F68",
+    "surface": "#FFFFFF",
+    "doripeGreen": "#14C762",
+    "bottomNav": {
+      "x": 24,
+      "y": 774,
+      "width": 345,
+      "height": 58,
+      "activeWidth": 66,
+      "activeHeight": 42,
+      "activeY": 8,
+      "radius": 24
+    },
+    "regionSelector": {
+      "x": 24,
+      "y": 48,
+      "width": 112,
+      "height": 42,
+      "radius": 21
+    },
+    "topAlert": {
+      "x": 24,
+      "y": 48,
+      "width": 345,
+      "height": 56
+    },
+    "screenTitle": {
+      "x": 26,
+      "y": 54,
+      "width": 292,
+      "fontSize": 30,
+      "lineHeight": 38
+    },
+    "screenSubtitle": {
+      "x": 26,
+      "y": 96,
+      "width": 308,
+      "fontSize": 14,
+      "lineHeight": 20
+    }
+  },
+  "screens": [
+    {
+      "screenName": "C1 / First Region Setup",
+      "role": "Neighborhood selection",
+      "webState": "region",
+      "figmaNodeId": "183:26",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 0,
+        "y": 2720
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/c1-first-region-setup.png",
+      "keyNodes": [
+        {
+          "name": "title",
+          "x": 24,
+          "y": 92,
+          "width": 330,
+          "height": 82,
+          "text": "처음 둘러볼\n동네를 골라주세요"
+        },
+        {
+          "name": "subtitle",
+          "x": 24,
+          "y": 180,
+          "width": 335,
+          "height": 19,
+          "text": "마지막으로 첫 피드를 볼 동네를 골라주세요."
+        },
+        {
+          "name": "single map / Seoul neighborhoods",
+          "x": 24,
+          "y": 224,
+          "width": 345,
+          "height": 410,
+          "radius": 28
+        },
+        {
+          "name": "primary cta",
+          "x": 24,
+          "y": 760,
+          "width": 345,
+          "height": 54,
+          "radius": 15
+        }
+      ]
+    },
+    {
+      "screenName": "C1A / Neighborhood Travel Transition",
+      "role": "Neighborhood transition",
+      "webState": "regionTransition",
+      "figmaNodeId": "669:509",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 475,
+        "y": 2720
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/c1a-neighborhood-travel-transition.png",
+      "keyNodes": [
+        {
+          "name": "soft card",
+          "x": 34,
+          "y": 218,
+          "width": 325,
+          "height": 332,
+          "radius": 32
+        },
+        {
+          "name": "title",
+          "x": 24,
+          "y": 586,
+          "width": 345,
+          "height": 38
+        },
+        {
+          "name": "progress dots",
+          "x": 169,
+          "y": 690,
+          "width": 55,
+          "height": 8
+        }
+      ]
+    },
+    {
+      "screenName": "C2 / Discovery Tag Setup",
+      "role": "Pre-discover tag setup",
+      "webState": "tagSetup",
+      "figmaNodeId": "610:405",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 950,
+        "y": 2720
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/c2-discovery-tag-setup.png",
+      "keyNodes": [
+        {
+          "name": "region selector",
+          "x": 24,
+          "y": 48,
+          "width": 112,
+          "height": 42
+        },
+        {
+          "name": "tag setup sheet",
+          "x": 9,
+          "y": 100,
+          "width": 376,
+          "height": 673,
+          "radius": 28
+        },
+        {
+          "name": "bottom nav",
+          "x": 24,
+          "y": 774,
+          "width": 345,
+          "height": 58
+        }
+      ]
+    },
+    {
+      "screenName": "C3 / Region Selector Open",
+      "role": "Discover region selector open",
+      "webState": "discoverRegionOpen",
+      "figmaNodeId": "183:63",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 1425,
+        "y": 2720
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/c3-region-selector-open.png"
+    },
+    {
+      "screenName": "D1 / Discover Place Card",
+      "role": "Main discover card",
+      "webState": "discover",
+      "figmaNodeId": "369:128",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 1900,
+        "y": 2720
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/d1-discover-place-card.png",
+      "keyNodes": [
+        {
+          "name": "region selector",
+          "x": 24,
+          "y": 48,
+          "width": 112,
+          "height": 42
+        },
+        {
+          "name": "bottom nav",
+          "x": 24,
+          "y": 774,
+          "width": 345,
+          "height": 58
+        }
+      ]
+    },
+    {
+      "screenName": "D1I / Discover Place Card Detail",
+      "role": "Discover place detail",
+      "webState": "placeDetail",
+      "figmaNodeId": "369:160",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 0,
+        "y": 3690
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/d1i-discover-place-card-detail.png"
+    },
+    {
+      "screenName": "D7 / Discover Complete",
+      "role": "All available cards seen",
+      "webState": "discoverComplete",
+      "figmaNodeId": "184:57",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 475,
+        "y": 3690
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/d7-discover-complete.png"
+    },
+    {
+      "screenName": "D8 / Swipe Limit Reached",
+      "role": "12-action limit reached",
+      "webState": "swipeLimit",
+      "figmaNodeId": "525:204",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 950,
+        "y": 3690
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/d8-swipe-limit-reached.png"
+    },
+    {
+      "screenName": "F1E / Saved Places Empty",
+      "role": "Saved empty",
+      "webState": "savedEmpty",
+      "figmaNodeId": "184:77",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 950,
+        "y": 3690
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/f1e-saved-places-empty.png"
+    },
+    {
+      "screenName": "F1 / Saved Places List",
+      "role": "Saved places list",
+      "webState": "saved",
+      "figmaNodeId": "184:97",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 1425,
+        "y": 3690
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/f1-saved-places-list.png"
+    },
+    {
+      "screenName": "F1F",
+      "role": "Saved filter open",
+      "webState": "savedFilterOpen",
+      "figmaNodeId": "577:413",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 1900,
+        "y": 3690
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/f1f-saved-filter-open.png"
+    },
+    {
+      "screenName": "F1D / Saved Place Detail",
+      "role": "Saved place detail",
+      "webState": "savedPlaceDetail",
+      "figmaNodeId": "605:376",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 0,
+        "y": 4660
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/f1d-saved-place-detail.png"
+    },
+    {
+      "screenName": "F1DS / Saved Place Detail Share Open",
+      "role": "Saved place share popover",
+      "webState": "savedPlaceShareOpen",
+      "figmaNodeId": "618:415",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 475,
+        "y": 4660
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/f1ds-saved-place-detail-share-open.png"
+    },
+    {
+      "screenName": "F1R / Saved Routes List",
+      "role": "Saved routes list",
+      "webState": "savedRoutes",
+      "figmaNodeId": "221:140",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 0,
+        "y": 5630
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/f1r-saved-routes-list.png"
+    },
+    {
+      "screenName": "F1RD / Saved Route Detail",
+      "role": "Saved route detail",
+      "webState": "savedRouteDetail",
+      "figmaNodeId": "185:231",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 475,
+        "y": 5630
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/f1rd-saved-route-detail.png"
+    },
+    {
+      "screenName": "G1E / Route Places Empty",
+      "role": "Route empty",
+      "webState": "routeEmpty",
+      "figmaNodeId": "515:204",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 1920,
+        "y": 5630
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/g1e-route-places-empty.png"
+    },
+    {
+      "screenName": "Route 후보",
+      "role": "Route candidate selection",
+      "webState": "route",
+      "figmaNodeId": "617:913",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 2864,
+        "y": 5630
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/route-candidate.png",
+      "keyNodes": [
+        {
+          "name": "white sheet",
+          "x": 26,
+          "y": 134,
+          "width": 341,
+          "height": 640
+        },
+        {
+          "name": "route action button",
+          "x": 44,
+          "y": 704,
+          "width": 301,
+          "height": 50
+        },
+        {
+          "name": "bottom nav",
+          "x": 24,
+          "y": 774,
+          "width": 345,
+          "height": 58
+        }
+      ]
+    },
+    {
+      "screenName": "Route 후보 Filter Open",
+      "role": "Route filter open",
+      "webState": "routeFilterOpen",
+      "figmaNodeId": "650:511",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 2357,
+        "y": 5630
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/route-candidate-filter-open.png"
+    },
+    {
+      "screenName": "G2 / Route Building Loading",
+      "role": "Route unavailable/loading state",
+      "webState": "routeBlocked",
+      "figmaNodeId": "283:17",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 3371,
+        "y": 5630
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/g2-route-building-loading.png"
+    },
+    {
+      "screenName": "G6 / Route Saved Result",
+      "role": "Route saved result",
+      "webState": "routeSaved",
+      "figmaNodeId": "277:56",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 1900,
+        "y": 6600
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/g6-route-saved-result.png"
+    },
+    {
+      "screenName": "G8 / Share Open",
+      "role": "Share popover",
+      "webState": "shareOpen",
+      "figmaNodeId": "277:167",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 0,
+        "y": 7570
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/g8-share-open.png"
+    },
+    {
+      "screenName": "ERR / Top Alert Pattern",
+      "role": "Reusable top alert",
+      "webState": "topAlert",
+      "figmaNodeId": "509:532",
+      "frame": {
+        "width": 393,
+        "height": 852,
+        "x": 5360,
+        "y": 6600
+      },
+      "screenshotPath": "docs/design/app-web-figma-contract-2026-06-11/err-top-alert-pattern.png"
+    }
+  ]
+}
