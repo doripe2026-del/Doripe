@@ -131,9 +131,6 @@ export async function loadPublicAppBootstrap() {
       .select(
         "id,name,status,neighborhood_id,sub_area,category_id,short_copy,mood_tags,best_for,address,naver_place_url,cover_photo_id,cover_image_url,image_urls,place_photos!place_photos_place_id_fkey(id,public_url,display_order,photo_type,permission_status)",
       )
-      .eq("status", "ready")
-      .eq("photo_qa_status", "approved")
-      .eq("qa_status", "ready")
       .order("updated_at", { ascending: false })
       .limit(200),
     supabase.from("neighborhoods").select("id,name,display_order,status").eq("status", "active").order("display_order"),
