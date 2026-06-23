@@ -8,21 +8,59 @@
     <title>Doripe</title>
     <link rel="icon" href="/favicon.png" />
     <link rel="manifest" href="/app/manifest.webmanifest" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/app/assets/fonts/PretendardVariable.woff2"
+      crossorigin
+    />
+    <script>
+      (() => {
+        const BASE_WIDTH = 393;
+        const BASE_HEIGHT = 852;
+        const setScale = () => {
+          const viewport = window.visualViewport || window;
+          const width = viewport.width || window.innerWidth || BASE_WIDTH;
+          const height = viewport.height || window.innerHeight || BASE_HEIGHT;
+          const isMobileWidth = width <= 520;
+          const widthScale = width / BASE_WIDTH;
+          const fitScale = isMobileWidth ? widthScale : Math.min(1, widthScale, height / BASE_HEIGHT);
+          const maxScale = isMobileWidth ? 1.18 : 1;
+          const scale = Math.min(maxScale, Math.max(0.64, fitScale));
+          document.documentElement.style.setProperty("--app-scale", String(scale));
+          document.documentElement.style.setProperty("--app-visual-width", `${BASE_WIDTH * scale}px`);
+          document.documentElement.style.setProperty("--app-visual-height", `${BASE_HEIGHT * scale}px`);
+        };
+        setScale();
+        window.addEventListener("resize", setScale, { passive: true });
+        window.visualViewport?.addEventListener("resize", setScale, { passive: true });
+      })();
+    </script>
     <link rel="stylesheet" href="/app/styles.css" />
   </head>
   <body>
-    <main id="app" class="app-shell" aria-live="polite">
-      <section class="screen screen-loading">
-        <div class="brand-mark" aria-hidden="true"></div>
-        <div class="loading-bar" aria-hidden="true"><span></span></div>
-        <p>도리페를 여는 중...</p>
-      </section>
-    </main>
+    <div class="app-viewport">
+      <main id="app" class="app-shell" aria-live="polite">
+        <section class="screen screen-loading">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div class="loading-bar" aria-hidden="true"><span></span></div>
+          <div class="boot-card-skeleton" aria-hidden="true">
+            <span class="boot-card-photo"></span>
+            <span class="boot-card-chip"></span>
+            <span class="boot-card-title"></span>
+            <span class="boot-card-copy short"></span>
+            <span class="boot-card-copy"></span>
+          </div>
+          <p>Doripe</p>
+        </section>
+      </main>
+    </div>
     <script>
       if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/app/sw.js", { scope: "/app" }).catch(() => {});
-        });
+        navigator.serviceWorker.getRegistrations()
+          .then((registrations) => registrations.forEach((registration) => registration.unregister()))
+          .catch(() => {});
       }
     </script>
     <script type="module" src="/app/main.js"></script>

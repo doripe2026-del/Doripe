@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Doripe - 분위기로 고르고 루트로 꺼내 쓰는 장소 앱</title>
-<meta name="description" content="동네를 고르고, 분위기와 상황별 덱을 넘기고, 마음에 드는 장소를 저장한 뒤 갈 때 루트로 꺼내 쓰는 Doripe 베타입니다." />
+<title>Doripe - 분위기로 고르고 다시 꺼내 쓰는 장소 앱</title>
+<meta name="description" content="저장만 해두고 잊힌 장소를 오늘의 기분, 동네, 동선에 맞게 다시 꺼내는 Doripe 베타입니다." />
 <meta name="robots" content="index,follow" />
 <meta name="google-site-verification" content="-0x5473PvEuPwcYQr9y5G7akJUHZrSOGGIQCGEbqXNI" />
 <meta name="naver-site-verification" content="55e51518b5114c32f9dd3d3d19c3ca24d6678ef0" />
@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Doripe" />
 <meta property="og:locale" content="ko_KR" />
 <meta property="og:title" content="Doripe - 오늘 갈 곳을 취향대로 고르는 방법" />
-<meta property="og:description" content="동네, 분위기, 스와이프, 저장, 루트까지. 장소를 고르는 흐름을 더 가볍게 만듭니다." />
+<meta property="og:description" content="인스타 저장글, 지도 핀, 친구 추천까지. 흩어진 장소를 오늘 갈 수 있는 선택으로 다시 꺼내세요." />
 <meta property="og:url" content="https://doripe.vercel.app/" />
 <meta property="og:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <meta property="og:image:alt" content="Doripe 앱 소개 이미지" />
@@ -21,7 +21,7 @@
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Doripe - 오늘 갈 곳을 취향대로 고르는 방법" />
-<meta name="twitter:description" content="분위기와 상황에 맞는 장소를 발견하고 저장하고 루트로 꺼내 쓰세요." />
+<meta name="twitter:description" content="분위기와 상황에 맞는 장소를 발견하고 저장하고 다시 꺼내 쓰세요." />
 <meta name="twitter:image" content="https://doripe.vercel.app/og-image-v2.png" />
 <meta name="twitter:image:alt" content="Doripe 앱 소개 이미지" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -37,7 +37,7 @@
       "name": "Doripe",
       "url": "https://doripe.vercel.app/",
       "logo": "https://doripe.vercel.app/favicon.png",
-      "email": "cityboy@yonsei.ac.kr"
+      "email": "support@doripe.kr"
     },
     {
       "@type": "WebSite",
@@ -46,11 +46,14 @@
       "url": "https://doripe.vercel.app/",
       "inLanguage": "ko-KR",
       "publisher": { "@id": "https://doripe.vercel.app/#organization" },
-      "description": "분위기와 상황에 맞는 장소를 발견하고 저장하고 루트로 꺼내 쓰는 장소 취향 서비스"
+      "description": "분위기와 상황에 맞는 장소를 발견하고 저장하고 다시 꺼내 쓰는 장소 취향 서비스"
     }
   ]
 }
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -58,388 +61,1023 @@
     theme: {
       extend: {
         colors: {
-          bg: '#000',
-          fg: '#f5f5f5',
-          card: '#0f0f0f',
-          muted: '#1f1f1f',
-          mutedfg: '#888',
-          border: '#292929',
-          primary: '#22ff88',
-          secondary: '#00d68f',
-          space: '#5eb3ff',
-          warm: '#f9a8d4',
+          bluebrand: '#0084ff',
+          blueglow: '#60B1FF',
+          deepblue: '#319AFF',
+          ink: '#07111f',
+          muted: '#5d6b7c',
+          doripe: '#22ff88',
+          cream: '#f8fbff'
         },
-        fontFamily: { sans: ['Pretendard Variable','Pretendard','-apple-system','BlinkMacSystemFont','system-ui','Apple SD Gothic Neo','Noto Sans KR','sans-serif'] },
+        fontFamily: {
+          fustat: ['Fustat', 'Pretendard Variable', 'Pretendard', 'Inter', 'system-ui', 'sans-serif'],
+          pretendard: ['Pretendard Variable', 'Pretendard', 'Inter', 'system-ui', 'sans-serif'],
+          inter: ['Pretendard Variable', 'Pretendard', 'Inter', 'system-ui', 'sans-serif']
+        }
       }
     }
-  }
+  };
 </script>
 <style>
-  body { background:#000; color:#f5f5f5; font-family:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif; }
-  ::-webkit-scrollbar { width:6px; }
-  ::-webkit-scrollbar-track { background:#000; }
-  ::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
-  img {
-    image-rendering:-webkit-optimize-contrast;
-    image-rendering:high-quality;
-    -ms-interpolation-mode:bicubic;
-    transform:translateZ(0);
-    backface-visibility:hidden;
+  :root {
+    --blue: #0084ff;
+    --green: #22ff88;
+    --ink: #07111f;
+    --font-ko: 'Pretendard Variable', Pretendard, Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-latin: Fustat, 'Pretendard Variable', Pretendard, Inter, system-ui, sans-serif;
   }
-  .fade-in { animation: fadeIn .6s ease-out both; }
-  .fade-in-d1 { animation: fadeIn .6s ease-out .15s both; }
-  .fade-in-d2 { animation: fadeIn .6s ease-out .3s both; }
-  .fade-in-d3 { animation: fadeIn .6s ease-out .45s both; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(20px);} to { opacity:1; transform:translateY(0);} }
-  .reveal { opacity:0; transform:translateY(20px); transition:opacity .6s, transform .6s; }
-  .reveal.show { opacity:1; transform:translateY(0); }
-  .gradient-cta { background:linear-gradient(90deg,#00d68f,#22ff88); transition:filter .2s, transform .2s; }
-  .gradient-cta:hover { filter:brightness(1.1); transform:scale(1.02); }
-  .carousel-track { transition:transform .35s ease-in-out; }
-  @media (max-width:420px) {
-    .hero-title { font-size:2.45rem; line-height:1.12; }
-    .hero-phone { width:218px; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(900px 640px at -9% 0%, rgba(96,177,255,.34), transparent 64%),
+      radial-gradient(760px 620px at 108% 38%, rgba(34,255,136,.08), transparent 66%),
+      radial-gradient(920px 720px at -8% 78%, rgba(96,177,255,.18), transparent 68%),
+      linear-gradient(180deg,
+        #ffffff 0%,
+        #ffffff 21%,
+        #f8fbff 34%,
+        #f4f9ff 48%,
+        #ffffff 64%,
+        #f7fbff 82%,
+        #ffffff 100%);
+    color: var(--ink);
+    font-family: var(--font-ko);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: rgba(0,132,255,.18); color: #04101d; }
+  .font-brand { font-family: var(--font-latin); }
+  .home-shell {
+    overflow-x: clip;
+  }
+  .glow-field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .glow-field::before {
+    content: "";
+    position: absolute;
+    top: -220px;
+    left: -180px;
+    width: 620px;
+    height: 520px;
+    border-radius: 999px;
+    background: #60B1FF;
+    filter: blur(105px);
+    opacity: .32;
+  }
+  .glow-field::after {
+    content: "";
+    position: absolute;
+    top: -110px;
+    left: 130px;
+    width: 430px;
+    height: 360px;
+    border-radius: 999px;
+    background: #319AFF;
+    filter: blur(95px);
+    opacity: .2;
+  }
+  .liquid-nav {
+    background: rgba(255,255,255,.3);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 16px;
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.25), 0 24px 80px rgba(0,76,145,.08);
+  }
+  .liquid-button {
+    background: rgba(255,255,255,.34);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(0,0,0,.08);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.35);
+  }
+  .primary-cta {
+    background: rgba(0,132,255,.8);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    border-radius: 16px;
+    color: #fff;
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.35), 0 22px 60px rgba(0,132,255,.26);
+    transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+  }
+  .primary-cta:hover {
+    transform: scale(1.02);
+    background: rgba(0,132,255,.88);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.38), 0 28px 72px rgba(0,132,255,.32);
+  }
+  .hero-title {
+    font-family: var(--font-ko);
+    font-size: clamp(48px, 6.25vw, 75px);
+    line-height: 1.05;
+    letter-spacing: -1.2px;
+  }
+  .hero-title,
+  .section-title,
+  .chat-text,
+  .journey-title,
+  .cta-title {
+    word-break: keep-all;
+    overflow-wrap: normal;
+    text-wrap: balance;
+  }
+  .hero-sub {
+    font-size: 18px;
+    letter-spacing: -.45px;
+  }
+  .phone-stage {
+    position: relative;
+    min-height: 660px;
+    perspective: 1200px;
+    transform-style: preserve-3d;
+  }
+  .phone-stage::before {
+    content: "";
+    position: absolute;
+    inset: 14% -4% 16% 10%;
+    border-radius: 48px;
+    background:
+      linear-gradient(135deg, rgba(0,132,255,.2), rgba(34,255,136,.08) 42%, rgba(255,255,255,.58)),
+      linear-gradient(90deg, rgba(255,255,255,.7), rgba(255,255,255,0));
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.8), 0 34px 100px rgba(0,91,176,.12);
+    filter: blur(12px);
+    opacity: .72;
+    transform: rotate(-8deg) skewX(-7deg);
+  }
+  .orbit {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    z-index: 2;
+  }
+  .iphone {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: clamp(172px, 14.5vw, 238px);
+    aspect-ratio: 9 / 19.35;
+    padding: 5px;
+    border-radius: 36px;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,.86), rgba(240,247,255,.34) 48%, rgba(0,132,255,.08)),
+      rgba(255,255,255,.48);
+    border: 1px solid rgba(0,64,130,.13);
+    box-shadow: 0 34px 90px rgba(0,54,110,.18), inset 0 1px 1px rgba(255,255,255,.96);
+    overflow: visible;
+    transform: translate(-50%, -50%);
+    animation: counterOrbit 13s cubic-bezier(.62,0,.38,1) infinite;
+    animation-delay: var(--delay);
+  }
+  .iphone::before {
+    display: none;
+  }
+  .iphone::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    z-index: 4;
+    border-radius: 31px;
+    box-shadow: inset 0 0 0 1px rgba(6,34,63,.08), inset 0 1px 1px rgba(255,255,255,.5);
+    pointer-events: none;
+  }
+  .screen {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 31px;
+    background: #f7f2e8;
+    box-shadow: 0 14px 34px rgba(12,53,93,.12);
+  }
+  .screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: inherit;
+  }
+  .iphone:nth-child(1) { --delay: 0s; z-index: 5; }
+  .iphone:nth-child(2) { --delay: -3.25s; z-index: 4; }
+  .iphone:nth-child(3) { --delay: -6.5s; z-index: 3; }
+  .iphone:nth-child(4) { --delay: -9.75s; z-index: 2; }
+  @keyframes counterOrbit {
+    0% {
+      transform: translate(-50%, -50%) translate3d(176px, 38px, 140px) rotate(-8deg) scale(1.08);
+      opacity: 1;
+      filter: saturate(1.04) brightness(1);
+    }
+    24% {
+      transform: translate(-50%, -50%) translate3d(-62px, 132px, 38px) rotate(-19deg) scale(.9);
+      opacity: .82;
+      filter: saturate(.9) brightness(.92);
+    }
+    50% {
+      transform: translate(-50%, -50%) translate3d(-258px, -22px, -126px) rotate(-28deg) scale(.7);
+      opacity: .52;
+      filter: saturate(.72) brightness(.82);
+    }
+    76% {
+      transform: translate(-50%, -50%) translate3d(18px, -166px, 42px) rotate(14deg) scale(.9);
+      opacity: .82;
+      filter: saturate(.92) brightness(.94);
+    }
+    100% {
+      transform: translate(-50%, -50%) translate3d(176px, 38px, 140px) rotate(-8deg) scale(1.08);
+      opacity: 1;
+      filter: saturate(1.04) brightness(1);
+    }
+  }
+  .phone-shadow {
+    position: absolute;
+    left: 50%;
+    bottom: 62px;
+    width: min(580px, 82vw);
+    height: 96px;
+    transform: translateX(-50%) skewX(-10deg);
+    background: linear-gradient(90deg, transparent, rgba(0,132,255,.16), rgba(0,0,0,.1), transparent);
+    filter: blur(24px);
+  }
+  .section-title {
+    font-family: var(--font-ko);
+    font-size: clamp(34px, 5vw, 68px);
+    line-height: 1.02;
+    letter-spacing: -1.25px;
+  }
+  #features,
+  #product,
+  #business,
+  #company,
+  #pricing {
+    background: transparent;
+  }
+  body.home-page #business,
+  body.home-page #company {
+    display: none;
+  }
+  #features > .glow-field,
+  #pricing > .glow-field {
+    display: none;
+  }
+  .site-footer {
+    background: rgba(255,255,255,.62);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+  }
+  .soft-card {
+    background: rgba(255,255,255,.62);
+    border: 1px solid rgba(8,36,72,.09);
+    box-shadow: 0 30px 90px rgba(0,74,142,.08), inset 0 1px 1px rgba(255,255,255,.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .chat-thread {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .chat-bubble {
+    position: relative;
+    width: min(670px, 92%);
+    padding: 24px 26px 26px;
+    border: 1px solid rgba(0,0,0,.09);
+    border-radius: 30px;
+    background: rgba(255,255,255,.34);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.32), 0 28px 90px rgba(0,74,142,.09);
+    backdrop-filter: blur(42px);
+    -webkit-backdrop-filter: blur(42px);
+    overflow: hidden;
+  }
+  .chat-bubble::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(255,255,255,.66), rgba(255,255,255,.14) 42%, rgba(0,132,255,.13));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .chat-bubble.left {
+    align-self: flex-start;
+    border-bottom-left-radius: 10px;
+  }
+  .chat-bubble.right {
+    align-self: flex-end;
+    border-color: rgba(0,132,255,.16);
+    border-bottom-right-radius: 10px;
+    background: linear-gradient(135deg, rgba(232,246,255,.54), rgba(255,255,255,.26));
+  }
+  .chat-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-latin);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--blue);
+  }
+  .chat-text {
+    margin-top: 14px;
+    font-family: var(--font-ko);
+    font-size: clamp(24px, 2.25vw, 34px);
+    font-weight: 800;
+    line-height: 1.18;
+    letter-spacing: -.45px;
+    color: var(--ink);
+  }
+  .journey-stack {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(72px, 8vw, 128px);
+  }
+  .journey-row {
+    display: grid;
+    grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr);
+    align-items: center;
+    gap: clamp(36px, 7vw, 108px);
+  }
+  .journey-row.reverse {
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr);
+  }
+  .journey-visual {
+    position: relative;
+    min-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .journey-visual::before {
+    content: "";
+    position: absolute;
+    width: min(520px, 88%);
+    aspect-ratio: 1 / 1;
+    border-radius: 48px;
+    background: linear-gradient(135deg, rgba(0,132,255,.18), rgba(34,255,136,.09), rgba(255,255,255,.55));
+    filter: blur(20px);
+    transform: rotate(-9deg);
+  }
+  .journey-phone {
+    position: relative;
+    z-index: 1;
+    width: min(310px, 74vw);
+    aspect-ratio: 393 / 852;
+    padding: 8px;
+    border-radius: 44px;
+    border: 1px solid rgba(0,64,130,.13);
+    background: rgba(255,255,255,.54);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.42), 0 34px 110px rgba(0,74,142,.14);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+  }
+  .journey-phone img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 35px;
+    box-shadow: inset 0 0 0 1px rgba(6,34,63,.08);
+  }
+  .journey-copy {
+    max-width: 560px;
+  }
+  .journey-kicker {
+    font-family: var(--font-latin);
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .journey-title {
+    margin-top: 18px;
+    font-family: var(--font-ko);
+    font-size: clamp(38px, 5vw, 72px);
+    line-height: .98;
+    letter-spacing: -1.2px;
+    font-weight: 900;
+    color: var(--ink);
+  }
+  .journey-text {
+    margin-top: 22px;
+    font-size: 17px;
+    line-height: 1.9;
+    letter-spacing: -.35px;
+    color: var(--muted);
+  }
+  .pilot-grid,
+  .company-layout {
+    display: grid;
+    grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+    gap: clamp(36px, 6vw, 96px);
+    align-items: start;
+  }
+  .pilot-list {
+    margin-top: 32px;
+    display: grid;
+    gap: 14px;
+  }
+  .pilot-item {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    padding: 20px;
+    border-radius: 28px;
+    background: rgba(255,255,255,.42);
+    border: 1px solid rgba(8,36,72,.09);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.28), 0 24px 70px rgba(0,74,142,.07);
+    backdrop-filter: blur(34px);
+    -webkit-backdrop-filter: blur(34px);
+  }
+  .pilot-num {
+    display: flex;
+    height: 44px;
+    width: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: rgba(0,132,255,.1);
+    color: var(--blue);
+    font-family: var(--font-latin);
+    font-weight: 900;
+  }
+  .pilot-item strong,
+  .company-card strong {
+    display: block;
+    font-family: var(--font-ko);
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -.3px;
+    color: var(--ink);
+  }
+  .pilot-item p,
+  .company-card p {
+    margin-top: 8px;
+    font-size: 15px;
+    line-height: 1.75;
+    letter-spacing: -.25px;
+    color: var(--muted);
+  }
+  .pilot-form-panel {
+    position: relative;
+    border-radius: 36px;
+    padding: clamp(24px, 3vw, 40px);
+    background: rgba(255,255,255,.46);
+    border: 1px solid rgba(0,0,0,.1);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.3), 0 34px 110px rgba(0,74,142,.12);
+    backdrop-filter: blur(46px);
+    -webkit-backdrop-filter: blur(46px);
+    overflow: hidden;
+  }
+  .pilot-form-panel::before {
+    content: "";
+    position: absolute;
+    inset: -80px -70px auto auto;
+    width: 220px;
+    height: 220px;
+    border-radius: 999px;
+    background: rgba(34,255,136,.17);
+    filter: blur(38px);
+    pointer-events: none;
+  }
+  .pilot-form {
+    position: relative;
+    z-index: 1;
+    margin-top: 28px;
+    display: grid;
+    gap: 18px;
+  }
+  .pilot-field {
+    display: grid;
+    gap: 9px;
+  }
+  .pilot-field span,
+  .consent-box strong {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -.2px;
+    color: var(--ink);
+  }
+  .pilot-field input {
+    min-height: 54px;
+    width: 100%;
+    border-radius: 18px;
+    border: 1px solid rgba(8,36,72,.12);
+    background: rgba(255,255,255,.66);
+    padding: 0 16px;
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 600;
+    outline: none;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.72);
+    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .pilot-field input:focus {
+    border-color: rgba(0,132,255,.55);
+    background: rgba(255,255,255,.86);
+    box-shadow: 0 0 0 4px rgba(0,132,255,.12), inset 0 1px 1px rgba(255,255,255,.8);
+  }
+  .consent-box {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 12px;
+    padding: 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(8,36,72,.09);
+    background: rgba(255,255,255,.52);
+  }
+  .consent-box input {
+    margin-top: 2px;
+    height: 18px;
+    width: 18px;
+    accent-color: var(--blue);
+  }
+  .consent-box span {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 1.65;
+    letter-spacing: -.3px;
+    color: var(--muted);
+  }
+  .form-status {
+    min-height: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--blue);
+  }
+  .form-status.error {
+    color: #c62828;
+  }
+  .business-submit:disabled {
+    cursor: not-allowed;
+    opacity: .58;
+    transform: none;
+  }
+  #mobileNotifyBar {
+    transition: opacity .22s ease, transform .22s ease;
+  }
+  #mobileNotifyBar.is-hidden {
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
+  }
+  .company-layout {
+    align-items: center;
+  }
+  .company-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    justify-self: end;
+    width: min(620px, 100%);
+  }
+  .company-card {
+    min-height: auto;
+    padding: 24px 28px;
+    border-radius: 28px;
+    background: rgba(255,255,255,.42);
+    border: 1px solid rgba(8,36,72,.09);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.28), 0 24px 80px rgba(0,74,142,.07);
+    backdrop-filter: blur(34px);
+    -webkit-backdrop-filter: blur(34px);
+  }
+  .company-stat-row {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .company-stat {
+    min-width: 168px;
+    border-radius: 22px;
+    border: 1px solid rgba(8,36,72,.09);
+    background: rgba(255,255,255,.46);
+    padding: 16px 18px;
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.24);
+  }
+  .company-stat b {
+    display: block;
+    font-family: var(--font-latin);
+    font-size: 26px;
+    line-height: 1;
+    color: var(--blue);
+  }
+  .company-stat > span {
+    margin-top: 7px;
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  .cta-title {
+    font-family: var(--font-ko);
+    font-size: clamp(46px, 7.4vw, 96px);
+    line-height: .98;
+    letter-spacing: -1.4px;
+    font-weight: 900;
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .78s cubic-bezier(.16,1,.3,1), transform .78s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .logo-pill {
+    filter: grayscale(1);
+    opacity: .56;
+  }
+  @media (max-width: 1023px) {
+    .phone-stage { min-height: 560px; }
+    .phone-stage::before { inset: 18% -8% 18% 0; transform: rotate(-7deg) skewX(-6deg); }
+    @keyframes counterOrbit {
+      0% { transform: translate(-50%, -50%) translate3d(96px, 44px, 118px) rotate(-7deg) scale(1.03); opacity: 1; }
+      24% { transform: translate(-50%, -50%) translate3d(-34px, 108px, 20px) rotate(-18deg) scale(.86); opacity: .82; }
+      50% { transform: translate(-50%, -50%) translate3d(-126px, -18px, -98px) rotate(-27deg) scale(.68); opacity: .5; }
+      76% { transform: translate(-50%, -50%) translate3d(-12px, -128px, 24px) rotate(13deg) scale(.86); opacity: .82; }
+      100% { transform: translate(-50%, -50%) translate3d(96px, 44px, 118px) rotate(-7deg) scale(1.03); opacity: 1; }
+    }
+  }
+  @media (max-width: 900px) {
+    .home-page h1,
+    .home-page h2,
+    .home-page h3,
+    .home-page p,
+    .home-page a,
+    .home-page span,
+    .home-page button {
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+    header {
+      top: 14px !important;
+      width: 100%;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    .liquid-nav {
+      width: min(390px, calc(100vw - 28px));
+      max-width: min(390px, calc(100vw - 28px));
+      flex-wrap: wrap;
+      justify-content: space-between;
+      row-gap: 7px;
+      padding: 8px 10px 10px;
+    }
+    .nav-links {
+      order: 3;
+      display: flex !important;
+      width: 100%;
+      justify-content: center;
+      gap: 4px;
+      padding: 0;
+      font-size: 12px;
+    }
+    .nav-links a {
+      flex: 1;
+      padding: 6px 8px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .liquid-nav .liquid-button {
+      padding: 7px 8px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .liquid-nav .liquid-button span {
+      width: 28px;
+      height: 28px;
+    }
+    .hero-title {
+      width: min(340px, calc(100vw - 40px));
+      max-width: min(340px, calc(100vw - 40px));
+      font-size: clamp(42px, 12vw, 56px);
+      letter-spacing: -.9px;
+    }
+    .hero-sub {
+      width: min(340px, calc(100vw - 40px));
+      max-width: min(340px, calc(100vw - 40px));
+      font-size: 16px;
+      letter-spacing: -.25px;
+    }
+    main {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+    main section:first-of-type {
+      max-width: 340px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    main section:first-of-type p,
+    main section:first-of-type h1 {
+      max-width: min(340px, calc(100vw - 40px));
+    }
+    main section:first-of-type .primary-cta {
+      max-width: calc(100vw - 40px);
+    }
+    .phone-stage { min-height: 430px; margin-top: -10px; }
+    .chat-bubble {
+      width: 94%;
+      padding: 21px 20px 22px;
+      border-radius: 24px;
+    }
+    .chat-bubble.left { border-bottom-left-radius: 8px; }
+    .chat-bubble.right { border-bottom-right-radius: 8px; }
+    .chat-text {
+      font-size: 24px;
+      letter-spacing: -.25px;
+    }
+    .journey-row,
+    .journey-row.reverse {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    .journey-row .journey-copy,
+    .journey-row.reverse .journey-copy {
+      order: 1;
+    }
+    .journey-row .journey-visual,
+    .journey-row.reverse .journey-visual {
+      order: 2;
+    }
+    .journey-visual {
+      min-height: 500px;
+    }
+    .journey-phone {
+      width: min(270px, 76vw);
+      border-radius: 38px;
+      padding: 7px;
+    }
+    .journey-phone img {
+      border-radius: 31px;
+    }
+    .journey-title {
+      font-size: clamp(36px, 11vw, 54px);
+      letter-spacing: -.8px;
+    }
+    .pilot-grid,
+    .company-layout {
+      grid-template-columns: 1fr;
+    }
+    .company-grid {
+      grid-template-columns: 1fr;
+    }
+    .pilot-form-panel {
+      border-radius: 30px;
+    }
+  }
+  @media (max-width: 767px) {
+    .iphone { width: 144px; padding: 4px; border-radius: 28px; }
+    .iphone::after { inset: 4px; border-radius: 24px; }
+    .screen { border-radius: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+    .iphone:nth-child(n+2) { display: none; }
+    .iphone { transform: translate(-50%, -50%) !important; opacity: 1; }
   }
 </style>
 </head>
-<body class="min-h-screen bg-bg">
+<body class="home-page">
+<div class="home-shell relative min-h-screen">
+  <div class="glow-field" aria-hidden="true"></div>
 
-<!-- HERO: keep previous visual system -->
-<section class="relative min-h-[100dvh] flex flex-col items-center justify-center px-5 pt-16 pb-28 md:pb-16 overflow-hidden">
-  <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none" style="background:rgba(34,255,136,.05); filter:blur(120px);"></div>
-
-  <p class="fade-in text-2xl md:text-3xl font-extrabold text-primary text-center tracking-tight mb-3">Doripe.</p>
-  <h1 class="hero-title fade-in-d1 text-4xl md:text-6xl font-bold text-center leading-tight tracking-tight">
-    내 취향의 장소를<br />
-    <span class="text-primary">넘기고</span>, <span class="text-primary">저장하고</span>,<br />
-    갈 때 <span class="text-primary">꺼내세요</span>.
-  </h1>
-
-  <p class="fade-in-d1 mt-5 text-mutedfg text-base md:text-lg text-center max-w-md leading-relaxed">
-    <span class="block">인스타에서 저장한 감성 장소,</span>
-    <span class="block">지도에 묻혀 있던 후보들.</span>
-    <span class="block mt-2">Doripe에서 다시 꺼내고,</span>
-    <span class="block">갈 수 있는 루트로 이어보세요.</span>
-  </p>
-
-  <p class="fade-in-d1 mt-5 inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-primary/10 border border-primary/30 text-sm md:text-base">
-    <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-    <span class="text-fg">오늘의 기분에 맞는 <span class="text-primary font-bold">장소 카드</span>를 준비 중</span>
-  </p>
-
-  <div class="hero-phone fade-in-d2 mt-10 w-[240px] md:w-[280px] aspect-[9/16] rounded-3xl border-2 border-primary/40 bg-card overflow-hidden relative">
-    <div id="heroTrack" class="absolute inset-0 flex transition-transform duration-700 ease-in-out" style="transform:translateX(0%); width:500%;">
-      <div class="w-1/5 h-full relative shrink-0">
-        <img src="img/elliot-gouy-eEX3gK7vFqc-unsplash.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" fetchpriority="high" />
-        <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(0,0,0,.1) 0%, transparent 30%, rgba(0,0,0,.75) 100%);"></div>
-        <div class="absolute bottom-5 left-0 right-0 px-5 z-10">
-          <div class="flex flex-wrap gap-1">
-            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium border border-primary/30 backdrop-blur-sm">산책</span>
-            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-space/20 text-space font-medium border border-space/40 backdrop-blur-sm">한강</span>
-          </div>
-          <p class="mt-2 text-fg text-base font-bold leading-tight">잔디밭 끝, 일몰 명당</p>
-          <p class="text-mutedfg text-[11px]">서울숲 · 도보 10분</p>
-        </div>
-      </div>
-      <div class="w-1/5 h-full relative shrink-0">
-        <img src="img/oguzhan-tasimaz-LdUQiz69jc4-unsplash.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-        <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(0,0,0,.1) 0%, transparent 30%, rgba(0,0,0,.75) 100%);"></div>
-        <div class="absolute bottom-5 left-0 right-0 px-5 z-10">
-          <div class="flex flex-wrap gap-1">
-            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium border border-primary/30 backdrop-blur-sm">아늑한</span>
-            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-space/20 text-space font-medium border border-space/40 backdrop-blur-sm">카페</span>
-          </div>
-          <p class="mt-2 text-fg text-base font-bold leading-tight">골목 끝, 창가 카페</p>
-          <p class="text-mutedfg text-[11px]">성수 · 도보 6분</p>
-        </div>
-      </div>
-      <div class="w-1/5 h-full relative shrink-0">
-        <img src="img/klara-kulikova-yjQDnOhGE34-unsplash.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-        <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(0,0,0,.1) 0%, transparent 30%, rgba(0,0,0,.75) 100%);"></div>
-        <div class="absolute bottom-5 left-0 right-0 px-5 z-10">
-          <div class="flex flex-wrap gap-1">
-            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium border border-primary/30 backdrop-blur-sm">대화</span>
-            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-space/20 text-space font-medium border border-space/40 backdrop-blur-sm">식당</span>
-          </div>
-          <p class="mt-2 text-fg text-base font-bold leading-tight">벨벳 부스, 작은 와인바</p>
-          <p class="text-mutedfg text-[11px]">이태원 · 도보 7분</p>
-        </div>
-      </div>
-      <div class="w-1/5 h-full relative shrink-0">
-        <img src="img/khamkeo-k24WR_faU3k-unsplash.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-        <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(0,0,0,.1) 0%, transparent 30%, rgba(0,0,0,.75) 100%);"></div>
-        <div class="absolute bottom-5 left-0 right-0 px-5 z-10">
-          <div class="flex flex-wrap gap-1">
-            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium border border-primary/30 backdrop-blur-sm">감성</span>
-            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-space/20 text-space font-medium border border-space/40 backdrop-blur-sm">전시</span>
-          </div>
-          <p class="mt-2 text-fg text-base font-bold leading-tight">가볍게 들를 작은 갤러리</p>
-          <p class="text-mutedfg text-[11px]">한남동 · 도보 4분</p>
-        </div>
-      </div>
-      <div class="w-1/5 h-full relative shrink-0">
-        <img src="img/elliot-gouy-rV6MMf398LE-unsplash.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-        <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(0,0,0,.1) 0%, transparent 30%, rgba(0,0,0,.75) 100%);"></div>
-        <div class="absolute bottom-5 left-0 right-0 px-5 z-10">
-          <div class="flex flex-wrap gap-1">
-            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium border border-primary/30 backdrop-blur-sm">로컬</span>
-            <span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-space/20 text-space font-medium border border-space/40 backdrop-blur-sm">볼거리</span>
-          </div>
-          <p class="mt-2 text-fg text-base font-bold leading-tight">도심 속 한옥 정자 연못</p>
-          <p class="text-mutedfg text-[11px]">서울숲 · 도보 10분</p>
-        </div>
-      </div>
+  <header class="sticky top-[30px] z-50 mx-auto flex w-fit items-center justify-center px-4">
+    <div class="liquid-nav flex items-center gap-2 px-3 py-2">
+      <a href="/" class="font-brand flex items-center gap-2 px-2 text-[20px] font-bold tracking-[-.04em] text-ink">
+        <img src="/favicon.svg" alt="" class="h-7 w-7 rounded-[8px]" />
+        <span>Doripe<span class="text-doripe">.</span></span>
+      </a>
+      <nav class="nav-links flex items-center gap-1 px-4 text-[13px] font-medium text-ink/62" aria-label="주요 섹션">
+        <a href="/" class="rounded-xl px-3 py-2 transition hover:bg-white/45 hover:text-ink">Home</a>
+        <a href="/business" class="rounded-xl px-3 py-2 transition hover:bg-white/45 hover:text-ink">Business</a>
+        <a href="/company" class="rounded-xl px-3 py-2 transition hover:bg-white/45 hover:text-ink">Company</a>
+      </nav>
+      <a href="/notify" class="liquid-button group flex items-center gap-2 rounded-[14px] px-3 py-2 text-[13px] font-semibold text-ink transition hover:bg-white/50">
+        알림신청
+        <span class="flex h-7 w-7 items-center justify-center rounded-full bg-ink text-white transition group-hover:translate-x-0.5" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+      </a>
     </div>
-    <div class="absolute top-3 left-0 right-0 flex justify-center gap-1.5 z-20" id="heroDots">
-      <span class="w-5 h-1 rounded-full bg-primary transition-all duration-300"></span>
-      <span class="w-1 h-1 rounded-full bg-fg/30 transition-all duration-300"></span>
-      <span class="w-1 h-1 rounded-full bg-fg/30 transition-all duration-300"></span>
-      <span class="w-1 h-1 rounded-full bg-fg/30 transition-all duration-300"></span>
-      <span class="w-1 h-1 rounded-full bg-fg/30 transition-all duration-300"></span>
-    </div>
-  </div>
+  </header>
 
-  <a href="/notify" class="fade-in-d3 mt-10 inline-block px-8 py-4 rounded-full gradient-cta text-black font-semibold text-base">
-    내 장소 취향 세팅하기
-  </a>
-  <p id="socialProofHero" class="fade-in-d3 mt-5 text-mutedfg text-sm md:text-base flex items-center gap-2.5">
-    <span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-    <span><span id="signupCountHero" class="text-primary font-bold">14</span>명이 이미 Doripe를 먼저 확인하고 있어요</span>
-  </p>
-</section>
+  <main id="home" class="relative z-10 mx-auto max-w-[1600px] px-5 pb-10 pt-20 md:px-10 md:pt-24 lg:px-16">
+    <section class="grid min-h-[calc(100vh-130px)] grid-cols-1 items-center gap-8 lg:grid-cols-[.92fr_1.08fr]">
+      <div class="relative z-10 max-w-[720px]">
+        <div class="reveal inline-flex items-center gap-2 rounded-[16px] border border-black/10 bg-white/45 px-3 py-2 shadow-[inset_0_4px_4px_rgba(255,255,255,.35)] backdrop-blur-[30px]">
+          <span class="rounded-full bg-bluebrand px-2 py-1 text-xs font-bold text-white shadow-[0_10px_24px_rgba(0,132,255,.22)]">
+            92.1%
+          </span>
+          <span class="text-sm font-semibold text-ink/72">초기 설문에서 사용 의향을 보였어요</span>
+        </div>
 
-<!-- PAIN POINTS -->
-<section class="px-5 py-16 md:py-24 border-y border-border/40">
-  <div class="max-w-5xl mx-auto">
-    <h2 class="reveal text-2xl md:text-4xl font-black leading-tight tracking-tight">
-      <span class="mr-2" aria-hidden="true">😮‍💨</span>이런 적 있으시지 않으셨나요?
+        <h1 class="hero-title reveal mt-7 font-bold text-ink">
+          오늘 어디 갈지,<br />
+          떠오르는 곳이 없다면.
+        </h1>
+
+        <p class="hero-sub reveal mt-6 max-w-[610px] font-inter leading-8 text-muted">
+          검색어가 없어도 괜찮아요. 오늘의 분위기에 맞는 카페, 식당, 술집, 샵을 가볍게 넘겨보세요.
+        </p>
+
+        <div class="reveal mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+          <a href="/notify" class="primary-cta group inline-flex w-fit items-center gap-4 px-5 py-3.5 text-[15px] font-semibold">
+            알림신청
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-bluebrand transition group-hover:translate-x-0.5" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </a>
+          <p class="text-sm font-medium text-muted">
+            <span id="signupCountHero" class="font-bold text-bluebrand" data-fallback-count="488">1</span>명이 Doripe를 먼저 확인했어요
+          </p>
+        </div>
+      </div>
+
+      <div class="phone-stage reveal" aria-label="Doripe 앱 목업 모션">
+        <div class="phone-shadow" aria-hidden="true"></div>
+        <div class="orbit">
+          <div class="iphone">
+            <div class="screen"><img src="img/figma-ui/discover.png" alt="Doripe 발견 화면" /></div>
+          </div>
+          <div class="iphone">
+            <div class="screen"><img src="img/figma-ui/saved.png" alt="Doripe 저장함 화면" /></div>
+          </div>
+          <div class="iphone">
+            <div class="screen"><img src="img/figma-ui/discover-photo-next.png" alt="Doripe 장소 카드 사진 화면" /></div>
+          </div>
+          <div class="iphone">
+            <div class="screen"><img src="img/figma-ui/discover-after-saves.png" alt="Doripe 저장 후 발견 화면" /></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="relative overflow-hidden px-0 py-20 md:py-28">
+      <div class="mx-auto grid max-w-[1320px] grid-cols-1 items-start gap-12 lg:grid-cols-[.9fr_1.1fr] lg:gap-20">
+        <div class="reveal lg:sticky lg:top-32">
+          <p class="font-brand text-sm font-black uppercase tracking-[.18em] text-bluebrand">Before Doripe</p>
+          <h2 class="section-title mt-5 font-black text-ink">
+            이런 적,<br />
+            있으시지 않나요?
+          </h2>
+          <p class="mt-6 max-w-[500px] text-base leading-8 tracking-[-.5px] text-muted">
+            장소를 모르는 게 아니라, 지금 가기 좋은 후보가 바로 떠오르지 않는 순간이 문제였어요.
+          </p>
+        </div>
+
+        <div class="chat-thread">
+          <article class="chat-bubble left reveal">
+            <div class="chat-meta">약속 잡기 전</div>
+            <p class="chat-text">😵 오늘 어디 갈지 정해야 하는데, 딱 떠오르는 후보가 없어...</p>
+          </article>
+          <article class="chat-bubble right reveal">
+            <div class="chat-meta">검색창 앞</div>
+            <p class="chat-text">🤔 '조용하고 어둑한 술집 (?)' 이런 느낌은 있는데, 뭐라고 검색해야 할지 모르겠어 ㅜㅜ</p>
+          </article>
+          <article class="chat-bubble left reveal">
+            <div class="chat-meta">나가기 직전</div>
+            <p class="chat-text">🫠 인스타에 저장한 곳은 많은데, 막상 약속 잡을 때 다시 찾기가 귀찮아...</p>
+          </article>
+          <article class="chat-bubble right reveal">
+            <div class="chat-meta">동선 확인 중</div>
+            <p class="chat-text">😶 괜찮아 보이는 곳을 봐도, 실제로 내 동선에 넣을 수 있을지 바로 판단이 안 돼...</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="product" class="relative overflow-hidden px-0 py-20 md:py-28">
+      <div class="mx-auto max-w-[1320px]">
+        <div class="reveal max-w-[820px]">
+          <p class="font-brand text-sm font-black uppercase tracking-[.18em] text-bluebrand">How it works</p>
+          <h2 class="section-title mt-5 font-black text-ink">
+            찾고, 남기고,<br />
+            떠나세요.
+          </h2>
+          <p class="mt-6 max-w-[680px] text-base leading-8 tracking-[-.5px] text-muted">
+            Doripe는 장소를 검색하는 앱이라기보다, 오늘의 분위기와 저장해둔 취향을 다시 꺼내는 흐름에 가깝습니다.
+          </p>
+        </div>
+
+        <div class="journey-stack mt-20">
+          <article class="journey-row">
+            <div class="journey-visual reveal">
+              <div class="journey-phone">
+                <img src="img/figma-ui/discover.png" alt="Doripe 발견 화면" />
+              </div>
+            </div>
+            <div class="journey-copy reveal">
+              <p class="journey-kicker">Discover</p>
+              <h3 class="journey-title">검색어 대신 분위기로 찾아요.</h3>
+              <p class="journey-text">
+                "성수 카페"처럼 넓게 찾는 대신, 오늘 필요한 분위기와 상황에 맞춰 장소를 넘겨봅니다. 사진을 먼저 보고, 마음이 가는 후보만 가볍게 남길 수 있어요.
+              </p>
+            </div>
+          </article>
+
+          <article class="journey-row reverse">
+            <div class="journey-copy reveal">
+              <p class="journey-kicker">Save</p>
+              <h3 class="journey-title">나중에 찾기 쉬운 방식으로 저장해요.</h3>
+              <p class="journey-text">
+                인스타 저장함이나 지도 핀처럼 쌓이기만 하는 방식에서 벗어나, "데이트", "조용한 술집", "혼자 가기 좋은 곳"처럼 상황 태그와 필터로 다시 찾기 쉽게 정리해요.
+              </p>
+            </div>
+            <div class="journey-visual reveal">
+              <div class="journey-phone">
+                <img src="img/figma-ui/saved.png" alt="Doripe 저장함 화면" />
+              </div>
+            </div>
+          </article>
+
+          <article class="journey-row">
+            <div class="journey-visual reveal">
+              <div class="journey-phone">
+                <img src="img/figma-ui/route-plan-generated.png" alt="Doripe 루트 계획 화면" />
+              </div>
+            </div>
+            <div class="journey-copy reveal">
+              <p class="journey-kicker">Go</p>
+              <h3 class="journey-title">오늘 갈 수 있는 순서로 떠나세요.</h3>
+              <p class="journey-text">
+                카페, 식당, 술집까지 이어서 가려면 순서와 동선이 복잡해지기 쉽습니다. Doripe에서는 후보를 지도 위에서 한 번에 보고, 오늘 움직일 순서를 간단하게 정리할 수 있어요.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<section id="pricing" class="relative overflow-hidden bg-white px-5 py-20 text-center md:px-10 md:py-28 lg:px-16">
+  <div class="glow-field opacity-50" aria-hidden="true"></div>
+  <div class="relative z-10 mx-auto max-w-[980px]">
+    <h2 class="cta-title reveal text-ink">
+      저장해두고 잊던 장소,<br />
+      이제 갈 때 <br class="md:hidden" />다시 꺼내세요.
     </h2>
-    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
-      <div class="reveal rounded-2xl border border-border bg-card/70 p-5 md:p-6">
-        <p class="text-lg md:text-xl font-bold leading-snug">
-          어디 갈지 정하려고<br />
-          <span class="text-primary">지도와 인스타</span>를 계속 오가던 날.
-        </p>
-      </div>
-      <div class="reveal rounded-2xl border border-border bg-card/70 p-5 md:p-6">
-        <p class="text-lg md:text-xl font-bold leading-snug">
-          오늘 <span class="text-primary">분위기</span>에 맞는 곳 하나<br />
-          찾는 데만 지쳐버릴 때.
-        </p>
-      </div>
-      <div class="reveal rounded-2xl border border-border bg-card/70 p-5 md:p-6">
-        <p class="text-lg md:text-xl font-bold leading-snug">
-          인스타에서 저장한 감성 장소,<br />
-          지도에서는 <span class="text-primary">이름만</span> 남아버릴 때.
-        </p>
-      </div>
-      <div class="reveal rounded-2xl border border-border bg-card/70 p-5 md:p-6">
-        <p class="text-lg md:text-xl font-bold leading-snug">
-          후보는 골라뒀는데<br />
-          어디부터 가야 할지 <span class="text-primary">동선</span>이 막막할 때.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FLOW -->
-<section class="px-5 py-20 md:py-28">
-  <div class="max-w-5xl mx-auto">
-    <div class="max-w-3xl">
-      <p class="reveal text-primary text-sm font-semibold tracking-wide">그래서 Doripe는 이렇게 써요</p>
-      <h2 class="reveal mt-3 text-2xl md:text-4xl font-bold leading-snug">
-        장소 찾기부터 저장, 루트까지<br />
-        한 흐름으로 이어지게.
-      </h2>
-      <p class="reveal mt-4 text-mutedfg text-sm md:text-base leading-relaxed">
-        장소를 찾고 저장하는 일이 흩어지지 않게, 발견부터 방문까지 자연스럽게 이어지게 만들고 싶어요.
-      </p>
-    </div>
-    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-      <div class="reveal rounded-2xl border border-border bg-card/70 p-5">
-        <div class="flex items-baseline gap-3">
-          <p class="shrink-0 text-primary font-mono text-sm">01</p>
-          <h3 class="text-xl font-black leading-tight">장소 발견</h3>
-        </div>
-        <p class="mt-3 text-mutedfg text-sm leading-relaxed">마음에 걸리는 장소를 먼저 찾아요.</p>
-      </div>
-      <div class="reveal rounded-2xl border border-border bg-card/70 p-5">
-        <div class="flex items-baseline gap-3">
-          <p class="shrink-0 text-primary font-mono text-sm">02</p>
-          <h3 class="text-xl font-black leading-tight">저장 정리</h3>
-        </div>
-        <p class="mt-3 text-mutedfg text-sm leading-relaxed">흩어진 후보를 취향별로 모아요.</p>
-      </div>
-      <div class="reveal rounded-2xl border border-border bg-card/70 p-5">
-        <div class="flex items-baseline gap-3">
-          <p class="shrink-0 text-primary font-mono text-sm">03</p>
-          <h3 class="text-xl font-black leading-tight">조건 필터</h3>
-        </div>
-        <p class="mt-3 text-mutedfg text-sm leading-relaxed">거리와 분위기 같은 조건으로 좁혀요.</p>
-      </div>
-      <div class="reveal rounded-2xl border border-border bg-card/70 p-5">
-        <div class="flex items-baseline gap-3">
-          <p class="shrink-0 text-primary font-mono text-sm">04</p>
-          <h3 class="text-xl font-black leading-tight">후보 꺼내기</h3>
-        </div>
-        <p class="mt-3 text-mutedfg text-sm leading-relaxed">갈 만한 장소만 다시 꺼내요.</p>
-      </div>
-      <div class="reveal rounded-2xl border border-border bg-card/70 p-5">
-        <div class="flex items-baseline gap-3">
-          <p class="shrink-0 text-primary font-mono text-sm">05</p>
-          <h3 class="text-xl font-black leading-tight">루트로 이어가기</h3>
-        </div>
-        <p class="mt-3 text-mutedfg text-sm leading-relaxed">선택한 후보를 갈 수 있는 동선으로 이어요.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- APP PREVIEW -->
-<section class="py-20 md:py-28 overflow-hidden">
-  <div class="max-w-5xl mx-auto px-5">
-    <h2 class="reveal text-2xl md:text-4xl font-bold leading-snug">
-      <span class="block md:inline">마음에 드는 곳을</span><span class="block text-primary md:inline md:ml-2">넘기고, 저장하고, 꺼내요.</span>
-    </h2>
-  </div>
-
-  <div class="relative mt-10 flex flex-col items-center" id="appPreview">
-    <div class="overflow-hidden w-full max-w-md md:max-w-3xl">
-      <div class="carousel-track flex" id="carouselTrack" style="transform:translateX(0%);">
-        <div class="w-full shrink-0 flex flex-col items-center text-center px-5">
-          <span class="text-primary font-mono text-sm tracking-wider mb-4">01</span>
-          <div class="w-[220px] md:w-[340px] aspect-[9/16] rounded-3xl border border-border bg-card overflow-hidden relative">
-            <img src="img/mockups/01-space.png" alt="서울숲 한강 다리 공간 카드" class="absolute inset-0 w-full h-full object-cover" />
-          </div>
-          <h3 class="mt-5 text-base md:text-2xl font-semibold">오늘 움직일 동네부터</h3>
-          <p class="mt-2 text-mutedfg text-sm md:text-base leading-relaxed max-w-[280px] md:max-w-[430px]">
-            <span class="block">멀리 있는 핫플보다,</span>
-            <span class="block">지금 갈 수 있는 범위 안에서 먼저 찾아요.</span>
-          </p>
-        </div>
-        <div class="w-full shrink-0 flex flex-col items-center text-center px-5">
-          <span class="text-primary font-mono text-sm tracking-wider mb-4">02</span>
-          <div class="w-[220px] md:w-[340px] aspect-[9/16] rounded-3xl border border-border bg-card overflow-hidden relative">
-            <img src="img/mockups/02-cafe.png" alt="창가 카페 카드" class="absolute inset-0 w-full h-full object-cover" />
-          </div>
-          <h3 class="mt-5 text-base md:text-2xl font-semibold">카드처럼 넘기며 발견하기</h3>
-          <p class="mt-2 text-mutedfg text-sm md:text-base leading-relaxed max-w-[280px] md:max-w-[430px]">
-            <span class="block">사진과 분위기를 먼저 보고,</span>
-            <span class="block">가격대와 거리로 가볍게 좁혀요.</span>
-          </p>
-        </div>
-        <div class="w-full shrink-0 flex flex-col items-center text-center px-5">
-          <span class="text-primary font-mono text-sm tracking-wider mb-4">03</span>
-          <div class="w-[220px] md:w-[340px] aspect-[9/16] rounded-3xl border border-border bg-card overflow-hidden relative">
-            <img src="img/mockups/03-collection.png" alt="저장한 장소 컬렉션" class="absolute inset-0 w-full h-full object-cover" />
-          </div>
-          <h3 class="mt-5 text-base md:text-2xl font-semibold">기억나게 저장하기</h3>
-          <p class="mt-2 text-mutedfg text-sm md:text-base leading-relaxed max-w-[280px] md:max-w-[430px]">
-            <span class="block">이름만 남기는 저장이 아니라,</span>
-            <span class="block">분위기와 상황별로 다시 꺼내요.</span>
-          </p>
-        </div>
-        <div class="w-full shrink-0 flex flex-col items-center text-center px-5">
-          <span class="text-primary font-mono text-sm tracking-wider mb-4">04</span>
-          <div class="w-[220px] md:w-[340px] aspect-[9/16] rounded-3xl border border-border bg-card overflow-hidden relative">
-            <img src="img/mockups/04-route.png" alt="지도와 루트 화면" class="absolute inset-0 w-full h-full object-cover" />
-          </div>
-          <h3 class="mt-5 text-base md:text-2xl font-semibold">갈 때는 루트로</h3>
-          <p class="mt-2 text-mutedfg text-sm md:text-base leading-relaxed max-w-[280px] md:max-w-[430px]">
-            <span class="block">저장해둔 후보 중 오늘 갈 곳만 골라,</span>
-            <span class="block">걷기 좋은 순서로 이어봐요.</span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex gap-2 md:gap-3 mt-8 md:mt-16" id="dots">
-      <button data-idx="0" class="w-6 h-2 rounded-full bg-primary transition-all duration-300" aria-label="1"></button>
-      <button data-idx="1" class="w-2 h-2 rounded-full bg-mutedfg/30 hover:bg-mutedfg/60 transition-all duration-300" aria-label="2"></button>
-      <button data-idx="2" class="w-2 h-2 rounded-full bg-mutedfg/30 hover:bg-mutedfg/60 transition-all duration-300" aria-label="3"></button>
-      <button data-idx="3" class="w-2 h-2 rounded-full bg-mutedfg/30 hover:bg-mutedfg/60 transition-all duration-300" aria-label="4"></button>
-    </div>
-
-    <button id="prev" class="absolute left-2 md:left-1/2 md:-translate-x-[260px] top-[34%] w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-primary/70 bg-black/70 backdrop-blur-md flex items-center justify-center text-primary text-xl md:text-3xl font-bold hover:bg-primary hover:text-black hover:scale-110 transition-all disabled:opacity-25 disabled:hover:scale-100 disabled:hover:bg-black/70 disabled:hover:text-primary z-20" style="box-shadow:0 0 20px rgba(34,255,136,.35);" aria-label="prev">‹</button>
-    <button id="next" class="absolute right-2 md:right-auto md:left-1/2 md:translate-x-[196px] top-[34%] w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-primary/70 bg-black/70 backdrop-blur-md flex items-center justify-center text-primary text-xl md:text-3xl font-bold hover:bg-primary hover:text-black hover:scale-110 transition-all disabled:opacity-25 disabled:hover:scale-100 disabled:hover:bg-black/70 disabled:hover:text-primary z-20" style="box-shadow:0 0 20px rgba(34,255,136,.35);" aria-label="next">›</button>
-  </div>
-</section>
-
-<!-- NOTIFY CTA -->
-<section class="px-5 py-16 md:py-24 border-y border-border/40">
-  <div class="max-w-5xl mx-auto">
-    <div class="max-w-3xl mx-auto text-center">
-      <p class="reveal text-primary text-sm font-semibold tracking-wide">알림 신청</p>
-      <h2 class="reveal mt-3 text-2xl md:text-4xl font-bold leading-snug">
-        인스타에서 보고,<br />
-        지도에 저장해두고,<br />
-        결국 까먹던 흐름 대신.
-      </h2>
-      <p class="reveal mt-4 text-mutedfg text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
-        <span class="block">Doripe에서 마음에 드는 장소를 정리하고,</span>
-        <span class="block">이번엔 실제로 가볼 수 있게 준비해보세요.</span>
-      </p>
-      <div class="reveal mt-8">
-        <a href="/notify" class="inline-block px-8 py-4 rounded-full gradient-cta text-black font-semibold text-base">알림 신청하고 취향 세팅하기</a>
-      </div>
-      <p class="reveal mt-5 text-mutedfg text-sm md:text-base flex items-center justify-center gap-2.5">
-        <span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-        <span><span id="signupCountFinal" class="text-primary font-bold">14</span>명이 이미 Doripe를 먼저 확인하고 있어요</span>
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- BUSINESS PILOT -->
-<section class="px-5 py-24 md:py-32">
-  <div class="max-w-3xl mx-auto rounded-3xl border border-primary/25 bg-primary/5 p-6 md:p-8">
-    <p class="reveal text-primary text-sm font-semibold tracking-wide">FOR LOCAL SPACES</p>
-    <h2 class="reveal mt-3 text-2xl md:text-3xl font-bold leading-snug">
-      분위기와 상황으로<br />
-      발견되고 싶은 공간이라면.
-    </h2>
-    <p class="reveal mt-4 text-mutedfg text-sm md:text-base leading-relaxed max-w-2xl">
-      <span class="block">카페, 식당, 전시, 산책 공간처럼</span>
-      <span class="block">사용자가 실제로 고르는 기준에 맞춰</span>
-      <span class="block">장소를 보여주는 베타를 준비하고 있어요.</span>
+    <p class="reveal mx-auto mt-6 max-w-2xl text-base leading-8 text-muted">
+      Doripe 베타가 열리면 가장 먼저 알려드릴게요.
     </p>
-    <div class="reveal mt-6 flex flex-col sm:flex-row gap-3">
-      <a href="/business" class="inline-flex items-center justify-center px-5 py-3 rounded-full border border-primary/60 text-primary font-semibold text-sm hover:bg-primary hover:text-black transition-colors">공간 제휴 문의</a>
-      <a href="/notify" class="inline-flex items-center justify-center px-5 py-3 rounded-full border border-border text-fg font-semibold text-sm hover:border-primary/60 transition-colors">유저 베타 신청</a>
+    <div class="reveal mt-9">
+      <a href="/notify" class="primary-cta inline-flex items-center gap-4 px-5 py-3.5 text-[15px] font-semibold">
+        알림신청
+        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-bluebrand" aria-hidden="true">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+      </a>
     </div>
+    <p class="reveal mt-5 text-sm font-medium text-muted">
+      <span id="signupCountFinal" class="font-bold text-bluebrand" data-fallback-count="488">1</span>명이 Doripe를 먼저 확인했어요
+    </p>
   </div>
 </section>
 
-<footer class="px-5 py-8 border-t border-border/40">
-  <div class="max-w-3xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+<footer class="site-footer border-t border-black/10 bg-white px-5 py-8 md:px-10 lg:px-16">
+  <div class="mx-auto flex max-w-[1600px] flex-col gap-4 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
     <div class="flex flex-col gap-1">
-      <span class="text-mutedfg text-xs">© 2026 Doripe</span>
-      <a href="mailto:cityboy@yonsei.ac.kr" class="text-mutedfg/70 text-[11px] hover:text-fg transition-colors">cityboy@yonsei.ac.kr</a>
+      <span>© 2026 Doripe</span>
+      <a href="mailto:support@doripe.kr" class="transition hover:text-ink">support@doripe.kr</a>
     </div>
-    <div class="flex items-center gap-3 text-[11px]">
-      <a href="/terms" class="text-mutedfg hover:text-fg transition-colors">이용약관</a>
-      <span class="text-mutedfg/40">·</span>
-      <a href="/privacy" class="text-mutedfg hover:text-fg transition-colors font-semibold">개인정보처리방침</a>
-      <span class="text-mutedfg/40">·</span>
-      <a href="/business" class="text-mutedfg hover:text-fg transition-colors">공간 제휴</a>
-      <span class="text-mutedfg/40">·</span>
-      <a href="/blog" class="text-mutedfg hover:text-fg transition-colors">블로그</a>
+    <div class="flex flex-wrap items-center gap-3">
+      <a href="/terms" class="transition hover:text-ink">이용약관</a>
+      <a href="/privacy" class="transition hover:text-ink">개인정보처리방침</a>
+      <a href="/blog" class="transition hover:text-ink">블로그</a>
     </div>
   </div>
 </footer>
 
-<div class="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-  <div class="pt-6 pb-4 px-5" style="background:linear-gradient(0deg, #000 30%, rgba(0,0,0,.95), transparent);">
-    <a href="/notify" class="block w-full py-3.5 rounded-full gradient-cta text-black font-semibold text-sm text-center">내 장소 취향 세팅하기</a>
-    <p class="mt-2.5 text-mutedfg text-xs text-center">
-      <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mr-1.5 align-middle animate-pulse"></span>
-      <span id="signupCountSticky" class="text-primary font-bold">14</span>명이 이미 Doripe를 먼저 확인하고 있어요
-    </p>
+<div id="mobileNotifyBar" class="fixed bottom-0 left-0 right-0 z-50 md:hidden">
+  <div class="px-5 pb-4 pt-8" style="background:linear-gradient(0deg, rgba(255,255,255,1) 42%, rgba(255,255,255,.88), transparent);">
+    <a href="/notify" class="primary-cta flex w-full items-center justify-center gap-3 py-3.5 text-center text-sm font-semibold">알림신청</a>
   </div>
 </div>
 
 <script>
+  if (location.hash === '#business') location.replace('/business');
+  if (location.hash === '#company') location.replace('/company');
+
   const CAMPAIGN_CODES = ['dori-001','dori-002','dori-003','dori-004','dori-005','dori-006','dori-007','dori-008','dori-009','dori-010','dori-011','dori-012','dori-013','dori-014','dori-015','dori-016','dori-017','dori-018','dori-019','dori-020'];
   const campaignParam = new URLSearchParams(location.search).get('c');
   const campaignCode = CAMPAIGN_CODES.includes(campaignParam) ? campaignParam : '';
@@ -457,71 +1095,85 @@
     keepalive: true
   }).catch(()=>{});
 
-  (function () {
-    const track = document.getElementById('heroTrack');
-    const dots = document.querySelectorAll('#heroDots span');
-    let i = 0;
-    const total = 5;
-    const step = 100 / total;
-    function tick() {
-      i = (i + 1) % total;
-      track.style.transform = `translateX(-${i * step}%)`;
-      dots.forEach((d, di) => {
-        d.className = di === i
-          ? 'w-5 h-1 rounded-full bg-primary transition-all duration-300'
-          : 'w-1 h-1 rounded-full bg-fg/30 transition-all duration-300';
-      });
-      setTimeout(tick, i === 0 ? 6000 : 3500);
-    }
-    setTimeout(tick, 6000);
-  })();
+  const countIds = ['signupCountHero','signupCountCompany','signupCountFinal'];
+  const countEls = countIds.map((id) => document.getElementById(id)).filter(Boolean);
+  const fallbackCount = countEls.reduce((max, el) => {
+    const value = Number(el.dataset.fallbackCount || el.textContent || 1);
+    return Number.isFinite(value) ? Math.max(max, value) : max;
+  }, 488);
+  const countFormatter = new Intl.NumberFormat('ko-KR');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let displayedCount = 1;
+  let pendingCountFrame = 0;
 
-  (function () {
-    fetch('/api/count').then(r => r.json()).then(j => {
-      if (j && typeof j.count === 'number') {
-        ['signupCountHero','signupCountSticky','signupCountFinal'].forEach((id) => {
-          const el = document.getElementById(id);
-          if (el) el.textContent = String(j.count);
-        });
-      }
-    }).catch(()=>{});
-  })();
+  function setDisplayCount(value) {
+    displayedCount = Math.max(1, Math.round(value));
+    countEls.forEach((el) => {
+      el.textContent = countFormatter.format(displayedCount);
+    });
+  }
+
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function animateDisplayCount(target, duration = 1200) {
+    cancelAnimationFrame(pendingCountFrame);
+    const from = displayedCount;
+    const to = Math.max(1, Math.round(target));
+    if (!countEls.length) return;
+    if (prefersReducedMotion || from === to) {
+      setDisplayCount(to);
+      return;
+    }
+    const startedAt = performance.now();
+    function tick(now) {
+      const progress = Math.min(1, (now - startedAt) / duration);
+      setDisplayCount(from + (to - from) * easeOutCubic(progress));
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function startPendingCount() {
+    if (!countEls.length) return;
+    setDisplayCount(1);
+    if (prefersReducedMotion) return;
+    const pendingTarget = Math.max(28, Math.min(fallbackCount - 24, 160));
+    const startedAt = performance.now();
+    function tick(now) {
+      const elapsed = now - startedAt;
+      const progress = Math.min(.96, elapsed / 2600);
+      setDisplayCount(1 + (pendingTarget - 1) * easeOutCubic(progress));
+      pendingCountFrame = requestAnimationFrame(tick);
+    }
+    pendingCountFrame = requestAnimationFrame(tick);
+  }
+
+  startPendingCount();
+  fetch('/api/count', { cache: 'no-store' }).then(r => r.json()).then(j => {
+    const latestCount = Number(j?.count);
+    animateDisplayCount(Number.isFinite(latestCount) ? latestCount : fallbackCount);
+  }).catch(() => {
+    animateDisplayCount(fallbackCount);
+  });
+
+  const mobileNotifyBar = document.getElementById('mobileNotifyBar');
+  const businessSection = document.getElementById('business');
+  if (mobileNotifyBar && businessSection) {
+    const mobileBarObserver = new IntersectionObserver((entries) => {
+      const businessVisible = entries.some((entry) => entry.isIntersecting);
+      mobileNotifyBar.classList.toggle('is-hidden', businessVisible);
+    }, { threshold: 0.12 });
+    mobileBarObserver.observe(businessSection);
+  }
 
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
-  }, { rootMargin: '-60px' });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  let idx = 0;
-  const track = document.getElementById('carouselTrack');
-  const dots = document.querySelectorAll('#dots button');
-  const prev = document.getElementById('prev');
-  const next = document.getElementById('next');
-  const lastIdx = dots.length - 1;
-  function go(i) {
-    idx = Math.max(0, Math.min(lastIdx, i));
-    track.style.transform = `translateX(-${idx * 100}%)`;
-    dots.forEach((d, di) => {
-      if (di === idx) d.className = 'w-6 h-2 rounded-full bg-primary transition-all duration-300';
-      else d.className = 'w-2 h-2 rounded-full bg-mutedfg/30 hover:bg-mutedfg/60 transition-all duration-300';
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('show');
     });
-    prev.disabled = idx === 0;
-    next.disabled = idx === lastIdx;
-  }
-  dots.forEach(d => d.addEventListener('click', () => go(parseInt(d.dataset.idx, 10))));
-  prev.addEventListener('click', () => go(idx - 1));
-  next.addEventListener('click', () => go(idx + 1));
-  go(0);
-
-  let startX = null;
-  track.parentElement.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-  track.parentElement.addEventListener('touchend', e => {
-    if (startX === null) return;
-    const dx = e.changedTouches[0].clientX - startX;
-    if (dx < -50) go(idx + 1);
-    else if (dx > 50) go(idx - 1);
-    startX = null;
-  });
+  }, { rootMargin: '-70px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 </body>
 </html>

@@ -44,7 +44,7 @@ export function getSessionId() {
 
 export function initialState() {
   return {
-    screen: "region",
+    screen: "welcome",
     tab: "discover",
     selectedNeighborhoodId: CONFIG.activeNeighborhoodId,
     selectedPlaceId: null,
@@ -52,13 +52,36 @@ export function initialState() {
     currentPhotoIndex: 0,
     cardActionCount: 0,
     photoDirection: "",
+    discoverTutorialSeen: false,
+    onboardingAnswers: {
+      source: "",
+      habit: ""
+    },
+    tagSetupComplete: false,
     savedPlaceIds: [],
     skippedPlaceIds: [],
     routePlaceIds: [],
+    routeIncludePrevious: false,
+    routeExpandedType: "",
+    routeSummaryOpen: false,
+    deletePlaceIds: [],
+    savedFilters: {
+      type: [],
+      mood: [],
+      situation: []
+    },
+    savedFilterOpen: false,
+    savedFilterNoResults: false,
+    routeFilterOpen: false,
+    regionPickerOpen: false,
+    deleteConfirmOpen: false,
     alert: null,
     shareOpen: false,
+    shareLinksByPlaceId: {},
     sharedContext: null,
-    selectedTags: []
+    selectedTags: [],
+    feedbackType: "앱 오류",
+    feedbackText: ""
   };
 }
 

@@ -1,6 +1,9 @@
 import { CONFIG } from "./config.js";
 import { getAnonymousId, getSessionId } from "./state.js";
 
+const BOOTSTRAP_CACHE_KEY = `${CONFIG.storageKey}_bootstrap_v1`;
+const BOOTSTRAP_CACHE_TTL_MS = 5 * 60 * 1000;
+
 async function jsonFetch(url, options = {}) {
   const response = await fetch(url, {
     ...options,
@@ -11,8 +14,45 @@ async function jsonFetch(url, options = {}) {
   return data;
 }
 
+function readBootstrapCache() {
+  try {
+    const raw = window.localStorage.getItem(BOOTSTRAP_CACHE_KEY);
+    if (!raw) return null;
+    const cached = JSON.parse(raw);
+    if (!cached?.data || !cached?.savedAt) return null;
+    return cached;
+  } catch {
+    return null;
+  }
+}
+
+function writeBootstrapCache(data) {
+  try {
+    window.localStorage.setItem(BOOTSTRAP_CACHE_KEY, JSON.stringify({
+      data,
+      savedAt: Date.now()
+    }));
+  } catch {}
+}
+
+async function fetchBootstrap(options = {}) {
+  const data = await jsonFetch(`${CONFIG.adminApiBase}/bootstrap`, options);
+  writeBootstrapCache(data);
+  return { ...data, __fromCache: false };
+}
+
 export function loadBootstrap() {
-  return jsonFetch(`${CONFIG.adminApiBase}/bootstrap`);
+  const cached = readBootstrapCache();
+  if (cached?.data) {
+    const isFresh = Date.now() - Number(cached.savedAt) < BOOTSTRAP_CACHE_TTL_MS;
+    return Promise.resolve({ ...cached.data, __fromCache: true, __cacheFresh: isFresh });
+  }
+
+  return fetchBootstrap();
+}
+
+export function refreshBootstrapCache() {
+  return fetchBootstrap({ cache: "no-cache" });
 }
 
 export function track(eventName, payload = {}) {
