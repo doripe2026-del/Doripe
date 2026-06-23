@@ -55,7 +55,7 @@ function assertAllowedUrl(url: URL) {
   }
 }
 
-async function fetchAllowedHtml(inputUrl: string) {
+async function fetchAllowedHtml(inputUrl: string, options: { stopWhenPlaceIdFound?: boolean } = {}) {
   let current = new URL(inputUrl);
   for (let index = 0; index < 5; index += 1) {
     assertAllowedUrl(current);
@@ -73,7 +73,7 @@ async function fetchAllowedHtml(inputUrl: string) {
       if (!location) throw new Error("네이버 지도 링크 리다이렉트 위치를 찾지 못했습니다.");
       const next = new URL(location, current);
       assertAllowedUrl(next);
-      if (extractPlaceId(next.toString())) {
+      if (options.stopWhenPlaceIdFound && extractPlaceId(next.toString())) {
         return {
           finalUrl: next.toString(),
           html: "",
@@ -279,7 +279,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const initialFetch = await fetchAllowedHtml(parsed.data.url);
+    const initialFetch = await fetchAllowedHtml(parsed.data.url, { stopWhenPlaceIdFound: true });
     const initialPlaceId = extractPlaceId(initialFetch.finalUrl, initialFetch.html);
     if (!initialPlaceId) {
       return NextResponse.json({ message: "네이버 플레이스 ID를 찾지 못했습니다." }, { status: 400 });
