@@ -3,13 +3,19 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
+    { "source": "/company", "destination": "/home/company.html" },
+    { "source": "/notify", "destination": "/home/notify.html" },
+    { "source": "/privacy", "destination": "/home/privacy.html" },
+    { "source": "/terms", "destination": "/home/terms.html" },
+    { "source": "/business", "destination": "/home/business.html" },
     { "source": "/app", "destination": "/app/index.html" },
     { "source": "/app/:path*", "destination": "/app/index.html" },
+    { "source": "/blog", "destination": "/blog/index.html" },
     { "source": "/p/:shareId", "destination": "/api/share?type=place&shareId=:shareId" },
     { "source": "/r/:shareId", "destination": "/api/share?type=route&shareId=:shareId" },
     { "source": "/s/:shareId", "destination": "/share.html" },
     { "source": "/open", "destination": "/share.html" },
-    { "source": "/", "destination": "/index.html" }
+    { "source": "/", "destination": "/home/index.html" }
   ],
   "headers": [
     {

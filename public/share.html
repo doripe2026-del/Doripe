@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Doripe로 이동 중</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Doripe" />
+<meta property="og:title" content="Doripe에서 공유된 장소와 루트" />
+<meta property="og:description" content="앱에서 공유받은 장소와 루트를 확인하세요." />
+<meta property="og:image" content="https://doripe.kr/og-image-v2.png" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="alternate icon" type="image/png" href="favicon.png" />
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f4ee;
+    --ink: #111512;
+    --muted: #697068;
+    --panel: #ffffff;
+    --primary: #00d878;
+    --primary-dark: #083f25;
+    --line: rgba(17, 21, 18, .12);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+  }
+  main {
+    width: min(100%, 420px);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    box-shadow: 0 24px 80px rgba(14, 22, 17, .16);
+    overflow: hidden;
+  }
+  .logo {
+    margin: 38px auto 20px;
+    width: 68px;
+    height: 68px;
+    border-radius: 22px;
+    display: block;
+    object-fit: cover;
+    box-shadow: 0 14px 38px rgba(0, 0, 0, .22);
+  }
+  section {
+    padding: 0 22px 24px;
+    text-align: center;
+  }
+  h1 {
+    margin: 0;
+    font-size: 28px;
+    line-height: 1.16;
+    letter-spacing: 0;
+  }
+  p {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .spinner {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    border: 3px solid #e4ece6;
+    border-top-color: var(--primary);
+    margin: 20px auto 6px;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .actions {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  a, button {
+    appearance: none;
+    border: 0;
+    border-radius: 999px;
+    min-height: 52px;
+    padding: 0 18px;
+    font: inherit;
+    font-weight: 800;
+    text-decoration: none;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .primary {
+    background: var(--ink);
+    color: #fff;
+  }
+  .secondary {
+    background: #edf3ee;
+    color: var(--primary-dark);
+  }
+  .hint {
+    margin-top: 14px;
+    font-size: 12px;
+    line-height: 1.45;
+    color: #8a9189;
+  }
+</style>
+</head>
+<body>
+<main>
+  <img class="logo" src="favicon.png" alt="Doripe" />
+  <section>
+    <h1>Doripe로 이동 중</h1>
+    <p>앱이 설치되어 있으면 앱이 열리고, 없으면 스토어로 이동합니다.</p>
+    <div class="spinner" aria-hidden="true"></div>
+    <div class="actions">
+      <a class="primary" id="open-app" href="doripe://share">앱에서 열기</a>
+      <a class="secondary" id="open-store" href="/">스토어로 이동</a>
+    </div>
+    <div class="hint">스토어 등록 전에는 스토어에서 앱이 검색되지 않을 수 있습니다.</div>
+  </section>
+</main>
+<script>
+  const ANDROID_STORE_URL = "https://play.google.com/store/apps/details?id=com.doripe.app";
+  const IOS_STORE_URL = "https://apps.apple.com/kr/search?term=doripe";
+
+  const pathMatch = /^\/s\/([^/?#]+)/.exec(location.pathname);
+  const params = new URLSearchParams(location.search);
+  const shareId = pathMatch ? decodeURIComponent(pathMatch[1]) : (params.get("doripe_share_id") || params.get("share_id") || "");
+  const appUrl = shareId
+    ? `doripe://share?doripe_share_id=${encodeURIComponent(shareId)}`
+    : `doripe://share${location.search || ""}`;
+  const userAgent = navigator.userAgent || "";
+  const isAndroid = /Android/i.test(userAgent);
+  const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+  const storeUrl = isAndroid ? ANDROID_STORE_URL : isIOS ? IOS_STORE_URL : "/";
+  let shouldRedirectToStore = true;
+
+  document.getElementById("open-app").setAttribute("href", appUrl);
+  document.getElementById("open-store").setAttribute("href", storeUrl);
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) shouldRedirectToStore = false;
+  });
+  window.addEventListener("pagehide", () => {
+    shouldRedirectToStore = false;
+  });
+
+  if (isAndroid || isIOS) {
+    setTimeout(() => {
+      location.href = appUrl;
+    }, 80);
+
+    setTimeout(() => {
+      if (shouldRedirectToStore) {
+        location.replace(storeUrl);
+      }
+    }, 950);
+  }
+</script>
+</body>
+</html>

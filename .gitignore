@@ -17,15 +17,8 @@ npm-debug.*
 yarn-debug.*
 yarn-error.*
 
-# Expo / React Native local output
-.expo/
+# build output
 dist/
 .next/
-web-build/
-ios/
-android/
 *.tsbuildinfo
-
-# generated local preview captures
-doripe-mobile/doripe-preview-*.png
-doripe-mobile/expo-web.log
+.vercel

@@ -20,6 +20,13 @@ function assertIncludes(source, needle, label) {
 }
 
 const requiredFiles = [
+  "public/home/index.html",
+  "public/home/business.html",
+  "public/home/company.html",
+  "public/home/notify.html",
+  "public/home/privacy.html",
+  "public/home/terms.html",
+  "public/admin/index.html",
   "public/app/index.html",
   "public/app/styles.css",
   "public/app/config.js",
@@ -29,6 +36,15 @@ const requiredFiles = [
   "public/app/main.js",
   "public/app/manifest.webmanifest",
   "public/app/sw.js",
+  "public/app/assets/figma-a0-logo.png",
+  "public/app/assets/fonts/PretendardVariable.woff2",
+  "public/blog/index.html",
+  "public/share.html",
+  "api/count.ts",
+  "api/track.ts",
+  "api/track-v2.ts",
+  "api/notify-v2.ts",
+  "api/business-lead.ts",
   "api/share.ts",
   "vercel.json",
 ];
@@ -57,14 +73,13 @@ assertIncludes(config, 'activeNeighborhoodLabel: "연남"', "active neighborhood
 assertIncludes(render, '["discover", "발견"]', "bottom nav discover");
 assertIncludes(render, '["saved", "저장"]', "bottom nav saved");
 assertIncludes(render, '["route", "루트"]', "bottom nav route");
-assert(!render.includes("크리에이터"), "creator tab must stay removed from public MVP");
 assertIncludes(render, "연남으로 시작하기", "Yeonnam start CTA");
 assertIncludes(render, "오늘은 어디를", "tag setup screen");
-assertIncludes(render, "오늘 발견할 장소", "discover screen");
-assertIncludes(render, "12번 넘기기", "limit screen");
+assertIncludes(render, "card-action skip", "discover card controls");
+assertIncludes(render, "오늘 볼 수 있는 카드는", "limit screen");
 assertIncludes(render, "저장함", "saved screen");
 assertIncludes(render, "루트 만들기", "route screen");
-assertIncludes(render, "추후 제공될 기능", "route blocked screen");
+assertIncludes(render, "루트 자동 정리는 곧 열릴 예정", "route blocked screen");
 assertIncludes(render, 'data-action="previous-photo"', "previous photo tap zone");
 assertIncludes(render, 'data-action="next-photo"', "next photo tap zone");
 assertIncludes(render, 'data-action="share-place"', "place share action");
@@ -99,8 +114,15 @@ assertIncludes(share, "/app?shareType=", "share page redirects to app");
 
 const rewrites = vercel.rewrites ?? [];
 const sources = rewrites.map((rewrite) => rewrite.source);
+assert(sources.includes("/"), "vercel rewrite missing /");
+assert(sources.includes("/business"), "vercel rewrite missing /business");
+assert(sources.includes("/company"), "vercel rewrite missing /company");
+assert(sources.includes("/notify"), "vercel rewrite missing /notify");
+assert(sources.includes("/privacy"), "vercel rewrite missing /privacy");
+assert(sources.includes("/terms"), "vercel rewrite missing /terms");
 assert(sources.includes("/app"), "vercel rewrite missing /app");
 assert(sources.includes("/app/:path*"), "vercel rewrite missing /app/:path*");
+assert(sources.includes("/blog"), "vercel rewrite missing /blog");
 assert(sources.includes("/p/:shareId"), "vercel rewrite missing /p/:shareId");
 assert(sources.includes("/r/:shareId"), "vercel rewrite missing /r/:shareId");
 

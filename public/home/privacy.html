@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Doripe 개인정보처리방침</title>
+<meta name="description" content="Doripe 서비스의 개인정보 수집, 이용, 보관, 파기 기준을 안내합니다." />
+<meta name="robots" content="noindex,follow" />
+<link rel="canonical" href="https://doripe.vercel.app/privacy" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="alternate icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { colors: {
+    bg:'#000', fg:'#f5f5f5', card:'#0f0f0f', muted:'#1f1f1f',
+    mutedfg:'#888', border:'#292929', primary:'#22ff88'
+  }}}}
+</script>
+<style>
+  body { background:#000; color:#f5f5f5; font-family:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif; line-height:1.7; }
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:#000; }
+  ::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
+  h2 { font-size:1.05rem; font-weight:700; margin-top:2rem; margin-bottom:.6rem; color:#22ff88; }
+  h3 { font-size:.95rem; font-weight:600; margin-top:1.25rem; margin-bottom:.4rem; }
+  p, li { color:#cfcfcf; font-size:.875rem; }
+  ul { padding-left:1.25rem; margin-top:.4rem; }
+  li { list-style-type:disc; margin-bottom:.25rem; }
+  table { width:100%; border-collapse:collapse; margin-top:.6rem; font-size:.8rem; }
+  th, td { border:1px solid #292929; padding:.5rem .75rem; text-align:left; vertical-align:top; }
+  th { background:#0f0f0f; color:#f5f5f5; font-weight:600; }
+  td { color:#bbb; }
+  a { color:#22ff88; text-decoration:underline; text-underline-offset:2px; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="sticky top-0 z-30 border-b border-border/40" style="background:rgba(0,0,0,.92); backdrop-filter:blur(8px);">
+  <div class="flex items-center gap-3 px-4 py-3 max-w-3xl mx-auto">
+    <a href="/" class="text-mutedfg hover:text-fg text-sm flex items-center gap-1">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      메인으로
+    </a>
+    <span class="text-sm font-semibold ml-auto">개인정보처리방침</span>
+  </div>
+</div>
+
+<main class="max-w-3xl mx-auto px-5 py-10">
+  <h1 class="text-2xl font-bold">Doripe 개인정보처리방침</h1>
+  <p class="mt-2 text-mutedfg text-xs">시행일: 2026년 5월 4일 · 버전 1.0 (베타)</p>
+
+  <p class="mt-6">Doripe(이하 "서비스")는 「개인정보 보호법」 등 관련 법령을 준수하며, 정보주체의 개인정보를 안전하게 보호하기 위해 다음과 같이 개인정보처리방침을 수립·공개합니다.</p>
+
+  <h2>1. 수집하는 개인정보 항목</h2>
+  <p>서비스는 베타 출시 알림 신청을 위해 아래 항목을 수집합니다.</p>
+  <table>
+    <thead><tr><th>구분</th><th>수집 항목</th><th>수집 방법</th></tr></thead>
+    <tbody>
+      <tr><td>필수</td><td>이메일 주소, 연령대, 성별, 거주 권역</td><td>알림 신청 폼</td></tr>
+      <tr><td>선택</td><td>나들이 동행, 선호 분위기, 선호 시간대, 중요도, 저장 습관, 평균 예산, 정보 출처, 나들이 빈도, 새 장소 탐색 시간, 예상 사용 횟수, 한 줄 의견</td><td>알림 신청 폼</td></tr>
+      <tr><td>자동 수집</td><td>접속 IP, User-Agent, Referrer, 접속 일시, 페이지 이동 이벤트(page view, step complete, submit)</td><td>웹 서버 로그·자체 트래킹</td></tr>
+    </tbody>
+  </table>
+
+  <h2>1-1. 만 14세 미만 아동의 개인정보</h2>
+  <p>서비스는 만 14세 미만 아동의 개인정보를 수집하지 않습니다. 신청자는 만 14세 이상임을 확인 체크박스를 통해 보증해야 하며, 만 14세 미만 아동이 신청한 사실이 확인될 경우 즉시 해당 정보를 파기합니다. 만 14세 미만 아동의 신청은 「개인정보 보호법」 제22조의2에 따라 법정대리인의 동의가 필요합니다.</p>
+
+  <h2>2. 개인정보 수집 및 이용 목적</h2>
+  <ul>
+    <li>베타 출시 시 이메일을 통한 알림 발송</li>
+    <li>사용자 취향·행동 데이터 분석을 통한 서비스 기획 및 추천 알고리즘 개선</li>
+    <li>이용 통계 분석, 페이지 이탈 지점 파악 및 UX 개선</li>
+    <li>중복 신청 방지 및 신청 이력 관리</li>
+  </ul>
+
+  <h2>2-1. 선택 동의 항목 (별도 동의)</h2>
+  <p>아래 항목은 선택 동의이며, 미동의해도 베타 알림 신청은 가능합니다.</p>
+  <ul>
+    <li><strong>광고성 정보 수신 동의</strong>: 베타 출시 알림 외 신규 기능, 이벤트, 뉴스레터, 프로모션 안내를 이메일로 발송 (정보통신망법 §50)</li>
+    <li><strong>취향 데이터 비식별 통계 활용 동의</strong>: 수집한 취향 데이터를 개인 식별이 불가능한 형태로 가공하여 트렌드 리포트, 외부 인사이트 자료, 투자자 자료 등에 활용</li>
+  </ul>
+  <p class="mt-2">동의 철회는 언제든지 본 방침 9조의 책임자 이메일로 요청 가능합니다.</p>
+
+  <h2>3. 보유 및 이용 기간</h2>
+  <ul>
+    <li>원칙: 정식 서비스 출시일로부터 <strong>1년</strong>까지 보유 후 지체 없이 파기</li>
+    <li>정보주체가 동의 철회·삭제를 요청한 경우: <strong>요청 즉시 파기</strong></li>
+    <li>관계 법령에 따라 보존이 필요한 경우 해당 기간 동안 보관</li>
+  </ul>
+
+  <h2>4. 개인정보의 제3자 제공</h2>
+  <p>서비스는 정보주체의 개인정보를 제3자에게 제공하지 않습니다. 단, 법령에 따라 요구되는 경우는 예외로 합니다.</p>
+
+  <h2>5. 개인정보의 처리 위탁</h2>
+  <p>서비스는 안정적인 운영을 위해 아래 업체에 개인정보 처리를 위탁할 수 있습니다.</p>
+  <table>
+    <thead><tr><th>수탁자</th><th>위탁 업무</th></tr></thead>
+    <tbody>
+      <tr><td>Vercel Inc.</td><td>웹사이트 호스팅, CDN, 서버리스 함수 실행</td></tr>
+      <tr><td>Vercel Postgres / Supabase</td><td>데이터베이스 호스팅 및 운영</td></tr>
+    </tbody>
+  </table>
+
+  <h2>6. 정보주체의 권리·의무 및 행사 방법</h2>
+  <p>정보주체는 언제든지 다음 권리를 행사할 수 있습니다.</p>
+  <ul>
+    <li>개인정보 열람 요구</li>
+    <li>오류 등이 있을 경우 정정·삭제 요구</li>
+    <li>처리 정지 요구</li>
+    <li>동의 철회 요구</li>
+  </ul>
+  <p class="mt-2">권리 행사는 아래 개인정보 보호 책임자의 이메일로 요청하실 수 있으며, 서비스는 지체 없이 조치합니다.</p>
+
+  <h2>7. 개인정보의 안전성 확보 조치</h2>
+  <ul>
+    <li>관리적: 최소 인원 접근 통제, 접근 권한 관리</li>
+    <li>기술적: HTTPS 통신 암호화, 관리자 페이지 비밀번호 보호 및 HMAC 서명 쿠키 인증</li>
+    <li>물리적: 위탁 호스팅사(Vercel)의 데이터센터 보안 기준 준수</li>
+  </ul>
+
+  <h2>8. 쿠키의 운영 및 거부 방법</h2>
+  <p>서비스는 관리자 인증을 위한 세션 쿠키(<code class="text-primary text-xs">doripe_admin</code>, 24시간 만료)를 사용하며, 일반 사용자에게는 별도의 추적 쿠키를 사용하지 않습니다. 외부 분석 도구(GA, Mixpanel 등)는 사용하지 않습니다.</p>
+
+  <h2>9. 개인정보 보호 책임자</h2>
+  <ul>
+    <li>성명: 한다현</li>
+    <li>이메일: <a href="mailto:support@doripe.kr">support@doripe.kr</a></li>
+  </ul>
+
+  <h2>10. 권익침해 구제 방법</h2>
+  <p>개인정보 침해에 대한 신고·상담이 필요하신 경우 아래 기관에 문의하실 수 있습니다.</p>
+  <ul>
+    <li>개인정보 침해신고센터 (privacy.go.kr / 국번 없이 182)</li>
+    <li>개인정보분쟁조정위원회 (kopico.go.kr / 1833-6972)</li>
+    <li>대검찰청 사이버수사과 (spo.go.kr / 국번 없이 1301)</li>
+    <li>경찰청 사이버수사국 (ecrm.cyber.go.kr / 국번 없이 182)</li>
+  </ul>
+
+  <h2>11. 개정 이력</h2>
+  <ul>
+    <li>2026-05-04: 최초 제정 (v1.0, 베타 출시 알림 신청용)</li>
+  </ul>
+</main>
+
+<footer class="px-5 py-8 mt-10 border-t border-border/40 text-center">
+  <p class="text-mutedfg text-xs">© 2026 Doripe</p>
+  <div class="mt-2 flex justify-center gap-3 text-xs">
+    <a href="/terms" class="text-mutedfg hover:text-fg">이용약관</a>
+    <span class="text-mutedfg/40">·</span>
+    <a href="/privacy" class="text-fg">개인정보처리방침</a>
+    <span class="text-mutedfg/40">·</span>
+    <a href="mailto:support@doripe.kr" class="text-mutedfg hover:text-fg">문의</a>
+  </div>
+</footer>
+
+</body>
+</html>

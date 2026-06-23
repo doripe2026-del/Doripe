@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "migrate": "node --env-file=.env.local scripts/migrate.mjs",
+    "build": "npm run typecheck",
+    "vercel-build": "npm run typecheck",
     "check:mvp-app": "node scripts/check-mvp-app.mjs",
     "build:admin": "node scripts/build-admin.mjs",
     "typecheck": "tsc --noEmit"
