@@ -8,11 +8,12 @@ export const runtime = "nodejs";
 const importSchema = z.object({
   category_id: z.string().max(80).optional().default(""),
   neighborhood_id: z.string().max(80).optional().default(""),
-  url: z.string().url().max(1000),
+  url: z.string().trim().url().max(1000),
 });
 
 const allowedHosts = new Set([
   "map.naver.com",
+  "m.map.naver.com",
   "m.place.naver.com",
   "naver.me",
   "nmap.place.naver.com",
@@ -44,7 +45,12 @@ function assertAllowedUrl(url: URL) {
   if (url.protocol !== "https:" && url.protocol !== "http:") {
     throw new Error("http/https 네이버 지도 링크만 사용할 수 있습니다.");
   }
-  if (!allowedHosts.has(url.hostname)) {
+  const hostname = url.hostname.toLowerCase();
+  const isAllowedNaverHost = allowedHosts.has(hostname)
+    || hostname.endsWith(".map.naver.com")
+    || hostname.endsWith(".place.naver.com");
+
+  if (!isAllowedNaverHost) {
     throw new Error("네이버 지도/플레이스 링크만 사용할 수 있습니다.");
   }
 }
@@ -65,7 +71,15 @@ async function fetchAllowedHtml(inputUrl: string) {
     if (response.status >= 300 && response.status < 400) {
       const location = response.headers.get("location");
       if (!location) throw new Error("네이버 지도 링크 리다이렉트 위치를 찾지 못했습니다.");
-      current = new URL(location, current);
+      const next = new URL(location, current);
+      assertAllowedUrl(next);
+      if (extractPlaceId(next.toString())) {
+        return {
+          finalUrl: next.toString(),
+          html: "",
+        };
+      }
+      current = next;
       continue;
     }
 
@@ -94,7 +108,7 @@ function extractPlaceId(url: string, html = "") {
     if (match?.[1]) return match[1];
   }
   const parsed = new URL(url);
-  return parsed.searchParams.get("placeId") ?? parsed.searchParams.get("id") ?? "";
+  return parsed.searchParams.get("placeId") ?? parsed.searchParams.get("pinId") ?? parsed.searchParams.get("id") ?? "";
 }
 
 function extractAssignedObject(html: string, assignmentName: string) {
