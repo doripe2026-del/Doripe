@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#14c762" />
+    <title>Doripe</title>
+    <link rel="icon" href="/favicon.png" />
+    <link rel="manifest" href="/app/manifest.webmanifest" />
+    <link rel="stylesheet" href="/app/styles.css" />
+  </head>
+  <body>
+    <main id="app" class="app-shell" aria-live="polite">
+      <section class="screen screen-loading">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="loading-bar" aria-hidden="true"><span></span></div>
+        <p>도리페를 여는 중...</p>
+      </section>
+    </main>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/app/sw.js", { scope: "/app" }).catch(() => {});
+        });
+      }
+    </script>
+    <script type="module" src="/app/main.js"></script>
+  </body>
+</html>
