@@ -500,7 +500,7 @@ var require_react_development = __commonJS({
         }
       }
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-      var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), MAYBE_ITERATOR_SYMBOL = Symbol.iterator, didWarnStateUpdateForUnmountedComponent = {}, ReactNoopUpdateQueue = {
+      var REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = /* @__PURE__ */ Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = /* @__PURE__ */ Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = /* @__PURE__ */ Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = /* @__PURE__ */ Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = /* @__PURE__ */ Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = /* @__PURE__ */ Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = /* @__PURE__ */ Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = /* @__PURE__ */ Symbol.for("react.memo"), REACT_LAZY_TYPE = /* @__PURE__ */ Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = /* @__PURE__ */ Symbol.for("react.activity"), MAYBE_ITERATOR_SYMBOL = Symbol.iterator, didWarnStateUpdateForUnmountedComponent = {}, ReactNoopUpdateQueue = {
         isMounted: function() {
           return false;
         },
@@ -543,7 +543,7 @@ var require_react_development = __commonJS({
       deprecatedAPIs.constructor = PureComponent;
       assign(deprecatedAPIs, Component.prototype);
       deprecatedAPIs.isPureReactComponent = true;
-      var isArrayImpl = Array.isArray, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = {
+      var isArrayImpl = Array.isArray, REACT_CLIENT_REFERENCE = /* @__PURE__ */ Symbol.for("react.client.reference"), ReactSharedInternals = {
         H: null,
         A: null,
         T: null,
@@ -1353,7 +1353,7 @@ var require_react_dom_development = __commonJS({
         },
         p: 0,
         findDOMNode: null
-      }, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React2.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+      }, REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), ReactSharedInternals = React2.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
       "function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error(
         "React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills"
       );
@@ -18520,14 +18520,14 @@ var require_react_dom_client_development = __commonJS({
         ));
       }
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-      var Scheduler = require_scheduler(), React2 = require_react(), ReactDOM = require_react_dom(), assign = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy");
-      Symbol.for("react.scope");
-      var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
-      Symbol.for("react.legacy_hidden");
-      Symbol.for("react.tracing_marker");
-      var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
-      Symbol.for("react.view_transition");
-      var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React2.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+      var Scheduler = require_scheduler(), React2 = require_react(), ReactDOM = require_react_dom(), assign = Object.assign, REACT_LEGACY_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.element"), REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = /* @__PURE__ */ Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = /* @__PURE__ */ Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = /* @__PURE__ */ Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = /* @__PURE__ */ Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = /* @__PURE__ */ Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = /* @__PURE__ */ Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = /* @__PURE__ */ Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = /* @__PURE__ */ Symbol.for("react.memo"), REACT_LAZY_TYPE = /* @__PURE__ */ Symbol.for("react.lazy");
+      /* @__PURE__ */ Symbol.for("react.scope");
+      var REACT_ACTIVITY_TYPE = /* @__PURE__ */ Symbol.for("react.activity");
+      /* @__PURE__ */ Symbol.for("react.legacy_hidden");
+      /* @__PURE__ */ Symbol.for("react.tracing_marker");
+      var REACT_MEMO_CACHE_SENTINEL = /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel");
+      /* @__PURE__ */ Symbol.for("react.view_transition");
+      var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = /* @__PURE__ */ Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React2.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
         pending: false,
         data: null,
         method: null,
@@ -21669,7 +21669,7 @@ var require_react_jsx_runtime_development = __commonJS({
       function isValidElement(object) {
         return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
       }
-      var React2 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React2.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+      var React2 = require_react(), REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = /* @__PURE__ */ Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = /* @__PURE__ */ Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = /* @__PURE__ */ Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = /* @__PURE__ */ Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = /* @__PURE__ */ Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = /* @__PURE__ */ Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = /* @__PURE__ */ Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = /* @__PURE__ */ Symbol.for("react.memo"), REACT_LAZY_TYPE = /* @__PURE__ */ Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = /* @__PURE__ */ Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = /* @__PURE__ */ Symbol.for("react.client.reference"), ReactSharedInternals = React2.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
         return null;
       };
       React2 = {
@@ -36454,6 +36454,7 @@ var navItems = [
     label: "\uCF58\uD150\uCE20",
     subTabs: [
       { id: "photo_review", label: "\uC7A5\uC18C\uCE74\uB4DC \uAD00\uB9AC" },
+      { id: "scrap_management", label: "\uC2A4\uD06C\uB7A9 \uAD00\uB9AC" },
       { id: "photo_management", label: "\uC0AC\uC9C4\uAD00\uB9AC" },
       { id: "tag_management", label: "\uD0DC\uADF8\uAD00\uB9AC" }
     ]
@@ -37293,6 +37294,129 @@ function NaverPlaceImportForm({
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { className: "btn ghost", disabled: isSaving, type: "button", onClick: onCancel, children: "\uCDE8\uC18C" }),
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { className: "btn primary", disabled: isSaving, type: "button", onClick: () => void submit(), children: isSaving ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoadingSpinner, { label: "\uAC00\uC838\uC624\uB294 \uC911" }) : "\uB124\uC774\uBC84 \uC7A5\uC18C \uAC00\uC838\uC624\uAE30" })
     ] })
+  ] });
+}
+function ScrapManagementView() {
+  const [files, setFiles] = (0, import_react.useState)([]);
+  const [isSubmitting, setIsSubmitting] = (0, import_react.useState)(false);
+  const [message, setMessage] = (0, import_react.useState)(null);
+  const [url, setUrl] = (0, import_react.useState)("");
+  const previews = (0, import_react.useMemo)(() => files.slice(0, 6).map((file) => ({
+    name: file.name,
+    size: file.size,
+    url: URL.createObjectURL(file)
+  })), [files]);
+  (0, import_react.useEffect)(() => () => {
+    previews.forEach((preview) => URL.revokeObjectURL(preview.url));
+  }, [previews]);
+  function addFiles(nextFiles) {
+    const imageFiles = nextFiles.filter((file) => file.type.startsWith("image/"));
+    setFiles((current) => [...current, ...imageFiles].slice(0, 20));
+    if (nextFiles.length !== imageFiles.length) {
+      setMessage("\uC774\uBBF8\uC9C0 \uD30C\uC77C\uB9CC \uCD94\uAC00\uD588\uC2B5\uB2C8\uB2E4.");
+    }
+  }
+  async function submit() {
+    const trimmedUrl = url.trim();
+    if (!trimmedUrl) {
+      setMessage("\uB124\uC774\uBC84\uC9C0\uB3C4 URL\uC744 \uC785\uB825\uD574\uC57C \uD569\uB2C8\uB2E4.");
+      return;
+    }
+    if (!files.length) {
+      setMessage("\uC0AC\uC9C4\uC744 1\uC7A5 \uC774\uC0C1 \uC62C\uB824\uC57C \uD569\uB2C8\uB2E4.");
+      return;
+    }
+    setIsSubmitting(true);
+    setMessage(null);
+    try {
+      const formData = new FormData();
+      formData.append("url", trimmedUrl);
+      files.forEach((file) => formData.append("photos", file));
+      const response = await fetch(adminApiPath("/api/admin/scrap-submissions"), {
+        body: formData,
+        method: "POST"
+      });
+      const body = await response.json().catch(() => null);
+      if (!response.ok) {
+        setMessage(body?.message ?? "\uC2A4\uD06C\uB7A9 \uC81C\uCD9C\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.");
+        return;
+      }
+      setUrl("");
+      setFiles([]);
+      setMessage(`\uC81C\uCD9C \uC644\uB8CC: \uC0AC\uC9C4 ${body?.submission?.file_count ?? files.length}\uC7A5\uC774 \uC2A4\uD06C\uB7A9 \uD050\uC5D0 \uB4E4\uC5B4\uAC14\uC2B5\uB2C8\uB2E4.`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionIntro, { eyebrow: "Content", title: "\uC2A4\uD06C\uB7A9 \uAD00\uB9AC", description: "\uB124\uC774\uBC84\uC9C0\uB3C4 URL\uACFC \uC7A5\uC18C \uC0AC\uC9C4\uC744 \uB4F1\uB85D\uD569\uB2C8\uB2E4." }),
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "scrap-management-shell", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+      Card,
+      {
+        actions: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "status-pill count-pill", children: [
+          files.length,
+          "\uC7A5 \uC120\uD0DD"
+        ] }),
+        eyebrow: "Scrap intake",
+        title: "\uB124\uC774\uBC84\uC9C0\uB3C4 URL \xB7 \uC0AC\uC9C4 \uC81C\uCD9C",
+        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "scrap-submit-form", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { className: "scrap-url-field", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "\uB124\uC774\uBC84\uC9C0\uB3C4 URL" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+              "input",
+              {
+                value: url,
+                onChange: (event) => setUrl(event.target.value),
+                placeholder: "https://naver.me/... \uB610\uB294 \uB124\uC774\uBC84 \uD50C\uB808\uC774\uC2A4 URL"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+            "label",
+            {
+              className: `scrap-dropzone ${files.length ? "has-files" : ""}`,
+              onDragOver: (event) => event.preventDefault(),
+              onDrop: (event) => {
+                event.preventDefault();
+                addFiles(Array.from(event.dataTransfer.files));
+              },
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  "input",
+                  {
+                    accept: "image/jpeg,image/png,image/webp",
+                    multiple: true,
+                    type: "file",
+                    onChange: (event) => {
+                      addFiles(Array.from(event.currentTarget.files ?? []));
+                      event.currentTarget.value = "";
+                    }
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "scrap-dropzone-icon", children: icons.image }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "\uC0AC\uC9C4 \uC62C\uB9AC\uAE30" }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("em", { children: "\uD074\uB9AD\uD558\uAC70\uB098 \uB4DC\uB798\uADF8\uD574\uC11C \uCD94\uAC00 \xB7 \uC7A5\uB2F9 10MB \uC774\uD558" })
+              ]
+            }
+          ),
+          previews.length ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "scrap-preview-grid", children: [
+            previews.map((preview, index2) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { alt: "", src: preview.url }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", { children: preview.name })
+            ] }, `${preview.name}-${index2}`)),
+            files.length > previews.length ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "scrap-extra-count", children: [
+              "+",
+              files.length - previews.length
+            ] }) : null
+          ] }) : null,
+          message ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "inline-warning", children: message }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "scrap-submit-actions", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { className: "btn ghost", disabled: isSubmitting || !files.length, type: "button", onClick: () => setFiles([]), children: "\uC0AC\uC9C4 \uBE44\uC6B0\uAE30" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { className: "btn primary", disabled: isSubmitting, type: "button", onClick: () => void submit(), children: isSubmitting ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoadingSpinner, { label: "\uC81C\uCD9C \uC911" }) : "\uC81C\uCD9C" })
+          ] })
+        ] })
+      }
+    ) })
   ] });
 }
 function PlaceAddMethodPicker({
@@ -39850,6 +39974,9 @@ function ContentView({
         section.title
       )) })
     ] });
+  }
+  if (subTab === "scrap_management") {
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrapManagementView, {});
   }
   if (subTab === "photo_review") {
     return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(

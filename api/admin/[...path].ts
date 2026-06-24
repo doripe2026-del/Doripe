@@ -9,6 +9,7 @@ import { GET as photoSubmissionsGET } from "../../src/admin-routes/admin/photoSu
 import { DELETE as photosDELETE, PATCH as photosPATCH, POST as photosPOST } from "../../src/admin-routes/admin/photos.js";
 import { POST as photosActivatePOST } from "../../src/admin-routes/admin/photosActivate.js";
 import { DELETE as placesDELETE, GET as placesGET, PATCH as placesPATCH, POST as placesPOST } from "../../src/admin-routes/admin/places.js";
+import { POST as scrapSubmissionsPOST } from "../../src/admin-routes/admin/scrapSubmissions.js";
 import { GET as statsGET } from "../../src/admin-routes/admin/stats.js";
 import { GET as tagsGET, POST as tagsPOST } from "../../src/admin-routes/admin/tags.js";
 import { runRoute } from "../../src/admin-server/vercelAdapter.js";
@@ -50,6 +51,8 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
       return runRoute(req, res, { POST: photosActivatePOST });
     case "places":
       return runRoute(req, res, { DELETE: placesDELETE, GET: placesGET, PATCH: placesPATCH, POST: placesPOST });
+    case "scrap-submissions":
+      return runRoute(req, res, { POST: scrapSubmissionsPOST });
     case "stats":
       return runRoute(req, res, { GET: statsGET });
     case "tags":

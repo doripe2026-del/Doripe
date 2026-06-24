@@ -2660,6 +2660,152 @@ button:disabled {
   line-height: 1.45;
 }
 
+.scrap-management-shell {
+  max-width: 760px;
+}
+
+.scrap-submit-form {
+  display: grid;
+  gap: 14px;
+}
+
+.scrap-url-field {
+  display: grid;
+  gap: 7px;
+}
+
+.scrap-url-field span {
+  color: var(--t-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.02em;
+}
+
+.scrap-url-field input {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--t-base);
+  font-size: 14px;
+  font-weight: 760;
+  min-height: 48px;
+  padding: 0 14px;
+}
+
+.scrap-url-field input:focus {
+  border-color: rgb(16 185 129 / 0.5);
+  box-shadow: 0 0 0 4px rgb(16 185 129 / 0.1);
+  outline: none;
+}
+
+.scrap-dropzone {
+  align-items: center;
+  background:
+    radial-gradient(circle at 18% 20%, rgb(16 185 129 / 0.13), transparent 34%),
+    linear-gradient(135deg, #f8fffb, #ffffff 58%, #f3fbf7);
+  border: 1.5px dashed rgb(16 185 129 / 0.36);
+  border-radius: 18px;
+  cursor: pointer;
+  display: grid;
+  gap: 7px;
+  justify-items: center;
+  min-height: 190px;
+  padding: 24px;
+  position: relative;
+  text-align: center;
+}
+
+.scrap-dropzone.has-files {
+  min-height: 148px;
+}
+
+.scrap-dropzone input {
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 1px;
+}
+
+.scrap-dropzone-icon {
+  align-items: center;
+  background: #ecfdf5;
+  border: 1px solid rgb(16 185 129 / 0.2);
+  border-radius: 18px;
+  color: var(--primary-dark);
+  display: inline-flex;
+  height: 56px;
+  justify-content: center;
+  width: 56px;
+}
+
+.scrap-dropzone-icon svg {
+  height: 24px;
+  width: 24px;
+}
+
+.scrap-dropzone strong {
+  color: var(--t-base);
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.scrap-dropzone em {
+  color: var(--t-muted);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 760;
+}
+
+.scrap-preview-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+}
+
+.scrap-preview-grid figure,
+.scrap-extra-count {
+  background: var(--bg-hover);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.scrap-preview-grid img {
+  aspect-ratio: 1;
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+.scrap-preview-grid figcaption {
+  color: var(--t-muted);
+  font-size: 10px;
+  font-weight: 820;
+  overflow: hidden;
+  padding: 7px 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scrap-extra-count {
+  align-items: center;
+  color: var(--primary-dark);
+  display: flex;
+  font-size: 18px;
+  font-weight: 950;
+  justify-content: center;
+  min-height: 116px;
+}
+
+.scrap-submit-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
 .choice-chip-row {
   display: flex;
   flex-wrap: wrap;

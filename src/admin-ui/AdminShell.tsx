@@ -22,6 +22,7 @@ type SubTabId =
   | "partnership_status"
   | "content_dashboard"
   | "photo_management"
+  | "scrap_management"
   | "tag_management"
   | "photo_review";
 
@@ -546,6 +547,7 @@ const navItems: NavItem[] = [
     label: "콘텐츠",
     subTabs: [
       { id: "photo_review", label: "장소카드 관리" },
+      { id: "scrap_management", label: "스크랩 관리" },
       { id: "photo_management", label: "사진관리" },
       { id: "tag_management", label: "태그관리" },
     ],
@@ -1643,6 +1645,131 @@ function NaverPlaceImportForm({
         </button>
       </div>
     </div>
+  );
+}
+
+function ScrapManagementView() {
+  const [files, setFiles] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [url, setUrl] = useState("");
+  const previews = useMemo(() => files.slice(0, 6).map((file) => ({
+    name: file.name,
+    size: file.size,
+    url: URL.createObjectURL(file),
+  })), [files]);
+
+  useEffect(() => () => {
+    previews.forEach((preview) => URL.revokeObjectURL(preview.url));
+  }, [previews]);
+
+  function addFiles(nextFiles: File[]) {
+    const imageFiles = nextFiles.filter((file) => file.type.startsWith("image/"));
+    setFiles((current) => [...current, ...imageFiles].slice(0, 20));
+    if (nextFiles.length !== imageFiles.length) {
+      setMessage("이미지 파일만 추가했습니다.");
+    }
+  }
+
+  async function submit() {
+    const trimmedUrl = url.trim();
+    if (!trimmedUrl) {
+      setMessage("네이버지도 URL을 입력해야 합니다.");
+      return;
+    }
+    if (!files.length) {
+      setMessage("사진을 1장 이상 올려야 합니다.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setMessage(null);
+    try {
+      const formData = new FormData();
+      formData.append("url", trimmedUrl);
+      files.forEach((file) => formData.append("photos", file));
+
+      const response = await fetch(adminApiPath("/api/admin/scrap-submissions"), {
+        body: formData,
+        method: "POST",
+      });
+      const body = await response.json().catch(() => null) as { message?: string; submission?: { file_count?: number } } | null;
+      if (!response.ok) {
+        setMessage(body?.message ?? "스크랩 제출에 실패했습니다.");
+        return;
+      }
+
+      setUrl("");
+      setFiles([]);
+      setMessage(`제출 완료: 사진 ${body?.submission?.file_count ?? files.length}장이 스크랩 큐에 들어갔습니다.`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  return (
+    <>
+      <SectionIntro eyebrow="Content" title="스크랩 관리" description="네이버지도 URL과 장소 사진을 등록합니다." />
+      <div className="scrap-management-shell">
+        <Card
+          actions={<span className="status-pill count-pill">{files.length}장 선택</span>}
+          eyebrow="Scrap intake"
+          title="네이버지도 URL · 사진 제출"
+        >
+          <div className="scrap-submit-form">
+            <label className="scrap-url-field">
+              <span>네이버지도 URL</span>
+              <input
+                value={url}
+                onChange={(event) => setUrl(event.target.value)}
+                placeholder="https://naver.me/... 또는 네이버 플레이스 URL"
+              />
+            </label>
+            <label
+              className={`scrap-dropzone ${files.length ? "has-files" : ""}`}
+              onDragOver={(event) => event.preventDefault()}
+              onDrop={(event) => {
+                event.preventDefault();
+                addFiles(Array.from(event.dataTransfer.files));
+              }}
+            >
+              <input
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                type="file"
+                onChange={(event) => {
+                  addFiles(Array.from(event.currentTarget.files ?? []));
+                  event.currentTarget.value = "";
+                }}
+              />
+              <span className="scrap-dropzone-icon">{icons.image}</span>
+              <strong>사진 올리기</strong>
+              <em>클릭하거나 드래그해서 추가 · 장당 10MB 이하</em>
+            </label>
+            {previews.length ? (
+              <div className="scrap-preview-grid">
+                {previews.map((preview, index) => (
+                  <figure key={`${preview.name}-${index}`}>
+                    <img alt="" src={preview.url} />
+                    <figcaption>{preview.name}</figcaption>
+                  </figure>
+                ))}
+                {files.length > previews.length ? <span className="scrap-extra-count">+{files.length - previews.length}</span> : null}
+              </div>
+            ) : null}
+            {message ? <div className="inline-warning">{message}</div> : null}
+            <div className="scrap-submit-actions">
+              <button className="btn ghost" disabled={isSubmitting || !files.length} type="button" onClick={() => setFiles([])}>
+                사진 비우기
+              </button>
+              <button className="btn primary" disabled={isSubmitting} type="button" onClick={() => void submit()}>
+                {isSubmitting ? <LoadingSpinner label="제출 중" /> : "제출"}
+              </button>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </>
   );
 }
 
@@ -4413,6 +4540,10 @@ function ContentView({
         </div>
       </>
     );
+  }
+
+  if (subTab === "scrap_management") {
+    return <ScrapManagementView />;
   }
 
   if (subTab === "photo_review") {
