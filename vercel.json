@@ -8,6 +8,7 @@
     { "source": "/privacy", "destination": "/home/privacy.html" },
     { "source": "/terms", "destination": "/home/terms.html" },
     { "source": "/business", "destination": "/home/business.html" },
+    { "source": "/admin/:path*", "destination": "/admin/index.html" },
     { "source": "/app", "destination": "/app/index.html" },
     { "source": "/app/:path*", "destination": "/app/index.html" },
     { "source": "/blog", "destination": "/blog/index.html" },
