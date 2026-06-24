@@ -38,6 +38,7 @@ const adminFallbackRoutes = [
   "content",
   "content/content_dashboard",
   "content/photo_management",
+  "content/scrap_management",
   "content/tag_management",
   "content/photo_review",
   "settings",
