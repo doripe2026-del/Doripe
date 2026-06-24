@@ -1671,6 +1671,15 @@ function ScrapManagementView() {
     }
   }
 
+  function fileToDataUrl(file: File) {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => resolve(String(reader.result ?? "")), { once: true });
+      reader.addEventListener("error", () => reject(new Error("사진 파일을 읽지 못했습니다.")), { once: true });
+      reader.readAsDataURL(file);
+    });
+  }
+
   async function submit() {
     const trimmedUrl = url.trim();
     if (!trimmedUrl) {
@@ -1685,12 +1694,24 @@ function ScrapManagementView() {
     setIsSubmitting(true);
     setMessage(null);
     try {
-      const formData = new FormData();
-      formData.append("url", trimmedUrl);
-      files.forEach((file) => formData.append("photos", file));
+      const oversized = files.find((file) => file.size > 10 * 1024 * 1024);
+      if (oversized) {
+        setMessage("사진은 장당 10MB 이하만 올릴 수 있습니다.");
+        return;
+      }
+
+      const photos = await Promise.all(files.map(async (file) => ({
+        dataUrl: await fileToDataUrl(file),
+        mimeType: file.type,
+        name: file.name,
+      })));
 
       const response = await fetch(adminApiPath("/api/admin/scrap-submissions"), {
-        body: formData,
+        body: JSON.stringify({
+          photos,
+          url: trimmedUrl,
+        }),
+        headers: { "content-type": "application/json" },
         method: "POST",
       });
       const body = await response.json().catch(() => null) as { message?: string; submission?: { file_count?: number } } | null;

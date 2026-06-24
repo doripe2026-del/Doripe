@@ -37316,6 +37316,14 @@ function ScrapManagementView() {
       setMessage("\uC774\uBBF8\uC9C0 \uD30C\uC77C\uB9CC \uCD94\uAC00\uD588\uC2B5\uB2C8\uB2E4.");
     }
   }
+  function fileToDataUrl(file) {
+    return new Promise((resolve2, reject) => {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => resolve2(String(reader.result ?? "")), { once: true });
+      reader.addEventListener("error", () => reject(new Error("\uC0AC\uC9C4 \uD30C\uC77C\uC744 \uC77D\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4.")), { once: true });
+      reader.readAsDataURL(file);
+    });
+  }
   async function submit() {
     const trimmedUrl = url.trim();
     if (!trimmedUrl) {
@@ -37329,11 +37337,22 @@ function ScrapManagementView() {
     setIsSubmitting(true);
     setMessage(null);
     try {
-      const formData = new FormData();
-      formData.append("url", trimmedUrl);
-      files.forEach((file) => formData.append("photos", file));
+      const oversized = files.find((file) => file.size > 10 * 1024 * 1024);
+      if (oversized) {
+        setMessage("\uC0AC\uC9C4\uC740 \uC7A5\uB2F9 10MB \uC774\uD558\uB9CC \uC62C\uB9B4 \uC218 \uC788\uC2B5\uB2C8\uB2E4.");
+        return;
+      }
+      const photos = await Promise.all(files.map(async (file) => ({
+        dataUrl: await fileToDataUrl(file),
+        mimeType: file.type,
+        name: file.name
+      })));
       const response = await fetch(adminApiPath("/api/admin/scrap-submissions"), {
-        body: formData,
+        body: JSON.stringify({
+          photos,
+          url: trimmedUrl
+        }),
+        headers: { "content-type": "application/json" },
         method: "POST"
       });
       const body = await response.json().catch(() => null);

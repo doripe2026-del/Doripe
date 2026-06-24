@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from "crypto";
+import { z } from "zod";
 import { NextResponse } from "../../admin-server/response.js";
 import { requireAdminRequest } from "../../admin-server/adminAuth.js";
 import { createSupabaseAdminClient } from "../../admin-server/supabaseAdmin.js";
@@ -7,6 +8,15 @@ export const runtime = "nodejs";
 
 const maxPhotoBytes = 10 * 1024 * 1024;
 const allowedImageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+const scrapPhotoSchema = z.object({
+  dataUrl: z.string().max(16 * 1024 * 1024),
+  mimeType: z.enum(["image/jpeg", "image/png", "image/webp"]),
+  name: z.string().trim().max(180).optional().default("photo"),
+});
+const scrapSubmissionSchema = z.object({
+  photos: z.array(scrapPhotoSchema).min(1).max(20),
+  url: z.string().trim().url().max(1000),
+});
 const allowedHosts = new Set([
   "map.naver.com",
   "m.map.naver.com",
@@ -54,35 +64,32 @@ function hasValidImageSignature(bytes: Buffer, mimeType: string): boolean {
   return false;
 }
 
+function decodeDataUrl(dataUrl: string, mimeType: string): Buffer {
+  const prefix = `data:${mimeType};base64,`;
+  if (!dataUrl.startsWith(prefix)) {
+    throw new Error("사진 데이터 형식이 올바르지 않습니다.");
+  }
+
+  const encoded = dataUrl.slice(prefix.length);
+  if (!encoded || !/^[A-Za-z0-9+/]+={0,2}$/.test(encoded)) {
+    throw new Error("사진 데이터가 올바른 base64 형식이 아닙니다.");
+  }
+
+  return Buffer.from(encoded, "base64");
+}
+
 export async function POST(request: Request) {
   const authError = await requireAdminRequest(request, { checkOrigin: true });
   if (authError) return authError;
 
   try {
-    const formData = await request.formData();
-    const rawUrl = String(formData.get("url") ?? "").trim();
-    if (!rawUrl) {
-      return NextResponse.json({ message: "네이버지도 URL을 입력해야 합니다." }, { status: 400 });
+    const parsed = scrapSubmissionSchema.safeParse(await request.json().catch(() => null));
+    if (!parsed.success) {
+      return NextResponse.json({ message: parsed.error.message }, { status: 400 });
     }
 
-    const naverUrl = assertNaverPlaceUrl(rawUrl);
-    const photos = formData.getAll("photos").filter((item): item is File => item instanceof File && item.size > 0);
-    if (!photos.length) {
-      return NextResponse.json({ message: "사진을 1장 이상 올려야 합니다." }, { status: 400 });
-    }
-
-    if (photos.length > 20) {
-      return NextResponse.json({ message: "한 번에 최대 20장까지 올릴 수 있습니다." }, { status: 400 });
-    }
-
-    for (const photo of photos) {
-      if (photo.size > maxPhotoBytes) {
-        return NextResponse.json({ message: "사진은 장당 10MB 이하만 올릴 수 있습니다." }, { status: 400 });
-      }
-      if (!allowedImageTypes.has(photo.type)) {
-        return NextResponse.json({ message: "JPG, PNG, WebP 사진만 올릴 수 있습니다." }, { status: 400 });
-      }
-    }
+    const naverUrl = assertNaverPlaceUrl(parsed.data.url);
+    const photos = parsed.data.photos;
 
     const supabase = createSupabaseAdminClient();
     const submissionId = randomUUID();
@@ -119,15 +126,23 @@ export async function POST(request: Request) {
 
     try {
       for (const [index, photo] of photos.entries()) {
-        const bytes = Buffer.from(await photo.arrayBuffer());
-        if (!hasValidImageSignature(bytes, photo.type)) {
+        if (!allowedImageTypes.has(photo.mimeType)) {
+          throw new Error("JPG, PNG, WebP 사진만 올릴 수 있습니다.");
+        }
+
+        const bytes = decodeDataUrl(photo.dataUrl, photo.mimeType);
+        if (bytes.length <= 0 || bytes.length > maxPhotoBytes) {
+          throw new Error("사진은 장당 10MB 이하만 올릴 수 있습니다.");
+        }
+
+        if (!hasValidImageSignature(bytes, photo.mimeType)) {
           throw new Error(`${photo.name} 파일 내용이 확장자와 맞지 않습니다.`);
         }
 
         const storagePath = `admin-scrap/${submissionId}/${String(index + 1).padStart(2, "0")}-${randomUUID()}-${cleanFileName(photo.name)}`;
         const upload = await supabase.storage.from(bucket).upload(storagePath, bytes, {
           cacheControl: "3600",
-          contentType: photo.type,
+          contentType: photo.mimeType,
           upsert: false,
         });
 
@@ -138,8 +153,8 @@ export async function POST(request: Request) {
           bucket_id: bucket,
           checksum_sha256: createHash("sha256").update(bytes).digest("hex"),
           display_order: index,
-          file_size: photo.size,
-          mime_type: photo.type,
+          file_size: bytes.length,
+          mime_type: photo.mimeType,
           original_url: naverUrl.toString(),
           source_file_name: photo.name,
           storage_path: storagePath,
