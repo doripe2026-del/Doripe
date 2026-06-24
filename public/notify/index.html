@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Doripe 베타 알림 신청</title>
+<meta name="description" content="Doripe 베타가 열리면 가장 먼저 알려드릴게요. 몇 가지 취향만 고르고 전화번호를 남겨주세요." />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="https://doripe.vercel.app/notify" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Doripe" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="Doripe 베타 알림 신청" />
+<meta property="og:description" content="오늘 갈 곳이 잘 떠오르지 않을 때, Doripe가 열리면 가장 먼저 알려드릴게요." />
+<meta property="og:url" content="https://doripe.vercel.app/notify" />
+<meta property="og:image" content="https://doripe.vercel.app/og-image-v2.png" />
+<meta property="og:image:alt" content="Doripe 앱 소개 이미지" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://doripe.vercel.app/og-image-v2.png" />
+<meta name="twitter:image:alt" content="Doripe 앱 소개 이미지" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="alternate icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bluebrand: '#0084ff',
+          blueglow: '#60B1FF',
+          deepblue: '#319AFF',
+          ink: '#07111f',
+          muted: '#5d6b7c',
+          doripe: '#22ff88',
+          danger: '#c62828'
+        },
+        fontFamily: {
+          fustat: ['Fustat', 'Pretendard Variable', 'Pretendard', 'Inter', 'system-ui', 'sans-serif'],
+          pretendard: ['Pretendard Variable', 'Pretendard', 'Inter', 'system-ui', 'sans-serif'],
+          inter: ['Pretendard Variable', 'Pretendard', 'Inter', 'system-ui', 'sans-serif']
+        }
+      }
+    }
+  };
+</script>
+<style>
+  :root {
+    --blue: #0084ff;
+    --green: #22ff88;
+    --ink: #07111f;
+    --muted: #5d6b7c;
+    --font-ko: 'Pretendard Variable', Pretendard, Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-latin: Fustat, 'Pretendard Variable', Pretendard, Inter, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(900px 640px at -9% 0%, rgba(96,177,255,.34), transparent 64%),
+      radial-gradient(760px 620px at 108% 38%, rgba(34,255,136,.08), transparent 66%),
+      linear-gradient(180deg, #fff 0%, #f8fbff 42%, #fff 100%);
+    color: var(--ink);
+    font-family: var(--font-ko);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, p, a, span, label, button { overflow-wrap: anywhere; }
+  @media (max-width: 900px) {
+    h1, h2, h3, p, a, span, label, button {
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+  }
+  button, input, textarea { font-family: inherit; }
+  .font-brand { font-family: var(--font-latin); }
+  .section-title,
+  .intro-title,
+  .intro-dynamic-title,
+  #headline,
+  .notify-card h2,
+  .thankyou-card h2,
+  #businessFormTitle {
+    word-break: keep-all;
+    overflow-wrap: normal;
+    text-wrap: balance;
+  }
+  .notify-shell {
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 112px;
+    overflow-x: clip;
+  }
+  .glow-field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .glow-field::before {
+    content: "";
+    position: absolute;
+    top: -220px;
+    left: -180px;
+    width: 620px;
+    height: 520px;
+    border-radius: 999px;
+    background: #60B1FF;
+    filter: blur(105px);
+    opacity: .32;
+  }
+  .glow-field::after {
+    content: "";
+    position: absolute;
+    top: -90px;
+    right: -160px;
+    width: 460px;
+    height: 380px;
+    border-radius: 999px;
+    background: #22ff88;
+    filter: blur(100px);
+    opacity: .12;
+  }
+  .notify-header {
+    position: sticky;
+    top: 24px;
+    z-index: 40;
+    width: min(860px, calc(100vw - 28px));
+    margin: 0 auto;
+    padding-top: 18px;
+  }
+  .liquid-nav,
+  .notify-card,
+  .intro-panel,
+  .thankyou-card {
+    background: rgba(255,255,255,.42);
+    border: 1px solid rgba(0,0,0,.1);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.28), 0 24px 80px rgba(0,76,145,.08);
+    backdrop-filter: blur(46px);
+    -webkit-backdrop-filter: blur(46px);
+  }
+  .liquid-nav {
+    border-radius: 18px;
+    padding: 10px;
+  }
+  .progress-track {
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(7,17,31,.08);
+    overflow: hidden;
+    box-shadow: inset 0 1px 1px rgba(7,17,31,.08);
+  }
+  #progress {
+    height: 100%;
+    width: 12.5%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, rgba(0,132,255,.85), rgba(34,255,136,.82));
+    box-shadow: 0 0 18px rgba(0,132,255,.18);
+    transition: width .42s cubic-bezier(.16,1,.3,1);
+  }
+  .notify-main {
+    position: relative;
+    z-index: 1;
+    width: min(1180px, calc(100vw - 40px));
+    margin: 0 auto;
+    padding-top: 84px;
+    display: grid;
+    grid-template-columns: minmax(0, .88fr) minmax(360px, 1.12fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: start;
+  }
+  .intro-panel {
+    position: sticky;
+    top: 142px;
+    border-radius: 34px;
+    padding: clamp(24px, 3vw, 38px);
+  }
+  .intro-title {
+    font-family: var(--font-ko);
+    font-size: clamp(40px, 5.4vw, 70px);
+    line-height: 1.02;
+    letter-spacing: -1.2px;
+    font-weight: 900;
+  }
+  .progress-dots {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 7px;
+  }
+  .progress-dot {
+    height: 7px;
+    border-radius: 999px;
+    background: rgba(7,17,31,.12);
+    transition: background .24s ease, transform .24s ease;
+  }
+  .progress-dot.active {
+    background: var(--blue);
+    transform: scaleY(1.35);
+  }
+  .notify-card {
+    border-radius: 36px;
+    padding: clamp(24px, 3vw, 38px);
+  }
+  .question-kicker {
+    font-family: var(--font-ko);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  #headline {
+    margin-top: 12px;
+    font-family: var(--font-ko);
+    font-size: clamp(34px, 4.2vw, 54px);
+    line-height: 1.04;
+    letter-spacing: -.8px;
+    font-weight: 900;
+  }
+  #subcopy {
+    margin-top: 14px;
+    font-size: 15px;
+    line-height: 1.75;
+    letter-spacing: -.45px;
+    color: var(--muted);
+  }
+  .form-panel {
+    margin-top: 28px;
+  }
+  .desktop-action {
+    display: none;
+  }
+  .intro-dynamic {
+    display: none;
+  }
+  .chip {
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(8,36,72,.1);
+    background: rgba(255,255,255,.54);
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: center;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.66);
+    transition: border-color .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease;
+    cursor: pointer;
+  }
+  .chip:hover {
+    border-color: rgba(0,132,255,.28);
+    background: rgba(255,255,255,.82);
+  }
+  .chip.active {
+    border-color: rgba(0,132,255,.62);
+    background: rgba(0,132,255,.1);
+    color: var(--blue);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.78), 0 16px 36px rgba(0,132,255,.12);
+    transform: translateY(-1px);
+  }
+  .intent-level {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: rgba(0,132,255,.11);
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 900;
+  }
+  .other-panel {
+    margin-top: 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(0,132,255,.18);
+    background: rgba(255,255,255,.52);
+    padding: 14px;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.7);
+  }
+  input, textarea {
+    width: 100%;
+    border-radius: 18px;
+    border: 1px solid rgba(8,36,72,.12);
+    background: rgba(255,255,255,.68);
+    color: var(--ink);
+    outline: none;
+    font-size: 16px;
+    font-weight: 650;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.72);
+    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  input { min-height: 56px; padding: 0 16px; }
+  textarea { min-height: 124px; padding: 16px; line-height: 1.65; resize: vertical; }
+  input:focus, textarea:focus {
+    border-color: rgba(0,132,255,.55);
+    background: rgba(255,255,255,.9);
+    box-shadow: 0 0 0 4px rgba(0,132,255,.12), inset 0 1px 1px rgba(255,255,255,.8);
+  }
+  input::placeholder, textarea::placeholder { color: rgba(93,107,124,.68); }
+  .consent-row {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    padding: 10px 0;
+    cursor: pointer;
+  }
+  .consent-row input {
+    margin-top: 2px;
+    height: 18px;
+    min-height: auto;
+    width: 18px;
+    padding: 0;
+    accent-color: var(--blue);
+  }
+  .consent-divider {
+    margin: 8px 0;
+    border-top: 1px solid rgba(7,17,31,.1);
+  }
+  .primary-cta {
+    min-height: 56px;
+    border: 0;
+    border-radius: 18px;
+    background: rgba(0,132,255,.82);
+    color: #fff;
+    font-weight: 850;
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.35), 0 22px 60px rgba(0,132,255,.24);
+    transition: transform .25s ease, box-shadow .25s ease, background .25s ease, opacity .2s ease;
+  }
+  .primary-cta:not(:disabled):hover {
+    transform: scale(1.01);
+    background: rgba(0,132,255,.9);
+  }
+  .primary-cta:disabled {
+    opacity: .42;
+    cursor: not-allowed;
+  }
+  .bottom-action {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    padding: 22px 20px;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 52%, rgba(255,255,255,.86), transparent);
+  }
+  .bottom-inner {
+    width: min(720px, calc(100vw - 40px));
+    margin: 0 auto;
+  }
+  .step-in { animation: stepIn .28s cubic-bezier(.16,1,.3,1) both; }
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  #errorMsg {
+    margin-top: 18px;
+    min-height: 22px;
+    color: #c62828;
+    font-size: 14px;
+    font-weight: 750;
+    text-align: center;
+  }
+  #thankyou {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(248,251,255,.88);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+  }
+  #thankyou.show { display: flex; }
+  .thankyou-card {
+    width: min(480px, 100%);
+    border-radius: 36px;
+    padding: 42px 30px;
+    text-align: center;
+  }
+  @media (max-width: 900px) {
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+    }
+    body {
+      min-height: 100dvh;
+    }
+    .notify-shell {
+      height: 100vh;
+      height: 100dvh;
+      min-height: 0;
+      padding-bottom: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
+    }
+    .notify-header {
+      position: relative;
+      top: auto;
+      width: min(390px, calc(100vw - 28px));
+      padding-top: 12px;
+    }
+    .liquid-nav {
+      display: grid !important;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 8px;
+      min-height: 54px;
+      padding: 8px;
+      align-items: center;
+    }
+    .header-status {
+      grid-column: auto;
+      order: initial;
+    }
+    .header-status p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-status #timeHint {
+      font-size: 11px;
+    }
+    .notify-header .progress-track {
+      height: 8px;
+      margin-top: 8px;
+    }
+    .notify-main {
+      width: min(390px, calc(100vw - 28px));
+      height: 100%;
+      min-height: 0;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      grid-template-columns: 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+    .intro-panel {
+      display: none;
+    }
+    .question-copy {
+      flex: 0 0 auto;
+    }
+    .notify-card {
+      height: 100%;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      border-radius: 28px;
+      padding: 18px;
+      overflow: hidden;
+    }
+    #headline {
+      margin-top: 7px;
+      font-size: clamp(26px, 7.3vw, 34px);
+      line-height: 1.06;
+      letter-spacing: -.8px;
+    }
+    #subcopy {
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .form-panel {
+      flex: 1;
+      min-height: 0;
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .form-panel > div {
+      min-height: 0;
+    }
+    .form-panel .space-y-5 {
+      display: grid;
+      gap: 10px;
+    }
+    .form-panel .space-y-5 > * {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+    .form-panel .options-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+    .field-block > p {
+      font-size: 12px;
+    }
+    .field-block .mt-4 {
+      margin-top: 7px !important;
+    }
+    .form-panel .my-6 {
+      margin-top: 8px !important;
+      margin-bottom: 8px !important;
+    }
+    .chip {
+      min-height: 38px;
+      padding: 7px 9px;
+      border-radius: 15px;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+    .intent-level {
+      min-height: 20px;
+      font-size: 10px;
+    }
+    .other-panel {
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 16px;
+    }
+    input {
+      min-height: 42px;
+      padding: 0 12px;
+      border-radius: 15px;
+      font-size: 15px;
+    }
+    textarea {
+      min-height: 58px;
+      max-height: 64px;
+      padding: 10px 12px;
+      border-radius: 15px;
+      font-size: 14px;
+      line-height: 1.45;
+      resize: none;
+    }
+    .rounded-\[24px\] {
+      border-radius: 18px;
+      padding: 10px !important;
+    }
+    .consent-row {
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 8px;
+      padding: 4px 0;
+    }
+    .consent-row input {
+      height: 16px;
+      width: 16px;
+    }
+    .consent-row span {
+      line-height: 1.35;
+    }
+    .consent-divider {
+      margin: 4px 0;
+    }
+    .is-final-step #subcopy {
+      display: none;
+    }
+    .is-final-step #headline {
+      font-size: clamp(24px, 6.8vw, 31px);
+    }
+    .is-final-step .form-panel {
+      margin-top: 10px;
+    }
+    .is-final-step .final-fields {
+      gap: 8px;
+    }
+    .is-final-step textarea {
+      min-height: 46px;
+      max-height: 50px;
+    }
+    .is-final-step .rounded-\[24px\] {
+      padding: 9px !important;
+    }
+    .is-final-step .consent-row {
+      padding: 3px 0;
+    }
+    #errorMsg {
+      margin-top: 6px;
+      min-height: 16px;
+      font-size: 12px;
+    }
+    .desktop-action {
+      display: block;
+      margin-top: auto;
+      padding-top: 10px;
+    }
+    .primary-cta {
+      min-height: 46px;
+      border-radius: 16px;
+    }
+    .bottom-action {
+      display: none;
+    }
+  }
+  @media (max-width: 900px) and (max-height: 740px) {
+    .notify-header {
+      padding-top: 8px;
+    }
+    .liquid-nav {
+      min-height: 48px;
+      padding: 6px;
+    }
+    .notify-header .progress-track {
+      height: 7px;
+      margin-top: 7px;
+    }
+    .notify-main {
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+    .notify-card {
+      padding: 14px;
+      border-radius: 24px;
+    }
+    #headline {
+      font-size: clamp(22px, 6.5vw, 28px);
+      line-height: 1.05;
+    }
+    #subcopy {
+      display: none;
+    }
+    .question-kicker {
+      font-size: 11px;
+    }
+    .form-panel {
+      margin-top: 10px;
+    }
+    .chip {
+      min-height: 32px;
+      padding: 5px 8px;
+      border-radius: 13px;
+      font-size: 12px;
+    }
+    .form-panel .options-grid {
+      gap: 6px;
+    }
+    .field-block .mt-4 {
+      margin-top: 6px !important;
+    }
+    .form-panel .my-6 {
+      margin-top: 6px !important;
+      margin-bottom: 6px !important;
+    }
+    input {
+      min-height: 38px;
+    }
+    textarea {
+      min-height: 48px;
+      max-height: 52px;
+    }
+    .primary-cta {
+      min-height: 42px;
+    }
+    .desktop-action {
+      padding-top: 8px;
+    }
+    .is-final-step .rounded-\[24px\] {
+      padding: 8px !important;
+    }
+    .is-final-step .consent-row {
+      padding: 2px 0;
+    }
+    .is-final-step .consent-divider {
+      margin: 3px 0;
+    }
+  }
+  @media (min-width: 901px) {
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+    }
+    .notify-shell {
+      height: 100vh;
+      min-height: 720px;
+      padding-bottom: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+    .notify-header {
+      position: relative;
+      top: auto;
+      width: min(1120px, calc(100vw - 56px));
+      padding-top: 16px;
+    }
+    .liquid-nav {
+      min-height: 58px;
+      padding: 8px 10px;
+    }
+    .notify-main {
+      width: min(1120px, calc(100vw - 56px));
+      height: calc(100vh - 104px);
+      min-height: 616px;
+      padding-top: 16px;
+      padding-bottom: 24px;
+      grid-template-columns: minmax(300px, .74fr) minmax(560px, 1.26fr);
+      gap: clamp(20px, 3vw, 44px);
+      align-items: stretch;
+    }
+    .intro-panel,
+    .notify-card {
+      height: 100%;
+      min-height: 0;
+      border-radius: 30px;
+    }
+    .intro-panel {
+      position: relative;
+      top: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(22px, 2.4vw, 34px);
+    }
+    .intro-title {
+      margin-top: 14px;
+      font-size: clamp(34px, 3.4vw, 54px);
+      line-height: 1.04;
+      letter-spacing: -.8px;
+    }
+    .intro-panel > p:last-of-type {
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .progress-dots {
+      margin-top: 24px;
+    }
+    .notify-card {
+      display: flex;
+      flex-direction: column;
+      padding: clamp(22px, 2.4vw, 34px);
+      overflow: hidden;
+    }
+    .intro-static {
+      display: none;
+    }
+    .intro-dynamic {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .intro-dynamic-title {
+      margin-top: 14px;
+      font-family: var(--font-ko);
+      font-size: clamp(34px, 3.4vw, 54px);
+      line-height: 1.04;
+      letter-spacing: -.8px;
+      font-weight: 900;
+    }
+    .intro-dynamic-copy {
+      margin-top: 18px;
+      font-size: 15px;
+      line-height: 1.78;
+      letter-spacing: -.45px;
+      color: var(--muted);
+    }
+    .question-copy {
+      display: none;
+    }
+    #headline {
+      margin-top: 8px;
+      font-size: clamp(30px, 3.4vw, 46px);
+      line-height: 1.04;
+      letter-spacing: -.7px;
+    }
+    #subcopy {
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .form-panel {
+      flex: 1;
+      min-height: 0;
+      margin-top: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: visible;
+    }
+    .form-panel > div {
+      min-height: 0;
+    }
+    .form-panel .space-y-5 {
+      display: grid;
+      gap: 12px;
+    }
+    .form-panel .space-y-5 > * {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+    .chip {
+      min-height: 42px;
+      padding: 8px 12px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.28;
+    }
+    .form-panel .options-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .form-panel .options-age,
+    .form-panel .options-gender,
+    .form-panel .options-region {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .field-block > p {
+      font-size: 13px;
+    }
+    .field-block .mt-4 {
+      margin-top: 8px !important;
+    }
+    .form-panel .my-6 {
+      margin-top: 10px !important;
+      margin-bottom: 10px !important;
+    }
+    .other-panel {
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 18px;
+    }
+    input {
+      min-height: 48px;
+    }
+    textarea {
+      min-height: 78px;
+      max-height: 92px;
+      resize: none;
+      padding: 12px 14px;
+      line-height: 1.5;
+    }
+    .consent-row {
+      padding: 6px 0;
+    }
+    .consent-row span {
+      line-height: 1.42;
+    }
+    .consent-divider {
+      margin: 6px 0;
+    }
+    .rounded-\[24px\] {
+      border-radius: 18px;
+      padding: 12px !important;
+    }
+    #errorMsg {
+      margin-top: 8px;
+      min-height: 18px;
+      font-size: 13px;
+    }
+    .desktop-action {
+      display: block;
+      margin-top: auto;
+      padding-top: 12px;
+    }
+    .bottom-action {
+      display: none;
+    }
+  }
+  @media (min-width: 901px) and (max-height: 820px) {
+    .notify-main {
+      height: calc(100vh - 92px);
+      min-height: 0;
+      padding-top: 12px;
+      padding-bottom: 16px;
+    }
+    .notify-header {
+      padding-top: 12px;
+    }
+    .liquid-nav {
+      min-height: 52px;
+    }
+    .progress-track {
+      height: 8px;
+      margin-top: 8px;
+    }
+    .intro-panel,
+    .notify-card {
+      padding: 24px 32px;
+    }
+    .intro-title {
+      font-size: clamp(32px, 3vw, 46px);
+    }
+    .intro-dynamic-title {
+      font-size: clamp(30px, 2.9vw, 42px);
+      line-height: 1.06;
+    }
+    .intro-dynamic-copy {
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    #headline {
+      font-size: clamp(28px, 3vw, 40px);
+    }
+    #subcopy {
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .form-panel {
+      margin-top: 14px;
+    }
+    .chip {
+      min-height: 39px;
+      padding-top: 7px;
+      padding-bottom: 7px;
+      font-size: 13px;
+    }
+    input {
+      min-height: 44px;
+    }
+    textarea {
+      min-height: 60px;
+      max-height: 68px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .consent-row {
+      padding: 4px 0;
+      gap: 9px;
+    }
+    .consent-row input {
+      height: 16px;
+      width: 16px;
+    }
+    .consent-divider {
+      margin: 4px 0;
+    }
+    .primary-cta {
+      min-height: 48px;
+      border-radius: 16px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="notify-shell">
+  <div class="glow-field" aria-hidden="true"></div>
+
+  <header class="notify-header">
+    <div class="liquid-nav flex items-center justify-between gap-3">
+      <a href="/" class="font-brand flex items-center gap-2 px-2 text-[20px] font-bold tracking-[-.04em] text-ink">
+        <img src="/favicon.svg" alt="" class="h-7 w-7 rounded-[8px]" />
+        <span>Doripe<span class="text-doripe">.</span></span>
+      </a>
+      <div class="header-status min-w-0 text-center">
+        <p id="stepCount" class="font-brand text-xs font-black uppercase tracking-[.16em] text-bluebrand">1/8</p>
+        <p id="timeHint" class="mt-1 text-xs font-bold text-muted">🌱 취향 세팅을 시작해요</p>
+      </div>
+      <button id="backBtn" class="flex h-10 w-10 items-center justify-center rounded-[14px] border border-black/10 bg-white/45 text-ink transition hover:bg-white/70" aria-label="이전">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="progress-track mt-3">
+      <div id="progress"></div>
+    </div>
+  </header>
+
+  <main class="notify-main">
+    <aside class="intro-panel">
+      <div class="intro-static">
+        <p class="font-brand text-sm font-black uppercase tracking-[.18em] text-bluebrand">알림 신청</p>
+        <h1 class="intro-title mt-4 text-ink">
+          몇 가지만 고르면<br />
+          알림 신청이 끝나요.
+        </h1>
+        <p class="mt-5 text-[15px] leading-7 tracking-[-.4px] text-muted">
+          Doripe가 열리면 바로 연락드릴 수 있도록, 지금 장소를 찾고 저장하는 방식만 가볍게 확인합니다.
+        </p>
+      </div>
+      <div class="intro-dynamic">
+        <p id="introSectionLabel" class="question-kicker">Step 1</p>
+        <h1 id="introHeadline" class="intro-dynamic-title text-ink">취향 세팅을 가볍게 시작해볼게요 ✨</h1>
+        <p id="introSubcopy" class="intro-dynamic-copy">짧게 시작할게요. 베타 대기 확인에 필요한 기본 정보입니다.</p>
+      </div>
+      <div id="progressDots" class="progress-dots" aria-hidden="true"></div>
+    </aside>
+
+    <section class="notify-card">
+      <div class="question-copy">
+        <p id="sectionLabel" class="question-kicker">Step 1</p>
+        <h2 id="headline">취향 세팅을 가볍게 시작해볼게요 ✨</h2>
+        <p id="subcopy">짧게 시작할게요. 베타 대기 확인에 필요한 기본 정보입니다.</p>
+      </div>
+      <form id="formCard" class="form-panel step-in"></form>
+      <p id="errorMsg" class="hidden"></p>
+      <div class="desktop-action">
+        <button id="nextBtnDesktop" class="primary-cta w-full text-base">다음</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="bottom-action">
+  <div class="bottom-inner">
+    <button id="nextBtn" class="primary-cta w-full text-base">다음</button>
+  </div>
+</div>
+
+<div id="thankyou">
+  <section class="thankyou-card">
+    <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-[26px] bg-bluebrand text-white shadow-[0_22px_60px_rgba(0,132,255,.24)]">
+      <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h2 class="font-brand mt-7 text-3xl font-black tracking-[-0.5px] text-ink">신청 완료</h2>
+    <p class="mx-auto mt-3 max-w-sm text-sm leading-7 text-muted">Doripe 베타가 열리면 남겨주신 번호로 가장 먼저 알려드릴게요.</p>
+    <a href="/" class="mt-8 inline-flex min-h-[46px] items-center justify-center rounded-[16px] border border-black/10 bg-white/55 px-6 text-sm font-bold text-ink transition hover:bg-white">메인으로</a>
+  </section>
+</div>
+
+<script>
+const CAMPAIGN_CODES = ['dori-001','dori-002','dori-003','dori-004','dori-005','dori-006','dori-007','dori-008','dori-009','dori-010','dori-011','dori-012','dori-013','dori-014','dori-015','dori-016','dori-017','dori-018','dori-019','dori-020'];
+const params = new URLSearchParams(location.search);
+const campaignParam = params.get('c');
+const storedCampaignCode = localStorage.getItem('doripe_campaign_code');
+const campaignCode = CAMPAIGN_CODES.includes(campaignParam)
+  ? campaignParam
+  : (CAMPAIGN_CODES.includes(storedCampaignCode) ? storedCampaignCode : '');
+if (campaignCode) localStorage.setItem('doripe_campaign_code', campaignCode);
+
+const state = {
+  age:'', gender:'', region:'',
+  painPoint:'',
+  desiredFeatures:[],
+  recentSearchMethods:[],
+  saveLocations:[],
+  betaResult:'',
+  betaCommitment:'',
+  otherAnswers:{
+    painPoint:'',
+    desiredFeatures:'',
+    recentSearchMethods:'',
+    saveLocations:'',
+    betaResult:'',
+    betaCommitment:'',
+  },
+  opinion:'',
+  phone:'',
+  consentPrivacy:false,
+  consentTerms:false,
+  consentAge:false,
+  consentMarketing:false,
+  consentAnalytics:false,
+};
+
+const steps = [
+  {
+    title:'취향 세팅을 가볍게 시작해볼게요 ✨',
+    desc:'짧게 시작할게요. 베타 대기 확인에 필요한 기본 정보입니다.',
+    fields:[
+      { key:'age', label:'연령대', type:'single', options:['10대','20-24','25-29','30-34','35+'] },
+      { key:'gender', label:'성별', type:'single', options:['여성','남성','응답 안 함'] },
+      { key:'region', label:'주 활동 지역', type:'single', options:['서울','경기/인천','강원/충청','전라/제주','경상','해외'] },
+    ],
+  },
+  {
+    title:'어디서 제일 막혔나요? 🤔',
+    desc:'Doripe가 먼저 풀어야 할 문제를 고르는 단계입니다.',
+    fields:[{ key:'painPoint', label:'가장 공감되는 불편', type:'single', allowOther:true, options:[
+      '원하는 장소를 찾는 데 시간이 오래 걸려요',
+      '저장한 장소가 많아도 나중에 다시 찾기 어려워요',
+      '갈 곳 후보는 있는데 루트/길찾기까지 정리하기 어려워요',
+      '광고/협찬 정보가 많아서 믿기 어려워요',
+      '기타',
+    ] }],
+  },
+  {
+    title:'먼저 써보고 싶은 걸 골라주세요 🧭',
+    desc:'여러 개 골라도 괜찮아요. 실제 MVP 우선순위를 정하는 데 쓰입니다.',
+    fields:[{ key:'desiredFeatures', label:'관심 기능', type:'multi', allowOther:true, options:[
+      '카드처럼 넘기며 장소 발견',
+      "'혼자', '데이트'와 같은 태그로 저장한 장소 정리",
+      '저장한 장소 기반 루트/길찾기',
+      '기타',
+    ] }],
+  },
+  {
+    title:'최근엔 어디서 찾아봤나요? 🔎',
+    desc:'Doripe가 대체하거나 보완해야 할 현재 행동을 확인합니다.',
+    fields:[{ key:'recentSearchMethods', label:'최근 갈 곳을 정한 방식', type:'multi', allowOther:true, options:[
+      '인스타그램에서 저장해둔 곳을 봤다',
+      '네이버지도/카카오맵에서 검색했다',
+      '블로그/리뷰를 찾아봤다',
+      '친구나 지인에게 물어봤다',
+      '저장해둔 장소 목록을 다시 봤다',
+      '그냥 근처에서 즉흥적으로 골랐다',
+      '기타',
+    ] }],
+  },
+  {
+    title:'마음에 든 곳은 보통 어디에 모아두나요? 🗂️',
+    desc:'저장 관리 문제가 실제로 어디에서 생기는지 보겠습니다.',
+    fields:[{ key:'saveLocations', label:'장소 저장 위치', type:'multi', allowOther:true, options:[
+      '네이버지도',
+      '카카오맵',
+      '인스타그램',
+      '사진첩/스크린샷',
+      '메모/노션',
+      '친구와의 채팅방',
+      '따로 저장하지 않음',
+      '기타',
+    ] }],
+  },
+  {
+    title:'베타에서 먼저 받아보고 싶은 건요? ✨',
+    desc:'기능 말고 결과물 기준으로 골라주세요.',
+    fields:[{ key:'betaResult', label:'가장 먼저 받고 싶은 결과물', type:'single', allowOther:true, options:[
+      '나만의 장소카드 10개',
+      '저장한 장소를 분위기/상황별로 정리한 장소 모음',
+      '저장한 장소 기반 루트/길찾기',
+      '광고 느낌 적은 검증된 장소 추천',
+      '기타',
+    ] }],
+  },
+  {
+    title:'베타가 열리면 이 정도까지 가능해요? 💚',
+    desc:'초기 유저에게 어느 정도까지 부탁할 수 있는지 확인하려고 합니다.',
+    fields:[{ key:'betaCommitment', label:'참여 의향', type:'single', allowOther:true, options:[
+      '일단 알림만 받을게요',
+      '한번 사용해볼게요',
+      '많이 스와이프해볼 것 같아요',
+      '피드백도 줄 수 있어요',
+      '기타',
+    ] }],
+  },
+  {
+    title:'마지막으로 받을 번호만 남겨주세요 📱',
+    desc:'자유응답은 선택입니다. 전화번호와 필수 동의만 확인하면 끝나요.',
+    fields:[{ key:'final', type:'final' }],
+  },
+];
+
+let step = 0;
+const formCard = document.getElementById('formCard');
+const headline = document.getElementById('headline');
+const subcopy = document.getElementById('subcopy');
+const introSectionLabel = document.getElementById('introSectionLabel');
+const introHeadline = document.getElementById('introHeadline');
+const introSubcopy = document.getElementById('introSubcopy');
+const progress = document.getElementById('progress');
+const stepCount = document.getElementById('stepCount');
+const timeHint = document.getElementById('timeHint');
+const sectionLabel = document.getElementById('sectionLabel');
+const progressDots = document.getElementById('progressDots');
+const nextBtn = document.getElementById('nextBtn');
+const nextBtnDesktop = document.getElementById('nextBtnDesktop');
+const nextButtons = [nextBtn, nextBtnDesktop].filter(Boolean);
+const backBtn = document.getElementById('backBtn');
+const errorMsg = document.getElementById('errorMsg');
+
+const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+}[ch]));
+
+const progressMessages = [
+  '🌱 기본 취향을 확인하고 있어요',
+  '🤔 가장 큰 불편을 고르는 중이에요',
+  '🧭 먼저 만들 기능을 좁히고 있어요',
+  '🔎 지금 찾는 방식을 확인 중이에요',
+  '🗂️ 저장 습관을 보고 있어요',
+  '✨ 받고 싶은 결과물을 고르는 중이에요',
+  '💚 베타 참여 의향만 남았어요',
+  '📱 번호만 남기면 끝나요',
+];
+
+const betaCommitmentLevels = ['알림', '가볍게', '적극적', '피드백'];
+const OTHER_OPTION = '기타';
+
+function isArrayField(key) {
+  return Array.isArray(state[key]);
+}
+
+function phoneDigits(value) {
+  return String(value || '').replace(/\D/g, '');
+}
+
+function phoneOk(value) {
+  return /^01[016789]\d{7,8}$/.test(phoneDigits(value));
+}
+
+function toggleValue(key, value, multi) {
+  if (multi) {
+    state[key] = state[key].includes(value)
+      ? state[key].filter((item) => item !== value)
+      : [...state[key], value];
+  } else {
+    state[key] = value;
+  }
+}
+
+function isOtherSelected(field) {
+  const value = state[field.key];
+  return field.allowOther && (Array.isArray(value) ? value.includes(OTHER_OPTION) : value === OTHER_OPTION);
+}
+
+function otherAnswer(key) {
+  return String(state.otherAnswers?.[key] || '').trim();
+}
+
+function serializeSingle(key) {
+  return state[key] === OTHER_OPTION ? `기타: ${otherAnswer(key)}` : state[key];
+}
+
+function serializeArray(key) {
+  return state[key].map((item) => item === OTHER_OPTION ? `기타: ${otherAnswer(key)}` : item);
+}
+
+function optionLabelHtml(key, option, index) {
+  const level = betaCommitmentLevels[index];
+  if (key !== 'betaCommitment' || !level) {
+    return escapeHtml(option);
+  }
+  return `
+    <span class="flex flex-wrap items-center justify-center gap-2">
+      <span class="intent-level">${escapeHtml(level)}</span>
+      <span>${escapeHtml(option)}</span>
+    </span>
+  `;
+}
+
+function renderChips(field) {
+  const multi = field.type === 'multi';
+  const showOtherInput = isOtherSelected(field);
+  return `
+    <div class="field-block field-${escapeHtml(field.key)}">
+      <p class="text-sm font-black text-ink">${escapeHtml(field.label)}</p>
+      <div class="options-grid options-${escapeHtml(field.key)} mt-4 grid grid-cols-1 gap-2">
+        ${field.options.map((option, optionIndex) => {
+          const active = multi ? state[field.key].includes(option) : state[field.key] === option;
+          return `<button type="button" class="chip ${active ? 'active' : ''}" data-key="${escapeHtml(field.key)}" data-value="${escapeHtml(option)}" data-multi="${multi ? '1' : '0'}">${optionLabelHtml(field.key, option, optionIndex)}</button>`;
+        }).join('')}
+      </div>
+      ${field.allowOther ? `
+        <div class="other-panel ${showOtherInput ? '' : 'hidden'}">
+          <label for="other-${escapeHtml(field.key)}" class="text-xs font-black text-bluebrand">기타:</label>
+          <input id="other-${escapeHtml(field.key)}" class="other-input mt-2" type="text" maxlength="120" placeholder="직접 입력해주세요" value="${escapeHtml(state.otherAnswers[field.key] || '')}" data-other-key="${escapeHtml(field.key)}" />
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function renderFinal() {
+  return `
+    <div class="final-fields space-y-5">
+      <div>
+        <label for="opinion" class="text-sm font-black text-ink">최근 장소를 찾거나 저장했다가 불편했던 경험 <span class="font-bold text-muted">(선택)</span></label>
+        <textarea id="opinion" class="mt-3" placeholder="예: 저장해둔 곳은 많은데 막상 약속 잡을 때 다시 찾기 어려웠어요.">${escapeHtml(state.opinion)}</textarea>
+      </div>
+      <div>
+        <label for="phone" class="text-sm font-black text-ink">베타 알림 받을 전화번호</label>
+        <input id="phone" class="mt-3" type="tel" placeholder="010-1234-5678" value="${escapeHtml(state.phone)}" autocomplete="tel" inputmode="tel" />
+      </div>
+      <div class="rounded-[24px] border border-black/10 bg-white/45 p-4">
+        <label class="consent-row">
+          <input type="checkbox" id="consentAll" />
+          <span class="text-sm font-black text-ink">전체 동의</span>
+        </label>
+        <div class="my-2 border-t border-black/10"></div>
+        <label class="consent-row">
+          <input type="checkbox" data-consent="consentPrivacy" ${state.consentPrivacy ? 'checked' : ''} />
+          <span class="text-xs leading-relaxed text-muted"><strong class="text-bluebrand">[필수]</strong> 개인정보 수집 및 이용에 동의합니다. <a href="/privacy" target="_blank" class="font-bold text-ink underline hover:text-bluebrand">자세히</a></span>
+        </label>
+        <label class="consent-row">
+          <input type="checkbox" data-consent="consentTerms" ${state.consentTerms ? 'checked' : ''} />
+          <span class="text-xs leading-relaxed text-muted"><strong class="text-bluebrand">[필수]</strong> 이용약관에 동의합니다. <a href="/terms" target="_blank" class="font-bold text-ink underline hover:text-bluebrand">자세히</a></span>
+        </label>
+        <label class="consent-row">
+          <input type="checkbox" data-consent="consentAge" ${state.consentAge ? 'checked' : ''} />
+          <span class="text-xs leading-relaxed text-muted"><strong class="text-bluebrand">[필수]</strong> 만 14세 이상입니다.</span>
+        </label>
+        <div class="consent-divider"></div>
+        <label class="consent-row">
+          <input type="checkbox" data-consent="consentMarketing" ${state.consentMarketing ? 'checked' : ''} />
+          <span class="text-xs leading-relaxed text-muted"><strong>[선택]</strong> 베타 소식과 이벤트 안내를 문자 또는 전화로 받겠습니다.</span>
+        </label>
+        <label class="consent-row">
+          <input type="checkbox" data-consent="consentAnalytics" ${state.consentAnalytics ? 'checked' : ''} />
+          <span class="text-xs leading-relaxed text-muted"><strong>[선택]</strong> 응답 데이터를 비식별 통계로 활용하는 것에 동의합니다.</span>
+        </label>
+      </div>
+    </div>
+  `;
+}
+
+function renderProgressDots() {
+  progressDots.innerHTML = steps.map((_, index) => `<span class="progress-dot ${index <= step ? 'active' : ''}"></span>`).join('');
+}
+
+function render() {
+  const current = steps[step];
+  document.querySelector('.notify-shell')?.classList.toggle('is-final-step', current.fields[0]?.type === 'final');
+  headline.textContent = current.title;
+  subcopy.textContent = current.desc;
+  sectionLabel.textContent = `Step ${step + 1}`;
+  introHeadline.textContent = current.title;
+  introSubcopy.textContent = current.desc;
+  introSectionLabel.textContent = `Step ${step + 1}`;
+  stepCount.textContent = `${step + 1}/${steps.length}`;
+  timeHint.textContent = progressMessages[step] || progressMessages[progressMessages.length - 1];
+  progress.style.width = `${((step + 1) / steps.length) * 100}%`;
+  nextButtons.forEach((button) => { button.textContent = step === steps.length - 1 ? '신청 완료' : '다음'; });
+  errorMsg.classList.add('hidden');
+  formCard.classList.remove('step-in');
+  void formCard.offsetWidth;
+  formCard.classList.add('step-in');
+  formCard.innerHTML = current.fields.map((field) => field.type === 'final' ? renderFinal() : renderChips(field)).join('<div class="my-6 border-t border-black/10"></div>');
+  renderProgressDots();
+  attachHandlers();
+  updateNext();
+}
+
+function attachHandlers() {
+  formCard.querySelectorAll('.chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      toggleValue(chip.dataset.key, chip.dataset.value, chip.dataset.multi === '1');
+      render();
+    });
+  });
+  const opinion = document.getElementById('opinion');
+  if (opinion) opinion.addEventListener('input', (e) => { state.opinion = e.target.value; });
+  const phone = document.getElementById('phone');
+  if (phone) phone.addEventListener('input', (e) => { state.phone = e.target.value; updateNext(); });
+  formCard.querySelectorAll('[data-other-key]').forEach((input) => {
+    input.addEventListener('input', (e) => {
+      state.otherAnswers[e.target.dataset.otherKey] = e.target.value;
+      updateNext();
+    });
+  });
+  formCard.querySelectorAll('[data-consent]').forEach((box) => {
+    box.addEventListener('change', () => {
+      state[box.dataset.consent] = box.checked;
+      syncConsentAll();
+      updateNext();
+    });
+  });
+  const consentAll = document.getElementById('consentAll');
+  if (consentAll) {
+    syncConsentAll();
+    consentAll.addEventListener('change', () => {
+      ['consentPrivacy','consentTerms','consentAge','consentMarketing','consentAnalytics'].forEach((key) => { state[key] = consentAll.checked; });
+      render();
+    });
+  }
+}
+
+function syncConsentAll() {
+  const consentAll = document.getElementById('consentAll');
+  if (consentAll) consentAll.checked = state.consentPrivacy && state.consentTerms && state.consentAge && state.consentMarketing && state.consentAnalytics;
+}
+
+function canProceed() {
+  const current = steps[step];
+  if (current.fields[0]?.type === 'final') {
+    return phoneOk(state.phone) && state.consentPrivacy && state.consentTerms && state.consentAge;
+  }
+  return current.fields.every((field) => {
+    const value = state[field.key];
+    const hasSelection = isArrayField(field.key) ? value.length > 0 : !!value;
+    const hasRequiredOtherText = !isOtherSelected(field) || otherAnswer(field.key).length > 0;
+    return hasSelection && hasRequiredOtherText;
+  });
+}
+
+function updateNext() {
+  const disabled = !canProceed();
+  nextButtons.forEach((button) => { button.disabled = disabled; });
+}
+
+function track(type, completedStep) {
+  fetch('/api/track-v2', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ type, route:'/notify', ...(completedStep ? { step: completedStep } : {}), ...(campaignCode ? { campaignCode } : {}) }),
+    keepalive:true,
+  }).catch(()=>{});
+}
+
+async function submit() {
+  nextButtons.forEach((button) => {
+    button.disabled = true;
+    button.textContent = '제출 중...';
+  });
+  errorMsg.classList.add('hidden');
+  const payload = {
+    age: state.age,
+    gender: state.gender,
+    region: state.region,
+    painPoint: serializeSingle('painPoint'),
+    desiredFeatures: serializeArray('desiredFeatures'),
+    useCases: [],
+    recentSearchMethods: serializeArray('recentSearchMethods'),
+    saveLocations: serializeArray('saveLocations'),
+    betaResult: serializeSingle('betaResult'),
+    betaCommitment: serializeSingle('betaCommitment'),
+    opinion: state.opinion,
+    phone: state.phone,
+    consentPrivacy: state.consentPrivacy,
+    consentTerms: state.consentTerms,
+    consentAge: state.consentAge,
+    consentMarketing: state.consentMarketing,
+    consentAnalytics: state.consentAnalytics,
+    campaignCode: campaignCode || null,
+  };
+  try {
+    const res = await fetch('/api/notify-v2', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload),
+    });
+    const body = await res.json().catch(()=>({}));
+    if (!res.ok || !body.ok) throw new Error(body.error || '제출에 실패했습니다.');
+    document.getElementById('thankyou').classList.add('show');
+  } catch (e) {
+    errorMsg.textContent = e.message || '잠시 후 다시 시도해주세요.';
+    errorMsg.classList.remove('hidden');
+    nextButtons.forEach((button) => {
+      button.disabled = false;
+      button.textContent = '신청 완료';
+    });
+  }
+}
+
+function handleNext() {
+  if (!canProceed()) return;
+  if (step < steps.length - 1) {
+    track('step_complete', step + 1);
+    step += 1;
+    render();
+    window.scrollTo({ top:0, behavior:'smooth' });
+  } else {
+    submit();
+  }
+}
+
+nextButtons.forEach((button) => button.addEventListener('click', handleNext));
+
+backBtn.addEventListener('click', () => {
+  if (step === 0) {
+    location.href = '/';
+    return;
+  }
+  step -= 1;
+  render();
+  window.scrollTo({ top:0, behavior:'smooth' });
+});
+
+track('page_view');
+render();
+</script>
+</body>
+</html>
