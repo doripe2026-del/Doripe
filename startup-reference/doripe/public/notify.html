@@ -693,8 +693,12 @@
   const params = new URLSearchParams(window.location.search);
   const shareSlugPattern = /^nt_[a-zA-Z0-9_-]{8,32}$/;
   const referrerShareSlug = params.get("ref");
+  const sanitizedReferrerShareSlug = shareSlugPattern.test(referrerShareSlug || "")
+    ? referrerShareSlug
+    : null;
   const picks = [];
   let round = 1;
+  let isPicking = false;
   let referrerResult = null;
   let activeResult = null;
   let activeCompatibility = { available: false };
@@ -746,6 +750,9 @@
     refs.progressValue.style.width = `${Math.max(10, ((round - 1) / 10) * 100)}%`;
     refs.choiceA.classList.remove("is-selected");
     refs.choiceB.classList.remove("is-selected");
+    refs.choiceA.disabled = false;
+    refs.choiceB.disabled = false;
+    isPicking = false;
   }
 
   function saveChoices() {
@@ -823,7 +830,7 @@
         body: JSON.stringify({
           eventName,
           shareSlug: activeResult?.shareSlug || null,
-          referrerShareSlug: shareSlugPattern.test(referrerShareSlug || "") ? referrerShareSlug : null,
+          referrerShareSlug: sanitizedReferrerShareSlug,
           metadata
         })
       });
@@ -833,10 +840,10 @@
   }
 
   async function loadReferrer() {
-    if (!shareSlugPattern.test(referrerShareSlug || "")) return;
+    if (!sanitizedReferrerShareSlug) return;
 
     try {
-      const response = await fetch(`/api/notify-taste?shareSlug=${encodeURIComponent(referrerShareSlug)}`);
+      const response = await fetch(`/api/notify-taste?shareSlug=${encodeURIComponent(sanitizedReferrerShareSlug)}`);
       if (!response.ok) return;
       const data = await response.json();
       if (data?.ok && data.result) {
@@ -848,6 +855,10 @@
   }
 
   function pick(value) {
+    if (isPicking) return;
+    isPicking = true;
+    refs.choiceA.disabled = true;
+    refs.choiceB.disabled = true;
     const target = value === "A" ? refs.choiceA : refs.choiceB;
     target.classList.add("is-selected");
     picks.push(value);
@@ -857,6 +868,9 @@
       if (round >= 10) {
         renderThumbs();
         show("email");
+        refs.choiceA.disabled = false;
+        refs.choiceB.disabled = false;
+        isPicking = false;
         return;
       }
       round += 1;
@@ -864,12 +878,49 @@
     }, 220);
   }
 
-  async function fallbackCopyLink() {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(activeShareUrl).catch(() => {});
-    }
+  function showToast(message) {
+    refs.toast.textContent = message;
     refs.toast.classList.add("is-visible");
     setTimeout(() => refs.toast.classList.remove("is-visible"), 1600);
+  }
+
+  function copyWithTextarea(value) {
+    const textarea = document.createElement("textarea");
+    textarea.value = value;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    textarea.style.top = "0";
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    let didCopy = false;
+    try {
+      didCopy = document.execCommand("copy");
+    } catch (error) {
+      didCopy = false;
+    }
+    textarea.remove();
+    return didCopy;
+  }
+
+  async function fallbackCopyLink() {
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(activeShareUrl);
+        showToast("링크를 복사했어요.");
+        return;
+      }
+    } catch (error) {
+      console.warn("Clipboard copy failed", error);
+    }
+
+    if (copyWithTextarea(activeShareUrl)) {
+      showToast("링크를 복사했어요.");
+      return;
+    }
+
+    showToast("링크 복사에 실패했어요.");
   }
 
   async function shareLink() {
@@ -903,7 +954,7 @@
         body: JSON.stringify({
           email,
           choices: picks.slice(0, 10),
-          referrerShareSlug: referrerResult?.shareSlug || null
+          referrerShareSlug: sanitizedReferrerShareSlug
         })
       });
       const data = await response.json();
@@ -968,7 +1019,7 @@
   loadReferrer().finally(() => {
     trackEvent("page_view", {
       hasReferrer: Boolean(referrerResult),
-      ref: shareSlugPattern.test(referrerShareSlug || "") ? referrerShareSlug : null
+      ref: sanitizedReferrerShareSlug
     });
   });
 </script>
