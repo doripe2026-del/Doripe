@@ -85,3 +85,23 @@ export const BusinessLeadPayloadSchema = z.object({
 });
 
 export type BusinessLeadPayload = z.infer<typeof BusinessLeadPayloadSchema>;
+
+const NotifyChoiceSchema = z.enum(["A", "B"]);
+
+export const NotifyTasteCreatePayloadSchema = z.object({
+  email: z.string().email().max(254),
+  choices: z.array(NotifyChoiceSchema).length(10),
+  characterKey: z.enum(["quiet_collector", "route_planner"]).optional(),
+  referrerShareSlug: z.string().regex(/^nt_[a-zA-Z0-9_-]{8,32}$/).optional().nullable(),
+});
+
+export type NotifyTasteCreatePayload = z.infer<typeof NotifyTasteCreatePayloadSchema>;
+
+export const NotifyTasteEventPayloadSchema = z.object({
+  eventName: z.enum(["page_view", "choice_complete", "email_submit", "result_view", "share_click", "compatibility_view"]),
+  shareSlug: z.string().regex(/^nt_[a-zA-Z0-9_-]{8,32}$/).optional().nullable(),
+  referrerShareSlug: z.string().regex(/^nt_[a-zA-Z0-9_-]{8,32}$/).optional().nullable(),
+  metadata: z.record(z.unknown()).optional().default({}),
+});
+
+export type NotifyTasteEventPayload = z.infer<typeof NotifyTasteEventPayloadSchema>;
