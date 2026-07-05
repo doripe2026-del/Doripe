@@ -14,4 +14,5 @@
 - Production changes go through GitHub PR, required checks, and `main`.
 - Supabase schema changes must be committed as migration files under `supabase/migrations`.
 - Before PR, run the relevant checks from `docs/ops/session-rules.md`.
-- Run `npm run setup:guards` once after cloning or creating a worktree so Git hooks block invalid commits/pushes locally.
+- Run `npm run setup:guards` once after cloning or creating a worktree. It installs Git hooks and a local deployment shell guard.
+- The deployment shell guard blocks direct production Vercel commands in Doripe contexts and forces the GitHub PR → checks → main merge → Vercel Git integration path.
