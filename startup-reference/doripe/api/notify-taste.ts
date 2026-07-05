@@ -25,9 +25,18 @@ function readBody(req: VercelRequest) {
 }
 
 function getRequestOrigin(req: VercelRequest) {
-  const host = req.headers.host || "doripe.kr";
-  const protocol = host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https";
-  return `${protocol}://${host}`;
+  const configuredOrigin = process.env.PUBLIC_SITE_URL;
+  if (configuredOrigin) return configuredOrigin.replace(/\/+$/, "");
+
+  const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  if (vercelHost) return `https://${vercelHost.replace(/^https?:\/\//, "").replace(/\/+$/, "")}`;
+
+  const host = req.headers.host;
+  if (host && (host.includes("localhost") || host.includes("127.0.0.1"))) {
+    return `http://${host}`.replace(/\/+$/, "");
+  }
+
+  return "https://doripe.kr";
 }
 
 function getSingleQueryValue(value: string | string[] | undefined) {
@@ -135,8 +144,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     if (req.method === "GET") return await handleGet(req, res);
     if (req.method === "POST") return await handlePost(req, res);
+    res.setHeader("Allow", "GET, POST");
     return res.status(405).json({ ok: false, error: "method not allowed" });
   } catch (error) {
-    return res.status(500).json({ ok: false, error: (error as Error).message });
+    console.error("notify-taste API error", error);
+    return res.status(500).json({ ok: false, error: "internal server error" });
   }
 }
