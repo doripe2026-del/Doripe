@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vercel dev",
     "migrate": "node --env-file=.env.local scripts/migrate.mjs",
     "check:mvp-app": "node scripts/check-mvp-app.mjs",
     "typecheck": "tsc --noEmit"
