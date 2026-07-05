@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Doripe Notify - 장소 취향 궁합</title>
+<meta name="description" content="사진 2장 중 더 끌리는 장소를 10번 고르면 Doripe가 내 장소 취향 캐릭터와 친구와의 궁합을 보여드립니다." />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<style>
+  :root {
+    --bg: #faf9f5;
+    --panel: #fffdfa;
+    --ink: #101714;
+    --muted: #626b65;
+    --line: #e4e0d8;
+    --green: #12c96b;
+    --green-dark: #09aa57;
+    --green-soft: #e5f8eb;
+    --blue-soft: #eff5ff;
+    --purple-soft: #f4efff;
+    --shadow: 0 22px 70px rgba(37, 45, 39, .12);
+    --shadow-sm: 0 12px 34px rgba(37, 45, 39, .10);
+    --radius: 28px;
+    font-family: "Pretendard Variable", Pretendard, Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 14% 8%, rgba(18, 201, 107, .10), transparent 30%),
+      radial-gradient(circle at 90% 20%, rgba(255, 211, 126, .20), transparent 28%),
+      linear-gradient(180deg, #fbfaf6 0%, #f6f3eb 100%);
+  }
+  body:not(.debug-nav) .preview-nav { display: none; }
+  button, input { font: inherit; }
+  button { cursor: pointer; border: 0; }
+  .page {
+    min-height: 100vh;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .preview-nav {
+    position: sticky;
+    top: 16px;
+    z-index: 20;
+    width: min(1040px, 100%);
+    margin: 0 auto;
+    padding: 8px;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+    border: 1px solid rgba(218, 214, 205, .9);
+    border-radius: 999px;
+    background: rgba(255, 253, 250, .80);
+    box-shadow: 0 10px 28px rgba(35, 42, 37, .08);
+    backdrop-filter: blur(16px);
+  }
+  .preview-nav button {
+    min-height: 38px;
+    border-radius: 999px;
+    background: transparent;
+    color: #6a726c;
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .preview-nav button.is-active {
+    background: var(--green);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(18, 201, 107, .24);
+  }
+  .stage {
+    flex: 1;
+    width: min(1040px, 100%);
+    margin: 0 auto;
+    display: grid;
+    place-items: center;
+  }
+  .screen {
+    display: none;
+    width: 100%;
+  }
+  .screen.is-active { display: block; }
+  .card {
+    width: 100%;
+    min-height: min(720px, calc(100vh - 136px));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: rgba(255, 253, 250, .94);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .intro-card,
+  .result-card,
+  .match-card {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(360px, 1fr);
+    gap: clamp(28px, 5vw, 76px);
+    align-items: center;
+    padding: clamp(30px, 5vw, 64px);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 42px;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -.02em;
+  }
+  .brand img {
+    width: 36px;
+    height: 36px;
+    display: block;
+  }
+  .brand .dot { color: var(--green); }
+  h1, h2, p { margin: 0; }
+  h1 {
+    font-size: clamp(38px, 5vw, 62px);
+    line-height: 1.12;
+    letter-spacing: -.045em;
+  }
+  h2 {
+    font-size: clamp(32px, 4.2vw, 48px);
+    line-height: 1.14;
+    letter-spacing: -.04em;
+  }
+  .lead {
+    margin-top: 22px;
+    color: var(--muted);
+    font-size: clamp(17px, 2vw, 21px);
+    line-height: 1.65;
+    font-weight: 600;
+  }
+  .primary,
+  .secondary {
+    height: 58px;
+    padding: 0 30px;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 900;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .primary {
+    background: linear-gradient(135deg, #14d875, #08b95d);
+    color: #fff;
+    box-shadow: 0 18px 32px rgba(18, 201, 107, .25);
+  }
+  .secondary {
+    border: 1.5px solid var(--green);
+    background: #fff;
+    color: var(--green-dark);
+  }
+  .primary:hover,
+  .secondary:hover,
+  .choice:hover {
+    transform: translateY(-2px);
+  }
+  .intro-actions,
+  .result-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 34px;
+  }
+  .result-actions .compat-action {
+    background:
+      radial-gradient(circle at 18% 12%, rgba(255, 255, 255, .42), transparent 30%),
+      linear-gradient(135deg, #ff5c95 0%, #ff8e9e 48%, #ffc07a 100%);
+    box-shadow: 0 18px 32px rgba(230, 78, 126, .22);
+  }
+  .result-actions .is-hidden { display: none; }
+  .collage {
+    position: relative;
+    min-height: 520px;
+  }
+  .collage img {
+    position: absolute;
+    width: 46%;
+    border-radius: 22px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(255,255,255,.65);
+  }
+  .collage .a1 { left: 2%; top: 3%; transform: rotate(-4deg); }
+  .collage .a2 { right: 3%; top: 13%; transform: rotate(5deg); }
+  .collage .a3 { left: 14%; bottom: 2%; transform: rotate(3deg); }
+  .collage .a4 { right: 0; bottom: 12%; transform: rotate(-3deg); }
+  .choice-card {
+    padding: clamp(30px, 4vw, 54px);
+    text-align: center;
+  }
+  .progress-num {
+    color: var(--green-dark);
+    font-size: 24px;
+    font-weight: 950;
+  }
+  .progress-track {
+    width: min(360px, 70%);
+    height: 8px;
+    margin: 14px auto 34px;
+    border-radius: 99px;
+    background: #dfddd6;
+    overflow: hidden;
+  }
+  .progress-value {
+    height: 100%;
+    width: 10%;
+    border-radius: inherit;
+    background: var(--green);
+    transition: width .22s ease;
+  }
+  .choice-card h2 { margin-bottom: 30px; }
+  .choices {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+    gap: clamp(18px, 3vw, 34px);
+    max-width: 740px;
+    margin: 0 auto;
+  }
+  .choice {
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #e2ded6;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(35, 42, 37, .08);
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .choice.is-selected {
+    border-color: var(--green);
+    box-shadow: 0 18px 38px rgba(18, 201, 107, .20);
+  }
+  .choice img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1.36 / 1;
+    object-fit: cover;
+  }
+  .choice-label {
+    display: grid;
+    place-items: center;
+    height: 62px;
+    font-size: 28px;
+    font-weight: 950;
+  }
+  .choice-check {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    display: none;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-weight: 950;
+  }
+  .choice.is-selected .choice-check { display: grid; }
+  .email-card {
+    display: grid;
+    place-items: center;
+    padding: 42px;
+  }
+  .email-inner {
+    width: min(640px, 100%);
+    text-align: center;
+  }
+  .email-inner h2 {
+    margin-bottom: 12px;
+  }
+  .email-inner .lead {
+    margin-top: 0;
+    font-size: 18px;
+  }
+  .email-form {
+    margin: 34px auto 0;
+    display: grid;
+    gap: 14px;
+    width: min(520px, 100%);
+  }
+  .email-form input {
+    height: 62px;
+    border: 1.5px solid #dedbd3;
+    border-radius: 17px;
+    padding: 0 22px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 18px;
+    outline: none;
+  }
+  .email-form input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 4px rgba(18, 201, 107, .12);
+  }
+  .thumb-row {
+    display: flex;
+    gap: 9px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 42px 0 24px;
+  }
+  .thumb {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.8);
+    box-shadow: 0 8px 18px rgba(20, 28, 22, .10);
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .thumb::after {
+    content: "✓";
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    width: 16px;
+    height: 16px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 900;
+  }
+  .microcopy {
+    color: #777f79;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .character-wrap {
+    display: grid;
+    place-items: center;
+  }
+  .character-img {
+    width: min(360px, 78vw);
+    aspect-ratio: 1;
+    border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+  }
+  .eyebrow {
+    color: var(--green-dark);
+    font-size: 15px;
+    font-weight: 950;
+  }
+  .tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 24px 0;
+  }
+  .tag {
+    padding: 9px 15px;
+    border-radius: 999px;
+    background: var(--green-soft);
+    color: var(--green-dark);
+    font-size: 15px;
+    font-weight: 900;
+  }
+  .share-box {
+    max-width: 480px;
+    margin-top: 26px;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: #fff;
+  }
+  .share-box small {
+    display: block;
+    margin-bottom: 6px;
+    color: #767f78;
+    font-weight: 800;
+  }
+  .share-box strong {
+    color: var(--green-dark);
+    font-size: 18px;
+  }
+  .share-box p {
+    margin: 0;
+    color: #4f5a53;
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 700;
+  }
+  .compat-box {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    gap: 16px;
+    align-items: center;
+    border: 0;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(255, 255, 255, .84), transparent 32%),
+      linear-gradient(135deg, #fff0f6 0%, #ffe1ec 48%, #ffe9d9 100%);
+    box-shadow: 0 18px 36px rgba(230, 78, 126, .16);
+  }
+  .compat-icon {
+    width: 50px;
+    height: 50px;
+    display: grid;
+    place-items: center;
+    border-radius: 18px;
+    background: #ff5c95;
+    color: #fff;
+    font-size: 26px;
+    box-shadow: 0 12px 22px rgba(255, 92, 149, .28);
+  }
+  .compat-box small {
+    color: #c42362;
+  }
+  .compat-box p {
+    color: #633446;
+  }
+  .match-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .score {
+    margin: 8px 0 28px;
+    color: var(--green-dark);
+    font-size: clamp(70px, 12vw, 118px);
+    line-height: .9;
+    font-weight: 950;
+    letter-spacing: -.06em;
+  }
+  .score span {
+    color: var(--ink);
+    font-size: 24px;
+    letter-spacing: 0;
+  }
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 70px 1fr;
+    align-items: center;
+    gap: 0;
+    width: min(720px, 100%);
+    margin: 0 auto 26px;
+  }
+  .person {
+    min-height: 132px;
+    display: grid;
+    grid-template-columns: 86px 1fr;
+    gap: 18px;
+    align-items: center;
+    padding: 20px;
+    border-radius: 24px;
+    text-align: left;
+  }
+  .person.me { background: var(--green-soft); }
+  .person.friend { background: var(--purple-soft); }
+  .person img {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+  }
+  .person b {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 15px;
+  }
+  .person strong {
+    display: block;
+    font-size: 19px;
+    line-height: 1.3;
+  }
+  .heart {
+    width: 70px;
+    height: 70px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--green);
+    font-size: 34px;
+    box-shadow: var(--shadow-sm);
+    z-index: 2;
+  }
+  .route-insight {
+    width: min(720px, 100%);
+    margin: 0 auto 24px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: #fffdfa;
+    color: #333b36;
+    font-size: 18px;
+    font-weight: 800;
+  }
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    z-index: 30;
+    transform: translateX(-50%) translateY(20px);
+    opacity: 0;
+    padding: 12px 16px;
+    border-radius: 999px;
+    background: #111714;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    transition: opacity .2s ease, transform .2s ease;
+    pointer-events: none;
+  }
+  .toast.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  @media (max-width: 760px) {
+    .page { padding: 16px; }
+    .preview-nav {
+      position: static;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-radius: 22px;
+    }
+    .preview-nav button { font-size: 12px; }
+    .card {
+      min-height: auto;
+      border-radius: 24px;
+    }
+    .intro-card,
+    .result-card {
+      grid-template-columns: 1fr;
+      padding: 28px 22px;
+      gap: 28px;
+    }
+    .brand { margin-bottom: 28px; }
+    .collage {
+      min-height: 320px;
+    }
+    .choices {
+      grid-template-columns: 1fr;
+    }
+    .choice img {
+      aspect-ratio: 1.55 / 1;
+    }
+    .email-card,
+    .choice-card,
+    .match-card {
+      padding: 28px 20px;
+    }
+    .compare {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .heart {
+      margin: -22px auto;
+    }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <nav class="preview-nav" aria-label="데모 화면 이동">
+    <button type="button" data-goto="intro" class="is-active">인트로</button>
+    <button type="button" data-goto="choice">사진 선택</button>
+    <button type="button" data-goto="email">이메일</button>
+    <button type="button" data-goto="result">캐릭터</button>
+    <button type="button" data-goto="match">궁합</button>
+  </nav>
+
+  <section class="stage">
+    <article id="screen-intro" class="screen is-active">
+      <div class="card intro-card">
+        <div>
+          <div class="brand">
+            <img src="/admin/doripe-logo.png" alt="Doripe" />
+            <span>Doripe<span class="dot">.</span></span>
+          </div>
+          <h1>사진 2장 중<br />더 끌리는 장소를<br />골라보세요</h1>
+          <p class="lead">10번만 고르면 내 장소 취향 캐릭터와 친구와의 궁합을 볼 수 있어요.</p>
+          <div class="intro-actions">
+            <button class="primary" type="button" data-start>시작하기</button>
+          </div>
+        </div>
+        <div class="collage" aria-hidden="true">
+          <img class="a1" src="/img/notify-demo/place-a.svg" alt="" />
+          <img class="a2" src="/img/notify-demo/place-b.svg" alt="" />
+          <img class="a3" src="/img/notify-demo/place-a.svg" alt="" />
+          <img class="a4" src="/img/notify-demo/place-b.svg" alt="" />
+        </div>
+      </div>
+    </article>
+
+    <article id="screen-choice" class="screen">
+      <div class="card choice-card">
+        <div class="progress-num"><span id="roundNum">1</span> / 10</div>
+        <div class="progress-track"><div id="progressValue" class="progress-value"></div></div>
+        <h2>둘 중 더 가고 싶은 곳은?</h2>
+        <div class="choices">
+          <button id="choiceA" class="choice" type="button" data-pick="A">
+            <span class="choice-check">✓</span>
+            <img src="/img/notify-demo/place-a.svg" alt="햇살이 드는 조용한 카페" />
+            <span class="choice-label">A</span>
+          </button>
+          <button id="choiceB" class="choice" type="button" data-pick="B">
+            <span class="choice-check">✓</span>
+            <img src="/img/notify-demo/place-b.svg" alt="초록 덩굴이 있는 골목 숍" />
+            <span class="choice-label">B</span>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article id="screen-email" class="screen">
+      <div class="card email-card">
+        <div class="email-inner">
+          <h2>이메일을 입력하면<br />내 장소 취향 캐릭터를 알 수 있어요</h2>
+          <p class="lead">이메일 하나만 입력하면 바로 결과가 나와요.</p>
+          <form class="email-form" id="emailForm">
+            <input id="emailInput" type="email" placeholder="you@example.com" autocomplete="email" />
+            <button class="primary" type="submit">캐릭터 보기</button>
+          </form>
+          <div id="thumbRow" class="thumb-row" aria-label="완료한 선택 10개"></div>
+          <p class="microcopy">입력한 이메일은 결과 발송 외 다른 용도로 사용되지 않아요.</p>
+        </div>
+      </div>
+    </article>
+
+    <article id="screen-result" class="screen">
+      <div class="card result-card">
+        <div class="character-wrap">
+          <img class="character-img" src="/img/notify-demo/character-quiet.svg" alt="조용한 감도 수집가 캐릭터" />
+        </div>
+        <div>
+          <p class="eyebrow">당신의 장소 취향 캐릭터</p>
+          <h2 id="resultTitle">조용한 감도 수집가</h2>
+          <p id="resultDescription" class="lead">복잡한 곳보다 오래 머물고 싶은 장면을 먼저 고르는 타입이에요.</p>
+          <div id="resultTags" class="tags">
+            <span class="tag">조용함</span>
+            <span class="tag">감성적인</span>
+            <span class="tag">동네감</span>
+          </div>
+          <div class="share-box compat-box">
+            <span class="compat-icon" aria-hidden="true">♥</span>
+            <div>
+              <small>친구와의 장소 궁합은 몇 점일까요?</small>
+              <p>링크를 공유하고 친구가 테스트를 마치면 둘의 궁합 점수가 열려요.</p>
+            </div>
+          </div>
+          <div class="share-box">
+            <div>
+              <small>나만의 결과 링크</small>
+              <strong id="shareUrlText">결과 생성 후 링크가 표시돼요</strong>
+            </div>
+          </div>
+          <div class="result-actions">
+            <button id="shareButton" class="primary" type="button" data-share>공유하기</button>
+            <button id="compatButton" class="primary compat-action is-hidden" type="button">궁합보기</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article id="screen-match" class="screen">
+      <div class="card match-card">
+        <div>
+          <h2>친구와 장소 궁합</h2>
+          <div id="matchScore" class="score">86<span>점</span></div>
+          <div class="compare">
+            <div class="person me">
+              <img src="/img/notify-demo/character-quiet.svg" alt="내 캐릭터" />
+              <div><b>나</b><strong id="matchMeName">조용한 감도 수집가</strong></div>
+            </div>
+            <div class="heart">♥</div>
+            <div class="person friend">
+              <img src="/img/notify-demo/character-route.svg" alt="친구 캐릭터" />
+              <div><b>친구</b><strong id="matchFriendName">하루 루트 설계자</strong></div>
+            </div>
+          </div>
+          <div id="matchSummary" class="route-insight">조용한 카페 → 골목 산책 → 작은 디저트샵 조합이 잘 맞아요.</div>
+          <button class="primary" type="button" data-share>내 링크 공유하기</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite">링크를 복사했어요.</div>
+
+<script>
+  const screens = ["intro", "choice", "email", "result", "match"];
+  const params = new URLSearchParams(window.location.search);
+  const shareSlugPattern = /^nt_[a-zA-Z0-9_-]{8,32}$/;
+  const referrerShareSlug = params.get("ref");
+  const picks = [];
+  let round = 1;
+  let referrerResult = null;
+  let activeResult = null;
+  let activeCompatibility = { available: false };
+  let activeShareUrl = `${window.location.origin}/notify.html`;
+
+  if (params.get("debug") === "1") {
+    document.body.classList.add("debug-nav");
+  }
+
+  const refs = {
+    roundNum: document.getElementById("roundNum"),
+    progressValue: document.getElementById("progressValue"),
+    choiceA: document.getElementById("choiceA"),
+    choiceB: document.getElementById("choiceB"),
+    thumbRow: document.getElementById("thumbRow"),
+    emailForm: document.getElementById("emailForm"),
+    emailInput: document.getElementById("emailInput"),
+    resultTitle: document.getElementById("resultTitle"),
+    resultDescription: document.getElementById("resultDescription"),
+    resultTags: document.getElementById("resultTags"),
+    shareUrlText: document.getElementById("shareUrlText"),
+    compatButton: document.getElementById("compatButton"),
+    matchScore: document.getElementById("matchScore"),
+    matchMeName: document.getElementById("matchMeName"),
+    matchFriendName: document.getElementById("matchFriendName"),
+    matchSummary: document.getElementById("matchSummary"),
+    toast: document.getElementById("toast")
+  };
+
+  const fallbackResult = {
+    shareSlug: null,
+    shareUrl: activeShareUrl,
+    characterKey: "quiet_collector",
+    characterName: "조용한 감도 수집가",
+    description: "복잡한 곳보다 오래 머물고 싶은 장면을 먼저 고르는 타입이에요.",
+    tags: ["조용함", "감성적인", "동네감"]
+  };
+
+  function show(screen) {
+    screens.forEach((name) => {
+      document.getElementById(`screen-${name}`).classList.toggle("is-active", name === screen);
+      const navButton = document.querySelector(`[data-goto="${name}"]`);
+      if (navButton) navButton.classList.toggle("is-active", name === screen);
+    });
+  }
+
+  function updateRound() {
+    refs.roundNum.textContent = String(round);
+    refs.progressValue.style.width = `${Math.max(10, ((round - 1) / 10) * 100)}%`;
+    refs.choiceA.classList.remove("is-selected");
+    refs.choiceB.classList.remove("is-selected");
+  }
+
+  function saveChoices() {
+    try {
+      localStorage.setItem("doripeNotifyChoices", JSON.stringify(picks));
+    } catch (error) {
+      console.warn("Unable to save notify choices", error);
+    }
+  }
+
+  function renderThumbs() {
+    refs.thumbRow.innerHTML = "";
+    const completed = picks.length ? picks : Array.from({ length: 10 }, (_, index) => index % 2 === 0 ? "A" : "B");
+    completed.slice(0, 10).forEach((pick) => {
+      const thumb = document.createElement("span");
+      thumb.className = "thumb";
+      const img = document.createElement("img");
+      img.src = pick === "A" ? "/img/notify-demo/place-a.svg" : "/img/notify-demo/place-b.svg";
+      img.alt = "";
+      thumb.appendChild(img);
+      refs.thumbRow.appendChild(thumb);
+    });
+  }
+
+  function getCharacterImage(characterKey) {
+    return characterKey === "route_planner"
+      ? "/img/notify-demo/character-route.svg"
+      : "/img/notify-demo/character-quiet.svg";
+  }
+
+  function normalizeResult(result, shareUrl) {
+    return {
+      ...fallbackResult,
+      ...(result || {}),
+      shareUrl: shareUrl || result?.shareUrl || fallbackResult.shareUrl,
+      tags: Array.isArray(result?.tags) && result.tags.length ? result.tags : fallbackResult.tags
+    };
+  }
+
+  function renderResult(result, compatibility) {
+    activeResult = normalizeResult(result, result?.shareUrl);
+    activeCompatibility = compatibility || { available: false };
+    activeShareUrl = activeResult.shareUrl || activeShareUrl;
+
+    document.querySelector(".character-img").src = getCharacterImage(activeResult.characterKey);
+    refs.resultTitle.textContent = activeResult.characterName;
+    refs.resultDescription.textContent = activeResult.description;
+    refs.resultTags.innerHTML = "";
+    activeResult.tags.forEach((tag) => {
+      const span = document.createElement("span");
+      span.className = "tag";
+      span.textContent = tag;
+      refs.resultTags.appendChild(span);
+    });
+    refs.shareUrlText.textContent = activeShareUrl.replace(/^https?:\/\//, "");
+    refs.compatButton.classList.toggle("is-hidden", !activeCompatibility.available);
+  }
+
+  function renderCompatibility() {
+    const score = Number(activeCompatibility.score || 0);
+    refs.matchScore.innerHTML = `${score || 86}<span>점</span>`;
+    refs.matchMeName.textContent = activeResult?.characterName || fallbackResult.characterName;
+    refs.matchFriendName.textContent = activeCompatibility.friendCharacterName
+      || referrerResult?.characterName
+      || "친구";
+    refs.matchSummary.textContent = activeCompatibility.summary
+      || "서로의 취향을 함께 보면 잘 맞는 장소를 더 쉽게 찾을 수 있어요.";
+  }
+
+  async function trackEvent(eventName, metadata = {}) {
+    try {
+      await fetch("/api/notify-taste-event", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventName,
+          shareSlug: activeResult?.shareSlug || null,
+          referrerShareSlug: shareSlugPattern.test(referrerShareSlug || "") ? referrerShareSlug : null,
+          metadata
+        })
+      });
+    } catch (error) {
+      console.warn("Notify event failed", error);
+    }
+  }
+
+  async function loadReferrer() {
+    if (!shareSlugPattern.test(referrerShareSlug || "")) return;
+
+    try {
+      const response = await fetch(`/api/notify-taste?shareSlug=${encodeURIComponent(referrerShareSlug)}`);
+      if (!response.ok) return;
+      const data = await response.json();
+      if (data?.ok && data.result) {
+        referrerResult = data.result;
+      }
+    } catch (error) {
+      console.warn("Referrer result failed", error);
+    }
+  }
+
+  function pick(value) {
+    const target = value === "A" ? refs.choiceA : refs.choiceB;
+    target.classList.add("is-selected");
+    picks.push(value);
+    saveChoices();
+    trackEvent("choice_complete", { round, choice: value });
+    setTimeout(() => {
+      if (round >= 10) {
+        renderThumbs();
+        show("email");
+        return;
+      }
+      round += 1;
+      updateRound();
+    }, 220);
+  }
+
+  async function fallbackCopyLink() {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(activeShareUrl).catch(() => {});
+    }
+    refs.toast.classList.add("is-visible");
+    setTimeout(() => refs.toast.classList.remove("is-visible"), 1600);
+  }
+
+  async function shareLink() {
+    const shareData = {
+      title: "Doripe 장소 취향 테스트",
+      text: "사진 2장 중 더 끌리는 장소를 골라보고 우리 장소 취향 궁합을 확인해봐.",
+      url: activeShareUrl
+    };
+
+    trackEvent("share_click", { url: activeShareUrl });
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (error) {
+        if (error && error.name === "AbortError") return;
+      }
+    }
+
+    await fallbackCopyLink();
+  }
+
+  async function submitEmail(email) {
+    trackEvent("email_submit", { choiceCount: picks.length });
+
+    try {
+      const response = await fetch("/api/notify-taste", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          choices: picks.slice(0, 10),
+          referrerShareSlug: referrerResult?.shareSlug || null
+        })
+      });
+      const data = await response.json();
+      if (!response.ok || !data?.ok) throw new Error(data?.error || "notify taste failed");
+      renderResult(data.result, data.compatibility);
+    } catch (error) {
+      console.warn("Notify result failed", error);
+      renderResult(fallbackResult, { available: false });
+    }
+
+    trackEvent("result_view", { characterName: activeResult?.characterName || null });
+    show("result");
+  }
+
+  document.querySelectorAll("[data-goto]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const screen = button.dataset.goto;
+      if (screen === "choice") updateRound();
+      if (screen === "email") renderThumbs();
+      if (screen === "match") renderCompatibility();
+      show(screen);
+    });
+  });
+
+  document.querySelector("[data-start]").addEventListener("click", () => {
+    round = 1;
+    picks.length = 0;
+    updateRound();
+    show("choice");
+  });
+
+  refs.choiceA.addEventListener("click", () => pick("A"));
+  refs.choiceB.addEventListener("click", () => pick("B"));
+
+  refs.emailForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const email = refs.emailInput.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      refs.emailInput.focus();
+      refs.emailInput.style.borderColor = "#e25f4c";
+      return;
+    }
+    refs.emailInput.style.borderColor = "";
+    submitEmail(email);
+  });
+
+  refs.compatButton.addEventListener("click", () => {
+    renderCompatibility();
+    trackEvent("compatibility_view", { score: activeCompatibility.score || null });
+    show("match");
+  });
+
+  document.querySelectorAll("[data-share]").forEach((button) => {
+    button.addEventListener("click", () => {
+      shareLink();
+    });
+  });
+
+  updateRound();
+  renderThumbs();
+  renderResult(fallbackResult, { available: false });
+  loadReferrer().finally(() => {
+    trackEvent("page_view", {
+      hasReferrer: Boolean(referrerResult),
+      ref: shareSlugPattern.test(referrerShareSlug || "") ? referrerShareSlug : null
+    });
+  });
+</script>
+</body>
+</html>
