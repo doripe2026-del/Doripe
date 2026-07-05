@@ -40,6 +40,13 @@
       radial-gradient(circle at 90% 20%, rgba(255, 211, 126, .20), transparent 28%),
       linear-gradient(180deg, #fbfaf6 0%, #f6f3eb 100%);
   }
+  body:not(.debug-nav) {
+    background:
+      radial-gradient(circle at 18% 12%, rgba(18, 201, 107, .14), transparent 30%),
+      radial-gradient(circle at 78% 8%, rgba(255, 211, 126, .24), transparent 28%),
+      radial-gradient(circle at 70% 86%, rgba(125, 190, 255, .12), transparent 32%),
+      linear-gradient(135deg, #fbfaf6 0%, #f4f7ef 46%, #f7f0e4 100%);
+  }
   body:not(.debug-nav) .preview-nav { display: none; }
   button, input { font: inherit; }
   button { cursor: pointer; border: 0; }
@@ -53,7 +60,7 @@
   body:not(.debug-nav) .page {
     min-height: 100vh;
     min-height: 100dvh;
-    padding: 0;
+    padding: clamp(18px, 3.4vw, 48px);
     gap: 0;
   }
   .preview-nav {
@@ -94,9 +101,11 @@
     place-items: center;
   }
   body:not(.debug-nav) .stage {
-    width: 100%;
+    width: min(1120px, 100%);
     min-height: 100vh;
     min-height: 100dvh;
+    min-height: calc(100vh - clamp(36px, 6.8vw, 96px));
+    min-height: calc(100dvh - clamp(36px, 6.8vw, 96px));
   }
   .screen {
     display: none;
@@ -104,8 +113,7 @@
   }
   .screen.is-active { display: block; }
   body:not(.debug-nav) .screen.is-active {
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: auto;
     display: flex;
   }
   .card {
@@ -118,11 +126,12 @@
     overflow: hidden;
   }
   body:not(.debug-nav) .card {
-    min-height: 100vh;
-    min-height: 100dvh;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
+    min-height: min(760px, calc(100vh - clamp(36px, 6.8vw, 96px)));
+    min-height: min(760px, calc(100dvh - clamp(36px, 6.8vw, 96px)));
+    border: 1px solid rgba(228, 224, 216, .82);
+    border-radius: 32px;
+    background: rgba(255, 253, 250, .96);
+    box-shadow: 0 30px 90px rgba(37, 45, 39, .14);
   }
   .intro-card,
   .result-card,
@@ -548,7 +557,11 @@
   }
   @media (max-width: 760px) {
     .page { padding: 16px; }
-    body:not(.debug-nav) .page { padding: 0; }
+    body:not(.debug-nav) .page { padding: 14px; }
+    body:not(.debug-nav) .stage {
+      min-height: calc(100vh - 28px);
+      min-height: calc(100dvh - 28px);
+    }
     .preview-nav {
       position: static;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -557,6 +570,11 @@
     .preview-nav button { font-size: 12px; }
     .card {
       min-height: auto;
+      border-radius: 24px;
+    }
+    body:not(.debug-nav) .card {
+      min-height: calc(100vh - 28px);
+      min-height: calc(100dvh - 28px);
       border-radius: 24px;
     }
     .intro-card,
