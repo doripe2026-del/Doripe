@@ -9,6 +9,7 @@
     "vercel-build": "npm run typecheck",
     "guard:repo": "node scripts/guard-repository.mjs",
     "check:supabase": "node scripts/check-supabase-migrations.mjs",
+    "check:ops": "node scripts/check-ops-readiness.mjs",
     "check:mvp-app": "node scripts/check-mvp-app.mjs",
     "build:admin": "node scripts/build-admin.mjs",
     "typecheck": "tsc --noEmit"

@@ -6,3 +6,11 @@
 - `doripe.kr/admin` is served from `public/admin` and `src/admin-*`.
 - Keep `vercel.json` free of rewrites to the deprecated `doripe-admin.vercel.app`.
 - Never commit `.env`, `.env.*`, `.vercel`, `node_modules`, or local-only generated files.
+
+# Session Rules
+
+- Do not work directly on `main`; use a `codex/*` branch.
+- Do not run `vercel --prod`, `vercel deploy --prod`, `vercel alias set`, or `vercel promote` for normal work.
+- Production changes go through GitHub PR, required checks, and `main`.
+- Supabase schema changes must be committed as migration files under `supabase/migrations`.
+- Before PR, run the relevant checks from `docs/ops/session-rules.md`.
