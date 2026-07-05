@@ -1,0 +1,33 @@
+name: Repository Guard
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  repository-guard:
+    name: repository-guard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Check repository structure
+        run: npm run guard:repo
+
+      - name: Check Supabase migrations
+        run: npm run check:supabase
