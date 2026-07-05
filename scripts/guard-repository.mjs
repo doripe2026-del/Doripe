@@ -4,6 +4,7 @@ import { extname, basename } from "node:path";
 
 const allowedTopLevel = new Set([
   ".github",
+  ".githooks",
   ".gitignore",
   "AGENTS.md",
   "README.md",

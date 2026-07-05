@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+protected_ref="refs/heads/main"
+
+while read -r _local_ref _local_sha remote_ref _remote_sha; do
+  if [[ "$remote_ref" == "$protected_ref" ]]; then
+    echo "pre-push blocked: do not push directly to main. Use PR." >&2
+    exit 1
+  fi
+done
+
+npm run guard:repo
+npm run check:supabase
+npm run typecheck
