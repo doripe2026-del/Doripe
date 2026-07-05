@@ -27,15 +27,11 @@ interface RecentRow {
   id: number; submitted_at: string; email: string; region: string; age_range: string;
   moods: string[] | null; time_slots: string[] | null; frequency: string; opinion: string | null;
 }
-interface BusinessLeadRow {
-  id: number; submitted_at: string; store_name: string; store_url: string; contact: string;
-  phone: string | null; space_type: string | null; message: string | null; consent_privacy: boolean | null;
-}
 interface CampaignRow {
   campaign_code: string; views: string; notify_arrivals: string; signups: string;
 }
 interface DailyRow {
-  day: string; home_views: string; notify_arrivals: string; signups: string; business_leads: string;
+  day: string; home_views: string; notify_arrivals: string; signups: string;
 }
 interface V2RecentRow {
   id: number; submitted_at: string; email: string; age_range: string; gender: string; region: string;
@@ -77,27 +73,6 @@ const distMap = (rows: DistRow[], order: readonly string[]) => {
   return order.map((label) => ({ label, value: m.get(label) ?? 0 }));
 };
 const toDistArray = (rows: DistRow[]) => rows.map((r) => ({ label: r.label, value: Number(r.count) }));
-
-async function ensureBusinessLeadsTable() {
-  await sql`
-    create table if not exists business_leads (
-      id bigserial primary key,
-      store_name text not null,
-      store_url text not null,
-      contact text not null,
-      phone text,
-      space_type text,
-      message text,
-      consent_privacy boolean not null default false,
-      submitted_at timestamptz not null default now(),
-      user_agent text,
-      referrer text
-    )
-  `;
-  await sql`alter table business_leads add column if not exists phone text`;
-  await sql`alter table business_leads add column if not exists consent_privacy boolean not null default false`;
-  await sql`create index if not exists business_leads_submitted_at_idx on business_leads (submitted_at desc)`;
-}
 
 async function buildV2Timeline(range: V2Range) {
   await ensureNotifyV2Tables();
@@ -326,7 +301,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
     return res.status(200).json(await buildV2Stats(range));
   }
-  await ensureBusinessLeadsTable();
   await ensureCampaignColumns();
 
   const [
@@ -339,7 +313,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     frequencyRows, budgetRows,
     seoulCount, quietIndieCount, highIntentCount,
     recentRows,
-    businessLeadsTotal, businessLeadsToday, recentBusinessLeads,
     campaignRows,
     dailyRows,
   ] = await Promise.all([
@@ -370,12 +343,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
              (select coalesce(array_agg(value), '{}') from jsonb_array_elements_text(time_slots) value) as time_slots,
              frequency, opinion
       from signups where submitted_at < ${V2_CUTOFF} order by submitted_at desc limit 100
-    `,
-    sql<CountRow>`select count(*)::text as count from business_leads`,
-    sql<CountRow>`select count(*)::text as count from business_leads where submitted_at >= date_trunc('day', now() at time zone ${KST}) at time zone ${KST}`,
-    sql<BusinessLeadRow>`
-      select id, submitted_at, store_name, store_url, contact, phone, space_type, message, consent_privacy
-      from business_leads order by submitted_at desc limit 50
     `,
     sql<CampaignRow>`
       with codes(campaign_code) as (
@@ -424,12 +391,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           from signups s
           where s.submitted_at < ${V2_CUTOFF}
             and (s.submitted_at at time zone ${KST})::date = d.day
-        ) as signups,
-        (
-          select count(*)::text
-          from business_leads b
-          where (b.submitted_at at time zone ${KST})::date = d.day
-        ) as business_leads
+        ) as signups
       from days d
       order by d.day
     `,
@@ -470,21 +432,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       [`조용함 + 인디·로컬 선호자 ${toInt(quietIndieCount.rows)}명`, "핵심 페르소나"],
       [`월 6회 이상 쓸 것 같다고 응답한 사람 ${toInt(highIntentCount.rows)}명`, ""],
     ],
-    business: {
-      leads: toInt(businessLeadsTotal.rows),
-      todayLeads: toInt(businessLeadsToday.rows),
-      recentLeads: recentBusinessLeads.rows.map((r) => ({
-        id: Number(r.id),
-        date: new Date(r.submitted_at),
-        storeName: r.store_name,
-        storeUrl: r.store_url,
-        contact: r.contact,
-        phone: r.phone ?? r.contact,
-        spaceType: r.space_type ?? "",
-        message: r.message ?? "",
-        consentPrivacy: r.consent_privacy === true,
-      })),
-    },
     campaigns: campaignRows.rows.map((r) => ({
       code: r.campaign_code,
       link: `https://doripe.vercel.app/?c=${r.campaign_code}`,
@@ -501,7 +448,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         homeViews,
         notifyArrivals,
         signups,
-        businessLeads: Number(r.business_leads),
         conversionRate: homeViews > 0 ? Number(((signups / homeViews) * 100).toFixed(1)) : 0,
       };
     }),

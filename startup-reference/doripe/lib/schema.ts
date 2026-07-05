@@ -62,30 +62,6 @@ export const LoginPayloadSchema = z.object({
   password: z.string().min(1).max(200),
 });
 
-const BusinessPhoneSchema = z
-  .string()
-  .trim()
-  .min(1, "전화번호를 입력해주세요")
-  .max(30, "전화번호가 너무 깁니다")
-  .transform((value) => value.replace(/\D/g, ""))
-  .refine((digits) => /^01[016789]\d{7,8}$/.test(digits), {
-    message: "전화번호를 010-1234-5678 형식으로 입력해주세요",
-  })
-  .transform((digits) => (
-    digits.length === 10
-      ? `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`
-      : `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`
-  ));
-
-export const BusinessLeadPayloadSchema = z.object({
-  phone: BusinessPhoneSchema,
-  consentPrivacy: z.boolean().refine((value) => value === true, {
-    message: "개인정보 수집 및 이용에 동의해주세요",
-  }),
-});
-
-export type BusinessLeadPayload = z.infer<typeof BusinessLeadPayloadSchema>;
-
 const NotifyChoiceSchema = z.enum(["A", "B"]);
 
 export const NotifyTasteCreatePayloadSchema = z.object({

@@ -2566,7 +2566,6 @@ const commonStyles = `
       justify-content: flex-end;
       max-width: 250px;
     }
-    .navlinks a[href="/business"],
     .nav-cta { display: none; }
     .footer-row { display: grid; }
   }
@@ -3332,9 +3331,8 @@ ${faviconLinks}
       <a class="brand" href="/">Doripe<span>.</span></a>
       <div class="navlinks">
         <a href="/" aria-label="Doripe home">홈</a>
-        <a href="/business">공간 파일럿</a>
         <a href="/blog" aria-current="page">블로그</a>
-        <a class="nav-cta" href="/business">파일럿 문의</a>
+        <a class="nav-cta" href="/notify">알림신청</a>
       </div>
     </nav>
   </header>
@@ -3377,7 +3375,7 @@ ${faviconLinks}
             <h2>문제별로 읽는 자료실</h2>
             <p class="section-sub">업종보다 먼저 운영자가 겪는 문제를 기준으로 묶었습니다. 같은 고민은 식당, 카페, 샵, 바, 전시공간에서 반복됩니다.</p>
           </div>
-          <a class="small-link" href="/business">공간 파일럿 문의</a>
+          <a class="small-link" href="/notify">알림신청</a>
         </div>
 
         <div class="topic-grid">
@@ -3413,7 +3411,7 @@ ${faviconLinks}
             <h2>우리 공간은 어떤 장면으로 기억될까요?</h2>
             <p>Doripe는 작은 공간을 취향 기반 카드로 소개하는 파일럿을 만들고 있습니다. 공간이 어떤 장면으로 보이면 좋을지 함께 테스트할 수 있어요.</p>
           </div>
-          <a class="button" href="/business">파일럿 문의</a>
+          <a class="button" href="/notify">알림신청</a>
         </div>
       </div>
     </section>
@@ -3427,7 +3425,6 @@ ${faviconLinks}
       </div>
       <div class="footer-links">
         <a href="/">홈</a>
-        <a href="/business">공간 파일럿</a>
         <a href="/terms">이용약관</a>
         <a href="/privacy">개인정보처리방침</a>
       </div>
@@ -3547,9 +3544,8 @@ ${faviconLinks}
       <a class="brand" href="/">Doripe<span>.</span></a>
       <div class="navlinks">
         <a href="/" aria-label="Doripe home">홈</a>
-        <a href="/business">공간 파일럿</a>
         <a href="/blog" aria-current="page">블로그</a>
-        <a class="nav-cta" href="/business">파일럿 문의</a>
+        <a class="nav-cta" href="/notify">알림신청</a>
       </div>
     </nav>
   </header>
@@ -3606,7 +3602,6 @@ ${faviconLinks}
       </div>
       <div class="footer-links">
         <a href="/">홈</a>
-        <a href="/business">공간 파일럿</a>
         <a href="/terms">이용약관</a>
         <a href="/privacy">개인정보처리방침</a>
       </div>
@@ -3621,7 +3616,6 @@ function renderSitemap() {
   const urls = [
     { loc: "/", lastmod: "2026-05-10", changefreq: "weekly", priority: "1.0" },
     { loc: "/notify", lastmod: "2026-05-10", changefreq: "monthly", priority: "0.8" },
-    { loc: "/business", lastmod: "2026-05-10", changefreq: "monthly", priority: "0.7" },
     { loc: "/blog", lastmod, changefreq: "weekly", priority: "0.8" },
     ...articles.map((article) => ({
       loc: articleUrl(article),
@@ -3667,7 +3661,6 @@ Doripe helps local spaces such as restaurants, cafes, shops, galleries, studios,
 
 - [Doripe home](${siteUrl}/)
 - [Doripe Blog](${siteUrl}/blog)
-- [Space pilot inquiry](${siteUrl}/business)
 
 ## B2B Blog Topics
 

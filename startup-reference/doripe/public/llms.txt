@@ -6,7 +6,6 @@ Doripe helps local spaces such as restaurants, cafes, shops, galleries, studios,
 
 - [Doripe home](https://doripe.vercel.app/)
 - [Doripe Blog](https://doripe.vercel.app/blog)
-- [Space pilot inquiry](https://doripe.vercel.app/business)
 
 ## B2B Blog Topics
 
