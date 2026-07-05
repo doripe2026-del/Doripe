@@ -776,13 +776,183 @@
     toast: document.getElementById("toast")
   };
 
+  const characterVisuals = {
+    sunny_window: {
+      name: "햇살 아래 오래 앉아있는 사람",
+      description: "조용한 창가, 식물, 낮의 공기, 오래 머무는 공간에 끌려요.",
+      tags: ["창가", "조용함", "낮"],
+      colors: ["#e9d58b", "#7fa46a", "#f8f3df"],
+      mark: "sun"
+    },
+    alley_wanderer: {
+      name: "골목만 보면 일단 꺾는 사람",
+      description: "목적지보다 로컬 골목, 작은 가게, 우연한 발견을 좋아해요.",
+      tags: ["골목", "산책", "로컬"],
+      colors: ["#9bbd82", "#8f704e", "#f5efe2"],
+      mark: "leaf"
+    },
+    city_aesthetic: {
+      name: "간판 예쁘면 이미 반쯤 넘어간 사람",
+      description: "외관, 편집샵, 트렌디한 거리, 도시적인 장면에 반응해요.",
+      tags: ["외관", "트렌디", "도시"],
+      colors: ["#bec7bd", "#343b35", "#edf1ec"],
+      mark: "window"
+    },
+    food_first: {
+      name: "맛없는 감성은 용서 못 하는 사람",
+      description: "분위기도 중요하지만 결국 메뉴와 한입의 만족도가 기준이에요.",
+      tags: ["맛집", "메뉴", "실패없음"],
+      colors: ["#d5a15f", "#7b4a31", "#fff1d6"],
+      mark: "plate"
+    },
+    night_mood: {
+      name: "조명 어두워지면 취향 살아나는 사람",
+      description: "와인바, 낮은 조명, 저녁 대화, 깊은 무드에 끌려요.",
+      tags: ["밤", "데이트", "무드"],
+      colors: ["#50415d", "#d99c59", "#efe4db"],
+      mark: "moon"
+    },
+    route_scene: {
+      name: "하루를 한 장면으로 엮는 사람",
+      description: "카페, 산책, 식사처럼 장소들이 자연스럽게 이어져야 좋아요.",
+      tags: ["루트", "동선", "하루"],
+      colors: ["#86b889", "#4d7656", "#eff8ed"],
+      mark: "path"
+    }
+  };
+
+  const notifyRounds = [
+    {
+      A: { title: "햇살이 길게 들어오는 작은 카페", alt: "창가에 낮빛과 식물이 은은하게 보이는 조용한 카페", palette: ["#e8d39a", "#6f8f5d", "#f7edd2"], mood: "window" },
+      B: { title: "식물이 감싼 거리의 작은 숍", alt: "초록 덩굴과 차분한 외관이 있는 거리의 작은 가게", palette: ["#b6c7a2", "#3f4a42", "#e9e5d7"], mood: "facade" }
+    },
+    {
+      A: { title: "나무 테이블 위 느린 오후", alt: "커피와 책이 놓인 따뜻한 테이블 장면", palette: ["#d7b071", "#7a5a37", "#f6ead2"], mood: "table" },
+      B: { title: "문 너머로 이어지는 골목", alt: "열린 문과 안쪽으로 깊게 이어지는 작은 골목", palette: ["#b7c79b", "#6d694f", "#ece6d5"], mood: "alley" }
+    },
+    {
+      A: { title: "정돈된 선반과 작은 오브제", alt: "따뜻한 조명 아래 선반과 오브제가 놓인 공간", palette: ["#c9b28d", "#6d5742", "#f5eee1"], mood: "shelf" },
+      B: { title: "접시에 담긴 조용한 한 끼", alt: "공간 분위기 안에 음식이 자연스럽게 놓인 테이블", palette: ["#dbad73", "#784934", "#fff0dc"], mood: "plate" }
+    },
+    {
+      A: { title: "밝은 브런치 테이블", alt: "밝은 낮빛과 간단한 브런치가 놓인 테이블", palette: ["#ead49a", "#8d9f71", "#fff5dc"], mood: "brunch" },
+      B: { title: "낮은 조명의 바 자리", alt: "어두운 조명과 잔잔한 빛이 있는 저녁 공간", palette: ["#4c4053", "#bf7b48", "#e8d5c4"], mood: "night" }
+    },
+    {
+      A: { title: "동네에 숨어있는 작은 입구", alt: "익숙한 동네 길에 조용히 자리한 작은 입구", palette: ["#c8b98e", "#6f805d", "#f2ead8"], mood: "local" },
+      B: { title: "첫눈에 시선이 가는 외관", alt: "선과 소재가 또렷한 세련된 외관", palette: ["#bac1b8", "#333936", "#eef0ea"], mood: "city" }
+    },
+    {
+      A: { title: "여백이 있는 창가 자리", alt: "테이블 위 여백과 창가 빛이 느껴지는 자리", palette: ["#e1c990", "#789269", "#f8f0df"], mood: "quiet" },
+      B: { title: "음식이 자연스럽게 모인 테이블", alt: "여러 접시가 부담 없이 놓인 따뜻한 테이블", palette: ["#d8a76d", "#7c5034", "#fff0d9"], mood: "shared" }
+    },
+    {
+      A: { title: "초록이 스친 작은 공간", alt: "창밖 초록과 실내의 식물이 이어지는 공간", palette: ["#b9ce96", "#557246", "#f2f0db"], mood: "green" },
+      B: { title: "도시적인 선이 있는 거리", alt: "건물 외벽과 길의 선이 차분하게 보이는 거리", palette: ["#c4c8c4", "#444b48", "#eef0ef"], mood: "urban" }
+    },
+    {
+      A: { title: "시선이 머무는 코너", alt: "빛과 소품 배치가 눈에 남는 공간의 한쪽", palette: ["#d8c1a0", "#6e5846", "#f6eee4"], mood: "visual" },
+      B: { title: "편하게 오래 앉는 테이블", alt: "음식과 잔이 안정감 있게 놓인 편한 테이블", palette: ["#d6aa72", "#765238", "#f7ead6"], mood: "comfort" }
+    },
+    {
+      A: { title: "천천히 보는 작은 전시 공간", alt: "조용한 벽면과 작은 오브제가 있는 차분한 공간", palette: ["#d8cfbd", "#6b6658", "#f7f4ec"], mood: "slow" },
+      B: { title: "가볍게 지나치기 좋은 길", alt: "다음 공간으로 이어질 듯한 밝은 거리", palette: ["#c6d2a7", "#6d7b5c", "#f0eddc"], mood: "walk" }
+    },
+    {
+      A: { title: "하루가 이어질 것 같은 장면", alt: "카페 테이블과 바깥 길이 자연스럽게 이어지는 공간", palette: ["#c7b77f", "#59754f", "#f4ead0"], mood: "route" },
+      B: { title: "지나가다 멈추게 되는 입구", alt: "우연히 발견한 듯한 작은 가게의 입구", palette: ["#bfc6b4", "#595b4c", "#f3f0e7"], mood: "discover" }
+    }
+  ].map((round) => ({
+    A: { ...round.A, image: makeSceneImage(round.A) },
+    B: { ...round.B, image: makeSceneImage(round.B) }
+  }));
+
+  function svgData(svg) {
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  }
+
+  function makeSceneImage(scene) {
+    const [a, b, c] = scene.palette;
+    const motif = {
+      window: `<rect x="82" y="64" width="230" height="360" rx="24" fill="${b}" opacity=".9"/><rect x="110" y="92" width="78" height="134" rx="10" fill="${c}" opacity=".9"/><rect x="206" y="92" width="78" height="134" rx="10" fill="${c}" opacity=".65"/>`,
+      facade: `<rect x="112" y="112" width="318" height="286" rx="26" fill="${b}" opacity=".86"/><rect x="150" y="160" width="106" height="170" rx="16" fill="${c}" opacity=".82"/><path d="M92 414c108-66 220-80 378-54" stroke="${a}" stroke-width="42" opacity=".48" fill="none"/>`,
+      table: `<ellipse cx="292" cy="372" rx="222" ry="70" fill="${b}" opacity=".8"/><rect x="184" y="280" width="210" height="38" rx="19" fill="${c}" opacity=".82"/><circle cx="456" cy="312" r="42" fill="${a}" opacity=".75"/>`,
+      alley: `<path d="M92 96h260l108 392H146z" fill="${b}" opacity=".74"/><path d="M332 110c-34 128-52 248-36 362" stroke="${c}" stroke-width="46" opacity=".42" fill="none"/>`,
+      shelf: `<rect x="86" y="120" width="420" height="36" rx="18" fill="${b}" opacity=".75"/><rect x="86" y="250" width="420" height="36" rx="18" fill="${b}" opacity=".65"/><circle cx="168" cy="214" r="38" fill="${c}" opacity=".72"/><rect x="274" y="184" width="68" height="82" rx="22" fill="${a}" opacity=".72"/>`,
+      plate: `<ellipse cx="300" cy="322" rx="152" ry="88" fill="${c}" opacity=".9"/><ellipse cx="300" cy="318" rx="104" ry="54" fill="${a}" opacity=".76"/><rect x="130" y="116" width="318" height="88" rx="24" fill="${b}" opacity=".36"/>`,
+      brunch: `<ellipse cx="282" cy="344" rx="230" ry="82" fill="${c}" opacity=".9"/><circle cx="226" cy="314" r="58" fill="${a}" opacity=".78"/><circle cx="382" cy="316" r="48" fill="${b}" opacity=".58"/>`,
+      night: `<rect x="0" y="0" width="600" height="440" fill="${b}" opacity=".8"/><circle cx="182" cy="152" r="54" fill="${a}" opacity=".72"/><circle cx="420" cy="308" r="86" fill="${a}" opacity=".34"/>`,
+      local: `<rect x="114" y="132" width="282" height="242" rx="22" fill="${b}" opacity=".7"/><path d="M96 390c100-52 218-72 370-46" stroke="${a}" stroke-width="38" opacity=".42" fill="none"/>`,
+      city: `<rect x="80" y="90" width="128" height="316" rx="18" fill="${b}" opacity=".8"/><rect x="234" y="64" width="238" height="342" rx="24" fill="${b}" opacity=".62"/><rect x="268" y="104" width="166" height="72" rx="14" fill="${c}" opacity=".74"/>`,
+      quiet: `<rect x="84" y="78" width="230" height="326" rx="26" fill="${c}" opacity=".72"/><ellipse cx="352" cy="354" rx="156" ry="54" fill="${b}" opacity=".56"/>`,
+      shared: `<ellipse cx="304" cy="346" rx="226" ry="76" fill="${c}" opacity=".92"/><circle cx="220" cy="318" r="48" fill="${a}" opacity=".78"/><circle cx="340" cy="310" r="42" fill="${b}" opacity=".56"/><circle cx="430" cy="330" r="36" fill="${a}" opacity=".56"/>`,
+      green: `<path d="M84 398c72-176 184-250 338-278-44 176-150 268-338 278z" fill="${b}" opacity=".54"/><rect x="118" y="98" width="316" height="266" rx="28" fill="${c}" opacity=".54"/>`,
+      urban: `<rect x="90" y="86" width="126" height="330" rx="20" fill="${b}" opacity=".72"/><rect x="238" y="124" width="270" height="292" rx="24" fill="${b}" opacity=".5"/><path d="M70 420h450" stroke="${a}" stroke-width="32" opacity=".52"/>`,
+      visual: `<circle cx="202" cy="190" r="78" fill="${a}" opacity=".62"/><rect x="280" y="132" width="168" height="214" rx="32" fill="${b}" opacity=".58"/><ellipse cx="292" cy="372" rx="226" ry="58" fill="${c}" opacity=".78"/>`,
+      comfort: `<ellipse cx="292" cy="350" rx="230" ry="74" fill="${c}" opacity=".92"/><rect x="158" y="238" width="276" height="52" rx="26" fill="${b}" opacity=".48"/><circle cx="366" cy="320" r="52" fill="${a}" opacity=".64"/>`,
+      slow: `<rect x="96" y="84" width="390" height="290" rx="28" fill="${c}" opacity=".7"/><rect x="162" y="136" width="98" height="154" rx="16" fill="${b}" opacity=".58"/><circle cx="370" cy="210" r="42" fill="${a}" opacity=".62"/>`,
+      walk: `<path d="M74 386c138-92 266-112 456-76" stroke="${b}" stroke-width="46" opacity=".5" fill="none"/><rect x="114" y="92" width="286" height="214" rx="28" fill="${c}" opacity=".58"/>`,
+      route: `<rect x="82" y="84" width="260" height="246" rx="28" fill="${c}" opacity=".65"/><path d="M292 332c76 10 136 42 178 96" stroke="${b}" stroke-width="30" stroke-linecap="round" opacity=".56" fill="none"/>`,
+      discover: `<rect x="138" y="118" width="268" height="286" rx="30" fill="${b}" opacity=".64"/><path d="M82 414c84-82 206-110 384-70" stroke="${a}" stroke-width="34" opacity=".44" fill="none"/>`
+    }[scene.mood] || "";
+
+    return svgData(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 440" role="img">
+      <defs>
+        <radialGradient id="glow" cx=".22" cy=".16" r=".8">
+          <stop offset="0" stop-color="${c}"/>
+          <stop offset=".62" stop-color="${a}"/>
+          <stop offset="1" stop-color="${b}"/>
+        </radialGradient>
+        <filter id="soft"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#2a2118" flood-opacity=".18"/></filter>
+      </defs>
+      <rect width="600" height="440" fill="url(#glow)"/>
+      <circle cx="514" cy="70" r="130" fill="${c}" opacity=".24"/>
+      <g filter="url(#soft)">${motif}</g>
+      <path d="M70 430c88-54 208-70 350-44" stroke="#ffffff" stroke-width="44" opacity=".16" fill="none"/>
+    </svg>`);
+  }
+
+  function makeCharacterImage(characterKey) {
+    const character = characterVisuals[characterKey] || characterVisuals.sunny_window;
+    const [a, b, c] = character.colors;
+    const marks = {
+      sun: `<circle cx="362" cy="138" r="42" fill="${a}" opacity=".95"/>`,
+      leaf: `<path d="M348 116c-62 18-104 58-126 120 70-12 118-52 126-120z" fill="${a}" opacity=".9"/>`,
+      window: `<rect x="316" y="96" width="98" height="118" rx="20" fill="${a}" opacity=".9"/><path d="M365 98v114M316 154h98" stroke="${c}" stroke-width="12" opacity=".7"/>`,
+      plate: `<ellipse cx="368" cy="164" rx="70" ry="42" fill="${c}" opacity=".95"/><ellipse cx="368" cy="164" rx="44" ry="24" fill="${a}" opacity=".9"/>`,
+      moon: `<path d="M386 104c-44 28-50 92-10 126-72-2-108-80-58-132 20-20 48-28 68 6z" fill="${a}" opacity=".95"/>`,
+      path: `<path d="M304 126c74 6 108 46 82 86-22 34-82 26-90 76" fill="none" stroke="${a}" stroke-width="26" stroke-linecap="round" opacity=".9"/>`
+    };
+    return svgData(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 560" role="img">
+      <defs>
+        <radialGradient id="bg" cx=".45" cy=".28" r=".75">
+          <stop offset="0" stop-color="${c}"/>
+          <stop offset="1" stop-color="#eef8ef"/>
+        </radialGradient>
+        <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="${b}" flood-opacity=".18"/></filter>
+      </defs>
+      <circle cx="280" cy="280" r="260" fill="url(#bg)"/>
+      <g filter="url(#shadow)">
+        <path d="M130 386c28-98 88-154 150-154s122 56 150 154c24 82-44 126-150 126s-174-44-150-126z" fill="${a}" opacity=".74"/>
+        <circle cx="280" cy="218" r="86" fill="#f6d8b2"/>
+        <path d="M190 190c38-72 142-94 202-22 18 22 8 48-22 48H212c-28 0-38-10-22-26z" fill="${b}" opacity=".86"/>
+        <circle cx="250" cy="230" r="9" fill="#28241d"/>
+        <circle cx="310" cy="230" r="9" fill="#28241d"/>
+        <path d="M260 264c15 14 34 14 50 0" fill="none" stroke="#8d6543" stroke-width="9" stroke-linecap="round"/>
+        <rect x="218" y="340" width="124" height="74" rx="24" fill="${b}" opacity=".88"/>
+        <circle cx="280" cy="377" r="26" fill="${c}" opacity=".95"/>
+        ${marks[character.mark] || marks.sun}
+      </g>
+    </svg>`);
+  }
+
   const fallbackResult = {
     shareSlug: null,
     shareUrl: activeShareUrl,
-    characterKey: "quiet_collector",
-    characterName: "조용한 감도 수집가",
-    description: "복잡한 곳보다 오래 머물고 싶은 장면을 먼저 고르는 타입이에요.",
-    tags: ["조용함", "감성적인", "동네감"]
+    characterKey: "sunny_window",
+    characterName: characterVisuals.sunny_window.name,
+    description: characterVisuals.sunny_window.description,
+    tags: characterVisuals.sunny_window.tags
   };
 
   function show(screen) {
@@ -794,12 +964,17 @@
   }
 
   function updateRound() {
+    const currentRound = notifyRounds[round - 1] || notifyRounds[0];
     refs.roundNum.textContent = String(round);
     refs.progressValue.style.width = `${Math.max(10, ((round - 1) / 10) * 100)}%`;
     refs.choiceA.classList.remove("is-selected");
     refs.choiceB.classList.remove("is-selected");
     refs.choiceA.disabled = false;
     refs.choiceB.disabled = false;
+    refs.choiceA.querySelector("img").src = currentRound.A.image;
+    refs.choiceA.querySelector("img").alt = currentRound.A.alt;
+    refs.choiceB.querySelector("img").src = currentRound.B.image;
+    refs.choiceB.querySelector("img").alt = currentRound.B.alt;
     isPicking = false;
   }
 
@@ -814,11 +989,11 @@
   function renderThumbs() {
     refs.thumbRow.innerHTML = "";
     const completed = picks.length ? picks : Array.from({ length: 10 }, (_, index) => index % 2 === 0 ? "A" : "B");
-    completed.slice(0, 10).forEach((pick) => {
+    completed.slice(0, 10).forEach((pick, index) => {
       const thumb = document.createElement("span");
       thumb.className = "thumb";
       const img = document.createElement("img");
-      img.src = pick === "A" ? "/img/notify-demo/place-a.svg" : "/img/notify-demo/place-b.svg";
+      img.src = notifyRounds[index]?.[pick]?.image || notifyRounds[0].A.image;
       img.alt = "";
       thumb.appendChild(img);
       refs.thumbRow.appendChild(thumb);
@@ -826,17 +1001,18 @@
   }
 
   function getCharacterImage(characterKey) {
-    return characterKey === "route_planner"
-      ? "/img/notify-demo/character-route.svg"
-      : "/img/notify-demo/character-quiet.svg";
+    return makeCharacterImage(characterKey);
   }
 
   function normalizeResult(result, shareUrl) {
+    const localCharacter = characterVisuals[result?.characterKey] || null;
     return {
       ...fallbackResult,
       ...(result || {}),
       shareUrl: shareUrl || result?.shareUrl || fallbackResult.shareUrl,
-      tags: Array.isArray(result?.tags) && result.tags.length ? result.tags : fallbackResult.tags
+      characterName: result?.characterName || localCharacter?.name || fallbackResult.characterName,
+      description: result?.description || localCharacter?.description || fallbackResult.description,
+      tags: Array.isArray(result?.tags) && result.tags.length ? result.tags : localCharacter?.tags || fallbackResult.tags
     };
   }
 
@@ -846,6 +1022,7 @@
     activeShareUrl = activeResult.shareUrl || activeShareUrl;
 
     document.querySelector(".character-img").src = getCharacterImage(activeResult.characterKey);
+    document.querySelector(".character-img").alt = `${activeResult.characterName} 캐릭터`;
     refs.resultTitle.textContent = activeResult.characterName;
     refs.resultDescription.textContent = activeResult.description;
     refs.resultTags.innerHTML = "";
@@ -866,6 +1043,8 @@
     refs.matchFriendName.textContent = activeCompatibility.friendCharacterName
       || referrerResult?.characterName
       || "친구";
+    document.querySelector(".person.me img").src = getCharacterImage(activeResult?.characterKey || fallbackResult.characterKey);
+    document.querySelector(".person.friend img").src = getCharacterImage(activeCompatibility.friendCharacterKey || referrerResult?.characterKey || "route_scene");
     refs.matchSummary.textContent = activeCompatibility.summary
       || "서로의 취향을 함께 보면 잘 맞는 장소를 더 쉽게 찾을 수 있어요.";
   }

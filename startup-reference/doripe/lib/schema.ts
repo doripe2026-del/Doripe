@@ -67,7 +67,16 @@ const NotifyChoiceSchema = z.enum(["A", "B"]);
 export const NotifyTasteCreatePayloadSchema = z.object({
   email: z.string().email().max(254),
   choices: z.array(NotifyChoiceSchema).length(10),
-  characterKey: z.enum(["quiet_collector", "route_planner"]).optional(),
+  characterKey: z.enum([
+    "sunny_window",
+    "alley_wanderer",
+    "city_aesthetic",
+    "food_first",
+    "night_mood",
+    "route_scene",
+    "quiet_collector",
+    "route_planner",
+  ]).optional(),
   referrerShareSlug: z.string().regex(/^nt_[a-zA-Z0-9_-]{8,32}$/).optional().nullable(),
 });
 

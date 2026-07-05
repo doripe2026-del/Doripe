@@ -6,6 +6,7 @@ import {
   createNotifySupabaseClient,
   createShareSlug,
   NOTIFY_TASTE_CHARACTERS,
+  toLegacyStorageCharacterKey,
   toPublicResult,
   type NotifyTasteResultRow,
 } from "../lib/notify-taste.js";
@@ -82,7 +83,7 @@ async function insertResult(payload: ReturnType<typeof NotifyTasteCreatePayloadS
     const computed = computeCompatibility(
       payload.choices,
       referrerRow.choices,
-      character.key === referrerRow.character_key,
+      character.name === referrerRow.character_name,
     );
     compatibility = {
       available: true,
@@ -98,7 +99,7 @@ async function insertResult(payload: ReturnType<typeof NotifyTasteCreatePayloadS
       .insert({
         email: payload.email,
         choices: payload.choices,
-        character_key: character.key,
+        character_key: toLegacyStorageCharacterKey(character.key),
         character_name: character.name,
         share_slug: shareSlug,
         referrer_share_slug: referrerRow?.share_slug ?? null,
@@ -133,7 +134,7 @@ async function handlePost(req: VercelRequest, res: VercelResponse) {
       ...publicResult,
       shareUrl: `${getRequestOrigin(req)}/notify?ref=${encodeURIComponent(row.share_slug)}`,
     },
-    character: NOTIFY_TASTE_CHARACTERS[row.character_key],
+    character: NOTIFY_TASTE_CHARACTERS[publicResult.characterKey],
     compatibility,
   });
 }
