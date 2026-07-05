@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-labelledby="title desc">
+  <title id="title">초록 덩굴이 있는 골목 숍</title>
+  <desc id="desc">식물과 자전거가 놓인 로컬 골목 상점 외관</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e4eadf"/>
+      <stop offset="1" stop-color="#a9bca4"/>
+    </linearGradient>
+    <linearGradient id="ivy" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8dbf60"/>
+      <stop offset="1" stop-color="#1f4d31"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="22" stdDeviation="16" flood-color="#243325" flood-opacity=".28"/>
+    </filter>
+  </defs>
+  <rect width="900" height="620" fill="url(#sky)"/>
+  <rect x="96" y="88" width="708" height="432" rx="34" fill="#5f625d" filter="url(#shadow)"/>
+  <rect x="134" y="132" width="632" height="356" rx="24" fill="#222620"/>
+  <rect x="168" y="170" width="210" height="258" rx="14" fill="#161a17"/>
+  <rect x="412" y="170" width="210" height="258" rx="14" fill="#151915"/>
+  <rect x="642" y="168" width="82" height="260" rx="14" fill="#161a17"/>
+  <rect x="192" y="198" width="162" height="192" rx="10" fill="#bbd3be" opacity=".8"/>
+  <rect x="436" y="198" width="162" height="192" rx="10" fill="#c7d6c1" opacity=".74"/>
+  <rect x="665" y="198" width="36" height="192" rx="10" fill="#cfdabd" opacity=".72"/>
+  <rect x="296" y="106" width="308" height="72" rx="8" fill="#222620"/>
+  <text x="450" y="153" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#f4f1e9" text-anchor="middle">SWAY</text>
+  <path d="M92 154c124-78 234-44 350-92 66 24 142 6 284 42-74 76-172 118-316 100-116 38-222 22-318-50z" fill="url(#ivy)" opacity=".95"/>
+  <path d="M124 240c94-72 176-64 240-32 72-58 150-68 238-6 52-35 122-34 196 3-78 70-172 84-276 40-110 50-240 52-398-5z" fill="url(#ivy)" opacity=".8"/>
+  <path d="M626 426c70 16 118 50 144 104" fill="none" stroke="#263326" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="636" cy="542" r="42" fill="none" stroke="#263326" stroke-width="12"/>
+  <circle cx="762" cy="542" r="42" fill="none" stroke="#263326" stroke-width="12"/>
+  <path d="M636 542l52-72 74 72M688 470l-12 72M688 470h54" fill="none" stroke="#263326" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <g>
+    <rect x="92" y="456" width="92" height="96" rx="22" fill="#6f4e34"/>
+    <path d="M80 460c46-74 88-94 132-82-24 70-68 102-132 82z" fill="#377641"/>
+    <path d="M126 440c54-88 108-112 166-96-32 82-84 118-166 96z" fill="#4b904c"/>
+  </g>
+  <rect x="0" y="540" width="900" height="80" fill="#7c776f" opacity=".45"/>
+</svg>
