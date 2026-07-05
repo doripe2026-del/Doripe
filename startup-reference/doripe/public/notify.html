@@ -142,6 +142,9 @@
     align-items: center;
     padding: clamp(30px, 5vw, 64px);
   }
+  .result-card > div {
+    min-width: 0;
+  }
   .brand {
     display: inline-flex;
     align-items: center;
@@ -385,8 +388,22 @@
   .character-img {
     width: min(360px, 78vw);
     aspect-ratio: 1;
-    border-radius: 999px;
+    object-fit: contain;
+    border-radius: 32px;
     box-shadow: var(--shadow-sm);
+  }
+  #resultTitle,
+  #resultDescription {
+    max-width: 100%;
+    width: 100%;
+    white-space: nowrap;
+  }
+  #resultTitle {
+    transform-origin: left center;
+  }
+  #resultDescription {
+    line-height: 1.45;
+    transform-origin: left center;
   }
   .eyebrow {
     color: var(--green-dark);
@@ -583,6 +600,14 @@
       padding: 28px 22px;
       gap: 28px;
     }
+    #resultTitle,
+    #resultDescription {
+      transform-origin: center center;
+      text-align: center;
+    }
+    #resultDescription {
+      margin-top: 14px;
+    }
     .brand { margin-bottom: 28px; }
     .collage {
       min-height: 320px;
@@ -633,10 +658,10 @@
           </div>
         </div>
         <div class="collage" aria-hidden="true">
-          <img class="a1" src="/img/notify-demo/place-a.svg" alt="" />
-          <img class="a2" src="/img/notify-demo/place-b.svg" alt="" />
-          <img class="a3" src="/img/notify-demo/place-a.svg" alt="" />
-          <img class="a4" src="/img/notify-demo/place-b.svg" alt="" />
+          <img class="a1" src="https://images.unsplash.com/photo-1625214264271-0aa384c5cf33?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8c2VvdWwlMjBjYWZlJTIwd2luZG93JTIwcGxhbnRzfGVufDB8fHx8MTc4MzI1MjQ2MXww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="" />
+          <img class="a2" src="https://images.unsplash.com/photo-1553668938-1b3a1e5792fc?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8a29yZWElMjBjYWZlJTIwaW50ZXJpb3IlMjB3b29kZW4lMjB0YWJsZXxlbnwwfHx8fDE3ODMyNTI0NjF8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="" />
+          <img class="a3" src="https://images.unsplash.com/photo-1625214264271-0aa384c5cf33?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8c2VvdWwlMjBjYWZlJTIwd2luZG93JTIwcGxhbnRzfGVufDB8fHx8MTc4MzI1MjQ2MXww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="" />
+          <img class="a4" src="https://images.unsplash.com/photo-1553668938-1b3a1e5792fc?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8a29yZWElMjBjYWZlJTIwaW50ZXJpb3IlMjB3b29kZW4lMjB0YWJsZXxlbnwwfHx8fDE3ODMyNTI0NjF8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="" />
         </div>
       </div>
     </article>
@@ -649,12 +674,12 @@
         <div class="choices">
           <button id="choiceA" class="choice" type="button" data-pick="A">
             <span class="choice-check">✓</span>
-            <img src="/img/notify-demo/place-a.svg" alt="햇살이 드는 조용한 카페" />
+            <img src="https://images.unsplash.com/photo-1625214264271-0aa384c5cf33?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8c2VvdWwlMjBjYWZlJTIwd2luZG93JTIwcGxhbnRzfGVufDB8fHx8MTc4MzI1MjQ2MXww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="햇살이 드는 조용한 카페" />
             <span class="choice-label">A</span>
           </button>
           <button id="choiceB" class="choice" type="button" data-pick="B">
             <span class="choice-check">✓</span>
-            <img src="/img/notify-demo/place-b.svg" alt="초록 덩굴이 있는 골목 숍" />
+            <img src="https://images.unsplash.com/photo-1553668938-1b3a1e5792fc?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8a29yZWElMjBjYWZlJTIwaW50ZXJpb3IlMjB3b29kZW4lMjB0YWJsZXxlbnwwfHx8fDE3ODMyNTI0NjF8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="초록 덩굴이 있는 골목 숍" />
             <span class="choice-label">B</span>
           </button>
         </div>
@@ -679,7 +704,7 @@
     <article id="screen-result" class="screen">
       <div class="card result-card">
         <div class="character-wrap">
-          <img class="character-img" src="/img/notify-demo/character-quiet.svg" alt="조용한 감도 수집가 캐릭터" />
+          <img class="character-img" src="/img/notify-characters/sunny-window.png" alt="조용한 창가를 먼저 찾는 사람 캐릭터" />
         </div>
         <div>
           <p class="eyebrow">당신의 장소 취향 캐릭터</p>
@@ -718,12 +743,12 @@
           <div id="matchScore" class="score">86<span>점</span></div>
           <div class="compare">
             <div class="person me">
-              <img src="/img/notify-demo/character-quiet.svg" alt="내 캐릭터" />
+              <img src="/img/notify-characters/sunny-window.png" alt="내 캐릭터" />
               <div><b>나</b><strong id="matchMeName">조용한 감도 수집가</strong></div>
             </div>
             <div class="heart">♥</div>
             <div class="person friend">
-              <img src="/img/notify-demo/character-route.svg" alt="친구 캐릭터" />
+              <img src="/img/notify-characters/route-scene.png" alt="친구 캐릭터" />
               <div><b>친구</b><strong id="matchFriendName">하루 루트 설계자</strong></div>
             </div>
           </div>
@@ -778,44 +803,50 @@
 
   const characterVisuals = {
     sunny_window: {
-      name: "햇살 아래 오래 앉아있는 사람",
-      description: "조용한 창가, 식물, 낮의 공기, 오래 머무는 공간에 끌려요.",
+      name: "조용한 창가를 먼저 찾는 사람",
+      description: "사람이 많은 곳보다 햇살, 창가, 식물이 있는 자리에 오래 머무는 걸 좋아해요.",
       tags: ["창가", "조용함", "낮"],
+      image: "/img/notify-characters/sunny-window.png",
       colors: ["#e9d58b", "#7fa46a", "#f8f3df"],
       mark: "sun"
     },
     alley_wanderer: {
-      name: "골목만 보면 일단 꺾는 사람",
-      description: "목적지보다 로컬 골목, 작은 가게, 우연한 발견을 좋아해요.",
+      name: "골목 끝 작은 가게에 끌리는 사람",
+      description: "유명한 곳보다 걷다가 우연히 발견한 동네 가게에 더 설레는 타입이에요.",
       tags: ["골목", "산책", "로컬"],
+      image: "/img/notify-characters/alley-wanderer.png",
       colors: ["#9bbd82", "#8f704e", "#f5efe2"],
       mark: "leaf"
     },
     city_aesthetic: {
-      name: "간판 예쁘면 이미 반쯤 넘어간 사람",
-      description: "외관, 편집샵, 트렌디한 거리, 도시적인 장면에 반응해요.",
+      name: "외관 보고 이미 마음 정하는 사람",
+      description: "간판, 입구, 쇼윈도처럼 첫인상이 예쁜 장소에 빠르게 반응해요.",
       tags: ["외관", "트렌디", "도시"],
+      image: "/img/notify-characters/city-aesthetic.png",
       colors: ["#bec7bd", "#343b35", "#edf1ec"],
       mark: "window"
     },
     food_first: {
-      name: "맛없는 감성은 용서 못 하는 사람",
-      description: "분위기도 중요하지만 결국 메뉴와 한입의 만족도가 기준이에요.",
+      name: "결국 맛있는 곳을 고르는 사람",
+      description: "분위기도 좋지만, 마지막 기준은 메뉴와 한입의 만족감이에요.",
       tags: ["맛집", "메뉴", "실패없음"],
+      image: "/img/notify-characters/food-first.png",
       colors: ["#d5a15f", "#7b4a31", "#fff1d6"],
       mark: "plate"
     },
     night_mood: {
-      name: "조명 어두워지면 취향 살아나는 사람",
-      description: "와인바, 낮은 조명, 저녁 대화, 깊은 무드에 끌려요.",
+      name: "밤 조명에 약한 사람",
+      description: "낮보다 저녁, 밝은 곳보다 낮은 조명과 차분한 대화가 있는 곳에 끌려요.",
       tags: ["밤", "데이트", "무드"],
+      image: "/img/notify-characters/night-mood.png",
       colors: ["#50415d", "#d99c59", "#efe4db"],
       mark: "moon"
     },
     route_scene: {
-      name: "하루를 한 장면으로 엮는 사람",
-      description: "카페, 산책, 식사처럼 장소들이 자연스럽게 이어져야 좋아요.",
+      name: "하루를 루트로 완성하는 사람",
+      description: "한 장소보다 카페, 산책, 식사가 자연스럽게 이어지는 하루를 좋아해요.",
       tags: ["루트", "동선", "하루"],
+      image: "/img/notify-characters/route-scene.png",
       colors: ["#86b889", "#4d7656", "#eff8ed"],
       mark: "path"
     }
@@ -823,49 +854,146 @@
 
   const notifyRounds = [
     {
-      A: { title: "햇살이 길게 들어오는 작은 카페", alt: "창가에 낮빛과 식물이 은은하게 보이는 조용한 카페", palette: ["#e8d39a", "#6f8f5d", "#f7edd2"], mood: "window" },
-      B: { title: "식물이 감싼 거리의 작은 숍", alt: "초록 덩굴과 차분한 외관이 있는 거리의 작은 가게", palette: ["#b6c7a2", "#3f4a42", "#e9e5d7"], mood: "facade" }
+      "A": {
+        "title": "창가 / 식물 / 낮빛",
+        "alt": "창가 / 식물 / 낮빛 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1625214264271-0aa384c5cf33?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8c2VvdWwlMjBjYWZlJTIwd2luZG93JTIwcGxhbnRzfGVufDB8fHx8MTc4MzI1MjQ2MXww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Andrey Vasilyev"
+      },
+      "B": {
+        "title": "나무 테이블 / 여백 / 체류감",
+        "alt": "나무 테이블 / 여백 / 체류감 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1553668938-1b3a1e5792fc?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8a29yZWElMjBjYWZlJTIwaW50ZXJpb3IlMjB3b29kZW4lMjB0YWJsZXxlbnwwfHx8fDE3ODMyNTI0NjF8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Tsuyuri Hara"
+      }
     },
     {
-      A: { title: "나무 테이블 위 느린 오후", alt: "커피와 책이 놓인 따뜻한 테이블 장면", palette: ["#d7b071", "#7a5a37", "#f6ead2"], mood: "table" },
-      B: { title: "문 너머로 이어지는 골목", alt: "열린 문과 안쪽으로 깊게 이어지는 작은 골목", palette: ["#b7c79b", "#6d694f", "#ece6d5"], mood: "alley" }
+      "A": {
+        "title": "외관 / 초록 / 발견감",
+        "alt": "외관 / 초록 / 발견감 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1549221429-289b573a9550?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8c2VvdWwlMjBjYWZlJTIwc3RvcmVmcm9udCUyMHBsYW50c3xlbnwwfHx8fDE3ODMyNTI0NjJ8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Bundo Kim"
+      },
+      "B": {
+        "title": "브런치 / 자연광 / 산뜻함",
+        "alt": "브런치 / 자연광 / 산뜻함 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1613274554329-70f997f5789f?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8YnJ1bmNoJTIwY2FmZSUyMHRhYmxlJTIwbmF0dXJhbCUyMGxpZ2h0fGVufDB8fHx8MTc4MzI1MjQ2Mnww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Chesley McCarty"
+      }
     },
     {
-      A: { title: "정돈된 선반과 작은 오브제", alt: "따뜻한 조명 아래 선반과 오브제가 놓인 공간", palette: ["#c9b28d", "#6d5742", "#f5eee1"], mood: "shelf" },
-      B: { title: "접시에 담긴 조용한 한 끼", alt: "공간 분위기 안에 음식이 자연스럽게 놓인 테이블", palette: ["#dbad73", "#784934", "#fff0dc"], mood: "plate" }
+      "A": {
+        "title": "오브제 / 선반 / 취향 밀도",
+        "alt": "오브제 / 선반 / 취향 밀도 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1708482282495-01ad7bb1d743?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8c21hbGwlMjBzaG9wJTIwaW50ZXJpb3IlMjBjZXJhbWljc3xlbnwwfHx8fDE3ODMyNTI0NjN8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "park minjung"
+      },
+      "B": {
+        "title": "식사 / 따뜻한 조명 / 안정감",
+        "alt": "식사 / 따뜻한 조명 / 안정감 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1599458252573-56ae36120de1?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8cmVzdGF1cmFudCUyMHRhYmxlJTIwd2FybSUyMGxpZ2h0fGVufDB8fHx8MTc4MzI1MjQ2M3ww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Hitesh Dewasi"
+      }
     },
     {
-      A: { title: "밝은 브런치 테이블", alt: "밝은 낮빛과 간단한 브런치가 놓인 테이블", palette: ["#ead49a", "#8d9f71", "#fff5dc"], mood: "brunch" },
-      B: { title: "낮은 조명의 바 자리", alt: "어두운 조명과 잔잔한 빛이 있는 저녁 공간", palette: ["#4c4053", "#bf7b48", "#e8d5c4"], mood: "night" }
+      "A": {
+        "title": "저녁 / 낮은 조명 / 대화 무드",
+        "alt": "저녁 / 낮은 조명 / 대화 무드 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1759048559612-6cfa12d3aa1c?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8d2luZSUyMGJhciUyMGludGVyaW9yJTIwd2FybXxlbnwwfHx8fDE3ODMyNTI0NjR8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Gian Paul Guinto"
+      },
+      "B": {
+        "title": "동네 입구 / 거리감 / 로컬함",
+        "alt": "동네 입구 / 거리감 / 로컬함 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1549221428-495f00892696?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8a29yZWElMjBzdHJlZXQlMjBjYWZlJTIwZXh0ZXJpb3J8ZW58MHx8fHwxNzgzMjUyNDY1fDA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Bundo Kim"
+      }
     },
     {
-      A: { title: "동네에 숨어있는 작은 입구", alt: "익숙한 동네 길에 조용히 자리한 작은 입구", palette: ["#c8b98e", "#6f805d", "#f2ead8"], mood: "local" },
-      B: { title: "첫눈에 시선이 가는 외관", alt: "선과 소재가 또렷한 세련된 외관", palette: ["#bac1b8", "#333936", "#eef0ea"], mood: "city" }
+      "A": {
+        "title": "전시감 / 조용함 / 감상",
+        "alt": "전시감 / 조용함 / 감상 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1627743914480-5c0a391767f0?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8cXVpZXQlMjBnYWxsZXJ5JTIwaW50ZXJpb3IlMjBjYWZlfGVufDB8fHx8MTc4MzI1MjQ2NXww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Do Nhu"
+      },
+      "B": {
+        "title": "초록 실내 / 편안함 / 숨 쉴 틈",
+        "alt": "초록 실내 / 편안함 / 숨 쉴 틈 분위기의 장소 사진",
+        "image": "https://plus.unsplash.com/premium_photo-1664702600368-d2d6a9c1c14d?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8Z3JlZW4lMjBjYWZlJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzgzMjUyNDY2fDA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Webster"
+      }
     },
     {
-      A: { title: "여백이 있는 창가 자리", alt: "테이블 위 여백과 창가 빛이 느껴지는 자리", palette: ["#e1c990", "#789269", "#f8f0df"], mood: "quiet" },
-      B: { title: "음식이 자연스럽게 모인 테이블", alt: "여러 접시가 부담 없이 놓인 따뜻한 테이블", palette: ["#d8a76d", "#7c5034", "#fff0d9"], mood: "shared" }
+      "A": {
+        "title": "디저트 / 커피 / 작은 만족",
+        "alt": "디저트 / 커피 / 작은 만족 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1730871082582-49e083b500a1?ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8ZGVzc2VydCUyMGNhZmUlMjB0YWJsZSUyMGNvZmZlZXxlbnwwfHx8fDE3ODMyNTI0NjZ8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Alimentos Fotogénicos"
+      },
+      "B": {
+        "title": "골목 / 산책 / 우연성",
+        "alt": "골목 / 산책 / 우연성 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1629642621587-9947ce328799?ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8Y2l0eSUyMGFsbGV5JTIwY2FmZSUyMGtvcmVhfGVufDB8fHx8MTc4MzI1MjQ2N3ww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Roméo A."
+      }
     },
     {
-      A: { title: "초록이 스친 작은 공간", alt: "창밖 초록과 실내의 식물이 이어지는 공간", palette: ["#b9ce96", "#557246", "#f2f0db"], mood: "green" },
-      B: { title: "도시적인 선이 있는 거리", alt: "건물 외벽과 길의 선이 차분하게 보이는 거리", palette: ["#c4c8c4", "#444b48", "#eef0ef"], mood: "urban" }
+      "A": {
+        "title": "아늑함 / 식사 / 오래 머묾",
+        "alt": "아늑함 / 식사 / 오래 머묾 분위기의 장소 사진",
+        "image": "https://plus.unsplash.com/premium_photo-1670984939096-f3cfd48c7408?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8Y296eSUyMHJlc3RhdXJhbnQlMjBpbnRlcmlvcnxlbnwwfHx8fDE3ODMyNTI0Njh8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Pablo Merchán Montes"
+      },
+      "B": {
+        "title": "책 / 창가 / 혼자 있기",
+        "alt": "책 / 창가 / 혼자 있기 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1571064492294-17e8c2fac904?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8Ym9vayUyMGNhZmUlMjB3aW5kb3d8ZW58MHx8fHwxNzgzMjUyNDY4fDA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Alicja Gancarz"
+      }
     },
     {
-      A: { title: "시선이 머무는 코너", alt: "빛과 소품 배치가 눈에 남는 공간의 한쪽", palette: ["#d8c1a0", "#6e5846", "#f6eee4"], mood: "visual" },
-      B: { title: "편하게 오래 앉는 테이블", alt: "음식과 잔이 안정감 있게 놓인 편한 테이블", palette: ["#d6aa72", "#765238", "#f7ead6"], mood: "comfort" }
+      "A": {
+        "title": "식물 / 작은 숍 / 생활감",
+        "alt": "식물 / 작은 숍 / 생활감 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1551887196-72e32bfc7bf3?ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8cGxhbnQlMjBzaG9wJTIwY2FmZSUyMGludGVyaW9yfGVufDB8fHx8MTc4MzI1MjQ2OXww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Louis Hansel"
+      },
+      "B": {
+        "title": "미니멀 / 정돈감 / 도시적",
+        "alt": "미니멀 / 정돈감 / 도시적 분위기의 장소 사진",
+        "image": "https://plus.unsplash.com/premium_photo-1716968595141-590865c9e8df?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8bWluaW1hbCUyMGNhZmUlMjBpbnRlcmlvciUyMGtvcmVhfGVufDB8fHx8MTc4MzI1MjQ2OXww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "insung yoon"
+      }
     },
     {
-      A: { title: "천천히 보는 작은 전시 공간", alt: "조용한 벽면과 작은 오브제가 있는 차분한 공간", palette: ["#d8cfbd", "#6b6658", "#f7f4ec"], mood: "slow" },
-      B: { title: "가볍게 지나치기 좋은 길", alt: "다음 공간으로 이어질 듯한 밝은 거리", palette: ["#c6d2a7", "#6d7b5c", "#f0eddc"], mood: "walk" }
+      "A": {
+        "title": "베이커리 / 테이블 / 일상성",
+        "alt": "베이커리 / 테이블 / 일상성 분위기의 장소 사진",
+        "image": "https://plus.unsplash.com/premium_photo-1687905432340-e82f7b91a41b?ixid=M3wxMjA3fDB8MXxzZWFyY2h8NXx8YmFrZXJ5JTIwY2FmZSUyMHRhYmxlfGVufDB8fHx8MTc4MzI1MjQ3MHww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Pablo Merchán Montes"
+      },
+      "B": {
+        "title": "저녁 식사 / 조명 / 깊은 무드",
+        "alt": "저녁 식사 / 조명 / 깊은 무드 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8ZXZlbmluZyUyMHJlc3RhdXJhbnQlMjBtb29kfGVufDB8fHx8MTc4MzI1MjQ3MHww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Adrien Olichon"
+      }
     },
     {
-      A: { title: "하루가 이어질 것 같은 장면", alt: "카페 테이블과 바깥 길이 자연스럽게 이어지는 공간", palette: ["#c7b77f", "#59754f", "#f4ead0"], mood: "route" },
-      B: { title: "지나가다 멈추게 되는 입구", alt: "우연히 발견한 듯한 작은 가게의 입구", palette: ["#bfc6b4", "#595b4c", "#f3f0e7"], mood: "discover" }
+      "A": {
+        "title": "거리 산책 / 가게들 / 다음 장소",
+        "alt": "거리 산책 / 가게들 / 다음 장소 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1588944926092-c516b1216238?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8d2Fsa2FibGUlMjBzdHJlZXQlMjBzaG9wcyUyMHNlb3VsfGVufDB8fHx8MTc4MzI1MjQ3MXww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Ming Han Low"
+      },
+      "B": {
+        "title": "커피 / 햇살 / 한 장면",
+        "alt": "커피 / 햇살 / 한 장면 분위기의 장소 사진",
+        "image": "https://images.unsplash.com/photo-1662038271111-5b1c0b4157e8?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8Y29mZmVlJTIwdGFibGUlMjB3aW5kb3clMjBzdW5saWdodHxlbnwwfHx8fDE3ODMyNTI0NzF8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82",
+        "credit": "Aimee Giles"
+      }
     }
-  ].map((round) => ({
-    A: { ...round.A, image: makeSceneImage(round.A) },
-    B: { ...round.B, image: makeSceneImage(round.B) }
-  }));
+  ];
 
   function svgData(svg) {
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
@@ -961,6 +1089,7 @@
       const navButton = document.querySelector(`[data-goto="${name}"]`);
       if (navButton) navButton.classList.toggle("is-active", name === screen);
     });
+    if (screen === "result") requestAnimationFrame(fitResultCopy);
   }
 
   function updateRound() {
@@ -1001,7 +1130,29 @@
   }
 
   function getCharacterImage(characterKey) {
-    return makeCharacterImage(characterKey);
+    return characterVisuals[characterKey]?.image || characterVisuals.sunny_window.image;
+  }
+
+  function fitSingleLine(element, maxSize, minSize) {
+    if (!element) return;
+    element.style.fontSize = `${maxSize}px`;
+    element.style.whiteSpace = "nowrap";
+
+    const availableWidth = Math.floor(element.parentElement?.getBoundingClientRect().width || element.clientWidth);
+    if (!availableWidth) return;
+    element.style.width = `${availableWidth}px`;
+
+    let size = maxSize;
+    while (element.scrollWidth > availableWidth && size > minSize) {
+      size -= 1;
+      element.style.fontSize = `${size}px`;
+    }
+  }
+
+  function fitResultCopy() {
+    const isMobile = window.matchMedia("(max-width: 760px)").matches;
+    fitSingleLine(refs.resultTitle, isMobile ? 34 : 48, isMobile ? 18 : 24);
+    fitSingleLine(refs.resultDescription, isMobile ? 17 : 21, isMobile ? 11 : 13);
   }
 
   function normalizeResult(result, shareUrl) {
@@ -1025,6 +1176,7 @@
     document.querySelector(".character-img").alt = `${activeResult.characterName} 캐릭터`;
     refs.resultTitle.textContent = activeResult.characterName;
     refs.resultDescription.textContent = activeResult.description;
+    fitResultCopy();
     refs.resultTags.innerHTML = "";
     activeResult.tags.forEach((tag) => {
       const span = document.createElement("span");
@@ -1215,6 +1367,7 @@
 
   refs.choiceA.addEventListener("click", () => pick("A"));
   refs.choiceB.addEventListener("click", () => pick("B"));
+  window.addEventListener("resize", fitResultCopy);
 
   refs.emailForm.addEventListener("submit", (event) => {
     event.preventDefault();
