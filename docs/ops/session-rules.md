@@ -15,6 +15,19 @@
 5. Open PR.
 6. Merge only after required checks pass.
 
+## Local Enforcement
+
+Run this once in every clone or worktree:
+
+```bash
+npm run setup:guards
+```
+
+This sets `core.hooksPath=.githooks` and enables:
+
+- `pre-commit`: blocks work on the wrong branch/repo and runs repository/Supabase guards.
+- `pre-push`: blocks direct push to `main` and runs repository/Supabase/type checks.
+
 ## Forbidden
 
 - Working directly on `main`

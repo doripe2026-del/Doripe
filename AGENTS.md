@@ -14,3 +14,4 @@
 - Production changes go through GitHub PR, required checks, and `main`.
 - Supabase schema changes must be committed as migration files under `supabase/migrations`.
 - Before PR, run the relevant checks from `docs/ops/session-rules.md`.
+- Run `npm run setup:guards` once after cloning or creating a worktree so Git hooks block invalid commits/pushes locally.
