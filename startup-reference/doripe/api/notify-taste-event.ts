@@ -6,6 +6,8 @@ const MAX_RAW_BODY_CHARS = 10_000;
 const MAX_METADATA_CHARS = 2_048;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_EVENTS = 120;
+const RATE_LIMIT_MAX_BUCKETS = 1_000;
+const RATE_LIMIT_OVERFLOW_KEY = "overflow";
 
 const rateLimitBuckets = new Map<string, { count: number; resetAt: number }>();
 
@@ -29,14 +31,25 @@ function getHeaderValue(value: string | string[] | undefined) {
 }
 
 function getClientKey(req: VercelRequest) {
-  const forwardedFor = getHeaderValue(req.headers["x-forwarded-for"]);
-  const firstForwardedIp = forwardedFor?.split(",")[0]?.trim();
-  return firstForwardedIp || req.socket.remoteAddress || "unknown";
+  return req.socket.remoteAddress || "unknown";
+}
+
+function pruneExpiredBuckets(now: number) {
+  for (const [key, bucket] of rateLimitBuckets) {
+    if (bucket.resetAt <= now) {
+      rateLimitBuckets.delete(key);
+    }
+  }
 }
 
 function isRateLimited(req: VercelRequest) {
   const now = Date.now();
-  const key = getClientKey(req);
+  pruneExpiredBuckets(now);
+
+  const clientKey = getClientKey(req);
+  const key = rateLimitBuckets.has(clientKey) || rateLimitBuckets.size < RATE_LIMIT_MAX_BUCKETS
+    ? clientKey
+    : RATE_LIMIT_OVERFLOW_KEY;
   const bucket = rateLimitBuckets.get(key);
 
   if (!bucket || bucket.resetAt <= now) {
