@@ -2,6 +2,13 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createNotifySupabaseClient } from "../lib/notify-taste.js";
 import { NotifyTasteEventPayloadSchema } from "../lib/schema.js";
 
+const MAX_RAW_BODY_CHARS = 10_000;
+const MAX_METADATA_CHARS = 2_048;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_EVENTS = 120;
+
+const rateLimitBuckets = new Map<string, { count: number; resetAt: number }>();
+
 function readBody(req: VercelRequest) {
   if (typeof req.body === "string") {
     try {
@@ -13,8 +20,32 @@ function readBody(req: VercelRequest) {
   return req.body;
 }
 
+function isRawBodyTooLarge(req: VercelRequest) {
+  return typeof req.body === "string" && req.body.length > MAX_RAW_BODY_CHARS;
+}
+
 function getHeaderValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value.join(", ") : value ?? null;
+}
+
+function getClientKey(req: VercelRequest) {
+  const forwardedFor = getHeaderValue(req.headers["x-forwarded-for"]);
+  const firstForwardedIp = forwardedFor?.split(",")[0]?.trim();
+  return firstForwardedIp || req.socket.remoteAddress || "unknown";
+}
+
+function isRateLimited(req: VercelRequest) {
+  const now = Date.now();
+  const key = getClientKey(req);
+  const bucket = rateLimitBuckets.get(key);
+
+  if (!bucket || bucket.resetAt <= now) {
+    rateLimitBuckets.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  bucket.count += 1;
+  return bucket.count > RATE_LIMIT_MAX_EVENTS;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -25,10 +56,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ ok: false, error: "method not allowed" });
   }
 
+  if (isRawBodyTooLarge(req)) {
+    return res.status(413).json({ ok: false, error: "payload too large" });
+  }
+
+  if (isRateLimited(req)) {
+    return res.status(429).json({ ok: false, error: "too many requests" });
+  }
+
   const parsed = NotifyTasteEventPayloadSchema.safeParse(readBody(req));
   if (!parsed.success) {
     const first = parsed.error.issues[0];
     return res.status(400).json({ ok: false, error: first?.message ?? "validation failed" });
+  }
+
+  if (JSON.stringify(parsed.data.metadata).length > MAX_METADATA_CHARS) {
+    return res.status(400).json({ ok: false, error: "metadata too large" });
   }
 
   try {
