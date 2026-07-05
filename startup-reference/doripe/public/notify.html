@@ -7,6 +7,9 @@
 <meta name="description" content="사진 2장 중 더 끌리는 장소를 10번 고르면 Doripe가 내 장소 취향 캐릭터와 친구와의 궁합을 보여드립니다." />
 <meta name="robots" content="noindex,nofollow" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
 <style>
   :root {
@@ -23,13 +26,15 @@
     --shadow: 0 22px 70px rgba(37, 45, 39, .12);
     --shadow-sm: 0 12px 34px rgba(37, 45, 39, .10);
     --radius: 28px;
-    font-family: "Pretendard Variable", Pretendard, Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-ko: 'Pretendard Variable', Pretendard, Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-latin: Fustat, 'Pretendard Variable', Pretendard, Inter, system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
     min-height: 100vh;
     color: var(--ink);
+    font-family: var(--font-ko);
     background:
       radial-gradient(circle at 14% 8%, rgba(18, 201, 107, .10), transparent 30%),
       radial-gradient(circle at 90% 20%, rgba(255, 211, 126, .20), transparent 28%),
@@ -44,6 +49,12 @@
     display: flex;
     flex-direction: column;
     gap: 18px;
+  }
+  body:not(.debug-nav) .page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 0;
+    gap: 0;
   }
   .preview-nav {
     position: sticky;
@@ -82,11 +93,21 @@
     display: grid;
     place-items: center;
   }
+  body:not(.debug-nav) .stage {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
   .screen {
     display: none;
     width: 100%;
   }
   .screen.is-active { display: block; }
+  body:not(.debug-nav) .screen.is-active {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+  }
   .card {
     width: 100%;
     min-height: min(720px, calc(100vh - 136px));
@@ -95,6 +116,13 @@
     background: rgba(255, 253, 250, .94);
     box-shadow: var(--shadow);
     overflow: hidden;
+  }
+  body:not(.debug-nav) .card {
+    min-height: 100vh;
+    min-height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
   }
   .intro-card,
   .result-card,
@@ -113,6 +141,7 @@
     font-size: 28px;
     font-weight: 900;
     letter-spacing: -.02em;
+    font-family: var(--font-latin);
   }
   .brand img {
     width: 36px;
@@ -519,6 +548,7 @@
   }
   @media (max-width: 760px) {
     .page { padding: 16px; }
+    body:not(.debug-nav) .page { padding: 0; }
     .preview-nav {
       position: static;
       grid-template-columns: repeat(3, minmax(0, 1fr));
