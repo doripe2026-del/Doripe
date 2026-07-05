@@ -10,5 +10,6 @@ for (const hook of [".githooks/pre-commit", ".githooks/pre-push"]) {
 }
 
 run("git", ["config", "core.hooksPath", ".githooks"]);
+run("node", ["scripts/install-deployment-shell-guard.mjs"]);
 
 console.log("Local git hooks enabled: .githooks");
