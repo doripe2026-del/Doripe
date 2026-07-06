@@ -16,3 +16,25 @@
 - Before PR, run the relevant checks from `docs/ops/session-rules.md`.
 - Run `npm run setup:guards` once after cloning or creating a worktree. It installs Git hooks and a local deployment shell guard.
 - The deployment shell guard blocks direct production Vercel commands in Doripe contexts and forces the GitHub PR → checks → main merge → Vercel Git integration path.
+
+# Doripe Slash Commands
+
+## `/인스타공장`
+
+When a user message starts with `/인스타공장`, treat it as the Instagram feed factory trigger.
+
+Syntax:
+
+```text
+/인스타공장 <absolute-post-folder>
+/인스타공장 --all <absolute-factory-folder>
+```
+
+Rules:
+
+- Follow `docs/superpowers/specs/2026-07-06-instagram-factory-command-design.md`.
+- One post folder contains `input.xlsx` and numeric images such as `1.jpg`, `2.jpg`, `3.png`.
+- Do not generate captions, hashtags, or upload to Instagram.
+- Use the Figma pages `Source` and `Instagram`.
+- Never mutate `Source`; copy from `Source` into `Instagram`, then replace `title` and `photo_1` through `photo_10`.
+- If Figma access, the template page, or required layers are missing, stop and report the exact missing requirement.
