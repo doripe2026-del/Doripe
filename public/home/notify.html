@@ -41,6 +41,9 @@
       linear-gradient(180deg, #fbfaf6 0%, #f6f3eb 100%);
   }
   body:not(.debug-nav) {
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
     background:
       radial-gradient(circle at 18% 12%, rgba(18, 201, 107, .14), transparent 30%),
       radial-gradient(circle at 78% 8%, rgba(255, 211, 126, .24), transparent 28%),
@@ -58,10 +61,18 @@
     gap: 18px;
   }
   body:not(.debug-nav) .page {
-    min-height: 100vh;
-    min-height: 100dvh;
+    height: 100vh;
+    height: 100svh;
+    height: 100dvh;
+    min-height: 0;
     padding: clamp(18px, 3.4vw, 48px);
+    padding:
+      max(clamp(18px, 3.4vw, 48px), env(safe-area-inset-top))
+      max(clamp(18px, 3.4vw, 48px), env(safe-area-inset-right))
+      max(clamp(18px, 3.4vw, 48px), env(safe-area-inset-bottom))
+      max(clamp(18px, 3.4vw, 48px), env(safe-area-inset-left));
     gap: 0;
+    overflow: hidden;
   }
   .preview-nav {
     position: sticky;
@@ -102,10 +113,8 @@
   }
   body:not(.debug-nav) .stage {
     width: min(1120px, 100%);
-    min-height: 100vh;
-    min-height: 100dvh;
-    min-height: calc(100vh - clamp(36px, 6.8vw, 96px));
-    min-height: calc(100dvh - clamp(36px, 6.8vw, 96px));
+    height: 100%;
+    min-height: 0;
   }
   .screen {
     display: none;
@@ -113,7 +122,8 @@
   }
   .screen.is-active { display: block; }
   body:not(.debug-nav) .screen.is-active {
-    min-height: auto;
+    height: 100%;
+    min-height: 0;
     display: flex;
   }
   .card {
@@ -126,8 +136,9 @@
     overflow: hidden;
   }
   body:not(.debug-nav) .card {
-    min-height: min(760px, calc(100vh - clamp(36px, 6.8vw, 96px)));
-    min-height: min(760px, calc(100dvh - clamp(36px, 6.8vw, 96px)));
+    height: min(760px, 100%);
+    min-height: 0;
+    max-height: 100%;
     border: 1px solid rgba(228, 224, 216, .82);
     border-radius: 32px;
     background: rgba(255, 253, 250, .96);
@@ -473,9 +484,11 @@
   }
   .compat-box small {
     color: #c42362;
+    white-space: nowrap;
   }
   .compat-box p {
     color: #633446;
+    white-space: nowrap;
   }
   .match-card {
     grid-template-columns: 1fr;
@@ -573,11 +586,15 @@
     transform: translateX(-50%) translateY(0);
   }
   @media (max-width: 760px) {
+    :root { --radius: 22px; }
     .page { padding: 16px; }
-    body:not(.debug-nav) .page { padding: 14px; }
-    body:not(.debug-nav) .stage {
-      min-height: calc(100vh - 28px);
-      min-height: calc(100dvh - 28px);
+    body:not(.debug-nav) .page {
+      padding: 10px;
+      padding:
+        max(10px, env(safe-area-inset-top))
+        max(10px, env(safe-area-inset-right))
+        max(10px, env(safe-area-inset-bottom))
+        max(10px, env(safe-area-inset-left));
     }
     .preview-nav {
       position: static;
@@ -590,15 +607,44 @@
       border-radius: 24px;
     }
     body:not(.debug-nav) .card {
-      min-height: calc(100vh - 28px);
-      min-height: calc(100dvh - 28px);
-      border-radius: 24px;
+      height: 100%;
+      min-height: 0;
+      border-radius: 22px;
+      box-shadow: 0 18px 52px rgba(37, 45, 39, .12);
     }
     .intro-card,
     .result-card {
       grid-template-columns: 1fr;
-      padding: 28px 22px;
-      gap: 28px;
+      padding: 20px 18px;
+      gap: 16px;
+      align-content: center;
+    }
+    .intro-card {
+      grid-template-rows: minmax(0, 1fr) auto;
+    }
+    .result-card {
+      grid-template-rows: auto minmax(0, 1fr);
+      text-align: center;
+    }
+    h1 {
+      font-size: clamp(30px, 9vw, 38px);
+      line-height: 1.08;
+    }
+    h2 {
+      font-size: clamp(25px, 7.4vw, 34px);
+      line-height: 1.08;
+    }
+    .lead {
+      margin-top: 12px;
+      font-size: 14px;
+      line-height: 1.48;
+    }
+    .primary,
+    .secondary {
+      height: 48px;
+      padding: 0 22px;
+      border-radius: 14px;
+      font-size: 16px;
     }
     #resultTitle,
     #resultDescription {
@@ -608,28 +654,216 @@
     #resultDescription {
       margin-top: 14px;
     }
-    .brand { margin-bottom: 28px; }
+    .brand {
+      margin-bottom: 20px;
+      gap: 8px;
+      font-size: 22px;
+    }
+    .brand img {
+      width: 30px;
+      height: 30px;
+    }
     .collage {
-      min-height: 320px;
+      min-height: 210px;
+      max-height: 32svh;
+    }
+    .collage img {
+      width: 43%;
+      border-radius: 16px;
+    }
+    .intro-actions,
+    .result-actions {
+      justify-content: center;
+      margin-top: 18px;
+      gap: 10px;
     }
     .choices {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
     }
     .choice img {
-      aspect-ratio: 1.55 / 1;
+      aspect-ratio: 1.18 / 1;
+    }
+    .choice {
+      border-radius: 18px;
+    }
+    .choice-label {
+      height: 44px;
+      font-size: 22px;
+    }
+    .choice-check {
+      top: 9px;
+      right: 9px;
+      width: 28px;
+      height: 28px;
     }
     .email-card,
     .choice-card,
     .match-card {
-      padding: 28px 20px;
+      padding: 20px 18px;
+      height: 100%;
+    }
+    .choice-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .progress-num {
+      font-size: 19px;
+    }
+    .progress-track {
+      width: 62%;
+      height: 7px;
+      margin: 9px auto 20px;
+    }
+    .choice-card h2 {
+      margin-bottom: 18px;
+    }
+    .email-inner .lead {
+      font-size: 14px;
+    }
+    .email-form {
+      margin-top: 20px;
+      gap: 10px;
+    }
+    .email-form input {
+      height: 52px;
+      border-radius: 15px;
+      font-size: 16px;
+    }
+    .thumb-row {
+      gap: 6px;
+      margin: 22px 0 14px;
+    }
+    .thumb {
+      width: 35px;
+      height: 35px;
+      border-radius: 10px;
+    }
+    .microcopy {
+      font-size: 12px;
+    }
+    .character-img {
+      width: min(220px, 58vw, 30svh);
+      border-radius: 24px;
+      box-shadow: 0 10px 24px rgba(35, 42, 37, .08);
+    }
+    .eyebrow {
+      font-size: 13px;
+    }
+    .tags {
+      justify-content: center;
+      gap: 7px;
+      margin: 14px 0;
+    }
+    .tag {
+      padding: 7px 11px;
+      font-size: 13px;
+    }
+    .share-box {
+      max-width: 100%;
+      margin-top: 14px;
+      padding: 13px 14px;
+      border-radius: 16px;
+    }
+    .share-box strong {
+      font-size: 15px;
+    }
+    .share-box p {
+      font-size: 13px;
+      line-height: 1.38;
+    }
+    .compat-box {
+      grid-template-columns: 40px 1fr;
+      gap: 10px;
+      text-align: left;
+    }
+    .compat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      font-size: 21px;
     }
     .compare {
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 8px;
+      margin-bottom: 14px;
     }
     .heart {
-      margin: -22px auto;
+      width: 46px;
+      height: 46px;
+      margin: -18px auto;
+      font-size: 24px;
     }
+    .score {
+      margin: 4px 0 16px;
+      font-size: clamp(58px, 18vw, 82px);
+    }
+    .person {
+      min-height: 86px;
+      grid-template-columns: 58px 1fr;
+      gap: 12px;
+      padding: 13px;
+      border-radius: 18px;
+    }
+    .person img {
+      width: 52px;
+      height: 52px;
+    }
+    .person b {
+      margin-bottom: 3px;
+      font-size: 12px;
+    }
+    .person strong {
+      font-size: 15px;
+      line-height: 1.2;
+    }
+    .route-insight {
+      margin-bottom: 14px;
+      padding: 14px;
+      font-size: 14px;
+      line-height: 1.4;
+      border-radius: 16px;
+    }
+  }
+
+  @media (max-width: 380px), (max-height: 720px) {
+    body:not(.debug-nav) .page {
+      padding: 8px;
+      padding:
+        max(8px, env(safe-area-inset-top))
+        max(8px, env(safe-area-inset-right))
+        max(8px, env(safe-area-inset-bottom))
+        max(8px, env(safe-area-inset-left));
+    }
+    .intro-card,
+    .result-card,
+    .email-card,
+    .choice-card,
+    .match-card {
+      padding: 16px 14px;
+    }
+    .brand { margin-bottom: 14px; }
+    h1 { font-size: clamp(27px, 8.4vw, 32px); }
+    h2 { font-size: clamp(22px, 6.8vw, 29px); }
+    .lead { font-size: 13px; }
+    .collage {
+      min-height: 178px;
+      max-height: 28svh;
+    }
+    .choice img { aspect-ratio: 1.34 / 1; }
+    .choice-label {
+      height: 38px;
+      font-size: 19px;
+    }
+    .progress-track { margin-bottom: 14px; }
+    .character-img { width: min(180px, 52vw, 26svh); }
+    .share-box { margin-top: 10px; padding: 11px 12px; }
+    .tags { margin: 10px 0; }
+    .result-actions { margin-top: 12px; }
+    .primary,
+    .secondary { height: 44px; font-size: 15px; }
+    .thumb { width: 30px; height: 30px; }
   }
 </style>
 </head>
@@ -718,8 +952,8 @@
           <div class="share-box compat-box">
             <span class="compat-icon" aria-hidden="true">♥</span>
             <div>
-              <small>친구와의 장소 궁합은 몇 점일까요?</small>
-              <p>링크를 공유하고 친구가 테스트를 마치면 둘의 궁합 점수가 열려요.</p>
+              <small id="compatPromptTitle">친구와의 장소 궁합은 몇 점일까요?</small>
+              <p id="compatPromptDescription">친구가 테스트를 마치면 궁합 점수가 열려요.</p>
             </div>
           </div>
           <div class="share-box">
@@ -798,6 +1032,8 @@
     matchMeName: document.getElementById("matchMeName"),
     matchFriendName: document.getElementById("matchFriendName"),
     matchSummary: document.getElementById("matchSummary"),
+    compatPromptTitle: document.getElementById("compatPromptTitle"),
+    compatPromptDescription: document.getElementById("compatPromptDescription"),
     toast: document.getElementById("toast")
   };
 
@@ -851,6 +1087,28 @@
       mark: "path"
     }
   };
+
+  const characterPriority = [
+    "sunny_window",
+    "alley_wanderer",
+    "city_aesthetic",
+    "food_first",
+    "night_mood",
+    "route_scene"
+  ];
+
+  const scoringRounds = [
+    { A: { sunny_window: 3, alley_wanderer: 1 }, B: { sunny_window: 2, food_first: 1 } },
+    { A: { city_aesthetic: 2, alley_wanderer: 1 }, B: { food_first: 2, sunny_window: 1 } },
+    { A: { city_aesthetic: 2, sunny_window: 1 }, B: { food_first: 3, night_mood: 1 } },
+    { A: { night_mood: 3, city_aesthetic: 1 }, B: { alley_wanderer: 3, route_scene: 1 } },
+    { A: { city_aesthetic: 2, sunny_window: 1 }, B: { sunny_window: 2, alley_wanderer: 1 } },
+    { A: { food_first: 2, sunny_window: 1 }, B: { alley_wanderer: 3, route_scene: 1 } },
+    { A: { food_first: 2, night_mood: 1 }, B: { sunny_window: 3, alley_wanderer: 1 } },
+    { A: { alley_wanderer: 2, sunny_window: 1 }, B: { city_aesthetic: 3, route_scene: 1 } },
+    { A: { food_first: 2, sunny_window: 1 }, B: { night_mood: 3, food_first: 1 } },
+    { A: { route_scene: 3, alley_wanderer: 1 }, B: { sunny_window: 2, route_scene: 1 } }
+  ];
 
   const notifyRounds = [
     {
@@ -1153,6 +1411,40 @@
     const isMobile = window.matchMedia("(max-width: 760px)").matches;
     fitSingleLine(refs.resultTitle, isMobile ? 34 : 48, isMobile ? 18 : 24);
     fitSingleLine(refs.resultDescription, isMobile ? 17 : 21, isMobile ? 11 : 13);
+    fitSingleLine(refs.compatPromptTitle, isMobile ? 13 : 14, 9);
+    fitSingleLine(refs.compatPromptDescription, isMobile ? 13 : 15, 9);
+  }
+
+  function computeLocalCharacter(choices) {
+    const scores = Object.fromEntries(characterPriority.map((key) => [key, 0]));
+    choices.slice(0, 10).forEach((choice, index) => {
+      const roundScore = scoringRounds[index]?.[choice];
+      if (!roundScore) return;
+      Object.entries(roundScore).forEach(([key, value]) => {
+        scores[key] = (scores[key] || 0) + value;
+      });
+    });
+
+    const key = [...characterPriority].sort((a, b) => {
+      const diff = scores[b] - scores[a];
+      return diff || characterPriority.indexOf(a) - characterPriority.indexOf(b);
+    })[0];
+    return key;
+  }
+
+  function makeLocalResult(choices) {
+    const completed = choices.length === 10
+      ? choices
+      : Array.from({ length: 10 }, (_, index) => choices[index] || (index % 2 === 0 ? "A" : "B"));
+    const characterKey = computeLocalCharacter(completed);
+    const character = characterVisuals[characterKey] || characterVisuals.sunny_window;
+    return {
+      ...fallbackResult,
+      characterKey,
+      characterName: character.name,
+      description: character.description,
+      tags: character.tags
+    };
   }
 
   function normalizeResult(result, shareUrl) {
@@ -1327,6 +1619,7 @@
     trackEvent("email_submit", { choiceCount: picks.length });
 
     try {
+      const localResult = makeLocalResult(picks);
       const response = await fetch("/api/notify-taste", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1338,10 +1631,10 @@
       });
       const data = await response.json();
       if (!response.ok || !data?.ok) throw new Error(data?.error || "notify taste failed");
-      renderResult(data.result, data.compatibility);
+      renderResult(data.result || localResult, data.compatibility);
     } catch (error) {
       console.warn("Notify result failed", error);
-      renderResult(fallbackResult, { available: false });
+      renderResult(makeLocalResult(picks), { available: false });
     }
 
     trackEvent("result_view", { characterName: activeResult?.characterName || null });
