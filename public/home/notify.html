@@ -322,6 +322,7 @@
   }
   .email-inner {
     width: min(640px, 100%);
+    min-width: 0;
     text-align: center;
   }
   .email-inner h2 {
@@ -336,8 +337,11 @@
     display: grid;
     gap: 14px;
     width: min(520px, 100%);
+    min-width: 0;
   }
   .email-form input {
+    width: 100%;
+    min-width: 0;
     height: 62px;
     border: 1.5px solid #dedbd3;
     border-radius: 17px;
@@ -691,7 +695,7 @@
       aspect-ratio: 1.18 / 1;
     }
     body:not(.debug-nav) .choice img {
-      aspect-ratio: 2.05 / 1;
+      aspect-ratio: 4 / 3;
     }
     .choice {
       border-radius: 18px;
@@ -701,7 +705,7 @@
       font-size: 22px;
     }
     body:not(.debug-nav) .choice-label {
-      height: 38px;
+      height: 34px;
       font-size: 20px;
     }
     .choice-check {
@@ -719,7 +723,8 @@
     .choice-card {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
+      padding-top: 44px;
     }
     .progress-num {
       font-size: 19px;
@@ -727,10 +732,10 @@
     .progress-track {
       width: 62%;
       height: 7px;
-      margin: 9px auto 20px;
+      margin: 9px auto 16px;
     }
     .choice-card h2 {
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
     .email-inner h2 {
       font-size: clamp(22px, 5.8vw, 28px);
@@ -743,11 +748,13 @@
     .email-form {
       margin-top: 20px;
       gap: 10px;
+      width: calc(100% - 20px);
     }
     .email-form input {
       height: 52px;
       border-radius: 15px;
       font-size: 16px;
+      padding: 0 18px;
     }
     .thumb-row {
       gap: 6px;
@@ -762,7 +769,7 @@
       font-size: 12px;
     }
     .character-img {
-      width: min(220px, 58vw, 30svh);
+      width: min(260px, 68vw, 36svh);
       border-radius: 24px;
       box-shadow: 0 10px 24px rgba(35, 42, 37, .08);
     }
@@ -874,18 +881,19 @@
       max-height: 28svh;
     }
     .choice img { aspect-ratio: 1.34 / 1; }
-    body:not(.debug-nav) .choice img { aspect-ratio: 2.35 / 1; }
+    body:not(.debug-nav) .choice img { aspect-ratio: 4 / 3; }
     .choice-label {
       height: 38px;
       font-size: 19px;
     }
     body:not(.debug-nav) .choice-label {
-      height: 34px;
+      height: 30px;
       font-size: 18px;
     }
     .progress-track { margin-bottom: 14px; }
     .email-inner h2 { font-size: clamp(20px, 5.3vw, 24px); }
-    .character-img { width: min(180px, 52vw, 26svh); }
+    .email-form { width: calc(100% - 28px); }
+    .character-img { width: min(215px, 62vw, 32svh); }
     .share-box { margin-top: 10px; padding: 11px 12px; }
     .tags { margin: 10px 0; }
     .result-actions { margin-top: 12px; }
@@ -1037,7 +1045,24 @@
   let referrerResult = null;
   let activeResult = null;
   let activeCompatibility = { available: false };
-  let activeShareUrl = `${window.location.origin}/notify`;
+  const productionNotifyUrl = "https://doripe.kr/notify";
+
+  function getDefaultShareUrl() {
+    if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+      return `${window.location.origin}/notify`;
+    }
+    return productionNotifyUrl;
+  }
+
+  function getValidShareUrl(url) {
+    try {
+      return new URL(url || getDefaultShareUrl(), window.location.href).href;
+    } catch (error) {
+      return productionNotifyUrl;
+    }
+  }
+
+  let activeShareUrl = getDefaultShareUrl();
 
   if (params.get("debug") === "1") {
     document.body.classList.add("debug-nav");
@@ -1067,7 +1092,7 @@
 
   const characterVisuals = {
     sunny_window: {
-      name: "조용한 창가를 먼저 찾는 사람",
+      name: "창가 수집가",
       description: "사람이 많은 곳보다 햇살, 창가, 식물이 있는 자리에 오래 머무는 걸 좋아해요.",
       tags: ["창가", "조용함", "낮"],
       image: "/img/notify-characters/sunny-window.png",
@@ -1075,7 +1100,7 @@
       mark: "sun"
     },
     alley_wanderer: {
-      name: "골목 끝 작은 가게에 끌리는 사람",
+      name: "골목 탐험가",
       description: "유명한 곳보다 걷다가 우연히 발견한 동네 가게에 더 설레는 타입이에요.",
       tags: ["골목", "산책", "로컬"],
       image: "/img/notify-characters/alley-wanderer.png",
@@ -1083,7 +1108,7 @@
       mark: "leaf"
     },
     city_aesthetic: {
-      name: "외관 보고 이미 마음 정하는 사람",
+      name: "분위기 감별사",
       description: "간판, 입구, 쇼윈도처럼 첫인상이 예쁜 장소에 빠르게 반응해요.",
       tags: ["외관", "트렌디", "도시"],
       image: "/img/notify-characters/city-aesthetic.png",
@@ -1091,7 +1116,7 @@
       mark: "window"
     },
     food_first: {
-      name: "결국 맛있는 곳을 고르는 사람",
+      name: "맛집 확신러",
       description: "분위기도 좋지만, 마지막 기준은 메뉴와 한입의 만족감이에요.",
       tags: ["맛집", "메뉴", "실패없음"],
       image: "/img/notify-characters/food-first.png",
@@ -1099,7 +1124,7 @@
       mark: "plate"
     },
     night_mood: {
-      name: "밤 조명에 약한 사람",
+      name: "밤산책러",
       description: "낮보다 저녁, 밝은 곳보다 낮은 조명과 차분한 대화가 있는 곳에 끌려요.",
       tags: ["밤", "데이트", "무드"],
       image: "/img/notify-characters/night-mood.png",
@@ -1107,7 +1132,7 @@
       mark: "moon"
     },
     route_scene: {
-      name: "하루를 루트로 완성하는 사람",
+      name: "루트 설계자",
       description: "한 장소보다 카페, 산책, 식사가 자연스럽게 이어지는 하루를 좋아해요.",
       tags: ["루트", "동선", "하루"],
       image: "/img/notify-characters/route-scene.png",
@@ -1611,10 +1636,11 @@
     return didCopy;
   }
 
-  async function fallbackCopyLink() {
+  async function fallbackCopyLink(value = activeShareUrl) {
+    const copyValue = getValidShareUrl(value);
     try {
       if (navigator.clipboard) {
-        await navigator.clipboard.writeText(activeShareUrl);
+        await navigator.clipboard.writeText(copyValue);
         showToast("링크를 복사했어요.");
         return;
       }
@@ -1622,7 +1648,7 @@
       console.warn("Clipboard copy failed", error);
     }
 
-    if (copyWithTextarea(activeShareUrl)) {
+    if (copyWithTextarea(copyValue)) {
       showToast("링크를 복사했어요.");
       return;
     }
@@ -1631,24 +1657,26 @@
   }
 
   async function shareLink() {
+    const shareUrl = getValidShareUrl(activeShareUrl);
     const shareData = {
       title: "Doripe 장소 취향 테스트",
       text: "사진 2장 중 더 끌리는 장소를 골라보고 우리 장소 취향 궁합을 확인해봐.",
-      url: activeShareUrl
+      url: shareUrl
     };
 
-    trackEvent("share_click", { url: activeShareUrl });
+    trackEvent("share_click", { url: shareUrl });
 
-    if (navigator.share) {
+    if (typeof navigator.share === "function") {
       try {
         await navigator.share(shareData);
         return;
       } catch (error) {
         if (error && error.name === "AbortError") return;
+        console.warn("Native share failed", error);
       }
     }
 
-    await fallbackCopyLink();
+    await fallbackCopyLink(shareUrl);
   }
 
   async function submitEmail(email) {
@@ -1717,8 +1745,9 @@
   });
 
   document.querySelectorAll("[data-share]").forEach((button) => {
-    button.addEventListener("click", () => {
-      shareLink();
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      void shareLink();
     });
   });
 
