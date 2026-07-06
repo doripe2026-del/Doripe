@@ -681,8 +681,17 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
     }
+    body:not(.debug-nav) .choices {
+      grid-template-columns: 1fr;
+      width: min(340px, 100%);
+      max-width: 100%;
+      gap: 10px;
+    }
     .choice img {
       aspect-ratio: 1.18 / 1;
+    }
+    body:not(.debug-nav) .choice img {
+      aspect-ratio: 2.05 / 1;
     }
     .choice {
       border-radius: 18px;
@@ -690,6 +699,10 @@
     .choice-label {
       height: 44px;
       font-size: 22px;
+    }
+    body:not(.debug-nav) .choice-label {
+      height: 38px;
+      font-size: 20px;
     }
     .choice-check {
       top: 9px;
@@ -719,6 +732,11 @@
     .choice-card h2 {
       margin-bottom: 18px;
     }
+    .email-inner h2 {
+      font-size: clamp(22px, 5.8vw, 28px);
+      line-height: 1.16;
+      white-space: nowrap;
+    }
     .email-inner .lead {
       font-size: 14px;
     }
@@ -733,7 +751,7 @@
     }
     .thumb-row {
       gap: 6px;
-      margin: 22px 0 14px;
+      margin: 18px 0 12px;
     }
     .thumb {
       width: 35px;
@@ -765,6 +783,10 @@
       margin-top: 14px;
       padding: 13px 14px;
       border-radius: 16px;
+    }
+    .result-card .share-box {
+      margin-left: auto;
+      margin-right: auto;
     }
     .share-box strong {
       font-size: 15px;
@@ -852,11 +874,17 @@
       max-height: 28svh;
     }
     .choice img { aspect-ratio: 1.34 / 1; }
+    body:not(.debug-nav) .choice img { aspect-ratio: 2.35 / 1; }
     .choice-label {
       height: 38px;
       font-size: 19px;
     }
+    body:not(.debug-nav) .choice-label {
+      height: 34px;
+      font-size: 18px;
+    }
     .progress-track { margin-bottom: 14px; }
+    .email-inner h2 { font-size: clamp(20px, 5.3vw, 24px); }
     .character-img { width: min(180px, 52vw, 26svh); }
     .share-box { margin-top: 10px; padding: 11px 12px; }
     .tags { margin: 10px 0; }
@@ -923,8 +951,8 @@
     <article id="screen-email" class="screen">
       <div class="card email-card">
         <div class="email-inner">
-          <h2>이메일을 입력하면<br />내 장소 취향 캐릭터를 알 수 있어요</h2>
-          <p class="lead">이메일 하나만 입력하면 바로 결과가 나와요.</p>
+          <h2>이메일 입력하면<br />취향 캐릭터를 볼 수 있어요</h2>
+          <p class="lead">입력하면 바로 결과가 나와요.</p>
           <form class="email-form" id="emailForm">
             <input id="emailInput" type="email" placeholder="you@example.com" autocomplete="email" />
             <button class="primary" type="submit">캐릭터 보기</button>
@@ -1395,8 +1423,10 @@
     if (!element) return;
     element.style.fontSize = `${maxSize}px`;
     element.style.whiteSpace = "nowrap";
+    element.style.overflow = "visible";
 
-    const availableWidth = Math.floor(element.parentElement?.getBoundingClientRect().width || element.clientWidth);
+    const parentWidth = element.parentElement?.getBoundingClientRect().width || element.clientWidth;
+    const availableWidth = Math.max(0, Math.floor(parentWidth) - 2);
     if (!availableWidth) return;
     element.style.width = `${availableWidth}px`;
 
@@ -1404,6 +1434,12 @@
     while (element.scrollWidth > availableWidth && size > minSize) {
       size -= 1;
       element.style.fontSize = `${size}px`;
+    }
+    if (element.scrollWidth > availableWidth) {
+      element.style.fontSize = `${minSize}px`;
+      element.style.transform = `scale(${Math.max(.72, availableWidth / element.scrollWidth)})`;
+    } else {
+      element.style.transform = "";
     }
   }
 
