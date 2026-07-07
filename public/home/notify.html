@@ -6,6 +6,19 @@
 <title>Doripe - 장소 취향 궁합</title>
 <meta name="description" content="사진 2장 중 더 끌리는 장소를 10번 고르면 Doripe가 내 장소 취향 캐릭터와 친구와의 궁합을 보여드립니다." />
 <meta name="robots" content="index,follow" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Doripe" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="Doripe - 장소 취향 캐릭터" />
+<meta property="og:description" content="사진을 고르면 내 장소 취향 캐릭터가 나와요." />
+<meta property="og:url" content="https://doripe.kr/notify" />
+<meta property="og:image" content="https://doripe.kr/img/notify-share-cover.png" />
+<meta property="og:image:width" content="1254" />
+<meta property="og:image:height" content="1254" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Doripe - 장소 취향 캐릭터" />
+<meta name="twitter:description" content="사진을 고르면 내 장소 취향 캐릭터가 나와요." />
+<meta name="twitter:image" content="https://doripe.kr/img/notify-share-cover.png" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -412,12 +425,21 @@
     border-radius: 16px;
     background: rgba(255, 255, 255, .76);
     text-align: left;
+    -webkit-tap-highlight-color: transparent;
   }
   .privacy-consent input {
     width: 18px;
     height: 18px;
     margin-top: 2px;
     accent-color: var(--green);
+    outline: none;
+    box-shadow: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .privacy-consent input:focus,
+  .privacy-consent input:focus-visible {
+    outline: none;
+    box-shadow: none;
   }
   .privacy-consent strong {
     display: block;
@@ -773,6 +795,14 @@
       grid-template-rows: auto minmax(0, 1fr);
       text-align: center;
     }
+    .result-question {
+      width: 100%;
+      font-size: clamp(34px, 10vw, 46px);
+      text-align: center;
+    }
+    .result-details {
+      text-align: center;
+    }
     h1 {
       font-size: clamp(30px, 9vw, 38px);
       line-height: 1.08;
@@ -889,9 +919,11 @@
       margin-bottom: 14px;
     }
     .email-inner h2 {
-      font-size: clamp(22px, 5.8vw, 28px);
+      font-size: clamp(21px, 5.6vw, 28px);
       line-height: 1.16;
-      white-space: nowrap;
+      white-space: normal;
+      text-align: center;
+      overflow-wrap: keep-all;
     }
     .email-inner .lead {
       font-size: 14px;
@@ -910,6 +942,11 @@
     .privacy-consent {
       width: calc(100% - 20px);
       padding: 11px 12px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .privacy-consent:focus-within {
+      border-color: var(--line);
+      box-shadow: none;
     }
     .privacy-consent strong {
       font-size: 12px;
@@ -931,7 +968,7 @@
       font-size: 12px;
     }
     .character-img {
-      width: min(260px, 68vw, 36svh);
+      width: min(292px, 76vw, 40svh);
       border-radius: 24px;
       box-shadow: 0 10px 24px rgba(35, 42, 37, .08);
     }
@@ -963,6 +1000,15 @@
     .share-box p {
       font-size: 13px;
       line-height: 1.38;
+    }
+    .share-box small,
+    .share-box strong,
+    .share-box p {
+      overflow-wrap: anywhere;
+    }
+    .compat-box small,
+    .compat-box p {
+      white-space: normal;
     }
     .compat-box {
       grid-template-columns: 40px 1fr;
@@ -1050,10 +1096,10 @@
       font-size: 18px;
     }
     .progress-track { margin-bottom: 14px; }
-    .email-inner h2 { font-size: clamp(20px, 5.3vw, 24px); }
+    .email-inner h2 { font-size: clamp(19px, 5.1vw, 24px); }
     .email-form { width: calc(100% - 28px); }
     .privacy-consent { width: calc(100% - 28px); }
-    .character-img { width: min(215px, 62vw, 32svh); }
+    .character-img { width: min(238px, 72vw, 35svh); }
     .share-box { margin-top: 10px; padding: 11px 12px; }
     .tags { margin: 10px 0; }
     .result-actions { margin-top: 12px; }
@@ -1090,8 +1136,8 @@
         <div class="collage" aria-hidden="true">
           <img class="a1" src="https://images.unsplash.com/photo-1625214264271-0aa384c5cf33?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8c2VvdWwlMjBjYWZlJTIwd2luZG93JTIwcGxhbnRzfGVufDB8fHx8MTc4MzI1MjQ2MXww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="" />
           <img class="a2" src="https://images.unsplash.com/photo-1553668938-1b3a1e5792fc?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8a29yZWElMjBjYWZlJTIwaW50ZXJpb3IlMjB3b29kZW4lMjB0YWJsZXxlbnwwfHx8fDE3ODMyNTI0NjF8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="" />
-          <img class="a3" src="https://images.unsplash.com/photo-1625214264271-0aa384c5cf33?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8c2VvdWwlMjBjYWZlJTIwd2luZG93JTIwcGxhbnRzfGVufDB8fHx8MTc4MzI1MjQ2MXww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="" />
-          <img class="a4" src="https://images.unsplash.com/photo-1553668938-1b3a1e5792fc?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8a29yZWElMjBjYWZlJTIwaW50ZXJpb3IlMjB3b29kZW4lMjB0YWJsZXxlbnwwfHx8fDE3ODMyNTI0NjF8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="" />
+          <img class="a3" src="https://images.unsplash.com/photo-1549221429-289b573a9550?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8c2VvdWwlMjBjYWZlJTIwc3RvcmVmcm9udCUyMHBsYW50c3xlbnwwfHx8fDE3ODMyNTI0NjJ8MA&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="" />
+          <img class="a4" src="https://images.unsplash.com/photo-1613274554329-70f997f5789f?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8YnJ1bmNoJTIwY2FmZSUyMHRhYmxlJTIwbmF0dXJhbCUyMGxpZ2h0fGVufDB8fHx8MTc4MzI1MjQ2Mnww&ixlib=rb-4.1.0&auto=format&fit=crop&w=1000&h=740&q=82" alt="" />
         </div>
       </div>
     </article>
@@ -1119,7 +1165,7 @@
     <article id="screen-email" class="screen">
       <div class="card email-card">
         <div class="email-inner">
-          <h2>이메일 입력하면<br />취향 캐릭터를 볼 수 있어요</h2>
+          <h2>앱 알림 신청을 하면<br />취향 캐릭터를 볼 수 있어요</h2>
           <p class="lead">입력하면 바로 결과가 나와요.</p>
           <form class="email-form" id="emailForm">
             <input id="emailInput" type="email" placeholder="you@example.com" autocomplete="email" />
@@ -1952,8 +1998,13 @@
     return didCopy;
   }
 
+  function getShareMessage(value = activeShareUrl) {
+    const shareUrl = getValidShareUrl(value);
+    return `🦊 내 장소 취향 캐릭터는 뭘까?\n사진을 고르면 내 장소 취향 캐릭터가 나와요.\n\n${shareUrl}`;
+  }
+
   async function fallbackCopyLink(value = activeShareUrl) {
-    const copyValue = getValidShareUrl(value);
+    const copyValue = getShareMessage(value);
     try {
       if (navigator.clipboard) {
         await navigator.clipboard.writeText(copyValue);
@@ -1975,9 +2026,8 @@
   async function shareLink() {
     const shareUrl = getValidShareUrl(activeShareUrl);
     const shareData = {
-      title: "Doripe 장소 취향 테스트",
-      text: "사진 2장 중 더 끌리는 장소를 골라보고 우리 장소 취향 궁합을 확인해봐.",
-      url: shareUrl
+      title: "Doripe - 장소 취향 캐릭터",
+      text: getShareMessage(shareUrl)
     };
 
     trackEvent("share_click", { url: shareUrl });
