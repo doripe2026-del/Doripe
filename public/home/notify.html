@@ -156,6 +156,52 @@
   .result-card > div {
     min-width: 0;
   }
+  .result-card {
+    overflow: hidden;
+  }
+  .result-question {
+    grid-column: 1 / -1;
+    margin: 0;
+    text-align: center;
+    transform-origin: center;
+  }
+  .result-details {
+    min-width: 0;
+  }
+  .result-reveal {
+    opacity: 0;
+    transform: translateY(28px) scale(.94);
+  }
+  #screen-result.is-active.is-animating .result-question {
+    animation: resultTitleLift 4s cubic-bezier(.16, 1, .3, 1) both;
+  }
+  #screen-result.is-active.is-animating .character-wrap,
+  #screen-result.is-active.is-animating .result-details {
+    animation: resultReveal 4s cubic-bezier(.16, 1, .3, 1) both;
+  }
+  #screen-result.is-active.is-animating .result-details {
+    animation-delay: .16s;
+  }
+  @keyframes resultTitleLift {
+    0%, 38% {
+      transform: translateY(210px) scale(1.08);
+    }
+    66%, 100% {
+      transform: translateY(0) scale(1);
+    }
+  }
+  @keyframes resultReveal {
+    0%, 56% {
+      opacity: 0;
+      transform: translateY(28px) scale(.94);
+      filter: blur(6px);
+    }
+    82%, 100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
   .brand {
     display: inline-flex;
     align-items: center;
@@ -496,20 +542,89 @@
   }
   .match-card {
     grid-template-columns: 1fr;
+    place-items: center;
     text-align: center;
+    overflow: hidden;
+  }
+  .match-content {
+    width: min(760px, 100%);
+  }
+  .match-title {
+    margin: 0;
+    transform-origin: center;
   }
   .score {
-    margin: 8px 0 28px;
+    margin: 18px 0 34px;
     color: var(--green-dark);
-    font-size: clamp(70px, 12vw, 118px);
+    font-size: clamp(96px, 15vw, 148px);
     line-height: .9;
     font-weight: 950;
     letter-spacing: -.06em;
+    transform-origin: center;
   }
   .score span {
     color: var(--ink);
-    font-size: 24px;
+    font-size: clamp(24px, 3.4vw, 34px);
     letter-spacing: 0;
+  }
+  .match-reveal {
+    opacity: 0;
+    transform: translateY(28px) scale(.94);
+  }
+  #screen-match.is-active.is-animating .match-title {
+    animation: matchTitleLift 4s cubic-bezier(.16, 1, .3, 1) both;
+  }
+  #screen-match.is-active.is-animating .score {
+    animation: scorePop 4s cubic-bezier(.16, 1.12, .3, 1) both;
+  }
+  #screen-match.is-active.is-animating .compare,
+  #screen-match.is-active.is-animating .match-share {
+    animation: matchReveal 4s cubic-bezier(.16, 1, .3, 1) both;
+  }
+  #screen-match.is-active.is-animating .match-share {
+    animation-delay: .18s;
+  }
+  @keyframes matchTitleLift {
+    0%, 38% {
+      transform: translateY(156px) scale(1.08);
+    }
+    66%, 100% {
+      transform: translateY(0) scale(1);
+    }
+  }
+  @keyframes scorePop {
+    0% {
+      opacity: 0;
+      transform: translateY(38px) scale(.58);
+      filter: blur(8px);
+    }
+    44% {
+      opacity: 0;
+      transform: translateY(38px) scale(.58);
+      filter: blur(8px);
+    }
+    72% {
+      opacity: 1;
+      transform: translateY(0) scale(1.18);
+      filter: blur(0);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+  @keyframes matchReveal {
+    0%, 58% {
+      opacity: 0;
+      transform: translateY(28px) scale(.94);
+      filter: blur(6px);
+    }
+    82%, 100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
   }
   .compare {
     display: grid;
@@ -557,17 +672,6 @@
     font-size: 34px;
     box-shadow: var(--shadow-sm);
     z-index: 2;
-  }
-  .route-insight {
-    width: min(720px, 100%);
-    margin: 0 auto 24px;
-    padding: 22px;
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    background: #fffdfa;
-    color: #333b36;
-    font-size: 18px;
-    font-weight: 800;
   }
   .toast {
     position: fixed;
@@ -720,6 +824,14 @@
       padding: 20px 18px;
       height: 100%;
     }
+    @keyframes resultTitleLift {
+      0%, 38% {
+        transform: translateY(150px) scale(1.08);
+      }
+      66%, 100% {
+        transform: translateY(0) scale(1);
+      }
+    }
     .choice-card {
       display: flex;
       flex-direction: column;
@@ -818,6 +930,10 @@
       gap: 8px;
       margin-bottom: 14px;
     }
+    .score {
+      margin: 12px 0 24px;
+      font-size: clamp(86px, 24vw, 118px);
+    }
     .heart {
       width: 46px;
       height: 46px;
@@ -846,13 +962,6 @@
     .person strong {
       font-size: 15px;
       line-height: 1.2;
-    }
-    .route-insight {
-      margin-bottom: 14px;
-      padding: 14px;
-      font-size: 14px;
-      line-height: 1.4;
-      border-radius: 16px;
     }
   }
 
@@ -973,10 +1082,11 @@
 
     <article id="screen-result" class="screen">
       <div class="card result-card">
-        <div class="character-wrap">
+        <h2 class="result-question">내 캐릭터는?</h2>
+        <div class="character-wrap result-reveal">
           <img class="character-img" src="/img/notify-characters/sunny-window.png" alt="조용한 창가를 먼저 찾는 사람 캐릭터" />
         </div>
-        <div>
+        <div class="result-details result-reveal">
           <p class="eyebrow">당신의 장소 취향 캐릭터</p>
           <h2 id="resultTitle">조용한 감도 수집가</h2>
           <p id="resultDescription" class="lead">복잡한 곳보다 오래 머물고 싶은 장면을 먼저 고르는 타입이에요.</p>
@@ -1000,7 +1110,7 @@
           </div>
           <div class="result-actions">
             <button id="shareButton" class="primary" type="button" data-share>공유하기</button>
-            <button id="compatButton" class="primary compat-action is-hidden" type="button">궁합보기</button>
+            <button id="compatButton" class="primary compat-action is-hidden" type="button">궁합점수보기</button>
           </div>
         </div>
       </div>
@@ -1008,10 +1118,10 @@
 
     <article id="screen-match" class="screen">
       <div class="card match-card">
-        <div>
-          <h2>친구와 장소 궁합</h2>
-          <div id="matchScore" class="score">86<span>점</span></div>
-          <div class="compare">
+        <div class="match-content">
+          <h2 class="match-title">우리 장소 궁합은?</h2>
+          <div id="matchScore" class="score match-reveal">86<span>점</span></div>
+          <div class="compare match-reveal">
             <div class="person me">
               <img src="/img/notify-characters/sunny-window.png" alt="내 캐릭터" />
               <div><b>나</b><strong id="matchMeName">조용한 감도 수집가</strong></div>
@@ -1022,8 +1132,7 @@
               <div><b>친구</b><strong id="matchFriendName">하루 루트 설계자</strong></div>
             </div>
           </div>
-          <div id="matchSummary" class="route-insight">조용한 카페 → 골목 산책 → 작은 디저트샵 조합이 잘 맞아요.</div>
-          <button class="primary" type="button" data-share>내 링크 공유하기</button>
+          <button class="primary match-share match-reveal" type="button" data-share>내 링크 공유하기</button>
         </div>
       </div>
     </article>
@@ -1035,10 +1144,14 @@
   const screens = ["intro", "choice", "email", "result", "match"];
   const params = new URLSearchParams(window.location.search);
   const shareSlugPattern = /^nt_[a-zA-Z0-9_-]{8,32}$/;
+  const isLocalFilePreview = window.location.protocol === "file:";
+  const localPreviewShareSlug = "nt_preview_friend01";
   const referrerShareSlug = params.get("ref");
-  const sanitizedReferrerShareSlug = shareSlugPattern.test(referrerShareSlug || "")
+  let sanitizedReferrerShareSlug = shareSlugPattern.test(referrerShareSlug || "")
     ? referrerShareSlug
-    : null;
+    : isLocalFilePreview
+      ? localPreviewShareSlug
+      : null;
   const picks = [];
   let round = 1;
   let isPicking = false;
@@ -1046,12 +1159,16 @@
   let activeResult = null;
   let activeCompatibility = { available: false };
   const productionNotifyUrl = "https://doripe.kr/notify";
+  const localResultStorageKey = "doripe.notifyTasteResults.v1";
 
   function getDefaultShareUrl() {
     if (window.location.protocol === "http:" || window.location.protocol === "https:") {
       return `${window.location.origin}/notify`;
     }
-    return productionNotifyUrl;
+    const currentUrl = new URL(window.location.href);
+    currentUrl.search = "";
+    currentUrl.hash = "";
+    return currentUrl.href || productionNotifyUrl;
   }
 
   function getValidShareUrl(url) {
@@ -1063,6 +1180,48 @@
   }
 
   let activeShareUrl = getDefaultShareUrl();
+
+  function createLocalShareSlug() {
+    const randomPart = Math.random().toString(36).slice(2, 12);
+    const timePart = Date.now().toString(36).slice(-6);
+    return `nt_${timePart}${randomPart}`.slice(0, 20);
+  }
+
+  function makeShareUrl(shareSlug) {
+    const url = new URL(getDefaultShareUrl(), window.location.href);
+    url.searchParams.set("ref", shareSlug);
+    return getValidShareUrl(url.href);
+  }
+
+  function readLocalResults() {
+    try {
+      return JSON.parse(window.localStorage.getItem(localResultStorageKey) || "{}");
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function writeLocalResult(result, choices) {
+    if (!result?.shareSlug) return;
+
+    try {
+      const results = readLocalResults();
+      results[result.shareSlug] = {
+        ...result,
+        choices: choices.slice(0, 10),
+        savedAt: new Date().toISOString()
+      };
+      window.localStorage.setItem(localResultStorageKey, JSON.stringify(results));
+    } catch (error) {
+      console.warn("Local notify result save failed", error);
+    }
+  }
+
+  function readLocalResult(shareSlug) {
+    const result = readLocalResults()[shareSlug];
+    if (!result || !Array.isArray(result.choices)) return null;
+    return normalizeResult(result, result.shareUrl);
+  }
 
   if (params.get("debug") === "1") {
     document.body.classList.add("debug-nav");
@@ -1084,7 +1243,6 @@
     matchScore: document.getElementById("matchScore"),
     matchMeName: document.getElementById("matchMeName"),
     matchFriendName: document.getElementById("matchFriendName"),
-    matchSummary: document.getElementById("matchSummary"),
     compatPromptTitle: document.getElementById("compatPromptTitle"),
     compatPromptDescription: document.getElementById("compatPromptDescription"),
     toast: document.getElementById("toast")
@@ -1400,7 +1558,27 @@
       const navButton = document.querySelector(`[data-goto="${name}"]`);
       if (navButton) navButton.classList.toggle("is-active", name === screen);
     });
-    if (screen === "result") requestAnimationFrame(fitResultCopy);
+    if (screen === "result") {
+      requestAnimationFrame(() => {
+        fitResultCopy();
+        restartResultAnimation();
+      });
+    }
+    if (screen === "match") requestAnimationFrame(restartMatchAnimation);
+  }
+
+  function restartResultAnimation() {
+    const resultScreen = document.getElementById("screen-result");
+    resultScreen.classList.remove("is-animating");
+    resultScreen.offsetHeight;
+    resultScreen.classList.add("is-animating");
+  }
+
+  function restartMatchAnimation() {
+    const matchScreen = document.getElementById("screen-match");
+    matchScreen.classList.remove("is-animating");
+    matchScreen.offsetHeight;
+    matchScreen.classList.add("is-animating");
   }
 
   function updateRound() {
@@ -1493,18 +1671,78 @@
     return key;
   }
 
+  function computeLocalCompatibility(myChoices, friendChoices, sameCharacter) {
+    const sameCount = myChoices.slice(0, 10).reduce((count, choice, index) => (
+      count + (choice === friendChoices[index] ? 1 : 0)
+    ), 0);
+    const score = Math.max(40, Math.min(98, 25 + sameCount * 6 + (sameCharacter ? 13 : 0)));
+    const summary = score >= 80
+      ? "둘 다 오래 머물고 싶은 장소의 결이 비슷해요. 카페, 산책, 디저트 코스가 잘 맞아요."
+      : score >= 65
+        ? "겹치는 취향이 꽤 있어요. 한 곳은 같이 고르고, 한 곳은 번갈아 고르면 좋아요."
+        : "취향이 달라서 오히려 새로운 장소를 발견하기 좋아요. 서로의 픽을 하나씩 섞어보세요.";
+
+    return { score, summary };
+  }
+
+  function makeLocalCompatibility(result, choices) {
+    if (!referrerResult?.choices) return { available: false };
+
+    const computed = computeLocalCompatibility(
+      choices.slice(0, 10),
+      referrerResult.choices,
+      result.characterName === referrerResult.characterName
+    );
+
+    return {
+      available: true,
+      score: computed.score,
+      summary: computed.summary,
+      friendCharacterKey: referrerResult.characterKey,
+      friendCharacterName: referrerResult.characterName
+    };
+  }
+
+  function makePreviewReferrerResult() {
+    const choices = ["A", "B", "A", "B", "B", "A", "B", "A", "B", "A"];
+    const characterKey = computeLocalCharacter(choices);
+    const character = characterVisuals[characterKey] || characterVisuals.sunny_window;
+
+    return {
+      ...fallbackResult,
+      shareSlug: localPreviewShareSlug,
+      shareUrl: makeShareUrl(localPreviewShareSlug),
+      characterKey,
+      characterName: character.name,
+      description: character.description,
+      tags: character.tags,
+      choices
+    };
+  }
+
+  function ensureLocalPreviewReferrer() {
+    if (!isLocalFilePreview || sanitizedReferrerShareSlug !== localPreviewShareSlug) return;
+    if (readLocalResult(localPreviewShareSlug)) return;
+    const previewReferrer = makePreviewReferrerResult();
+    writeLocalResult(previewReferrer, previewReferrer.choices);
+  }
+
   function makeLocalResult(choices) {
     const completed = choices.length === 10
       ? choices
       : Array.from({ length: 10 }, (_, index) => choices[index] || (index % 2 === 0 ? "A" : "B"));
     const characterKey = computeLocalCharacter(completed);
     const character = characterVisuals[characterKey] || characterVisuals.sunny_window;
+    const shareSlug = createLocalShareSlug();
     return {
       ...fallbackResult,
+      shareSlug,
+      shareUrl: makeShareUrl(shareSlug),
       characterKey,
       characterName: character.name,
       description: character.description,
-      tags: character.tags
+      tags: character.tags,
+      choices: completed
     };
   }
 
@@ -1516,7 +1754,8 @@
       shareUrl: shareUrl || result?.shareUrl || fallbackResult.shareUrl,
       characterName: result?.characterName || localCharacter?.name || fallbackResult.characterName,
       description: result?.description || localCharacter?.description || fallbackResult.description,
-      tags: Array.isArray(result?.tags) && result.tags.length ? result.tags : localCharacter?.tags || fallbackResult.tags
+      tags: Array.isArray(result?.tags) && result.tags.length ? result.tags : localCharacter?.tags || fallbackResult.tags,
+      choices: Array.isArray(result?.choices) ? result.choices : null
     };
   }
 
@@ -1539,6 +1778,16 @@
     });
     refs.shareUrlText.textContent = activeShareUrl.replace(/^https?:\/\//, "");
     refs.compatButton.classList.toggle("is-hidden", !activeCompatibility.available);
+    if (activeCompatibility.available) {
+      refs.compatPromptTitle.textContent = "친구와의 장소 궁합 점수가 준비됐어요";
+      refs.compatPromptDescription.textContent = "궁합점수보기를 누르면 두 사람의 장소 취향 점수가 열려요.";
+    } else if (referrerResult) {
+      refs.compatPromptTitle.textContent = "공유한 친구와 연결됐어요";
+      refs.compatPromptDescription.textContent = "테스트를 마치면 친구와의 궁합 점수를 볼 수 있어요.";
+    } else {
+      refs.compatPromptTitle.textContent = "친구와의 장소 궁합은 몇 점일까요?";
+      refs.compatPromptDescription.textContent = "링크를 공유하고 친구가 테스트를 마치면 궁합 점수가 열려요.";
+    }
   }
 
   function renderCompatibility() {
@@ -1550,8 +1799,6 @@
       || "친구";
     document.querySelector(".person.me img").src = getCharacterImage(activeResult?.characterKey || fallbackResult.characterKey);
     document.querySelector(".person.friend img").src = getCharacterImage(activeCompatibility.friendCharacterKey || referrerResult?.characterKey || "route_scene");
-    refs.matchSummary.textContent = activeCompatibility.summary
-      || "서로의 취향을 함께 보면 잘 맞는 장소를 더 쉽게 찾을 수 있어요.";
   }
 
   async function trackEvent(eventName, metadata = {}) {
@@ -1573,15 +1820,25 @@
 
   async function loadReferrer() {
     if (!sanitizedReferrerShareSlug) return;
+    ensureLocalPreviewReferrer();
 
     try {
       const response = await fetch(`/api/notify-taste?shareSlug=${encodeURIComponent(sanitizedReferrerShareSlug)}`);
-      if (!response.ok) return;
+      if (!response.ok) throw new Error("referrer api unavailable");
       const data = await response.json();
       if (data?.ok && data.result) {
         referrerResult = data.result;
+        refs.compatPromptTitle.textContent = "공유한 친구와 연결됐어요";
+        refs.compatPromptDescription.textContent = "테스트를 마치면 친구와의 궁합 점수를 볼 수 있어요.";
       }
     } catch (error) {
+      const localResult = readLocalResult(sanitizedReferrerShareSlug);
+      if (localResult) {
+        referrerResult = localResult;
+        refs.compatPromptTitle.textContent = "공유한 친구와 연결됐어요";
+        refs.compatPromptDescription.textContent = "테스트를 마치면 친구와의 궁합 점수를 볼 수 있어요.";
+        return;
+      }
       console.warn("Referrer result failed", error);
     }
   }
@@ -1695,10 +1952,13 @@
       });
       const data = await response.json();
       if (!response.ok || !data?.ok) throw new Error(data?.error || "notify taste failed");
+      if (data.result) writeLocalResult(data.result, picks);
       renderResult(data.result || localResult, data.compatibility);
     } catch (error) {
       console.warn("Notify result failed", error);
-      renderResult(makeLocalResult(picks), { available: false });
+      const localResult = makeLocalResult(picks);
+      writeLocalResult(localResult, localResult.choices);
+      renderResult(localResult, makeLocalCompatibility(localResult, localResult.choices));
     }
 
     trackEvent("result_view", { characterName: activeResult?.characterName || null });
