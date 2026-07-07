@@ -39,7 +39,7 @@ export const NOTIFY_TASTE_CHARACTERS: Record<NotifyTasteCharacterKey, {
 }> = {
   sunny_window: {
     key: "sunny_window",
-    name: "조용한 창가를 먼저 찾는 사람",
+    name: "창가 수집가",
     description: "사람이 많은 곳보다 햇살, 창가, 식물이 있는 자리에 오래 머무는 걸 좋아해요.",
     tags: ["창가", "조용함", "낮"],
     image: "/img/notify-characters/sunny-window.png",
@@ -48,7 +48,7 @@ export const NOTIFY_TASTE_CHARACTERS: Record<NotifyTasteCharacterKey, {
   },
   alley_wanderer: {
     key: "alley_wanderer",
-    name: "골목 끝 작은 가게에 끌리는 사람",
+    name: "골목 탐험가",
     description: "유명한 곳보다 걷다가 우연히 발견한 동네 가게에 더 설레는 타입이에요.",
     tags: ["골목", "산책", "로컬"],
     image: "/img/notify-characters/alley-wanderer.png",
@@ -57,7 +57,7 @@ export const NOTIFY_TASTE_CHARACTERS: Record<NotifyTasteCharacterKey, {
   },
   city_aesthetic: {
     key: "city_aesthetic",
-    name: "외관 보고 이미 마음 정하는 사람",
+    name: "분위기 감별사",
     description: "간판, 입구, 쇼윈도처럼 첫인상이 예쁜 장소에 빠르게 반응해요.",
     tags: ["외관", "트렌디", "도시"],
     image: "/img/notify-characters/city-aesthetic.png",
@@ -66,7 +66,7 @@ export const NOTIFY_TASTE_CHARACTERS: Record<NotifyTasteCharacterKey, {
   },
   food_first: {
     key: "food_first",
-    name: "결국 맛있는 곳을 고르는 사람",
+    name: "맛집 확신러",
     description: "분위기도 좋지만, 마지막 기준은 메뉴와 한입의 만족감이에요.",
     tags: ["맛집", "메뉴", "실패없음"],
     image: "/img/notify-characters/food-first.png",
@@ -75,7 +75,7 @@ export const NOTIFY_TASTE_CHARACTERS: Record<NotifyTasteCharacterKey, {
   },
   night_mood: {
     key: "night_mood",
-    name: "밤 조명에 약한 사람",
+    name: "밤산책러",
     description: "낮보다 저녁, 밝은 곳보다 낮은 조명과 차분한 대화가 있는 곳에 끌려요.",
     tags: ["밤", "데이트", "무드"],
     image: "/img/notify-characters/night-mood.png",
@@ -84,7 +84,7 @@ export const NOTIFY_TASTE_CHARACTERS: Record<NotifyTasteCharacterKey, {
   },
   route_scene: {
     key: "route_scene",
-    name: "하루를 루트로 완성하는 사람",
+    name: "루트 설계자",
     description: "한 장소보다 카페, 산책, 식사가 자연스럽게 이어지는 하루를 좋아해요.",
     tags: ["루트", "동선", "하루"],
     image: "/img/notify-characters/route-scene.png",
