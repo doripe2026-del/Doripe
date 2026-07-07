@@ -26,6 +26,7 @@ export interface NotifyTasteResultRow {
   compatibility_score: number | null;
   compatibility_summary: string | null;
   created_at: string;
+  email_key?: string | null;
 }
 
 export const NOTIFY_TASTE_CHARACTERS: Record<NotifyTasteCharacterKey, {
