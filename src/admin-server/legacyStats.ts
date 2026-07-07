@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { sql } from "@vercel/postgres";
+import { createSupabaseAdminClient } from "./supabaseAdmin.js";
 
 const KST = "Asia/Seoul";
 const V2_CUTOFF = "2026-05-11 15:00:00+00";
@@ -42,6 +43,32 @@ type V2TimelineRow = {
   notify_arrivals: string;
   page_views: string;
   signups: string;
+};
+type NotifyTasteRecentRow = {
+  character_name: string;
+  compatibility_score: number | null;
+  created_at: string;
+  email: string;
+  id: string;
+  referrer_share_slug: string | null;
+  share_slug: string;
+};
+type AdminRecentSignup = {
+  age: string;
+  betaCommitment: string;
+  betaResult: string;
+  campaignCode: string;
+  date: string;
+  desiredFeatures: string[];
+  email: string;
+  gender: string;
+  id: number;
+  opinion: string;
+  painPoint: string;
+  phone: string;
+  recentSearchMethods: string[];
+  region: string;
+  saveLocations: string[];
 };
 
 export type LegacyAdminStats = Awaited<ReturnType<typeof getLegacyAdminStats>>;
@@ -97,6 +124,70 @@ async function tableExists(tableName: string) {
   return result.rows[0]?.exists === true;
 }
 
+function getKstDayStartIso() {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    day: "2-digit",
+    month: "2-digit",
+    timeZone: KST,
+    year: "numeric",
+  }).formatToParts(new Date());
+  const year = Number(parts.find((part) => part.type === "year")?.value);
+  const month = Number(parts.find((part) => part.type === "month")?.value);
+  const day = Number(parts.find((part) => part.type === "day")?.value);
+  return new Date(Date.UTC(year, month - 1, day, -9, 0, 0)).toISOString();
+}
+
+async function getNotifyTasteAdminStats() {
+  try {
+    const supabase = createSupabaseAdminClient();
+    const todayStart = getKstDayStartIso();
+    const [totalResult, todayResult, recentResult] = await Promise.all([
+      supabase.from("notify_taste_results").select("id", { count: "exact", head: true }),
+      supabase.from("notify_taste_results").select("id", { count: "exact", head: true }).gte("created_at", todayStart),
+      supabase
+        .from("notify_taste_results")
+        .select("id,email,character_name,share_slug,referrer_share_slug,compatibility_score,created_at")
+        .order("created_at", { ascending: false })
+        .limit(200),
+    ]);
+
+    if (totalResult.error) throw totalResult.error;
+    if (todayResult.error) throw todayResult.error;
+    if (recentResult.error) throw recentResult.error;
+
+    const recentSignups: AdminRecentSignup[] = ((recentResult.data || []) as NotifyTasteRecentRow[]).map((row, index) => ({
+      age: "취향 테스트",
+      betaCommitment: row.compatibility_score === null ? "단독 결과" : `${row.compatibility_score}점`,
+      betaResult: row.character_name,
+      campaignCode: row.referrer_share_slug ? "shared-link" : "notify-taste",
+      date: row.created_at,
+      desiredFeatures: [row.character_name],
+      email: row.email,
+      gender: "-",
+      id: -(index + 1),
+      opinion: row.share_slug,
+      painPoint: row.character_name,
+      phone: "",
+      recentSearchMethods: row.referrer_share_slug ? ["공유 링크"] : ["직접 진입"],
+      region: "-",
+      saveLocations: [],
+    }));
+
+    return {
+      recentSignups,
+      todaySignups: todayResult.count ?? 0,
+      totalSignups: totalResult.count ?? 0,
+    };
+  } catch (error) {
+    console.warn("Notify taste admin stats unavailable", error);
+    return {
+      recentSignups: [] as AdminRecentSignup[],
+      todaySignups: 0,
+      totalSignups: 0,
+    };
+  }
+}
+
 export async function ensureCampaignLabelStorage() {
   await sql`
     create table if not exists notify_v2_campaign_labels (
@@ -147,6 +238,7 @@ export async function getLegacyAdminStats() {
 
   await ensureCampaignLabelStorage();
   hasCampaignLabels = true;
+  const notifyTasteStats = await getNotifyTasteAdminStats();
 
   const [
     pageViewsTotal,
@@ -254,7 +346,28 @@ export async function getLegacyAdminStats() {
 
   const pageViews = toInt(pageViewsTotal.rows);
   const arrivals = toInt(arrivalsTotal.rows);
-  const signups = toInt(signupsTotal.rows);
+  const signups = toInt(signupsTotal.rows) + notifyTasteStats.totalSignups;
+  const todaySignups = toInt(signupsToday.rows) + notifyTasteStats.todaySignups;
+  const legacyRecentSignups: AdminRecentSignup[] = (recentRows.rows as V2RecentRow[]).map((row) => ({
+    age: row.age_range,
+    betaCommitment: row.beta_commitment,
+    betaResult: row.beta_result,
+    campaignCode: row.campaign_code ?? "",
+    date: row.submitted_at,
+    desiredFeatures: row.desired_features ?? [],
+    email: row.email,
+    gender: row.gender,
+    id: Number(row.id),
+    opinion: row.opinion ?? "",
+    painPoint: row.pain_point,
+    phone: row.phone ?? "",
+    recentSearchMethods: row.recent_search_methods ?? [],
+    region: row.region,
+    saveLocations: row.save_locations ?? [],
+  }));
+  const recentSignups = [...notifyTasteStats.recentSignups, ...legacyRecentSignups]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 200);
 
   return {
     campaigns: (campaignRows.rows as V2CampaignRow[]).map((row) => ({
@@ -301,25 +414,9 @@ export async function getLegacyAdminStats() {
       signups,
       todayArrivals: toInt(arrivalsToday.rows),
       todayPageViews: toInt(pageViewsToday.rows),
-      todaySignups: toInt(signupsToday.rows),
+      todaySignups,
     },
-    recentSignups: (recentRows.rows as V2RecentRow[]).map((row) => ({
-      age: row.age_range,
-      betaCommitment: row.beta_commitment,
-      betaResult: row.beta_result,
-      campaignCode: row.campaign_code ?? "",
-      date: row.submitted_at,
-      desiredFeatures: row.desired_features ?? [],
-      email: row.email,
-      gender: row.gender,
-      id: Number(row.id),
-      opinion: row.opinion ?? "",
-      painPoint: row.pain_point,
-      phone: row.phone ?? "",
-      recentSearchMethods: row.recent_search_methods ?? [],
-      region: row.region,
-      saveLocations: row.save_locations ?? [],
-    })),
+    recentSignups,
     timeline: (timelineRows.rows as V2TimelineRow[]).map((row) => ({
       bucket: row.bucket,
       notifyArrivals: Number(row.notify_arrivals),

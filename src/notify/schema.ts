@@ -67,6 +67,7 @@ const NotifyChoiceSchema = z.enum(["A", "B"]);
 export const NotifyTasteCreatePayloadSchema = z.object({
   email: z.string().email().max(254),
   choices: z.array(NotifyChoiceSchema).length(10),
+  consentPrivacy: z.literal(true),
   characterKey: z.enum([
     "sunny_window",
     "alley_wanderer",
