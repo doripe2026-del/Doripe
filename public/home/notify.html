@@ -401,6 +401,45 @@
     border-color: var(--green);
     box-shadow: 0 0 0 4px rgba(18, 201, 107, .12);
   }
+  .privacy-consent {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 10px;
+    width: min(520px, 100%);
+    margin: 12px auto 0;
+    padding: 13px 14px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .76);
+    text-align: left;
+  }
+  .privacy-consent input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: var(--green);
+  }
+  .privacy-consent strong {
+    display: block;
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 900;
+  }
+  .privacy-consent span {
+    display: block;
+    margin-top: 5px;
+    color: #6f7771;
+    font-size: 12px;
+    line-height: 1.45;
+    font-weight: 700;
+  }
+  .privacy-consent a {
+    color: var(--green-dark);
+    font-weight: 900;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
   .thumb-row {
     display: flex;
     gap: 9px;
@@ -868,6 +907,17 @@
       font-size: 16px;
       padding: 0 18px;
     }
+    .privacy-consent {
+      width: calc(100% - 20px);
+      padding: 11px 12px;
+    }
+    .privacy-consent strong {
+      font-size: 12px;
+    }
+    .privacy-consent span {
+      font-size: 11px;
+      line-height: 1.36;
+    }
     .thumb-row {
       gap: 6px;
       margin: 18px 0 12px;
@@ -1002,6 +1052,7 @@
     .progress-track { margin-bottom: 14px; }
     .email-inner h2 { font-size: clamp(20px, 5.3vw, 24px); }
     .email-form { width: calc(100% - 28px); }
+    .privacy-consent { width: calc(100% - 28px); }
     .character-img { width: min(215px, 62vw, 32svh); }
     .share-box { margin-top: 10px; padding: 11px 12px; }
     .tags { margin: 10px 0; }
@@ -1072,6 +1123,13 @@
           <p class="lead">입력하면 바로 결과가 나와요.</p>
           <form class="email-form" id="emailForm">
             <input id="emailInput" type="email" placeholder="you@example.com" autocomplete="email" />
+            <label class="privacy-consent" for="privacyConsent">
+              <input id="privacyConsent" type="checkbox" required />
+              <span>
+                <strong>앱 출시 알림을 받기 위한 개인정보 수집·이용에 동의해요. (필수)</strong>
+                <span>항목: 이메일 · 목적: Doripe 앱 출시 알림 발송 · 보유기간: 출시 알림 발송 후 30일 또는 삭제 요청 시까지 · 동의 거부 시 결과 확인 및 알림 신청이 제한돼요. <a href="/privacy" target="_blank" rel="noopener">개인정보처리방침</a></span>
+              </span>
+            </label>
             <button class="primary" type="submit">캐릭터 보기</button>
           </form>
           <div id="thumbRow" class="thumb-row" aria-label="완료한 선택 10개"></div>
@@ -1235,6 +1293,7 @@
     thumbRow: document.getElementById("thumbRow"),
     emailForm: document.getElementById("emailForm"),
     emailInput: document.getElementById("emailInput"),
+    privacyConsent: document.getElementById("privacyConsent"),
     resultTitle: document.getElementById("resultTitle"),
     resultDescription: document.getElementById("resultDescription"),
     resultTags: document.getElementById("resultTags"),
@@ -1947,6 +2006,7 @@
         body: JSON.stringify({
           email,
           choices: picks.slice(0, 10),
+          consentPrivacy: true,
           referrerShareSlug: sanitizedReferrerShareSlug
         })
       });
@@ -1992,6 +2052,11 @@
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       refs.emailInput.focus();
       refs.emailInput.style.borderColor = "#e25f4c";
+      return;
+    }
+    if (!refs.privacyConsent.checked) {
+      refs.privacyConsent.focus();
+      showToast("개인정보 수집·이용 동의가 필요해요.");
       return;
     }
     refs.emailInput.style.borderColor = "";
