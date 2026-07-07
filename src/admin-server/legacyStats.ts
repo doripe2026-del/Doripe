@@ -53,6 +53,11 @@ type NotifyTasteRecentRow = {
   referrer_share_slug: string | null;
   share_slug: string;
 };
+type NotifyTasteStats = {
+  recentSignups: AdminRecentSignup[];
+  todaySignups: number;
+  totalSignups: number;
+};
 type AdminRecentSignup = {
   age: string;
   betaCommitment: string;
@@ -112,6 +117,26 @@ function dist(rows: DistRow[]) {
     .filter((row) => row.value > 0);
 }
 
+function normalizeEmail(email: string) {
+  return email.trim().toLowerCase();
+}
+
+function dedupeLatestByEmail(rows: AdminRecentSignup[]) {
+  const byEmail = new Map<string, AdminRecentSignup>();
+
+  for (const row of rows) {
+    const key = normalizeEmail(row.email);
+    if (!key) continue;
+
+    const existing = byEmail.get(key);
+    if (!existing || new Date(row.date).getTime() > new Date(existing.date).getTime()) {
+      byEmail.set(key, row);
+    }
+  }
+
+  return [...byEmail.values()].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+}
+
 async function tableExists(tableName: string) {
   const result = await sql<{ exists: boolean }>`
     select exists (
@@ -137,25 +162,33 @@ function getKstDayStartIso() {
   return new Date(Date.UTC(year, month - 1, day, -9, 0, 0)).toISOString();
 }
 
-async function getNotifyTasteAdminStats() {
+async function fetchNotifyTasteRows() {
+  const supabase = createSupabaseAdminClient();
+  const pageSize = 1000;
+  const maxRows = 10000;
+  const rows: NotifyTasteRecentRow[] = [];
+
+  for (let from = 0; from < maxRows; from += pageSize) {
+    const { data, error } = await supabase
+      .from("notify_taste_results")
+      .select("id,email,character_name,share_slug,referrer_share_slug,compatibility_score,created_at")
+      .order("created_at", { ascending: false })
+      .range(from, from + pageSize - 1);
+
+    if (error) throw error;
+    const page = (data || []) as NotifyTasteRecentRow[];
+    rows.push(...page);
+    if (page.length < pageSize) break;
+  }
+
+  return rows;
+}
+
+async function getNotifyTasteAdminStats(): Promise<NotifyTasteStats> {
   try {
-    const supabase = createSupabaseAdminClient();
     const todayStart = getKstDayStartIso();
-    const [totalResult, todayResult, recentResult] = await Promise.all([
-      supabase.from("notify_taste_results").select("id", { count: "exact", head: true }),
-      supabase.from("notify_taste_results").select("id", { count: "exact", head: true }).gte("created_at", todayStart),
-      supabase
-        .from("notify_taste_results")
-        .select("id,email,character_name,share_slug,referrer_share_slug,compatibility_score,created_at")
-        .order("created_at", { ascending: false })
-        .limit(200),
-    ]);
-
-    if (totalResult.error) throw totalResult.error;
-    if (todayResult.error) throw todayResult.error;
-    if (recentResult.error) throw recentResult.error;
-
-    const recentSignups: AdminRecentSignup[] = ((recentResult.data || []) as NotifyTasteRecentRow[]).map((row, index) => ({
+    const rows = await fetchNotifyTasteRows();
+    const latestRows = dedupeLatestByEmail(rows.map((row, index) => ({
       age: "취향 테스트",
       betaCommitment: row.compatibility_score === null ? "단독 결과" : `${row.compatibility_score}점`,
       betaResult: row.character_name,
@@ -171,12 +204,12 @@ async function getNotifyTasteAdminStats() {
       recentSearchMethods: row.referrer_share_slug ? ["공유 링크"] : ["직접 진입"],
       region: "-",
       saveLocations: [],
-    }));
+    })));
 
     return {
-      recentSignups,
-      todaySignups: todayResult.count ?? 0,
-      totalSignups: totalResult.count ?? 0,
+      recentSignups: latestRows.slice(0, 200),
+      todaySignups: latestRows.filter((row) => row.date >= todayStart).length,
+      totalSignups: latestRows.length,
     };
   } catch (error) {
     console.warn("Notify taste admin stats unavailable", error);
@@ -280,8 +313,25 @@ export async function getLegacyAdminStats() {
     hasNotifyV2Events
       ? sql<CountRow>`select count(*)::text as count from notify_v2_events where type='page_view' and route='/notify' and timestamp >= date_trunc('day', now() at time zone ${KST}) at time zone ${KST}`
       : Promise.resolve({ rows: [{ count: "0" }] }),
-    sql<CountRow>`select count(*)::text as count from notify_v2_signups`,
-    sql<CountRow>`select count(*)::text as count from notify_v2_signups where submitted_at >= date_trunc('day', now() at time zone ${KST}) at time zone ${KST}`,
+    sql<CountRow>`
+      select count(*)::text as count
+      from (
+        select lower(trim(email)) as email_key
+        from notify_v2_signups
+        where nullif(trim(email), '') is not null
+        group by 1
+      ) deduped
+    `,
+    sql<CountRow>`
+      select count(*)::text as count
+      from (
+        select lower(trim(email)) as email_key, max(submitted_at) as latest_at
+        from notify_v2_signups
+        where nullif(trim(email), '') is not null
+        group by 1
+      ) deduped
+      where latest_at >= date_trunc('day', now() at time zone ${KST}) at time zone ${KST}
+    `,
     hasNotifyV2Events ? sql<CountRow>`select count(*)::text as count from notify_v2_events where type='step_complete' and step=1` : Promise.resolve({ rows: [{ count: "0" }] }),
     hasNotifyV2Events ? sql<CountRow>`select count(*)::text as count from notify_v2_events where type='step_complete' and step=2` : Promise.resolve({ rows: [{ count: "0" }] }),
     hasNotifyV2Events ? sql<CountRow>`select count(*)::text as count from notify_v2_events where type='step_complete' and step=3` : Promise.resolve({ rows: [{ count: "0" }] }),
@@ -300,12 +350,18 @@ export async function getLegacyAdminStats() {
     sql<DistRow>`select beta_commitment as label, count(*)::text as count from notify_v2_signups group by 1 order by 2 desc`,
     sql<DistRow>`select trim(opinion) as label, count(*)::text as count from notify_v2_signups where nullif(trim(opinion), '') is not null group by 1 order by 2 desc, 1 asc limit 50`,
     sql<V2RecentRow>`
-      select id, submitted_at, email, phone, age_range, gender, region, pain_point,
-             (select coalesce(array_agg(value), '{}') from jsonb_array_elements_text(desired_features) value) as desired_features,
-             (select coalesce(array_agg(value), '{}') from jsonb_array_elements_text(recent_search_methods) value) as recent_search_methods,
-             (select coalesce(array_agg(value), '{}') from jsonb_array_elements_text(save_locations) value) as save_locations,
-             beta_result, beta_commitment, campaign_code, opinion
-      from notify_v2_signups
+      select *
+      from (
+        select distinct on (lower(trim(email)))
+               id, submitted_at, email, phone, age_range, gender, region, pain_point,
+               (select coalesce(array_agg(value), '{}') from jsonb_array_elements_text(desired_features) value) as desired_features,
+               (select coalesce(array_agg(value), '{}') from jsonb_array_elements_text(recent_search_methods) value) as recent_search_methods,
+               (select coalesce(array_agg(value), '{}') from jsonb_array_elements_text(save_locations) value) as save_locations,
+               beta_result, beta_commitment, campaign_code, opinion
+        from notify_v2_signups
+        where nullif(trim(email), '') is not null
+        order by lower(trim(email)), submitted_at desc
+      ) latest
       order by submitted_at desc
       limit 200
     `,
@@ -338,7 +394,16 @@ export async function getLegacyAdminStats() {
         to_char(d.day, 'YYYY-MM-DD') as bucket,
         ${hasEvents ? `(select count(*)::text from events e where e.type = 'page_view' and e.route = '/' and e.timestamp >= '${V2_CUTOFF}'::timestamptz and (e.timestamp at time zone '${KST}')::date = d.day)` : `'0'`} as page_views,
         ${hasNotifyV2Events ? `(select count(*)::text from notify_v2_events e where e.type = 'page_view' and e.route = '/notify' and (e.timestamp at time zone '${KST}')::date = d.day)` : `'0'`} as notify_arrivals,
-        (select count(*)::text from notify_v2_signups s where (s.submitted_at at time zone '${KST}')::date = d.day) as signups
+        (
+          select count(*)::text
+          from (
+            select lower(trim(s.email)) as email_key, max(s.submitted_at) as latest_at
+            from notify_v2_signups s
+            where nullif(trim(s.email), '') is not null
+            group by 1
+          ) latest
+          where (latest.latest_at at time zone '${KST}')::date = d.day
+        ) as signups
       from days d
       order by d.day
     `),
@@ -365,8 +430,7 @@ export async function getLegacyAdminStats() {
     region: row.region,
     saveLocations: row.save_locations ?? [],
   }));
-  const recentSignups = [...notifyTasteStats.recentSignups, ...legacyRecentSignups]
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  const recentSignups = dedupeLatestByEmail([...notifyTasteStats.recentSignups, ...legacyRecentSignups])
     .slice(0, 200);
 
   return {
