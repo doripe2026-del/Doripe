@@ -152,7 +152,8 @@ add("a20", "confirm-neighborhood", "action/primary", "button", navigate("a21"));
 add("b1", "show-following", "segment label", "tab", state("selections.feedTab"), { payload: { value: "following" } });
 add("b1", "show-discover", "segment label / Discover", "tab", navigate("b2"));
 add("b1", "open-filter", "Header / filter pill", "button", state("selections.feedFilter"));
-add("b1", "open-following-list", "Following / list CTA", "button", navigate("e7"));
+add("b1", "open-following-list", "Following / list CTA", "button", navigate("b13"));
+addSources("b1", "open-profile", measuredKeys("b1", /^Ellipse(?:#\d+)?$/), "avatar", navigate("b12", "selectedUserId"));
 addSources("b1", "open-place", measuredKeys("b1", /^Feed \/ media tile \d+(?:#\d+)?$/), "media-card", navigate("b4", "selectedPlaceId"));
 add("b1", "save-place", "Feed / masonry grid", "gesture-target", state("savedPlaceIds"), {
   evidence: "B1's dynamic feed is flattened and masked in the reference; the measured masonry composite is the only retained source for the brief-required save-place state action."
@@ -174,6 +175,8 @@ function placeDetailActions(screenId, {
   hoursSource = "Info / hours row",
   addressSource = "Info / address row",
   menuSource = "Info / menu row",
+  profileSource,
+  officialPlaceSource,
   related = false,
   route = false
 }) {
@@ -188,16 +191,37 @@ function placeDetailActions(screenId, {
   add(screenId, "open-menu", menuSource, "row", overlay("place-menu"));
   add(screenId, "open-share", "CTA / share button bg", "button", share("place"));
   add(screenId, "save-place", "CTA / save button bg", "button", state("savedPlaceIds"));
+  if (profileSource) add(screenId, "open-profile", profileSource, "profile", navigate("b12", "selectedUserId"));
+  if (officialPlaceSource) {
+    add(screenId, "open-official-place", officialPlaceSource, "text-button", navigate("b10", "selectedPlaceId"));
+  }
   if (related) {
-    addSources(screenId, "open-related-place", measuredKeys(screenId, /^Related places \/ card \d+$/), "place-card", navigate("b4", "selectedPlaceId"));
+    addSources(screenId, "open-related-place", measuredKeys(screenId, /^Related places \/ card \d+$/), "place-card", navigate("b10", "selectedPlaceId"));
     addSources(screenId, "toggle-comment-like", measuredKeys(screenId, /^slot\/comment-item\/like-icon(?:#\d+)?$/), "icon-button", state("likedCommentIds"));
   }
   if (route) add(screenId, "create-route", "Floating route CTA / text", "button", navigate("d1"));
 }
 
-placeDetailActions("b4", { mediaSource: "Hero / photo crop slot", handleSource: "Sheet / drag handle", related: true });
-placeDetailActions("b5", { mediaSource: "Hero / photo and floating controls crop slot", handleSource: "Sheet / handle" });
-placeDetailActions("b6", { mediaSource: "Hero / photo and floating controls crop slot", handleSource: "Sheet / handle", related: true, route: true });
+placeDetailActions("b4", {
+  mediaSource: "Hero / photo crop slot",
+  handleSource: "Sheet / drag handle",
+  profileSource: "Hero / author pill",
+  officialPlaceSource: "data/place.name",
+  related: true
+});
+placeDetailActions("b5", {
+  mediaSource: "Hero / photo and floating controls crop slot",
+  handleSource: "Sheet / handle",
+  profileSource: "Hero / author pill",
+  officialPlaceSource: "data/place.name"
+});
+placeDetailActions("b6", {
+  mediaSource: "Hero / photo and floating controls crop slot",
+  handleSource: "Sheet / handle",
+  officialPlaceSource: "data/place.name",
+  related: true,
+  route: true
+});
 placeDetailActions("b10", {
   mediaSource: "Hero / photo crop slot",
   handleSource: "Sheet / handle",
@@ -207,15 +231,39 @@ placeDetailActions("b10", {
   related: true,
   route: true
 });
+add("b10", "open-profile", "Hero / author pill", "profile", navigate("b12", "selectedUserId"));
+add("b10", "open-other-media", "slot/other-photo/item/media", "text-button", navigate("b3"));
+add("b10", "open-related-places", "Related places / title", "text-button", navigate("b11"));
 
 add("b7", "close-photo", "button / close photo viewer", "icon-button", history());
+add("b7", "open-profile", "text / uploader name / dynamic", "text-button", navigate("b12", "selectedUserId"));
+add("b7", "open-official-place", "text / place name / dynamic", "text-button", navigate("b10", "selectedPlaceId"));
 add("b8", "close-comments", "button / back circle", "icon-button", history());
 add("b8", "update-comment", "bottom sheet / comments editable", "input", state("form.comment"), {
   evidence: "The B8 comment input is flattened into the measured editable comments sheet composite."
 });
 add("b8", "submit-comment", "button / submit comment", "icon-button", state("comments"));
 addSources("b8", "toggle-comment-like", measuredKeys("b8", /^icon \/ heart \/ /), "icon-button", state("likedCommentIds"));
+addSources("b8", "open-profile", measuredKeys("b8", /^avatar \/ [^/]+$/), "avatar", navigate("b12", "selectedUserId"));
 add("b9", "close-business-hours", "button / back", "icon-button", history());
+
+add("b11", "go-back", "Back button", "icon-button", history());
+addSources("b11", "open-place", measuredKeys("b11", /^UGC card \d+$/), "place-card", navigate("b10", "selectedPlaceId"));
+addSources("b11", "toggle-place-like", measuredKeys("b11", /^Heart icon(?:#\d+)?$/), "icon-button", state("likedPlaceIds"));
+
+add("b12", "go-back", "action/back/bg", "icon-button", history());
+add("b12", "toggle-follow", "action/primary/bg", "button", state("followedUserIds"));
+addSources("b12", "open-content", measuredKeys("b12", /^media\/photo\/crop-asset(?:#\d+)?$/), "media", navigate("b4", "selectedPlaceId"));
+
+add("b13", "go-back", "action/primary/bg", "icon-button", history());
+addSources("b13", "toggle-follow", [
+  "action/primary/bg#2", "action/primary/bg#4", "action/primary/bg#6",
+  "action/primary/bg#8", "action/primary/bg#10", "action/primary/bg#12"
+], "button", state("followedUserIds"));
+addSources("b13", "open-profile", [
+  "media/avatar/crop-asset", "media/avatar/crop-asset#3", "media/avatar/crop-asset#5",
+  "media/avatar/crop-asset#7", "media/avatar/crop-asset#9", "media/avatar/crop-asset#11"
+], "avatar", navigate("b12", "selectedUserId"));
 
 function filterSheetActions(screenId) {
   const buttons = measuredKeys(screenId, /^button(?:#\d+)?$/);
@@ -340,26 +388,16 @@ add("d12", "open-photo-grid", "Bottom sheet / selected place photos", "sheet", n
 addSources("d13", "open-photo", measuredKeys("d13", /^Candidate photo slot \d+$/), "media", navigate("b7", "selectedMediaId"));
 addSources("d13", "open-photo-menu", measuredKeys("d13", /^Photo menu(?:#\d+)?$/), "icon-button", overlay("photo-menu"));
 
-add("d14", "go-back", "Back button", "icon-button", history());
-addSources("d14", "open-place", measuredKeys("d14", /^UGC card \d+$/), "place-card", navigate("b4", "selectedPlaceId"));
-addSources("d14", "toggle-place-like", measuredKeys("d14", /^Heart icon(?:#\d+)?$/), "icon-button", state("likedPlaceIds"));
-
-add("e1", "go-back", "action/back", "icon-button", history());
-add("e1", "toggle-follow", "action/primary", "button", state("followedUserIds"), {
-  evidence: "The E1 reference visibly labels the measured primary button 팔로우; no edit-profile variant is present in this static frame."
-});
-addSources("e1", "open-media", measuredKeys("e1", /^media\/photo\/crop-asset(?:#\d+)?$/), "media", navigate("b7", "selectedMediaId"));
-
 add("e2", "go-back", "action/back", "icon-button", history());
 add("e2", "update-nickname", "field/nickname/bg", "input", state("form.nickname"));
 add("e2", "update-bio", "field/value/bg", "input", state("form.bio"));
 add("e2", "show-profile-places", "segment place", "tab", state("selections.profileTab"));
 add("e2", "show-profile-routes", "segment route", "tab", state("selections.profileTab"));
 add("e2", "edit-media", "action/primary", "button", overlay("media-editor"));
-add("e2", "save-profile", "action/save", "button", navigate("e1"));
+add("e2", "save-profile", "action/save", "button", navigate("b12"));
 addSources("e2", "open-media", measuredKeys("e2", /^media\/photo\/crop-asset(?:#\d+)?$/), "media", navigate("b7", "selectedMediaId"));
 
-add("e3", "open-profile", "profile/avatar", "row", navigate("e1", "selectedUserId"));
+add("e3", "open-profile", "profile/avatar", "row", navigate("b12", "selectedUserId"));
 add("e3", "open-account-settings", "slot/settings-row/chevron", "row", navigate("e4"));
 add("e3", "open-notification-settings", "slot/settings-row/chevron#2", "row", navigate("e5"));
 add("e3", "open-contact", "slot/settings-row/chevron#3", "row", navigate("e6"));
@@ -393,13 +431,6 @@ notificationActions.forEach((actionId, index) => add(
 add("e6", "go-back", "action/back", "icon-button", history());
 add("e6", "update-message", "field/message/bg", "textarea", state("form.message"));
 add("e6", "send-message", "action/send", "button", state("toast"));
-
-add("e7", "go-back", "icon/lucide", "icon-button", history(), {
-  evidence: "The E7 back arrow is retained as the measured icon/lucide element inside the flattened editable screen composite."
-});
-add("e7", "toggle-follow", "action/primary", "button", state("followedUserIds"));
-addSources("e7", "open-profile", measuredKeys("e7", /^media\/avatar\/crop-asset(?:#\d+)?$/), "avatar", navigate("e1", "selectedUserId"));
-addSources("e7", "open-media", measuredKeys("e7", /^slot\/user-photo\/media(?:#\d+)?$/), "media", navigate("b7", "selectedMediaId"));
 
 const visibleControlPatterns = [
   /^action\/[^/]+$/i,
@@ -537,6 +568,33 @@ reviewNoninteractive(
   ["Floating route CTA / glass bg", "Floating route CTA / icon"],
   "visual-child",
   (source) => `B10 ${source} is presentation artwork inside the separately contracted Floating route CTA / text control.`
+);
+reviewNoninteractive(
+  "b12",
+  ["action/back", "action/primary"],
+  "composite-container",
+  (source) => `B12 ${source} groups the separately contracted background and icon or label layers; it is not an additional control.`
+);
+reviewNoninteractive(
+  "b13",
+  ["action/primary"],
+  "composite-container",
+  (source) => `B13 ${source} groups the back and six separately contracted follow button backgrounds; it is not an additional control.`
+);
+reviewNoninteractive(
+  "b13",
+  [
+    "media/avatar/crop-asset#2", "media/avatar/crop-asset#4", "media/avatar/crop-asset#6",
+    "media/avatar/crop-asset#8", "media/avatar/crop-asset#10", "media/avatar/crop-asset#12"
+  ],
+  "visual-child",
+  (source) => `B13 ${source} is the clipped image layer inside a separately contracted profile avatar.`
+);
+reviewNoninteractive(
+  "b13",
+  measuredKeys("b13", /^slot\/user-photo\/media(?:#\d+)?$/),
+  "decorative-media",
+  (source) => `B13 ${source} is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12.`
 );
 for (const screenId of ["c1", "c2"]) {
   reviewNoninteractive(

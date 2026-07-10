@@ -354,7 +354,7 @@ test("shared geometry is backed by identical measurements in multiple final scre
     });
   }
 
-  for (const screenId of ["a5", "a10", "e1", "e6"]) {
+  for (const screenId of ["a5", "a10", "b12", "e6"]) {
     assert.deepEqual(
       {
         width: measurements[screenId].elements["action/back/bg"].width,

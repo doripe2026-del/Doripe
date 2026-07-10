@@ -74,23 +74,23 @@ test("place detail survives reload and closes to its exact opener", async ({ pag
   expect(closed.history).toEqual([]);
 });
 
-test("profile media survives reload and closes to its exact opener", async ({ page }) => {
-  await page.goto("/app-preview/?screen=e1");
-  await addActionControl(page, { action: "open-media", id: "media-4" });
-  await page.getByRole("button", { name: "open-media" }).click();
-  await expect(page).toHaveURL(/screen=b7/);
+test("profile content survives reload and closes to its exact opener", async ({ page }) => {
+  await page.goto("/app-preview/?screen=b12");
+  await addActionControl(page, { action: "open-content", id: "place-4" });
+  await page.getByRole("button", { name: "open-content" }).click();
+  await expect(page).toHaveURL(/screen=b4/);
 
   await page.reload();
   const opened = await page.evaluate(() => JSON.parse(localStorage.getItem("doripe_app_preview_v1")));
-  expect(opened.currentScreenId).toBe("b7");
-  expect(opened.history).toEqual(["e1"]);
-  expect(opened.selections.selectedMediaId).toBe("media-4");
+  expect(opened.currentScreenId).toBe("b4");
+  expect(opened.history).toEqual(["b12"]);
+  expect(opened.selections.selectedPlaceId).toBe("place-4");
 
-  await addActionControl(page, { action: "close-photo" });
-  await page.getByRole("button", { name: "close-photo" }).click();
-  await expect(page).toHaveURL(/screen=e1/);
+  await addActionControl(page, { action: "close-place" });
+  await page.getByRole("button", { name: "close-place" }).click();
+  await expect(page).toHaveURL(/screen=b12/);
   await page.reload();
   const closed = await page.evaluate(() => JSON.parse(localStorage.getItem("doripe_app_preview_v1")));
-  expect(closed.currentScreenId).toBe("e1");
+  expect(closed.currentScreenId).toBe("b12");
   expect(closed.history).toEqual([]);
 });

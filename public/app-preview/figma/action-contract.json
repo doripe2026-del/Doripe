@@ -918,9 +918,69 @@
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "e7"
+        "destination": "b13"
       },
       "evidence": "The Following / list CTA control is visible in the B1 reference."
+    },
+    {
+      "screenId": "b1",
+      "actionId": "open-profile",
+      "source": "Ellipse",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The Ellipse control is visible in the B1 reference."
+    },
+    {
+      "screenId": "b1",
+      "actionId": "open-profile",
+      "source": "Ellipse#2",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The Ellipse#2 control is visible in the B1 reference."
+    },
+    {
+      "screenId": "b1",
+      "actionId": "open-profile",
+      "source": "Ellipse#3",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The Ellipse#3 control is visible in the B1 reference."
+    },
+    {
+      "screenId": "b1",
+      "actionId": "open-profile",
+      "source": "Ellipse#4",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The Ellipse#4 control is visible in the B1 reference."
+    },
+    {
+      "screenId": "b1",
+      "actionId": "open-profile",
+      "source": "Ellipse#5",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The Ellipse#5 control is visible in the B1 reference."
     },
     {
       "screenId": "b1",
@@ -1523,12 +1583,36 @@
     },
     {
       "screenId": "b4",
+      "actionId": "open-profile",
+      "source": "Hero / author pill",
+      "kind": "profile",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The Hero / author pill control is visible in the B4 reference."
+    },
+    {
+      "screenId": "b4",
+      "actionId": "open-official-place",
+      "source": "data/place.name",
+      "kind": "text-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The data/place.name control is visible in the B4 reference."
+    },
+    {
+      "screenId": "b4",
       "actionId": "open-related-place",
       "source": "Related places / card 01",
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "b10",
         "selectionKey": "selectedPlaceId"
       },
       "evidence": "The Related places / card 01 control is visible in the B4 reference."
@@ -1540,7 +1624,7 @@
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "b10",
         "selectionKey": "selectedPlaceId"
       },
       "evidence": "The Related places / card 02 control is visible in the B4 reference."
@@ -1668,6 +1752,30 @@
       "evidence": "The CTA / save button bg control is visible in the B5 reference."
     },
     {
+      "screenId": "b5",
+      "actionId": "open-profile",
+      "source": "Hero / author pill",
+      "kind": "profile",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The Hero / author pill control is visible in the B5 reference."
+    },
+    {
+      "screenId": "b5",
+      "actionId": "open-official-place",
+      "source": "data/place.name",
+      "kind": "text-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The data/place.name control is visible in the B5 reference."
+    },
+    {
       "screenId": "b6",
       "actionId": "close-place",
       "source": "Sheet / handle",
@@ -1769,12 +1877,24 @@
     },
     {
       "screenId": "b6",
+      "actionId": "open-official-place",
+      "source": "data/place.name",
+      "kind": "text-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The data/place.name control is visible in the B6 reference."
+    },
+    {
+      "screenId": "b6",
       "actionId": "open-related-place",
       "source": "Related places / card 01",
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "b10",
         "selectionKey": "selectedPlaceId"
       },
       "evidence": "The Related places / card 01 control is visible in the B6 reference."
@@ -1786,7 +1906,7 @@
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "b10",
         "selectionKey": "selectedPlaceId"
       },
       "evidence": "The Related places / card 02 control is visible in the B6 reference."
@@ -1958,6 +2078,40 @@
       "evidence": "The Floating route CTA / text control is visible in the B10 reference."
     },
     {
+      "screenId": "b10",
+      "actionId": "open-profile",
+      "source": "Hero / author pill",
+      "kind": "profile",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The Hero / author pill control is visible in the B10 reference."
+    },
+    {
+      "screenId": "b10",
+      "actionId": "open-other-media",
+      "source": "slot/other-photo/item/media",
+      "kind": "text-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "b3"
+      },
+      "evidence": "The slot/other-photo/item/media control is visible in the B10 reference."
+    },
+    {
+      "screenId": "b10",
+      "actionId": "open-related-places",
+      "source": "Related places / title",
+      "kind": "text-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "b11"
+      },
+      "evidence": "The Related places / title control is visible in the B10 reference."
+    },
+    {
       "screenId": "b7",
       "actionId": "close-photo",
       "source": "button / close photo viewer",
@@ -1966,6 +2120,30 @@
         "type": "history"
       },
       "evidence": "The button / close photo viewer control is visible in the B7 reference."
+    },
+    {
+      "screenId": "b7",
+      "actionId": "open-profile",
+      "source": "text / uploader name / dynamic",
+      "kind": "text-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The text / uploader name / dynamic control is visible in the B7 reference."
+    },
+    {
+      "screenId": "b7",
+      "actionId": "open-official-place",
+      "source": "text / place name / dynamic",
+      "kind": "text-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The text / place name / dynamic control is visible in the B7 reference."
     },
     {
       "screenId": "b8",
@@ -2044,6 +2222,54 @@
       "evidence": "The icon / heart / hyejin control is visible in the B8 reference."
     },
     {
+      "screenId": "b8",
+      "actionId": "open-profile",
+      "source": "avatar / minsu",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The avatar / minsu control is visible in the B8 reference."
+    },
+    {
+      "screenId": "b8",
+      "actionId": "open-profile",
+      "source": "avatar / yeon",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The avatar / yeon control is visible in the B8 reference."
+    },
+    {
+      "screenId": "b8",
+      "actionId": "open-profile",
+      "source": "avatar / dori",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The avatar / dori control is visible in the B8 reference."
+    },
+    {
+      "screenId": "b8",
+      "actionId": "open-profile",
+      "source": "avatar / hyejin",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The avatar / hyejin control is visible in the B8 reference."
+    },
+    {
       "screenId": "b9",
       "actionId": "close-business-hours",
       "source": "button / back",
@@ -2052,6 +2278,407 @@
         "type": "history"
       },
       "evidence": "The button / back control is visible in the B9 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "go-back",
+      "source": "Back button",
+      "kind": "icon-button",
+      "effect": {
+        "type": "history"
+      },
+      "evidence": "The Back button control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "open-place",
+      "source": "UGC card 1",
+      "kind": "place-card",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The UGC card 1 control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "open-place",
+      "source": "UGC card 2",
+      "kind": "place-card",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The UGC card 2 control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "open-place",
+      "source": "UGC card 3",
+      "kind": "place-card",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The UGC card 3 control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "open-place",
+      "source": "UGC card 4",
+      "kind": "place-card",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The UGC card 4 control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "open-place",
+      "source": "UGC card 5",
+      "kind": "place-card",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The UGC card 5 control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "open-place",
+      "source": "UGC card 6",
+      "kind": "place-card",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The UGC card 6 control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "toggle-place-like",
+      "source": "Heart icon",
+      "kind": "icon-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "likedPlaceIds"
+      },
+      "evidence": "The Heart icon control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "toggle-place-like",
+      "source": "Heart icon#2",
+      "kind": "icon-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "likedPlaceIds"
+      },
+      "evidence": "The Heart icon#2 control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "toggle-place-like",
+      "source": "Heart icon#3",
+      "kind": "icon-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "likedPlaceIds"
+      },
+      "evidence": "The Heart icon#3 control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "toggle-place-like",
+      "source": "Heart icon#4",
+      "kind": "icon-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "likedPlaceIds"
+      },
+      "evidence": "The Heart icon#4 control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "toggle-place-like",
+      "source": "Heart icon#5",
+      "kind": "icon-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "likedPlaceIds"
+      },
+      "evidence": "The Heart icon#5 control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b11",
+      "actionId": "toggle-place-like",
+      "source": "Heart icon#6",
+      "kind": "icon-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "likedPlaceIds"
+      },
+      "evidence": "The Heart icon#6 control is visible in the B11 reference."
+    },
+    {
+      "screenId": "b12",
+      "actionId": "go-back",
+      "source": "action/back/bg",
+      "kind": "icon-button",
+      "effect": {
+        "type": "history"
+      },
+      "evidence": "The action/back/bg control is visible in the B12 reference."
+    },
+    {
+      "screenId": "b12",
+      "actionId": "toggle-follow",
+      "source": "action/primary/bg",
+      "kind": "button",
+      "effect": {
+        "type": "state",
+        "stateKey": "followedUserIds"
+      },
+      "evidence": "The action/primary/bg control is visible in the B12 reference."
+    },
+    {
+      "screenId": "b12",
+      "actionId": "open-content",
+      "source": "media/photo/crop-asset",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The media/photo/crop-asset control is visible in the B12 reference."
+    },
+    {
+      "screenId": "b12",
+      "actionId": "open-content",
+      "source": "media/photo/crop-asset#2",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The media/photo/crop-asset#2 control is visible in the B12 reference."
+    },
+    {
+      "screenId": "b12",
+      "actionId": "open-content",
+      "source": "media/photo/crop-asset#3",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The media/photo/crop-asset#3 control is visible in the B12 reference."
+    },
+    {
+      "screenId": "b12",
+      "actionId": "open-content",
+      "source": "media/photo/crop-asset#4",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The media/photo/crop-asset#4 control is visible in the B12 reference."
+    },
+    {
+      "screenId": "b12",
+      "actionId": "open-content",
+      "source": "media/photo/crop-asset#5",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The media/photo/crop-asset#5 control is visible in the B12 reference."
+    },
+    {
+      "screenId": "b12",
+      "actionId": "open-content",
+      "source": "media/photo/crop-asset#6",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The media/photo/crop-asset#6 control is visible in the B12 reference."
+    },
+    {
+      "screenId": "b12",
+      "actionId": "open-content",
+      "source": "media/photo/crop-asset#7",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The media/photo/crop-asset#7 control is visible in the B12 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "go-back",
+      "source": "action/primary/bg",
+      "kind": "icon-button",
+      "effect": {
+        "type": "history"
+      },
+      "evidence": "The action/primary/bg control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "toggle-follow",
+      "source": "action/primary/bg#2",
+      "kind": "button",
+      "effect": {
+        "type": "state",
+        "stateKey": "followedUserIds"
+      },
+      "evidence": "The action/primary/bg#2 control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "toggle-follow",
+      "source": "action/primary/bg#4",
+      "kind": "button",
+      "effect": {
+        "type": "state",
+        "stateKey": "followedUserIds"
+      },
+      "evidence": "The action/primary/bg#4 control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "toggle-follow",
+      "source": "action/primary/bg#6",
+      "kind": "button",
+      "effect": {
+        "type": "state",
+        "stateKey": "followedUserIds"
+      },
+      "evidence": "The action/primary/bg#6 control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "toggle-follow",
+      "source": "action/primary/bg#8",
+      "kind": "button",
+      "effect": {
+        "type": "state",
+        "stateKey": "followedUserIds"
+      },
+      "evidence": "The action/primary/bg#8 control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "toggle-follow",
+      "source": "action/primary/bg#10",
+      "kind": "button",
+      "effect": {
+        "type": "state",
+        "stateKey": "followedUserIds"
+      },
+      "evidence": "The action/primary/bg#10 control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "toggle-follow",
+      "source": "action/primary/bg#12",
+      "kind": "button",
+      "effect": {
+        "type": "state",
+        "stateKey": "followedUserIds"
+      },
+      "evidence": "The action/primary/bg#12 control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "open-profile",
+      "source": "media/avatar/crop-asset",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The media/avatar/crop-asset control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "open-profile",
+      "source": "media/avatar/crop-asset#3",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The media/avatar/crop-asset#3 control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "open-profile",
+      "source": "media/avatar/crop-asset#5",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The media/avatar/crop-asset#5 control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "open-profile",
+      "source": "media/avatar/crop-asset#7",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The media/avatar/crop-asset#7 control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "open-profile",
+      "source": "media/avatar/crop-asset#9",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The media/avatar/crop-asset#9 control is visible in the B13 reference."
+    },
+    {
+      "screenId": "b13",
+      "actionId": "open-profile",
+      "source": "media/avatar/crop-asset#11",
+      "kind": "avatar",
+      "effect": {
+        "type": "navigate",
+        "destination": "b12",
+        "selectionKey": "selectedUserId"
+      },
+      "evidence": "The media/avatar/crop-asset#11 control is visible in the B13 reference."
     },
     {
       "screenId": "c1",
@@ -4541,259 +5168,6 @@
       "evidence": "The Photo menu#9 control is visible in the D13 reference."
     },
     {
-      "screenId": "d14",
-      "actionId": "go-back",
-      "source": "Back button",
-      "kind": "icon-button",
-      "effect": {
-        "type": "history"
-      },
-      "evidence": "The Back button control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "open-place",
-      "source": "UGC card 1",
-      "kind": "place-card",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The UGC card 1 control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "open-place",
-      "source": "UGC card 2",
-      "kind": "place-card",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The UGC card 2 control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "open-place",
-      "source": "UGC card 3",
-      "kind": "place-card",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The UGC card 3 control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "open-place",
-      "source": "UGC card 4",
-      "kind": "place-card",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The UGC card 4 control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "open-place",
-      "source": "UGC card 5",
-      "kind": "place-card",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The UGC card 5 control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "open-place",
-      "source": "UGC card 6",
-      "kind": "place-card",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The UGC card 6 control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "toggle-place-like",
-      "source": "Heart icon",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "likedPlaceIds"
-      },
-      "evidence": "The Heart icon control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "toggle-place-like",
-      "source": "Heart icon#2",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "likedPlaceIds"
-      },
-      "evidence": "The Heart icon#2 control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "toggle-place-like",
-      "source": "Heart icon#3",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "likedPlaceIds"
-      },
-      "evidence": "The Heart icon#3 control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "toggle-place-like",
-      "source": "Heart icon#4",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "likedPlaceIds"
-      },
-      "evidence": "The Heart icon#4 control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "toggle-place-like",
-      "source": "Heart icon#5",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "likedPlaceIds"
-      },
-      "evidence": "The Heart icon#5 control is visible in the D14 reference."
-    },
-    {
-      "screenId": "d14",
-      "actionId": "toggle-place-like",
-      "source": "Heart icon#6",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "likedPlaceIds"
-      },
-      "evidence": "The Heart icon#6 control is visible in the D14 reference."
-    },
-    {
-      "screenId": "e1",
-      "actionId": "go-back",
-      "source": "action/back",
-      "kind": "icon-button",
-      "effect": {
-        "type": "history"
-      },
-      "evidence": "The action/back control is visible in the E1 reference."
-    },
-    {
-      "screenId": "e1",
-      "actionId": "toggle-follow",
-      "source": "action/primary",
-      "kind": "button",
-      "effect": {
-        "type": "state",
-        "stateKey": "followedUserIds"
-      },
-      "evidence": "The E1 reference visibly labels the measured primary button 팔로우; no edit-profile variant is present in this static frame."
-    },
-    {
-      "screenId": "e1",
-      "actionId": "open-media",
-      "source": "media/photo/crop-asset",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The media/photo/crop-asset control is visible in the E1 reference."
-    },
-    {
-      "screenId": "e1",
-      "actionId": "open-media",
-      "source": "media/photo/crop-asset#2",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The media/photo/crop-asset#2 control is visible in the E1 reference."
-    },
-    {
-      "screenId": "e1",
-      "actionId": "open-media",
-      "source": "media/photo/crop-asset#3",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The media/photo/crop-asset#3 control is visible in the E1 reference."
-    },
-    {
-      "screenId": "e1",
-      "actionId": "open-media",
-      "source": "media/photo/crop-asset#4",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The media/photo/crop-asset#4 control is visible in the E1 reference."
-    },
-    {
-      "screenId": "e1",
-      "actionId": "open-media",
-      "source": "media/photo/crop-asset#5",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The media/photo/crop-asset#5 control is visible in the E1 reference."
-    },
-    {
-      "screenId": "e1",
-      "actionId": "open-media",
-      "source": "media/photo/crop-asset#6",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The media/photo/crop-asset#6 control is visible in the E1 reference."
-    },
-    {
-      "screenId": "e1",
-      "actionId": "open-media",
-      "source": "media/photo/crop-asset#7",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The media/photo/crop-asset#7 control is visible in the E1 reference."
-    },
-    {
       "screenId": "e2",
       "actionId": "go-back",
       "source": "action/back",
@@ -4865,7 +5239,7 @@
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "e1"
+        "destination": "b12"
       },
       "evidence": "The action/save control is visible in the E2 reference."
     },
@@ -4876,7 +5250,7 @@
       "kind": "row",
       "effect": {
         "type": "navigate",
-        "destination": "e1",
+        "destination": "b12",
         "selectionKey": "selectedUserId"
       },
       "evidence": "The profile/avatar control is visible in the E3 reference."
@@ -5108,603 +5482,6 @@
         "stateKey": "toast"
       },
       "evidence": "The action/send control is visible in the E6 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "go-back",
-      "source": "icon/lucide",
-      "kind": "icon-button",
-      "effect": {
-        "type": "history"
-      },
-      "evidence": "The E7 back arrow is retained as the measured icon/lucide element inside the flattened editable screen composite."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "toggle-follow",
-      "source": "action/primary",
-      "kind": "button",
-      "effect": {
-        "type": "state",
-        "stateKey": "followedUserIds"
-      },
-      "evidence": "The action/primary control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset#2",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset#2 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset#3",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset#3 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset#4",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset#4 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset#5",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset#5 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset#6",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset#6 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset#7",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset#7 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset#8",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset#8 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset#9",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset#9 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset#10",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset#10 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset#11",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset#11 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-profile",
-      "source": "media/avatar/crop-asset#12",
-      "kind": "avatar",
-      "effect": {
-        "type": "navigate",
-        "destination": "e1",
-        "selectionKey": "selectedUserId"
-      },
-      "evidence": "The media/avatar/crop-asset#12 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#2",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#2 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#3",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#3 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#4",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#4 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#5",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#5 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#6",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#6 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#7",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#7 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#8",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#8 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#9",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#9 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#10",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#10 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#11",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#11 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#12",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#12 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#13",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#13 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#14",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#14 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#15",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#15 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#16",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#16 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#17",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#17 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#18",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#18 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#19",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#19 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#20",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#20 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#21",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#21 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#22",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#22 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#23",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#23 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#24",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#24 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#25",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#25 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#26",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#26 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#27",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#27 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#28",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#28 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#29",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#29 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#30",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#30 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#31",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#31 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#32",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#32 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#33",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#33 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#34",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#34 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#35",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#35 control is visible in the E7 reference."
-    },
-    {
-      "screenId": "e7",
-      "actionId": "open-media",
-      "source": "slot/user-photo/media#36",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The slot/user-photo/media#36 control is visible in the E7 reference."
     }
   ],
   "nonInteractive": [
@@ -6148,6 +5925,321 @@
       "kind": "measured-control-layer",
       "reason": "visual-child",
       "evidence": "E5 ui/toggle/knob#5 is the moving knob artwork inside its separately contracted toggle background."
+    },
+    {
+      "screenId": "b12",
+      "source": "action/back",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "B12 action/back groups the separately contracted background and icon or label layers; it is not an additional control."
+    },
+    {
+      "screenId": "b12",
+      "source": "action/primary",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "B12 action/primary groups the separately contracted background and icon or label layers; it is not an additional control."
+    },
+    {
+      "screenId": "b13",
+      "source": "media/avatar/crop-asset#2",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "B13 media/avatar/crop-asset#2 is the clipped image layer inside a separately contracted profile avatar."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#2",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#2 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#3",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#3 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#4",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#4 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#5",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#5 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#6",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#6 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "media/avatar/crop-asset#4",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "B13 media/avatar/crop-asset#4 is the clipped image layer inside a separately contracted profile avatar."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#7",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#7 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#8",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#8 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#9",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#9 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#10",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#10 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#11",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#11 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#12",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#12 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "media/avatar/crop-asset#6",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "B13 media/avatar/crop-asset#6 is the clipped image layer inside a separately contracted profile avatar."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#13",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#13 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#14",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#14 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#15",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#15 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#16",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#16 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#17",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#17 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#18",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#18 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "media/avatar/crop-asset#8",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "B13 media/avatar/crop-asset#8 is the clipped image layer inside a separately contracted profile avatar."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#19",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#19 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#20",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#20 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#21",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#21 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#22",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#22 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#23",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#23 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#24",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#24 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "media/avatar/crop-asset#10",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "B13 media/avatar/crop-asset#10 is the clipped image layer inside a separately contracted profile avatar."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#25",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#25 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#26",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#26 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#27",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#27 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#28",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#28 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#29",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#29 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#30",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#30 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "media/avatar/crop-asset#12",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "B13 media/avatar/crop-asset#12 is the clipped image layer inside a separately contracted profile avatar."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#31",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#31 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#32",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#32 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#33",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#33 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#34",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#34 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#35",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#35 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "slot/user-photo/media#36",
+      "kind": "measured-control-layer",
+      "reason": "decorative-media",
+      "evidence": "B13 slot/user-photo/media#36 is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12."
+    },
+    {
+      "screenId": "b13",
+      "source": "action/primary",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "B13 action/primary groups the back and six separately contracted follow button backgrounds; it is not an additional control."
     }
   ]
 }

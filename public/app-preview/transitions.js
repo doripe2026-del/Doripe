@@ -386,7 +386,8 @@ export const TRANSITIONS = Object.freeze({
     "show-following": selectValue("feedTab"),
     "show-discover": navigateTo("b2"),
     "open-filter": selectValue("feedFilter"),
-    "open-following-list": navigateTo("e7"),
+    "open-following-list": navigateTo("b13"),
+    "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
     "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId"),
     "save-place": savePlace,
     "create-route": navigateTo("d1"),
@@ -412,7 +413,9 @@ export const TRANSITIONS = Object.freeze({
     "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
     "save-place": savePlace,
-    "open-related-place": selectAndNavigate("b4", "selectedPlaceId", "placeId"),
+    "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
+    "open-official-place": selectAndNavigate("b10", "selectedPlaceId", "placeId"),
+    "open-related-place": selectAndNavigate("b10", "selectedPlaceId", "placeId"),
     "toggle-comment-like": toggleCommentLike
   }),
   b5: defineTransitions("b5", {
@@ -424,7 +427,9 @@ export const TRANSITIONS = Object.freeze({
     "open-place-map": selectAndNavigate("c5", "selectedPlaceId", "placeId"),
     "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
-    "save-place": savePlace
+    "save-place": savePlace,
+    "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
+    "open-official-place": selectAndNavigate("b10", "selectedPlaceId", "placeId")
   }),
   b6: defineTransitions("b6", {
     "close-place": navigateBack,
@@ -436,16 +441,22 @@ export const TRANSITIONS = Object.freeze({
     "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
     "save-place": savePlace,
-    "open-related-place": selectAndNavigate("b4", "selectedPlaceId", "placeId"),
+    "open-official-place": selectAndNavigate("b10", "selectedPlaceId", "placeId"),
+    "open-related-place": selectAndNavigate("b10", "selectedPlaceId", "placeId"),
     "toggle-comment-like": toggleCommentLike,
     "create-route": navigateTo("d1")
   }),
-  b7: defineTransitions("b7", { "close-photo": navigateBack }),
+  b7: defineTransitions("b7", {
+    "close-photo": navigateBack,
+    "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
+    "open-official-place": selectAndNavigate("b10", "selectedPlaceId", "placeId")
+  }),
   b8: defineTransitions("b8", {
     "close-comments": navigateBack,
     "update-comment": updateComment,
     "submit-comment": showToast("success", "댓글을 등록했어요"),
-    "toggle-comment-like": toggleCommentLike
+    "toggle-comment-like": toggleCommentLike,
+    "open-profile": selectAndNavigate("b12", "selectedUserId", "userId")
   }),
   b9: defineTransitions("b9", { "close-business-hours": navigateBack }),
   b10: defineTransitions("b10", {
@@ -459,7 +470,25 @@ export const TRANSITIONS = Object.freeze({
     "open-share": shareTarget("place"),
     "save-place": savePlace,
     "toggle-comment-like": toggleCommentLike,
-    "create-route": navigateTo("d1")
+    "create-route": navigateTo("d1"),
+    "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
+    "open-other-media": navigateTo("b3"),
+    "open-related-places": navigateTo("b11")
+  }),
+  b11: defineTransitions("b11", {
+    "go-back": navigateBack,
+    "open-place": selectAndNavigate("b10", "selectedPlaceId", "placeId"),
+    "toggle-place-like": togglePlaceLike
+  }),
+  b12: defineTransitions("b12", {
+    "go-back": navigateBack,
+    "toggle-follow": toggleFollow,
+    "open-content": selectAndNavigate("b4", "selectedPlaceId", "placeId")
+  }),
+  b13: defineTransitions("b13", {
+    "go-back": navigateBack,
+    "toggle-follow": toggleFollow,
+    "open-profile": selectAndNavigate("b12", "selectedUserId", "userId")
   }),
   c1: defineTransitions("c1", {
     "select-situation": selectValue("situation"),
@@ -582,16 +611,6 @@ export const TRANSITIONS = Object.freeze({
     "open-photo": selectAndNavigate("b7", "selectedMediaId", "mediaId"),
     "open-photo-menu": openOverlay("photo-menu", "selectedMediaId", "mediaId")
   }),
-  d14: defineTransitions("d14", {
-    "go-back": navigateBack,
-    "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId"),
-    "toggle-place-like": togglePlaceLike
-  }),
-  e1: defineTransitions("e1", {
-    "go-back": navigateBack,
-    "toggle-follow": toggleFollow,
-    "open-media": selectAndNavigate("b7", "selectedMediaId", "mediaId")
-  }),
   e2: defineTransitions("e2", {
     "go-back": navigateBack,
     "update-nickname": updateNickname,
@@ -599,10 +618,10 @@ export const TRANSITIONS = Object.freeze({
     "show-profile-places": selectValue("profileTab"),
     "show-profile-routes": selectValue("profileTab"),
     "edit-media": openOverlay("media-editor", "selectedMediaId", "mediaId"),
-    "save-profile": navigateTo("e1")
+    "save-profile": navigateTo("b12")
   }),
   e3: defineTransitions("e3", {
-    "open-profile": selectAndNavigate("e1", "selectedUserId", "userId"),
+    "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
     "open-account-settings": navigateTo("e4"),
     "open-notification-settings": navigateTo("e5"),
     "open-contact": navigateTo("e6"),
@@ -630,12 +649,6 @@ export const TRANSITIONS = Object.freeze({
     "go-back": navigateBack,
     "update-message": updateMessage,
     "send-message": showToast("success", "문의를 보냈어요")
-  }),
-  e7: defineTransitions("e7", {
-    "go-back": navigateBack,
-    "toggle-follow": toggleFollow,
-    "open-profile": selectAndNavigate("e1", "selectedUserId", "userId"),
-    "open-media": selectAndNavigate("b7", "selectedMediaId", "mediaId")
   })
 });
 

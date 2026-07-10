@@ -273,8 +273,8 @@ test("one measured source maps to one action unless backed by explicit Figma var
   }
 
   assert.throws(() => validateActionSources([
-    { screenId: "e1", source: "action/primary", actionId: "toggle-follow" },
-    { screenId: "e1", source: "action/primary", actionId: "edit-profile" }
+    { screenId: "b12", source: "action/primary", actionId: "toggle-follow" },
+    { screenId: "b12", source: "action/primary", actionId: "edit-profile" }
   ]), /Duplicate measured action source/);
 });
 
@@ -306,13 +306,13 @@ test("noninteractive controls require exact reviewed overrides without generic r
   assert.equal(artifactByKey.size, Object.keys(NONINTERACTIVE_OVERRIDES).length);
 });
 
-test("E1 exposes only its measured follow action and B4 rows are interactive", () => {
-  const e1Actions = actionIdsForScreen("e1");
+test("B12 exposes only its measured follow action and B4 rows are interactive", () => {
+  const b12Actions = actionIdsForScreen("b12");
   const b4BySource = new Map(actionContract.actions
     .filter((record) => record.screenId === "b4")
     .map((record) => [record.source, record]));
 
-  assert.ok(!e1Actions.includes("edit-profile"));
+  assert.ok(!b12Actions.includes("edit-profile"));
   assert.equal(b4BySource.get("Info / address row").actionId, "open-place-map");
   assert.equal(b4BySource.get("Info / address row").effect.destination, "c5");
   assert.equal(b4BySource.get("Info / menu row").actionId, "open-menu");
@@ -356,7 +356,7 @@ test("save, follow, and share actions implement the brief contract", () => {
     "place-1"
   );
   assert.equal(
-    dispatchAction("e1", "toggle-follow", { userId: "user-1" }).state.followedUserIds[0],
+    dispatchAction("b12", "toggle-follow", { userId: "user-1" }).state.followedUserIds[0],
     "user-1"
   );
   assert.equal(
@@ -433,28 +433,28 @@ test("detail and media close actions return to their exact opener", () => {
   assert.equal(detailClosed.nextScreenId, "b1");
   assert.deepEqual(detailClosed.state.history, []);
 
-  const media = dispatchAction("e1", "open-media", {
-    state: previewState("e1"),
-    mediaId: "media-4"
+  const media = dispatchAction("b12", "open-content", {
+    state: previewState("b12"),
+    placeId: "place-4"
   });
-  assert.equal(media.nextScreenId, "b7");
-  assert.equal(media.state.selections.selectedMediaId, "media-4");
+  assert.equal(media.nextScreenId, "b4");
+  assert.equal(media.state.selections.selectedPlaceId, "place-4");
 
-  const mediaClosed = dispatchAction("b7", "close-photo", { state: media.state });
-  assert.equal(mediaClosed.nextScreenId, "e1");
+  const mediaClosed = dispatchAction("b4", "close-place", { state: media.state });
+  assert.equal(mediaClosed.nextScreenId, "b12");
   assert.deepEqual(mediaClosed.state.history, []);
 });
 
 test("opening profile and route records selected fixture ids immutably", () => {
-  const profileState = previewState("e7");
-  const profile = dispatchAction("e7", "open-profile", { state: profileState, userId: "user-2" });
+  const profileState = previewState("b13");
+  const profile = dispatchAction("b13", "open-profile", { state: profileState, userId: "user-2" });
   const route = dispatchAction("c4", "open-route", {
     state: previewState("c4"),
     routeId: "route-2"
   });
 
   assert.equal(profile.state.selections.selectedUserId, "user-2");
-  assert.equal(profile.nextScreenId, "e1");
+  assert.equal(profile.nextScreenId, "b12");
   assert.equal(route.state.selections.selectedRouteId, "route-2");
   assert.equal(route.nextScreenId, "d10");
   assert.deepEqual(profileState.selections, {});

@@ -7,7 +7,8 @@ import { fileURLToPath } from "node:url";
 import {
   validateFlowACoverageManifest,
   validateFlowAAssetPolicy,
-  validateFlowALiveEvidence
+  validateFlowALiveEvidence,
+  validateFlowBLiveEvidence
 } from "./app-preview-semantic-gates.mjs";
 import { readAssetMetadata } from "./app-preview-asset-metadata.mjs";
 
@@ -24,6 +25,7 @@ const registryFiles = [
   "public/app-preview/figma/flow-a-asset-policy.json",
   "public/app-preview/figma/flow-a-coverage-manifest.json",
   "public/app-preview/figma/flow-a-live-evidence.json",
+  "public/app-preview/figma/flow-b-live-evidence.json",
   "public/app-preview/figma/screen-inventory.json",
   "public/app-preview/figma/screen-measurements.json",
   "public/app-preview/figma/visual-masks.json"
@@ -96,10 +98,11 @@ const actionContract = registries.get("public/app-preview/figma/action-contract.
 const flowAAssetPolicy = registries.get("public/app-preview/figma/flow-a-asset-policy.json");
 const flowACoverageManifest = registries.get("public/app-preview/figma/flow-a-coverage-manifest.json");
 const flowALiveEvidence = registries.get("public/app-preview/figma/flow-a-live-evidence.json");
+const flowBLiveEvidence = registries.get("public/app-preview/figma/flow-b-live-evidence.json");
 const inventoryIds = inventory.map((screen) => screen.id);
 const sortedInventoryIds = [...inventoryIds].sort();
 
-if (inventory.length < 50) throw new Error("Figma inventory must contain at least 50 final screens");
+if (inventory.length !== 59) throw new Error("Figma inventory must contain the 59 unique live screens");
 if (new Set(inventoryIds).size !== inventory.length) throw new Error("Figma screen IDs must be unique");
 if (new Set(inventory.map((screen) => screen.nodeId)).size !== inventory.length) {
   throw new Error("Figma node IDs must be globally unique");
@@ -209,6 +212,11 @@ for (const screen of inventory) {
 
 validateFlowALiveEvidence({
   evidence: flowALiveEvidence,
+  inventory,
+  referenceHashes: referenceHashesByScreen
+});
+validateFlowBLiveEvidence({
+  evidence: flowBLiveEvidence,
   inventory,
   referenceHashes: referenceHashesByScreen
 });

@@ -68,8 +68,8 @@ test("replace persists the complete transition state across reloads", () => {
 test("reset restores defaults and clears preview storage", () => {
   const storage = createMemoryStorage();
   const state = createPreviewState({ storage });
-  state.navigate("e7");
-  state.setReviewStatus("e7", "complete");
+  state.navigate("b13");
+  state.setReviewStatus("b13", "complete");
 
   state.reset();
 

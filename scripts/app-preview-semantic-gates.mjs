@@ -69,6 +69,86 @@ export function validateFlowALiveEvidence({ evidence, inventory, referenceHashes
   return seen;
 }
 
+const EXPECTED_FLOW_B_NODES = Object.freeze([
+  ["b1", "446:507"], ["b2", "446:596"], ["b3", "446:646"], ["b4", "446:682"],
+  ["b5", "446:818"], ["b6", "446:876"], ["b7", "446:1000"], ["b8", "446:1017"],
+  ["b9", "446:1070"], ["b10", "446:1106"], ["b11", "446:2667"],
+  ["b12", "446:2792"], ["b13", "446:3042"]
+]);
+
+export function validateFlowBLiveEvidence({ evidence, inventory, referenceHashes }) {
+  if (
+    evidence?.version !== 1
+    || evidence.fileKey !== "TfZAtv9JUy508otim4P23w"
+    || evidence.rootNodeId !== "446:33"
+    || !Number.isFinite(Date.parse(evidence.capturedAt))
+    || evidence.capture?.designContextTool !== "get_design_context"
+    || evidence.capture?.screenshotTool !== "get_screenshot"
+    || evidence.capture?.readOnly !== true
+    || evidence.capture?.contentsOnly !== true
+    || evidence.capture?.maxDimension !== 852
+    || !Array.isArray(evidence.screens)
+  ) {
+    throw new Error("Invalid Flow B live Figma evidence registry");
+  }
+
+  const flowB = inventory.filter(({ group }) => group === "B");
+  if (
+    flowB.length !== EXPECTED_FLOW_B_NODES.length
+    || JSON.stringify(flowB.map(({ id, nodeId }) => [id, nodeId])) !== JSON.stringify(EXPECTED_FLOW_B_NODES)
+    || flowB.some(({ nodeId }) => nodeId === "446:1018")
+  ) {
+    throw new Error("Flow B inventory does not match the exact reviewed live top-level nodes");
+  }
+
+  const expected = new Map(flowB.map((screen) => [screen.id, screen]));
+  const seen = new Set();
+  for (const record of evidence.screens) {
+    const screen = expected.get(record.id);
+    if (!screen) throw new Error(`Unknown Flow B live evidence screen: ${record.id}`);
+    if (seen.has(record.id)) throw new Error(`Duplicate Flow B live evidence screen: ${record.id}`);
+    seen.add(record.id);
+
+    if (
+      record.nodeId !== screen.nodeId
+      || record.reference !== screen.reference
+      || record.width !== 393
+      || record.height !== 852
+      || record.designContextRead !== true
+      || !/^[a-f0-9]{64}$/.test(record.liveScreenshotSha256)
+    ) {
+      throw new Error(`Invalid Flow B live evidence record: ${record.id}`);
+    }
+    const referenceHash = referenceHashes instanceof Map
+      ? referenceHashes.get(record.id)
+      : referenceHashes?.[record.id];
+    if (referenceHash !== record.liveScreenshotSha256) {
+      throw new Error(`Flow B reference does not match live Figma: ${record.id}`);
+    }
+  }
+
+  const b1 = evidence.screens.find(({ id }) => id === "b1");
+  if (
+    b1?.sourceScreenshot?.width !== 465
+    || b1.sourceScreenshot.height !== 924
+    || b1.sourceScreenshot.maxDimension !== 924
+    || !/^[a-f0-9]{64}$/.test(b1.sourceScreenshot.sha256)
+    || b1.normalization?.type !== "center-crop-to-frame-bounds"
+    || ["insetTop", "insetRight", "insetBottom", "insetLeft"]
+      .some((key) => b1.normalization[key] !== 36)
+  ) {
+    throw new Error("B1 live evidence must record the reviewed shadow-bound frame crop");
+  }
+
+  for (const [screenId] of EXPECTED_FLOW_B_NODES) {
+    if (!seen.has(screenId)) throw new Error(`Flow B live evidence is missing screen: ${screenId}`);
+  }
+  if (seen.size !== EXPECTED_FLOW_B_NODES.length) {
+    throw new Error("Flow B live evidence screen count mismatch");
+  }
+  return seen;
+}
+
 export function validateFlowACoverageManifest({ manifest, inventory, measurements }) {
   if (manifest?.version !== 1 || !Array.isArray(manifest.rendered) || !Array.isArray(manifest.classifications)) {
     throw new Error("Invalid Flow A coverage manifest");

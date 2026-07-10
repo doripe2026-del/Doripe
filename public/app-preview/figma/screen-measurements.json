@@ -27933,1546 +27933,6 @@
     "shadows": {},
     "assets": []
   },
-  "d14": {
-    "nodeId": "446:2667",
-    "frame": {
-      "width": 393,
-      "height": 852
-    },
-    "elements": {
-      "Back button": {
-        "x": 14,
-        "y": 44,
-        "width": 34,
-        "height": 34
-      },
-      "Icon / back": {
-        "x": 19,
-        "y": 49,
-        "width": 24,
-        "height": 24
-      },
-      "Vector": {
-        "x": 28,
-        "y": 55,
-        "width": 6,
-        "height": 12
-      },
-      "Hero query card": {
-        "x": 14,
-        "y": 84,
-        "width": 365,
-        "height": 74
-      },
-      "Hero image gradient": {
-        "x": 14,
-        "y": 84,
-        "width": 365,
-        "height": 74
-      },
-      "Hero dark overlay": {
-        "x": 14,
-        "y": 84,
-        "width": 365,
-        "height": 74
-      },
-      "Hero title": {
-        "x": 30,
-        "y": 97,
-        "width": 177,
-        "height": 18
-      },
-      "Hero chip": {
-        "x": 30,
-        "y": 126,
-        "width": 54,
-        "height": 22
-      },
-      "Hero chip text": {
-        "x": 39,
-        "y": 131,
-        "width": 37,
-        "height": 11
-      },
-      "Hero chip#2": {
-        "x": 90,
-        "y": 126,
-        "width": 54,
-        "height": 22
-      },
-      "Hero chip text#2": {
-        "x": 99,
-        "y": 131,
-        "width": 17,
-        "height": 11
-      },
-      "UGC card 1": {
-        "x": 14,
-        "y": 178,
-        "width": 176,
-        "height": 217
-      },
-      "Photo slot": {
-        "x": 14,
-        "y": 178,
-        "width": 176,
-        "height": 112
-      },
-      "Avatar": {
-        "x": 24,
-        "y": 282,
-        "width": 22,
-        "height": 22
-      },
-      "Creator": {
-        "x": 50,
-        "y": 297,
-        "width": 17,
-        "height": 11
-      },
-      "Heart icon": {
-        "x": 148,
-        "y": 297,
-        "width": 13,
-        "height": 13
-      },
-      "Vector#2": {
-        "x": 150.031,
-        "y": 299.682,
-        "width": 8.938,
-        "height": 8.287
-      },
-      "Like count": {
-        "x": 165,
-        "y": 298,
-        "width": 12,
-        "height": 11
-      },
-      "Place name": {
-        "x": 24,
-        "y": 314,
-        "width": 107,
-        "height": 17
-      },
-      "Caption": {
-        "x": 24,
-        "y": 335,
-        "width": 129,
-        "height": 12
-      },
-      "slot/tag-chip": {
-        "x": 24,
-        "y": 358,
-        "width": 40,
-        "height": 19
-      },
-      "Tag text": {
-        "x": 32,
-        "y": 361,
-        "width": 16,
-        "height": 10
-      },
-      "slot/tag-chip#2": {
-        "x": 70,
-        "y": 358,
-        "width": 52,
-        "height": 19
-      },
-      "Tag text#2": {
-        "x": 78,
-        "y": 361,
-        "width": 24,
-        "height": 10
-      },
-      "slot/tag-chip#3": {
-        "x": 128,
-        "y": 358,
-        "width": 52,
-        "height": 19
-      },
-      "Tag text#3": {
-        "x": 136,
-        "y": 361,
-        "width": 24,
-        "height": 10
-      },
-      "Walk icon": {
-        "x": 24,
-        "y": 382,
-        "width": 12,
-        "height": 12
-      },
-      "Vector#3": {
-        "x": 28.8,
-        "y": 382.857,
-        "width": 2.4,
-        "height": 2.4
-      },
-      "Vector#4": {
-        "x": 27.857,
-        "y": 385.6,
-        "width": 1.543,
-        "height": 6.686
-      },
-      "Vector#5": {
-        "x": 30.257,
-        "y": 386.371,
-        "width": 2.143,
-        "height": 5.914
-      },
-      "Walk time": {
-        "x": 40,
-        "y": 381,
-        "width": 37,
-        "height": 12
-      },
-      "UGC card 2": {
-        "x": 203,
-        "y": 178,
-        "width": 176,
-        "height": 217
-      },
-      "Photo slot#2": {
-        "x": 203,
-        "y": 178,
-        "width": 176,
-        "height": 112
-      },
-      "Avatar#2": {
-        "x": 213,
-        "y": 282,
-        "width": 22,
-        "height": 22
-      },
-      "Creator#2": {
-        "x": 239,
-        "y": 297,
-        "width": 37,
-        "height": 11
-      },
-      "Heart icon#2": {
-        "x": 337,
-        "y": 297,
-        "width": 13,
-        "height": 13
-      },
-      "Vector#6": {
-        "x": 339.031,
-        "y": 299.682,
-        "width": 8.938,
-        "height": 8.287
-      },
-      "Like count#2": {
-        "x": 354,
-        "y": 298,
-        "width": 10,
-        "height": 11
-      },
-      "Place name#2": {
-        "x": 213,
-        "y": 314,
-        "width": 94,
-        "height": 17
-      },
-      "Caption#2": {
-        "x": 213,
-        "y": 335,
-        "width": 119,
-        "height": 12
-      },
-      "slot/tag-chip#4": {
-        "x": 213,
-        "y": 358,
-        "width": 52,
-        "height": 19
-      },
-      "Tag text#4": {
-        "x": 221,
-        "y": 361,
-        "width": 24,
-        "height": 10
-      },
-      "slot/tag-chip#5": {
-        "x": 271,
-        "y": 358,
-        "width": 64,
-        "height": 19
-      },
-      "Tag text#5": {
-        "x": 279,
-        "y": 361,
-        "width": 32,
-        "height": 10
-      },
-      "Walk icon#2": {
-        "x": 213,
-        "y": 382,
-        "width": 12,
-        "height": 12
-      },
-      "Vector#7": {
-        "x": 217.8,
-        "y": 382.857,
-        "width": 2.4,
-        "height": 2.4
-      },
-      "Vector#8": {
-        "x": 216.857,
-        "y": 385.6,
-        "width": 1.543,
-        "height": 6.686
-      },
-      "Vector#9": {
-        "x": 219.257,
-        "y": 386.371,
-        "width": 2.143,
-        "height": 5.914
-      },
-      "Walk time#2": {
-        "x": 229,
-        "y": 381,
-        "width": 37,
-        "height": 12
-      },
-      "UGC card 3": {
-        "x": 14,
-        "y": 410,
-        "width": 176,
-        "height": 217
-      },
-      "Photo slot#3": {
-        "x": 14,
-        "y": 410,
-        "width": 176,
-        "height": 112
-      },
-      "Avatar#3": {
-        "x": 24,
-        "y": 514,
-        "width": 22,
-        "height": 22
-      },
-      "Creator#3": {
-        "x": 50,
-        "y": 529,
-        "width": 26,
-        "height": 11
-      },
-      "Heart icon#3": {
-        "x": 148,
-        "y": 529,
-        "width": 13,
-        "height": 13
-      },
-      "Vector#10": {
-        "x": 150.031,
-        "y": 531.682,
-        "width": 8.938,
-        "height": 8.287
-      },
-      "Like count#3": {
-        "x": 165,
-        "y": 530,
-        "width": 11,
-        "height": 11
-      },
-      "Place name#3": {
-        "x": 24,
-        "y": 546,
-        "width": 68,
-        "height": 17
-      },
-      "Caption#3": {
-        "x": 24,
-        "y": 567,
-        "width": 92,
-        "height": 12
-      },
-      "slot/tag-chip#6": {
-        "x": 24,
-        "y": 590,
-        "width": 52,
-        "height": 19
-      },
-      "Tag text#6": {
-        "x": 32,
-        "y": 593,
-        "width": 24,
-        "height": 10
-      },
-      "slot/tag-chip#7": {
-        "x": 82,
-        "y": 590,
-        "width": 52,
-        "height": 19
-      },
-      "Tag text#7": {
-        "x": 90,
-        "y": 593,
-        "width": 24,
-        "height": 10
-      },
-      "Walk icon#3": {
-        "x": 24,
-        "y": 614,
-        "width": 12,
-        "height": 12
-      },
-      "Vector#11": {
-        "x": 28.8,
-        "y": 614.857,
-        "width": 2.4,
-        "height": 2.4
-      },
-      "Vector#12": {
-        "x": 27.857,
-        "y": 617.6,
-        "width": 1.543,
-        "height": 6.686
-      },
-      "Vector#13": {
-        "x": 30.257,
-        "y": 618.371,
-        "width": 2.143,
-        "height": 5.914
-      },
-      "Walk time#3": {
-        "x": 40,
-        "y": 613,
-        "width": 37,
-        "height": 12
-      },
-      "UGC card 4": {
-        "x": 203,
-        "y": 410,
-        "width": 176,
-        "height": 217
-      },
-      "Photo slot#4": {
-        "x": 203,
-        "y": 410,
-        "width": 176,
-        "height": 112
-      },
-      "Avatar#4": {
-        "x": 213,
-        "y": 514,
-        "width": 22,
-        "height": 22
-      },
-      "Creator#4": {
-        "x": 239,
-        "y": 529,
-        "width": 26,
-        "height": 11
-      },
-      "Heart icon#4": {
-        "x": 337,
-        "y": 529,
-        "width": 13,
-        "height": 13
-      },
-      "Vector#14": {
-        "x": 339.031,
-        "y": 531.682,
-        "width": 8.938,
-        "height": 8.287
-      },
-      "Like count#4": {
-        "x": 354,
-        "y": 530,
-        "width": 11,
-        "height": 11
-      },
-      "Place name#4": {
-        "x": 213,
-        "y": 546,
-        "width": 52,
-        "height": 17
-      },
-      "Caption#4": {
-        "x": 213,
-        "y": 567,
-        "width": 141,
-        "height": 12
-      },
-      "slot/tag-chip#8": {
-        "x": 213,
-        "y": 590,
-        "width": 40,
-        "height": 19
-      },
-      "Tag text#8": {
-        "x": 221,
-        "y": 593,
-        "width": 16,
-        "height": 10
-      },
-      "slot/tag-chip#9": {
-        "x": 259,
-        "y": 590,
-        "width": 52,
-        "height": 19
-      },
-      "Tag text#9": {
-        "x": 267,
-        "y": 593,
-        "width": 24,
-        "height": 10
-      },
-      "Walk icon#4": {
-        "x": 213,
-        "y": 614,
-        "width": 12,
-        "height": 12
-      },
-      "Vector#15": {
-        "x": 217.8,
-        "y": 614.857,
-        "width": 2.4,
-        "height": 2.4
-      },
-      "Vector#16": {
-        "x": 216.857,
-        "y": 617.6,
-        "width": 1.543,
-        "height": 6.686
-      },
-      "Vector#17": {
-        "x": 219.257,
-        "y": 618.371,
-        "width": 2.143,
-        "height": 5.914
-      },
-      "Walk time#4": {
-        "x": 229,
-        "y": 613,
-        "width": 37,
-        "height": 12
-      },
-      "UGC card 5": {
-        "x": 14,
-        "y": 642,
-        "width": 176,
-        "height": 210
-      },
-      "Photo slot#5": {
-        "x": 14,
-        "y": 642,
-        "width": 176,
-        "height": 112
-      },
-      "Avatar#5": {
-        "x": 24,
-        "y": 746,
-        "width": 22,
-        "height": 22
-      },
-      "Creator#5": {
-        "x": 50,
-        "y": 761,
-        "width": 26,
-        "height": 11
-      },
-      "Heart icon#5": {
-        "x": 148,
-        "y": 761,
-        "width": 13,
-        "height": 13
-      },
-      "Vector#18": {
-        "x": 150.031,
-        "y": 763.682,
-        "width": 8.938,
-        "height": 8.287
-      },
-      "Like count#5": {
-        "x": 165,
-        "y": 762,
-        "width": 12,
-        "height": 11
-      },
-      "Place name#5": {
-        "x": 24,
-        "y": 778,
-        "width": 68,
-        "height": 17
-      },
-      "Caption#5": {
-        "x": 24,
-        "y": 799,
-        "width": 101,
-        "height": 12
-      },
-      "slot/tag-chip#10": {
-        "x": 24,
-        "y": 822,
-        "width": 34,
-        "height": 19
-      },
-      "Tag text#10": {
-        "x": 32,
-        "y": 825,
-        "width": 8,
-        "height": 10
-      },
-      "slot/tag-chip#11": {
-        "x": 64,
-        "y": 822,
-        "width": 52,
-        "height": 19
-      },
-      "Tag text#11": {
-        "x": 72,
-        "y": 825,
-        "width": 24,
-        "height": 10
-      },
-      "Walk icon#5": {
-        "x": 24,
-        "y": 846,
-        "width": 12,
-        "height": 6
-      },
-      "Vector#19": {
-        "x": 28.8,
-        "y": 846.857,
-        "width": 2.4,
-        "height": 2.4
-      },
-      "Vector#20": {
-        "x": 27.857,
-        "y": 849.6,
-        "width": 1.543,
-        "height": 2.4
-      },
-      "Vector#21": {
-        "x": 30.257,
-        "y": 850.371,
-        "width": 2.143,
-        "height": 1.629
-      },
-      "Walk time#5": {
-        "x": 40,
-        "y": 845,
-        "width": 37,
-        "height": 7
-      },
-      "UGC card 6": {
-        "x": 203,
-        "y": 642,
-        "width": 176,
-        "height": 210
-      },
-      "Photo slot#6": {
-        "x": 203,
-        "y": 642,
-        "width": 176,
-        "height": 112
-      },
-      "Avatar#6": {
-        "x": 213,
-        "y": 746,
-        "width": 22,
-        "height": 22
-      },
-      "Creator#6": {
-        "x": 239,
-        "y": 761,
-        "width": 17,
-        "height": 11
-      },
-      "Heart icon#6": {
-        "x": 337,
-        "y": 761,
-        "width": 13,
-        "height": 13
-      },
-      "Vector#22": {
-        "x": 339.031,
-        "y": 763.682,
-        "width": 8.938,
-        "height": 8.287
-      },
-      "Like count#6": {
-        "x": 354,
-        "y": 762,
-        "width": 10,
-        "height": 11
-      },
-      "Place name#6": {
-        "x": 213,
-        "y": 778,
-        "width": 65,
-        "height": 17
-      },
-      "Caption#6": {
-        "x": 213,
-        "y": 799,
-        "width": 83,
-        "height": 12
-      },
-      "slot/tag-chip#12": {
-        "x": 213,
-        "y": 822,
-        "width": 40,
-        "height": 19
-      },
-      "Tag text#12": {
-        "x": 221,
-        "y": 825,
-        "width": 16,
-        "height": 10
-      },
-      "slot/tag-chip#13": {
-        "x": 259,
-        "y": 822,
-        "width": 40,
-        "height": 19
-      },
-      "Tag text#13": {
-        "x": 267,
-        "y": 825,
-        "width": 16,
-        "height": 10
-      },
-      "Walk icon#6": {
-        "x": 213,
-        "y": 846,
-        "width": 12,
-        "height": 6
-      },
-      "Vector#23": {
-        "x": 217.8,
-        "y": 846.857,
-        "width": 2.4,
-        "height": 2.4
-      },
-      "Vector#24": {
-        "x": 216.857,
-        "y": 849.6,
-        "width": 1.543,
-        "height": 2.4
-      },
-      "Vector#25": {
-        "x": 219.257,
-        "y": 850.371,
-        "width": 2.143,
-        "height": 1.629
-      },
-      "Walk time#6": {
-        "x": 229,
-        "y": 845,
-        "width": 37,
-        "height": 7
-      }
-    },
-    "typography": {
-      "style-1": {
-        "fontFamily": "Inter",
-        "fontStyle": "Bold",
-        "fontSize": 15,
-        "lineHeight": {
-          "unit": "AUTO"
-        },
-        "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
-        },
-        "textAlignHorizontal": "LEFT",
-        "textAlignVertical": "TOP",
-        "textCase": "ORIGINAL",
-        "textDecoration": "NONE"
-      },
-      "style-2": {
-        "fontFamily": "Inter",
-        "fontStyle": "Semi Bold",
-        "fontSize": 9,
-        "lineHeight": {
-          "unit": "AUTO"
-        },
-        "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
-        },
-        "textAlignHorizontal": "LEFT",
-        "textAlignVertical": "TOP",
-        "textCase": "ORIGINAL",
-        "textDecoration": "NONE"
-      },
-      "style-3": {
-        "fontFamily": "Inter",
-        "fontStyle": "Medium",
-        "fontSize": 9,
-        "lineHeight": {
-          "unit": "AUTO"
-        },
-        "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
-        },
-        "textAlignHorizontal": "LEFT",
-        "textAlignVertical": "TOP",
-        "textCase": "ORIGINAL",
-        "textDecoration": "NONE"
-      },
-      "style-4": {
-        "fontFamily": "Inter",
-        "fontStyle": "Bold",
-        "fontSize": 14,
-        "lineHeight": {
-          "unit": "AUTO"
-        },
-        "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
-        },
-        "textAlignHorizontal": "LEFT",
-        "textAlignVertical": "TOP",
-        "textCase": "ORIGINAL",
-        "textDecoration": "NONE"
-      },
-      "style-5": {
-        "fontFamily": "Inter",
-        "fontStyle": "Regular",
-        "fontSize": 10,
-        "lineHeight": {
-          "unit": "AUTO"
-        },
-        "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
-        },
-        "textAlignHorizontal": "LEFT",
-        "textAlignVertical": "TOP",
-        "textCase": "ORIGINAL",
-        "textDecoration": "NONE"
-      },
-      "style-6": {
-        "fontFamily": "Inter",
-        "fontStyle": "Semi Bold",
-        "fontSize": 8.5,
-        "lineHeight": {
-          "unit": "AUTO"
-        },
-        "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
-        },
-        "textAlignHorizontal": "LEFT",
-        "textAlignVertical": "TOP",
-        "textCase": "ORIGINAL",
-        "textDecoration": "NONE"
-      }
-    },
-    "colors": {
-      "paint-1": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#FFFFFF",
-        "opacity": 1
-      },
-      "paint-2": {
-        "source": "stroke",
-        "type": "solid",
-        "color": "#222222",
-        "opacity": 1
-      },
-      "paint-3": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#402E1F",
-        "opacity": 1
-      },
-      "paint-4": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#856340",
-        "opacity": 1
-      },
-      "paint-5": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#000000",
-        "opacity": 1
-      },
-      "paint-6": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#E8FCF0",
-        "opacity": 1
-      },
-      "paint-7": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#00C759",
-        "opacity": 1
-      },
-      "paint-8": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#404040",
-        "opacity": 1
-      },
-      "paint-9": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#784F33",
-        "opacity": 1
-      },
-      "paint-10": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#DBE0DB",
-        "opacity": 1
-      },
-      "paint-11": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#737A7A",
-        "opacity": 1
-      },
-      "paint-12": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#16C76A",
-        "opacity": 1
-      },
-      "paint-13": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#1F2121",
-        "opacity": 1
-      },
-      "paint-14": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#E5FAF0",
-        "opacity": 1
-      },
-      "paint-15": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#6B7280",
-        "opacity": 1
-      },
-      "paint-16": {
-        "source": "stroke",
-        "type": "solid",
-        "color": "#6B7280",
-        "opacity": 1
-      },
-      "paint-17": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#B89E80",
-        "opacity": 1
-      },
-      "paint-18": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#8FBF78",
-        "opacity": 1
-      },
-      "paint-19": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#5E422E",
-        "opacity": 1
-      },
-      "paint-20": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#705238",
-        "opacity": 1
-      },
-      "paint-21": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#9EC78A",
-        "opacity": 1
-      }
-    },
-    "radii": {
-      "radius-1": 17,
-      "radius-2": 10,
-      "radius-3": 11
-    },
-    "shadows": {
-      "shadow-1": {
-        "type": "drop_shadow",
-        "color": "#000000",
-        "opacity": 0.10000000149011612,
-        "offset": {
-          "x": 0,
-          "y": 4
-        },
-        "radius": 14,
-        "spread": 0,
-        "blendMode": "NORMAL"
-      },
-      "shadow-2": {
-        "type": "drop_shadow",
-        "color": "#000000",
-        "opacity": 0.11999999731779099,
-        "offset": {
-          "x": 0,
-          "y": 4
-        },
-        "radius": 12,
-        "spread": 0,
-        "blendMode": "NORMAL"
-      },
-      "shadow-3": {
-        "type": "drop_shadow",
-        "color": "#000000",
-        "opacity": 0.07999999821186066,
-        "offset": {
-          "x": 0,
-          "y": 3
-        },
-        "radius": 10,
-        "spread": 0,
-        "blendMode": "NORMAL"
-      }
-    },
-    "assets": []
-  },
-  "e1": {
-    "nodeId": "446:2792",
-    "frame": {
-      "width": 393,
-      "height": 852
-    },
-    "elements": {
-      "action/back/bg": {
-        "x": 18,
-        "y": 44,
-        "width": 32,
-        "height": 32
-      },
-      "action/back/icon": {
-        "x": 22,
-        "y": 48,
-        "width": 24,
-        "height": 24
-      },
-      "Vector": {
-        "x": 31,
-        "y": 54,
-        "width": 6,
-        "height": 12
-      },
-      "media/crop-asset": {
-        "x": 44,
-        "y": 72,
-        "width": 86,
-        "height": 86
-      },
-      "profile/avatar": {
-        "x": 44,
-        "y": 72,
-        "width": 86,
-        "height": 86
-      },
-      "username": {
-        "x": 174,
-        "y": 92,
-        "width": 90,
-        "height": 35
-      },
-      "bio": {
-        "x": 174,
-        "y": 128,
-        "width": 160,
-        "height": 22
-      },
-      "action/primary/bg": {
-        "x": 174,
-        "y": 157,
-        "width": 96,
-        "height": 34
-      },
-      "action/primary/label": {
-        "x": 174,
-        "y": 157,
-        "width": 96,
-        "height": 34
-      },
-      "stat label": {
-        "x": 50,
-        "y": 226,
-        "width": 60,
-        "height": 18
-      },
-      "stat num": {
-        "x": 50,
-        "y": 247,
-        "width": 60,
-        "height": 30
-      },
-      "stat label#2": {
-        "x": 166,
-        "y": 226,
-        "width": 60,
-        "height": 18
-      },
-      "stat num#2": {
-        "x": 166,
-        "y": 247,
-        "width": 60,
-        "height": 30
-      },
-      "stat label#3": {
-        "x": 283,
-        "y": 226,
-        "width": 60,
-        "height": 18
-      },
-      "stat num#3": {
-        "x": 283,
-        "y": 247,
-        "width": 60,
-        "height": 30
-      },
-      "media/photo/crop-asset": {
-        "x": 22,
-        "y": 302,
-        "width": 173,
-        "height": 175
-      },
-      "media/photo": {
-        "x": 22,
-        "y": 302,
-        "width": 173,
-        "height": 175
-      },
-      "photo icon/sway": {
-        "x": 165,
-        "y": 312,
-        "width": 20,
-        "height": 20
-      },
-      "Vector#2": {
-        "x": 167.5,
-        "y": 316.167,
-        "width": 15,
-        "height": 11.667
-      },
-      "Vector#3": {
-        "x": 170.833,
-        "y": 322,
-        "width": 10,
-        "height": 4.167
-      },
-      "Vector#4": {
-        "x": 170.667,
-        "y": 318.5,
-        "width": 2,
-        "height": 2
-      },
-      "media/photo/crop-asset#2": {
-        "x": 207,
-        "y": 302,
-        "width": 164,
-        "height": 224
-      },
-      "media/photo#2": {
-        "x": 207,
-        "y": 302,
-        "width": 164,
-        "height": 224
-      },
-      "photo icon/table": {
-        "x": 341,
-        "y": 312,
-        "width": 20,
-        "height": 20
-      },
-      "Vector#5": {
-        "x": 343.5,
-        "y": 314.5,
-        "width": 15,
-        "height": 15
-      },
-      "Vector#6": {
-        "x": 349.333,
-        "y": 318.667,
-        "width": 5,
-        "height": 6.667
-      },
-      "media/photo/crop-asset#3": {
-        "x": 22,
-        "y": 489,
-        "width": 173,
-        "height": 119
-      },
-      "media/photo#3": {
-        "x": 22,
-        "y": 489,
-        "width": 173,
-        "height": 119
-      },
-      "photo icon/shop": {
-        "x": 165,
-        "y": 499,
-        "width": 20,
-        "height": 20
-      },
-      "Vector#7": {
-        "x": 167.5,
-        "y": 501.5,
-        "width": 15,
-        "height": 15
-      },
-      "Vector#8": {
-        "x": 173.333,
-        "y": 505.667,
-        "width": 5,
-        "height": 6.667
-      },
-      "media/photo/crop-asset#4": {
-        "x": 207,
-        "y": 540,
-        "width": 164,
-        "height": 150
-      },
-      "media/photo#4": {
-        "x": 207,
-        "y": 540,
-        "width": 164,
-        "height": 150
-      },
-      "photo icon/pasta": {
-        "x": 341,
-        "y": 550,
-        "width": 20,
-        "height": 20
-      },
-      "Vector#9": {
-        "x": 343.5,
-        "y": 554.167,
-        "width": 15,
-        "height": 11.667
-      },
-      "Vector#10": {
-        "x": 346.833,
-        "y": 560,
-        "width": 10,
-        "height": 4.167
-      },
-      "Vector#11": {
-        "x": 346.667,
-        "y": 556.5,
-        "width": 2,
-        "height": 2
-      },
-      "media/photo/crop-asset#5": {
-        "x": 22,
-        "y": 620,
-        "width": 173,
-        "height": 174
-      },
-      "media/photo#5": {
-        "x": 22,
-        "y": 620,
-        "width": 173,
-        "height": 174
-      },
-      "photo icon/street": {
-        "x": 165,
-        "y": 630,
-        "width": 20,
-        "height": 20
-      },
-      "Vector#12": {
-        "x": 167.5,
-        "y": 634.167,
-        "width": 15,
-        "height": 11.667
-      },
-      "Vector#13": {
-        "x": 170.833,
-        "y": 640,
-        "width": 10,
-        "height": 4.167
-      },
-      "Vector#14": {
-        "x": 170.667,
-        "y": 636.5,
-        "width": 2,
-        "height": 2
-      },
-      "media/photo/crop-asset#6": {
-        "x": 207,
-        "y": 704,
-        "width": 164,
-        "height": 120
-      },
-      "media/photo#6": {
-        "x": 207,
-        "y": 704,
-        "width": 164,
-        "height": 120
-      },
-      "photo icon/gallery": {
-        "x": 341,
-        "y": 714,
-        "width": 20,
-        "height": 20
-      },
-      "Vector#15": {
-        "x": 343.5,
-        "y": 716.5,
-        "width": 15,
-        "height": 15
-      },
-      "Vector#16": {
-        "x": 349.333,
-        "y": 720.667,
-        "width": 5,
-        "height": 6.667
-      },
-      "media/photo/crop-asset#7": {
-        "x": 22,
-        "y": 806,
-        "width": 173,
-        "height": 46
-      },
-      "media/photo#7": {
-        "x": 22,
-        "y": 806,
-        "width": 173,
-        "height": 46
-      },
-      "photo icon/flower": {
-        "x": 165,
-        "y": 816,
-        "width": 20,
-        "height": 20
-      },
-      "Vector#17": {
-        "x": 167.5,
-        "y": 820.167,
-        "width": 15,
-        "height": 11.667
-      },
-      "Vector#18": {
-        "x": 170.833,
-        "y": 826,
-        "width": 10,
-        "height": 4.167
-      },
-      "Vector#19": {
-        "x": 170.667,
-        "y": 822.5,
-        "width": 2,
-        "height": 2
-      },
-      "action/back": {
-        "x": 18,
-        "y": 44,
-        "width": 32,
-        "height": 32
-      },
-      "action/primary": {
-        "x": 174,
-        "y": 157,
-        "width": 96,
-        "height": 34
-      }
-    },
-    "typography": {
-      "style-1": {
-        "fontFamily": "Noto Sans KR",
-        "fontStyle": "Bold",
-        "fontSize": 25,
-        "lineHeight": {
-          "unit": "AUTO"
-        },
-        "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
-        },
-        "textAlignHorizontal": "LEFT",
-        "textAlignVertical": "CENTER",
-        "textCase": "ORIGINAL",
-        "textDecoration": "NONE"
-      },
-      "style-2": {
-        "fontFamily": "Noto Sans KR",
-        "fontStyle": "Regular",
-        "fontSize": 10,
-        "lineHeight": {
-          "unit": "AUTO"
-        },
-        "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
-        },
-        "textAlignHorizontal": "LEFT",
-        "textAlignVertical": "CENTER",
-        "textCase": "ORIGINAL",
-        "textDecoration": "NONE"
-      },
-      "style-3": {
-        "fontFamily": "Noto Sans KR",
-        "fontStyle": "Bold",
-        "fontSize": 13,
-        "lineHeight": {
-          "unit": "AUTO"
-        },
-        "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
-        },
-        "textAlignHorizontal": "CENTER",
-        "textAlignVertical": "CENTER",
-        "textCase": "ORIGINAL",
-        "textDecoration": "NONE"
-      },
-      "style-4": {
-        "fontFamily": "Noto Sans KR",
-        "fontStyle": "Regular",
-        "fontSize": 10,
-        "lineHeight": {
-          "unit": "AUTO"
-        },
-        "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
-        },
-        "textAlignHorizontal": "CENTER",
-        "textAlignVertical": "CENTER",
-        "textCase": "ORIGINAL",
-        "textDecoration": "NONE"
-      },
-      "style-5": {
-        "fontFamily": "Noto Sans KR",
-        "fontStyle": "Bold",
-        "fontSize": 18,
-        "lineHeight": {
-          "unit": "AUTO"
-        },
-        "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
-        },
-        "textAlignHorizontal": "CENTER",
-        "textAlignVertical": "CENTER",
-        "textCase": "ORIGINAL",
-        "textDecoration": "NONE"
-      }
-    },
-    "colors": {
-      "paint-1": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#FFFFFF",
-        "opacity": 1
-      },
-      "paint-2": {
-        "source": "stroke",
-        "type": "solid",
-        "color": "#202124",
-        "opacity": 1
-      },
-      "paint-3": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#141414",
-        "opacity": 1
-      },
-      "paint-4": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#7A7A7A",
-        "opacity": 1
-      },
-      "paint-5": {
-        "source": "fill",
-        "type": "solid",
-        "color": "#10C76F",
-        "opacity": 1
-      },
-      "paint-6": {
-        "source": "stroke",
-        "type": "solid",
-        "color": "#10C76F",
-        "opacity": 1
-      },
-      "paint-7": {
-        "source": "stroke",
-        "type": "solid",
-        "color": "#FFFFFF",
-        "opacity": 1
-      }
-    },
-    "radii": {
-      "radius-1": 999,
-      "radius-2": 8,
-      "radius-3": 10
-    },
-    "shadows": {},
-    "assets": [
-      {
-        "nodeId": "446:2799",
-        "name": "profile/avatar",
-        "type": "image",
-        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
-        "scaleMode": "FILL"
-      },
-      {
-        "nodeId": "446:2812",
-        "name": "media/photo",
-        "type": "image",
-        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
-        "scaleMode": "FILL"
-      },
-      {
-        "nodeId": "446:2818",
-        "name": "media/photo",
-        "type": "image",
-        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
-        "scaleMode": "FILL"
-      },
-      {
-        "nodeId": "446:2823",
-        "name": "media/photo",
-        "type": "image",
-        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
-        "scaleMode": "FILL"
-      },
-      {
-        "nodeId": "446:2828",
-        "name": "media/photo",
-        "type": "image",
-        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
-        "scaleMode": "FILL"
-      },
-      {
-        "nodeId": "446:2834",
-        "name": "media/photo",
-        "type": "image",
-        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
-        "scaleMode": "FILL"
-      },
-      {
-        "nodeId": "446:2840",
-        "name": "media/photo",
-        "type": "image",
-        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
-        "scaleMode": "FILL"
-      },
-      {
-        "nodeId": "446:2845",
-        "name": "media/photo",
-        "type": "image",
-        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
-        "scaleMode": "FILL"
-      }
-    ]
-  },
   "e2": {
     "nodeId": "446:2850",
     "frame": {
@@ -31285,7 +29745,1547 @@
     "shadows": {},
     "assets": []
   },
-  "e7": {
+  "b11": {
+    "nodeId": "446:2667",
+    "frame": {
+      "width": 393,
+      "height": 852
+    },
+    "elements": {
+      "Back button": {
+        "x": 14,
+        "y": 44,
+        "width": 34,
+        "height": 34
+      },
+      "Icon / back": {
+        "x": 19,
+        "y": 49,
+        "width": 24,
+        "height": 24
+      },
+      "Vector": {
+        "x": 28,
+        "y": 55,
+        "width": 6,
+        "height": 12
+      },
+      "Hero query card": {
+        "x": 14,
+        "y": 84,
+        "width": 365,
+        "height": 74
+      },
+      "Hero image gradient": {
+        "x": 14,
+        "y": 84,
+        "width": 365,
+        "height": 74
+      },
+      "Hero dark overlay": {
+        "x": 14,
+        "y": 84,
+        "width": 365,
+        "height": 74
+      },
+      "Hero title": {
+        "x": 30,
+        "y": 97,
+        "width": 177,
+        "height": 18
+      },
+      "Hero chip": {
+        "x": 30,
+        "y": 126,
+        "width": 54,
+        "height": 22
+      },
+      "Hero chip text": {
+        "x": 39,
+        "y": 131,
+        "width": 37,
+        "height": 11
+      },
+      "Hero chip#2": {
+        "x": 90,
+        "y": 126,
+        "width": 54,
+        "height": 22
+      },
+      "Hero chip text#2": {
+        "x": 99,
+        "y": 131,
+        "width": 17,
+        "height": 11
+      },
+      "UGC card 1": {
+        "x": 14,
+        "y": 178,
+        "width": 176,
+        "height": 217
+      },
+      "Photo slot": {
+        "x": 14,
+        "y": 178,
+        "width": 176,
+        "height": 112
+      },
+      "Avatar": {
+        "x": 24,
+        "y": 282,
+        "width": 22,
+        "height": 22
+      },
+      "Creator": {
+        "x": 50,
+        "y": 297,
+        "width": 17,
+        "height": 11
+      },
+      "Heart icon": {
+        "x": 148,
+        "y": 297,
+        "width": 13,
+        "height": 13
+      },
+      "Vector#2": {
+        "x": 150.031,
+        "y": 299.682,
+        "width": 8.938,
+        "height": 8.287
+      },
+      "Like count": {
+        "x": 165,
+        "y": 298,
+        "width": 12,
+        "height": 11
+      },
+      "Place name": {
+        "x": 24,
+        "y": 314,
+        "width": 107,
+        "height": 17
+      },
+      "Caption": {
+        "x": 24,
+        "y": 335,
+        "width": 129,
+        "height": 12
+      },
+      "slot/tag-chip": {
+        "x": 24,
+        "y": 358,
+        "width": 40,
+        "height": 19
+      },
+      "Tag text": {
+        "x": 32,
+        "y": 361,
+        "width": 16,
+        "height": 10
+      },
+      "slot/tag-chip#2": {
+        "x": 70,
+        "y": 358,
+        "width": 52,
+        "height": 19
+      },
+      "Tag text#2": {
+        "x": 78,
+        "y": 361,
+        "width": 24,
+        "height": 10
+      },
+      "slot/tag-chip#3": {
+        "x": 128,
+        "y": 358,
+        "width": 52,
+        "height": 19
+      },
+      "Tag text#3": {
+        "x": 136,
+        "y": 361,
+        "width": 24,
+        "height": 10
+      },
+      "Walk icon": {
+        "x": 24,
+        "y": 382,
+        "width": 12,
+        "height": 12
+      },
+      "Vector#3": {
+        "x": 28.8,
+        "y": 382.857,
+        "width": 2.4,
+        "height": 2.4
+      },
+      "Vector#4": {
+        "x": 27.857,
+        "y": 385.6,
+        "width": 1.543,
+        "height": 6.686
+      },
+      "Vector#5": {
+        "x": 30.257,
+        "y": 386.371,
+        "width": 2.143,
+        "height": 5.914
+      },
+      "Walk time": {
+        "x": 40,
+        "y": 381,
+        "width": 37,
+        "height": 12
+      },
+      "UGC card 2": {
+        "x": 203,
+        "y": 178,
+        "width": 176,
+        "height": 217
+      },
+      "Photo slot#2": {
+        "x": 203,
+        "y": 178,
+        "width": 176,
+        "height": 112
+      },
+      "Avatar#2": {
+        "x": 213,
+        "y": 282,
+        "width": 22,
+        "height": 22
+      },
+      "Creator#2": {
+        "x": 239,
+        "y": 297,
+        "width": 37,
+        "height": 11
+      },
+      "Heart icon#2": {
+        "x": 337,
+        "y": 297,
+        "width": 13,
+        "height": 13
+      },
+      "Vector#6": {
+        "x": 339.031,
+        "y": 299.682,
+        "width": 8.938,
+        "height": 8.287
+      },
+      "Like count#2": {
+        "x": 354,
+        "y": 298,
+        "width": 10,
+        "height": 11
+      },
+      "Place name#2": {
+        "x": 213,
+        "y": 314,
+        "width": 94,
+        "height": 17
+      },
+      "Caption#2": {
+        "x": 213,
+        "y": 335,
+        "width": 119,
+        "height": 12
+      },
+      "slot/tag-chip#4": {
+        "x": 213,
+        "y": 358,
+        "width": 52,
+        "height": 19
+      },
+      "Tag text#4": {
+        "x": 221,
+        "y": 361,
+        "width": 24,
+        "height": 10
+      },
+      "slot/tag-chip#5": {
+        "x": 271,
+        "y": 358,
+        "width": 64,
+        "height": 19
+      },
+      "Tag text#5": {
+        "x": 279,
+        "y": 361,
+        "width": 32,
+        "height": 10
+      },
+      "Walk icon#2": {
+        "x": 213,
+        "y": 382,
+        "width": 12,
+        "height": 12
+      },
+      "Vector#7": {
+        "x": 217.8,
+        "y": 382.857,
+        "width": 2.4,
+        "height": 2.4
+      },
+      "Vector#8": {
+        "x": 216.857,
+        "y": 385.6,
+        "width": 1.543,
+        "height": 6.686
+      },
+      "Vector#9": {
+        "x": 219.257,
+        "y": 386.371,
+        "width": 2.143,
+        "height": 5.914
+      },
+      "Walk time#2": {
+        "x": 229,
+        "y": 381,
+        "width": 37,
+        "height": 12
+      },
+      "UGC card 3": {
+        "x": 14,
+        "y": 410,
+        "width": 176,
+        "height": 217
+      },
+      "Photo slot#3": {
+        "x": 14,
+        "y": 410,
+        "width": 176,
+        "height": 112
+      },
+      "Avatar#3": {
+        "x": 24,
+        "y": 514,
+        "width": 22,
+        "height": 22
+      },
+      "Creator#3": {
+        "x": 50,
+        "y": 529,
+        "width": 26,
+        "height": 11
+      },
+      "Heart icon#3": {
+        "x": 148,
+        "y": 529,
+        "width": 13,
+        "height": 13
+      },
+      "Vector#10": {
+        "x": 150.031,
+        "y": 531.682,
+        "width": 8.938,
+        "height": 8.287
+      },
+      "Like count#3": {
+        "x": 165,
+        "y": 530,
+        "width": 11,
+        "height": 11
+      },
+      "Place name#3": {
+        "x": 24,
+        "y": 546,
+        "width": 68,
+        "height": 17
+      },
+      "Caption#3": {
+        "x": 24,
+        "y": 567,
+        "width": 92,
+        "height": 12
+      },
+      "slot/tag-chip#6": {
+        "x": 24,
+        "y": 590,
+        "width": 52,
+        "height": 19
+      },
+      "Tag text#6": {
+        "x": 32,
+        "y": 593,
+        "width": 24,
+        "height": 10
+      },
+      "slot/tag-chip#7": {
+        "x": 82,
+        "y": 590,
+        "width": 52,
+        "height": 19
+      },
+      "Tag text#7": {
+        "x": 90,
+        "y": 593,
+        "width": 24,
+        "height": 10
+      },
+      "Walk icon#3": {
+        "x": 24,
+        "y": 614,
+        "width": 12,
+        "height": 12
+      },
+      "Vector#11": {
+        "x": 28.8,
+        "y": 614.857,
+        "width": 2.4,
+        "height": 2.4
+      },
+      "Vector#12": {
+        "x": 27.857,
+        "y": 617.6,
+        "width": 1.543,
+        "height": 6.686
+      },
+      "Vector#13": {
+        "x": 30.257,
+        "y": 618.371,
+        "width": 2.143,
+        "height": 5.914
+      },
+      "Walk time#3": {
+        "x": 40,
+        "y": 613,
+        "width": 37,
+        "height": 12
+      },
+      "UGC card 4": {
+        "x": 203,
+        "y": 410,
+        "width": 176,
+        "height": 217
+      },
+      "Photo slot#4": {
+        "x": 203,
+        "y": 410,
+        "width": 176,
+        "height": 112
+      },
+      "Avatar#4": {
+        "x": 213,
+        "y": 514,
+        "width": 22,
+        "height": 22
+      },
+      "Creator#4": {
+        "x": 239,
+        "y": 529,
+        "width": 26,
+        "height": 11
+      },
+      "Heart icon#4": {
+        "x": 337,
+        "y": 529,
+        "width": 13,
+        "height": 13
+      },
+      "Vector#14": {
+        "x": 339.031,
+        "y": 531.682,
+        "width": 8.938,
+        "height": 8.287
+      },
+      "Like count#4": {
+        "x": 354,
+        "y": 530,
+        "width": 11,
+        "height": 11
+      },
+      "Place name#4": {
+        "x": 213,
+        "y": 546,
+        "width": 52,
+        "height": 17
+      },
+      "Caption#4": {
+        "x": 213,
+        "y": 567,
+        "width": 141,
+        "height": 12
+      },
+      "slot/tag-chip#8": {
+        "x": 213,
+        "y": 590,
+        "width": 40,
+        "height": 19
+      },
+      "Tag text#8": {
+        "x": 221,
+        "y": 593,
+        "width": 16,
+        "height": 10
+      },
+      "slot/tag-chip#9": {
+        "x": 259,
+        "y": 590,
+        "width": 52,
+        "height": 19
+      },
+      "Tag text#9": {
+        "x": 267,
+        "y": 593,
+        "width": 24,
+        "height": 10
+      },
+      "Walk icon#4": {
+        "x": 213,
+        "y": 614,
+        "width": 12,
+        "height": 12
+      },
+      "Vector#15": {
+        "x": 217.8,
+        "y": 614.857,
+        "width": 2.4,
+        "height": 2.4
+      },
+      "Vector#16": {
+        "x": 216.857,
+        "y": 617.6,
+        "width": 1.543,
+        "height": 6.686
+      },
+      "Vector#17": {
+        "x": 219.257,
+        "y": 618.371,
+        "width": 2.143,
+        "height": 5.914
+      },
+      "Walk time#4": {
+        "x": 229,
+        "y": 613,
+        "width": 37,
+        "height": 12
+      },
+      "UGC card 5": {
+        "x": 14,
+        "y": 642,
+        "width": 176,
+        "height": 210
+      },
+      "Photo slot#5": {
+        "x": 14,
+        "y": 642,
+        "width": 176,
+        "height": 112
+      },
+      "Avatar#5": {
+        "x": 24,
+        "y": 746,
+        "width": 22,
+        "height": 22
+      },
+      "Creator#5": {
+        "x": 50,
+        "y": 761,
+        "width": 26,
+        "height": 11
+      },
+      "Heart icon#5": {
+        "x": 148,
+        "y": 761,
+        "width": 13,
+        "height": 13
+      },
+      "Vector#18": {
+        "x": 150.031,
+        "y": 763.682,
+        "width": 8.938,
+        "height": 8.287
+      },
+      "Like count#5": {
+        "x": 165,
+        "y": 762,
+        "width": 12,
+        "height": 11
+      },
+      "Place name#5": {
+        "x": 24,
+        "y": 778,
+        "width": 68,
+        "height": 17
+      },
+      "Caption#5": {
+        "x": 24,
+        "y": 799,
+        "width": 101,
+        "height": 12
+      },
+      "slot/tag-chip#10": {
+        "x": 24,
+        "y": 822,
+        "width": 34,
+        "height": 19
+      },
+      "Tag text#10": {
+        "x": 32,
+        "y": 825,
+        "width": 8,
+        "height": 10
+      },
+      "slot/tag-chip#11": {
+        "x": 64,
+        "y": 822,
+        "width": 52,
+        "height": 19
+      },
+      "Tag text#11": {
+        "x": 72,
+        "y": 825,
+        "width": 24,
+        "height": 10
+      },
+      "Walk icon#5": {
+        "x": 24,
+        "y": 846,
+        "width": 12,
+        "height": 6
+      },
+      "Vector#19": {
+        "x": 28.8,
+        "y": 846.857,
+        "width": 2.4,
+        "height": 2.4
+      },
+      "Vector#20": {
+        "x": 27.857,
+        "y": 849.6,
+        "width": 1.543,
+        "height": 2.4
+      },
+      "Vector#21": {
+        "x": 30.257,
+        "y": 850.371,
+        "width": 2.143,
+        "height": 1.629
+      },
+      "Walk time#5": {
+        "x": 40,
+        "y": 845,
+        "width": 37,
+        "height": 7
+      },
+      "UGC card 6": {
+        "x": 203,
+        "y": 642,
+        "width": 176,
+        "height": 210
+      },
+      "Photo slot#6": {
+        "x": 203,
+        "y": 642,
+        "width": 176,
+        "height": 112
+      },
+      "Avatar#6": {
+        "x": 213,
+        "y": 746,
+        "width": 22,
+        "height": 22
+      },
+      "Creator#6": {
+        "x": 239,
+        "y": 761,
+        "width": 17,
+        "height": 11
+      },
+      "Heart icon#6": {
+        "x": 337,
+        "y": 761,
+        "width": 13,
+        "height": 13
+      },
+      "Vector#22": {
+        "x": 339.031,
+        "y": 763.682,
+        "width": 8.938,
+        "height": 8.287
+      },
+      "Like count#6": {
+        "x": 354,
+        "y": 762,
+        "width": 10,
+        "height": 11
+      },
+      "Place name#6": {
+        "x": 213,
+        "y": 778,
+        "width": 65,
+        "height": 17
+      },
+      "Caption#6": {
+        "x": 213,
+        "y": 799,
+        "width": 83,
+        "height": 12
+      },
+      "slot/tag-chip#12": {
+        "x": 213,
+        "y": 822,
+        "width": 40,
+        "height": 19
+      },
+      "Tag text#12": {
+        "x": 221,
+        "y": 825,
+        "width": 16,
+        "height": 10
+      },
+      "slot/tag-chip#13": {
+        "x": 259,
+        "y": 822,
+        "width": 40,
+        "height": 19
+      },
+      "Tag text#13": {
+        "x": 267,
+        "y": 825,
+        "width": 16,
+        "height": 10
+      },
+      "Walk icon#6": {
+        "x": 213,
+        "y": 846,
+        "width": 12,
+        "height": 6
+      },
+      "Vector#23": {
+        "x": 217.8,
+        "y": 846.857,
+        "width": 2.4,
+        "height": 2.4
+      },
+      "Vector#24": {
+        "x": 216.857,
+        "y": 849.6,
+        "width": 1.543,
+        "height": 2.4
+      },
+      "Vector#25": {
+        "x": 219.257,
+        "y": 850.371,
+        "width": 2.143,
+        "height": 1.629
+      },
+      "Walk time#6": {
+        "x": 229,
+        "y": 845,
+        "width": 37,
+        "height": 7
+      }
+    },
+    "typography": {
+      "style-1": {
+        "fontFamily": "Inter",
+        "fontStyle": "Bold",
+        "fontSize": 15,
+        "lineHeight": {
+          "unit": "AUTO"
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        },
+        "textAlignHorizontal": "LEFT",
+        "textAlignVertical": "TOP",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE"
+      },
+      "style-2": {
+        "fontFamily": "Inter",
+        "fontStyle": "Semi Bold",
+        "fontSize": 9,
+        "lineHeight": {
+          "unit": "AUTO"
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        },
+        "textAlignHorizontal": "LEFT",
+        "textAlignVertical": "TOP",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE"
+      },
+      "style-3": {
+        "fontFamily": "Inter",
+        "fontStyle": "Medium",
+        "fontSize": 9,
+        "lineHeight": {
+          "unit": "AUTO"
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        },
+        "textAlignHorizontal": "LEFT",
+        "textAlignVertical": "TOP",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE"
+      },
+      "style-4": {
+        "fontFamily": "Inter",
+        "fontStyle": "Bold",
+        "fontSize": 14,
+        "lineHeight": {
+          "unit": "AUTO"
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        },
+        "textAlignHorizontal": "LEFT",
+        "textAlignVertical": "TOP",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE"
+      },
+      "style-5": {
+        "fontFamily": "Inter",
+        "fontStyle": "Regular",
+        "fontSize": 10,
+        "lineHeight": {
+          "unit": "AUTO"
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        },
+        "textAlignHorizontal": "LEFT",
+        "textAlignVertical": "TOP",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE"
+      },
+      "style-6": {
+        "fontFamily": "Inter",
+        "fontStyle": "Semi Bold",
+        "fontSize": 8.5,
+        "lineHeight": {
+          "unit": "AUTO"
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        },
+        "textAlignHorizontal": "LEFT",
+        "textAlignVertical": "TOP",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE"
+      }
+    },
+    "colors": {
+      "paint-1": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#FFFFFF",
+        "opacity": 1
+      },
+      "paint-2": {
+        "source": "stroke",
+        "type": "solid",
+        "color": "#222222",
+        "opacity": 1
+      },
+      "paint-3": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#402E1F",
+        "opacity": 1
+      },
+      "paint-4": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#856340",
+        "opacity": 1
+      },
+      "paint-5": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#000000",
+        "opacity": 1
+      },
+      "paint-6": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#E8FCF0",
+        "opacity": 1
+      },
+      "paint-7": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#00C759",
+        "opacity": 1
+      },
+      "paint-8": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#404040",
+        "opacity": 1
+      },
+      "paint-9": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#784F33",
+        "opacity": 1
+      },
+      "paint-10": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#DBE0DB",
+        "opacity": 1
+      },
+      "paint-11": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#737A7A",
+        "opacity": 1
+      },
+      "paint-12": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#16C76A",
+        "opacity": 1
+      },
+      "paint-13": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#1F2121",
+        "opacity": 1
+      },
+      "paint-14": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#E5FAF0",
+        "opacity": 1
+      },
+      "paint-15": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#6B7280",
+        "opacity": 1
+      },
+      "paint-16": {
+        "source": "stroke",
+        "type": "solid",
+        "color": "#6B7280",
+        "opacity": 1
+      },
+      "paint-17": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#B89E80",
+        "opacity": 1
+      },
+      "paint-18": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#8FBF78",
+        "opacity": 1
+      },
+      "paint-19": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#5E422E",
+        "opacity": 1
+      },
+      "paint-20": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#705238",
+        "opacity": 1
+      },
+      "paint-21": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#9EC78A",
+        "opacity": 1
+      }
+    },
+    "radii": {
+      "radius-1": 17,
+      "radius-2": 10,
+      "radius-3": 11
+    },
+    "shadows": {
+      "shadow-1": {
+        "type": "drop_shadow",
+        "color": "#000000",
+        "opacity": 0.10000000149011612,
+        "offset": {
+          "x": 0,
+          "y": 4
+        },
+        "radius": 14,
+        "spread": 0,
+        "blendMode": "NORMAL"
+      },
+      "shadow-2": {
+        "type": "drop_shadow",
+        "color": "#000000",
+        "opacity": 0.11999999731779099,
+        "offset": {
+          "x": 0,
+          "y": 4
+        },
+        "radius": 12,
+        "spread": 0,
+        "blendMode": "NORMAL"
+      },
+      "shadow-3": {
+        "type": "drop_shadow",
+        "color": "#000000",
+        "opacity": 0.07999999821186066,
+        "offset": {
+          "x": 0,
+          "y": 3
+        },
+        "radius": 10,
+        "spread": 0,
+        "blendMode": "NORMAL"
+      }
+    },
+    "assets": []
+  },
+  "b12": {
+    "nodeId": "446:2792",
+    "frame": {
+      "width": 393,
+      "height": 852
+    },
+    "elements": {
+      "action/back/bg": {
+        "x": 18,
+        "y": 44,
+        "width": 32,
+        "height": 32
+      },
+      "action/back/icon": {
+        "x": 22,
+        "y": 48,
+        "width": 24,
+        "height": 24
+      },
+      "Vector": {
+        "x": 31,
+        "y": 54,
+        "width": 6,
+        "height": 12
+      },
+      "media/crop-asset": {
+        "x": 44,
+        "y": 72,
+        "width": 86,
+        "height": 86
+      },
+      "profile/avatar": {
+        "x": 44,
+        "y": 72,
+        "width": 86,
+        "height": 86
+      },
+      "username": {
+        "x": 174,
+        "y": 92,
+        "width": 90,
+        "height": 35
+      },
+      "bio": {
+        "x": 174,
+        "y": 128,
+        "width": 160,
+        "height": 22
+      },
+      "action/primary/bg": {
+        "x": 174,
+        "y": 157,
+        "width": 96,
+        "height": 34
+      },
+      "action/primary/label": {
+        "x": 174,
+        "y": 157,
+        "width": 96,
+        "height": 34
+      },
+      "stat label": {
+        "x": 50,
+        "y": 226,
+        "width": 60,
+        "height": 18
+      },
+      "stat num": {
+        "x": 50,
+        "y": 247,
+        "width": 60,
+        "height": 30
+      },
+      "stat label#2": {
+        "x": 166,
+        "y": 226,
+        "width": 60,
+        "height": 18
+      },
+      "stat num#2": {
+        "x": 166,
+        "y": 247,
+        "width": 60,
+        "height": 30
+      },
+      "stat label#3": {
+        "x": 283,
+        "y": 226,
+        "width": 60,
+        "height": 18
+      },
+      "stat num#3": {
+        "x": 283,
+        "y": 247,
+        "width": 60,
+        "height": 30
+      },
+      "media/photo/crop-asset": {
+        "x": 22,
+        "y": 302,
+        "width": 173,
+        "height": 175
+      },
+      "media/photo": {
+        "x": 22,
+        "y": 302,
+        "width": 173,
+        "height": 175
+      },
+      "photo icon/sway": {
+        "x": 165,
+        "y": 312,
+        "width": 20,
+        "height": 20
+      },
+      "Vector#2": {
+        "x": 167.5,
+        "y": 316.167,
+        "width": 15,
+        "height": 11.667
+      },
+      "Vector#3": {
+        "x": 170.833,
+        "y": 322,
+        "width": 10,
+        "height": 4.167
+      },
+      "Vector#4": {
+        "x": 170.667,
+        "y": 318.5,
+        "width": 2,
+        "height": 2
+      },
+      "media/photo/crop-asset#2": {
+        "x": 207,
+        "y": 302,
+        "width": 164,
+        "height": 224
+      },
+      "media/photo#2": {
+        "x": 207,
+        "y": 302,
+        "width": 164,
+        "height": 224
+      },
+      "photo icon/table": {
+        "x": 341,
+        "y": 312,
+        "width": 20,
+        "height": 20
+      },
+      "Vector#5": {
+        "x": 343.5,
+        "y": 314.5,
+        "width": 15,
+        "height": 15
+      },
+      "Vector#6": {
+        "x": 349.333,
+        "y": 318.667,
+        "width": 5,
+        "height": 6.667
+      },
+      "media/photo/crop-asset#3": {
+        "x": 22,
+        "y": 489,
+        "width": 173,
+        "height": 119
+      },
+      "media/photo#3": {
+        "x": 22,
+        "y": 489,
+        "width": 173,
+        "height": 119
+      },
+      "photo icon/shop": {
+        "x": 165,
+        "y": 499,
+        "width": 20,
+        "height": 20
+      },
+      "Vector#7": {
+        "x": 167.5,
+        "y": 501.5,
+        "width": 15,
+        "height": 15
+      },
+      "Vector#8": {
+        "x": 173.333,
+        "y": 505.667,
+        "width": 5,
+        "height": 6.667
+      },
+      "media/photo/crop-asset#4": {
+        "x": 207,
+        "y": 540,
+        "width": 164,
+        "height": 150
+      },
+      "media/photo#4": {
+        "x": 207,
+        "y": 540,
+        "width": 164,
+        "height": 150
+      },
+      "photo icon/pasta": {
+        "x": 341,
+        "y": 550,
+        "width": 20,
+        "height": 20
+      },
+      "Vector#9": {
+        "x": 343.5,
+        "y": 554.167,
+        "width": 15,
+        "height": 11.667
+      },
+      "Vector#10": {
+        "x": 346.833,
+        "y": 560,
+        "width": 10,
+        "height": 4.167
+      },
+      "Vector#11": {
+        "x": 346.667,
+        "y": 556.5,
+        "width": 2,
+        "height": 2
+      },
+      "media/photo/crop-asset#5": {
+        "x": 22,
+        "y": 620,
+        "width": 173,
+        "height": 174
+      },
+      "media/photo#5": {
+        "x": 22,
+        "y": 620,
+        "width": 173,
+        "height": 174
+      },
+      "photo icon/street": {
+        "x": 165,
+        "y": 630,
+        "width": 20,
+        "height": 20
+      },
+      "Vector#12": {
+        "x": 167.5,
+        "y": 634.167,
+        "width": 15,
+        "height": 11.667
+      },
+      "Vector#13": {
+        "x": 170.833,
+        "y": 640,
+        "width": 10,
+        "height": 4.167
+      },
+      "Vector#14": {
+        "x": 170.667,
+        "y": 636.5,
+        "width": 2,
+        "height": 2
+      },
+      "media/photo/crop-asset#6": {
+        "x": 207,
+        "y": 704,
+        "width": 164,
+        "height": 120
+      },
+      "media/photo#6": {
+        "x": 207,
+        "y": 704,
+        "width": 164,
+        "height": 120
+      },
+      "photo icon/gallery": {
+        "x": 341,
+        "y": 714,
+        "width": 20,
+        "height": 20
+      },
+      "Vector#15": {
+        "x": 343.5,
+        "y": 716.5,
+        "width": 15,
+        "height": 15
+      },
+      "Vector#16": {
+        "x": 349.333,
+        "y": 720.667,
+        "width": 5,
+        "height": 6.667
+      },
+      "media/photo/crop-asset#7": {
+        "x": 22,
+        "y": 806,
+        "width": 173,
+        "height": 46
+      },
+      "media/photo#7": {
+        "x": 22,
+        "y": 806,
+        "width": 173,
+        "height": 46
+      },
+      "photo icon/flower": {
+        "x": 165,
+        "y": 816,
+        "width": 20,
+        "height": 20
+      },
+      "Vector#17": {
+        "x": 167.5,
+        "y": 820.167,
+        "width": 15,
+        "height": 11.667
+      },
+      "Vector#18": {
+        "x": 170.833,
+        "y": 826,
+        "width": 10,
+        "height": 4.167
+      },
+      "Vector#19": {
+        "x": 170.667,
+        "y": 822.5,
+        "width": 2,
+        "height": 2
+      },
+      "action/back": {
+        "x": 18,
+        "y": 44,
+        "width": 32,
+        "height": 32
+      },
+      "action/primary": {
+        "x": 174,
+        "y": 157,
+        "width": 96,
+        "height": 34
+      }
+    },
+    "typography": {
+      "style-1": {
+        "fontFamily": "Noto Sans KR",
+        "fontStyle": "Bold",
+        "fontSize": 25,
+        "lineHeight": {
+          "unit": "AUTO"
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        },
+        "textAlignHorizontal": "LEFT",
+        "textAlignVertical": "CENTER",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE"
+      },
+      "style-2": {
+        "fontFamily": "Noto Sans KR",
+        "fontStyle": "Regular",
+        "fontSize": 10,
+        "lineHeight": {
+          "unit": "AUTO"
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        },
+        "textAlignHorizontal": "LEFT",
+        "textAlignVertical": "CENTER",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE"
+      },
+      "style-3": {
+        "fontFamily": "Noto Sans KR",
+        "fontStyle": "Bold",
+        "fontSize": 13,
+        "lineHeight": {
+          "unit": "AUTO"
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        },
+        "textAlignHorizontal": "CENTER",
+        "textAlignVertical": "CENTER",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE"
+      },
+      "style-4": {
+        "fontFamily": "Noto Sans KR",
+        "fontStyle": "Regular",
+        "fontSize": 10,
+        "lineHeight": {
+          "unit": "AUTO"
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        },
+        "textAlignHorizontal": "CENTER",
+        "textAlignVertical": "CENTER",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE"
+      },
+      "style-5": {
+        "fontFamily": "Noto Sans KR",
+        "fontStyle": "Bold",
+        "fontSize": 18,
+        "lineHeight": {
+          "unit": "AUTO"
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        },
+        "textAlignHorizontal": "CENTER",
+        "textAlignVertical": "CENTER",
+        "textCase": "ORIGINAL",
+        "textDecoration": "NONE"
+      }
+    },
+    "colors": {
+      "paint-1": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#FFFFFF",
+        "opacity": 1
+      },
+      "paint-2": {
+        "source": "stroke",
+        "type": "solid",
+        "color": "#202124",
+        "opacity": 1
+      },
+      "paint-3": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#141414",
+        "opacity": 1
+      },
+      "paint-4": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#7A7A7A",
+        "opacity": 1
+      },
+      "paint-5": {
+        "source": "fill",
+        "type": "solid",
+        "color": "#10C76F",
+        "opacity": 1
+      },
+      "paint-6": {
+        "source": "stroke",
+        "type": "solid",
+        "color": "#10C76F",
+        "opacity": 1
+      },
+      "paint-7": {
+        "source": "stroke",
+        "type": "solid",
+        "color": "#FFFFFF",
+        "opacity": 1
+      }
+    },
+    "radii": {
+      "radius-1": 999,
+      "radius-2": 8,
+      "radius-3": 10
+    },
+    "shadows": {},
+    "assets": [
+      {
+        "nodeId": "446:2799",
+        "name": "profile/avatar",
+        "type": "image",
+        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
+        "scaleMode": "FILL"
+      },
+      {
+        "nodeId": "446:2812",
+        "name": "media/photo",
+        "type": "image",
+        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
+        "scaleMode": "FILL"
+      },
+      {
+        "nodeId": "446:2818",
+        "name": "media/photo",
+        "type": "image",
+        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
+        "scaleMode": "FILL"
+      },
+      {
+        "nodeId": "446:2823",
+        "name": "media/photo",
+        "type": "image",
+        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
+        "scaleMode": "FILL"
+      },
+      {
+        "nodeId": "446:2828",
+        "name": "media/photo",
+        "type": "image",
+        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
+        "scaleMode": "FILL"
+      },
+      {
+        "nodeId": "446:2834",
+        "name": "media/photo",
+        "type": "image",
+        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
+        "scaleMode": "FILL"
+      },
+      {
+        "nodeId": "446:2840",
+        "name": "media/photo",
+        "type": "image",
+        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
+        "scaleMode": "FILL"
+      },
+      {
+        "nodeId": "446:2845",
+        "name": "media/photo",
+        "type": "image",
+        "imageHash": "481625f506b9ee3c77581ae2b8d2ef44f6d2dcfc",
+        "scaleMode": "FILL"
+      }
+    ]
+  },
+  "b13": {
     "nodeId": "446:3042",
     "frame": {
       "width": 393,
