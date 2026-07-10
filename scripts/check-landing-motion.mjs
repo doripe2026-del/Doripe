@@ -24,4 +24,17 @@ assert(home.includes("검색어 대신 분위기로 찾아요."), "Discover copy
 assert(home.includes("나중에 다시 찾기 쉬운 방식으로 저장해요."), "Save copy changed unexpectedly");
 assert(home.includes("나만의 코스를 만들고, 떠나보세요."), "Go copy changed unexpectedly");
 
+for (const marker of [
+  'id="landingMotionHero"',
+  'data-motion-layer="ugc"',
+  'data-motion-layer="selection"',
+  'data-motion-layer="nearby"',
+  'data-motion-layer="course"',
+  'data-motion-layer="share"',
+  'data-motion-layer="navigation"',
+]) {
+  assert(home.includes(marker), `hero motion missing ${marker}`);
+}
+assert(!home.includes('class="phone-stage reveal"'), "legacy hero orbit still present");
+
 console.log("Landing motion contracts passed.");

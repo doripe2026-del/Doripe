@@ -912,19 +912,40 @@
         </div>
       </div>
 
-      <div class="phone-stage reveal" aria-label="Doripe 앱 목업 모션">
-        <div class="phone-shadow" aria-hidden="true"></div>
-        <div class="orbit">
-          <div class="iphone">
-            <div class="screen"><img src="/img/figma-ui/hero-discover-feed.png" alt="Doripe 발견 피드 화면" /></div>
-          </div>
-          <div class="iphone">
-            <div class="screen"><img src="/img/figma-ui/hero-saved-route-empty.png" alt="Doripe 저장 경로 화면" /></div>
-          </div>
-          <div class="iphone">
-            <div class="screen"><img src="/img/figma-ui/hero-map-candidates.png" alt="Doripe 지도 후보 화면" /></div>
-          </div>
+      <div
+        id="landingMotionHero"
+        class="landing-motion landing-motion--hero reveal"
+        data-motion-scene
+        data-motion-state="final"
+        role="img"
+        aria-label="유저와 큐레이터의 장소 콘텐츠가 주변 장소 추천과 하루 코스로 이어지는 Doripe 흐름"
+      >
+        <div class="motion-ugc-stack" data-motion-layer="ugc" aria-hidden="true">
+          <figure class="motion-ugc-card motion-ugc-card--one">
+            <img src="/img/figma-ui/hero-discover-feed.png" alt="" />
+            <figcaption><img src="/app/assets/creator-photos/creator-01.png" alt="" />도리데이</figcaption>
+          </figure>
+          <figure class="motion-ugc-card motion-ugc-card--two">
+            <img src="/img/figma-ui/discover-photo-next.png" alt="" />
+            <figcaption><img src="/app/assets/creator-photos/creator-02.png" alt="" />주말의연남</figcaption>
+          </figure>
         </div>
+        <div class="motion-selected-place" data-motion-layer="selection" aria-hidden="true">
+          <img src="/img/figma-ui/discover.png" alt="" />
+        </div>
+        <div class="motion-nearby" data-motion-layer="nearby" aria-hidden="true">
+          <span class="motion-nearby-card">카페 · 도보 6분</span>
+          <span class="motion-nearby-card">소품샵 · 도보 8분</span>
+          <span class="motion-nearby-card">식당 · 도보 11분</span>
+        </div>
+        <div class="motion-course" data-motion-layer="course" aria-hidden="true">
+          <img src="/img/figma-ui/route-plan-generated.png" alt="" />
+          <svg viewBox="0 0 320 180"><path d="M38 138 C92 58 186 142 278 42" /></svg>
+        </div>
+        <div class="motion-share-card" data-motion-layer="share" aria-hidden="true">
+          <strong>연남 하루 코스</strong><span>3곳 · 친구에게 공유</span>
+        </div>
+        <div class="motion-navigation" data-motion-layer="navigation" aria-hidden="true">길찾기 시작 ↗</div>
       </div>
     </section>
 
