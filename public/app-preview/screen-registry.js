@@ -1,5 +1,6 @@
 import actionContract from "./figma/action-contract.json" with { type: "json" };
 import inventory from "./figma/screen-inventory.json" with { type: "json" };
+import { ONBOARDING_RENDERERS } from "./screens/onboarding.js";
 
 const actionsByScreenId = new Map();
 for (const record of actionContract.actions) {
@@ -25,19 +26,22 @@ export function renderEvidenceScreen(screen) {
   return evidence;
 }
 
-const screens = Object.freeze(inventory.map((item) => Object.freeze({
-  id: item.id,
-  name: item.name,
-  group: item.group,
-  figmaNodeId: item.nodeId,
-  reference: item.reference,
-  render: () => renderEvidenceScreen({
+const screens = Object.freeze(inventory.map((item) => {
+  const semanticRenderer = item.group === "A" ? ONBOARDING_RENDERERS[item.id] : null;
+  return Object.freeze({
     id: item.id,
+    name: item.name,
+    group: item.group,
     figmaNodeId: item.nodeId,
-    reference: item.reference
-  }),
-  actions: Object.freeze(actionsByScreenId.get(item.id) || [])
-})));
+    reference: item.reference,
+    render: semanticRenderer || (() => renderEvidenceScreen({
+      id: item.id,
+      figmaNodeId: item.nodeId,
+      reference: item.reference
+    })),
+    actions: Object.freeze(actionsByScreenId.get(item.id) || [])
+  });
+}));
 
 const screensById = new Map(screens.map((screen) => [screen.id, screen]));
 

@@ -182,6 +182,88 @@ const updateRouteName = updateField("routeName");
 const updateBio = updateField("bio");
 const updateCurrentPassword = updateField("currentPassword");
 const updateMessage = updateField("message");
+
+function hasFormKey(state, key) {
+  return Object.hasOwn(state.form || {}, key);
+}
+
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value || "");
+}
+
+function isValidPassword(value) {
+  return typeof value === "string"
+    && value.length >= 8
+    && /[A-Za-z]/.test(value)
+    && /\d/.test(value);
+}
+
+function submitLogin(state) {
+  if (!hasFormKey(state, "email") && !hasFormKey(state, "password")) {
+    return navigateTo("b1")(state);
+  }
+  const valid = state.form?.email?.trim().toLowerCase() === "dori@doripe.kr"
+    && state.form?.password === "Doripe123";
+  return navigateTo(valid ? "b1" : "a4")(state);
+}
+
+function sendResetEmail(state) {
+  if (!hasFormKey(state, "email") || isValidEmail(state.form.email)) {
+    return navigateTo("a6")(state);
+  }
+  return errorResult(state, "올바른 이메일을 입력해 주세요");
+}
+
+function saveResetPassword(state) {
+  if (!hasFormKey(state, "newPassword") && !hasFormKey(state, "passwordConfirmation")) {
+    return navigateTo("a3")(state);
+  }
+  const valid = isValidPassword(state.form?.newPassword)
+    && state.form.newPassword === state.form?.passwordConfirmation;
+  return navigateTo(valid ? "a3" : "a8")(state);
+}
+
+function continueFromEmail(state) {
+  if (!hasFormKey(state, "email")) return navigateTo("a12")(state);
+  const email = state.form.email.trim().toLowerCase();
+  if (!isValidEmail(email)) return navigateTo("a10")(state);
+  if (email === "doripe@example.com") return navigateTo("a11")(state);
+  return navigateTo("a12")(state);
+}
+
+function continueFromPassword(state) {
+  if (!hasFormKey(state, "password")) return navigateTo("a14")(state);
+  return navigateTo(isValidPassword(state.form.password) ? "a14" : "a13")(state);
+}
+
+function continueFromBirthYear(state) {
+  if (!hasFormKey(state, "birthYear")) return navigateTo("a15")(state);
+  return /^\d{4}$/.test(state.form.birthYear)
+    ? navigateTo("a15")(state)
+    : errorResult(state, "출생연도를 선택해 주세요");
+}
+
+function continueFromGender(state) {
+  if (!hasFormKey(state, "gender")) return navigateTo("a16")(state);
+  return ["female", "male", "unspecified"].includes(state.form.gender)
+    ? navigateTo("a16")(state)
+    : errorResult(state, "성별을 선택해 주세요");
+}
+
+function continueFromNickname(state) {
+  if (!hasFormKey(state, "nickname")) return navigateTo("a18")(state);
+  const nickname = state.form.nickname.trim();
+  return navigateTo(nickname.length >= 2 && nickname !== "도리" ? "a18" : "a17")(state);
+}
+
+const selectCanonicalValue = (selectionId, formId) => (state, payload) => {
+  const value = valueFrom(payload);
+  return idleResult(state, {
+    selections: { ...(state.selections || {}), [selectionId]: value },
+    form: { ...(state.form || {}), [formId]: value }
+  });
+};
+
 const savePlace = addListValue("savedPlaceIds", "placeId");
 const toggleFollow = toggleListValue("followedUserIds", "userId");
 const toggleMediaLike = toggleListValue("likedMediaIds", "mediaId");
@@ -206,54 +288,54 @@ export const TRANSITIONS = Object.freeze({
     "update-email": updateEmail,
     "update-password": updatePassword,
     "create-account": navigateTo("a9"),
-    "submit-login": navigateTo("b1"),
+    "submit-login": submitLogin,
     "forgot-password": navigateTo("a5")
   }),
   a4: defineTransitions("a4", {
     "update-email": updateEmail,
     "update-password": updatePassword,
     "create-account": navigateTo("a9"),
-    "submit-login": navigateTo("b1"),
+    "submit-login": submitLogin,
     "forgot-password": navigateTo("a5")
   }),
-  a5: defineTransitions("a5", { "go-back": navigateBack, "update-email": updateEmail, "send-reset-email": navigateTo("a6") }),
+  a5: defineTransitions("a5", { "go-back": navigateBack, "update-email": updateEmail, "send-reset-email": sendResetEmail }),
   a6: defineTransitions("a6", { "go-back": navigateBack, "return-to-login": navigateTo("a3") }),
   a7: defineTransitions("a7", {
     "go-back": navigateBack,
     "update-new-password": updateNewPassword,
     "update-password-confirmation": updatePasswordConfirmation,
-    "save-password": navigateTo("a3")
+    "save-password": saveResetPassword
   }),
   a8: defineTransitions("a8", {
     "go-back": navigateBack,
     "update-new-password": updateNewPassword,
     "update-password-confirmation": updatePasswordConfirmation,
-    "save-password": navigateTo("a3")
+    "save-password": saveResetPassword
   }),
-  a9: defineTransitions("a9", { "go-back": navigateBack, "update-email": updateEmail, "continue-sign-up": navigateTo("a12") }),
-  a10: defineTransitions("a10", { "go-back": navigateBack, "update-email": updateEmail, "continue-sign-up": navigateTo("a12") }),
-  a11: defineTransitions("a11", { "go-back": navigateBack, "update-email": updateEmail, "continue-sign-up": navigateTo("a12") }),
-  a12: defineTransitions("a12", { "go-back": navigateBack, "update-password": updatePassword, "continue-sign-up": navigateTo("a14") }),
-  a13: defineTransitions("a13", { "go-back": navigateBack, "update-password": updatePassword, "continue-sign-up": navigateTo("a14") }),
-  a14: defineTransitions("a14", { "go-back": navigateBack, "select-birth-year": selectValue("birthYear"), "continue-sign-up": navigateTo("a15") }),
-  a15: defineTransitions("a15", { "go-back": navigateBack, "select-gender": selectValue("gender"), "continue-sign-up": navigateTo("a16") }),
-  a16: defineTransitions("a16", { "go-back": navigateBack, "update-nickname": updateNickname, "continue-sign-up": navigateTo("a18") }),
-  a17: defineTransitions("a17", { "go-back": navigateBack, "update-nickname": updateNickname, "continue-sign-up": navigateTo("a18") }),
+  a9: defineTransitions("a9", { "go-back": navigateBack, "update-email": updateEmail, "continue-sign-up": continueFromEmail }),
+  a10: defineTransitions("a10", { "go-back": navigateBack, "update-email": updateEmail, "continue-sign-up": continueFromEmail }),
+  a11: defineTransitions("a11", { "go-back": navigateBack, "update-email": updateEmail, "continue-sign-up": continueFromEmail }),
+  a12: defineTransitions("a12", { "go-back": navigateBack, "update-password": updatePassword, "continue-sign-up": continueFromPassword }),
+  a13: defineTransitions("a13", { "go-back": navigateBack, "update-password": updatePassword, "continue-sign-up": continueFromPassword }),
+  a14: defineTransitions("a14", { "go-back": navigateBack, "select-birth-year": selectCanonicalValue("birthYear", "birthYear"), "continue-sign-up": continueFromBirthYear }),
+  a15: defineTransitions("a15", { "go-back": navigateBack, "select-gender": selectCanonicalValue("gender", "gender"), "continue-sign-up": continueFromGender }),
+  a16: defineTransitions("a16", { "go-back": navigateBack, "update-nickname": updateNickname, "continue-sign-up": continueFromNickname }),
+  a17: defineTransitions("a17", { "go-back": navigateBack, "update-nickname": updateNickname, "continue-sign-up": continueFromNickname }),
   a18: defineTransitions("a18", {
     "go-back": navigateBack,
-    "select-place-source": selectValue("placeSource"),
+    "select-place-source": selectCanonicalValue("placeSource", "habit"),
     "choose-location": navigateTo("a20"),
     "skip-question": navigateTo("a19")
   }),
   a19: defineTransitions("a19", {
     "go-back": navigateBack,
-    "select-referral-source": selectValue("referralSource"),
+    "select-referral-source": selectCanonicalValue("referralSource", "source"),
     "continue-sign-up": navigateTo("a20"),
     "skip-question": navigateTo("a20")
   }),
   a20: defineTransitions("a20", {
     "go-back": navigateBack,
-    "select-neighborhood": selectValue("neighborhood"),
+    "select-neighborhood": selectCanonicalValue("neighborhood", "neighborhoodId"),
     "confirm-neighborhood": navigateTo("a21")
   }),
   a21: defineTransitions("a21", {}),
