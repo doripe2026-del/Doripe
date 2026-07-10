@@ -1,8 +1,5 @@
 import inventory from "./figma/screen-inventory.json" with { type: "json" };
-
-const actionsByScreenId = Object.freeze({
-  a1: ["start", "login"]
-});
+import { ACTIONS_BY_SCREEN } from "./transitions.js";
 
 export function renderEvidenceScreen(screen) {
   const evidence = document.createElement("div");
@@ -32,7 +29,7 @@ const screens = Object.freeze(inventory.map((item) => Object.freeze({
     figmaNodeId: item.nodeId,
     reference: item.reference
   }),
-  actions: Object.freeze(actionsByScreenId[item.id] || [])
+  actions: ACTIONS_BY_SCREEN[item.id]
 })));
 
 const screensById = new Map(screens.map((screen) => [screen.id, screen]));
