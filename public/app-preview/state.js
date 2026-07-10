@@ -29,13 +29,17 @@ function cloneDefaultState() {
   };
 }
 
+function clonePreviewState(value) {
+  return { ...cloneDefaultState(), ...structuredClone(value) };
+}
+
 function loadState(storage) {
   try {
     const stored = storage?.getItem(PREVIEW_STORAGE_KEY);
     if (!stored) return cloneDefaultState();
 
     const parsed = JSON.parse(stored);
-    return { ...cloneDefaultState(), ...parsed };
+    return clonePreviewState(parsed);
   } catch {
     return cloneDefaultState();
   }
@@ -51,6 +55,10 @@ export function createPreviewState({ storage = globalThis.localStorage } = {}) {
   return {
     getState() {
       return currentState;
+    },
+    replace(nextState) {
+      currentState = clonePreviewState(nextState);
+      persist();
     },
     navigate(screenId, { replace = false } = {}) {
       if (!replace && currentState.currentScreenId !== screenId) {

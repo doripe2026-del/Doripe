@@ -41,6 +41,30 @@ test("replace navigation does not add history or change review status", () => {
   assert.equal(state.getState().reviewStatus.a3, undefined);
 });
 
+test("replace persists the complete transition state across reloads", () => {
+  const storage = createMemoryStorage();
+  const state = createPreviewState({ storage });
+  const transitionState = {
+    ...state.getState(),
+    currentScreenId: "b4",
+    history: ["b1"],
+    selections: {
+      selectedPlaceId: "place-1",
+      selectedMediaId: "media-2",
+      selectedUserId: "user-3",
+      selectedRouteId: "route-1"
+    }
+  };
+
+  state.replace(transitionState);
+  const reloaded = createPreviewState({ storage });
+
+  assert.deepEqual(reloaded.getState(), transitionState);
+  assert.notEqual(reloaded.getState(), transitionState);
+  assert.notEqual(reloaded.getState().history, transitionState.history);
+  assert.notEqual(reloaded.getState().selections, transitionState.selections);
+});
+
 test("reset restores defaults and clears preview storage", () => {
   const storage = createMemoryStorage();
   const state = createPreviewState({ storage });

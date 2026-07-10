@@ -194,6 +194,71 @@ test("contract records the corrected B4, B6, and D13 evidence", () => {
   assert.ok(d13PhotoMenus.every((record) => record.actionId === "open-photo-menu"));
 });
 
+test("one measured source maps to one action unless backed by explicit Figma variants", async () => {
+  const { validateActionSources } = await import("../../scripts/generate-app-preview-action-contract.mjs");
+  const actionsBySource = new Map();
+
+  for (const record of actionContract.actions) {
+    const key = `${record.screenId}\0${record.source}`;
+    const records = actionsBySource.get(key) || [];
+    records.push(record);
+    actionsBySource.set(key, records);
+  }
+
+  for (const [key, records] of actionsBySource) {
+    const actionIds = new Set(records.map((record) => record.actionId));
+    if (actionIds.size <= 1) continue;
+    assert.ok(records.every((record) => record.variant?.condition && record.variant?.figmaNodeId), key);
+    assert.equal(new Set(records.map((record) => record.variant.figmaNodeId)).size, records.length, key);
+  }
+
+  assert.throws(() => validateActionSources([
+    { screenId: "e1", source: "action/primary", actionId: "toggle-follow" },
+    { screenId: "e1", source: "action/primary", actionId: "edit-profile" }
+  ]), /Duplicate measured action source/);
+});
+
+test("noninteractive controls require exact reviewed overrides without generic reasons", async () => {
+  const {
+    ALLOWED_NONINTERACTIVE_REASONS,
+    NONINTERACTIVE_OVERRIDES,
+    classifyNonInteractive
+  } = await import("../../scripts/generate-app-preview-action-contract.mjs");
+  const artifactByKey = new Map(actionContract.nonInteractive.map((record) => [
+    `${record.screenId}\0${record.source}`,
+    record
+  ]));
+
+  assert.throws(() => classifyNonInteractive({
+    measurementRegistry: { x1: { elements: { "button / unreviewed": {} } } },
+    actionRecords: [],
+    overrides: {}
+  }), /Unreviewed control-shaped element: x1\/button \/ unreviewed/);
+
+  for (const [key, override] of Object.entries(NONINTERACTIVE_OVERRIDES)) {
+    const record = artifactByKey.get(key);
+    assert.ok(record, `override missing from artifact: ${key}`);
+    assert.ok(ALLOWED_NONINTERACTIVE_REASONS.has(override.reason), key);
+    assert.equal(record.reason, override.reason);
+    assert.equal(record.evidence, override.evidence);
+    assert.doesNotMatch(record.evidence, /reference and 59-screen inventory|visual child or containing composite/i);
+  }
+  assert.equal(artifactByKey.size, Object.keys(NONINTERACTIVE_OVERRIDES).length);
+});
+
+test("E1 exposes only its measured follow action and B4 rows are interactive", () => {
+  const e1Actions = actionIdsForScreen("e1");
+  const b4BySource = new Map(actionContract.actions
+    .filter((record) => record.screenId === "b4")
+    .map((record) => [record.source, record]));
+
+  assert.ok(!e1Actions.includes("edit-profile"));
+  assert.equal(b4BySource.get("Info / address row").actionId, "open-place-map");
+  assert.equal(b4BySource.get("Info / address row").effect.destination, "c5");
+  assert.equal(b4BySource.get("Info / menu row").actionId, "open-menu");
+  assert.equal(b4BySource.get("Info / menu row").effect.type, "overlay");
+});
+
 test("route controls use their distinct measured buttons", () => {
   const c4RouteMapSources = actionContract.actions
     .filter((record) => record.screenId === "c4" && record.actionId === "open-route-map")
@@ -392,6 +457,8 @@ test("main owns delegated action events and keeps sharing as a DOM effect", asyn
   assert.match(source, /function isActionFormControl\(target\)/);
   assert.match(source, /if \(isActionFormControl\(target\)\) return;/);
   assert.match(source, /function isChangeOnlyControl\(target\)/);
+  assert.match(source, /state\.replace\(result\.state\)/);
+  assert.doesNotMatch(source, /if \(result\.nextScreenId\) navigate\(result\.nextScreenId\)/);
 
   const clickHandler = source.slice(
     source.indexOf('document.addEventListener("click"'),

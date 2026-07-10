@@ -1467,6 +1467,29 @@
     },
     {
       "screenId": "b4",
+      "actionId": "open-place-map",
+      "source": "Info / address row",
+      "kind": "row",
+      "effect": {
+        "type": "navigate",
+        "destination": "c5",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Info / address row control is visible in the B4 reference."
+    },
+    {
+      "screenId": "b4",
+      "actionId": "open-menu",
+      "source": "Info / menu row",
+      "kind": "row",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "place-menu"
+      },
+      "evidence": "The Info / menu row control is visible in the B4 reference."
+    },
+    {
+      "screenId": "b4",
       "actionId": "open-share",
       "source": "CTA / share button bg",
       "kind": "button",
@@ -1590,6 +1613,29 @@
     },
     {
       "screenId": "b5",
+      "actionId": "open-place-map",
+      "source": "Info / address row",
+      "kind": "row",
+      "effect": {
+        "type": "navigate",
+        "destination": "c5",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Info / address row control is visible in the B5 reference."
+    },
+    {
+      "screenId": "b5",
+      "actionId": "open-menu",
+      "source": "Info / menu row",
+      "kind": "row",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "place-menu"
+      },
+      "evidence": "The Info / menu row control is visible in the B5 reference."
+    },
+    {
+      "screenId": "b5",
       "actionId": "open-share",
       "source": "CTA / share button bg",
       "kind": "button",
@@ -1664,6 +1710,29 @@
         "destination": "b9"
       },
       "evidence": "The Info / hours row control is visible in the B6 reference."
+    },
+    {
+      "screenId": "b6",
+      "actionId": "open-place-map",
+      "source": "Info / address row",
+      "kind": "row",
+      "effect": {
+        "type": "navigate",
+        "destination": "c5",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Info / address row control is visible in the B6 reference."
+    },
+    {
+      "screenId": "b6",
+      "actionId": "open-menu",
+      "source": "Info / menu row",
+      "kind": "row",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "place-menu"
+      },
+      "evidence": "The Info / menu row control is visible in the B6 reference."
     },
     {
       "screenId": "b6",
@@ -1798,6 +1867,29 @@
         "destination": "b9"
       },
       "evidence": "The slot/info-row/opening-hours control is visible in the B10 reference."
+    },
+    {
+      "screenId": "b10",
+      "actionId": "open-place-map",
+      "source": "slot/info-row/address",
+      "kind": "row",
+      "effect": {
+        "type": "navigate",
+        "destination": "c5",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The slot/info-row/address control is visible in the B10 reference."
+    },
+    {
+      "screenId": "b10",
+      "actionId": "open-menu",
+      "source": "slot/info-row/menu",
+      "kind": "row",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "place-menu"
+      },
+      "evidence": "The slot/info-row/menu control is visible in the B10 reference."
     },
     {
       "screenId": "b10",
@@ -2469,24 +2561,24 @@
     {
       "screenId": "c4",
       "actionId": "show-saved-places",
-      "source": "toggle / place route",
+      "source": "icon / bookmark",
       "kind": "tab",
       "effect": {
         "type": "navigate",
         "destination": "c6"
       },
-      "evidence": "The two saved-view tabs are flattened into the measured place/route toggle composite."
+      "evidence": "The measured bookmark icon is the distinct place-tab affordance in C4."
     },
     {
       "screenId": "c4",
       "actionId": "show-saved-routes",
-      "source": "toggle / place route",
+      "source": "icon / route",
       "kind": "tab",
       "effect": {
         "type": "state",
         "stateKey": "selections.savedTab"
       },
-      "evidence": "The two saved-view tabs are flattened into the measured place/route toggle composite."
+      "evidence": "The measured route icon is the distinct route-tab affordance in C4."
     },
     {
       "screenId": "c4",
@@ -2662,24 +2754,24 @@
     {
       "screenId": "c6",
       "actionId": "show-saved-places",
-      "source": "toggle / place route",
+      "source": "icon / bookmark",
       "kind": "tab",
       "effect": {
         "type": "state",
         "stateKey": "selections.savedTab"
       },
-      "evidence": "The toggle / place route control is visible in the C6 reference."
+      "evidence": "The icon / bookmark control is visible in the C6 reference."
     },
     {
       "screenId": "c6",
       "actionId": "show-saved-routes",
-      "source": "toggle / place route",
+      "source": "icon / route",
       "kind": "tab",
       "effect": {
         "type": "navigate",
         "destination": "c4"
       },
-      "evidence": "The toggle / place route control is visible in the C6 reference."
+      "evidence": "The icon / route control is visible in the C6 reference."
     },
     {
       "screenId": "c6",
@@ -4597,17 +4689,6 @@
     },
     {
       "screenId": "e1",
-      "actionId": "edit-profile",
-      "source": "action/primary",
-      "kind": "button",
-      "effect": {
-        "type": "navigate",
-        "destination": "e2"
-      },
-      "evidence": "The action/primary control is visible in the E1 reference."
-    },
-    {
-      "screenId": "e1",
       "actionId": "toggle-follow",
       "source": "action/primary",
       "kind": "button",
@@ -4615,7 +4696,7 @@
         "type": "state",
         "stateKey": "followedUserIds"
       },
-      "evidence": "The measured E1 primary profile button is reused for owner edit and viewed-user follow states; the Task 4 brief requires the follow state contract."
+      "evidence": "The E1 reference visibly labels the measured primary button 팔로우; no edit-profile variant is present in this static frame."
     },
     {
       "screenId": "e1",
@@ -4736,13 +4817,13 @@
     {
       "screenId": "e2",
       "actionId": "show-profile-places",
-      "source": "segment place icon",
+      "source": "segment place",
       "kind": "tab",
       "effect": {
         "type": "state",
         "stateKey": "selections.profileTab"
       },
-      "evidence": "The segment place icon control is visible in the E2 reference."
+      "evidence": "The segment place control is visible in the E2 reference."
     },
     {
       "screenId": "e2",
@@ -4754,6 +4835,17 @@
         "stateKey": "selections.profileTab"
       },
       "evidence": "The segment route control is visible in the E2 reference."
+    },
+    {
+      "screenId": "e2",
+      "actionId": "edit-media",
+      "source": "action/primary",
+      "kind": "button",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "media-editor"
+      },
+      "evidence": "The action/primary control is visible in the E2 reference."
     },
     {
       "screenId": "e2",
@@ -5170,6 +5262,438 @@
         "selectionKey": "selectedUserId"
       },
       "evidence": "The media/avatar/crop-asset#12 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#2",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#2 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#3",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#3 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#4",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#4 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#5",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#5 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#6",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#6 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#7",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#7 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#8",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#8 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#9",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#9 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#10",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#10 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#11",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#11 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#12",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#12 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#13",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#13 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#14",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#14 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#15",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#15 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#16",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#16 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#17",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#17 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#18",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#18 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#19",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#19 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#20",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#20 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#21",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#21 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#22",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#22 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#23",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#23 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#24",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#24 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#25",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#25 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#26",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#26 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#27",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#27 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#28",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#28 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#29",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#29 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#30",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#30 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#31",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#31 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#32",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#32 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#33",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#33 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#34",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#34 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#35",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#35 control is visible in the E7 reference."
+    },
+    {
+      "screenId": "e7",
+      "actionId": "open-media",
+      "source": "slot/user-photo/media#36",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "b7",
+        "selectionKey": "selectedMediaId"
+      },
+      "evidence": "The slot/user-photo/media#36 control is visible in the E7 reference."
     }
   ],
   "nonInteractive": [
@@ -5177,631 +5701,442 @@
       "screenId": "a1",
       "source": "media/photo/crop-asset",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "decorative-media",
+      "evidence": "A1 media/photo/crop-asset is one of the four onboarding collage images and has no button, link, or destination affordance in the reference."
     },
     {
       "screenId": "a1",
       "source": "media/photo/crop-asset#2",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "decorative-media",
+      "evidence": "A1 media/photo/crop-asset#2 is one of the four onboarding collage images and has no button, link, or destination affordance in the reference."
     },
     {
       "screenId": "a1",
       "source": "media/photo/crop-asset#3",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "decorative-media",
+      "evidence": "A1 media/photo/crop-asset#3 is one of the four onboarding collage images and has no button, link, or destination affordance in the reference."
     },
     {
       "screenId": "a1",
       "source": "media/photo/crop-asset#4",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "decorative-media",
+      "evidence": "A1 media/photo/crop-asset#4 is one of the four onboarding collage images and has no button, link, or destination affordance in the reference."
     },
     {
       "screenId": "a3",
       "source": "action/primary",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "composite-container",
+      "evidence": "A3 action/primary bounds the separately measured create-account and login button backgrounds; the composite itself is not a third control."
     },
     {
       "screenId": "a4",
       "source": "action/primary",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "composite-container",
+      "evidence": "A4 action/primary bounds the separately measured create-account and login button backgrounds; the composite itself is not a third control."
     },
     {
       "screenId": "a7",
       "source": "field/password-rules/container",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "static-validation-status",
+      "evidence": "A7 field/password-rules/container displays password requirements and check states only; the reference shows no editable or clickable affordance."
     },
     {
       "screenId": "a8",
       "source": "field/password-rules/container",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "static-validation-status",
+      "evidence": "A8 field/password-rules/container displays password requirements and check states only; the reference shows no editable or clickable affordance."
     },
     {
       "screenId": "a13",
       "source": "field/password-rules/container",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "static-validation-status",
+      "evidence": "A13 field/password-rules/container displays password requirements and check states only; the reference shows no editable or clickable affordance."
     },
     {
       "screenId": "a15",
       "source": "gender radio",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "A15 gender radio is the radio-circle artwork inside a separately contracted named gender row."
     },
     {
       "screenId": "a15",
       "source": "gender radio#2",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "A15 gender radio#2 is the radio-circle artwork inside a separately contracted named gender row."
     },
     {
       "screenId": "a15",
       "source": "gender radio#3",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "A15 gender radio#3 is the radio-circle artwork inside a separately contracted named gender row."
     },
     {
       "screenId": "b1",
       "source": "Header / segmented control",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "composite-container",
+      "evidence": "B1 Header / segmented control contains the separately contracted Following and Discover tab labels."
     },
     {
       "screenId": "b1",
       "source": "filter label",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "visual-child",
+      "evidence": "B1 filter label is text inside the separately contracted Header / filter pill hit target."
     },
     {
       "screenId": "b2",
       "source": "Header / segmented control",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "composite-container",
+      "evidence": "B2 Header / segmented control contains the separately contracted Following and Discover tab labels."
     },
     {
       "screenId": "b2",
       "source": "filter label",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
-    },
-    {
-      "screenId": "b4",
-      "source": "Info / address row",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "b4",
-      "source": "Info / menu row",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B2 filter label is text inside the separately contracted Header / filter pill hit target."
     },
     {
       "screenId": "b4",
       "source": "Icon / CTA / share",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B4 Icon / CTA / share is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b4",
       "source": "CTA / share text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B4 CTA / share text is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b4",
       "source": "Icon / CTA / save",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B4 Icon / CTA / save is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b4",
       "source": "CTA / save text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "b5",
-      "source": "Info / address row",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "b5",
-      "source": "Info / menu row",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B4 CTA / save text is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b5",
       "source": "Icon / CTA / share",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B5 Icon / CTA / share is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b5",
       "source": "CTA / share text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B5 CTA / share text is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b5",
       "source": "Icon / CTA / save",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B5 Icon / CTA / save is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b5",
       "source": "CTA / save text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "b6",
-      "source": "Info / address row",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "b6",
-      "source": "Info / menu row",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B5 CTA / save text is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b6",
       "source": "Icon / CTA / share",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B6 Icon / CTA / share is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b6",
       "source": "CTA / share text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B6 CTA / share text is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b6",
       "source": "Icon / CTA / save",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B6 Icon / CTA / save is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b6",
       "source": "CTA / save text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B6 CTA / save text is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b6",
       "source": "Floating route CTA / blur bg",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "visual-child",
+      "evidence": "B6 Floating route CTA / blur bg is presentation artwork inside the separately contracted Floating route CTA / text control."
     },
     {
       "screenId": "b6",
       "source": "Floating route CTA / icon",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "visual-child",
+      "evidence": "B6 Floating route CTA / icon is presentation artwork inside the separately contracted Floating route CTA / text control."
     },
     {
       "screenId": "b9",
       "source": "bottom sheet / business hours",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "composite-container",
+      "evidence": "B9 bottom sheet / business hours is the hours-sheet surface; its measured back button is the independent dismiss control."
     },
     {
       "screenId": "b10",
       "source": "CTA / share icon",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "visual-child",
+      "evidence": "B10 CTA / share icon is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b10",
       "source": "CTA / share text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B10 CTA / share text is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b10",
       "source": "CTA / save icon",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "visual-child",
+      "evidence": "B10 CTA / save icon is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b10",
       "source": "CTA / save text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "B10 CTA / save text is icon or text artwork inside its separately contracted share/save button background."
     },
     {
       "screenId": "b10",
       "source": "Floating route CTA / glass bg",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "visual-child",
+      "evidence": "B10 Floating route CTA / glass bg is presentation artwork inside the separately contracted Floating route CTA / text control."
     },
     {
       "screenId": "b10",
       "source": "Floating route CTA / icon",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "visual-child",
+      "evidence": "B10 Floating route CTA / icon is presentation artwork inside the separately contracted Floating route CTA / text control."
     },
     {
       "screenId": "c1",
       "source": "bottom sheet / filter only",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "composite-container",
+      "evidence": "C1 bottom sheet / filter only is the filter-sheet surface containing separately measured option buttons, apply CTA, and reset text."
     },
     {
       "screenId": "c2",
       "source": "bottom sheet / filter only",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "composite-container",
+      "evidence": "C2 bottom sheet / filter only is the filter-sheet surface containing separately measured option buttons, apply CTA, and reset text."
     },
     {
       "screenId": "c3",
       "source": "bottom fixed CTA area",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "composite-container",
+      "evidence": "C3 bottom fixed CTA area is the fixed footer surface around the separately measured confirmation CTA."
+    },
+    {
+      "screenId": "c4",
+      "source": "toggle / place route",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "C4 toggle / place route is the shared tab track; icon / bookmark and icon / route are the two distinct contracted tab sources."
     },
     {
       "screenId": "c4",
       "source": "route card",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "composite-container",
+      "evidence": "C4 route card groups one route summary with separately measured 경로 보기 and 상세 보기 buttons; the card has no additional whole-card action."
     },
     {
       "screenId": "c4",
       "source": "route card#2",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "composite-container",
+      "evidence": "C4 route card#2 groups one route summary with separately measured 경로 보기 and 상세 보기 buttons; the card has no additional whole-card action."
     },
     {
       "screenId": "c4",
       "source": "route card#3",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "composite-container",
+      "evidence": "C4 route card#3 groups one route summary with separately measured 경로 보기 and 상세 보기 buttons; the card has no additional whole-card action."
+    },
+    {
+      "screenId": "c6",
+      "source": "toggle / place route",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "C6 toggle / place route is the shared tab track; icon / bookmark and icon / route are the two distinct contracted tab sources."
     },
     {
       "screenId": "d1",
       "source": "Start CTA / icon bg",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "visual-child",
+      "evidence": "D1 Start CTA / icon bg is artwork inside the separately contracted Start CTA / bg button."
     },
     {
       "screenId": "d1",
       "source": "Start CTA / text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "D1 Start CTA / text is artwork inside the separately contracted Start CTA / bg button."
     },
     {
       "screenId": "d2",
       "source": "Segmented / bg",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "composite-container",
+      "evidence": "D2 Segmented / bg is the shared route-source tab track around separately contracted tab elements."
     },
     {
       "screenId": "d2",
       "source": "Segmented / saved text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "D2 Segmented / saved text is label artwork inside a separately contracted tab, filter button, or route CTA source."
     },
     {
       "screenId": "d2",
       "source": "Filter / change text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "D2 Filter / change text is label artwork inside a separately contracted tab, filter button, or route CTA source."
     },
     {
       "screenId": "d2",
       "source": "CTA / route label",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "visual-child",
+      "evidence": "D2 CTA / route label is label artwork inside a separately contracted tab, filter button, or route CTA source."
     },
     {
       "screenId": "d3",
       "source": "Segmented / bg",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "composite-container",
+      "evidence": "D3 Segmented / bg is the shared route-source tab track around separately contracted tab elements."
     },
     {
       "screenId": "d3",
       "source": "Segmented / discover text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "D3 Segmented / discover text is label artwork inside a separately contracted tab, filter button, or route CTA source."
     },
     {
       "screenId": "d3",
       "source": "Filter / change text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "D3 Filter / change text is label artwork inside a separately contracted tab, filter button, or route CTA source."
     },
     {
       "screenId": "d3",
       "source": "CTA / route label",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "visual-child",
+      "evidence": "D3 CTA / route label is label artwork inside a separately contracted tab, filter button, or route CTA source."
     },
     {
       "screenId": "d11",
       "source": "CTA text",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "D11 CTA text is the label inside the separately contracted Floating CTA / start here button."
     },
     {
       "screenId": "d13",
       "source": "Photo grid sheet",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
-    },
-    {
-      "screenId": "e2",
-      "source": "segment place",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e2",
-      "source": "action/primary",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "composite-container",
+      "evidence": "D13 Photo grid sheet is the sheet surface containing ten photo slots and nine separately contracted photo-menu buttons."
     },
     {
       "screenId": "e4",
       "source": "field/email/bg",
       "kind": "measured-control-layer",
-      "reason": "This measured layer is a visual child or containing composite of separately contracted controls and has no independent hit target."
+      "reason": "read-only-status",
+      "evidence": "E4 field/email/bg displays the verified account email as read-only; the reference provides no email edit affordance."
     },
     {
       "screenId": "e5",
       "source": "ui/toggle/knob",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "E5 ui/toggle/knob is the moving knob artwork inside its separately contracted toggle background."
     },
     {
       "screenId": "e5",
       "source": "ui/toggle/knob#2",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "E5 ui/toggle/knob#2 is the moving knob artwork inside its separately contracted toggle background."
     },
     {
       "screenId": "e5",
       "source": "ui/toggle/knob#3",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "E5 ui/toggle/knob#3 is the moving knob artwork inside its separately contracted toggle background."
     },
     {
       "screenId": "e5",
       "source": "ui/toggle/knob#4",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "E5 ui/toggle/knob#4 is the moving knob artwork inside its separately contracted toggle background."
     },
     {
       "screenId": "e5",
       "source": "ui/toggle/knob#5",
       "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#2",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#3",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#4",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#5",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#6",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#7",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#8",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#9",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#10",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#11",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#12",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#13",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#14",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#15",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#16",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#17",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#18",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#19",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#20",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#21",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#22",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#23",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#24",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#25",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#26",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#27",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#28",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#29",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#30",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#31",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#32",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#33",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#34",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#35",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
-    },
-    {
-      "screenId": "e7",
-      "source": "slot/user-photo/media#36",
-      "kind": "measured-control-layer",
-      "reason": "The reference and 59-screen inventory show no separate destination or state for this control-shaped layer."
+      "reason": "visual-child",
+      "evidence": "E5 ui/toggle/knob#5 is the moving knob artwork inside its separately contracted toggle background."
     }
   ]
 }

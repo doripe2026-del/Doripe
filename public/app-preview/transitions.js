@@ -284,6 +284,8 @@ export const TRANSITIONS = Object.freeze({
     "toggle-media-like": toggleMediaLike,
     "open-comments": navigateTo("b8"),
     "open-business-hours": navigateTo("b9"),
+    "open-place-map": selectAndNavigate("c5", "selectedPlaceId", "placeId"),
+    "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
     "save-place": savePlace,
     "open-related-place": selectAndNavigate("b4", "selectedPlaceId", "placeId"),
@@ -295,6 +297,8 @@ export const TRANSITIONS = Object.freeze({
     "toggle-media-like": toggleMediaLike,
     "open-comments": navigateTo("b8"),
     "open-business-hours": navigateTo("b9"),
+    "open-place-map": selectAndNavigate("c5", "selectedPlaceId", "placeId"),
+    "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
     "save-place": savePlace
   }),
@@ -304,6 +308,8 @@ export const TRANSITIONS = Object.freeze({
     "toggle-media-like": toggleMediaLike,
     "open-comments": navigateTo("b8"),
     "open-business-hours": navigateTo("b9"),
+    "open-place-map": selectAndNavigate("c5", "selectedPlaceId", "placeId"),
+    "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
     "save-place": savePlace,
     "open-related-place": selectAndNavigate("b4", "selectedPlaceId", "placeId"),
@@ -324,6 +330,8 @@ export const TRANSITIONS = Object.freeze({
     "toggle-media-like": toggleMediaLike,
     "open-comments": navigateTo("b8"),
     "open-business-hours": navigateTo("b9"),
+    "open-place-map": selectAndNavigate("c5", "selectedPlaceId", "placeId"),
+    "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
     "save-place": savePlace,
     "toggle-comment-like": toggleCommentLike,
@@ -457,7 +465,6 @@ export const TRANSITIONS = Object.freeze({
   }),
   e1: defineTransitions("e1", {
     "go-back": navigateBack,
-    "edit-profile": navigateTo("e2"),
     "toggle-follow": toggleFollow,
     "open-media": selectAndNavigate("b7", "selectedMediaId", "mediaId")
   }),
@@ -467,6 +474,7 @@ export const TRANSITIONS = Object.freeze({
     "update-bio": updateBio,
     "show-profile-places": selectValue("profileTab"),
     "show-profile-routes": selectValue("profileTab"),
+    "edit-media": openOverlay("media-editor", "selectedMediaId", "mediaId"),
     "save-profile": navigateTo("e1")
   }),
   e3: defineTransitions("e3", {
@@ -502,7 +510,8 @@ export const TRANSITIONS = Object.freeze({
   e7: defineTransitions("e7", {
     "go-back": navigateBack,
     "toggle-follow": toggleFollow,
-    "open-profile": selectAndNavigate("e1", "selectedUserId", "userId")
+    "open-profile": selectAndNavigate("e1", "selectedUserId", "userId"),
+    "open-media": selectAndNavigate("b7", "selectedMediaId", "mediaId")
   })
 });
 

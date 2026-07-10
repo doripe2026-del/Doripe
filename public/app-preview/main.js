@@ -107,7 +107,7 @@ function navigate(screenId, { replace = false } = {}) {
   }
 
   state.navigate(screenId, { replace });
-  interactionState = { ...interactionState, currentScreenId: screenId };
+  interactionState = state.getState();
   writeScreenIdToUrl(screenId, { replace });
   renderScreen(screenId);
 }
@@ -121,7 +121,7 @@ function renderFromUrl() {
 
   const selectedScreenId = screenId || state.getState().currentScreenId;
   state.navigate(selectedScreenId, { replace: true });
-  interactionState = { ...interactionState, currentScreenId: selectedScreenId };
+  interactionState = state.getState();
   renderScreen(selectedScreenId);
 }
 
@@ -177,6 +177,8 @@ function setEffectToast(kind, message) {
     ...interactionState,
     toast: { kind, message, duration: 2500 }
   };
+  state.replace(interactionState);
+  interactionState = state.getState();
   phoneRoot.dataset.toastKind = kind;
 }
 
@@ -208,8 +210,12 @@ function dispatchTargetAction(target) {
   const payload = readActionPayload(target);
   const result = dispatchAction(screenId, actionId, payload);
 
-  interactionState = result.state;
-  if (result.nextScreenId) navigate(result.nextScreenId);
+  state.replace(result.state);
+  interactionState = state.getState();
+  if (result.nextScreenId) {
+    writeScreenIdToUrl(result.nextScreenId);
+    renderScreen(result.nextScreenId);
+  }
   void runDomEffect(result.effect, screenId, payload);
 }
 
