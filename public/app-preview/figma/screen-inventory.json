@@ -1,0 +1,2225 @@
+[
+  {
+    "id": "a1",
+    "name": "A1 / 시작",
+    "group": "A",
+    "nodeId": "446:34",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a1.png",
+    "masks": []
+  },
+  {
+    "id": "a2",
+    "name": "A2 / 비밀번호 생성",
+    "group": "A",
+    "nodeId": "446:56",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a2.png",
+    "masks": []
+  },
+  {
+    "id": "a3",
+    "name": "A3 / 이메일 입력",
+    "group": "A",
+    "nodeId": "446:75",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a3.png",
+    "masks": []
+  },
+  {
+    "id": "a4",
+    "name": "A4 / 비밀번호 입력",
+    "group": "A",
+    "nodeId": "446:98",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a4.png",
+    "masks": []
+  },
+  {
+    "id": "a5",
+    "name": "A5 / 스플래시",
+    "group": "A",
+    "nodeId": "446:134",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a5.png",
+    "masks": []
+  },
+  {
+    "id": "a6",
+    "name": "A6 / 새 비밀번호 설정",
+    "group": "A",
+    "nodeId": "446:146",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a6.png",
+    "masks": []
+  },
+  {
+    "id": "a7",
+    "name": "A7 / 닉네임 입력",
+    "group": "A",
+    "nodeId": "446:182",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a7.png",
+    "masks": []
+  },
+  {
+    "id": "a8",
+    "name": "A8 / 출생연도 선택",
+    "group": "A",
+    "nodeId": "446:206",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a8.png",
+    "masks": []
+  },
+  {
+    "id": "a9",
+    "name": "A9 / 유입경로 선택",
+    "group": "A",
+    "nodeId": "446:226",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a9.png",
+    "masks": []
+  },
+  {
+    "id": "a10",
+    "name": "A10 / 이메일 입력",
+    "group": "A",
+    "nodeId": "446:281",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a10.png",
+    "masks": []
+  },
+  {
+    "id": "a11",
+    "name": "A11 / 재설정 메일 발송",
+    "group": "A",
+    "nodeId": "446:298",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a11.png",
+    "masks": []
+  },
+  {
+    "id": "a12",
+    "name": "A12 / 인지경로 선택",
+    "group": "A",
+    "nodeId": "446:321",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a12.png",
+    "masks": []
+  },
+  {
+    "id": "a13",
+    "name": "A13 / 동네 선택",
+    "group": "A",
+    "nodeId": "446:391",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a13.png",
+    "masks": []
+  },
+  {
+    "id": "a14",
+    "name": "A14 / 로그인",
+    "group": "A",
+    "nodeId": "446:430",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a14.png",
+    "masks": []
+  },
+  {
+    "id": "a15",
+    "name": "A15 / 성별 선택",
+    "group": "A",
+    "nodeId": "446:457",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/a15.png",
+    "masks": []
+  },
+  {
+    "id": "b1",
+    "name": "B1 / 팔로잉 피드",
+    "group": "B",
+    "nodeId": "446:507",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/b1.png",
+    "masks": [
+      {
+        "x": 24,
+        "y": 178,
+        "width": 166,
+        "height": 221,
+        "reason": "photo"
+      },
+      {
+        "x": 24,
+        "y": 407,
+        "width": 166,
+        "height": 93,
+        "reason": "photo"
+      },
+      {
+        "x": 24,
+        "y": 508,
+        "width": 166,
+        "height": 124,
+        "reason": "photo"
+      },
+      {
+        "x": 24,
+        "y": 640,
+        "width": 166,
+        "height": 166,
+        "reason": "photo"
+      },
+      {
+        "x": 24,
+        "y": 814,
+        "width": 166,
+        "height": 38,
+        "reason": "photo"
+      },
+      {
+        "x": 198,
+        "y": 178,
+        "width": 166,
+        "height": 124,
+        "reason": "photo"
+      },
+      {
+        "x": 198,
+        "y": 310,
+        "width": 166,
+        "height": 221,
+        "reason": "photo"
+      },
+      {
+        "x": 198,
+        "y": 539,
+        "width": 166,
+        "height": 93,
+        "reason": "photo"
+      },
+      {
+        "x": 198,
+        "y": 640,
+        "width": 166,
+        "height": 212,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "b2",
+    "name": "B2 / 발견 피드",
+    "group": "B",
+    "nodeId": "446:596",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/b2.png",
+    "masks": [
+      {
+        "x": 19.949,
+        "y": 82,
+        "width": 171.563,
+        "height": 210,
+        "reason": "photo"
+      },
+      {
+        "x": 195.503,
+        "y": 82,
+        "width": 177.548,
+        "height": 84,
+        "reason": "photo"
+      },
+      {
+        "x": 195.503,
+        "y": 168,
+        "width": 177.548,
+        "height": 168,
+        "reason": "photo"
+      },
+      {
+        "x": 19.949,
+        "y": 294,
+        "width": 171.563,
+        "height": 92,
+        "reason": "photo"
+      },
+      {
+        "x": 195.503,
+        "y": 338,
+        "width": 177.548,
+        "height": 82,
+        "reason": "photo"
+      },
+      {
+        "x": 19.949,
+        "y": 388,
+        "width": 171.563,
+        "height": 96,
+        "reason": "photo"
+      },
+      {
+        "x": 195.503,
+        "y": 424,
+        "width": 177.548,
+        "height": 152,
+        "reason": "photo"
+      },
+      {
+        "x": 19.949,
+        "y": 486,
+        "width": 171.563,
+        "height": 136,
+        "reason": "photo"
+      },
+      {
+        "x": 195.503,
+        "y": 578,
+        "width": 177.548,
+        "height": 68,
+        "reason": "photo"
+      },
+      {
+        "x": 19.949,
+        "y": 624,
+        "width": 171.563,
+        "height": 86,
+        "reason": "photo"
+      },
+      {
+        "x": 195.503,
+        "y": 648,
+        "width": 177.548,
+        "height": 106,
+        "reason": "photo"
+      },
+      {
+        "x": 19.949,
+        "y": 712,
+        "width": 171.563,
+        "height": 116,
+        "reason": "photo"
+      },
+      {
+        "x": 195.503,
+        "y": 756,
+        "width": 177.548,
+        "height": 72,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "b3",
+    "name": "B3 / 발견 피드 확장",
+    "group": "B",
+    "nodeId": "446:646",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/b3.png",
+    "masks": [
+      {
+        "x": 13.964,
+        "y": 82,
+        "width": 179.543,
+        "height": 208,
+        "reason": "photo"
+      },
+      {
+        "x": 197.497,
+        "y": 82,
+        "width": 181.538,
+        "height": 82,
+        "reason": "photo"
+      },
+      {
+        "x": 197.497,
+        "y": 170,
+        "width": 181.538,
+        "height": 148,
+        "reason": "photo"
+      },
+      {
+        "x": 13.964,
+        "y": 294,
+        "width": 179.543,
+        "height": 86,
+        "reason": "photo"
+      },
+      {
+        "x": 197.497,
+        "y": 322,
+        "width": 181.538,
+        "height": 124,
+        "reason": "photo"
+      },
+      {
+        "x": 13.964,
+        "y": 384,
+        "width": 179.543,
+        "height": 94,
+        "reason": "photo"
+      },
+      {
+        "x": 197.497,
+        "y": 452,
+        "width": 181.538,
+        "height": 108,
+        "reason": "photo"
+      },
+      {
+        "x": 13.964,
+        "y": 482,
+        "width": 179.543,
+        "height": 134,
+        "reason": "photo"
+      },
+      {
+        "x": 197.497,
+        "y": 564,
+        "width": 181.538,
+        "height": 98,
+        "reason": "photo"
+      },
+      {
+        "x": 13.964,
+        "y": 620,
+        "width": 179.543,
+        "height": 92,
+        "reason": "photo"
+      },
+      {
+        "x": 197.497,
+        "y": 666,
+        "width": 181.538,
+        "height": 74,
+        "reason": "photo"
+      },
+      {
+        "x": 13.964,
+        "y": 716,
+        "width": 179.543,
+        "height": 118,
+        "reason": "photo"
+      },
+      {
+        "x": 197.497,
+        "y": 744,
+        "width": 181.538,
+        "height": 90,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "b4",
+    "name": "B4 / 장소 상세",
+    "group": "B",
+    "nodeId": "446:682",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/b4.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 331,
+        "reason": "photo"
+      },
+      {
+        "x": 22,
+        "y": 331,
+        "width": 86,
+        "height": 96,
+        "reason": "photo"
+      },
+      {
+        "x": 23,
+        "y": 633,
+        "width": 28,
+        "height": 28,
+        "reason": "photo"
+      },
+      {
+        "x": 62,
+        "y": 631,
+        "width": 46,
+        "height": 16,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 62,
+        "y": 649,
+        "width": 230,
+        "height": 15,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 23,
+        "y": 679,
+        "width": 28,
+        "height": 28,
+        "reason": "photo"
+      },
+      {
+        "x": 62,
+        "y": 677,
+        "width": 46,
+        "height": 16,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 62,
+        "y": 695,
+        "width": 230,
+        "height": 15,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 22,
+        "y": 745,
+        "width": 171,
+        "height": 58,
+        "reason": "photo"
+      },
+      {
+        "x": 201,
+        "y": 745,
+        "width": 171,
+        "height": 58,
+        "reason": "photo"
+      },
+      {
+        "x": 30,
+        "y": 846,
+        "width": 62,
+        "height": 6,
+        "reason": "photo"
+      },
+      {
+        "x": 210,
+        "y": 846,
+        "width": 62,
+        "height": 6,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "b5",
+    "name": "B5 / 장소 상세 CTA",
+    "group": "B",
+    "nodeId": "446:818",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/b5.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 658,
+        "reason": "photo"
+      },
+      {
+        "x": 21,
+        "y": 569,
+        "width": 24,
+        "height": 24,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "b6",
+    "name": "B6 / 장소 상세 CTA Hover",
+    "group": "B",
+    "nodeId": "446:876",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/b6.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 332,
+        "reason": "photo"
+      },
+      {
+        "x": 23,
+        "y": 474,
+        "width": 28,
+        "height": 28,
+        "reason": "photo"
+      },
+      {
+        "x": 62,
+        "y": 472,
+        "width": 46,
+        "height": 16,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 62,
+        "y": 490,
+        "width": 230,
+        "height": 15,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 23,
+        "y": 520,
+        "width": 28,
+        "height": 28,
+        "reason": "photo"
+      },
+      {
+        "x": 62,
+        "y": 518,
+        "width": 46,
+        "height": 16,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 62,
+        "y": 536,
+        "width": 230,
+        "height": 15,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 22,
+        "y": 586,
+        "width": 171,
+        "height": 58,
+        "reason": "photo"
+      },
+      {
+        "x": 201,
+        "y": 586,
+        "width": 171,
+        "height": 58,
+        "reason": "photo"
+      },
+      {
+        "x": 30,
+        "y": 687,
+        "width": 62,
+        "height": 62,
+        "reason": "photo"
+      },
+      {
+        "x": 210,
+        "y": 687,
+        "width": 62,
+        "height": 62,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "b7",
+    "name": "B7 / 사진 확대",
+    "group": "B",
+    "nodeId": "446:1000",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/b7.png",
+    "masks": [
+      {
+        "x": 24,
+        "y": 92,
+        "width": 345,
+        "height": 612,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "b8",
+    "name": "B8 / 댓글",
+    "group": "B",
+    "nodeId": "446:1017",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/b8.png",
+    "masks": [
+      {
+        "x": 24,
+        "y": 405,
+        "width": 38,
+        "height": 38,
+        "reason": "photo"
+      },
+      {
+        "x": 76,
+        "y": 407,
+        "width": 64,
+        "height": 20,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 76,
+        "y": 431,
+        "width": 224,
+        "height": 22,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 24,
+        "y": 500,
+        "width": 38,
+        "height": 38,
+        "reason": "photo"
+      },
+      {
+        "x": 76,
+        "y": 502,
+        "width": 64,
+        "height": 20,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 76,
+        "y": 526,
+        "width": 224,
+        "height": 22,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 24,
+        "y": 558,
+        "width": 38,
+        "height": 38,
+        "reason": "photo"
+      },
+      {
+        "x": 76,
+        "y": 560,
+        "width": 64,
+        "height": 20,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 76,
+        "y": 584,
+        "width": 224,
+        "height": 22,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 24,
+        "y": 626,
+        "width": 38,
+        "height": 38,
+        "reason": "photo"
+      },
+      {
+        "x": 76,
+        "y": 628,
+        "width": 64,
+        "height": 20,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 76,
+        "y": 652,
+        "width": 224,
+        "height": 22,
+        "reason": "user-generated-text"
+      }
+    ]
+  },
+  {
+    "id": "b9",
+    "name": "B9 / 영업시간",
+    "group": "B",
+    "nodeId": "446:1070",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/b9.png",
+    "masks": []
+  },
+  {
+    "id": "b10",
+    "name": "B10 / 장소 상세 전체",
+    "group": "B",
+    "nodeId": "446:1106",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/b10.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 388,
+        "reason": "photo"
+      },
+      {
+        "x": 23,
+        "y": 573,
+        "width": 24,
+        "height": 24,
+        "reason": "photo"
+      },
+      {
+        "x": 58,
+        "y": 569,
+        "width": 45,
+        "height": 16,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 58,
+        "y": 586,
+        "width": 230,
+        "height": 15,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 23,
+        "y": 622,
+        "width": 24,
+        "height": 24,
+        "reason": "photo"
+      },
+      {
+        "x": 58,
+        "y": 618,
+        "width": 45,
+        "height": 16,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 58,
+        "y": 635,
+        "width": 230,
+        "height": 15,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 22,
+        "y": 702,
+        "width": 171,
+        "height": 58,
+        "reason": "photo"
+      },
+      {
+        "x": 201,
+        "y": 702,
+        "width": 171,
+        "height": 58,
+        "reason": "photo"
+      },
+      {
+        "x": 22,
+        "y": 772,
+        "width": 171,
+        "height": 58,
+        "reason": "photo"
+      },
+      {
+        "x": 201,
+        "y": 772,
+        "width": 171,
+        "height": 58,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "c1",
+    "name": "C1 / 저장 후보 리스트",
+    "group": "C",
+    "nodeId": "446:1223",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/c1.png",
+    "masks": []
+  },
+  {
+    "id": "c2",
+    "name": "C2 / 저장 후보 리스트 복제",
+    "group": "C",
+    "nodeId": "446:1348",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/c2.png",
+    "masks": []
+  },
+  {
+    "id": "c3",
+    "name": "C3 / 저장 후보 발견",
+    "group": "C",
+    "nodeId": "446:1474",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/c3.png",
+    "masks": [
+      {
+        "x": 20,
+        "y": 190,
+        "width": 169,
+        "height": 152,
+        "reason": "photo"
+      },
+      {
+        "x": 32,
+        "y": 350,
+        "width": 18,
+        "height": 18,
+        "reason": "photo"
+      },
+      {
+        "x": 204,
+        "y": 190,
+        "width": 169,
+        "height": 152,
+        "reason": "photo"
+      },
+      {
+        "x": 216,
+        "y": 350,
+        "width": 18,
+        "height": 18,
+        "reason": "photo"
+      },
+      {
+        "x": 20,
+        "y": 495,
+        "width": 169,
+        "height": 152,
+        "reason": "photo"
+      },
+      {
+        "x": 32,
+        "y": 655,
+        "width": 18,
+        "height": 18,
+        "reason": "photo"
+      },
+      {
+        "x": 204,
+        "y": 495,
+        "width": 169,
+        "height": 152,
+        "reason": "photo"
+      },
+      {
+        "x": 216,
+        "y": 655,
+        "width": 18,
+        "height": 18,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "c4",
+    "name": "C4 / 저장 후보 카드",
+    "group": "C",
+    "nodeId": "446:1631",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/c4.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 260,
+        "reason": "map"
+      },
+      {
+        "x": 22,
+        "y": 365,
+        "width": 116,
+        "height": 120,
+        "reason": "photo"
+      },
+      {
+        "x": 22,
+        "y": 511,
+        "width": 116,
+        "height": 120,
+        "reason": "photo"
+      },
+      {
+        "x": 22,
+        "y": 657,
+        "width": 116,
+        "height": 120,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "c5",
+    "name": "C5 / 저장 지도 상세",
+    "group": "C",
+    "nodeId": "446:1715",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/c5.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852,
+        "reason": "map"
+      },
+      {
+        "x": 80,
+        "y": 241,
+        "width": 88,
+        "height": 88,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "c6",
+    "name": "C6 / 저장 경로 없음",
+    "group": "C",
+    "nodeId": "446:1787",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/c6.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852,
+        "reason": "map"
+      },
+      {
+        "x": 28,
+        "y": 368,
+        "width": 100,
+        "height": 72,
+        "reason": "photo"
+      },
+      {
+        "x": 148,
+        "y": 368,
+        "width": 100,
+        "height": 72,
+        "reason": "photo"
+      },
+      {
+        "x": 268,
+        "y": 368,
+        "width": 100,
+        "height": 72,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "d1",
+    "name": "D1 / 루트 후보 리스트",
+    "group": "D",
+    "nodeId": "446:1929",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d1.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852,
+        "reason": "map"
+      }
+    ]
+  },
+  {
+    "id": "d2",
+    "name": "D2 / 루트 후보 저장장소",
+    "group": "D",
+    "nodeId": "446:1956",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d2.png",
+    "masks": [
+      {
+        "x": 16,
+        "y": 82,
+        "width": 361,
+        "height": 144,
+        "reason": "photo"
+      },
+      {
+        "x": 27,
+        "y": 423,
+        "width": 80,
+        "height": 86,
+        "reason": "photo"
+      },
+      {
+        "x": 27,
+        "y": 548,
+        "width": 80,
+        "height": 86,
+        "reason": "photo"
+      },
+      {
+        "x": 27,
+        "y": 673,
+        "width": 80,
+        "height": 86,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "d3",
+    "name": "D3 / 루트 후보 발견",
+    "group": "D",
+    "nodeId": "446:2048",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d3.png",
+    "masks": [
+      {
+        "x": 16,
+        "y": 82,
+        "width": 361,
+        "height": 144,
+        "reason": "photo"
+      },
+      {
+        "x": 17,
+        "y": 365,
+        "width": 174,
+        "height": 116,
+        "reason": "photo"
+      },
+      {
+        "x": 29,
+        "y": 491,
+        "width": 17,
+        "height": 17,
+        "reason": "photo"
+      },
+      {
+        "x": 202,
+        "y": 365,
+        "width": 174,
+        "height": 116,
+        "reason": "photo"
+      },
+      {
+        "x": 214,
+        "y": 491,
+        "width": 17,
+        "height": 17,
+        "reason": "photo"
+      },
+      {
+        "x": 17,
+        "y": 592,
+        "width": 174,
+        "height": 116,
+        "reason": "photo"
+      },
+      {
+        "x": 29,
+        "y": 718,
+        "width": 17,
+        "height": 17,
+        "reason": "photo"
+      },
+      {
+        "x": 202,
+        "y": 592,
+        "width": 174,
+        "height": 116,
+        "reason": "photo"
+      },
+      {
+        "x": 214,
+        "y": 718,
+        "width": 17,
+        "height": 17,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "d4",
+    "name": "D4 / 선택장소 지도확인",
+    "group": "D",
+    "nodeId": "446:2166",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d4.png",
+    "masks": []
+  },
+  {
+    "id": "d5",
+    "name": "D5 / 루트 이름 정하기",
+    "group": "D",
+    "nodeId": "446:2218",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d5.png",
+    "masks": [
+      {
+        "x": 50,
+        "y": 684,
+        "width": 144,
+        "height": 19,
+        "reason": "user-generated-text"
+      }
+    ]
+  },
+  {
+    "id": "d6",
+    "name": "D6 / 루트 완성",
+    "group": "D",
+    "nodeId": "446:2256",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d6.png",
+    "masks": [
+      {
+        "x": 24,
+        "y": 76,
+        "width": 234,
+        "height": 31,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 24,
+        "y": 154,
+        "width": 345,
+        "height": 191,
+        "reason": "map"
+      },
+      {
+        "x": 72,
+        "y": 442,
+        "width": 72,
+        "height": 72,
+        "reason": "photo"
+      },
+      {
+        "x": 72,
+        "y": 528,
+        "width": 72,
+        "height": 72,
+        "reason": "photo"
+      },
+      {
+        "x": 72,
+        "y": 614,
+        "width": 72,
+        "height": 72,
+        "reason": "photo"
+      },
+      {
+        "x": 34,
+        "y": 731,
+        "width": 50,
+        "height": 50,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "d7",
+    "name": "D7 / 내부 길찾기",
+    "group": "D",
+    "nodeId": "446:2341",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d7.png",
+    "masks": []
+  },
+  {
+    "id": "d8",
+    "name": "D8 / 경로 상세",
+    "group": "D",
+    "nodeId": "446:2394",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d8.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 386,
+        "reason": "photo"
+      },
+      {
+        "x": 69,
+        "y": 518,
+        "width": 92,
+        "height": 92,
+        "reason": "photo"
+      },
+      {
+        "x": 69,
+        "y": 623,
+        "width": 92,
+        "height": 92,
+        "reason": "photo"
+      },
+      {
+        "x": 69,
+        "y": 728,
+        "width": 92,
+        "height": 92,
+        "reason": "photo"
+      },
+      {
+        "x": 73,
+        "y": 416,
+        "width": 152,
+        "height": 27,
+        "reason": "user-generated-text"
+      }
+    ]
+  },
+  {
+    "id": "d9",
+    "name": "D9 / 경로 지도",
+    "group": "D",
+    "nodeId": "446:2462",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d9.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 386,
+        "reason": "photo"
+      },
+      {
+        "x": 69,
+        "y": 518,
+        "width": 92,
+        "height": 92,
+        "reason": "photo"
+      },
+      {
+        "x": 69,
+        "y": 623,
+        "width": 92,
+        "height": 92,
+        "reason": "photo"
+      },
+      {
+        "x": 69,
+        "y": 728,
+        "width": 92,
+        "height": 92,
+        "reason": "photo"
+      },
+      {
+        "x": 73,
+        "y": 416,
+        "width": 152,
+        "height": 27,
+        "reason": "user-generated-text"
+      }
+    ]
+  },
+  {
+    "id": "d10",
+    "name": "D10 / 경로 상세 전체",
+    "group": "D",
+    "nodeId": "446:2530",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d10.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 500,
+        "reason": "map"
+      },
+      {
+        "x": 73,
+        "y": 582,
+        "width": 50,
+        "height": 50,
+        "reason": "photo"
+      },
+      {
+        "x": 73,
+        "y": 650,
+        "width": 50,
+        "height": 50,
+        "reason": "photo"
+      },
+      {
+        "x": 73,
+        "y": 718,
+        "width": 50,
+        "height": 50,
+        "reason": "photo"
+      },
+      {
+        "x": 32,
+        "y": 522,
+        "width": 125,
+        "height": 22,
+        "reason": "user-generated-text"
+      }
+    ]
+  },
+  {
+    "id": "d11",
+    "name": "D11 / 지도 후보",
+    "group": "D",
+    "nodeId": "446:2574",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d11.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852,
+        "reason": "map"
+      },
+      {
+        "x": 69,
+        "y": 212,
+        "width": 86,
+        "height": 70,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "d12",
+    "name": "D12 / 선택장소 지도",
+    "group": "D",
+    "nodeId": "446:2608",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d12.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 140,
+        "reason": "map"
+      },
+      {
+        "x": 22,
+        "y": 185,
+        "width": 115,
+        "height": 166,
+        "reason": "photo"
+      },
+      {
+        "x": 146,
+        "y": 185,
+        "width": 100,
+        "height": 76,
+        "reason": "photo"
+      },
+      {
+        "x": 254,
+        "y": 185,
+        "width": 117,
+        "height": 123,
+        "reason": "photo"
+      },
+      {
+        "x": 146,
+        "y": 270,
+        "width": 100,
+        "height": 156,
+        "reason": "photo"
+      },
+      {
+        "x": 254,
+        "y": 318,
+        "width": 117,
+        "height": 108,
+        "reason": "photo"
+      },
+      {
+        "x": 22,
+        "y": 361,
+        "width": 115,
+        "height": 105,
+        "reason": "photo"
+      },
+      {
+        "x": 22,
+        "y": 476,
+        "width": 115,
+        "height": 130,
+        "reason": "photo"
+      },
+      {
+        "x": 146,
+        "y": 436,
+        "width": 100,
+        "height": 86,
+        "reason": "photo"
+      },
+      {
+        "x": 254,
+        "y": 436,
+        "width": 117,
+        "height": 167,
+        "reason": "photo"
+      },
+      {
+        "x": 146,
+        "y": 532,
+        "width": 100,
+        "height": 74,
+        "reason": "photo"
+      },
+      {
+        "x": 22,
+        "y": 616,
+        "width": 115,
+        "height": 100,
+        "reason": "photo"
+      },
+      {
+        "x": 146,
+        "y": 616,
+        "width": 225,
+        "height": 118,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "d13",
+    "name": "D13 / 후보 그리드",
+    "group": "D",
+    "nodeId": "446:2641",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d13.png",
+    "masks": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 205,
+        "reason": "map"
+      },
+      {
+        "x": 7,
+        "y": 196,
+        "width": 188,
+        "height": 137,
+        "reason": "photo"
+      },
+      {
+        "x": 202,
+        "y": 196,
+        "width": 183,
+        "height": 90,
+        "reason": "photo"
+      },
+      {
+        "x": 7,
+        "y": 341,
+        "width": 188,
+        "height": 103,
+        "reason": "photo"
+      },
+      {
+        "x": 202,
+        "y": 294,
+        "width": 183,
+        "height": 166,
+        "reason": "photo"
+      },
+      {
+        "x": 7,
+        "y": 452,
+        "width": 188,
+        "height": 103,
+        "reason": "photo"
+      },
+      {
+        "x": 202,
+        "y": 468,
+        "width": 183,
+        "height": 106,
+        "reason": "photo"
+      },
+      {
+        "x": 7,
+        "y": 563,
+        "width": 188,
+        "height": 108,
+        "reason": "photo"
+      },
+      {
+        "x": 202,
+        "y": 582,
+        "width": 183,
+        "height": 102,
+        "reason": "photo"
+      },
+      {
+        "x": 7,
+        "y": 683,
+        "width": 188,
+        "height": 110,
+        "reason": "photo"
+      },
+      {
+        "x": 202,
+        "y": 692,
+        "width": 183,
+        "height": 118,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "d14",
+    "name": "D14 / 루트 후보 발견 카드",
+    "group": "D",
+    "nodeId": "446:2667",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/d14.png",
+    "masks": [
+      {
+        "x": 14,
+        "y": 178,
+        "width": 176,
+        "height": 112,
+        "reason": "photo"
+      },
+      {
+        "x": 24,
+        "y": 282,
+        "width": 22,
+        "height": 22,
+        "reason": "photo"
+      },
+      {
+        "x": 24,
+        "y": 335,
+        "width": 129,
+        "height": 12,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 203,
+        "y": 178,
+        "width": 176,
+        "height": 112,
+        "reason": "photo"
+      },
+      {
+        "x": 213,
+        "y": 282,
+        "width": 22,
+        "height": 22,
+        "reason": "photo"
+      },
+      {
+        "x": 213,
+        "y": 335,
+        "width": 119,
+        "height": 12,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 14,
+        "y": 410,
+        "width": 176,
+        "height": 112,
+        "reason": "photo"
+      },
+      {
+        "x": 24,
+        "y": 514,
+        "width": 22,
+        "height": 22,
+        "reason": "photo"
+      },
+      {
+        "x": 24,
+        "y": 567,
+        "width": 92,
+        "height": 12,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 203,
+        "y": 410,
+        "width": 176,
+        "height": 112,
+        "reason": "photo"
+      },
+      {
+        "x": 213,
+        "y": 514,
+        "width": 22,
+        "height": 22,
+        "reason": "photo"
+      },
+      {
+        "x": 213,
+        "y": 567,
+        "width": 141,
+        "height": 12,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 14,
+        "y": 642,
+        "width": 176,
+        "height": 112,
+        "reason": "photo"
+      },
+      {
+        "x": 24,
+        "y": 746,
+        "width": 22,
+        "height": 22,
+        "reason": "photo"
+      },
+      {
+        "x": 24,
+        "y": 799,
+        "width": 101,
+        "height": 12,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 203,
+        "y": 642,
+        "width": 176,
+        "height": 112,
+        "reason": "photo"
+      },
+      {
+        "x": 213,
+        "y": 746,
+        "width": 22,
+        "height": 22,
+        "reason": "photo"
+      },
+      {
+        "x": 213,
+        "y": 799,
+        "width": 83,
+        "height": 12,
+        "reason": "user-generated-text"
+      }
+    ]
+  },
+  {
+    "id": "e1",
+    "name": "E1 / 프로필",
+    "group": "E",
+    "nodeId": "446:2792",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/e1.png",
+    "masks": [
+      {
+        "x": 44,
+        "y": 72,
+        "width": 86,
+        "height": 86,
+        "reason": "photo"
+      },
+      {
+        "x": 174,
+        "y": 92,
+        "width": 90,
+        "height": 35,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 174,
+        "y": 128,
+        "width": 160,
+        "height": 22,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 22,
+        "y": 302,
+        "width": 173,
+        "height": 175,
+        "reason": "photo"
+      },
+      {
+        "x": 207,
+        "y": 302,
+        "width": 164,
+        "height": 224,
+        "reason": "photo"
+      },
+      {
+        "x": 22,
+        "y": 489,
+        "width": 173,
+        "height": 119,
+        "reason": "photo"
+      },
+      {
+        "x": 207,
+        "y": 540,
+        "width": 164,
+        "height": 150,
+        "reason": "photo"
+      },
+      {
+        "x": 22,
+        "y": 620,
+        "width": 173,
+        "height": 174,
+        "reason": "photo"
+      },
+      {
+        "x": 207,
+        "y": 704,
+        "width": 164,
+        "height": 120,
+        "reason": "photo"
+      },
+      {
+        "x": 22,
+        "y": 806,
+        "width": 173,
+        "height": 46,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "e2",
+    "name": "E2 / 프로필 수정",
+    "group": "E",
+    "nodeId": "446:2850",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/e2.png",
+    "masks": [
+      {
+        "x": 145,
+        "y": 84,
+        "width": 102,
+        "height": 102,
+        "reason": "photo"
+      },
+      {
+        "x": 46,
+        "y": 248,
+        "width": 295,
+        "height": 22,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 46,
+        "y": 323,
+        "width": 295,
+        "height": 22,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 34,
+        "y": 465,
+        "width": 151,
+        "height": 140,
+        "reason": "photo"
+      },
+      {
+        "x": 199,
+        "y": 465,
+        "width": 151,
+        "height": 140,
+        "reason": "photo"
+      },
+      {
+        "x": 34,
+        "y": 618,
+        "width": 151,
+        "height": 100,
+        "reason": "photo"
+      },
+      {
+        "x": 199,
+        "y": 618,
+        "width": 151,
+        "height": 140,
+        "reason": "photo"
+      },
+      {
+        "x": 34,
+        "y": 731,
+        "width": 151,
+        "height": 95,
+        "reason": "photo"
+      }
+    ]
+  },
+  {
+    "id": "e3",
+    "name": "E3 / 설정",
+    "group": "E",
+    "nodeId": "446:2912",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/e3.png",
+    "masks": [
+      {
+        "x": 33,
+        "y": 121,
+        "width": 58,
+        "height": 58,
+        "reason": "photo"
+      },
+      {
+        "x": 106,
+        "y": 124,
+        "width": 80,
+        "height": 26,
+        "reason": "user-generated-text"
+      }
+    ]
+  },
+  {
+    "id": "e4",
+    "name": "E4 / 계정 설정",
+    "group": "E",
+    "nodeId": "446:2952",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/e4.png",
+    "masks": [
+      {
+        "x": 44,
+        "y": 154,
+        "width": 305,
+        "height": 22,
+        "reason": "user-generated-text"
+      }
+    ]
+  },
+  {
+    "id": "e5",
+    "name": "E5 / 알림 설정",
+    "group": "E",
+    "nodeId": "446:2984",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/e5.png",
+    "masks": []
+  },
+  {
+    "id": "e6",
+    "name": "E6 / 문의",
+    "group": "E",
+    "nodeId": "446:3031",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/e6.png",
+    "masks": []
+  },
+  {
+    "id": "e7",
+    "name": "E7 / 프로필 편집",
+    "group": "E",
+    "nodeId": "446:3042",
+    "width": 393,
+    "height": 852,
+    "reference": "/app-preview/assets/references/e7.png",
+    "masks": [
+      {
+        "x": 32,
+        "y": 154,
+        "width": 46,
+        "height": 46,
+        "reason": "photo"
+      },
+      {
+        "x": 109,
+        "y": 156,
+        "width": 29,
+        "height": 19,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 180,
+        "width": 98,
+        "height": 14,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 203,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 158,
+        "y": 203,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 207,
+        "y": 203,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 32,
+        "y": 276,
+        "width": 46,
+        "height": 46,
+        "reason": "photo"
+      },
+      {
+        "x": 109,
+        "y": 278,
+        "width": 37,
+        "height": 19,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 302,
+        "width": 98,
+        "height": 14,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 325,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 158,
+        "y": 325,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 207,
+        "y": 325,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 32,
+        "y": 398,
+        "width": 46,
+        "height": 46,
+        "reason": "photo"
+      },
+      {
+        "x": 109,
+        "y": 400,
+        "width": 45,
+        "height": 19,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 424,
+        "width": 108,
+        "height": 14,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 447,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 158,
+        "y": 447,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 207,
+        "y": 447,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 32,
+        "y": 520,
+        "width": 46,
+        "height": 46,
+        "reason": "photo"
+      },
+      {
+        "x": 109,
+        "y": 522,
+        "width": 45,
+        "height": 19,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 546,
+        "width": 108,
+        "height": 14,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 569,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 158,
+        "y": 569,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 207,
+        "y": 569,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 32,
+        "y": 642,
+        "width": 46,
+        "height": 46,
+        "reason": "photo"
+      },
+      {
+        "x": 109,
+        "y": 644,
+        "width": 17,
+        "height": 19,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 668,
+        "width": 134,
+        "height": 14,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 691,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 158,
+        "y": 691,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 207,
+        "y": 691,
+        "width": 43,
+        "height": 43,
+        "reason": "photo"
+      },
+      {
+        "x": 32,
+        "y": 764,
+        "width": 46,
+        "height": 46,
+        "reason": "photo"
+      },
+      {
+        "x": 109,
+        "y": 766,
+        "width": 27,
+        "height": 19,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 790,
+        "width": 108,
+        "height": 14,
+        "reason": "user-generated-text"
+      },
+      {
+        "x": 109,
+        "y": 813,
+        "width": 43,
+        "height": 39,
+        "reason": "photo"
+      },
+      {
+        "x": 158,
+        "y": 813,
+        "width": 43,
+        "height": 39,
+        "reason": "photo"
+      },
+      {
+        "x": 207,
+        "y": 813,
+        "width": 43,
+        "height": 39,
+        "reason": "photo"
+      }
+    ]
+  }
+]

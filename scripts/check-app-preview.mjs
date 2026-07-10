@@ -14,7 +14,8 @@ const requiredFiles = [
 ];
 const registryFiles = [
   "public/app-preview/figma/screen-inventory.json",
-  "public/app-preview/figma/screen-measurements.json"
+  "public/app-preview/figma/screen-measurements.json",
+  "public/app-preview/figma/visual-masks.json"
 ];
 
 async function previewJavaScriptFiles(directory) {
@@ -32,9 +33,16 @@ for (const file of requiredFiles) {
   if (!existsSync(join(repositoryRoot, file))) throw new Error(`Missing required preview file: ${file}`);
 }
 
+const registries = new Map();
 for (const file of registryFiles) {
   const filePath = join(repositoryRoot, file);
-  if (existsSync(filePath)) JSON.parse(await readFile(filePath, "utf8"));
+  if (!existsSync(filePath)) throw new Error(`Missing required preview registry: ${file}`);
+  registries.set(file, JSON.parse(await readFile(filePath, "utf8")));
+}
+
+for (const screen of registries.get("public/app-preview/figma/screen-inventory.json")) {
+  const referencePath = join(repositoryRoot, "public", screen.reference.replace(/^\//, ""));
+  if (!existsSync(referencePath)) throw new Error(`Missing Figma reference for ${screen.id}: ${screen.reference}`);
 }
 
 for (const file of await previewJavaScriptFiles(join(repositoryRoot, "public/app-preview"))) {
