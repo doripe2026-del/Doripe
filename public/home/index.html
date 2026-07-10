@@ -906,7 +906,7 @@
             </span>
           </a>
           <p class="text-sm font-medium text-muted">
-            <span id="signupCountHero" class="font-bold text-bluebrand" data-fallback-count="488">1</span>명이 Doripe를 먼저 확인했어요
+            <span id="signupCountHero" class="font-bold text-bluebrand" data-fallback-count="10000">10,000</span>명이 Doripe를 먼저 확인했어요
           </p>
         </div>
       </div>
@@ -1042,7 +1042,7 @@
       </a>
     </div>
     <p class="reveal mt-5 text-sm font-medium text-muted">
-      <span id="signupCountFinal" class="font-bold text-bluebrand" data-fallback-count="488">1</span>명이 Doripe를 먼저 확인했어요
+      <span id="signupCountFinal" class="font-bold text-bluebrand" data-fallback-count="10000">10,000</span>명이 Doripe를 먼저 확인했어요
     </p>
   </div>
 </section>
@@ -1093,10 +1093,10 @@
   const fallbackCount = countEls.reduce((max, el) => {
     const value = Number(el.dataset.fallbackCount || el.textContent || 1);
     return Number.isFinite(value) ? Math.max(max, value) : max;
-  }, 488);
+  }, 10000);
   const countFormatter = new Intl.NumberFormat('ko-KR');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let displayedCount = 1;
+  let displayedCount = fallbackCount;
   let pendingCountFrame = 0;
 
   function setDisplayCount(value) {
@@ -1130,17 +1130,7 @@
 
   function startPendingCount() {
     if (!countEls.length) return;
-    setDisplayCount(1);
-    if (prefersReducedMotion) return;
-    const pendingTarget = Math.max(28, Math.min(fallbackCount - 24, 160));
-    const startedAt = performance.now();
-    function tick(now) {
-      const elapsed = now - startedAt;
-      const progress = Math.min(.96, elapsed / 2600);
-      setDisplayCount(1 + (pendingTarget - 1) * easeOutCubic(progress));
-      pendingCountFrame = requestAnimationFrame(tick);
-    }
-    pendingCountFrame = requestAnimationFrame(tick);
+    setDisplayCount(fallbackCount);
   }
 
   startPendingCount();
