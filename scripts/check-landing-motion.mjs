@@ -80,6 +80,60 @@ assert(
   "nearby scene must be visible without reveal JavaScript",
 );
 
+const nearbySceneStart = home.indexOf('id="motionSceneNearby"');
+const nearbySceneEnd = home.indexOf('<article class="journey-row">', nearbySceneStart);
+assert(nearbySceneStart >= 0 && nearbySceneEnd > nearbySceneStart, "could not isolate nearby scene");
+const nearbyScene = home.slice(nearbySceneStart, nearbySceneEnd);
+assert(
+  !nearbyScene.includes("anchor-place__label"),
+  "nearby anchor must not have a redundant visible badge",
+);
+
+const nearbyCandidateCues = [...nearbyScene.matchAll(
+  /<span class="nearby-candidate[^"]*"[^>]*>[\s\S]*?<small>([^<]+)<\/small>\s*<\/span>/g,
+)].map((match) => match[1].trim());
+assert(nearbyCandidateCues.length === 4, "nearby scene must contain exactly four candidates");
+assert(
+  nearbyCandidateCues.join("|") === [
+    "카페 · 도보 6분",
+    "소품샵 · 도보 8분",
+    "식당 · 도보 11분",
+    "바 · 도보 13분",
+  ].join("|"),
+  "each nearby candidate must include its category and walking-time cue",
+);
+assert(
+  !/<(?:a|button|input|select)\b/i.test(nearbyScene)
+    && !/role="(?:button|tab|switch)"/i.test(nearbyScene),
+  "nearby advertising overlays must remain non-interactive markup",
+);
+assert(
+  !nearbyScene.includes("--x:"),
+  "nearby candidate positions must not use fixed inline offsets",
+);
+
+const nearbyCandidateBase = cssBlock(motionCss, ".landing-motion--nearby .nearby-candidates span");
+assert(
+  /max-width:\s*calc\(100%\s*-\s*24px\)\s*;/.test(nearbyCandidateBase),
+  "nearby candidates must reserve responsive scene gutters",
+);
+for (const [index, edge] of [[1, "left"], [2, "right"], [3, "left"], [4, "right"]]) {
+  const selector = `.landing-motion--nearby .nearby-candidates span:nth-child(${index})`;
+  const block = cssBlock(motionCss, selector);
+  assert(
+    new RegExp(`${edge}:\\s*clamp\\(`).test(block),
+    `nearby candidate ${index} must use clamped ${edge} positioning`,
+  );
+}
+const nearbyFinalSelection = cssBlock(
+  motionCss,
+  '.landing-motion.landing-motion--nearby[data-motion-state="final"] .nearby-candidates .is-selected',
+);
+assert(
+  /top:\s*95%\s*;/.test(nearbyFinalSelection),
+  "nearby final selection must clear the anchor screenshot",
+);
+
 for (const [selector, opacity] of [
   ['.landing-motion.landing-motion--nearby[data-motion-state="final"] .anchor-place', "1"],
   ['.landing-motion.landing-motion--nearby[data-motion-state="final"] .nearby-candidates span', "0"],

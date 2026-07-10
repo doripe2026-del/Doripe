@@ -264,21 +264,6 @@
   animation: anchorFocus 5.5s ease-in-out infinite;
 }
 
-.anchor-place__label {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 1;
-  padding: 7px 10px;
-  border: 1px solid rgba(255, 255, 255, .7);
-  border-radius: 10px;
-  background: rgba(7, 17, 31, .76);
-  box-shadow: 0 8px 20px rgba(7, 17, 31, .14);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-}
-
 .anchor-place img {
   display: block;
   width: 100%;
@@ -295,12 +280,31 @@
 
 .landing-motion--nearby .nearby-candidates span {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
+  max-width: calc(100% - 24px);
+}
+
+.landing-motion--nearby .nearby-candidates span:nth-child(1) {
+  left: clamp(12px, 3vw, 20px);
+  top: 18%;
+}
+
+.landing-motion--nearby .nearby-candidates span:nth-child(2) {
+  right: clamp(12px, 3vw, 20px);
+  top: 22%;
+}
+
+.landing-motion--nearby .nearby-candidates span:nth-child(3) {
+  left: clamp(12px, 3vw, 20px);
+  top: 57%;
+}
+
+.landing-motion--nearby .nearby-candidates span:nth-child(4) {
+  right: clamp(12px, 3vw, 20px);
+  top: 56%;
 }
 
 .nearby-candidate {
+  box-sizing: border-box;
   display: grid;
   width: 154px;
   gap: 3px;
@@ -403,6 +407,7 @@
 
 .landing-motion.landing-motion--nearby[data-motion-state="final"] .nearby-candidates .is-selected {
   opacity: 1;
+  top: 95%;
 }
 
 .landing-motion.landing-motion--nearby[data-motion-state="final"] .course-tray {
@@ -462,12 +467,6 @@
     inset: 8% 14% 29%;
     border-radius: 25px;
   }
-  .anchor-place__label {
-    top: 9px;
-    left: 9px;
-    padding: 6px 8px;
-    font-size: 11px;
-  }
   .landing-motion--nearby .nearby-candidates {
     inset: 7% 0 25%;
   }
@@ -475,12 +474,10 @@
     display: none;
   }
   .landing-motion--nearby .nearby-candidates span:nth-child(1) {
-    --x: -82px !important;
-    --y: 0px !important;
+    top: 40%;
   }
   .landing-motion--nearby .nearby-candidates span:nth-child(2) {
-    --x: 62px !important;
-    --y: 118px !important;
+    top: 70%;
   }
   .nearby-candidate {
     width: 116px;
