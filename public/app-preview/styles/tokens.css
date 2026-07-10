@@ -27,13 +27,7 @@
   --radius-chip: 15px;
   --radius-bottom-nav: 27px;
   --radius-bottom-nav-active: 29px;
-  --radius-pill: 999px;
+  --radius-sheet-handle: 3px;
 
   --shadow-floating: 0 8px 24px rgb(0 0 0 / 13%);
-
-  --duration-toast: 2500ms;
-
-  --z-content: 0;
-  --z-overlay: 1;
-  --z-toast: 2;
 }

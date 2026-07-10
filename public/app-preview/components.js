@@ -1,5 +1,5 @@
 const ICON_FILES = Object.freeze({
-  "chevron-down": "chevron-down.svg",
+  back: "back.svg",
   close: "close.svg",
   heart: "heart.svg",
   info: "info.svg",
@@ -37,6 +37,45 @@ function iconSize(size) {
   return size;
 }
 
+function localAssetPath(value) {
+  const source = requiredText(value, "avatar src");
+  let decoded = source;
+
+  try {
+    for (let pass = 0; pass < 4; pass += 1) {
+      const next = decodeURIComponent(decoded);
+      if (next === decoded) break;
+      decoded = next;
+    }
+  } catch {
+    throw new TypeError("avatar src must be a local app-preview asset");
+  }
+
+  if (
+    decoded.includes("%")
+    || /[\\?#\u0000-\u001f\u007f]/.test(decoded)
+    || !decoded.startsWith("/app-preview/assets/")
+  ) {
+    throw new TypeError("avatar src must be a local app-preview asset");
+  }
+
+  const relativePath = decoded.slice("/app-preview/assets/".length);
+  const segments = relativePath.split("/");
+  if (
+    relativePath === ""
+    || segments.some((segment) => segment === "" || segment === "." || segment === "..")
+  ) {
+    throw new TypeError("avatar src must be a local app-preview asset");
+  }
+
+  const normalized = new URL(decoded, "https://preview.invalid");
+  if (normalized.origin !== "https://preview.invalid" || normalized.pathname !== decoded) {
+    throw new TypeError("avatar src must be a local app-preview asset");
+  }
+
+  return decoded;
+}
+
 export function icon(name, { label, decorative = false, size = 24 } = {}) {
   const file = ICON_FILES[name];
   if (!file) throw new TypeError(`Unknown icon: ${name}`);
@@ -54,12 +93,15 @@ export function primaryButton({ label, action, disabled = false } = {}) {
 }
 
 export function backButton({ action, label = "뒤로 가기" } = {}) {
-  return `<button class="preview-back-button" type="button" ${actionAttribute(action)} aria-label="${escapeHtml(requiredText(label, "label"))}"><span class="preview-back-button__visible" aria-hidden="true">${icon("chevron-down", { decorative: true, size: 26 })}</span></button>`;
+  return `<button class="preview-back-button" type="button" ${actionAttribute(action)} aria-label="${escapeHtml(requiredText(label, "label"))}"><span class="preview-back-button__visible" aria-hidden="true">${icon("back", { decorative: true, size: 26 })}</span></button>`;
 }
 
 export function bottomNav({ items, label = "주요 메뉴" } = {}) {
   if (!Array.isArray(items) || items.length !== 4) {
     throw new TypeError("bottom nav requires the four measured navigation items");
+  }
+  if (!items[2]?.selected || items.some((item, index) => index !== 2 && item.selected)) {
+    throw new TypeError("bottom nav selection must be the third measured navigation item");
   }
 
   const navItems = items.map((item) => {
@@ -82,12 +124,8 @@ export function chip({ label, action, selected = false } = {}) {
 }
 
 export function avatar({ src, alt, action, label } = {}) {
-  requiredText(src, "avatar src");
-  if (!src.startsWith("/app-preview/assets/") || src.includes("//")) {
-    throw new TypeError("avatar src must be a local app-preview asset");
-  }
-
-  const image = `<img class="preview-avatar" src="${escapeHtml(src)}" alt="${escapeHtml(requiredText(alt, "avatar alt"))}">`;
+  const safeSrc = localAssetPath(src);
+  const image = `<img class="preview-avatar" src="${escapeHtml(safeSrc)}" alt="${escapeHtml(requiredText(alt, "avatar alt"))}">`;
   if (action === undefined) return image;
 
   return `<button class="preview-avatar-action" type="button" ${actionAttribute(action)} aria-label="${escapeHtml(requiredText(label, "label"))}">${image}</button>`;
