@@ -903,9 +903,45 @@
                 인스타 저장함이나 지도 핀처럼 쌓이기만 하는 방식에서 벗어나, "데이트", "조용한 술집", "혼자 가기 좋은 곳"처럼 상황 태그와 필터로 다시 찾기 쉽게 정리해요.
               </p>
             </div>
-            <div class="journey-visual reveal">
-              <div class="journey-phone">
-                <img src="/img/figma-ui/saved.png" alt="Doripe 저장함 화면" />
+            <div class="journey-visual">
+              <div
+                id="motionSceneNearby"
+                class="landing-motion landing-motion--nearby"
+                data-motion-scene
+                data-motion-state="final"
+                role="img"
+                aria-label="선택한 장소 주변에서 함께 갈 장소를 추천하고 코스 후보로 정리하는 화면"
+              >
+                <article class="anchor-place" data-motion-layer="anchor-place" aria-hidden="true">
+                  <span class="anchor-place__label">선택한 장소</span>
+                  <img src="/img/figma-ui/discover.png" alt="" />
+                </article>
+                <div class="nearby-candidates" data-motion-layer="nearby-candidates" aria-hidden="true">
+                  <span class="nearby-candidate is-selected" style="--x:-190px;--y:-150px">
+                    <strong>카페 이페메라</strong>
+                    <small>카페 · 도보 6분</small>
+                  </span>
+                  <span class="nearby-candidate" style="--x:120px;--y:-128px">
+                    <strong>오브젝트 성수</strong>
+                    <small>소품샵 · 도보 8분</small>
+                  </span>
+                  <span class="nearby-candidate" style="--x:-190px;--y:92px">
+                    <strong>난포</strong>
+                    <small>식당 · 도보 11분</small>
+                  </span>
+                  <span class="nearby-candidate" style="--x:125px;--y:88px">
+                    <strong>포도도</strong>
+                    <small>바 · 도보 13분</small>
+                  </span>
+                </div>
+                <div class="course-tray" data-motion-layer="course-tray" aria-hidden="true">
+                  <strong>코스 후보</strong>
+                  <ol>
+                    <li data-course-stop="1"><b>1</b><span>도라이트 카페</span></li>
+                    <li data-course-stop="2"><b>2</b><span>카페 이페메라</span></li>
+                    <li data-course-stop="3"><b>3</b><span>오브젝트 성수</span></li>
+                  </ol>
+                </div>
               </div>
             </div>
           </article>

@@ -67,6 +67,36 @@ assert(
   "discovery scene must be visible without reveal JavaScript",
 );
 
+for (const marker of [
+  'id="motionSceneNearby"',
+  'data-motion-layer="anchor-place"',
+  'data-motion-layer="nearby-candidates"',
+  'data-motion-layer="course-tray"',
+]) {
+  assert(home.includes(marker), `nearby scene missing ${marker}`);
+}
+assert(
+  /<div class="journey-visual">\s*<div\s+id="motionSceneNearby"/.test(home),
+  "nearby scene must be visible without reveal JavaScript",
+);
+
+for (const [selector, opacity] of [
+  ['.landing-motion.landing-motion--nearby[data-motion-state="final"] .anchor-place', "1"],
+  ['.landing-motion.landing-motion--nearby[data-motion-state="final"] .nearby-candidates span', "0"],
+  ['.landing-motion.landing-motion--nearby[data-motion-state="final"] .nearby-candidates .is-selected', "1"],
+  ['.landing-motion.landing-motion--nearby[data-motion-state="final"] .course-tray', "1"],
+]) {
+  const block = cssBlock(motionCss, selector);
+  assert(
+    new RegExp(`opacity:\\s*${opacity}(?:\\s*;|\\s*$)`).test(block),
+    `nearby final composition requires ${selector} opacity ${opacity}`,
+  );
+}
+
+for (const stop of ["1", "2", "3"]) {
+  assert(home.includes(`data-course-stop="${stop}"`), `nearby course tray missing stop ${stop}`);
+}
+
 for (const [selector, opacity] of [
   ['.landing-motion.landing-motion--discovery[data-motion-state="final"] .discovery-ui', "1"],
   ['.landing-motion.landing-motion--discovery[data-motion-state="final"] .creator-reaction', "0"],
@@ -92,6 +122,19 @@ assert(
   /display:\s*none\s*;/.test(mobileVideo),
   "320px discovery must hide the secondary video overlay",
 );
+const mobileNearbyAnchor = cssBlock(mobileMotion, ".landing-motion--nearby .anchor-place");
+assert(
+  /inset:\s*8% 14% 29%\s*;/.test(mobileNearbyAnchor),
+  "320px nearby scene must preserve a large anchor place",
+);
+const mobileNearbyCandidates = cssBlock(
+  mobileMotion,
+  ".landing-motion--nearby .nearby-candidates span:nth-child(n+3)",
+);
+assert(
+  /display:\s*none\s*;/.test(mobileNearbyCandidates),
+  "320px nearby scene must simplify the candidate count",
+);
 
 const discoveryKeyframes = Object.fromEntries(
   ["discoveryFeed", "discoveryReaction", "discoveryVideo", "discoverySelect"].map((name) => [
@@ -100,6 +143,20 @@ const discoveryKeyframes = Object.fromEntries(
   ]),
 );
 for (const [name, block] of Object.entries(discoveryKeyframes)) {
+  const properties = [...block.matchAll(/([a-z][a-z-]*)\s*:/g)].map((match) => match[1]);
+  assert(
+    properties.every((property) => property === "opacity" || property === "transform"),
+    `${name} may animate only transform and opacity`,
+  );
+}
+
+const nearbyKeyframes = Object.fromEntries(
+  ["anchorFocus", "candidateReveal", "courseTray"].map((name) => [
+    name,
+    cssBlock(motionCss, `@keyframes ${name}`),
+  ]),
+);
+for (const [name, block] of Object.entries(nearbyKeyframes)) {
   const properties = [...block.matchAll(/([a-z][a-z-]*)\s*:/g)].map((match) => match[1]);
   assert(
     properties.every((property) => property === "opacity" || property === "transform"),
