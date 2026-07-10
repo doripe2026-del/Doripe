@@ -4,6 +4,23 @@ function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
+function cssBlock(source, marker) {
+  const markerIndex = source.indexOf(marker);
+  assert(markerIndex >= 0, `missing CSS marker ${marker}`);
+  const openIndex = source.indexOf("{", markerIndex);
+  assert(openIndex >= 0, `missing CSS block for ${marker}`);
+
+  let depth = 0;
+  for (let index = openIndex; index < source.length; index += 1) {
+    if (source[index] === "{") depth += 1;
+    if (source[index] !== "}") continue;
+    depth -= 1;
+    if (depth === 0) return source.slice(openIndex + 1, index);
+  }
+
+  throw new Error(`unclosed CSS block for ${marker}`);
+}
+
 const required = [
   "public/home/landing-motion.css",
   "public/home/landing-motion.js",
@@ -45,6 +62,65 @@ for (const marker of [
 ]) {
   assert(home.includes(marker), `discovery scene missing ${marker}`);
 }
+assert(
+  /<div class="journey-visual">\s*<div\s+id="motionSceneDiscovery"/.test(home),
+  "discovery scene must be visible without reveal JavaScript",
+);
+
+for (const [selector, opacity] of [
+  ['.landing-motion.landing-motion--discovery[data-motion-state="final"] .discovery-ui', "1"],
+  ['.landing-motion.landing-motion--discovery[data-motion-state="final"] .creator-reaction', "0"],
+  ['.landing-motion.landing-motion--discovery[data-motion-state="final"] .video-indicator', "0"],
+  ['.landing-motion.landing-motion--discovery[data-motion-state="final"] .place-selection', "1"],
+]) {
+  const block = cssBlock(motionCss, selector);
+  assert(
+    new RegExp(`opacity:\\s*${opacity}(?:\\s*;|\\s*$)`).test(block),
+    `discovery final composition requires ${selector} opacity ${opacity}`,
+  );
+}
+
+const creatorProfile = cssBlock(motionCss, ".creator-reaction img");
+assert(
+  /border-radius:\s*50%\s*;/.test(creatorProfile),
+  "discovery creator profile must remain circular",
+);
+
+const mobileMotion = cssBlock(motionCss, "@media (max-width: 480px)");
+const mobileVideo = cssBlock(mobileMotion, ".landing-motion--discovery .video-indicator");
+assert(
+  /display:\s*none\s*;/.test(mobileVideo),
+  "320px discovery must hide the secondary video overlay",
+);
+
+const discoveryKeyframes = Object.fromEntries(
+  ["discoveryFeed", "discoveryReaction", "discoveryVideo", "discoverySelect"].map((name) => [
+    name,
+    cssBlock(motionCss, `@keyframes ${name}`),
+  ]),
+);
+for (const [name, block] of Object.entries(discoveryKeyframes)) {
+  const properties = [...block.matchAll(/([a-z][a-z-]*)\s*:/g)].map((match) => match[1]);
+  assert(
+    properties.every((property) => property === "opacity" || property === "transform"),
+    `${name} may animate only transform and opacity`,
+  );
+}
+
+assert(
+  /32%,\s*100%\s*\{[^}]*opacity:\s*0/.test(discoveryKeyframes.discoveryReaction),
+  "discovery reaction must finish before the video stage",
+);
+assert(
+  /0%,\s*34%\s*\{[^}]*opacity:\s*0/.test(discoveryKeyframes.discoveryVideo)
+    && /60%,\s*100%\s*\{[^}]*opacity:\s*0/.test(discoveryKeyframes.discoveryVideo),
+  "discovery video must occupy only the middle stage",
+);
+assert(
+  /0%,\s*62%\s*\{[^}]*opacity:\s*0/.test(discoveryKeyframes.discoverySelect)
+    && /78%,\s*100%\s*\{[^}]*opacity:\s*1/.test(discoveryKeyframes.discoverySelect),
+  "discovery timeline must end on selection",
+);
 assert(!home.includes('class="phone-stage reveal"'), "legacy hero orbit still present");
 assert(
   !home.includes('class="landing-motion landing-motion--hero reveal"'),

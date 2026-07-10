@@ -194,27 +194,40 @@
   animation: discoverySelect 5s ease-in-out infinite;
 }
 
+.landing-motion.landing-motion--discovery[data-motion-state="final"] .discovery-ui {
+  opacity: 1;
+}
+
+.landing-motion.landing-motion--discovery[data-motion-state="final"] .creator-reaction,
+.landing-motion.landing-motion--discovery[data-motion-state="final"] .video-indicator {
+  opacity: 0;
+}
+
+.landing-motion.landing-motion--discovery[data-motion-state="final"] .place-selection {
+  opacity: 1;
+}
+
 @keyframes discoveryFeed {
   0%, 100% { transform: translateY(0); }
   48%, 72% { transform: translateY(-4%); }
 }
 
 @keyframes discoveryReaction {
-  0%, 14% { opacity: 0; transform: translateY(10px); }
-  26%, 84% { opacity: 1; transform: none; }
-  100% { opacity: 0; }
+  0%, 8% { opacity: 0; transform: translateY(10px); }
+  16%, 26% { opacity: 1; transform: none; }
+  32%, 100% { opacity: 0; transform: translateY(-6px); }
 }
 
 @keyframes discoveryVideo {
-  0%, 20% { opacity: 0; transform: scale(.8); }
-  32%, 78% { opacity: 1; transform: none; }
-  100% { opacity: 0; }
+  0%, 34% { opacity: 0; transform: scale(.8); }
+  42%, 54% { opacity: 1; transform: none; }
+  60%, 100% { opacity: 0; transform: scale(.9); }
 }
 
 @keyframes discoverySelect {
-  0%, 58% { opacity: 0; transform: scale(.7); }
-  68%, 90% { opacity: 1; transform: scale(1.12); }
-  100% { opacity: 0; }
+  0%, 62% { opacity: 0; transform: scale(.7); }
+  70% { opacity: 1; transform: scale(1.12); }
+  78%, 100% { opacity: 1; transform: none; }
 }
 
 @media (max-width: 1023px) {
