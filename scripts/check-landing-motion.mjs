@@ -57,6 +57,11 @@ for (const sceneId of [
 
 assert(motionCss.includes("prefers-reduced-motion: reduce"), "missing reduced-motion CSS");
 assert(motionCss.includes("@media (max-width: 390px)"), "missing narrow-mobile rules");
+assert(
+  motionCss.lastIndexOf("@media (prefers-reduced-motion: reduce)")
+    > motionCss.lastIndexOf("will-change: transform, opacity"),
+  "reduced-motion will-change override must follow all scene declarations",
+);
 assert(motionJs.includes("IntersectionObserver"), "offscreen pause observer missing");
 assert(motionJs.includes("is-media-missing"), "media failure fallback missing");
 assert(

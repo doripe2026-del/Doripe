@@ -117,6 +117,42 @@ test("a failed image marks only its nearest media shell as missing", () => {
   assert.equal(healthyImageClasses.size, 0);
 });
 
+test("an already-complete broken image is marked missing during initialization", () => {
+  const scene = { dataset: {} };
+  const shellClasses = new Set();
+  const imageClasses = new Set();
+  const mediaShell = { classList: { add: (name) => shellClasses.add(name) } };
+  const brokenImage = {
+    complete: true,
+    naturalWidth: 0,
+    classList: { add: (name) => imageClasses.add(name) },
+    addEventListener() {},
+    closest() {
+      return mediaShell;
+    },
+  };
+  const documentRef = {
+    querySelectorAll(selector) {
+      if (selector === "[data-motion-scene]") return [scene];
+      if (selector === "[data-motion-scene] img") return [brokenImage];
+      return [];
+    },
+  };
+  const media = { matches: false, addEventListener() {}, removeEventListener() {} };
+  const windowRef = {
+    matchMedia: () => media,
+    IntersectionObserver: class {
+      observe() {}
+      disconnect() {}
+    },
+  };
+
+  initLandingMotion(documentRef, windowRef);
+
+  assert(shellClasses.has("is-media-missing"));
+  assert(imageClasses.has("is-media-missing__image"));
+});
+
 test("destroy removes controller listeners and disconnects observation", () => {
   const scene = { dataset: {} };
   const imageListeners = new Set();

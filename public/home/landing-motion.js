@@ -7,6 +7,11 @@ export function applySceneState(element, state) {
   element.dataset.motionState = state;
 }
 
+function markImageMissing(image) {
+  image.closest("figure, article, div")?.classList.add("is-media-missing");
+  image.classList.add("is-media-missing__image");
+}
+
 export function initLandingMotion(documentRef = document, windowRef = window) {
   const scenes = [...documentRef.querySelectorAll("[data-motion-scene]")];
   const images = [...documentRef.querySelectorAll("[data-motion-scene] img")];
@@ -39,12 +44,10 @@ export function initLandingMotion(documentRef = document, windowRef = window) {
     observer.observe(scene);
   });
   images.forEach((image) => {
-    const handleError = () => {
-      image.closest("figure, article, div")?.classList.add("is-media-missing");
-      image.classList.add("is-media-missing__image");
-    };
+    const handleError = () => markImageMissing(image);
     imageErrorHandlers.set(image, handleError);
     image.addEventListener("error", handleError);
+    if (image.complete && image.naturalWidth === 0) handleError();
   });
   media.addEventListener?.("change", updateAll);
 

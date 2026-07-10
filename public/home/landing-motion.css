@@ -25,14 +25,6 @@
   transform: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .landing-motion [data-motion-layer] {
-    animation: none !important;
-    transition: none !important;
-    will-change: auto;
-  }
-}
-
 .landing-motion--hero {
   min-height: 660px;
   border-radius: 42px;
@@ -938,5 +930,13 @@
   .landing-motion .creator-reaction,
   .landing-motion .share-card {
     max-width: calc(100% - 32px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-motion [data-motion-layer] {
+    animation: none !important;
+    transition: none !important;
+    will-change: auto;
   }
 }
