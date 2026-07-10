@@ -15,6 +15,7 @@ for (const file of required) assert(existsSync(file), `missing ${file}`);
 
 const home = readFileSync("public/home/index.html", "utf8");
 const mirror = readFileSync("public/index.html", "utf8");
+const motionCss = readFileSync("public/home/landing-motion.css", "utf8");
 assert(home === mirror, "public/index.html must mirror public/home/index.html");
 assert(home.includes('/home/landing-motion.css'), "missing motion stylesheet link");
 assert(home.includes('/home/landing-motion.js'), "missing motion module link");
@@ -36,5 +37,39 @@ for (const marker of [
   assert(home.includes(marker), `hero motion missing ${marker}`);
 }
 assert(!home.includes('class="phone-stage reveal"'), "legacy hero orbit still present");
+assert(
+  !home.includes('class="landing-motion landing-motion--hero reveal"'),
+  "hero motion must be visible without reveal JavaScript",
+);
+assert(
+  /@media \(max-width: 480px\)[\s\S]*?\.motion-ugc-card--two\s*\{\s*display:\s*none;/.test(motionCss),
+  "320px motion must hide the secondary UGC card",
+);
+assert(
+  /@media \(max-width: 480px\)[\s\S]*?\.motion-nearby-card:nth-child\(n\+2\)\s*\{\s*display:\s*none;/.test(motionCss),
+  "320px motion must hide nonessential nearby cards",
+);
+assert(
+  /@media \(max-width: 480px\)[\s\S]*?\.motion-selected-place\s*\{\s*inset:\s*9% 16% 9% 30%;/.test(motionCss),
+  "320px motion must enlarge the selected place UI",
+);
+assert(
+  /\.motion-ugc-card\s*\{[^}]*display:\s*grid;[^}]*grid-template-rows:\s*minmax\(0,\s*1fr\) auto;/.test(motionCss),
+  "UGC cards must reserve a visible caption row",
+);
+for (const legacySelector of [
+  ".phone-stage {",
+  ".phone-stage::before",
+  ".orbit {",
+  ".iphone {",
+  ".iphone::before",
+  ".iphone::after",
+  ".screen {",
+  ".screen img",
+  ".phone-shadow {",
+  "@keyframes counterOrbit",
+]) {
+  assert(!home.includes(legacySelector), `legacy hero CSS remains: ${legacySelector}`);
+}
 
 console.log("Landing motion contracts passed.");
