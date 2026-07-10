@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Doripe Preview</title>
+    <style>
+      * { box-sizing: border-box; }
+
+      html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+
+      body {
+        background: #e8e5dc;
+        color: #0e131e;
+        font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      }
+
+      .review-shell {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        overflow: hidden;
+      }
+
+      #phone-root {
+        width: 393px;
+        height: 852px;
+        flex: 0 0 auto;
+        overflow: hidden;
+        border-radius: 24px;
+        background: #ffffff;
+      }
+
+      #review-panel {
+        width: 280px;
+        height: 852px;
+        display: flex;
+        flex-direction: column;
+        background: #ffffff;
+      }
+
+      #review-list { flex: 1; overflow-y: auto; }
+
+      #review-reset { flex: 0 0 auto; }
+
+      @media (max-width: 700px) {
+        #review-panel { display: none; }
+        #phone-root { width: 100vw; height: 100dvh; border-radius: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="review-shell">
+      <section id="phone-root" aria-label="Doripe app preview"></section>
+      <aside id="review-panel" aria-label="Review controls">
+        <div id="review-list"></div>
+        <button id="review-reset" type="button">Reset</button>
+      </aside>
+    </main>
+    <script type="module" src="/app-preview/main.js"></script>
+  </body>
+</html>

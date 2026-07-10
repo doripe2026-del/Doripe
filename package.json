@@ -11,6 +11,12 @@
     "check:session": "node scripts/check-session-context.mjs",
     "check:supabase": "node scripts/check-supabase-migrations.mjs",
     "check:ops": "node scripts/check-ops-readiness.mjs",
+    "dev:app-preview": "node scripts/serve-app-preview.mjs",
+    "test:app-preview:unit": "node --test tests/app-preview/*.test.mjs",
+    "test:app-preview:e2e": "playwright test -c playwright.app-preview.config.mjs",
+    "test:app-preview:update": "playwright test -c playwright.app-preview.config.mjs --update-snapshots",
+    "test:app-preview": "npm run test:app-preview:unit && npm run test:app-preview:e2e",
+    "check:app-preview": "node scripts/check-app-preview.mjs",
     "setup:guards": "node scripts/setup-local-guards.mjs",
     "setup:deployment-guard": "node scripts/install-deployment-shell-guard.mjs",
     "check:mvp-app": "node scripts/check-mvp-app.mjs",
@@ -26,6 +32,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.53.0",
     "@types/node": "^22.13.5",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
