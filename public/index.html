@@ -867,8 +867,23 @@
         <div class="journey-stack mt-20">
           <article class="journey-row">
             <div class="journey-visual reveal">
-              <div class="journey-phone">
-                <img src="/img/figma-ui/discover.png" alt="Doripe 발견 화면" />
+              <div
+                id="motionSceneDiscovery"
+                class="landing-motion landing-motion--discovery"
+                data-motion-scene
+                data-motion-state="final"
+                role="img"
+                aria-label="유저와 큐레이터의 사진과 영상으로 장소를 발견하는 화면"
+              >
+                <div class="discovery-ui" data-motion-layer="creator-posts" aria-hidden="true">
+                  <img src="/img/figma-ui/hero-discover-feed.png" alt="" />
+                </div>
+                <div class="creator-reaction" data-motion-layer="creator-reaction" aria-hidden="true">
+                  <img src="/app/assets/creator-photos/creator-03.png" alt="" />
+                  <span>여기 분위기 좋아</span>
+                </div>
+                <div class="video-indicator" data-motion-layer="creator-posts" aria-hidden="true">▶</div>
+                <div class="place-selection" data-motion-layer="place-selection" aria-hidden="true">♥</div>
               </div>
             </div>
             <div class="journey-copy reveal">

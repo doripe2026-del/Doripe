@@ -36,6 +36,15 @@ for (const marker of [
 ]) {
   assert(home.includes(marker), `hero motion missing ${marker}`);
 }
+
+for (const marker of [
+  'id="motionSceneDiscovery"',
+  'data-motion-layer="creator-posts"',
+  'data-motion-layer="creator-reaction"',
+  'data-motion-layer="place-selection"',
+]) {
+  assert(home.includes(marker), `discovery scene missing ${marker}`);
+}
 assert(!home.includes('class="phone-stage reveal"'), "legacy hero orbit still present");
 assert(
   !home.includes('class="landing-motion landing-motion--hero reveal"'),

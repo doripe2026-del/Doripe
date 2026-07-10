@@ -106,6 +106,117 @@
 .landing-motion--hero[data-motion-state="final"] .motion-share-card,
 .landing-motion--hero[data-motion-state="final"] .motion-navigation { opacity: 1; }
 
+.landing-motion--discovery {
+  min-height: 620px;
+  overflow: visible;
+}
+
+.landing-motion--discovery [data-motion-layer] {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.landing-motion--discovery .discovery-ui {
+  inset: 4% 16%;
+  overflow: hidden;
+  border: 1px solid rgba(0, 64, 130, .13);
+  border-radius: 36px;
+  background: #fff;
+  box-shadow: 0 30px 90px rgba(0, 74, 142, .16);
+  animation: discoveryFeed 5s ease-in-out infinite;
+}
+
+.discovery-ui img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.landing-motion--discovery .creator-reaction {
+  left: 8%;
+  bottom: 15%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px 8px 8px;
+  border: 1px solid rgba(0, 64, 130, .1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 14px 36px rgba(7, 17, 31, .16);
+  color: #07111f;
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  animation: discoveryReaction 5s ease-in-out infinite;
+}
+
+.creator-reaction img {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 34%;
+}
+
+.landing-motion--discovery .video-indicator,
+.landing-motion--discovery .place-selection {
+  z-index: 2;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 50%;
+  background: rgba(7, 17, 31, .72);
+  box-shadow: 0 12px 32px rgba(7, 17, 31, .2);
+  color: #fff;
+  font-size: 16px;
+}
+
+.landing-motion--discovery .video-indicator {
+  right: 18%;
+  top: 16%;
+  padding-left: 3px;
+  animation: discoveryVideo 5s ease-in-out infinite;
+}
+
+.landing-motion--discovery .place-selection {
+  right: 16%;
+  bottom: 14%;
+  background: rgba(255, 255, 255, .96);
+  color: #ff3f62;
+  font-size: 22px;
+  animation: discoverySelect 5s ease-in-out infinite;
+}
+
+@keyframes discoveryFeed {
+  0%, 100% { transform: translateY(0); }
+  48%, 72% { transform: translateY(-4%); }
+}
+
+@keyframes discoveryReaction {
+  0%, 14% { opacity: 0; transform: translateY(10px); }
+  26%, 84% { opacity: 1; transform: none; }
+  100% { opacity: 0; }
+}
+
+@keyframes discoveryVideo {
+  0%, 20% { opacity: 0; transform: scale(.8); }
+  32%, 78% { opacity: 1; transform: none; }
+  100% { opacity: 0; }
+}
+
+@keyframes discoverySelect {
+  0%, 58% { opacity: 0; transform: scale(.7); }
+  68%, 90% { opacity: 1; transform: scale(1.12); }
+  100% { opacity: 0; }
+}
+
 @media (max-width: 1023px) {
   .landing-motion--hero { min-height: 560px; }
 }
@@ -132,6 +243,34 @@
 }
 
 @media (max-width: 480px) {
+  .landing-motion--discovery {
+    min-height: 500px;
+  }
+  .landing-motion--discovery .discovery-ui {
+    inset: 3% 8%;
+    border-radius: 28px;
+  }
+  .landing-motion--discovery .creator-reaction {
+    left: 3%;
+    bottom: 10%;
+    gap: 7px;
+    padding: 6px 10px 6px 6px;
+    font-size: 12px;
+  }
+  .creator-reaction img {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+  .landing-motion--discovery .video-indicator {
+    display: none;
+  }
+  .landing-motion--discovery .place-selection {
+    right: 7%;
+    bottom: 9%;
+    width: 42px;
+    height: 42px;
+  }
   .motion-ugc-stack {
     inset:12% 63% 17% 3%;
     grid-template-columns:1fr;
