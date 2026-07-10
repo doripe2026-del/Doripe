@@ -1,9 +1,10 @@
 import { expect, test } from "@playwright/test";
 import actionContract from "../../public/app-preview/figma/action-contract.json" with { type: "json" };
 import assetPolicy from "../../public/app-preview/figma/flow-a-asset-policy.json" with { type: "json" };
+import coverageManifest from "../../public/app-preview/figma/flow-a-coverage-manifest.json" with { type: "json" };
 import measurements from "../../public/app-preview/figma/screen-measurements.json" with { type: "json" };
 import masks from "../../public/app-preview/figma/visual-masks.json" with { type: "json" };
-import { authoritativeGeometrySources } from "../../scripts/app-preview-semantic-gates.mjs";
+import { resolveFlowACoverage } from "../../scripts/app-preview-semantic-gates.mjs";
 
 const FLOW_A = Object.freeze([
   { id: "a1", nodeId: "446:34", title: "오늘 갈 곳, 1분 안에 정해요", action: "start", actionLabel: "시작하기" },
@@ -115,16 +116,22 @@ async function compareWithReference(page, screen, screenId, testInfo) {
 async function assertMeasuredGeometry(screen, screenId) {
   const frame = await screen.boundingBox();
   expect(frame).not.toBeNull();
-  const requiredSources = authoritativeGeometrySources(screenId, measurements, actionContract);
   const measuredNodes = await screen.locator("[data-measure-key]").evaluateAll((elements) => (
     elements.map((element) => ({
       source: element.dataset.measureKey,
       rect: element.getBoundingClientRect().toJSON()
     }))
   ));
+  const coverage = resolveFlowACoverage({
+    screenId,
+    nodeId: measurements[screenId].nodeId,
+    measurementKeys: Object.keys(measurements[screenId].elements),
+    renderedSources: measuredNodes.map(({ source }) => source),
+    classifications: coverageManifest.classifications
+  });
   let maximumDelta = 0;
 
-  for (const key of requiredSources) {
+  for (const key of coverage.rendered) {
     const matches = measuredNodes.filter((node) => node.source === key);
     expect(matches, `${screenId}/${key} has exactly one measured DOM owner`).toHaveLength(1);
     const expected = measurements[screenId].elements[key];
@@ -166,7 +173,6 @@ async function assertSemanticAssets(screen, screenId) {
 
   expect(result.urlBackgrounds, `${screenId} CSS image backgrounds`).toEqual([]);
   for (const image of result.images) {
-    if (image.path.startsWith("/app-preview/assets/icons/")) continue;
     const policy = policyByPath.get(image.path);
     expect(policy, `${screenId} declares ${image.path}`).toBeTruthy();
     expect(policy.screens, `${image.path} screen ownership`).toContain(screenId);
@@ -289,6 +295,17 @@ test("password rules and reset confirmation validate before continuing", async (
   await page.getByLabel("비밀번호 확인").fill(VALID_PASSWORD);
   await page.getByRole("button", { name: "저장하기" }).click();
   await expect(page).toHaveURL(/screen=a3/);
+});
+
+test("A7 persists its visible password before matching confirmation is saved", async ({ page }) => {
+  await gotoScreen(page, "a7");
+  await page.getByLabel("비밀번호 확인").fill("Doripe12");
+  await page.getByRole("button", { name: "저장하기", exact: true }).click();
+  await expect(page).toHaveURL(/screen=a3/);
+
+  const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("doripe_app_preview_v1")));
+  expect(stored.form.newPassword).toBe("Doripe12");
+  expect(stored.form.passwordConfirmation).toBe("Doripe12");
 });
 
 test("profile setup validates birth year, gender, and nickname", async ({ page }) => {

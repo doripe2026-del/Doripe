@@ -5,9 +5,11 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import {
-  authoritativeGeometrySources,
-  validateFlowAAssetPolicy
+  validateFlowACoverageManifest,
+  validateFlowAAssetPolicy,
+  validateFlowALiveEvidence
 } from "./app-preview-semantic-gates.mjs";
+import { readAssetMetadata } from "./app-preview-asset-metadata.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("..", import.meta.url));
 const requiredFiles = [
@@ -20,6 +22,8 @@ const requiredFiles = [
 const registryFiles = [
   "public/app-preview/figma/action-contract.json",
   "public/app-preview/figma/flow-a-asset-policy.json",
+  "public/app-preview/figma/flow-a-coverage-manifest.json",
+  "public/app-preview/figma/flow-a-live-evidence.json",
   "public/app-preview/figma/screen-inventory.json",
   "public/app-preview/figma/screen-measurements.json",
   "public/app-preview/figma/visual-masks.json"
@@ -90,6 +94,8 @@ const measurements = registries.get("public/app-preview/figma/screen-measurement
 const masks = registries.get("public/app-preview/figma/visual-masks.json");
 const actionContract = registries.get("public/app-preview/figma/action-contract.json");
 const flowAAssetPolicy = registries.get("public/app-preview/figma/flow-a-asset-policy.json");
+const flowACoverageManifest = registries.get("public/app-preview/figma/flow-a-coverage-manifest.json");
+const flowALiveEvidence = registries.get("public/app-preview/figma/flow-a-live-evidence.json");
 const inventoryIds = inventory.map((screen) => screen.id);
 const sortedInventoryIds = [...inventoryIds].sort();
 
@@ -116,12 +122,7 @@ for (const record of [...actionContract.actions, ...actionContract.nonInteractiv
   }
 }
 
-for (const screen of inventory.filter((entry) => entry.group === "A")) {
-  const geometrySources = authoritativeGeometrySources(screen.id, measurements, actionContract);
-  if (geometrySources.length === 0) {
-    throw new Error(`Flow A screen has no authoritative geometry: ${screen.id}`);
-  }
-}
+validateFlowACoverageManifest({ manifest: flowACoverageManifest, inventory, measurements });
 for (const record of actionContract.actions) {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(record.actionId)) {
     throw new Error(`Invalid action ID: ${record.screenId}/${record.actionId}`);
@@ -145,6 +146,7 @@ if (JSON.stringify(actualASelection) !== JSON.stringify(expectedASelection)) {
 }
 
 const referenceHashes = new Set();
+const referenceHashesByScreen = new Map();
 for (const screen of inventory) {
   if (!/^[a-e]\d+[a-z0-9-]*$/.test(screen.id)) throw new Error(`Invalid Figma screen ID: ${screen.id}`);
   if (!/^\d+:\d+$/.test(screen.nodeId)) throw new Error(`Invalid Figma node ID for ${screen.id}: ${screen.nodeId}`);
@@ -193,7 +195,9 @@ for (const screen of inventory) {
   const referencePath = join(repositoryRoot, "public", screen.reference.replace(/^\//, ""));
   if (!existsSync(referencePath)) throw new Error(`Missing Figma reference for ${screen.id}: ${screen.reference}`);
   const png = await readFile(referencePath);
-  referenceHashes.add(createHash("sha256").update(png).digest("hex"));
+  const referenceHash = createHash("sha256").update(png).digest("hex");
+  referenceHashes.add(referenceHash);
+  referenceHashesByScreen.set(screen.id, referenceHash);
   if (
     png.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a"
     || png.readUInt32BE(16) !== 393
@@ -203,12 +207,22 @@ for (const screen of inventory) {
   }
 }
 
+validateFlowALiveEvidence({
+  evidence: flowALiveEvidence,
+  inventory,
+  referenceHashes: referenceHashesByScreen
+});
+
 const onboardingAssetDirectory = join(repositoryRoot, "public/app-preview/assets/onboarding");
-const onboardingAssets = await Promise.all((await readdir(onboardingAssetDirectory)).map(async (name) => {
-  const contents = await readFile(join(onboardingAssetDirectory, name));
+const localAssetPaths = new Set([
+  ...(await readdir(onboardingAssetDirectory)).map((name) => `/app-preview/assets/onboarding/${name}`),
+  ...flowAAssetPolicy.assets.map((asset) => asset.path)
+]);
+const onboardingAssets = await Promise.all([...localAssetPaths].map(async (path) => {
+  const contents = await readFile(join(repositoryRoot, "public", path.replace(/^\//, "")));
   return {
-    path: `/app-preview/assets/onboarding/${name}`,
-    hash: createHash("sha256").update(contents).digest("hex")
+    path,
+    ...readAssetMetadata(contents, path)
   };
 }));
 validateFlowAAssetPolicy({

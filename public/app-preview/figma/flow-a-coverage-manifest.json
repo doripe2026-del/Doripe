@@ -1,0 +1,3020 @@
+{
+  "version": 1,
+  "fileKey": "TfZAtv9JUy508otim4P23w",
+  "generatedFrom": "screen-measurements.json plus reviewed semantic Flow A DOM ownership",
+  "rendered": [
+    {
+      "screenId": "a1",
+      "figmaNodeId": "446:34",
+      "sources": [
+        "media/photo/crop-asset",
+        "media/photo/crop-asset#2",
+        "media/photo/crop-asset#3",
+        "media/photo/crop-asset#4",
+        "Header-/-brand/logo/image",
+        "screen/title",
+        "screen/subtitle",
+        "action/start",
+        "action/login"
+      ]
+    },
+    {
+      "screenId": "a1-splash",
+      "figmaNodeId": "579:698",
+      "sources": [
+        "Header-/-brand/logo/image",
+        "ui/loading/track",
+        "ui/loading/fill"
+      ]
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "sources": [
+        "Header-/-brand/logo/image",
+        "screen/title",
+        "field/email/bg",
+        "field/password/bg",
+        "action/forgot-password",
+        "action/primary",
+        "action/primary/bg#2",
+        "action/primary/bg"
+      ]
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "sources": [
+        "Header-/-brand/logo/image",
+        "screen/title",
+        "field/email/bg",
+        "field/password/bg",
+        "state/helper-text",
+        "action/forgot-password",
+        "action/primary",
+        "action/primary/bg#2",
+        "action/primary/bg"
+      ]
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "sources": [
+        "action/back",
+        "screen/title",
+        "screen/subtitle",
+        "field/email/bg",
+        "action/next"
+      ]
+    },
+    {
+      "screenId": "a6",
+      "figmaNodeId": "579:848",
+      "sources": [
+        "action/back",
+        "complete hero / check halo",
+        "codex generated / polished check badge",
+        "screen/title",
+        "screen/subtitle",
+        "action/primary",
+        "resend"
+      ]
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "sources": [
+        "action/back",
+        "screen/title",
+        "screen/subtitle",
+        "field/new-password/bg",
+        "field/password-rules/container",
+        "field/password-confirm/bg",
+        "action/save"
+      ]
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "sources": [
+        "action/back",
+        "screen/title",
+        "screen/subtitle",
+        "field/new-password/bg",
+        "field/password-rules/container",
+        "field/password-confirm/bg",
+        "state/helper-text",
+        "action/save"
+      ]
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "sources": [
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "field/email/bg",
+        "action/next"
+      ]
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "sources": [
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "field/email/bg",
+        "state/helper-text",
+        "action/next"
+      ]
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "sources": [
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "field/email/bg",
+        "state/helper-text",
+        "action/next"
+      ]
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "sources": [
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "screen/subtitle",
+        "field/password/bg",
+        "action/next"
+      ]
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "sources": [
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "screen/subtitle",
+        "field/password/bg",
+        "field/password-rules/container",
+        "action/next"
+      ]
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "sources": [
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "screen/subtitle",
+        "field/year-picker/container",
+        "action/next"
+      ]
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "sources": [
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "screen/subtitle",
+        "gender",
+        "gender radio/여성",
+        "gender radio",
+        "gender#2",
+        "gender radio/남성",
+        "gender radio#2",
+        "gender#3",
+        "gender radio/선택하지 않음",
+        "gender radio#3",
+        "action/next"
+      ]
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "sources": [
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "screen/subtitle",
+        "field/nickname/bg",
+        "legal/privacy-note",
+        "action/next"
+      ]
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "sources": [
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "screen/subtitle",
+        "field/nickname/bg",
+        "legal/privacy-note",
+        "action/next"
+      ]
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "sources": [
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "screen/subtitle",
+        "slot/option-card/bg",
+        "slot/option-card/bg#2",
+        "slot/option-card/bg#3",
+        "slot/option-card/bg#4",
+        "slot/option-card/bg#5",
+        "slot/option-card/bg#6",
+        "action/choose-location",
+        "action/skip"
+      ]
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "sources": [
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "screen/subtitle",
+        "slot/option-card/bg",
+        "slot/option-card/bg#2",
+        "slot/option-card/bg#3",
+        "slot/option-card/bg#4",
+        "slot/option-card/bg#5",
+        "slot/option-card/bg#6",
+        "slot/option-card/bg#7",
+        "slot/option-card/bg#8",
+        "action/next",
+        "action/skip"
+      ]
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "sources": [
+        "misty map bg",
+        "action/back",
+        "ui/intro-progress/track",
+        "ui/intro-progress/fill",
+        "screen/title",
+        "screen/subtitle",
+        "region",
+        "region#2",
+        "region#3",
+        "bottom hover",
+        "bottom title",
+        "bottom sub",
+        "action/primary"
+      ]
+    },
+    {
+      "screenId": "a21",
+      "figmaNodeId": "579:1173",
+      "sources": [
+        "COMPONENT / floating glass travel status",
+        "travel status / icon background",
+        "ICON / Send Plane",
+        "Text / TravelTransition / Destination",
+        "Text / travel subtitle",
+        "COMPONENT / loading dots",
+        "Loading / dot 1",
+        "Loading / dot 2",
+        "Loading / dot 3"
+      ]
+    },
+    {
+      "screenId": "a22",
+      "figmaNodeId": "579:1162",
+      "sources": [
+        "ui/loading/track",
+        "ui/loading/fill",
+        "Header-/-brand/logo/image",
+        "screen/title",
+        "screen/subtitle"
+      ]
+    }
+  ],
+  "classifications": [
+    {
+      "screenId": "a1",
+      "figmaNodeId": "446:34",
+      "source": "asset/source-reference/full",
+      "reason": "decorative-crop-source-owned-by-rendered-media",
+      "evidence": "A1 asset/source-reference/full is the clipped source layer inside a separately rendered decorative media crop and is not standalone UI."
+    },
+    {
+      "screenId": "a1",
+      "figmaNodeId": "446:34",
+      "source": "asset/source-reference/full#2",
+      "reason": "decorative-crop-source-owned-by-rendered-media",
+      "evidence": "A1 asset/source-reference/full#2 is the clipped source layer inside a separately rendered decorative media crop and is not standalone UI."
+    },
+    {
+      "screenId": "a1",
+      "figmaNodeId": "446:34",
+      "source": "asset/source-reference/full#3",
+      "reason": "decorative-crop-source-owned-by-rendered-media",
+      "evidence": "A1 asset/source-reference/full#3 is the clipped source layer inside a separately rendered decorative media crop and is not standalone UI."
+    },
+    {
+      "screenId": "a1",
+      "figmaNodeId": "446:34",
+      "source": "asset/source-reference/full#4",
+      "reason": "decorative-crop-source-owned-by-rendered-media",
+      "evidence": "A1 asset/source-reference/full#4 is the clipped source layer inside a separately rendered decorative media crop and is not standalone UI."
+    },
+    {
+      "screenId": "a1",
+      "figmaNodeId": "446:34",
+      "source": "action/start/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A1 action/start/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a1",
+      "figmaNodeId": "446:34",
+      "source": "action/start/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A1 action/start/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a1",
+      "figmaNodeId": "446:34",
+      "source": "action/login/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A1 action/login/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a1",
+      "figmaNodeId": "446:34",
+      "source": "Group 1",
+      "reason": "brand-layer-owned-by-rendered-brand",
+      "evidence": "A1 Group 1 is a named text/group sub-layer inside the rendered brand component, not a separate interface element."
+    },
+    {
+      "screenId": "a1",
+      "figmaNodeId": "446:34",
+      "source": "brand/name",
+      "reason": "brand-layer-owned-by-rendered-brand",
+      "evidence": "A1 brand/name is a named text/group sub-layer inside the rendered brand component, not a separate interface element."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "field/email/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A3 field/email/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "field/password/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A3 field/password/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "action/primary/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A3 action/primary/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "action/primary/label#2",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A3 action/primary/label#2 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "action/forgot-password/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A3 action/forgot-password/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "Group 1",
+      "reason": "brand-layer-owned-by-rendered-brand",
+      "evidence": "A3 Group 1 is a named text/group sub-layer inside the rendered brand component, not a separate interface element."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "brand/name",
+      "reason": "brand-layer-owned-by-rendered-brand",
+      "evidence": "A3 brand/name is a named text/group sub-layer inside the rendered brand component, not a separate interface element."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "input icon/이메일",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A3 input icon/이메일 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A3 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A3 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A3 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "input icon/비밀번호",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A3 input icon/비밀번호 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A3 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A3 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a3",
+      "figmaNodeId": "579:929",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A3 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "field/email/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A4 field/email/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "field/password/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A4 field/password/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "action/primary/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A4 action/primary/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "action/primary/label#2",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A4 action/primary/label#2 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "action/forgot-password/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A4 action/forgot-password/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "Group 1",
+      "reason": "brand-layer-owned-by-rendered-brand",
+      "evidence": "A4 Group 1 is a named text/group sub-layer inside the rendered brand component, not a separate interface element."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "brand/name",
+      "reason": "brand-layer-owned-by-rendered-brand",
+      "evidence": "A4 brand/name is a named text/group sub-layer inside the rendered brand component, not a separate interface element."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "input icon/이메일",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A4 input icon/이메일 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A4 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A4 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A4 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "input icon/비밀번호",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A4 input icon/비밀번호 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A4 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A4 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a4",
+      "figmaNodeId": "579:991",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A4 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A5 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "source": "field/email/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A5 field/email/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "source": "action/next/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A5 action/next/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "source": "action/next/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A5 action/next/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A5 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A5 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A5 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "source": "input icon/이메일 주소",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A5 input icon/이메일 주소 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A5 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A5 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a5",
+      "figmaNodeId": "579:833",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A5 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a6",
+      "figmaNodeId": "579:848",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A6 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a6",
+      "figmaNodeId": "579:848",
+      "source": "action/primary/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A6 action/primary/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a6",
+      "figmaNodeId": "579:848",
+      "source": "action/primary/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A6 action/primary/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a6",
+      "figmaNodeId": "579:848",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A6 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a6",
+      "figmaNodeId": "579:848",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A6 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a6",
+      "figmaNodeId": "579:848",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A6 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a6",
+      "figmaNodeId": "579:848",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A6 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a6",
+      "figmaNodeId": "579:848",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A6 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a6",
+      "figmaNodeId": "579:848",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A6 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A7 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "field/new-password/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A7 field/new-password/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "field/password-rules/item-icon",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A7 field/password-rules/item-icon is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "field/password-rules/item-label",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A7 field/password-rules/item-label is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "field/password-rules/item-icon#2",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A7 field/password-rules/item-icon#2 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "field/password-rules/item-label#2",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A7 field/password-rules/item-label#2 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "field/password-rules/item-icon#3",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A7 field/password-rules/item-icon#3 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "field/password-rules/item-label#3",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A7 field/password-rules/item-label#3 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "field/password-confirm/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A7 field/password-confirm/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "action/save/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A7 action/save/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "action/save/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A7 action/save/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "input icon/새 비밀번호",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 input icon/새 비밀번호 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "check/0",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A7 check/0 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "web-icon / lucide#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 web-icon / lucide#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "check/1",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A7 check/1 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "web-icon / lucide#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 web-icon / lucide#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "Vector#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 Vector#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "check/2",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A7 check/2 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "web-icon / lucide#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 web-icon / lucide#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "Vector#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 Vector#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "input icon/비밀번호 확인",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 input icon/비밀번호 확인 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "web-icon / lucide#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 web-icon / lucide#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "Vector#7",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 Vector#7 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a7",
+      "figmaNodeId": "579:702",
+      "source": "Vector#8",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A7 Vector#8 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A8 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "field/password-rules/item-icon",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A8 field/password-rules/item-icon is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "field/password-rules/item-label",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A8 field/password-rules/item-label is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "field/password-rules/item-icon#2",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A8 field/password-rules/item-icon#2 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "field/password-rules/item-label#2",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A8 field/password-rules/item-label#2 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "field/password-rules/item-icon#3",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A8 field/password-rules/item-icon#3 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "field/password-rules/item-label#3",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A8 field/password-rules/item-label#3 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "field/password-confirm/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A8 field/password-confirm/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "field/password-confirm/placeholder#2",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A8 field/password-confirm/placeholder#2 is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "action/save/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A8 action/save/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "action/save/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A8 action/save/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "input icon/새 비밀번호",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 input icon/새 비밀번호 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "check/0",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A8 check/0 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "web-icon / lucide#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 web-icon / lucide#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "check/1",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A8 check/1 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "web-icon / lucide#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 web-icon / lucide#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "Vector#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 Vector#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "check/2",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A8 check/2 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "web-icon / lucide#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 web-icon / lucide#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "Vector#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 Vector#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "input icon/비밀번호 확인",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 input icon/비밀번호 확인 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "web-icon / lucide#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 web-icon / lucide#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "Vector#7",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 Vector#7 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a8",
+      "figmaNodeId": "579:1063",
+      "source": "Vector#8",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A8 Vector#8 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A9 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "field/email/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A9 field/email/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "field/validation/check-bg",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A9 field/validation/check-bg is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "field/validation/check-icon",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A9 field/validation/check-icon is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "action/next/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A9 action/next/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "action/next/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A9 action/next/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A9 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A9 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A9 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "input icon/이메일",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A9 input icon/이메일 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A9 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A9 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A9 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "input check bg",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A9 input check bg is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "input check",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A9 input check is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "web-icon / lucide#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A9 web-icon / lucide#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a9",
+      "figmaNodeId": "579:638",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A9 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A10 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "source": "field/email/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A10 field/email/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "source": "action/next/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A10 action/next/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "source": "action/next/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A10 action/next/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A10 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A10 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A10 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "source": "input icon/이메일",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A10 input icon/이메일 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A10 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A10 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a10",
+      "figmaNodeId": "579:1015",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A10 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A11 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "source": "field/email/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A11 field/email/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "source": "action/next/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A11 action/next/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "source": "action/next/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A11 action/next/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A11 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A11 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A11 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "source": "input icon/이메일",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A11 input icon/이메일 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A11 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A11 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a11",
+      "figmaNodeId": "579:1039",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A11 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A12 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "source": "field/password/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A12 field/password/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "source": "action/next/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A12 action/next/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "source": "action/next/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A12 action/next/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A12 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A12 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A12 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "source": "input icon/비밀번호",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A12 input icon/비밀번호 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A12 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A12 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a12",
+      "figmaNodeId": "579:621",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A12 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A13 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "field/password/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A13 field/password/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "field/password-rules/item-icon",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 field/password-rules/item-icon is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "field/password-rules/item-label",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 field/password-rules/item-label is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "field/password-rules/item-icon#2",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 field/password-rules/item-icon#2 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "field/password-rules/item-label#2",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 field/password-rules/item-label#2 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "field/password-rules/item-icon#3",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 field/password-rules/item-icon#3 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "field/password-rules/item-label#3",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 field/password-rules/item-label#3 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "field/password-rules/item-icon#4",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 field/password-rules/item-icon#4 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "field/password-rules/item-label#4",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 field/password-rules/item-label#4 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "action/next/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A13 action/next/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "action/next/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A13 action/next/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "input icon/비밀번호",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 input icon/비밀번호 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "check/0",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 check/0 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "web-icon / lucide#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 web-icon / lucide#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "check/1",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 check/1 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "web-icon / lucide#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 web-icon / lucide#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "Vector#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 Vector#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "check/2",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 check/2 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "web-icon / lucide#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 web-icon / lucide#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "Vector#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 Vector#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "check/3",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A13 check/3 is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "web-icon / lucide#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 web-icon / lucide#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a13",
+      "figmaNodeId": "579:660",
+      "source": "Vector#7",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A13 Vector#7 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A14 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "field/year-picker/option-label",
+      "reason": "picker-layer-owned-by-semantic-picker",
+      "evidence": "A14 field/year-picker/option-label is an option/selection visual sub-layer owned by the rendered semantic year picker control."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "field/year-picker/option-label#2",
+      "reason": "picker-layer-owned-by-semantic-picker",
+      "evidence": "A14 field/year-picker/option-label#2 is an option/selection visual sub-layer owned by the rendered semantic year picker control."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "field/year-picker/selected-bg",
+      "reason": "picker-layer-owned-by-semantic-picker",
+      "evidence": "A14 field/year-picker/selected-bg is an option/selection visual sub-layer owned by the rendered semantic year picker control."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "field/year-picker/option-label#3",
+      "reason": "picker-layer-owned-by-semantic-picker",
+      "evidence": "A14 field/year-picker/option-label#3 is an option/selection visual sub-layer owned by the rendered semantic year picker control."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "field/year-picker/option-label#4",
+      "reason": "picker-layer-owned-by-semantic-picker",
+      "evidence": "A14 field/year-picker/option-label#4 is an option/selection visual sub-layer owned by the rendered semantic year picker control."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "field/year-picker/option-label#5",
+      "reason": "picker-layer-owned-by-semantic-picker",
+      "evidence": "A14 field/year-picker/option-label#5 is an option/selection visual sub-layer owned by the rendered semantic year picker control."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "action/next/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A14 action/next/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "action/next/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A14 action/next/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A14 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A14 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a14",
+      "figmaNodeId": "579:763",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A14 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A15 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "gender text",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A15 gender text is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "gender text#2",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A15 gender text#2 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "gender text#3",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A15 gender text#3 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "action/next/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A15 action/next/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "action/next/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A15 action/next/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "gender icon / female",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 gender icon / female is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "Icon / Female Symbol",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 Icon / Female Symbol is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "gender check/여성",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 gender check/여성 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "gender icon / male",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 gender icon / male is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "Icon / Male Symbol",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 Icon / Male Symbol is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "Vector#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 Vector#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "Vector#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 Vector#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "gender icon/선택하지 않음",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 gender icon/선택하지 않음 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "web-icon / lucide#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 web-icon / lucide#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "Vector#7",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 Vector#7 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a15",
+      "figmaNodeId": "579:951",
+      "source": "Vector#8",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A15 Vector#8 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A16 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "field/nickname/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A16 field/nickname/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "field/validation/check-bg",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A16 field/validation/check-bg is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "field/validation/check-icon",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A16 field/validation/check-icon is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "action/next/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A16 action/next/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "action/next/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A16 action/next/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A16 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A16 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A16 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "input icon/닉네임",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A16 input icon/닉네임 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A16 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A16 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A16 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "input check bg",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A16 input check bg is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "input check",
+      "reason": "validation-layer-owned-by-rendered-status",
+      "evidence": "A16 input check is an icon or label sub-layer owned by a rendered validation list or field status component."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "web-icon / lucide#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A16 web-icon / lucide#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a16",
+      "figmaNodeId": "579:739",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A16 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A17 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "source": "field/nickname/placeholder",
+      "reason": "field-placeholder-owned-by-semantic-input",
+      "evidence": "A17 field/nickname/placeholder is placeholder text owned by a rendered semantic input rather than an independent DOM element."
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "source": "action/next/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A17 action/next/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "source": "action/next/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A17 action/next/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A17 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A17 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A17 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "source": "input icon/닉네임",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A17 input icon/닉네임 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A17 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A17 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a17",
+      "figmaNodeId": "579:1102",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A17 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A18 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "slot/option-card/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A18 slot/option-card/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "slot/option-card/label#2",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A18 slot/option-card/label#2 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "slot/option-card/label#3",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A18 slot/option-card/label#3 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "slot/option-card/label#4",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A18 slot/option-card/label#4 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "slot/option-card/label#5",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A18 slot/option-card/label#5 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "slot/option-card/label#6",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A18 slot/option-card/label#6 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "action/choose-location/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A18 action/choose-location/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "action/choose-location/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A18 action/choose-location/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "action/skip/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A18 action/skip/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "option icon/인스타 저장",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 option icon/인스타 저장 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "option icon/네이버 지도 저장",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 option icon/네이버 지도 저장 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "web-icon / lucide#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 web-icon / lucide#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Vector#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Vector#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Vector#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Vector#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "option icon/블로그 검색",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 option icon/블로그 검색 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "web-icon / lucide#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 web-icon / lucide#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Vector#7",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Vector#7 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Vector#8",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Vector#8 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "option icon/친구 추천",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 option icon/친구 추천 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Z30 / instance",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Z30 / instance is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Artwork",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Artwork is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Artwork#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Artwork#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Path 01",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Path 01 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Path 02",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Path 02 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Path 03",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Path 03 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Path 04",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Path 04 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "option icon/그때그때 검색",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 option icon/그때그때 검색 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "web-icon / lucide#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 web-icon / lucide#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Vector#9",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Vector#9 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Vector#10",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Vector#10 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "option icon/잘 맞는 편",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 option icon/잘 맞는 편 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "web-icon / lucide#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 web-icon / lucide#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a18",
+      "figmaNodeId": "579:781",
+      "source": "Vector#11",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A18 Vector#11 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A19 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "slot/option-card/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A19 slot/option-card/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "slot/option-card/label#2",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A19 slot/option-card/label#2 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "slot/option-card/label#3",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A19 slot/option-card/label#3 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "slot/option-card/label#4",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A19 slot/option-card/label#4 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "slot/option-card/label#5",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A19 slot/option-card/label#5 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "slot/option-card/label#6",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A19 slot/option-card/label#6 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "slot/option-card/label#7",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A19 slot/option-card/label#7 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "slot/option-card/label#8",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A19 slot/option-card/label#8 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "action/next/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A19 action/next/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "action/next/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A19 action/next/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "action/skip/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A19 action/skip/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "option icon/지인 추천",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 option icon/지인 추천 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Z30 / instance",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Z30 / instance is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Artwork",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Artwork is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Artwork#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Artwork#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Path 01",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Path 01 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Path 02",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Path 02 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Path 03",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Path 03 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Path 04",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Path 04 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "option icon/인스타그램",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 option icon/인스타그램 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "option icon/틱톡/쇼츠",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 option icon/틱톡/쇼츠 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "web-icon / lucide#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 web-icon / lucide#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "option icon/블로그/검색",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 option icon/블로그/검색 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "web-icon / lucide#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 web-icon / lucide#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#7",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#7 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#8",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#8 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "option icon/커뮤니티/카페",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 option icon/커뮤니티/카페 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Z17 / instance",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Z17 / instance is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#9",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#9 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "option icon/크리에이터",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 option icon/크리에이터 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "web-icon / lucide#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 web-icon / lucide#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#10",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#10 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#11",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#11 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#12",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#12 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "option icon/웹스토어",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 option icon/웹스토어 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "web-icon / lucide#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 web-icon / lucide#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#13",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#13 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#14",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#14 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "option icon/기타",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 option icon/기타 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "web-icon / lucide#7",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 web-icon / lucide#7 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#15",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#15 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#16",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#16 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a19",
+      "figmaNodeId": "579:863",
+      "source": "Vector#17",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A19 Vector#17 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "action/back/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A20 action/back/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "region text",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A20 region text is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "region text#2",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A20 region text#2 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "region text#3",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A20 region text#3 is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "bottom pin",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 bottom pin is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "action/primary/bg",
+      "reason": "control-background-owned-by-semantic-control",
+      "evidence": "A20 action/primary/bg is the visual background sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "action/primary/label",
+      "reason": "control-label-owned-by-semantic-control",
+      "evidence": "A20 action/primary/label is the text label sub-layer of a rendered semantic control with its own measured DOM owner."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "icon/back",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 icon/back is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "web-icon / lucide",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 web-icon / lucide is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "region icon/연남",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 region icon/연남 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "web-icon / lucide#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 web-icon / lucide#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "Vector#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 Vector#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "region icon/성수",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 region icon/성수 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "web-icon / lucide#3",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 web-icon / lucide#3 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "Vector#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 Vector#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "Vector#5",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 Vector#5 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "region icon/용산",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 region icon/용산 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "web-icon / lucide#4",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 web-icon / lucide#4 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "Vector#6",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 Vector#6 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a20",
+      "figmaNodeId": "579:1127",
+      "source": "Vector#7",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A20 Vector#7 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a21",
+      "figmaNodeId": "579:1173",
+      "source": "Icon / Send Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A21 Icon / Send Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a21",
+      "figmaNodeId": "579:1173",
+      "source": "Vector",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A21 Vector is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    },
+    {
+      "screenId": "a21",
+      "figmaNodeId": "579:1173",
+      "source": "Vector#2",
+      "reason": "vector-child-owned-by-component-asset",
+      "evidence": "A21 Vector#2 is an internal vector/instance layer owned by a separately rendered component-level image asset."
+    }
+  ]
+}

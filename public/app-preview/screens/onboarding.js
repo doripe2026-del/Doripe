@@ -315,7 +315,7 @@ export function renderA7() {
     <p class="a7-subtitle" data-measure-key="screen/subtitle">다시 로그인할 비밀번호를 입력해주세요</p>
     <label class="a7-field a7-field--password">
       <span>새 비밀번호</span>
-      <input type="password" autocomplete="new-password" aria-label="새 비밀번호" value="Doripe12" data-action="update-new-password" data-measure-key="field/new-password/bg">
+      <input type="password" autocomplete="new-password" aria-label="새 비밀번호" value="Doripe12" data-action="update-new-password" data-measure-key="field/new-password/bg" data-persist-default="true">
       <img src="${ASSET_ROOT}/lock.svg" alt="" aria-hidden="true" draggable="false">
     </label>
     <ul class="a7-rules" data-measure-key="field/password-rules/container" aria-label="안전한 암호 조건">

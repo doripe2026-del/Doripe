@@ -1,0 +1,218 @@
+{
+  "version": 1,
+  "fileKey": "TfZAtv9JUy508otim4P23w",
+  "rootNodeId": "446:33",
+  "capturedAt": "2026-07-10T15:02:28Z",
+  "capture": {
+    "designContextTool": "get_design_context",
+    "screenshotTool": "get_screenshot",
+    "readOnly": true,
+    "contentsOnly": true,
+    "maxDimension": 852
+  },
+  "notes": [
+    "All 22 exact Flow A nodes were re-read from live Figma and captured at 393x852.",
+    "A1 changed from a partially transparent prior render; two consecutive current captures matched the recorded hash.",
+    "The other 21 live captures were byte-identical to their committed references."
+  ],
+  "screens": [
+    {
+      "id": "a1",
+      "nodeId": "446:34",
+      "reference": "/app-preview/assets/references/a1.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "c0a1584547ca55a8a261c9c5490d3d8321297b753c63e0308f9d5a0cfaaede64"
+    },
+    {
+      "id": "a1-splash",
+      "nodeId": "579:698",
+      "reference": "/app-preview/assets/references/a1-splash.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "82c9e49d36827740137052b2dee0c89364b3843cc4d6f829725ead92afe8d113"
+    },
+    {
+      "id": "a3",
+      "nodeId": "579:929",
+      "reference": "/app-preview/assets/references/a3.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "06ba4ee04db45f2087c8ec86f3ef87252e1bd4a3af12d984469bf66fa0d8291a"
+    },
+    {
+      "id": "a4",
+      "nodeId": "579:991",
+      "reference": "/app-preview/assets/references/a4.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "6ace98527ddc18c509d6c335be4e8b96a2e9cf2c04ab7720fe1b5cb80b942867"
+    },
+    {
+      "id": "a5",
+      "nodeId": "579:833",
+      "reference": "/app-preview/assets/references/a5.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "83863e43a9076f2ea0d8b20272552b4ce723e398c383420733b5f736c6646598"
+    },
+    {
+      "id": "a6",
+      "nodeId": "579:848",
+      "reference": "/app-preview/assets/references/a6.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "c0ab11ed3ed60301c981b5bdf15ae36befcf4241a7a0aa41f2cf056c33db1ffe"
+    },
+    {
+      "id": "a7",
+      "nodeId": "579:702",
+      "reference": "/app-preview/assets/references/a7.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "fbcdf41f2f3c6b6f9924183a5f3ee1da779922046ada4cf0215260319d4238e3"
+    },
+    {
+      "id": "a8",
+      "nodeId": "579:1063",
+      "reference": "/app-preview/assets/references/a8.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "24a5e02f3aa876654a84f86b553ee656e9bf3249afc93ca61fff8cf4c747c9e0"
+    },
+    {
+      "id": "a9",
+      "nodeId": "579:638",
+      "reference": "/app-preview/assets/references/a9.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "fbd1138672228aab04e27871bc1873fa12ca1b4c2188e5b94d125c81ffdc3538"
+    },
+    {
+      "id": "a10",
+      "nodeId": "579:1015",
+      "reference": "/app-preview/assets/references/a10.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "d1c9bf8e3acbe55e0d8b07fb67ee712bdf473f78d8eded4e71d11a1d3fcf7077"
+    },
+    {
+      "id": "a11",
+      "nodeId": "579:1039",
+      "reference": "/app-preview/assets/references/a11.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "9595c543e4e9730c8b8e9372565c6084ab5f5306d97ea740bd9b85eda4c4a2a4"
+    },
+    {
+      "id": "a12",
+      "nodeId": "579:621",
+      "reference": "/app-preview/assets/references/a12.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "c95d7f530efa007c06b1cb005c38fc6934a6b7e23e06d0e5a83c3c6bf516f8e3"
+    },
+    {
+      "id": "a13",
+      "nodeId": "579:660",
+      "reference": "/app-preview/assets/references/a13.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "49450318fdb4c38fdcc8682895733b0a292de28df973d264bfdb60a88c2b9d65"
+    },
+    {
+      "id": "a14",
+      "nodeId": "579:763",
+      "reference": "/app-preview/assets/references/a14.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "3d8f8db57760d1175331e2375f06d1aecccb2d290feafe92fec4a928f86e8f1d"
+    },
+    {
+      "id": "a15",
+      "nodeId": "579:951",
+      "reference": "/app-preview/assets/references/a15.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "3d6f925ab598e882fdb20098439a5b1c6d3bf7645484234662435f21bf226a51"
+    },
+    {
+      "id": "a16",
+      "nodeId": "579:739",
+      "reference": "/app-preview/assets/references/a16.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "cfe619e967dd3abb221ebc15cc4a94b374d1e93a485d2f28437bb1c5ae9c94b9"
+    },
+    {
+      "id": "a17",
+      "nodeId": "579:1102",
+      "reference": "/app-preview/assets/references/a17.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "20757aeb7c8e602ce6bb49cd75b55d49196e5ba88b7dce245a0edad1e8cfd929"
+    },
+    {
+      "id": "a18",
+      "nodeId": "579:781",
+      "reference": "/app-preview/assets/references/a18.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "463aa36ed24d854a3a0fa790b1402e90bca51d1d826b173a1f56323b43ec11eb"
+    },
+    {
+      "id": "a19",
+      "nodeId": "579:863",
+      "reference": "/app-preview/assets/references/a19.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "769db45f1de4cf8bcdcfe06e6728cbd5c5119c249f8c3e5a347e1b57fe77613b"
+    },
+    {
+      "id": "a20",
+      "nodeId": "579:1127",
+      "reference": "/app-preview/assets/references/a20.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "adf3347769278d265d56697227699f2ccd8e7db4af1002c66b80698be5ea72d1"
+    },
+    {
+      "id": "a21",
+      "nodeId": "579:1173",
+      "reference": "/app-preview/assets/references/a21.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "dbb34e35699842109a1445b7ebc5a748d4adbd97b5af416f4b901be040a0bc77"
+    },
+    {
+      "id": "a22",
+      "nodeId": "579:1162",
+      "reference": "/app-preview/assets/references/a22.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "83a36bdc8d00692f95d8077f0a9b5f5cb54a72b5c183f97d3f65b640f8328537"
+    }
+  ]
+}

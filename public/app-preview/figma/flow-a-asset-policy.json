@@ -2,185 +2,411 @@
   "version": 1,
   "assets": [
     {
+      "path": "/app-preview/assets/icons/back.svg",
+      "role": "component",
+      "screens": [
+        "a5",
+        "a6",
+        "a7",
+        "a8",
+        "a9",
+        "a10",
+        "a11",
+        "a12",
+        "a13",
+        "a14",
+        "a15",
+        "a16",
+        "a17",
+        "a18",
+        "a19",
+        "a20"
+      ],
+      "sha256": "bbdd4db1fee78b935d705b10fab449b382ee422b1691c853a7013cb0e33e9735",
+      "width": 26,
+      "height": 26
+    },
+    {
       "path": "/app-preview/assets/onboarding/a1-photo-1.png",
       "role": "decorative",
-      "screens": ["a1"]
+      "screens": [
+        "a1"
+      ],
+      "sha256": "bdc112ce1f7d5fa44c71b7abebe2ed95add173f265b0b9a0b80e9497bf308147",
+      "width": 137,
+      "height": 155
     },
     {
       "path": "/app-preview/assets/onboarding/a1-photo-2.png",
       "role": "decorative",
-      "screens": ["a1"]
+      "screens": [
+        "a1"
+      ],
+      "sha256": "b52860e3fc4a4aeb55c09328a525f439994a549a0ef6710ebfa98493b3663899",
+      "width": 137,
+      "height": 144
     },
     {
       "path": "/app-preview/assets/onboarding/a1-photo-3.png",
       "role": "decorative",
-      "screens": ["a1"]
+      "screens": [
+        "a1"
+      ],
+      "sha256": "4ff1b04eea770b9aad8537c81a2d433185e0af98da7b4cb90bfc8d5199e933ee",
+      "width": 128,
+      "height": 122
     },
     {
       "path": "/app-preview/assets/onboarding/a1-photo-4.png",
       "role": "decorative",
-      "screens": ["a1"]
+      "screens": [
+        "a1"
+      ],
+      "sha256": "3f27b1ab729af135d92f9ae2665339c16c39cea0f2bb49b02d57d7f8f6a1b45b",
+      "width": 111,
+      "height": 134
     },
     {
       "path": "/app-preview/assets/onboarding/a21-map-plane.png",
       "role": "decorative",
-      "screens": ["a21"],
-      "allowLarge": true
+      "screens": [
+        "a21"
+      ],
+      "allowLarge": true,
+      "largeAssetEvidence": "A21 uses this 393x704 current Figma decorative map-and-plane crop behind separately rendered semantic status and loading components.",
+      "sha256": "e75ef121df184d46ca60377262fa31fcbaec2dc9cb26aab56d1c543981ee48a0",
+      "width": 853,
+      "height": 1844
     },
     {
       "path": "/app-preview/assets/onboarding/a22-mark.png",
       "role": "component",
-      "screens": ["a22"]
+      "screens": [
+        "a22"
+      ],
+      "sha256": "80ae6c239aef6c32a0654209d68fd0d54870cd22ce7abdd44a8117480d002057",
+      "width": 310,
+      "height": 310
     },
     {
       "path": "/app-preview/assets/onboarding/check-badge.svg",
       "role": "component",
-      "screens": ["a6"]
+      "screens": [
+        "a6"
+      ],
+      "sha256": "770cac80791a5f18e6df3fc22ff76af169de6ec1988933e9461beedb2935f93b",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/check-halo.svg",
       "role": "decorative",
-      "screens": ["a6"]
+      "screens": [
+        "a6"
+      ],
+      "sha256": "d82ae2c3e173ff628004b3ac1550c90ce38cd29cb309157d44748f0f784f8e52",
+      "width": 168,
+      "height": 168
     },
     {
       "path": "/app-preview/assets/onboarding/check.svg",
       "role": "component",
-      "screens": ["a7", "a8", "a12", "a13"]
+      "screens": [
+        "a7",
+        "a8",
+        "a12",
+        "a13"
+      ],
+      "sha256": "89b244f810be98eb7d4c65ce1efb0c29ee8cbe583eb0f6fa3036e26321dbd176",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/doripe-mark.png",
       "role": "component",
-      "screens": ["a1", "a1-splash", "a3", "a4"]
+      "screens": [
+        "a1",
+        "a1-splash",
+        "a3",
+        "a4"
+      ],
+      "sha256": "80ae6c239aef6c32a0654209d68fd0d54870cd22ce7abdd44a8117480d002057",
+      "width": 310,
+      "height": 310
     },
     {
       "path": "/app-preview/assets/onboarding/email.svg",
       "role": "component",
-      "screens": ["a3", "a4", "a5", "a9", "a10", "a11"]
+      "screens": [
+        "a3",
+        "a4",
+        "a5",
+        "a9",
+        "a10",
+        "a11"
+      ],
+      "sha256": "974f4ae23b34895bf847cd0daa98d83beb2a3b0ea163d82a63f033a4b0f1143d",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/gender-female.svg",
       "role": "component",
-      "screens": ["a15"]
+      "screens": [
+        "a15"
+      ],
+      "sha256": "f397c30b1cd09ca6d561d93234e84c26198666bb87ef71fb34d77ad1751f1f06",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/gender-male.svg",
       "role": "component",
-      "screens": ["a15"]
+      "screens": [
+        "a15"
+      ],
+      "sha256": "1219bcbfbff9063b09d40d0c1c928f90825ed8b59d74b31fcf79d1a54753f675",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/gender-unspecified.svg",
       "role": "component",
-      "screens": ["a15"]
+      "screens": [
+        "a15"
+      ],
+      "sha256": "74a52f261d0195a773249078fa8f88e2c4bd668a5d63409349c0ff067459e792",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/lock.svg",
       "role": "component",
-      "screens": ["a3", "a4", "a7", "a8", "a12", "a13"]
+      "screens": [
+        "a3",
+        "a4",
+        "a7",
+        "a8",
+        "a12",
+        "a13"
+      ],
+      "sha256": "e9410041ababe694840e75a91ef349cccca4fe699d2277b9abbdacbcf05b6649",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/neighborhood-pin.svg",
       "role": "component",
-      "screens": ["a20"]
+      "screens": [
+        "a20"
+      ],
+      "sha256": "b0b494344c71870ce4a1df27a58b8ce1e5af7d81d2c9a8977afc4ddd6e758034",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/radio-check.svg",
       "role": "component",
-      "screens": ["a15"]
+      "screens": [
+        "a15"
+      ],
+      "sha256": "e98035d025f49383f2f674d14979d4fe290c9f51af89999a17a7e18639772ca9",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/radio-empty.svg",
       "role": "component",
-      "screens": ["a15"]
+      "screens": [
+        "a15"
+      ],
+      "sha256": "c0f640c84d73a879cab45ba8145c5b4cfedd671474545c450e7c5fd349418501",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/radio-selected.svg",
       "role": "component",
-      "screens": ["a15"]
+      "screens": [
+        "a15"
+      ],
+      "sha256": "090b23ca3f9bad5ea30f29b3a7fb3bccfda14054d60faaabcc906021a8300030",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/referral-community.svg",
       "role": "component",
-      "screens": ["a19"]
+      "screens": [
+        "a19"
+      ],
+      "sha256": "3bc4c0c1d1149f3589ef751de14b80e6e949469bb8b5f46e0c5f948088063b88",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/referral-creator.svg",
       "role": "component",
-      "screens": ["a19"]
+      "screens": [
+        "a19"
+      ],
+      "sha256": "c53e35a76aabc4aac2712040f390def780fe263e486ead17e51a50679020c72d",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/referral-instagram.svg",
       "role": "component",
-      "screens": ["a19"]
+      "screens": [
+        "a19"
+      ],
+      "sha256": "2b47b84be82580745cff65860960bb7c3793de5e6107a7ca44af9895d6be95b2",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/referral-other.svg",
       "role": "component",
-      "screens": ["a19"]
+      "screens": [
+        "a19"
+      ],
+      "sha256": "3e2c376ef601306f43c2c89321fa2f0d80a8a2f573a3f85db74a28a9935abcd2",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/referral-search.svg",
       "role": "component",
-      "screens": ["a19"]
+      "screens": [
+        "a19"
+      ],
+      "sha256": "ea8bcf18506224542b91d4dbdec118d8160e40a79f69f97a4e1ec6379ddac309",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/referral-store.svg",
       "role": "component",
-      "screens": ["a19"]
+      "screens": [
+        "a19"
+      ],
+      "sha256": "ae3297b957e705bb57beb63151c97e140a1d0306877f15a30ddf08c32b38d6aa",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/referral-tiktok.svg",
       "role": "component",
-      "screens": ["a19"]
+      "screens": [
+        "a19"
+      ],
+      "sha256": "d53e28cdecf321e0e59ccb758f55166010ce76ff0c981cf626bf611c838dae1e",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/source-friend.svg",
       "role": "component",
-      "screens": ["a18", "a19"]
+      "screens": [
+        "a18",
+        "a19"
+      ],
+      "sha256": "264f302a68f4b1391382d7ac5cb9315ea4ed356da41cc9d02ce8be49d514510a",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/source-instagram.svg",
       "role": "component",
-      "screens": ["a18"]
+      "screens": [
+        "a18"
+      ],
+      "sha256": "2b47b84be82580745cff65860960bb7c3793de5e6107a7ca44af9895d6be95b2",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/source-map.svg",
       "role": "component",
-      "screens": ["a18"]
+      "screens": [
+        "a18"
+      ],
+      "sha256": "b0b494344c71870ce4a1df27a58b8ce1e5af7d81d2c9a8977afc4ddd6e758034",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/source-search.svg",
       "role": "component",
-      "screens": ["a18"]
+      "screens": [
+        "a18"
+      ],
+      "sha256": "ea8bcf18506224542b91d4dbdec118d8160e40a79f69f97a4e1ec6379ddac309",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/source-sparkle.svg",
       "role": "component",
-      "screens": ["a18"]
+      "screens": [
+        "a18"
+      ],
+      "sha256": "dea0db4fcc0fb2bebe7ffd3200c20d78b5d3f45edd1d6c3f0417a1e6ae5f2dba",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/travel-icon-bg.svg",
       "role": "component",
-      "screens": ["a21"]
+      "screens": [
+        "a21"
+      ],
+      "sha256": "20e5e0f30eb74d39afe9f3cd8f843f884264a7290ed4438a5dd64a6e3ced4ada",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/travel-plane.svg",
       "role": "component",
-      "screens": ["a21"]
+      "screens": [
+        "a21"
+      ],
+      "sha256": "9da040777a772a39a674702be4a6b15a45d436d513fa7e67e989717501d396cb",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/user.svg",
       "role": "component",
-      "screens": ["a16", "a17"]
+      "screens": [
+        "a16",
+        "a17"
+      ],
+      "sha256": "c772b6c69c348524cbc50410d80491af7b44f397315b9f1c29503c8d2bc0af70",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/validation-check-bg.svg",
       "role": "component",
-      "screens": ["a9", "a16"]
+      "screens": [
+        "a9",
+        "a16"
+      ],
+      "sha256": "0fc3b7a26fe0571a16b74ef48a75dc4e53c96fffcaf62b0338e4f56dc23314de",
+      "width": 100,
+      "height": 100
     },
     {
       "path": "/app-preview/assets/onboarding/validation-check.svg",
       "role": "component",
-      "screens": ["a9", "a16"]
+      "screens": [
+        "a9",
+        "a16"
+      ],
+      "sha256": "eee65a450128e46b82312b4bd0097c400d5bba960be006520aa7a9ac59a8c23d",
+      "width": 100,
+      "height": 100
     }
   ]
 }

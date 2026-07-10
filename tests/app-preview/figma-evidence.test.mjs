@@ -1,11 +1,14 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import inventory from "../../public/app-preview/figma/screen-inventory.json" with { type: "json" };
+import liveEvidence from "../../public/app-preview/figma/flow-a-live-evidence.json" with { type: "json" };
 import measurements from "../../public/app-preview/figma/screen-measurements.json" with { type: "json" };
 import masks from "../../public/app-preview/figma/visual-masks.json" with { type: "json" };
+import { validateFlowALiveEvidence } from "../../scripts/app-preview-semantic-gates.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../..", import.meta.url));
 const allowedMaskReasons = new Set(["photo", "video", "map", "user-generated-text"]);
@@ -215,6 +218,28 @@ const overlaps = (left, right) => (
   && left.y < right.y + right.height
   && right.y < left.y + left.height
 );
+
+test("committed Flow A references match the exact live Figma capture registry", async () => {
+  const referenceHashes = new Map();
+  for (const screen of inventory.filter(({ group }) => group === "A")) {
+    const png = await readFile(join(repositoryRoot, "public", screen.reference.replace(/^\//, "")));
+    referenceHashes.set(screen.id, createHash("sha256").update(png).digest("hex"));
+  }
+
+  assert.doesNotThrow(() => validateFlowALiveEvidence({
+    evidence: liveEvidence,
+    inventory,
+    referenceHashes
+  }));
+  assert.throws(() => validateFlowALiveEvidence({
+    evidence: {
+      ...liveEvidence,
+      screens: liveEvidence.screens.slice(1)
+    },
+    inventory,
+    referenceHashes
+  }), /missing screen/);
+});
 
 test("every final screen has complete and internally consistent Figma evidence", async () => {
   assert.ok(inventory.length >= 50);
