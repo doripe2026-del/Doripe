@@ -80,6 +80,107 @@ assert(
   "nearby scene must be visible without reveal JavaScript",
 );
 
+for (const marker of [
+  'id="motionSceneCourse"',
+  'data-motion-layer="route-places"',
+  'data-motion-layer="route-line"',
+  'data-motion-layer="share-card"',
+  'data-motion-layer="recipient"',
+  'data-motion-layer="navigation-handoff"',
+]) {
+  assert(home.includes(marker), `course scene missing ${marker}`);
+}
+assert(
+  /<div class="journey-visual">\s*<div\s+id="motionSceneCourse"/.test(home),
+  "course scene must be visible without reveal JavaScript",
+);
+
+const courseSceneStart = home.indexOf('id="motionSceneCourse"');
+const courseSceneEnd = home.indexOf('<div class="journey-copy reveal">', courseSceneStart);
+assert(courseSceneStart >= 0 && courseSceneEnd > courseSceneStart, "could not isolate course scene");
+const courseScene = home.slice(courseSceneStart, courseSceneEnd);
+assert(
+  /data-motion-state="final"/.test(courseScene),
+  "course no-JS state must start on the final composition",
+);
+assert(
+  !/<(?:a|button|input|select)\b/i.test(courseScene)
+    && !/role="(?:button|tab|switch)"/i.test(courseScene),
+  "course advertising overlays must remain non-interactive markup",
+);
+
+const orderedCoursePlaces = [...courseScene.matchAll(/data-course-place="([123])"/g)]
+  .map((match) => match[1]);
+assert(
+  orderedCoursePlaces.join("") === "123",
+  "course scene must contain exactly three places in route order",
+);
+assert(
+  /<svg[^>]*data-motion-layer="route-line"[^>]*viewBox="0 0 320 420"[^>]*width="320"[^>]*height="420"/.test(courseScene),
+  "course route SVG must have a stable 320 by 420 coordinate system",
+);
+assert(
+  /<img[^>]+(?:discover\.png|discover-photo-next\.png|route-plan-generated\.png)/.test(courseScene),
+  "course scene must use current Figma-derived place assets",
+);
+assert(
+  /creator-photos\/creator-04\.png/.test(courseScene),
+  "course recipient must use the existing creator profile",
+);
+
+const courseRouteBox = cssBlock(motionCss, ".landing-motion--course .route-places,");
+assert(
+  /width:\s*min\(78%,\s*320px\)\s*;/.test(courseRouteBox)
+    && /aspect-ratio:\s*320\s*\/\s*420\s*;/.test(courseRouteBox)
+    && /overflow:\s*visible\s*;/.test(courseRouteBox),
+  "course route layers must keep stable dimensions without clipping",
+);
+const coursePlaceImage = cssBlock(motionCss, ".route-place-card img");
+assert(
+  /width:\s*126px\s*;/.test(coursePlaceImage)
+    && /height:\s*61px\s*;/.test(coursePlaceImage),
+  "course place images must reserve stable dimensions",
+);
+
+for (const [selector, opacity] of [
+  ['.landing-motion.landing-motion--course[data-motion-state="final"] .route-places', "1"],
+  ['.landing-motion.landing-motion--course[data-motion-state="final"] .route-line', "1"],
+  ['.landing-motion.landing-motion--course[data-motion-state="final"] .share-card', "1"],
+  ['.landing-motion.landing-motion--course[data-motion-state="final"] .recipient', "1"],
+  ['.landing-motion.landing-motion--course[data-motion-state="final"] .navigation-handoff', "1"],
+]) {
+  const block = cssBlock(motionCss, selector);
+  assert(
+    new RegExp(`opacity:\\s*${opacity}(?:\\s*;|\\s*$)`).test(block),
+    `course final composition requires ${selector} opacity ${opacity}`,
+  );
+}
+
+const courseFinalCards = cssBlock(
+  motionCss,
+  '.landing-motion.landing-motion--course[data-motion-state="final"] .route-place-card',
+);
+assert(
+  /opacity:\s*0(?:\s*;|\s*$)/.test(courseFinalCards),
+  "course final composition must replace transitional place cards with pins",
+);
+const courseFinalPins = cssBlock(
+  motionCss,
+  '.landing-motion.landing-motion--course[data-motion-state="final"] .route-pin',
+);
+assert(
+  /opacity:\s*1(?:\s*;|\s*$)/.test(courseFinalPins),
+  "course final composition must show ordered route pins",
+);
+const courseFinalRoute = cssBlock(
+  motionCss,
+  '.landing-motion.landing-motion--course[data-motion-state="final"] .route-line path',
+);
+assert(
+  /stroke-dashoffset:\s*0(?:\s*;|\s*$)/.test(courseFinalRoute),
+  "course final route line must be complete",
+);
+
 const nearbySceneStart = home.indexOf('id="motionSceneNearby"');
 const nearbySceneEnd = home.indexOf('<article class="journey-row">', nearbySceneStart);
 assert(nearbySceneStart >= 0 && nearbySceneEnd > nearbySceneStart, "could not isolate nearby scene");
@@ -189,6 +290,22 @@ assert(
   /display:\s*none\s*;/.test(mobileNearbyCandidates),
   "320px nearby scene must simplify the candidate count",
 );
+const mobileCourseCards = cssBlock(mobileMotion, ".landing-motion--course .route-place-card");
+assert(
+  /display:\s*none\s*;/.test(mobileCourseCards),
+  "320px course scene must remove transitional place cards first",
+);
+const mobileCoursePins = cssBlock(mobileMotion, ".landing-motion--course .route-pin");
+assert(
+  /animation:\s*none\s*;/.test(mobileCoursePins),
+  "320px course scene must keep the ordered pins visible while simplifying transitions",
+);
+const mobileCourseRoute = cssBlock(mobileMotion, ".landing-motion--course .route-line");
+assert(
+  !/display:\s*none\s*;/.test(mobileCourseRoute)
+    && /width:\s*min\(100%,\s*320px\)\s*;/.test(mobileCourseRoute),
+  "320px course scene must preserve a readable focal route",
+);
 
 const discoveryKeyframes = Object.fromEntries(
   ["discoveryFeed", "discoveryReaction", "discoveryVideo", "discoverySelect"].map((name) => [
@@ -217,6 +334,32 @@ for (const [name, block] of Object.entries(nearbyKeyframes)) {
     `${name} may animate only transform and opacity`,
   );
 }
+
+const courseKeyframes = Object.fromEntries(
+  ["coursePlaceCard", "coursePin", "shareCourse", "openCourse", "startNavigation"].map((name) => [
+    name,
+    cssBlock(motionCss, `@keyframes ${name}`),
+  ]),
+);
+for (const [name, block] of Object.entries(courseKeyframes)) {
+  const properties = [...block.matchAll(/([a-z][a-z-]*)\s*:/g)].map((match) => match[1]);
+  assert(
+    properties.every((property) => property === "opacity" || property === "transform"),
+    `${name} may animate only transform and opacity`,
+  );
+}
+const courseRouteKeyframes = cssBlock(motionCss, "@keyframes drawCourse");
+const courseRouteProperties = [...courseRouteKeyframes.matchAll(/([a-z][a-z-]*)\s*:/g)]
+  .map((match) => match[1]);
+assert(
+  courseRouteProperties.every((property) => property === "stroke-dashoffset"),
+  "drawCourse may animate only stroke-dashoffset",
+);
+assert(
+  /0%,\s*34%\s*\{[^}]*stroke-dashoffset:\s*700/.test(courseRouteKeyframes)
+    && /64%,\s*100%\s*\{[^}]*stroke-dashoffset:\s*0/.test(courseRouteKeyframes),
+  "course route must finish drawing before sharing begins",
+);
 
 assert(
   /32%,\s*100%\s*\{[^}]*opacity:\s*0/.test(discoveryKeyframes.discoveryReaction),

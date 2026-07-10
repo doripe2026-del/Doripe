@@ -946,9 +946,61 @@
           </article>
 
           <article class="journey-row">
-            <div class="journey-visual reveal">
-              <div class="journey-phone">
-                <img src="/img/figma-ui/route-plan-generated.png" alt="Doripe 루트 계획 화면" />
+            <div class="journey-visual">
+              <div
+                id="motionSceneCourse"
+                class="landing-motion landing-motion--course"
+                data-motion-scene
+                data-motion-state="final"
+                role="img"
+                aria-label="장소가 하루 코스로 연결되고 친구에게 공유되어 길찾기로 이어지는 화면"
+              >
+                <div class="route-places" data-motion-layer="route-places" aria-hidden="true">
+                  <div class="route-place route-place--one" data-course-place="1">
+                    <figure class="route-place-card" data-motion-layer="route-place-card">
+                      <img src="/img/figma-ui/discover.png" alt="" />
+                      <figcaption>도라이트 카페</figcaption>
+                    </figure>
+                    <span class="route-pin" data-motion-layer="route-pin"><b>1</b><small>카페</small></span>
+                  </div>
+                  <div class="route-place route-place--two" data-course-place="2">
+                    <figure class="route-place-card" data-motion-layer="route-place-card">
+                      <img src="/img/figma-ui/discover-photo-next.png" alt="" />
+                      <figcaption>오브젝트 성수</figcaption>
+                    </figure>
+                    <span class="route-pin" data-motion-layer="route-pin"><b>2</b><small>소품샵</small></span>
+                  </div>
+                  <div class="route-place route-place--three" data-course-place="3">
+                    <figure class="route-place-card" data-motion-layer="route-place-card">
+                      <img src="/img/figma-ui/route-plan-generated.png" alt="" />
+                      <figcaption>연남 다이닝</figcaption>
+                    </figure>
+                    <span class="route-pin" data-motion-layer="route-pin"><b>3</b><small>식당</small></span>
+                  </div>
+                </div>
+                <svg
+                  class="route-line"
+                  data-motion-layer="route-line"
+                  viewBox="0 0 320 420"
+                  width="320"
+                  height="420"
+                  preserveAspectRatio="xMidYMid meet"
+                  aria-hidden="true"
+                >
+                  <path data-motion-layer="route-path" d="M72 92 C208 118 34 188 118 220 C170 248 190 292 246 326" />
+                </svg>
+                <div class="share-card" data-motion-layer="share-card" aria-hidden="true">
+                  <span>코스 공유됨</span>
+                  <strong>연남 하루 코스</strong>
+                  <small>3곳 · 1시간 40분</small>
+                </div>
+                <div class="recipient" data-motion-layer="recipient" aria-hidden="true">
+                  <img src="/app/assets/creator-photos/creator-04.png" alt="" />
+                  <span>친구가 코스를 열었어요</span>
+                </div>
+                <div class="navigation-handoff" data-motion-layer="navigation-handoff" aria-hidden="true">
+                  <span>↗</span><strong>길찾기 시작</strong>
+                </div>
               </div>
             </div>
             <div class="journey-copy reveal">

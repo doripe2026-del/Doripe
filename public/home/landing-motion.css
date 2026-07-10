@@ -430,6 +430,327 @@
   80%, 100% { opacity: 1; transform: none; }
 }
 
+.landing-motion--course {
+  min-height: 620px;
+  overflow: visible;
+}
+
+.landing-motion--course::before {
+  content: "";
+  position: absolute;
+  inset: 4% 6% 14%;
+  border: 1px solid rgba(0, 64, 130, .08);
+  border-radius: 34px;
+  background:
+    linear-gradient(rgba(255, 255, 255, .82), rgba(255, 255, 255, .82)),
+    url("/img/figma-ui/hero-map-candidates.png") center / cover;
+  box-shadow: 0 30px 90px rgba(0, 74, 142, .11);
+}
+
+.landing-motion--course [data-motion-layer] {
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.landing-motion--course .route-places,
+.landing-motion--course .route-line {
+  position: absolute;
+  top: 4%;
+  right: 0;
+  left: 0;
+  width: min(78%, 320px);
+  height: auto;
+  aspect-ratio: 320 / 420;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.landing-motion--course .route-places {
+  z-index: 3;
+}
+
+.landing-motion--course .route-line {
+  z-index: 2;
+  display: block;
+}
+
+.landing-motion--course .route-line path {
+  fill: none;
+  stroke: #12ca6b;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 700;
+  stroke-dashoffset: 700;
+  filter: drop-shadow(0 4px 7px rgba(18, 202, 107, .2));
+  animation: drawCourse 6.8s ease-in-out infinite;
+}
+
+.route-place {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.route-place--one {
+  left: 22.5%;
+  top: 21.9%;
+  --place-order: 0;
+}
+
+.route-place--two {
+  left: 36.875%;
+  top: 52.38%;
+  --place-order: 1;
+}
+
+.route-place--three {
+  left: 76.875%;
+  top: 77.62%;
+  --place-order: 2;
+}
+
+.route-place-card {
+  position: absolute;
+  left: -63px;
+  top: -47px;
+  display: grid;
+  width: 126px;
+  height: 88px;
+  grid-template-rows: 61px 27px;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid rgba(0, 64, 130, .11);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 16px 38px rgba(7, 37, 67, .16);
+  animation: coursePlaceCard 6.8s ease-in-out infinite;
+  animation-delay: calc(var(--place-order) * .16s);
+}
+
+.route-place-card img {
+  display: block;
+  width: 126px;
+  height: 61px;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.route-place-card figcaption {
+  overflow: hidden;
+  padding: 6px 9px;
+  color: #16283a;
+  font-size: 10px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.route-pin {
+  position: absolute;
+  left: -17px;
+  top: -17px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  animation: coursePin 6.8s ease-in-out infinite;
+  animation-delay: calc(var(--place-order) * .16s);
+}
+
+.route-pin b {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  place-items: center;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #12ca6b;
+  box-shadow: 0 8px 22px rgba(7, 37, 67, .2);
+  color: #fff;
+  font-size: 12px;
+}
+
+.route-pin small {
+  padding: 5px 8px;
+  border: 1px solid rgba(0, 64, 130, .09);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 7px 18px rgba(7, 37, 67, .1);
+  color: #38556b;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.landing-motion--course .share-card {
+  position: absolute;
+  left: 19%;
+  bottom: 4%;
+  z-index: 5;
+  display: grid;
+  width: min(210px, 68%);
+  gap: 2px;
+  padding: 11px 13px;
+  border: 1px solid rgba(18, 202, 107, .25);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, .97);
+  box-shadow: 0 16px 38px rgba(7, 37, 67, .15);
+  animation: shareCourse 6.8s ease-in-out infinite;
+}
+
+.share-card > span {
+  color: #0aa95a;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.share-card strong {
+  color: #15293b;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.share-card small {
+  color: #617487;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.landing-motion--course .recipient {
+  position: absolute;
+  left: 4%;
+  bottom: 18%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: openCourse 6.8s ease-in-out infinite;
+}
+
+.recipient img {
+  display: block;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 11px 28px rgba(7, 37, 67, .18);
+  object-fit: cover;
+  object-position: 50% 32%;
+}
+
+.recipient span {
+  padding: 7px 9px;
+  border: 1px solid rgba(0, 64, 130, .09);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 9px 24px rgba(7, 37, 67, .12);
+  color: #2a455c;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.landing-motion--course .navigation-handoff {
+  position: absolute;
+  top: 6%;
+  right: 5%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px 8px 8px;
+  border: 1px solid rgba(0, 132, 255, .18);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .97);
+  box-shadow: 0 12px 30px rgba(7, 37, 67, .13);
+  color: #0877d7;
+  animation: startNavigation 6.8s ease-in-out infinite;
+}
+
+.navigation-handoff span {
+  display: grid;
+  width: 25px;
+  height: 25px;
+  place-items: center;
+  border-radius: 50%;
+  background: #0084ff;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.navigation-handoff strong {
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.landing-motion.landing-motion--course[data-motion-state="final"] .route-places {
+  opacity: 1;
+}
+
+.landing-motion.landing-motion--course[data-motion-state="final"] .route-line {
+  opacity: 1;
+}
+
+.landing-motion.landing-motion--course[data-motion-state="final"] .route-place-card {
+  opacity: 0;
+}
+
+.landing-motion.landing-motion--course[data-motion-state="final"] .route-pin {
+  opacity: 1;
+}
+
+.landing-motion.landing-motion--course[data-motion-state="final"] .route-line path {
+  stroke-dashoffset: 0;
+}
+
+.landing-motion.landing-motion--course[data-motion-state="final"] .share-card {
+  opacity: 1;
+}
+
+.landing-motion.landing-motion--course[data-motion-state="final"] .recipient {
+  opacity: 1;
+}
+
+.landing-motion.landing-motion--course[data-motion-state="final"] .navigation-handoff {
+  opacity: 1;
+}
+
+@keyframes coursePlaceCard {
+  0%, 8% { opacity: 0; transform: translateY(12px) scale(.92); }
+  14%, 25% { opacity: 1; transform: none; }
+  34%, 100% { opacity: 0; transform: scale(.58); }
+}
+
+@keyframes coursePin {
+  0%, 27% { opacity: 0; transform: scale(.7); }
+  36%, 100% { opacity: 1; transform: none; }
+}
+
+@keyframes drawCourse {
+  0%, 34% { stroke-dashoffset: 700; }
+  64%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes shareCourse {
+  0%, 58% { opacity: 0; transform: translate(105px, -165px) scale(.88); }
+  66% { opacity: 1; transform: translate(105px, -165px); }
+  80%, 100% { opacity: 1; transform: none; }
+}
+
+@keyframes openCourse {
+  0%, 74% { opacity: 0; transform: translateX(-10px) scale(.9); }
+  84%, 100% { opacity: 1; transform: none; }
+}
+
+@keyframes startNavigation {
+  0%, 86% { opacity: 0; transform: translateX(-8px); }
+  94%, 100% { opacity: 1; transform: none; }
+}
+
 @media (max-width: 1023px) {
   .landing-motion--hero { min-height: 560px; }
 }
@@ -456,6 +777,41 @@
 }
 
 @media (max-width: 480px) {
+  .landing-motion--course {
+    min-height: 500px;
+  }
+  .landing-motion--course::before {
+    inset: 2% 0 10%;
+    border-radius: 26px;
+  }
+  .landing-motion--course .route-places,
+  .landing-motion--course .route-line {
+    top: 2%;
+    width: min(100%, 320px);
+  }
+  .landing-motion--course .route-place-card {
+    display: none;
+  }
+  .landing-motion--course .route-pin {
+    animation: none;
+  }
+  .landing-motion--course .recipient {
+    left: 3%;
+    bottom: 17%;
+  }
+  .landing-motion--course .recipient span {
+    padding: 6px 8px;
+    font-size: 9px;
+  }
+  .landing-motion--course .share-card {
+    left: 19%;
+    bottom: 2%;
+    padding: 9px 11px;
+  }
+  .landing-motion--course .navigation-handoff {
+    top: 3%;
+    right: 3%;
+  }
   .landing-motion--nearby {
     min-height: 500px;
   }
