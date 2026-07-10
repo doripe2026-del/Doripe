@@ -526,6 +526,7 @@
   box-shadow: 0 16px 38px rgba(7, 37, 67, .16);
   animation: coursePlaceCard 6.8s ease-in-out infinite;
   animation-delay: calc(var(--place-order) * .16s);
+  animation-fill-mode: backwards;
 }
 
 .route-place-card img {
@@ -556,6 +557,7 @@
   white-space: nowrap;
   animation: coursePin 6.8s ease-in-out infinite;
   animation-delay: calc(var(--place-order) * .16s);
+  animation-fill-mode: backwards;
 }
 
 .route-pin b {
@@ -720,8 +722,8 @@
 }
 
 @keyframes coursePlaceCard {
-  0%, 8% { opacity: 0; transform: translateY(12px) scale(.92); }
-  14%, 25% { opacity: 1; transform: none; }
+  0% { opacity: 0; transform: translateY(12px) scale(.92); }
+  4%, 25% { opacity: 1; transform: none; }
   34%, 100% { opacity: 0; transform: scale(.58); }
 }
 
@@ -790,10 +792,23 @@
     width: min(100%, 320px);
   }
   .landing-motion--course .route-place-card {
+    left: -42px;
+    top: -29px;
+    width: 84px;
+    height: 58px;
+    grid-template-rows: 58px;
+    border-radius: 12px;
+    animation-name: coursePlaceCard;
+  }
+  .landing-motion--course .route-place-card img {
+    width: 84px;
+    height: 58px;
+  }
+  .landing-motion--course .route-place-card figcaption {
     display: none;
   }
   .landing-motion--course .route-pin {
-    animation: none;
+    animation-name: coursePin;
   }
   .landing-motion--course .recipient {
     left: 3%;

@@ -141,6 +141,17 @@ assert(
     && /height:\s*61px\s*;/.test(coursePlaceImage),
   "course place images must reserve stable dimensions",
 );
+for (const selector of [".route-place-card", ".route-pin"]) {
+  const block = cssBlock(motionCss, selector);
+  assert(
+    /animation-delay:\s*calc\(var\(--place-order\)\s*\*\s*\.16s\)\s*;/.test(block),
+    `${selector} must keep the ordered 160ms stagger`,
+  );
+  assert(
+    /animation-fill-mode:\s*(?:backwards|both)\s*;/.test(block),
+    `${selector} must apply its hidden first frame during positive delays`,
+  );
+}
 
 for (const [selector, opacity] of [
   ['.landing-motion.landing-motion--course[data-motion-state="final"] .route-places', "1"],
@@ -292,13 +303,23 @@ assert(
 );
 const mobileCourseCards = cssBlock(mobileMotion, ".landing-motion--course .route-place-card");
 assert(
-  /display:\s*none\s*;/.test(mobileCourseCards),
-  "320px course scene must remove transitional place cards first",
+  !/display:\s*none\s*;/.test(mobileCourseCards)
+    && /width:\s*84px\s*;/.test(mobileCourseCards)
+    && /height:\s*58px\s*;/.test(mobileCourseCards)
+    && /animation-name:\s*coursePlaceCard\s*;/.test(mobileCourseCards),
+  "320px course scene must retain compact animated place thumbnails",
+);
+const mobileCourseImages = cssBlock(mobileMotion, ".landing-motion--course .route-place-card img");
+assert(
+  /width:\s*84px\s*;/.test(mobileCourseImages)
+    && /height:\s*58px\s*;/.test(mobileCourseImages),
+  "320px course thumbnails must reserve compact photographic dimensions",
 );
 const mobileCoursePins = cssBlock(mobileMotion, ".landing-motion--course .route-pin");
 assert(
-  /animation:\s*none\s*;/.test(mobileCoursePins),
-  "320px course scene must keep the ordered pins visible while simplifying transitions",
+  !/animation(?:-name)?:\s*none\s*;/.test(mobileCoursePins)
+    && /animation-name:\s*coursePin\s*;/.test(mobileCoursePins),
+  "320px course scene must retain the ordered pin animation",
 );
 const mobileCourseRoute = cssBlock(mobileMotion, ".landing-motion--course .route-line");
 assert(
@@ -340,6 +361,11 @@ const courseKeyframes = Object.fromEntries(
     name,
     cssBlock(motionCss, `@keyframes ${name}`),
   ]),
+);
+assert(
+  /0%\s*\{[^}]*opacity:\s*0/.test(courseKeyframes.coursePlaceCard)
+    && /4%,\s*25%\s*\{[^}]*opacity:\s*1/.test(courseKeyframes.coursePlaceCard),
+  "course place cards must reveal early enough to verify the 160ms order",
 );
 for (const [name, block] of Object.entries(courseKeyframes)) {
   const properties = [...block.matchAll(/([a-z][a-z-]*)\s*:/g)].map((match) => match[1]);
