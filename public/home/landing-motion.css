@@ -1,0 +1,33 @@
+.landing-motion {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  contain: layout paint;
+}
+
+.landing-motion [data-motion-layer] {
+  animation-play-state: paused;
+}
+
+.landing-motion[data-motion-state="playing"] [data-motion-layer] {
+  animation-play-state: running;
+}
+
+.landing-motion[data-motion-state="paused"] [data-motion-layer] {
+  animation-play-state: paused;
+}
+
+.landing-motion[data-motion-state="final"] [data-motion-layer] {
+  animation: none !important;
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-motion [data-motion-layer] {
+    animation: none !important;
+    transition: none !important;
+  }
+}

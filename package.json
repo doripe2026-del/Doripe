@@ -15,7 +15,10 @@
     "setup:deployment-guard": "node scripts/install-deployment-shell-guard.mjs",
     "check:mvp-app": "node scripts/check-mvp-app.mjs",
     "build:admin": "node scripts/build-admin.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "sync:home": "node scripts/sync-home-index.mjs",
+    "test:landing-motion": "node --test tests/landing-motion-controller.test.mjs",
+    "check:landing-motion": "node scripts/check-landing-motion.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
