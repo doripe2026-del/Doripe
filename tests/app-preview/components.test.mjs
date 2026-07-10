@@ -17,6 +17,13 @@ import {
 } from "../../public/app-preview/components.js";
 
 const rootUrl = new URL("../../public/app-preview/", import.meta.url);
+const svgNamespace = "http://www.w3.org/2000/svg";
+const svgAllowlist = new Map([
+  ["svg", new Set(["xmlns", "width", "height", "viewBox", "fill", "preserveAspectRatio"])],
+  ["g", new Set(["id"])],
+  ["path", new Set(["id", "d", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin"])],
+  ["circle", new Set(["id", "cx", "cy", "r", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin"])]
+]);
 
 function assertLocalSvgMarkup(markup) {
   assert.match(markup, /src="\/app-preview\/assets\/icons\/[a-z0-9-]+\.svg"/);
@@ -36,37 +43,43 @@ function parseSafeSvg(source, name = "SVG") {
 
   assert.deepEqual(parseErrors, [], `${name} must be well-formed XML`);
   assert.equal(document.documentElement?.localName, "svg", `${name} must have one SVG root`);
+  assert.equal(document.documentElement?.namespaceURI, svgNamespace, `${name} must use the SVG namespace`);
   assert.equal(document.doctype, null, `${name} must not contain a doctype`);
 
   const visit = (node) => {
-    if (node.nodeType === 7 || node.nodeType === 10) {
-      assert.fail(`${name} contains a forbidden XML instruction`);
+    if (node.nodeType === 9) {
+      for (let child = node.firstChild; child; child = child.nextSibling) visit(child);
+      return;
     }
 
-    if (node.nodeType === 1) {
-      const elementName = node.localName.toLowerCase();
-      assert.ok(!["foreignobject", "script", "style"].includes(elementName), `${name} contains <${node.localName}>`);
+    if (node.nodeType === 3) {
+      assert.equal(node.data.trim(), "", `${name} contains text content`);
+      return;
+    }
 
-      for (let index = 0; index < node.attributes.length; index += 1) {
-        const attribute = node.attributes.item(index);
-        const attributeName = attribute.name.toLowerCase();
-        const value = attribute.value.trim();
-        const compactValue = value.replace(/[\u0000-\u0020]+/g, "").toLowerCase();
+    assert.equal(node.nodeType, 1, `${name} contains an unsupported XML node`);
 
-        assert.doesNotMatch(attributeName, /^on/i, `${name} contains event handler ${attribute.name}`);
-        if (attributeName === "xmlns" || attributeName.startsWith("xmlns:")) continue;
+    const elementName = node.localName;
+    const allowedAttributes = svgAllowlist.get(elementName);
+    assert.ok(allowedAttributes, `${name} contains unknown <${elementName}>`);
+    assert.equal(node.namespaceURI, svgNamespace, `${name} contains a non-SVG <${elementName}>`);
 
-        assert.doesNotMatch(compactValue, /(?:javascript|data):|^(?:https?:)?\/\//i, `${name} contains an unsafe reference`);
+    for (let index = 0; index < node.attributes.length; index += 1) {
+      const attribute = node.attributes.item(index);
+      const attributeName = attribute.name;
+      const value = attribute.value.trim();
+      const compactValue = value.replace(/[\u0000-\u0020]+/g, "").toLowerCase();
 
-        if (["href", "xlink:href", "src"].includes(attributeName) && value !== "") {
-          assert.match(value, /^#[A-Za-z_][\w:.-]*$/, `${name} contains a non-local reference`);
-        }
+      assert.doesNotMatch(attributeName, /(?:href|src|url)/i, `${name} contains URL-bearing ${attributeName}`);
+      assert.ok(allowedAttributes.has(attributeName), `${name} contains unknown ${attributeName}`);
 
-        for (const match of value.matchAll(/url\(([^)]+)\)/gi)) {
-          const target = match[1].trim().replace(/^['"]|['"]$/g, "");
-          assert.match(target, /^#[A-Za-z_][\w:.-]*$/, `${name} contains an external url()`);
-        }
+      if (attributeName === "xmlns") {
+        assert.equal(node, document.documentElement, `${name} declares a nested namespace`);
+        assert.equal(value, svgNamespace, `${name} declares an unknown namespace`);
+        continue;
       }
+
+      assert.doesNotMatch(compactValue, /\\|;|url\(|\/\/|[a-z][a-z0-9+.-]*:/i, `${name} contains an unsafe value`);
     }
 
     for (let child = node.firstChild; child; child = child.nextSibling) visit(child);
@@ -124,6 +137,8 @@ test("all icon assets pass a parsed XML safety gate", async () => {
 test("parsed SVG safety gate rejects active content and external references", () => {
   const attacks = [
     '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><animate values="#local;https://evil.example/x.svg"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><set attributeName="fill" to="red"/></svg>',
     '<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"/>',
     '<svg xmlns="http://www.w3.org/2000/svg"><foreignObject/></svg>',
     '<svg xmlns="http://www.w3.org/2000/svg"><use href="javascript:alert(1)"/></svg>',
@@ -133,6 +148,13 @@ test("parsed SVG safety gate rejects active content and external references", ()
     '<svg xmlns="http://www.w3.org/2000/svg"><path style="fill:url(//evil.example/x.svg)"/></svg>',
     '<svg xmlns="http://www.w3.org/2000/svg"><style>@import url(https://evil.example/x.css)</style></svg>',
     '<svg xmlns="http://www.w3.org/2000/svg"><use href="&#x6a;avascript:alert(1)"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><metadata/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><path data-test="unknown"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><path fill="url(#local)"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><path fill="#fff;#000"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><path fill="red https://evil.example/x.svg"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><path fill="red mailto:evil@example.com"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><path fill="u\\72l(https\\3a\\2f\\2fevil.example)"/></svg>',
     '<!DOCTYPE svg><svg xmlns="http://www.w3.org/2000/svg"/>'
   ];
 
@@ -202,10 +224,10 @@ test("bottom nav exposes selected state and labels every icon-only action", () =
   const markup = bottomNav({
     label: "주요 메뉴",
     items: [
-      { label: "발견", icon: "info", action: "open-discover" },
-      { label: "저장", icon: "heart", action: "open-saved" },
+      { label: "발견", icon: "info", action: "open-discover", selected: false },
+      { label: "저장", icon: "heart", action: "open-saved", selected: false },
       { label: "경로", icon: "map-pin", action: "open-route", selected: true },
-      { label: "설정", icon: "share", action: "open-settings" }
+      { label: "설정", icon: "share", action: "open-settings", selected: false }
     ]
   });
 
@@ -217,14 +239,27 @@ test("bottom nav exposes selected state and labels every icon-only action", () =
   assert.match(markup, /data-action="open-route"[^>]*aria-current="page"[^>]*aria-pressed="true"/);
   assertLocalSvgMarkup(markup);
 
-  assert.throws(() => bottomNav({
-    items: [
-      { label: "발견", icon: "info", action: "open-discover", selected: true },
-      { label: "저장", icon: "heart", action: "open-saved" },
-      { label: "경로", icon: "map-pin", action: "open-route" },
-      { label: "설정", icon: "share", action: "open-settings" }
-    ]
-  }), /third measured navigation item/);
+});
+
+test("bottom nav requires one exact boolean selection at the third measured item", () => {
+  const baseItems = [
+    { label: "발견", icon: "info", action: "open-discover", selected: false },
+    { label: "저장", icon: "heart", action: "open-saved", selected: false },
+    { label: "경로", icon: "map-pin", action: "open-route", selected: true },
+    { label: "설정", icon: "share", action: "open-settings", selected: false }
+  ];
+  const invalidSelections = [
+    [false, false, "yes", false],
+    [false, false, 1, false],
+    [false, false, null, false],
+    [null, false, true, false],
+    [true, false, true, false]
+  ];
+
+  for (const selectedValues of invalidSelections) {
+    const items = baseItems.map((item, index) => ({ ...item, selected: selectedValues[index] }));
+    assert.throws(() => bottomNav({ items }), /third measured navigation item/);
+  }
 });
 
 test("chip uses button semantics for actions and exposes selected state", () => {

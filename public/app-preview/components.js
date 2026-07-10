@@ -100,7 +100,7 @@ export function bottomNav({ items, label = "주요 메뉴" } = {}) {
   if (!Array.isArray(items) || items.length !== 4) {
     throw new TypeError("bottom nav requires the four measured navigation items");
   }
-  if (!items[2]?.selected || items.some((item, index) => index !== 2 && item.selected)) {
+  if (items[2]?.selected !== true || items.some((item, index) => index !== 2 && item.selected !== false)) {
     throw new TypeError("bottom nav selection must be the third measured navigation item");
   }
 
