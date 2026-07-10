@@ -2199,13 +2199,6 @@
     "reference": "/app-preview/assets/references/d8.png",
     "masks": [
       {
-        "x": 0,
-        "y": 0,
-        "width": 393,
-        "height": 386,
-        "reason": "photo"
-      },
-      {
         "x": 69,
         "y": 518,
         "width": 92,
@@ -2244,13 +2237,6 @@
     "height": 852,
     "reference": "/app-preview/assets/references/d9.png",
     "masks": [
-      {
-        "x": 0,
-        "y": 0,
-        "width": 393,
-        "height": 386,
-        "reason": "photo"
-      },
       {
         "x": 69,
         "y": 518,

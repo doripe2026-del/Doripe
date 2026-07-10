@@ -18,6 +18,36 @@ const registryFiles = [
   "public/app-preview/figma/visual-masks.json"
 ];
 const allowedMaskReasons = new Set(["photo", "video", "map", "user-generated-text"]);
+const expectedASelection = [
+  ["a1", "446:34", "Flow / A Onboarding", "Brief-required a1 retained; current equivalent is 579:603.", ["579:603"]],
+  ["a1-splash", "579:698", "Flow / A Onboarding_수정", "Current modified splash selected over the original splash.", ["446:134"]],
+  ["a3", "579:929", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original login screen.", ["446:430"]],
+  ["a4", "579:991", "Flow / A Onboarding_수정", "Unique current login-failure state; no original equivalent.", []],
+  ["a5", "579:833", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original reset-email screen.", ["446:281"]],
+  ["a6", "579:848", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original reset-sent screen.", ["446:298"]],
+  ["a7", "579:702", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original new-password screen.", ["446:146"]],
+  ["a8", "579:1063", "Flow / A Onboarding_수정", "Unique current password-mismatch state; no original equivalent.", []],
+  ["a9", "579:638", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original signup-email screen.", ["446:75"]],
+  ["a10", "579:1015", "Flow / A Onboarding_수정", "Unique current email-format error state; no original equivalent.", []],
+  ["a11", "579:1039", "Flow / A Onboarding_수정", "Unique current existing-email error state; no original equivalent.", []],
+  ["a12", "579:621", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original password-creation screen.", ["446:56"]],
+  ["a13", "579:660", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original password-entry screen.", ["446:98"]],
+  ["a14", "579:763", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original birth-year screen.", ["446:206"]],
+  ["a15", "579:951", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original gender screen.", ["446:457"]],
+  ["a16", "579:739", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original nickname screen.", ["446:182"]],
+  ["a17", "579:1102", "Flow / A Onboarding_수정", "Unique current duplicate-nickname error state; no original equivalent.", []],
+  ["a18", "579:781", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original acquisition-source screen.", ["446:226"]],
+  ["a19", "579:863", "Flow / A Onboarding_수정", "Current modified equivalent selected over the original awareness-source screen.", ["446:321"]],
+  ["a20", "579:1127", "Flow / A Onboarding_수정", "Current modified neighborhood-selection state selected over the original screen.", ["446:391"]],
+  ["a21", "579:1173", "Flow / A Onboarding_수정", "Unique current neighborhood-transition frame; no original equivalent.", []],
+  ["a22", "579:1162", "Flow / A Onboarding_수정", "Unique current completion-loading state; no original equivalent.", []]
+];
+const overlaps = (left, right) => (
+  left.x < right.x + right.width
+  && right.x < left.x + left.width
+  && left.y < right.y + right.height
+  && right.y < left.y + left.height
+);
 
 async function previewJavaScriptFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -56,11 +86,27 @@ const sortedInventoryIds = [...inventoryIds].sort();
 
 if (inventory.length < 50) throw new Error("Figma inventory must contain at least 50 final screens");
 if (new Set(inventoryIds).size !== inventory.length) throw new Error("Figma screen IDs must be unique");
+if (new Set(inventory.map((screen) => screen.nodeId)).size !== inventory.length) {
+  throw new Error("Figma node IDs must be globally unique");
+}
 if (JSON.stringify(Object.keys(measurements).sort()) !== JSON.stringify(sortedInventoryIds)) {
   throw new Error("Figma inventory and measurement keysets must match exactly");
 }
 if (JSON.stringify(Object.keys(masks).sort()) !== JSON.stringify(sortedInventoryIds)) {
   throw new Error("Figma inventory and mask keysets must match exactly");
+}
+
+const actualASelection = inventory
+  .filter((screen) => screen.group === "A")
+  .map((screen) => [
+    screen.id,
+    screen.nodeId,
+    screen.provenance?.sourceSection,
+    screen.provenance?.rationale,
+    screen.provenance?.alternateNodeIds
+  ]);
+if (JSON.stringify(actualASelection) !== JSON.stringify(expectedASelection)) {
+  throw new Error("Flow A node and provenance selection must match the reviewed mapping exactly");
 }
 
 for (const screen of inventory) {
@@ -117,6 +163,13 @@ for (const screen of inventory) {
     || png.readUInt32BE(20) !== 852
   ) {
     throw new Error(`Invalid Figma reference PNG dimensions for ${screen.id}`);
+  }
+}
+
+const flattenedRouteHero = { x: 0, y: 0, width: 393, height: 386 };
+for (const screenId of ["d8", "d9"]) {
+  if (masks[screenId].some((mask) => overlaps(mask, flattenedRouteHero))) {
+    throw new Error(`${screenId.toUpperCase()} masks must not intersect the flattened composite hero`);
   }
 }
 
