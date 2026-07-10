@@ -37,6 +37,28 @@ const motionJs = readFileSync("public/home/landing-motion.js", "utf8");
 assert(home === mirror, "public/index.html must mirror public/home/index.html");
 assert(home.includes('/home/landing-motion.css'), "missing motion stylesheet link");
 assert(home.includes('/home/landing-motion.js'), "missing motion module link");
+const noJsFallback = home.match(
+  /<noscript\s+data-landing-no-js>\s*<style>([\s\S]*?)<\/style>\s*<\/noscript>/,
+)?.[1];
+assert(noJsFallback, "landing must include a static no-JS fallback shell");
+assert(
+  /\.reveal\s*\{[^}]*opacity:\s*1[^}]*transform:\s*none/.test(noJsFallback),
+  "no-JS fallback must reveal content without the landing controller",
+);
+assert(
+  /header\s+\.liquid-nav[^}]*display:\s*flex/.test(noJsFallback)
+    && /header\s+\.liquid-nav\s+img[^}]*width:\s*36px/.test(noJsFallback),
+  "no-JS fallback must keep the navigation and logo bounded",
+);
+assert(
+  /main#home[^}]*max-width:\s*1600px/.test(noJsFallback)
+    && /main#home\s*>\s*section:first-child[^}]*display:\s*grid/.test(noJsFallback),
+  "no-JS fallback must preserve the hero layout",
+);
+assert(
+  /#mobileNotifyBar[^}]*display:\s*none/.test(noJsFallback),
+  "no-JS fallback must avoid a duplicate permanent mobile CTA",
+);
 assert(home.includes('href="/notify"'), "notification CTA must remain linked to /notify");
 assert(home.includes("오늘 어디 갈지,"), "hero copy changed unexpectedly");
 assert(home.includes("검색어 대신 분위기로 찾아요."), "Discover copy changed unexpectedly");
