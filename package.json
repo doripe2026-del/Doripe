@@ -19,6 +19,7 @@
     "typecheck": "tsc --noEmit",
     "sync:home": "node scripts/sync-home-index.mjs",
     "test:landing-motion": "node --test tests/landing-*.test.mjs",
+    "test:landing-motion:geometry": "node tests/landing-route-geometry.browser.mjs",
     "check:landing-motion": "node scripts/check-landing-motion.mjs"
   },
   "dependencies": {

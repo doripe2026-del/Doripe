@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, statSync } from "node:fs";
+import { assertProtectedLandingSurface } from "./landing-protected-surface.mjs";
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -26,7 +27,9 @@ const required = [
   "public/home/landing-motion.js",
   "public/home/index.html",
   "public/index.html",
+  "scripts/landing-protected-surface.mjs",
   "scripts/serve-landing.mjs",
+  "tests/landing-route-geometry.browser.mjs",
 ];
 
 for (const file of required) assert(existsSync(file), `missing ${file}`);
@@ -75,6 +78,10 @@ assert(
 assert(
   packageJson.scripts["test:landing-motion"] === "node --test tests/landing-*.test.mjs",
   "landing motion tests must include controller and preview coverage",
+);
+assert(
+  packageJson.scripts["test:landing-motion:geometry"] === "node tests/landing-route-geometry.browser.mjs",
+  "landing motion must expose its browser route-geometry regression",
 );
 for (const command of ["npm run test:landing-motion", "npm run check:landing-motion"]) {
   assert(buildWorkflow.includes(command), `required build workflow missing ${command}`);
@@ -147,11 +154,7 @@ assert(
   /#mobileNotifyBar[^}]*display:\s*none/.test(noJsFallback),
   "no-JS fallback must avoid a duplicate permanent mobile CTA",
 );
-assert(home.includes('href="/notify"'), "notification CTA must remain linked to /notify");
-assert(home.includes("오늘 어디 갈지,"), "hero copy changed unexpectedly");
-assert(home.includes("검색어 대신 분위기로 찾아요."), "Discover copy changed unexpectedly");
-assert(home.includes("나중에 다시 찾기 쉬운 방식으로 저장해요."), "Save copy changed unexpectedly");
-assert(home.includes("나만의 코스를 만들고, 떠나보세요."), "Go copy changed unexpectedly");
+assertProtectedLandingSurface(home);
 const heroAccessibleDescription = home.match(
   /id="landingMotionHero"[\s\S]{0,320}?aria-label="([^"]+)"/,
 )?.[1];
@@ -258,10 +261,38 @@ assert(
   "hero route pins must replace the travelling cards",
 );
 const heroNavigation = cssBlock(motionCss, "@keyframes heroNavigation");
+const heroNavigationWaypoints = [...heroNavigation.matchAll(
+  /translate\(([-.\d]+)%,\s*([-.\d]+)%\)/g,
+)];
 assert(
-  /translate\(-50%,\s*-50%\)/.test(heroNavigation)
-    && /translate\(72px,\s*24px\)/.test(heroNavigation),
-  "hero navigation marker must follow the first route segment",
+  heroNavigationWaypoints.length >= 5
+    && !/translate\([^)]*px/.test(heroNavigation),
+  "hero navigation marker must use multiple responsive route-derived waypoints",
+);
+const heroPath = home.match(/class="hero-route-line"[\s\S]*?<path[^>]*d="([^"]+)"/)?.[1];
+const coursePath = home.match(/class="route-line"[\s\S]*?<path[^>]*d="([^"]+)"/)?.[1];
+assert(heroPath && heroPath === coursePath, "hero and course markers must share the same SVG route geometry");
+assert(
+  /motion-route-flow[\s\S]*motion-navigation[\s\S]*navigation-marker-icon/.test(home)
+    && /route-navigation-track[\s\S]*navigation-handoff[\s\S]*navigation-marker-icon/.test(home),
+  "route markers must live inside their responsive SVG coordinate tracks",
+);
+assert(!/offset-(?:path|distance|rotate)\s*:/.test(motionCss), "route binding must not use offset-distance motion");
+const heroRoutePath = cssBlock(motionCss, ".landing-motion--hero .hero-route-line path");
+assert(
+  /stroke-dasharray:\s*700/.test(heroRoutePath)
+    && /stroke-dashoffset:\s*700/.test(heroRoutePath)
+    && /animation:\s*heroRouteDraw\s+8s/.test(heroRoutePath),
+  "hero route must begin hidden and draw with the pin formation",
+);
+const heroRouteDraw = cssBlock(motionCss, "@keyframes heroRouteDraw");
+const heroRouteDrawProperties = [...heroRouteDraw.matchAll(/([a-z][a-z-]*)\s*:/g)]
+  .map((match) => match[1]);
+assert(
+  /stroke-dashoffset:\s*700/.test(heroRouteDraw)
+    && /stroke-dashoffset:\s*0/.test(heroRouteDraw)
+    && heroRouteDrawProperties.every((property) => property === "stroke-dashoffset"),
+  "heroRouteDraw may animate only stroke-dashoffset from hidden to complete",
 );
 for (const name of [
   "heroUgc",
@@ -274,8 +305,9 @@ for (const name of [
   "heroFriend",
   "heroNavigation",
 ]) {
+  const keyframes = cssBlock(motionCss, `@keyframes ${name}`);
   assert(
-    /0%,\s*100%\s*\{/.test(cssBlock(motionCss, `@keyframes ${name}`)),
+    /0%(?:\s*,\s*\d+%)*\s*,\s*100%\s*\{/.test(keyframes),
     `${name} must share its start and end frame for a soft loop reset`,
   );
 }
@@ -544,19 +576,14 @@ assert(
 );
 
 const mobileMotion = cssBlock(motionCss, "@media (max-width: 480px)");
-const mobileHeroNavigation = cssBlock(mobileMotion, ".motion-navigation");
+const mobileHeroRoute = cssBlock(mobileMotion, ".motion-route-flow");
 assert(
-  /left:\s*60%\s*;/.test(mobileHeroNavigation)
-    && /animation-name:\s*heroNavigationMobile\s*;/.test(mobileHeroNavigation),
-  "320px hero navigation must follow a shorter in-bounds route segment",
-);
-const mobileHeroFinalNavigation = cssBlock(
-  mobileMotion,
-  '.landing-motion--hero[data-motion-state="final"] .motion-navigation',
+  /width:\s*min\(76%,\s*320px\)\s*;/.test(mobileHeroRoute),
+  "320px hero route must retain the shared SVG coordinate system",
 );
 assert(
-  /translate\(50px,\s*18px\)/.test(mobileHeroFinalNavigation),
-  "320px static navigation marker must remain inside the viewport",
+  /\.landing-motion--hero\[data-motion-state="final"\] \.motion-navigation\s*\{\s*transform:\s*translate\(13\.2813%,\s*14\.7024%\)/.test(motionCss),
+  "static hero navigation marker must remain on a shared route waypoint",
 );
 const mobileHeroFinalSelection = cssBlock(
   mobileMotion,
@@ -566,10 +593,9 @@ assert(
   /opacity:\s*0\s*;/.test(mobileHeroFinalSelection),
   "320px static hero must remove the transitional selected screen before the final route",
 );
-const mobileHeroNavigationKeyframes = cssBlock(motionCss, "@keyframes heroNavigationMobile");
 assert(
-  /translate\(50px,\s*18px\)/.test(mobileHeroNavigationKeyframes),
-  "320px navigation motion must use the shortened first route segment",
+  !motionCss.includes("heroNavigationMobile"),
+  "hero navigation must not detach into a mobile-only pixel path",
 );
 const mobileVideo = cssBlock(mobileMotion, ".landing-motion--discovery .video-indicator");
 assert(
@@ -676,13 +702,17 @@ assert(
 );
 assert(
   courseScene.includes('class="route-navigation-track"')
-    && courseScene.includes('data-motion-layer="navigation-marker"'),
+    && courseScene.includes('data-motion-layer="navigation-marker"')
+    && courseScene.includes('class="navigation-marker-icon"'),
   "course navigation handoff must live on the route coordinate track",
 );
+const courseNavigationWaypoints = [...courseKeyframes.startNavigation.matchAll(
+  /translate\(([-.\d]+)%,\s*([-.\d]+)%\)/g,
+)];
 assert(
-  /translate\(64px,\s*22px\)/.test(courseKeyframes.startNavigation)
-    && /translate\(96px,\s*38px\)/.test(courseKeyframes.startNavigation),
-  "course navigation marker must move along the first route segment",
+  courseNavigationWaypoints.length >= 5
+    && !/translate\([^)]*px/.test(courseKeyframes.startNavigation),
+  "course navigation marker must use multiple responsive route-derived waypoints",
 );
 
 assert(

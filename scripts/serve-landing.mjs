@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { readFile, stat } from "node:fs/promises";
+import { lstat, readFile, realpath, stat } from "node:fs/promises";
 import { extname, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -25,30 +25,42 @@ const CONTENT_TYPES = new Map([
   [".webp", "image/webp"],
 ]);
 
-function candidatePaths(requestUrl, publicRoot) {
-  let pathname;
-  try {
-    pathname = decodeURIComponent(new URL(requestUrl ?? "/", "http://landing.local").pathname);
-  } catch {
-    return [];
+class PreviewRequestError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
   }
+}
+
+function isWithinRoot(path, root) {
+  return path === root || path.startsWith(`${root}${sep}`);
+}
+
+function candidatePaths(pathname, publicRoot) {
   if (pathname.includes("\0")) return [];
 
   const relativePath = ROUTE_ALIASES.get(pathname) ?? pathname.replace(/^\/+/, "");
   if (!relativePath || relativePath.split("/").includes("..")) return [];
 
   const basePath = resolve(publicRoot, relativePath);
-  if (basePath !== publicRoot && !basePath.startsWith(`${publicRoot}${sep}`)) return [];
+  if (!isWithinRoot(basePath, publicRoot)) return [];
   if (extname(basePath)) return [basePath];
   return [basePath, `${basePath}.html`, resolve(basePath, "index.html")];
 }
 
-async function findPublicFile(requestUrl, publicRoot) {
-  for (const candidate of candidatePaths(requestUrl, publicRoot)) {
+async function findPublicFile(pathname, publicRoot, realPublicRoot) {
+  for (const candidate of candidatePaths(pathname, publicRoot)) {
     try {
-      if ((await stat(candidate)).isFile()) return candidate;
+      const candidateInfo = await lstat(candidate);
+      if (!candidateInfo.isFile() && !candidateInfo.isSymbolicLink()) continue;
+
+      const realCandidate = await realpath(candidate);
+      if (!isWithinRoot(realCandidate, realPublicRoot)) {
+        throw new PreviewRequestError(403, "Forbidden");
+      }
+      if ((await stat(realCandidate)).isFile()) return realCandidate;
     } catch (error) {
-      if (error.code !== "ENOENT" && error.code !== "ENOTDIR") throw error;
+      if (!["ENOENT", "ENOTDIR", "ELOOP"].includes(error.code)) throw error;
     }
   }
   return null;
@@ -56,32 +68,45 @@ async function findPublicFile(requestUrl, publicRoot) {
 
 export function createLandingPreviewServer({ publicRoot = DEFAULT_PUBLIC_ROOT } = {}) {
   const root = resolve(publicRoot);
+  const realRoot = realpath(root);
   return createServer(async (request, response) => {
-    const pathname = new URL(request.url ?? "/", "http://landing.local").pathname;
-    if (pathname === "/api/count" && (request.method === "GET" || request.method === "HEAD")) {
-      const body = Buffer.from(JSON.stringify({ count: 10000 }));
-      response.writeHead(200, {
-        "Cache-Control": "no-store",
-        "Content-Length": body.byteLength,
-        "Content-Type": "application/json; charset=utf-8",
-      });
-      response.end(request.method === "HEAD" ? undefined : body);
-      return;
-    }
-    if (pathname === "/api/track" && request.method === "POST") {
-      response.writeHead(204, { "Cache-Control": "no-store" });
-      response.end();
-      return;
-    }
-
-    if (request.method !== "GET" && request.method !== "HEAD") {
-      response.writeHead(405, { Allow: "GET, HEAD" });
-      response.end();
-      return;
-    }
-
     try {
-      const filePath = await findPublicFile(request.url, root);
+      let parsedUrl;
+      try {
+        parsedUrl = new URL(request.url ?? "/", "http://landing.local");
+      } catch {
+        throw new PreviewRequestError(400, "Bad request");
+      }
+      let pathname;
+      try {
+        pathname = decodeURIComponent(parsedUrl.pathname);
+      } catch {
+        throw new PreviewRequestError(400, "Bad request");
+      }
+
+      if (pathname === "/api/count" && (request.method === "GET" || request.method === "HEAD")) {
+        const body = Buffer.from(JSON.stringify({ count: 10000 }));
+        response.writeHead(200, {
+          "Cache-Control": "no-store",
+          "Content-Length": body.byteLength,
+          "Content-Type": "application/json; charset=utf-8",
+        });
+        response.end(request.method === "HEAD" ? undefined : body);
+        return;
+      }
+      if (pathname === "/api/track" && request.method === "POST") {
+        response.writeHead(204, { "Cache-Control": "no-store" });
+        response.end();
+        return;
+      }
+
+      if (request.method !== "GET" && request.method !== "HEAD") {
+        response.writeHead(405, { Allow: "GET, HEAD" });
+        response.end();
+        return;
+      }
+
+      const filePath = await findPublicFile(pathname, root, await realRoot);
       if (!filePath) {
         response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
         response.end("Not found");
@@ -96,6 +121,12 @@ export function createLandingPreviewServer({ publicRoot = DEFAULT_PUBLIC_ROOT } 
       });
       response.end(request.method === "HEAD" ? undefined : body);
     } catch (error) {
+      if (error instanceof PreviewRequestError) {
+        const { status } = error;
+        response.writeHead(status, { "Content-Type": "text/plain; charset=utf-8" });
+        response.end(status === 403 ? "Forbidden" : "Bad request");
+        return;
+      }
       console.error(error);
       response.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
       response.end("Preview server error");
