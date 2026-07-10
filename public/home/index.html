@@ -906,7 +906,7 @@
             </span>
           </a>
           <p class="text-sm font-medium text-muted">
-            <span id="signupCountHero" class="font-bold text-bluebrand" data-fallback-count="10000">10,000</span>명이 Doripe를 먼저 확인했어요
+            <span id="signupCountHero" class="font-bold text-bluebrand" data-fallback-count="10000" style="visibility:hidden">10,000</span>명이 Doripe를 먼저 확인했어요
           </p>
         </div>
       </div>
@@ -1042,7 +1042,7 @@
       </a>
     </div>
     <p class="reveal mt-5 text-sm font-medium text-muted">
-      <span id="signupCountFinal" class="font-bold text-bluebrand" data-fallback-count="10000">10,000</span>명이 Doripe를 먼저 확인했어요
+      <span id="signupCountFinal" class="font-bold text-bluebrand" data-fallback-count="10000" style="visibility:hidden">10,000</span>명이 Doripe를 먼저 확인했어요
     </p>
   </div>
 </section>
@@ -1095,50 +1095,20 @@
     return Number.isFinite(value) ? Math.max(max, value) : max;
   }, 10000);
   const countFormatter = new Intl.NumberFormat('ko-KR');
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let displayedCount = fallbackCount;
-  let pendingCountFrame = 0;
 
   function setDisplayCount(value) {
-    displayedCount = Math.max(1, Math.round(value));
+    const displayedCount = Math.max(1, Math.round(value));
     countEls.forEach((el) => {
       el.textContent = countFormatter.format(displayedCount);
+      el.style.visibility = 'visible';
     });
   }
 
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
-  }
-
-  function animateDisplayCount(target, duration = 1200) {
-    cancelAnimationFrame(pendingCountFrame);
-    const from = displayedCount;
-    const to = Math.max(1, Math.round(target));
-    if (!countEls.length) return;
-    if (prefersReducedMotion || from === to) {
-      setDisplayCount(to);
-      return;
-    }
-    const startedAt = performance.now();
-    function tick(now) {
-      const progress = Math.min(1, (now - startedAt) / duration);
-      setDisplayCount(from + (to - from) * easeOutCubic(progress));
-      if (progress < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-
-  function startPendingCount() {
-    if (!countEls.length) return;
-    setDisplayCount(fallbackCount);
-  }
-
-  startPendingCount();
   fetch('/api/count', { cache: 'no-store' }).then(r => r.json()).then(j => {
     const latestCount = Number(j?.count);
-    animateDisplayCount(Number.isFinite(latestCount) ? latestCount : fallbackCount);
+    setDisplayCount(Number.isFinite(latestCount) ? latestCount : fallbackCount);
   }).catch(() => {
-    animateDisplayCount(fallbackCount);
+    setDisplayCount(fallbackCount);
   });
 
   const mobileNotifyBar = document.getElementById('mobileNotifyBar');
