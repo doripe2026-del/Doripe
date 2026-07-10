@@ -29,6 +29,7 @@
   .landing-motion [data-motion-layer] {
     animation: none !important;
     transition: none !important;
+    will-change: auto;
   }
 }
 
@@ -47,7 +48,7 @@
 .motion-navigation { right: 5%; top: 8%; animation: heroNavigation 8s ease-in-out infinite; }
 
 @keyframes heroUgc {
-  0%, 4% { opacity: 0; transform: translateX(-22px); }
+  0%, 4% { opacity: 0; transform: translateX(-8px); }
   12%, 34% { opacity: 1; transform: none; }
   45%, 100% { opacity: .34; transform: scale(.9); }
 }
@@ -753,6 +754,14 @@
   94%, 100% { opacity: 1; transform: none; }
 }
 
+.landing-motion .is-media-missing {
+  background: #edf1ef;
+}
+
+.landing-motion .is-media-missing__image {
+  visibility: hidden;
+}
+
 @media (max-width: 1023px) {
   .landing-motion--hero { min-height: 560px; }
 }
@@ -920,4 +929,14 @@
   .motion-ugc-card--two { display:none; }
   .motion-selected-place { inset:9% 16% 9% 30%; }
   .motion-nearby-card:nth-child(n+2) { display:none; }
+}
+
+@media (max-width: 390px) {
+  .landing-motion--hero {
+    min-height: 440px;
+  }
+  .landing-motion .creator-reaction,
+  .landing-motion .share-card {
+    max-width: calc(100% - 32px);
+  }
 }

@@ -33,6 +33,7 @@ for (const file of required) assert(existsSync(file), `missing ${file}`);
 const home = readFileSync("public/home/index.html", "utf8");
 const mirror = readFileSync("public/index.html", "utf8");
 const motionCss = readFileSync("public/home/landing-motion.css", "utf8");
+const motionJs = readFileSync("public/home/landing-motion.js", "utf8");
 assert(home === mirror, "public/index.html must mirror public/home/index.html");
 assert(home.includes('/home/landing-motion.css'), "missing motion stylesheet link");
 assert(home.includes('/home/landing-motion.js'), "missing motion module link");
@@ -41,6 +42,51 @@ assert(home.includes("오늘 어디 갈지,"), "hero copy changed unexpectedly")
 assert(home.includes("검색어 대신 분위기로 찾아요."), "Discover copy changed unexpectedly");
 assert(home.includes("나중에 다시 찾기 쉬운 방식으로 저장해요."), "Save copy changed unexpectedly");
 assert(home.includes("나만의 코스를 만들고, 떠나보세요."), "Go copy changed unexpectedly");
+
+for (const sceneId of [
+  "landingMotionHero",
+  "motionSceneDiscovery",
+  "motionSceneNearby",
+  "motionSceneCourse",
+]) {
+  assert(
+    new RegExp(`id="${sceneId}"[\\s\\S]{0,220}?data-motion-state="final"`).test(home),
+    `${sceneId} must expose its final composition without JavaScript`,
+  );
+}
+
+assert(motionCss.includes("prefers-reduced-motion: reduce"), "missing reduced-motion CSS");
+assert(motionCss.includes("@media (max-width: 390px)"), "missing narrow-mobile rules");
+assert(motionJs.includes("IntersectionObserver"), "offscreen pause observer missing");
+assert(motionJs.includes("is-media-missing"), "media failure fallback missing");
+assert(
+  /removeEventListener\("error",\s*handleError\)/.test(motionJs),
+  "media failure listeners must be removed during cleanup",
+);
+assert(
+  /removeEventListener\?\.\("change",\s*updateAll\)/.test(motionJs)
+    && motionJs.includes("observer.disconnect()"),
+  "motion controller cleanup must remove media listeners and disconnect observation",
+);
+assert(!motionJs.includes("fetch("), "landing motion must not call backend APIs");
+assert(!motionJs.includes("/notify"), "landing motion must not control notify navigation");
+
+const fallbackShell = cssBlock(motionCss, ".landing-motion .is-media-missing");
+assert(/background:\s*#edf1ef\s*;/.test(fallbackShell), "missing neutral media fallback shell");
+const fallbackImage = cssBlock(motionCss, ".landing-motion .is-media-missing__image");
+assert(
+  /visibility:\s*hidden\s*;/.test(fallbackImage),
+  "failed images must keep their reserved dimensions",
+);
+const heroUgcKeyframes = cssBlock(motionCss, "@keyframes heroUgc");
+assert(
+  /translateX\(-8px\)/.test(heroUgcKeyframes),
+  "narrow-screen UGC entrance must remain inside the scene gutter",
+);
+assert(
+  !/font-size\s*:[^;}]*(?:vw|vh|vmin|vmax|cqw|cqh)/i.test(motionCss),
+  "landing motion font sizes must not scale with the viewport",
+);
 
 for (const marker of [
   'id="landingMotionHero"',

@@ -9,8 +9,10 @@ export function applySceneState(element, state) {
 
 export function initLandingMotion(documentRef = document, windowRef = window) {
   const scenes = [...documentRef.querySelectorAll("[data-motion-scene]")];
+  const images = [...documentRef.querySelectorAll("[data-motion-scene] img")];
   const visibility = new Map(scenes.map((scene) => [scene, false]));
   const media = windowRef.matchMedia("(prefers-reduced-motion: reduce)");
+  const imageErrorHandlers = new Map();
 
   const updateAll = () => {
     scenes.forEach((scene) => applySceneState(scene, resolveSceneState({
@@ -36,12 +38,23 @@ export function initLandingMotion(documentRef = document, windowRef = window) {
     }));
     observer.observe(scene);
   });
+  images.forEach((image) => {
+    const handleError = () => {
+      image.closest("figure, article, div")?.classList.add("is-media-missing");
+      image.classList.add("is-media-missing__image");
+    };
+    imageErrorHandlers.set(image, handleError);
+    image.addEventListener("error", handleError);
+  });
   media.addEventListener?.("change", updateAll);
 
   return {
     destroy() {
       observer.disconnect();
       media.removeEventListener?.("change", updateAll);
+      imageErrorHandlers.forEach((handleError, image) => {
+        image.removeEventListener("error", handleError);
+      });
     },
   };
 }
