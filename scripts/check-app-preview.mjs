@@ -13,6 +13,7 @@ const requiredFiles = [
   "tests/app-preview/shell.spec.mjs"
 ];
 const registryFiles = [
+  "public/app-preview/figma/action-contract.json",
   "public/app-preview/figma/screen-inventory.json",
   "public/app-preview/figma/screen-measurements.json",
   "public/app-preview/figma/visual-masks.json"
@@ -81,6 +82,7 @@ if (/https?:\/\//i.test(registrySource.join("\n"))) {
 const inventory = registries.get("public/app-preview/figma/screen-inventory.json");
 const measurements = registries.get("public/app-preview/figma/screen-measurements.json");
 const masks = registries.get("public/app-preview/figma/visual-masks.json");
+const actionContract = registries.get("public/app-preview/figma/action-contract.json");
 const inventoryIds = inventory.map((screen) => screen.id);
 const sortedInventoryIds = [...inventoryIds].sort();
 
@@ -94,6 +96,25 @@ if (JSON.stringify(Object.keys(measurements).sort()) !== JSON.stringify(sortedIn
 }
 if (JSON.stringify(Object.keys(masks).sort()) !== JSON.stringify(sortedInventoryIds)) {
   throw new Error("Figma inventory and mask keysets must match exactly");
+}
+if (actionContract.version !== 1 || !Array.isArray(actionContract.actions) || !Array.isArray(actionContract.nonInteractive)) {
+  throw new Error("Invalid Figma action contract shape");
+}
+
+const inventoryIdSet = new Set(inventoryIds);
+for (const record of [...actionContract.actions, ...actionContract.nonInteractive]) {
+  if (!inventoryIdSet.has(record.screenId)) throw new Error(`Unknown action-contract screen: ${record.screenId}`);
+  if (!Object.hasOwn(measurements[record.screenId].elements, record.source)) {
+    throw new Error(`Unknown action-contract element: ${record.screenId}/${record.source}`);
+  }
+}
+for (const record of actionContract.actions) {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(record.actionId)) {
+    throw new Error(`Invalid action ID: ${record.screenId}/${record.actionId}`);
+  }
+  if (record.effect.destination && !inventoryIdSet.has(record.effect.destination)) {
+    throw new Error(`Unknown action destination: ${record.screenId}/${record.actionId} -> ${record.effect.destination}`);
+  }
 }
 
 const actualASelection = inventory

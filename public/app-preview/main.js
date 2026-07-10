@@ -241,6 +241,20 @@ function handleReviewAction(actionId, id) {
   return false;
 }
 
+function isActionFormControl(target) {
+  return target.matches("input, select, textarea");
+}
+
+function isChangeOnlyControl(target) {
+  return target.matches([
+    "select",
+    'input[type="checkbox"]',
+    'input[type="radio"]',
+    'input[type="date"]',
+    'input[type="file"]'
+  ].join(", "));
+}
+
 window.addEventListener("popstate", renderFromUrl);
 document.addEventListener("click", (event) => {
   const target = event.target.closest?.("[data-action]");
@@ -249,12 +263,20 @@ document.addEventListener("click", (event) => {
   const actionId = target.dataset.action;
   const id = target.getAttribute("data-id");
   if (handleReviewAction(actionId, id)) return;
+  if (isActionFormControl(target)) return;
   dispatchTargetAction(target);
 });
 
 document.addEventListener("input", (event) => {
   const target = event.target.closest?.("[data-action]");
   if (!target || handleReviewAction(target.dataset.action, target.getAttribute("data-id"))) return;
+  if (isChangeOnlyControl(target)) return;
+  dispatchTargetAction(target);
+});
+
+document.addEventListener("change", (event) => {
+  const target = event.target.closest?.("[data-action]");
+  if (!target || !isChangeOnlyControl(target)) return;
   dispatchTargetAction(target);
 });
 

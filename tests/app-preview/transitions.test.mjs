@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import actionContract from "../../public/app-preview/figma/action-contract.json" with { type: "json" };
+import measurements from "../../public/app-preview/figma/screen-measurements.json" with { type: "json" };
 import { getScreen, listScreens } from "../../public/app-preview/screen-registry.js";
+import { DEFAULT_STATE } from "../../public/app-preview/state.js";
 import {
   ACTIONS_BY_SCREEN,
   TRANSITIONS,
@@ -20,6 +23,77 @@ const actionPayload = Object.freeze({
   userId: "user-1",
   value: "fixture-value"
 });
+
+const visibleControlPatterns = [
+  /^action\/[^/]+$/i,
+  /^field\/[^/]+\/(?:bg|container)$/i,
+  /^(?:button|Button)(?:#\d+)?(?: \/.*)?$/,
+  /CTA/i,
+  /^hero-action\/[^/]+$/,
+  /(?:^|\/)(?:toggle|tab|filter)(?:\b| \/)/i,
+  /^chip(?:#\d+)?$/i,
+  /^Photo menu(?:#\d+)?$/,
+  /^Candidate photo slot \d+$/,
+  /^Navigation \/ back button/,
+  /^Back button/,
+  /^Locate button/,
+  /^Target button/,
+  /^Following \/ list CTA$/,
+  /^Header \/ filter pill$/,
+  /^Header \/ segmented control$/,
+  /^Floating \/ (?:add route CTA|scroll to top)$/,
+  /^Info \/ (?:address|hours|menu) row$/,
+  /^Related places \/ card/,
+  /^slot\/comment-item\/like-icon/,
+  /^bottom sheet \/ (?:comments editable|business hours|filter only)$/i,
+  /^Discover card\/action bg/,
+  /^Segmented \//,
+  /^segment (?:place|route)$/,
+  /^ui\/toggle\/bg/,
+  /^slot\/settings-row\/bg/,
+  /^Photo grid sheet$/,
+  /^Bottom sheet \/ selected place photos$/,
+  /^Floating CTA \/ start here$/,
+  /^Start CTA \/ bg$/,
+  /^Filter \/ change bg$/,
+  /^Top \/ back button bg$/,
+  /^route card(?:#\d+)?$/,
+  /^Feed \/ media tile \d+(?:#\d+)?$/,
+  /^media\/(?:photo|avatar)\/crop-asset(?:#\d+)?$/,
+  /^slot\/option-card\/bg(?:#\d+)?$/,
+  /^gender radio(?:#\d+|\/[^/]+)?$/,
+  /^region(?:#\d+)?$/,
+  /^slot\/user-photo\/media(?:#\d+)?$/,
+  /^UGC card \d+$/,
+  /^Heart icon(?:#\d+)?$/
+];
+
+function isVisibleControlKey(key) {
+  return visibleControlPatterns.some((pattern) => pattern.test(key));
+}
+
+function actionIdsForScreen(screenId) {
+  return [...new Set(actionContract.actions
+    .filter((record) => record.screenId === screenId)
+    .map((record) => record.actionId))];
+}
+
+function previewState(currentScreenId, overrides = {}) {
+  return {
+    ...DEFAULT_STATE,
+    currentScreenId,
+    history: [],
+    reviewStatus: {},
+    form: {},
+    selections: {},
+    savedPlaceIds: [],
+    likedMediaIds: [],
+    followedUserIds: [],
+    routePlaceIds: [],
+    overlays: [],
+    ...overrides
+  };
+}
 
 test("every registry action has one explicit transition handler", () => {
   const screens = listScreens();
@@ -41,6 +115,100 @@ test("every registry action has one explicit transition handler", () => {
 
     assert.deepEqual(Object.keys(TRANSITIONS[screen.id]), screen.actions);
   }
+});
+
+test("the independent Figma action contract covers measured controls and drives registry actions", async () => {
+  const screenIds = new Set(listScreens().map((screen) => screen.id));
+  const actionSources = new Set();
+  const classifiedSources = new Set();
+
+  assert.equal(actionContract.version, 1);
+  assert.ok(actionContract.actions.length > 0);
+
+  for (const record of actionContract.actions) {
+    assert.ok(screenIds.has(record.screenId), `unknown contract screen ${record.screenId}`);
+    assert.match(record.actionId, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+    assert.ok(Object.hasOwn(measurements[record.screenId].elements, record.source), `${record.screenId}/${record.source}`);
+    assert.ok(record.kind.length > 0);
+    assert.ok(record.evidence.length > 0);
+    assert.ok(["navigate", "history", "state", "share", "overlay"].includes(record.effect.type));
+    if (record.effect.destination) assert.ok(getScreen(record.effect.destination));
+    actionSources.add(`${record.screenId}\0${record.source}`);
+    classifiedSources.add(`${record.screenId}\0${record.source}`);
+  }
+
+  for (const record of actionContract.nonInteractive) {
+    assert.ok(screenIds.has(record.screenId), `unknown classification screen ${record.screenId}`);
+    assert.ok(Object.hasOwn(measurements[record.screenId].elements, record.source), `${record.screenId}/${record.source}`);
+    assert.ok(record.kind.length > 0);
+    assert.ok(record.reason.length > 0);
+    assert.ok(!actionSources.has(`${record.screenId}\0${record.source}`), `interactive source classified noninteractive: ${record.screenId}/${record.source}`);
+    classifiedSources.add(`${record.screenId}\0${record.source}`);
+  }
+
+  for (const screen of listScreens()) {
+    assert.deepEqual(screen.actions, actionIdsForScreen(screen.id));
+    for (const key of Object.keys(measurements[screen.id].elements).filter(isVisibleControlKey)) {
+      assert.ok(classifiedSources.has(`${screen.id}\0${key}`), `unclassified visible control ${screen.id}/${key}`);
+    }
+  }
+
+  const registrySource = await readFile(new URL("../../public/app-preview/screen-registry.js", import.meta.url), "utf8");
+  const transitionSource = await readFile(new URL("../../public/app-preview/transitions.js", import.meta.url), "utf8");
+  const checkSource = await readFile(new URL("../../scripts/check-app-preview.mjs", import.meta.url), "utf8");
+  assert.match(registrySource, /action-contract\.json/);
+  assert.match(transitionSource, /action-contract\.json/);
+  assert.match(checkSource, /action-contract\.json/);
+});
+
+test("contract effects agree with pure transition results", () => {
+  const seen = new Set();
+
+  for (const record of actionContract.actions) {
+    const key = `${record.screenId}/${record.actionId}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    const state = previewState(record.screenId, { history: ["a1"] });
+    const result = dispatchAction(record.screenId, record.actionId, { state, ...actionPayload });
+
+    if (record.effect.type === "navigate") assert.equal(result.nextScreenId, record.effect.destination, key);
+    if (record.effect.type === "history") assert.equal(result.nextScreenId, "a1", key);
+    if (record.effect.type === "share") assert.equal(result.effect, "share", key);
+    if (["state", "overlay"].includes(record.effect.type)) assert.equal(result.nextScreenId, undefined, key);
+    if (record.effect.type === "overlay") assert.ok(result.state.overlays.includes(record.effect.overlayId), key);
+  }
+});
+
+test("contract records the corrected B4, B6, and D13 evidence", () => {
+  const b4Actions = actionIdsForScreen("b4");
+  const b6Actions = actionIdsForScreen("b6");
+  const d13PhotoMenus = actionContract.actions.filter((record) => (
+    record.screenId === "d13" && /^Photo menu(?:#\d+)?$/.test(record.source)
+  ));
+
+  assert.ok(!b4Actions.includes("go-back"));
+  assert.ok(!b4Actions.includes("create-route"));
+  assert.ok(b6Actions.includes("create-route"));
+  assert.equal(d13PhotoMenus.length, 9);
+  assert.ok(d13PhotoMenus.every((record) => record.actionId === "open-photo-menu"));
+});
+
+test("route controls use their distinct measured buttons", () => {
+  const c4RouteMapSources = actionContract.actions
+    .filter((record) => record.screenId === "c4" && record.actionId === "open-route-map")
+    .map((record) => record.source);
+  const c4DetailSources = actionContract.actions
+    .filter((record) => record.screenId === "c4" && record.actionId === "open-route")
+    .map((record) => record.source);
+  const d2AddSources = actionContract.actions
+    .filter((record) => record.screenId === "d2" && record.actionId === "add-place")
+    .map((record) => record.source);
+
+  assert.deepEqual(c4RouteMapSources, ["button", "button#3", "button#5"]);
+  assert.deepEqual(c4DetailSources, ["button#2", "button#4", "button#6"]);
+  assert.deepEqual(d2AddSources, ["icon/lucide#5", "icon/lucide#6", "icon/lucide#7"]);
+  assert.ok(actionIdsForScreen("d10").includes("close-route"));
 });
 
 test("every transition destination is a valid registry screen", () => {
@@ -105,12 +273,114 @@ test("unknown screens and actions return an error toast instead of throwing", ()
   assert.equal(dispatchAction("unknown-screen", "open-place").state.toast.kind, "error");
 });
 
+test("prototype keys are unknown actions and cannot mutate state", () => {
+  const state = previewState("b1", {
+    selections: { safe: "value" },
+    savedPlaceIds: ["place-2"]
+  });
+  const snapshot = structuredClone(state);
+
+  for (const [screenId, actionId] of [
+    ["b1", "toString"],
+    ["b1", "__proto__"],
+    ["toString", "open-place"],
+    ["__proto__", "open-place"]
+  ]) {
+    const result = dispatchAction(screenId, actionId, { state, placeId: "place-1" });
+    assert.equal(result.state.toast.kind, "error");
+    assert.equal(result.nextScreenId, undefined);
+  }
+
+  assert.deepEqual(state, snapshot);
+  assert.equal({}.selectedPlaceId, undefined);
+});
+
+test("detail and media close actions return to their exact opener", () => {
+  const detail = dispatchAction("b1", "open-place", {
+    state: previewState("b1"),
+    placeId: "place-1"
+  });
+  assert.equal(detail.nextScreenId, "b4");
+  assert.equal(detail.state.selections.selectedPlaceId, "place-1");
+  assert.deepEqual(detail.state.history, ["b1"]);
+
+  const detailClosed = dispatchAction("b4", "close-place", { state: detail.state });
+  assert.equal(detailClosed.nextScreenId, "b1");
+  assert.deepEqual(detailClosed.state.history, []);
+
+  const media = dispatchAction("e1", "open-media", {
+    state: previewState("e1"),
+    mediaId: "media-4"
+  });
+  assert.equal(media.nextScreenId, "b7");
+  assert.equal(media.state.selections.selectedMediaId, "media-4");
+
+  const mediaClosed = dispatchAction("b7", "close-photo", { state: media.state });
+  assert.equal(mediaClosed.nextScreenId, "e1");
+  assert.deepEqual(mediaClosed.state.history, []);
+});
+
+test("opening profile and route records selected fixture ids immutably", () => {
+  const profileState = previewState("e7");
+  const profile = dispatchAction("e7", "open-profile", { state: profileState, userId: "user-2" });
+  const route = dispatchAction("c4", "open-route", {
+    state: previewState("c4"),
+    routeId: "route-2"
+  });
+
+  assert.equal(profile.state.selections.selectedUserId, "user-2");
+  assert.equal(profile.nextScreenId, "e1");
+  assert.equal(route.state.selections.selectedRouteId, "route-2");
+  assert.equal(route.nextScreenId, "d10");
+  assert.deepEqual(profileState.selections, {});
+});
+
+test("route detail closes to its exact opener", () => {
+  const route = dispatchAction("c4", "open-route", {
+    state: previewState("c4"),
+    routeId: "route-2"
+  });
+  const closed = dispatchAction("d10", "close-route", { state: route.state });
+
+  assert.equal(route.nextScreenId, "d10");
+  assert.equal(route.state.selections.selectedRouteId, "route-2");
+  assert.equal(closed.nextScreenId, "c4");
+  assert.deepEqual(closed.state.history, []);
+});
+
+test("filter reset preserves non-filter selections", () => {
+  const state = previewState("c1", {
+    selections: {
+      birthYear: 1995,
+      profileTab: "places",
+      referralSource: "friend",
+      shareTarget: { type: "place", id: "place-1" },
+      situation: "date",
+      time: "afternoon",
+      mood: "quiet",
+      feedFilter: "nearby",
+      savedFilter: "cafe",
+      routeFilter: "walk"
+    }
+  });
+  const result = dispatchAction("c1", "reset-filters", { state });
+
+  assert.deepEqual(result.state.selections, {
+    birthYear: 1995,
+    profileTab: "places",
+    referralSource: "friend",
+    shareTarget: { type: "place", id: "place-1" }
+  });
+  assert.notEqual(result.state.selections, state.selections);
+});
+
 test("main owns delegated action events and keeps sharing as a DOM effect", async () => {
   const source = await readFile(new URL("../../public/app-preview/main.js", import.meta.url), "utf8");
 
   assert.match(source, /dispatchAction\(/);
   assert.equal(source.match(/addEventListener\("click"/g)?.length, 1);
   assert.equal(source.match(/addEventListener\("input"/g)?.length, 1);
+  assert.equal(source.match(/addEventListener\("change"/g)?.length, 1);
   assert.equal(source.match(/addEventListener\("keydown"/g)?.length, 1);
   assert.equal(source.match(/addEventListener\("pointerdown"/g)?.length, 1);
   assert.equal(source.match(/addEventListener\("pointerup"/g)?.length, 1);
@@ -119,4 +389,24 @@ test("main owns delegated action events and keeps sharing as a DOM effect", asyn
   assert.match(source, /navigator\.clipboard\.writeText\(/);
   assert.match(source, /data-action/);
   assert.match(source, /data-id/);
+  assert.match(source, /function isActionFormControl\(target\)/);
+  assert.match(source, /if \(isActionFormControl\(target\)\) return;/);
+  assert.match(source, /function isChangeOnlyControl\(target\)/);
+
+  const clickHandler = source.slice(
+    source.indexOf('document.addEventListener("click"'),
+    source.indexOf('document.addEventListener("input"')
+  );
+  assert.ok(clickHandler.indexOf("isActionFormControl(target)") < clickHandler.indexOf("dispatchTargetAction(target)"));
+
+  const inputHandler = source.slice(
+    source.indexOf('document.addEventListener("input"'),
+    source.indexOf('document.addEventListener("change"')
+  );
+  const changeHandler = source.slice(
+    source.indexOf('document.addEventListener("change"'),
+    source.indexOf('document.addEventListener("keydown"')
+  );
+  assert.ok(inputHandler.indexOf("isChangeOnlyControl(target)") < inputHandler.indexOf("dispatchTargetAction(target)"));
+  assert.ok(changeHandler.indexOf("!isChangeOnlyControl(target)") < changeHandler.indexOf("dispatchTargetAction(target)"));
 });

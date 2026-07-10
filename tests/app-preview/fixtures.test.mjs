@@ -101,6 +101,7 @@ test("fixtures contain no orphan references", () => {
     assert.ok(userIds.has(route.userId), `${route.id} has an unknown user`);
     assert.ok(route.placeIds.length > 0, `${route.id} has no places`);
     for (const id of route.placeIds) assert.ok(placeIds.has(id), `${route.id} -> ${id}`);
+    for (const id of route.tagIds) assert.ok(tagIds.has(id), `${route.id} -> ${id}`);
   }
 });
 

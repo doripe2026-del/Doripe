@@ -1,5 +1,12 @@
+import actionContract from "./figma/action-contract.json" with { type: "json" };
 import inventory from "./figma/screen-inventory.json" with { type: "json" };
-import { ACTIONS_BY_SCREEN } from "./transitions.js";
+
+const actionsByScreenId = new Map();
+for (const record of actionContract.actions) {
+  const actionIds = actionsByScreenId.get(record.screenId) || [];
+  if (!actionIds.includes(record.actionId)) actionIds.push(record.actionId);
+  actionsByScreenId.set(record.screenId, actionIds);
+}
 
 export function renderEvidenceScreen(screen) {
   const evidence = document.createElement("div");
@@ -29,7 +36,7 @@ const screens = Object.freeze(inventory.map((item) => Object.freeze({
     figmaNodeId: item.nodeId,
     reference: item.reference
   }),
-  actions: ACTIONS_BY_SCREEN[item.id]
+  actions: Object.freeze(actionsByScreenId.get(item.id) || [])
 })));
 
 const screensById = new Map(screens.map((screen) => [screen.id, screen]));
