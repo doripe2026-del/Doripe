@@ -125,4 +125,3 @@ Round 1 established visitor, creator, place content, place, course, and motion s
 ## Design Reference
 
 See `docs/superpowers/specs/2026-07-10-landing-motion-graphics-design.md`.
-

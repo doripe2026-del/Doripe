@@ -168,4 +168,3 @@ Desktop shows the complete composition. Mobile uses the same story with fewer si
 - Confirm lower scenes pause when offscreen.
 - Confirm existing notification CTA links still open `/notify`.
 - Measure that motion assets do not block the existing page's primary content.
-

@@ -18,25 +18,38 @@ export function initLandingMotion(documentRef = document, windowRef = window) {
   const visibility = new Map(scenes.map((scene) => [scene, false]));
   const media = windowRef.matchMedia("(prefers-reduced-motion: reduce)");
   const imageErrorHandlers = new Map();
+  const supportsIntersectionObserver = typeof windowRef.IntersectionObserver === "function";
 
   const updateAll = () => {
-    scenes.forEach((scene) => applySceneState(scene, resolveSceneState({
-      visible: visibility.get(scene),
-      reducedMotion: media.matches,
-    })));
-  };
-
-  const observer = new windowRef.IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      visibility.set(entry.target, entry.isIntersecting);
-      applySceneState(entry.target, resolveSceneState({
-        visible: entry.isIntersecting,
+    scenes.forEach((scene) => {
+      if (!supportsIntersectionObserver) {
+        applySceneState(scene, "final");
+        return;
+      }
+      applySceneState(scene, resolveSceneState({
+        visible: visibility.get(scene),
         reducedMotion: media.matches,
       }));
-    }
-  }, { threshold: 0.2 });
+    });
+  };
+
+  const observer = supportsIntersectionObserver
+    ? new windowRef.IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          visibility.set(entry.target, entry.isIntersecting);
+          applySceneState(entry.target, resolveSceneState({
+            visible: entry.isIntersecting,
+            reducedMotion: media.matches,
+          }));
+        }
+      }, { threshold: 0.2 })
+    : null;
 
   scenes.forEach((scene) => {
+    if (!observer) {
+      applySceneState(scene, "final");
+      return;
+    }
     applySceneState(scene, resolveSceneState({
       visible: visibility.get(scene),
       reducedMotion: media.matches,
@@ -53,7 +66,7 @@ export function initLandingMotion(documentRef = document, windowRef = window) {
 
   return {
     destroy() {
-      observer.disconnect();
+      observer?.disconnect();
       media.removeEventListener?.("change", updateAll);
       imageErrorHandlers.forEach((handleError, image) => {
         image.removeEventListener("error", handleError);

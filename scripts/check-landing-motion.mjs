@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -26,17 +26,105 @@ const required = [
   "public/home/landing-motion.js",
   "public/home/index.html",
   "public/index.html",
+  "scripts/serve-landing.mjs",
 ];
 
 for (const file of required) assert(existsSync(file), `missing ${file}`);
+
+const motionDerivatives = [
+  "public/img/landing-motion/hero-discover-feed.avif",
+  "public/img/landing-motion/hero-map-candidates.avif",
+  "public/img/landing-motion/discover.avif",
+  "public/img/landing-motion/discover-photo-next.avif",
+  "public/img/landing-motion/route-plan-generated.avif",
+  "public/img/landing-motion/creator-01.avif",
+  "public/img/landing-motion/creator-02.avif",
+  "public/img/landing-motion/creator-03.avif",
+  "public/img/landing-motion/creator-04.avif",
+];
+for (const file of motionDerivatives) {
+  assert(existsSync(file), `missing optimized motion derivative ${file}`);
+}
+const motionDerivativeBytes = motionDerivatives.reduce((total, file) => total + statSync(file).size, 0);
+assert(
+  motionDerivativeBytes < 2_500_000,
+  `optimized motion derivatives exceed 2.5MB (${motionDerivativeBytes} bytes)`,
+);
 
 const home = readFileSync("public/home/index.html", "utf8");
 const mirror = readFileSync("public/index.html", "utf8");
 const motionCss = readFileSync("public/home/landing-motion.css", "utf8");
 const motionJs = readFileSync("public/home/landing-motion.js", "utf8");
+const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
+const buildWorkflow = readFileSync(".github/workflows/build.yml", "utf8");
+const repositoryGuard = readFileSync("scripts/guard-repository.mjs", "utf8");
+const implementationPlan = readFileSync(
+  "docs/superpowers/plans/2026-07-10-landing-motion-graphics.md",
+  "utf8",
+);
+for (const file of [
+  ".omc/specs/deep-interview-landing-motion-graphics.md",
+  "docs/superpowers/specs/2026-07-10-landing-motion-graphics-design.md",
+]) {
+  assert(!readFileSync(file, "utf8").endsWith("\n\n"), `${file} must not end with a blank line`);
+}
+assert(
+  packageJson.scripts["dev:landing"] === "node scripts/serve-landing.mjs",
+  "package scripts must provide the repository-owned landing preview",
+);
+assert(
+  packageJson.scripts["test:landing-motion"] === "node --test tests/landing-*.test.mjs",
+  "landing motion tests must include controller and preview coverage",
+);
+for (const command of ["npm run test:landing-motion", "npm run check:landing-motion"]) {
+  assert(buildWorkflow.includes(command), `required build workflow missing ${command}`);
+}
+assert(
+  repositoryGuard.includes('".omc"')
+    && repositoryGuard.includes('"tests"')
+    && repositoryGuard.includes('".omc/specs/"'),
+  "repository guard must allow only the branch's required .omc specs and tests roots",
+);
+assert(
+  implementationPlan.includes("npm run dev:landing")
+    && implementationPlan.includes("Vercel project settings"),
+  "implementation plan must document the reliable landing preview and external Vercel setting",
+);
+const motionMarkup = home.slice(home.indexOf('id="landingMotionHero"'), home.indexOf("</main>"));
+const lowerMotionMarkup = home.slice(home.indexOf('id="motionSceneDiscovery"'), home.indexOf("</main>"));
+const motionImageTags = [...motionMarkup.matchAll(/<img\b[^>]*>/g)].map((match) => match[0]);
+assert(motionImageTags.length > 0, "motion scenes must contain photographic assets");
+for (const tag of motionImageTags) {
+  assert(
+    /src="\/img\/landing-motion\/[^"]+\.avif"/.test(tag),
+    `motion image must use an optimized derivative: ${tag}`,
+  );
+  assert(/decoding="async"/.test(tag), `motion image must decode asynchronously: ${tag}`);
+}
+for (const match of lowerMotionMarkup.matchAll(/<img\b[^>]*>/g)) {
+  const tag = match[0];
+  assert(/loading="lazy"/.test(tag), `lower motion image must load lazily: ${tag}`);
+  assert(/decoding="async"/.test(tag), `lower motion image must decode asynchronously: ${tag}`);
+}
+assert(
+  !motionMarkup.includes("/img/figma-ui/")
+    && !motionMarkup.includes("/app/assets/creator-photos/")
+    && !motionCss.includes("/img/figma-ui/")
+    && !motionCss.includes("/app/assets/creator-photos/"),
+  "motion scenes must not request original source assets",
+);
+assert(
+  /hero-discover-feed\.avif"[^>]*loading="eager"[^>]*fetchpriority="high"/.test(motionMarkup),
+  "the primary hero visual must be the only explicitly prioritized motion image",
+);
 assert(home === mirror, "public/index.html must mirror public/home/index.html");
 assert(home.includes('/home/landing-motion.css'), "missing motion stylesheet link");
 assert(home.includes('/home/landing-motion.js'), "missing motion module link");
+assert(
+  home.includes("const supportsIntersectionObserver = typeof window.IntersectionObserver === 'function';")
+    && home.includes("document.querySelectorAll('.reveal').forEach(el => el.classList.add('show'))"),
+  "inline reveal observer must expose content when IntersectionObserver is unavailable",
+);
 const noJsFallback = home.match(
   /<noscript\s+data-landing-no-js>\s*<style>([\s\S]*?)<\/style>\s*<\/noscript>/,
 )?.[1];
@@ -64,6 +152,13 @@ assert(home.includes("오늘 어디 갈지,"), "hero copy changed unexpectedly")
 assert(home.includes("검색어 대신 분위기로 찾아요."), "Discover copy changed unexpectedly");
 assert(home.includes("나중에 다시 찾기 쉬운 방식으로 저장해요."), "Save copy changed unexpectedly");
 assert(home.includes("나만의 코스를 만들고, 떠나보세요."), "Go copy changed unexpectedly");
+const heroAccessibleDescription = home.match(
+  /id="landingMotionHero"[\s\S]{0,320}?aria-label="([^"]+)"/,
+)?.[1];
+assert(
+  heroAccessibleDescription?.includes("공유") && heroAccessibleDescription?.includes("길찾기"),
+  "hero accessible description must include sharing and navigation",
+);
 
 for (const sceneId of [
   "landingMotionHero",
@@ -85,6 +180,11 @@ assert(
   "reduced-motion will-change override must follow all scene declarations",
 );
 assert(motionJs.includes("IntersectionObserver"), "offscreen pause observer missing");
+assert(
+  motionJs.includes('typeof windowRef.IntersectionObserver === "function"')
+    && motionJs.includes('applySceneState(scene, "final")'),
+  "motion controller must fall back to final scenes without IntersectionObserver",
+);
 assert(motionJs.includes("is-media-missing"), "media failure fallback missing");
 assert(
   /removeEventListener\("error",\s*handleError\)/.test(motionJs),
@@ -92,7 +192,7 @@ assert(
 );
 assert(
   /removeEventListener\?\.\("change",\s*updateAll\)/.test(motionJs)
-    && motionJs.includes("observer.disconnect()"),
+    && motionJs.includes("observer?.disconnect()"),
   "motion controller cleanup must remove media listeners and disconnect observation",
 );
 assert(!motionJs.includes("fetch("), "landing motion must not call backend APIs");
@@ -122,9 +222,62 @@ for (const marker of [
   'data-motion-layer="nearby"',
   'data-motion-layer="course"',
   'data-motion-layer="share"',
+  'data-motion-layer="friend-handoff"',
   'data-motion-layer="navigation"',
 ]) {
   assert(home.includes(marker), `hero motion missing ${marker}`);
+}
+for (const stop of ["1", "2", "3"]) {
+  assert(
+    home.includes(`data-hero-route-stop="${stop}"`),
+    `hero transformation missing route stop ${stop}`,
+  );
+}
+const heroOverlayBlock = cssBlock(motionCss, ".landing-motion--hero [data-motion-layer]");
+assert(
+  /pointer-events:\s*none\s*;/.test(heroOverlayBlock),
+  "hero advertising overlays must remain non-interactive",
+);
+const heroRouteTravel = cssBlock(motionCss, "@keyframes heroRouteTravel");
+assert(
+  /translate\(var\(--candidate-x\),\s*var\(--candidate-y\)\)/.test(heroRouteTravel)
+    && /transform:\s*none\s*;/.test(heroRouteTravel),
+  "hero place cards must travel from candidate positions into route positions",
+);
+const heroRouteCard = cssBlock(motionCss, "@keyframes heroRouteCard");
+assert(
+  /scale\(1\)/.test(heroRouteCard)
+    && /scale\(\.3/.test(heroRouteCard)
+    && /opacity:\s*0/.test(heroRouteCard),
+  "hero route cards must visibly collapse as pins take over",
+);
+const heroRoutePin = cssBlock(motionCss, "@keyframes heroRoutePin");
+assert(
+  /opacity:\s*0/.test(heroRoutePin)
+    && /70%,\s*96%\s*\{[^}]*opacity:\s*1/.test(heroRoutePin),
+  "hero route pins must replace the travelling cards",
+);
+const heroNavigation = cssBlock(motionCss, "@keyframes heroNavigation");
+assert(
+  /translate\(-50%,\s*-50%\)/.test(heroNavigation)
+    && /translate\(72px,\s*24px\)/.test(heroNavigation),
+  "hero navigation marker must follow the first route segment",
+);
+for (const name of [
+  "heroUgc",
+  "heroSelection",
+  "heroRouteTravel",
+  "heroRouteCard",
+  "heroRoutePin",
+  "heroCourse",
+  "heroShare",
+  "heroFriend",
+  "heroNavigation",
+]) {
+  assert(
+    /0%,\s*100%\s*\{/.test(cssBlock(motionCss, `@keyframes ${name}`)),
+    `${name} must share its start and end frame for a soft loop reset`,
+  );
 }
 
 for (const marker of [
@@ -135,6 +288,10 @@ for (const marker of [
 ]) {
   assert(home.includes(marker), `discovery scene missing ${marker}`);
 }
+assert(
+  home.includes('class="place-selection is-active"'),
+  "discovery final state must expose an active place selection",
+);
 assert(
   /<div class="journey-visual">\s*<div\s+id="motionSceneDiscovery"/.test(home),
   "discovery scene must be visible without reveal JavaScript",
@@ -193,11 +350,11 @@ assert(
   "course route SVG must have a stable 320 by 420 coordinate system",
 );
 assert(
-  /<img[^>]+(?:discover\.png|discover-photo-next\.png|route-plan-generated\.png)/.test(courseScene),
+  /<img[^>]+\/img\/landing-motion\/(?:discover|discover-photo-next|route-plan-generated)\.avif/.test(courseScene),
   "course scene must use current Figma-derived place assets",
 );
 assert(
-  /creator-photos\/creator-04\.png/.test(courseScene),
+  /\/img\/landing-motion\/creator-04\.avif/.test(courseScene),
   "course recipient must use the existing creator profile",
 );
 
@@ -296,6 +453,12 @@ assert(
   !nearbyScene.includes("--x:"),
   "nearby candidate positions must not use fixed inline offsets",
 );
+const orderedCandidateStops = [...nearbyScene.matchAll(/data-course-order="([23])"/g)]
+  .map((match) => match[1]);
+assert(
+  orderedCandidateStops.join("") === "23",
+  "nearby scene must assign two candidate cards to ordered tray stops 2 and 3",
+);
 
 const nearbyCandidateBase = cssBlock(motionCss, ".landing-motion--nearby .nearby-candidates span");
 assert(
@@ -336,9 +499,34 @@ for (const stop of ["1", "2", "3"]) {
   assert(home.includes(`data-course-stop="${stop}"`), `nearby course tray missing stop ${stop}`);
 }
 
+const candidateTravel = cssBlock(motionCss, "@keyframes candidateToTray");
+assert(
+  /translate\(var\(--tray-x\),\s*var\(--tray-y\)\)/.test(candidateTravel)
+    && /scale\(\.3/.test(candidateTravel),
+  "nearby candidate cards must travel and shrink into their tray positions",
+);
+const travellingCandidate = cssBlock(motionCss, ".nearby-candidate.is-course-stop");
+assert(
+  /animation-name:\s*candidateToTray\s*;/.test(travellingCandidate)
+    && /animation-delay:\s*calc\(var\(--course-order\)\s*\*\s*\.08s\)\s*;/.test(travellingCandidate),
+  "nearby tray candidates must keep an ordered travel stagger",
+);
+const nearbyStopTwo = cssBlock(motionCss, '.nearby-candidate[data-course-order="2"]');
+assert(
+  /--tray-x:\s*220px\s*;/.test(nearbyStopTwo)
+    && /--tray-y:\s*410px\s*;/.test(nearbyStopTwo),
+  "nearby stop 2 must land on the middle desktop tray position",
+);
+const nearbyStopThree = cssBlock(motionCss, '.nearby-candidate[data-course-order="3"]');
+assert(
+  /--tray-x:\s*-35px\s*;/.test(nearbyStopThree)
+    && /--tray-y:\s*380px\s*;/.test(nearbyStopThree),
+  "nearby stop 3 must travel left into the final desktop tray position",
+);
+
 for (const [selector, opacity] of [
   ['.landing-motion.landing-motion--discovery[data-motion-state="final"] .discovery-ui', "1"],
-  ['.landing-motion.landing-motion--discovery[data-motion-state="final"] .creator-reaction', "0"],
+  ['.landing-motion.landing-motion--discovery[data-motion-state="final"] .creator-reaction', "1"],
   ['.landing-motion.landing-motion--discovery[data-motion-state="final"] .video-indicator', "0"],
   ['.landing-motion.landing-motion--discovery[data-motion-state="final"] .place-selection', "1"],
 ]) {
@@ -356,6 +544,33 @@ assert(
 );
 
 const mobileMotion = cssBlock(motionCss, "@media (max-width: 480px)");
+const mobileHeroNavigation = cssBlock(mobileMotion, ".motion-navigation");
+assert(
+  /left:\s*60%\s*;/.test(mobileHeroNavigation)
+    && /animation-name:\s*heroNavigationMobile\s*;/.test(mobileHeroNavigation),
+  "320px hero navigation must follow a shorter in-bounds route segment",
+);
+const mobileHeroFinalNavigation = cssBlock(
+  mobileMotion,
+  '.landing-motion--hero[data-motion-state="final"] .motion-navigation',
+);
+assert(
+  /translate\(50px,\s*18px\)/.test(mobileHeroFinalNavigation),
+  "320px static navigation marker must remain inside the viewport",
+);
+const mobileHeroFinalSelection = cssBlock(
+  mobileMotion,
+  '.landing-motion--hero[data-motion-state="final"] .motion-selected-place',
+);
+assert(
+  /opacity:\s*0\s*;/.test(mobileHeroFinalSelection),
+  "320px static hero must remove the transitional selected screen before the final route",
+);
+const mobileHeroNavigationKeyframes = cssBlock(motionCss, "@keyframes heroNavigationMobile");
+assert(
+  /translate\(50px,\s*18px\)/.test(mobileHeroNavigationKeyframes),
+  "320px navigation motion must use the shortened first route segment",
+);
 const mobileVideo = cssBlock(mobileMotion, ".landing-motion--discovery .video-indicator");
 assert(
   /display:\s*none\s*;/.test(mobileVideo),
@@ -416,7 +631,7 @@ for (const [name, block] of Object.entries(discoveryKeyframes)) {
 }
 
 const nearbyKeyframes = Object.fromEntries(
-  ["anchorFocus", "candidateReveal", "courseTray"].map((name) => [
+  ["anchorFocus", "candidateDismiss", "candidateToTray", "courseTray"].map((name) => [
     name,
     cssBlock(motionCss, `@keyframes ${name}`),
   ]),
@@ -459,6 +674,16 @@ assert(
     && /64%,\s*100%\s*\{[^}]*stroke-dashoffset:\s*0/.test(courseRouteKeyframes),
   "course route must finish drawing before sharing begins",
 );
+assert(
+  courseScene.includes('class="route-navigation-track"')
+    && courseScene.includes('data-motion-layer="navigation-marker"'),
+  "course navigation handoff must live on the route coordinate track",
+);
+assert(
+  /translate\(64px,\s*22px\)/.test(courseKeyframes.startNavigation)
+    && /translate\(96px,\s*38px\)/.test(courseKeyframes.startNavigation),
+  "course navigation marker must move along the first route segment",
+);
 
 assert(
   /32%,\s*100%\s*\{[^}]*opacity:\s*0/.test(discoveryKeyframes.discoveryReaction),
@@ -484,8 +709,8 @@ assert(
   "320px motion must hide the secondary UGC card",
 );
 assert(
-  /@media \(max-width: 480px\)[\s\S]*?\.motion-nearby-card:nth-child\(n\+2\)\s*\{\s*display:\s*none;/.test(motionCss),
-  "320px motion must hide nonessential nearby cards",
+  /@media \(max-width: 480px\)[\s\S]*?\.motion-route-card\s*\{[^}]*width:\s*96px\s*;/.test(motionCss),
+  "320px hero route cards must keep a compact stable width",
 );
 assert(
   /@media \(max-width: 480px\)[\s\S]*?\.motion-selected-place\s*\{\s*inset:\s*9% 16% 9% 30%;/.test(motionCss),

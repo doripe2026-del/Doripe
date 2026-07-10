@@ -827,15 +827,17 @@ git commit -m "fix: harden landing motion fallbacks"
 **Interfaces:**
 - Produces: approved desktop and mobile visual behavior with no clipping, blank canvases, or misleading permanent controls.
 
-- [ ] **Step 1: Start the local Vercel preview**
+- [ ] **Step 1: Start the repository-owned landing preview**
 
 Run:
 
 ```bash
-npm run dev
+npm run dev:landing
 ```
 
-Expected: Vercel dev server prints a local URL and the homepage loads without console errors.
+Expected: the landing preview prints a local URL and serves the homepage and motion assets without recursion.
+
+`npm run dev` remains the Vercel CLI entrypoint because Vercel functions depend on that runtime. In an unlinked worktree, its Development Command comes from Vercel project settings and currently resolves back to `npm run dev`, so frontend-only landing QA uses `npm run dev:landing` until that external setting is corrected.
 
 - [ ] **Step 2: Verify desktop behavior at 1440x900**
 

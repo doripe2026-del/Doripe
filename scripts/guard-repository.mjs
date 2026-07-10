@@ -6,6 +6,7 @@ const allowedTopLevel = new Set([
   ".github",
   ".githooks",
   ".gitignore",
+  ".omc",
   "AGENTS.md",
   "README.md",
   "api",
@@ -16,8 +17,13 @@ const allowedTopLevel = new Set([
   "scripts",
   "src",
   "supabase",
+  "tests",
   "tsconfig.json",
   "vercel.json",
+]);
+
+const restrictedTopLevelPrefixes = new Map([
+  [".omc", [".omc/specs/"]],
 ]);
 
 const forbiddenPaths = [
@@ -83,6 +89,11 @@ for (const file of files) {
   const top = file.split("/")[0];
   if (!allowedTopLevel.has(top)) {
     fail(`unexpected top-level path: ${top} (${file})`);
+  }
+
+  const allowedPrefixes = restrictedTopLevelPrefixes.get(top);
+  if (allowedPrefixes && !allowedPrefixes.some((prefix) => file.startsWith(prefix))) {
+    fail(`unexpected path under ${top}: ${file}`);
   }
 
   if (forbiddenPaths.some((path) => file === path || file.startsWith(`${path}/`))) {

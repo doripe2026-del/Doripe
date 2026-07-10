@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
+    "dev:landing": "node scripts/serve-landing.mjs",
     "build": "npm run typecheck",
     "vercel-build": "npm run typecheck",
     "guard:repo": "node scripts/guard-repository.mjs",
@@ -17,7 +18,7 @@
     "build:admin": "node scripts/build-admin.mjs",
     "typecheck": "tsc --noEmit",
     "sync:home": "node scripts/sync-home-index.mjs",
-    "test:landing-motion": "node --test tests/landing-motion-controller.test.mjs",
+    "test:landing-motion": "node --test tests/landing-*.test.mjs",
     "check:landing-motion": "node scripts/check-landing-motion.mjs"
   },
   "dependencies": {

@@ -22,6 +22,39 @@ test("visible scenes play and offscreen scenes pause", () => {
   assert.equal(resolveSceneState({ visible: false, reducedMotion: false }), "paused");
 });
 
+test("missing IntersectionObserver keeps every scene in its useful final state", () => {
+  const firstScene = { dataset: { motionState: "paused" } };
+  const secondScene = { dataset: { motionState: "paused" } };
+  const mediaListeners = new Set();
+  const documentRef = {
+    querySelectorAll(selector) {
+      if (selector === "[data-motion-scene]") return [firstScene, secondScene];
+      if (selector === "[data-motion-scene] img") return [];
+      assert.fail(`unexpected selector ${selector}`);
+    },
+  };
+  const media = {
+    matches: false,
+    addEventListener(type, listener) {
+      if (type === "change") mediaListeners.add(listener);
+    },
+    removeEventListener(type, listener) {
+      if (type === "change") mediaListeners.delete(listener);
+    },
+  };
+  const windowRef = { matchMedia: () => media };
+
+  let controller;
+  assert.doesNotThrow(() => {
+    controller = initLandingMotion(documentRef, windowRef);
+  });
+  assert.equal(firstScene.dataset.motionState, "final");
+  assert.equal(secondScene.dataset.motionState, "final");
+
+  assert.doesNotThrow(() => controller.destroy());
+  assert.equal(mediaListeners.size, 0);
+});
+
 test("ending reduced motion restores each observed scene state", () => {
   const visibleScene = { dataset: {} };
   const offscreenScene = { dataset: {} };
