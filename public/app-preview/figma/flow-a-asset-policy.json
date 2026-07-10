@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "path": "/app-preview/assets/onboarding/a1-photo-1.png",
+      "role": "decorative",
+      "screens": ["a1"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/a1-photo-2.png",
+      "role": "decorative",
+      "screens": ["a1"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/a1-photo-3.png",
+      "role": "decorative",
+      "screens": ["a1"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/a1-photo-4.png",
+      "role": "decorative",
+      "screens": ["a1"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/a21-map-plane.png",
+      "role": "decorative",
+      "screens": ["a21"],
+      "allowLarge": true
+    },
+    {
+      "path": "/app-preview/assets/onboarding/a22-mark.png",
+      "role": "component",
+      "screens": ["a22"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/check-badge.svg",
+      "role": "component",
+      "screens": ["a6"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/check-halo.svg",
+      "role": "decorative",
+      "screens": ["a6"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/check.svg",
+      "role": "component",
+      "screens": ["a7", "a8", "a12", "a13"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/doripe-mark.png",
+      "role": "component",
+      "screens": ["a1", "a1-splash", "a3", "a4"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/email.svg",
+      "role": "component",
+      "screens": ["a3", "a4", "a5", "a9", "a10", "a11"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/gender-female.svg",
+      "role": "component",
+      "screens": ["a15"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/gender-male.svg",
+      "role": "component",
+      "screens": ["a15"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/gender-unspecified.svg",
+      "role": "component",
+      "screens": ["a15"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/lock.svg",
+      "role": "component",
+      "screens": ["a3", "a4", "a7", "a8", "a12", "a13"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/neighborhood-pin.svg",
+      "role": "component",
+      "screens": ["a20"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/radio-check.svg",
+      "role": "component",
+      "screens": ["a15"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/radio-empty.svg",
+      "role": "component",
+      "screens": ["a15"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/radio-selected.svg",
+      "role": "component",
+      "screens": ["a15"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/referral-community.svg",
+      "role": "component",
+      "screens": ["a19"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/referral-creator.svg",
+      "role": "component",
+      "screens": ["a19"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/referral-instagram.svg",
+      "role": "component",
+      "screens": ["a19"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/referral-other.svg",
+      "role": "component",
+      "screens": ["a19"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/referral-search.svg",
+      "role": "component",
+      "screens": ["a19"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/referral-store.svg",
+      "role": "component",
+      "screens": ["a19"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/referral-tiktok.svg",
+      "role": "component",
+      "screens": ["a19"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/source-friend.svg",
+      "role": "component",
+      "screens": ["a18", "a19"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/source-instagram.svg",
+      "role": "component",
+      "screens": ["a18"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/source-map.svg",
+      "role": "component",
+      "screens": ["a18"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/source-search.svg",
+      "role": "component",
+      "screens": ["a18"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/source-sparkle.svg",
+      "role": "component",
+      "screens": ["a18"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/travel-icon-bg.svg",
+      "role": "component",
+      "screens": ["a21"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/travel-plane.svg",
+      "role": "component",
+      "screens": ["a21"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/user.svg",
+      "role": "component",
+      "screens": ["a16", "a17"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/validation-check-bg.svg",
+      "role": "component",
+      "screens": ["a9", "a16"]
+    },
+    {
+      "path": "/app-preview/assets/onboarding/validation-check.svg",
+      "role": "component",
+      "screens": ["a9", "a16"]
+    }
+  ]
+}

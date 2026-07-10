@@ -169,7 +169,21 @@ test("contract effects agree with pure transition results", () => {
     if (seen.has(key)) continue;
     seen.add(key);
 
-    const state = previewState(record.screenId, { history: ["a1"] });
+    const state = previewState(record.screenId, {
+      history: ["a1"],
+      form: {
+        email: "dori@doripe.kr",
+        password: "Doripe123",
+        newPassword: "Doripe123",
+        passwordConfirmation: "Doripe123",
+        birthYear: "2000",
+        gender: "female",
+        nickname: "dori",
+        habit: "instagram-saved",
+        source: "instagram",
+        neighborhoodId: "seongsu"
+      }
+    });
     const result = dispatchAction(record.screenId, record.actionId, { state, ...actionPayload });
 
     if (record.effect.type === "navigate") assert.equal(result.nextScreenId, record.effect.destination, key);
@@ -192,6 +206,52 @@ test("contract records the corrected B4, B6, and D13 evidence", () => {
   assert.ok(b6Actions.includes("create-route"));
   assert.equal(d13PhotoMenus.length, 9);
   assert.ok(d13PhotoMenus.every((record) => record.actionId === "open-photo-menu"));
+});
+
+test("A4 action sources follow the visible login and signup controls", () => {
+  const a4BySource = new Map(actionContract.actions
+    .filter((record) => record.screenId === "a4")
+    .map((record) => [record.source, record]));
+
+  assert.equal(a4BySource.get("action/primary/bg#2").actionId, "submit-login");
+  assert.equal(a4BySource.get("action/primary/bg#2").effect.destination, "b1");
+  assert.equal(a4BySource.get("action/primary/bg").actionId, "create-account");
+  assert.equal(a4BySource.get("action/primary/bg").effect.destination, "a9");
+});
+
+test("required Flow A transitions reject missing persisted form values", () => {
+  for (const [screenId, actionId] of [
+    ["a3", "submit-login"],
+    ["a5", "send-reset-email"],
+    ["a7", "save-password"],
+    ["a9", "continue-sign-up"],
+    ["a12", "continue-sign-up"],
+    ["a14", "continue-sign-up"],
+    ["a15", "continue-sign-up"],
+    ["a16", "continue-sign-up"],
+    ["a18", "choose-location"],
+    ["a19", "continue-sign-up"],
+    ["a20", "confirm-neighborhood"]
+  ]) {
+    const state = previewState(screenId);
+    const result = dispatchAction(screenId, actionId, { state });
+    assert.equal(result.nextScreenId, undefined, `${screenId}/${actionId}`);
+    assert.equal(result.state.currentScreenId, screenId, `${screenId}/${actionId}`);
+    assert.equal(result.state.toast?.kind, "error", `${screenId}/${actionId}`);
+  }
+});
+
+test("A6 resend is a measured state action", () => {
+  const record = actionContract.actions.find(({ screenId, actionId }) => (
+    screenId === "a6" && actionId === "resend-reset-email"
+  ));
+  assert.equal(record.source, "resend");
+  assert.equal(record.effect.type, "state");
+
+  const state = previewState("a6");
+  const result = dispatchAction("a6", "resend-reset-email", { state });
+  assert.equal(result.nextScreenId, undefined);
+  assert.equal(result.state.form.resetEmailResent, true);
 });
 
 test("one measured source maps to one action unless backed by explicit Figma variants", async () => {

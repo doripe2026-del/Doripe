@@ -7,8 +7,12 @@ const state = createPreviewState();
 const phoneRoot = document.querySelector("#phone-root");
 const reviewList = document.querySelector("#review-list");
 const resetButton = document.querySelector("#review-reset");
+const BROWSER_HISTORY_KEY = "doripeAppPreview";
+const SCREEN_TEARDOWN_EVENT = "app-preview:screen-teardown";
+const SCREEN_NAVIGATE_EVENT = "app-preview:screen-navigate";
 let interactionState = state.getState();
 let activePointerTarget = null;
+let pendingHistoryBack = null;
 
 resetButton.dataset.action = "review-reset";
 
@@ -17,10 +21,35 @@ function readScreenIdFromUrl() {
   return params.has("screen") ? params.get("screen") : null;
 }
 
+function browserHistoryEntry() {
+  return window.history.state?.[BROWSER_HISTORY_KEY] || null;
+}
+
 function writeScreenIdToUrl(screenId, { replace = false } = {}) {
   const url = new URL(window.location.href);
   url.search = new URLSearchParams({ screen: screenId }).toString();
-  window.history[replace ? "replaceState" : "pushState"]({}, "", url);
+  const currentEntry = browserHistoryEntry();
+  const depth = replace ? (currentEntry?.depth || 0) : (currentEntry?.depth || 0) + 1;
+  const browserState = {
+    ...(replace && window.history.state ? window.history.state : {}),
+    [BROWSER_HISTORY_KEY]: {
+      screenId,
+      depth,
+      previewState: structuredClone(interactionState)
+    }
+  };
+  window.history[replace ? "replaceState" : "pushState"](browserState, "", url);
+}
+
+function refreshCurrentBrowserEntry() {
+  const screenId = readScreenIdFromUrl();
+  if (screenId && getScreen(screenId)) writeScreenIdToUrl(screenId, { replace: true });
+}
+
+function teardownRenderedScreen() {
+  for (const rendered of phoneRoot.children) {
+    rendered.dispatchEvent(new Event(SCREEN_TEARDOWN_EVENT));
+  }
 }
 
 function renderReviewList() {
@@ -64,11 +93,28 @@ function renderReviewList() {
 }
 
 function renderEvidenceScreen(screen) {
-  phoneRoot.replaceChildren(screen.render());
+  const renderedScreen = screen.render();
+  teardownRenderedScreen();
+  phoneRoot.replaceChildren(renderedScreen);
+  persistVisibleDefaults(renderedScreen);
   phoneRoot.dataset.previewMode = "evidence";
 }
 
+function persistVisibleDefaults(renderedScreen) {
+  const screenId = renderedScreen.dataset.screenId;
+  for (const target of renderedScreen.querySelectorAll('[data-persist-default="true"][data-action]')) {
+    const payload = readActionPayload(target);
+    const result = dispatchAction(screenId, target.dataset.action, payload);
+    if (result.nextScreenId) {
+      throw new Error(`Visible default must use a state-only action: ${screenId}/${target.dataset.action}`);
+    }
+    state.replace(result.state);
+    interactionState = state.getState();
+  }
+}
+
 function renderUnknownScreen(screenId) {
+  teardownRenderedScreen();
   phoneRoot.replaceChildren();
   phoneRoot.dataset.previewMode = "review-error";
 
@@ -108,21 +154,47 @@ function navigate(screenId, { replace = false } = {}) {
 
   state.navigate(screenId, { replace });
   interactionState = state.getState();
-  writeScreenIdToUrl(screenId, { replace });
   renderScreen(screenId);
+  writeScreenIdToUrl(screenId, { replace });
 }
 
-function renderFromUrl() {
+function restoreBrowserNavigation(snapshot, screenId) {
+  const currentState = state.getState();
+  const snapshotState = snapshot?.previewState;
+  if (snapshot?.screenId === screenId && Array.isArray(snapshotState?.history)) {
+    state.replace({
+      ...currentState,
+      currentScreenId: screenId,
+      history: [...snapshotState.history]
+    });
+    return;
+  }
+
+  const history = [...(currentState.history || [])];
+  if (history.at(-1) === screenId) history.pop();
+  state.replace({ ...currentState, currentScreenId: screenId, history });
+}
+
+function renderFromUrl(event) {
   const screenId = readScreenIdFromUrl();
   if (screenId !== null && !getScreen(screenId)) {
     renderScreen(screenId);
     return;
   }
 
-  const selectedScreenId = screenId || state.getState().currentScreenId;
-  state.navigate(selectedScreenId, { replace: true });
+  let selectedScreenId = screenId || state.getState().currentScreenId;
+  if (event?.type === "popstate" && pendingHistoryBack) {
+    selectedScreenId = pendingHistoryBack.nextScreenId;
+    state.replace(pendingHistoryBack.state);
+    pendingHistoryBack = null;
+  } else if (event?.type === "popstate") {
+    restoreBrowserNavigation(event.state?.[BROWSER_HISTORY_KEY], selectedScreenId);
+  } else {
+    state.navigate(selectedScreenId, { replace: true });
+  }
   interactionState = state.getState();
   renderScreen(selectedScreenId);
+  writeScreenIdToUrl(selectedScreenId, { replace: true });
 }
 
 function readActionPayload(target) {
@@ -180,6 +252,7 @@ function setEffectToast(kind, message) {
   state.replace(interactionState);
   interactionState = state.getState();
   phoneRoot.dataset.toastKind = kind;
+  refreshCurrentBrowserEntry();
 }
 
 async function runDomEffect(effect, screenId, payload) {
@@ -213,8 +286,18 @@ function dispatchTargetAction(target) {
   state.replace(result.state);
   interactionState = state.getState();
   if (result.nextScreenId) {
-    writeScreenIdToUrl(result.nextScreenId);
-    renderScreen(result.nextScreenId);
+    if (result.historyMode === "back" && (browserHistoryEntry()?.depth || 0) > 0) {
+      pendingHistoryBack = {
+        nextScreenId: result.nextScreenId,
+        state: interactionState
+      };
+      window.history.back();
+    } else {
+      renderScreen(result.nextScreenId);
+      writeScreenIdToUrl(result.nextScreenId, { replace: result.historyMode === "back" });
+    }
+  } else {
+    refreshCurrentBrowserEntry();
   }
   void runDomEffect(result.effect, screenId, payload);
 }
@@ -233,14 +316,15 @@ function handleReviewAction(actionId, id) {
       reviewStatus: { ...state.getState().reviewStatus }
     };
     renderReviewList();
+    refreshCurrentBrowserEntry();
     return true;
   }
 
   if (actionId === "review-reset") {
     state.reset();
     interactionState = state.getState();
-    writeScreenIdToUrl("a1", { replace: true });
     renderScreen("a1");
+    writeScreenIdToUrl("a1", { replace: true });
     return true;
   }
 
@@ -262,6 +346,9 @@ function isChangeOnlyControl(target) {
 }
 
 window.addEventListener("popstate", renderFromUrl);
+document.addEventListener(SCREEN_NAVIGATE_EVENT, (event) => {
+  navigate(event.detail.screenId, { replace: event.detail.replace === true });
+});
 document.addEventListener("click", (event) => {
   const target = event.target.closest?.("[data-action]");
   if (!target) return;

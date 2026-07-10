@@ -1,4 +1,12 @@
 const ASSET_ROOT = "/app-preview/assets/onboarding";
+const SCREEN_TEARDOWN_EVENT = "app-preview:screen-teardown";
+const SCREEN_NAVIGATE_EVENT = "app-preview:screen-navigate";
+const NEIGHBORHOODS = Object.freeze([
+  ["yeonnam", "연남", "region"],
+  ["seongsu", "성수", "region#2"],
+  ["yongsan", "용산", "region#3"]
+]);
+const NEIGHBORHOOD_LABELS = new Map(NEIGHBORHOODS.map(([id, label]) => [id, label]));
 
 function createScreen(id, figmaNodeId, className) {
   const screen = document.createElement("section");
@@ -33,25 +41,51 @@ function storedFormValue(key, fallback) {
   }
 }
 
+function loadingNeighborhoodLabel(screenId) {
+  const staticFrame = new URLSearchParams(globalThis.location?.search || "").get("static") === "1";
+  const staticFallback = screenId === "a21" ? "yeonnam" : "seongsu";
+  const fallback = staticFrame ? staticFallback : "seongsu";
+  return NEIGHBORHOOD_LABELS.get(storedFormValue("neighborhoodId", fallback))
+    || NEIGHBORHOOD_LABELS.get(fallback);
+}
+
+function directionLabel(label) {
+  const finalConsonant = (label.codePointAt(label.length - 1) - 0xac00) % 28;
+  const particle = finalConsonant === 0 || finalConsonant === 8 ? "로" : "으로";
+  return `${label}${particle}`;
+}
+
 function replaceScreenAfter(screen, screenId, delay) {
   if (new URLSearchParams(globalThis.location?.search || "").get("static") === "1") return;
-  globalThis.setTimeout(() => {
+  let active = true;
+  const handle = globalThis.setTimeout(() => {
+    active = false;
     if (!screen.isConnected) return;
-    const url = new URL(globalThis.location.href);
-    url.searchParams.set("screen", screenId);
-    url.searchParams.delete("static");
-    globalThis.history.replaceState({}, "", url);
-    globalThis.dispatchEvent(new PopStateEvent("popstate"));
+    screen.dispatchEvent(new CustomEvent(SCREEN_NAVIGATE_EVENT, {
+      bubbles: true,
+      detail: { screenId, replace: true }
+    }));
   }, delay);
+  screen.addEventListener(SCREEN_TEARDOWN_EVENT, () => {
+    if (!active) return;
+    active = false;
+    globalThis.clearTimeout(handle);
+  }, { once: true });
 }
 
 function startLoadingProgress(screen, { fillSelector, destination }) {
   if (new URLSearchParams(globalThis.location?.search || "").get("static") === "1") return;
   const fill = screen.querySelector(fillSelector);
   let value = Number(fill.getAttribute("aria-valuenow"));
+  let active = true;
+  const stop = () => {
+    if (!active) return;
+    active = false;
+    globalThis.clearInterval(interval);
+  };
   const interval = globalThis.setInterval(() => {
     if (!screen.isConnected) {
-      globalThis.clearInterval(interval);
+      stop();
       return;
     }
     value = Math.min(100, value + 8);
@@ -60,10 +94,11 @@ function startLoadingProgress(screen, { fillSelector, destination }) {
     fill.style.left = `${105 + (183 - width) / 2}px`;
     fill.setAttribute("aria-valuenow", String(value));
     if (value === 100) {
-      globalThis.clearInterval(interval);
+      stop();
       replaceScreenAfter(screen, destination, 180);
     }
   }, 100);
+  screen.addEventListener(SCREEN_TEARDOWN_EVENT, stop, { once: true });
 }
 
 function bindPasswordConfirmation(screen, { requireMatch = false } = {}) {
@@ -148,7 +183,7 @@ export function renderA1() {
       <img src="${ASSET_ROOT}/a1-photo-4.png" alt="" draggable="false">
     </div>
     <div class="a1-brand" aria-label="Doripe">
-      <img class="a1-brand__mark" src="${ASSET_ROOT}/doripe-mark.png" alt="" draggable="false">
+      <img class="a1-brand__mark" src="${ASSET_ROOT}/doripe-mark.png" alt="" data-measure-key="Header-/-brand/logo/image" draggable="false">
       <span class="a1-brand__name">Doripe</span>
     </div>
     <h1 class="a1-title" data-measure-key="screen/title">오늘 갈 곳,<br>1분 안에 정해요</h1>
@@ -175,7 +210,7 @@ export function renderA3() {
   const screen = createScreen("a3", "579:929", "onboarding-a3");
   screen.innerHTML = `
     <div class="a3-brand" aria-label="Doripe">
-      <img src="${ASSET_ROOT}/doripe-mark.png" alt="" draggable="false">
+      <img src="${ASSET_ROOT}/doripe-mark.png" alt="" data-measure-key="Header-/-brand/logo/image" draggable="false">
       <span>Doripe</span>
     </div>
     <h1 data-measure-key="screen/title">다시 만나서 반가워요</h1>
@@ -190,6 +225,7 @@ export function renderA3() {
       <img src="${ASSET_ROOT}/lock.svg" alt="" aria-hidden="true" draggable="false">
     </label>
     <button class="a3-forgot" type="button" data-action="forgot-password" data-measure-key="action/forgot-password">비밀번호를 잊으셨나요?</button>
+    <div class="a3-primary-measure" data-measure-key="action/primary" aria-hidden="true"></div>
     <button class="a3-create" type="button" data-action="create-account" data-measure-key="action/primary/bg#2">새 계정 만들기</button>
     <button class="a3-login" type="button" data-action="submit-login" data-measure-key="action/primary/bg">로그인</button>
   `;
@@ -202,7 +238,7 @@ export function renderA4() {
   const screen = createScreen("a4", "579:991", "onboarding-a3 onboarding-a4");
   screen.innerHTML = `
     <div class="a3-brand" aria-label="Doripe">
-      <img src="${ASSET_ROOT}/doripe-mark.png" alt="" draggable="false">
+      <img src="${ASSET_ROOT}/doripe-mark.png" alt="" data-measure-key="Header-/-brand/logo/image" draggable="false">
       <span>Doripe</span>
     </div>
     <h1 data-measure-key="screen/title">다시 로그인해 주세요</h1>
@@ -218,6 +254,7 @@ export function renderA4() {
     </label>
     <p class="a4-error" data-measure-key="state/helper-text">이메일 또는 비밀번호가 맞지 않아요.</p>
     <button class="a3-forgot" type="button" data-action="forgot-password" data-measure-key="action/forgot-password">비밀번호를 잊으셨나요?</button>
+    <div class="a3-primary-measure" data-measure-key="action/primary" aria-hidden="true"></div>
     <button class="a3-create" type="button" data-action="submit-login" data-measure-key="action/primary/bg#2">로그인</button>
     <button class="a3-login" type="button" data-action="create-account" data-measure-key="action/primary/bg">회원가입으로 가기</button>
   `;
@@ -263,7 +300,7 @@ export function renderA6() {
     <h1 data-measure-key="screen/title">재설정 메일을 보냈어요</h1>
     <p class="a6-subtitle" data-measure-key="screen/subtitle">이메일을 확인하고 새 비밀번호를 만들어주세요</p>
     <button class="a6-return" type="button" data-action="return-to-login" data-measure-key="action/primary">로그인으로 돌아가기</button>
-    <p class="a6-resend" data-measure-key="resend">메일을 못 받았어요</p>
+    <button class="a6-resend" type="button" data-action="resend-reset-email" data-measure-key="resend">메일을 못 받았어요</button>
   `;
   return screen;
 }
@@ -344,7 +381,7 @@ export function renderA9() {
     <h1 data-measure-key="screen/title">이메일을 입력해주세요</h1>
     <label class="a9-email-field">
       <span>이메일</span>
-      <input type="email" inputmode="email" autocomplete="email" aria-label="이메일" value="dori@doripe.kr" data-action="update-email" data-measure-key="field/email/bg">
+      <input type="email" inputmode="email" autocomplete="email" aria-label="이메일" value="dori@doripe.kr" data-action="update-email" data-measure-key="field/email/bg" data-persist-default="true">
       <img class="a9-email-field__icon" src="${ASSET_ROOT}/email.svg" alt="" aria-hidden="true" draggable="false">
       <img class="a9-email-field__check-bg" src="${ASSET_ROOT}/validation-check-bg.svg" alt="" aria-hidden="true" draggable="false">
       <img class="a9-email-field__check" src="${ASSET_ROOT}/validation-check.svg" alt="" aria-hidden="true" draggable="false">
@@ -446,7 +483,7 @@ export function renderA13() {
     <p class="a12-subtitle" data-measure-key="screen/subtitle">안전한 비밀번호 조건을 보호하세요.</p>
     <label class="a12-password-field">
       <span>비밀번호</span>
-      <input type="password" autocomplete="new-password" aria-label="비밀번호" value="Doripe1234" data-action="update-password" data-measure-key="field/password/bg">
+      <input type="password" autocomplete="new-password" aria-label="비밀번호" value="Doripe1234" data-action="update-password" data-measure-key="field/password/bg" data-persist-default="true">
       <img src="${ASSET_ROOT}/lock.svg" alt="" aria-hidden="true" draggable="false">
     </label>
     <ul class="a12-success-rules" data-measure-key="field/password-rules/container" aria-label="안전한 암호 조건">
@@ -484,7 +521,7 @@ export function renderA14() {
       <span class="a14-picker__year" data-year-offset="1">2001</span>
       <span class="a14-picker__year" data-year-offset="2">2002</span>
     </div>
-    <select class="a14-select" aria-label="출생연도" data-action="select-birth-year" data-measure-key="field/year-picker/container">${yearOptions}</select>
+    <select class="a14-select" aria-label="출생연도" data-action="select-birth-year" data-measure-key="field/year-picker/container" data-persist-default="true">${yearOptions}</select>
     <button class="a14-next" type="button" data-action="continue-sign-up" data-measure-key="action/next">다음</button>
   `;
   const select = screen.querySelector(".a14-select");
@@ -518,25 +555,31 @@ export function renderA15() {
         <input type="radio" name="gender" value="female" data-action="select-gender" data-measure-key="gender radio/여성" checked>
         <img class="a15-option__symbol" src="${ASSET_ROOT}/gender-female.svg" alt="" aria-hidden="true">
         <span>여성</span>
-        <img class="a15-option__radio a15-option__radio--empty" src="${ASSET_ROOT}/radio-empty.svg" alt="" aria-hidden="true">
-        <img class="a15-option__radio a15-option__radio--selected" src="${ASSET_ROOT}/radio-selected.svg" alt="" aria-hidden="true">
-        <img class="a15-option__check" src="${ASSET_ROOT}/radio-check.svg" alt="" aria-hidden="true">
+        <span class="a15-option__radio-visual" data-measure-key="gender radio" aria-hidden="true">
+          <img class="a15-option__radio a15-option__radio--empty" src="${ASSET_ROOT}/radio-empty.svg" alt="">
+          <img class="a15-option__radio a15-option__radio--selected" src="${ASSET_ROOT}/radio-selected.svg" alt="">
+          <img class="a15-option__check" src="${ASSET_ROOT}/radio-check.svg" alt="">
+        </span>
       </label>
       <label class="a15-option a15-option--male" data-measure-key="gender#2">
         <input type="radio" name="gender" value="male" data-action="select-gender" data-measure-key="gender radio/남성">
         <img class="a15-option__symbol" src="${ASSET_ROOT}/gender-male.svg" alt="" aria-hidden="true">
         <span>남성</span>
-        <img class="a15-option__radio a15-option__radio--empty" src="${ASSET_ROOT}/radio-empty.svg" alt="" aria-hidden="true">
-        <img class="a15-option__radio a15-option__radio--selected" src="${ASSET_ROOT}/radio-selected.svg" alt="" aria-hidden="true">
-        <img class="a15-option__check" src="${ASSET_ROOT}/radio-check.svg" alt="" aria-hidden="true">
+        <span class="a15-option__radio-visual" data-measure-key="gender radio#2" aria-hidden="true">
+          <img class="a15-option__radio a15-option__radio--empty" src="${ASSET_ROOT}/radio-empty.svg" alt="">
+          <img class="a15-option__radio a15-option__radio--selected" src="${ASSET_ROOT}/radio-selected.svg" alt="">
+          <img class="a15-option__check" src="${ASSET_ROOT}/radio-check.svg" alt="">
+        </span>
       </label>
       <label class="a15-option a15-option--unspecified" data-measure-key="gender#3">
         <input type="radio" name="gender" value="unspecified" data-action="select-gender" data-measure-key="gender radio/선택하지 않음">
         <img class="a15-option__symbol" src="${ASSET_ROOT}/gender-unspecified.svg" alt="" aria-hidden="true">
         <span>선택하지 않음</span>
-        <img class="a15-option__radio a15-option__radio--empty" src="${ASSET_ROOT}/radio-empty.svg" alt="" aria-hidden="true">
-        <img class="a15-option__radio a15-option__radio--selected" src="${ASSET_ROOT}/radio-selected.svg" alt="" aria-hidden="true">
-        <img class="a15-option__check" src="${ASSET_ROOT}/radio-check.svg" alt="" aria-hidden="true">
+        <span class="a15-option__radio-visual" data-measure-key="gender radio#3" aria-hidden="true">
+          <img class="a15-option__radio a15-option__radio--empty" src="${ASSET_ROOT}/radio-empty.svg" alt="">
+          <img class="a15-option__radio a15-option__radio--selected" src="${ASSET_ROOT}/radio-selected.svg" alt="">
+          <img class="a15-option__check" src="${ASSET_ROOT}/radio-check.svg" alt="">
+        </span>
       </label>
     </fieldset>
     <button class="a15-next" type="button" data-action="continue-sign-up" data-measure-key="action/next">다음</button>
@@ -544,7 +587,10 @@ export function renderA15() {
   const storedGender = storedFormValue("gender", "female");
   const storedOption = [...screen.querySelectorAll('input[name="gender"]')]
     .find((option) => option.value === storedGender);
-  if (storedOption) storedOption.checked = true;
+  if (storedOption) {
+    storedOption.checked = true;
+    storedOption.dataset.persistDefault = "true";
+  }
   return screen;
 }
 
@@ -562,7 +608,7 @@ export function renderA16() {
     <p class="a16-subtitle" data-measure-key="screen/subtitle">Doripe에서 사용할 이름이에요</p>
     <label class="a16-nickname-field">
       <span>닉네임</span>
-      <input type="text" autocomplete="nickname" maxlength="12" aria-label="닉네임" data-action="update-nickname" data-measure-key="field/nickname/bg">
+      <input type="text" autocomplete="nickname" maxlength="12" aria-label="닉네임" data-action="update-nickname" data-measure-key="field/nickname/bg" data-persist-default="true">
       <img class="a16-nickname-field__icon" src="${ASSET_ROOT}/user.svg" alt="" aria-hidden="true" draggable="false">
       <img class="a16-nickname-field__check-bg" src="${ASSET_ROOT}/validation-check-bg.svg" alt="" aria-hidden="true" draggable="false">
       <img class="a16-nickname-field__check" src="${ASSET_ROOT}/validation-check.svg" alt="" aria-hidden="true" draggable="false">
@@ -642,7 +688,7 @@ export function renderA18() {
     <p class="a18-subtitle" data-measure-key="screen/subtitle">나에게 맞는 탐색 경험을 준비해드려요</p>
     <div class="a18-options" role="group" aria-label="장소 탐색 습관">
       ${options.map(([value, label, icon, measureKey], index) => `
-        <button class="a18-option a18-option--${index + 1}" type="button" value="${value}" data-action="select-place-source" data-measure-key="${measureKey}" aria-pressed="${value === selectedValue ? "true" : "false"}">
+        <button class="a18-option a18-option--${index + 1}" type="button" value="${value}" data-action="select-place-source" data-measure-key="${measureKey}" aria-pressed="${value === selectedValue ? "true" : "false"}"${value === selectedValue ? " data-persist-default=\"true\"" : ""}>
           <img src="${ASSET_ROOT}/${icon}" alt="" aria-hidden="true" draggable="false">
           <span>${label}</span>
         </button>
@@ -686,7 +732,7 @@ export function renderA19() {
     <p class="a19-subtitle" data-measure-key="screen/subtitle">알려주시면 더 나은 서비스를 만들 수 있어요</p>
     <div class="a19-options" role="group" aria-label="Doripe를 알게 된 경로">
       ${options.map(([value, label, icon, measureKey], index) => `
-        <button class="a19-option a19-option--${index + 1}" type="button" value="${value}" data-action="select-referral-source" data-measure-key="${measureKey}" aria-pressed="${value === selectedValue ? "true" : "false"}">
+        <button class="a19-option a19-option--${index + 1}" type="button" value="${value}" data-action="select-referral-source" data-measure-key="${measureKey}" aria-pressed="${value === selectedValue ? "true" : "false"}"${value === selectedValue ? " data-persist-default=\"true\"" : ""}>
           <img src="${ASSET_ROOT}/${icon}" alt="" aria-hidden="true" draggable="false">
           <span>${label}</span>
         </button>
@@ -708,11 +754,6 @@ export function renderA19() {
 export function renderA20() {
   const screen = createScreen("a20", "579:1127", "onboarding-a20");
   const selectedValue = storedFormValue("neighborhoodId", "seongsu");
-  const neighborhoods = [
-    ["yeonnam", "연남", "region"],
-    ["seongsu", "성수", "region#2"],
-    ["yongsan", "용산", "region#3"]
-  ];
   screen.innerHTML = `
     <div class="a20-map" data-measure-key="misty map bg" aria-hidden="true"></div>
     <button class="setup-back" type="button" data-action="go-back" data-measure-key="action/back" aria-label="뒤로 가기">
@@ -725,8 +766,8 @@ export function renderA20() {
     <h1 data-measure-key="screen/title">동네를 선택해 주세요</h1>
     <p class="a20-subtitle" data-measure-key="screen/subtitle">처음 둘러볼 동네를 골라주세요.</p>
     <div class="a20-neighborhoods" role="group" aria-label="동네 선택">
-      ${neighborhoods.map(([value, label, measureKey], index) => `
-        <button class="a20-region a20-region--${index + 1}" type="button" value="${value}" data-action="select-neighborhood" data-measure-key="${measureKey}" aria-pressed="${value === selectedValue ? "true" : "false"}">
+      ${NEIGHBORHOODS.map(([value, label, measureKey], index) => `
+        <button class="a20-region a20-region--${index + 1}" type="button" value="${value}" data-action="select-neighborhood" data-measure-key="${measureKey}" aria-pressed="${value === selectedValue ? "true" : "false"}"${value === selectedValue ? " data-persist-default=\"true\"" : ""}>
           <img src="${ASSET_ROOT}/neighborhood-pin.svg" alt="" aria-hidden="true" draggable="false">
           <span>${label}</span>
         </button>
@@ -754,12 +795,13 @@ export function renderA20() {
 
 export function renderA21() {
   const screen = createScreen("a21", "579:1173", "onboarding-a21");
+  const neighborhoodLabel = directionLabel(loadingNeighborhoodLabel("a21"));
   screen.innerHTML = `
     <img class="a21-map-plane" src="${ASSET_ROOT}/a21-map-plane.png" alt="" aria-hidden="true" draggable="false">
     <div class="a21-status" data-measure-key="COMPONENT / floating glass travel status">
       <img class="a21-status__icon-bg" src="${ASSET_ROOT}/travel-icon-bg.svg" alt="" data-measure-key="travel status / icon background" aria-hidden="true" draggable="false">
       <img class="a21-status__plane" src="${ASSET_ROOT}/travel-plane.svg" alt="" data-measure-key="ICON / Send Plane" aria-hidden="true" draggable="false">
-      <h1 data-measure-key="Text / TravelTransition / Destination">연남으로 가는 중</h1>
+      <h1 data-measure-key="Text / TravelTransition / Destination">${neighborhoodLabel} 가는 중</h1>
       <p data-measure-key="Text / travel subtitle">잠깐만요, 장소카드를 준비하고 있어요</p>
     </div>
     <div class="a21-dots" role="progressbar" aria-label="장소 카드 준비 중" aria-valuemin="0" aria-valuemax="100" aria-valuenow="55" data-measure-key="COMPONENT / loading dots">
@@ -774,11 +816,12 @@ export function renderA21() {
 
 export function renderA22() {
   const screen = createScreen("a22", "579:1162", "onboarding-a22");
+  const neighborhoodLabel = directionLabel(loadingNeighborhoodLabel("a22"));
   screen.innerHTML = `
     <div class="a22-loading__track" data-measure-key="ui/loading/track" aria-hidden="true"></div>
     <div class="a22-loading__fill" role="progressbar" aria-label="취향 장소 준비 중" aria-valuemin="0" aria-valuemax="100" aria-valuenow="32" data-measure-key="ui/loading/fill"></div>
     <img class="a22-mark" src="${ASSET_ROOT}/a22-mark.png" alt="" data-measure-key="Header-/-brand/logo/image" aria-hidden="true" draggable="false">
-    <h1 data-measure-key="screen/title">성수로 이동 중</h1>
+    <h1 data-measure-key="screen/title">${neighborhoodLabel} 이동 중</h1>
     <p data-measure-key="screen/subtitle">취향에 맞는 장소를 준비하고 있어요.</p>
   `;
   startLoadingProgress(screen, { fillSelector: ".a22-loading__fill", destination: "b1" });

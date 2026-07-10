@@ -1,7 +1,9 @@
 import { expect, test } from "@playwright/test";
 import actionContract from "../../public/app-preview/figma/action-contract.json" with { type: "json" };
+import assetPolicy from "../../public/app-preview/figma/flow-a-asset-policy.json" with { type: "json" };
 import measurements from "../../public/app-preview/figma/screen-measurements.json" with { type: "json" };
 import masks from "../../public/app-preview/figma/visual-masks.json" with { type: "json" };
+import { authoritativeGeometrySources } from "../../scripts/app-preview-semantic-gates.mjs";
 
 const FLOW_A = Object.freeze([
   { id: "a1", nodeId: "446:34", title: "오늘 갈 곳, 1분 안에 정해요", action: "start", actionLabel: "시작하기" },
@@ -113,18 +115,20 @@ async function compareWithReference(page, screen, screenId, testInfo) {
 async function assertMeasuredGeometry(screen, screenId) {
   const frame = await screen.boundingBox();
   expect(frame).not.toBeNull();
-  const measuredNodes = screen.locator("[data-measure-key]");
-  const count = await measuredNodes.count();
-  expect(count, `${screenId} exposes measured DOM geometry`).toBeGreaterThan(0);
+  const requiredSources = authoritativeGeometrySources(screenId, measurements, actionContract);
+  const measuredNodes = await screen.locator("[data-measure-key]").evaluateAll((elements) => (
+    elements.map((element) => ({
+      source: element.dataset.measureKey,
+      rect: element.getBoundingClientRect().toJSON()
+    }))
+  ));
   let maximumDelta = 0;
 
-  for (let index = 0; index < count; index += 1) {
-    const node = measuredNodes.nth(index);
-    const key = await node.getAttribute("data-measure-key");
+  for (const key of requiredSources) {
+    const matches = measuredNodes.filter((node) => node.source === key);
+    expect(matches, `${screenId}/${key} has exactly one measured DOM owner`).toHaveLength(1);
     const expected = measurements[screenId].elements[key];
-    expect(expected, `${screenId}/${key} exists in measurements`).toBeTruthy();
-    const actual = await node.boundingBox();
-    expect(actual, `${screenId}/${key} has geometry`).not.toBeNull();
+    const actual = matches[0].rect;
     const relative = {
       x: actual.x - frame.x,
       y: actual.y - frame.y,
@@ -140,6 +144,37 @@ async function assertMeasuredGeometry(screen, screenId) {
     }
   }
   return maximumDelta;
+}
+
+async function assertSemanticAssets(screen, screenId) {
+  const policyByPath = new Map(assetPolicy.assets.map((asset) => [asset.path, asset]));
+  const result = await screen.evaluate((root) => {
+    const frame = root.getBoundingClientRect();
+    return {
+      images: [...root.querySelectorAll("img")].map((element) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          path: new URL(element.currentSrc || element.src, location.href).pathname,
+          areaRatio: (rect.width * rect.height) / (frame.width * frame.height)
+        };
+      }),
+      urlBackgrounds: [...root.querySelectorAll("*")]
+        .filter((element) => getComputedStyle(element).backgroundImage.includes("url("))
+        .map((element) => element.className || element.tagName)
+    };
+  });
+
+  expect(result.urlBackgrounds, `${screenId} CSS image backgrounds`).toEqual([]);
+  for (const image of result.images) {
+    if (image.path.startsWith("/app-preview/assets/icons/")) continue;
+    const policy = policyByPath.get(image.path);
+    expect(policy, `${screenId} declares ${image.path}`).toBeTruthy();
+    expect(policy.screens, `${image.path} screen ownership`).toContain(screenId);
+    if (image.areaRatio > 0.7) {
+      expect(policy.role, `${image.path} large-image role`).toBe("decorative");
+      expect(policy.allowLarge, `${image.path} large-image approval`).toBe(true);
+    }
+  }
 }
 
 test.describe("Flow A direct-entry renderers", () => {
@@ -159,6 +194,17 @@ test.describe("Flow A direct-entry renderers", () => {
         .evaluateAll((elements) => elements.map((element) => element.dataset.action)))].sort();
       expect(renderedActions, `${entry.id} action contract`).toEqual(expectedActions);
 
+      const actionSources = await screen.locator("[data-action][data-measure-key]")
+        .evaluateAll((elements) => elements.map((element) => ({
+          actionId: element.dataset.action,
+          source: element.dataset.measureKey
+        })));
+      for (const record of actionContract.actions.filter(({ screenId }) => screenId === entry.id)) {
+        const matches = actionSources.filter(({ source }) => source === record.source);
+        expect(matches, `${entry.id}/${record.source} has one action owner`).toHaveLength(1);
+        expect(matches[0].actionId, `${entry.id}/${record.source} action pairing`).toBe(record.actionId);
+      }
+
       if (entry.action) {
         const primary = screen.locator(`[data-action="${entry.action}"]`);
         await expect(primary).toBeVisible();
@@ -168,6 +214,7 @@ test.describe("Flow A direct-entry renderers", () => {
       }
 
       const maximumGeometryDelta = await assertMeasuredGeometry(screen, entry.id);
+      await assertSemanticAssets(screen, entry.id);
       const visualDiffRatio = await compareWithReference(page, screen, entry.id, testInfo);
       console.log(`FLOW_A_METRIC ${entry.id} visual=${visualDiffRatio.toFixed(6)} geometry=${maximumGeometryDelta.toFixed(3)}`);
     });
@@ -269,6 +316,36 @@ test("profile setup validates birth year, gender, and nickname", async ({ page }
   expect(stored.form.nickname).toBe("새도리");
 });
 
+test("visible Flow A defaults persist before their continuation actions", async ({ page }) => {
+  for (const [screenId, field, value] of [
+    ["a9", "email", "dori@doripe.kr"],
+    ["a13", "password", "Doripe1234"],
+    ["a14", "birthYear", "2000"],
+    ["a15", "gender", "female"],
+    ["a16", "nickname", "dori"],
+    ["a18", "habit", "instagram-saved"],
+    ["a19", "source", "instagram"],
+    ["a20", "neighborhoodId", "seongsu"]
+  ]) {
+    await gotoScreen(page, screenId);
+    await expect.poll(async () => page.evaluate((key) => {
+      const stored = JSON.parse(localStorage.getItem("doripe_app_preview_v1") || "null");
+      return stored?.form?.[key];
+    }, field), `${screenId} persists ${field}`).toBe(value);
+  }
+});
+
+test("A6 resend is an interactive contracted control", async ({ page }) => {
+  await gotoScreen(page, "a6");
+  const resend = page.getByRole("button", { name: "메일을 못 받았어요", exact: true });
+  await expect(resend).toHaveAttribute("data-action", "resend-reset-email");
+  await resend.click();
+
+  const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("doripe_app_preview_v1")));
+  expect(stored.form.resetEmailResent).toBe(true);
+  await expect(page).toHaveURL(/screen=a6/);
+});
+
 test("source, habit, and neighborhood selections persist exact values", async ({ page }) => {
   await gotoScreen(page, "a18");
   await page.getByRole("button", { name: "인스타 저장" }).click();
@@ -285,6 +362,16 @@ test("source, habit, and neighborhood selections persist exact values", async ({
   expect(stored.form.habit).toBe("instagram-saved");
   expect(stored.form.source).toBe("instagram");
   expect(stored.form.neighborhoodId).toBe("yeonnam");
+});
+
+test("the selected neighborhood labels both completion frames", async ({ page }) => {
+  await gotoScreen(page, "a20", { staticFrame: false });
+  await page.getByRole("button", { name: "용산", exact: true }).click();
+  await page.getByRole("button", { name: "시작", exact: true }).click();
+
+  await expect(page.getByRole("heading", { name: "용산으로 가는 중", exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/screen=a22/, { timeout: 5_000 });
+  await expect(page.getByRole("heading", { name: "용산으로 이동 중", exact: true })).toBeVisible();
 });
 
 test("completion loading progresses monotonically and enters Flow B once", async ({ page }) => {
@@ -319,6 +406,47 @@ test("back actions use contextual history", async ({ page }) => {
   await page.getByRole("button", { name: "비밀번호를 잊으셨나요?" }).click();
   await page.getByRole("button", { name: "뒤로 가기" }).click();
   await expect(page).toHaveURL(/screen=a3/);
+});
+
+test("browser Back then in-app back preserve one coherent history", async ({ page }) => {
+  await gotoScreen(page, "a1");
+  await page.getByRole("button", { name: "시작하기", exact: true }).click();
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  await expect(page).toHaveURL(/screen=a12/);
+
+  await page.goBack();
+  await expect(page).toHaveURL(/screen=a9/);
+  await page.getByRole("button", { name: "뒤로 가기", exact: true }).click();
+  await expect(page).toHaveURL(/screen=a1/);
+
+  await page.goForward();
+  await expect(page).toHaveURL(/screen=a9/);
+});
+
+test("timed Flow A screens cancel handles during teardown", async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 900 });
+  await page.addInitScript(() => {
+    const nativeClearTimeout = window.clearTimeout.bind(window);
+    const nativeClearInterval = window.clearInterval.bind(window);
+    window.__flowAClearedTimers = { timeouts: 0, intervals: 0 };
+    window.clearTimeout = (handle) => {
+      window.__flowAClearedTimers.timeouts += 1;
+      return nativeClearTimeout(handle);
+    };
+    window.clearInterval = (handle) => {
+      window.__flowAClearedTimers.intervals += 1;
+      return nativeClearInterval(handle);
+    };
+  });
+
+  await gotoScreen(page, "a21", { staticFrame: false });
+  await page.locator('[data-action="review-navigate"][data-id="a22"]').click();
+  await expect(page).toHaveURL(/screen=a22/);
+  expect(await page.evaluate(() => window.__flowAClearedTimers.timeouts)).toBeGreaterThan(0);
+
+  await page.locator('[data-action="review-navigate"][data-id="a1"]').click();
+  await expect(page).toHaveURL(/screen=a1/);
+  expect(await page.evaluate(() => window.__flowAClearedTimers.intervals)).toBeGreaterThan(0);
 });
 
 for (const viewport of [
@@ -363,6 +491,12 @@ for (const viewport of [
         return {
           clipped,
           overlaps,
+          viewportBounds: {
+            left: rootBox.left,
+            right: rootBox.right,
+            width: rootBox.width,
+            viewportWidth: window.innerWidth
+          },
           horizontalOverflow: root.scrollWidth - root.clientWidth,
           documentOverflow: document.documentElement.scrollWidth - window.innerWidth
         };
@@ -370,6 +504,11 @@ for (const viewport of [
 
       expect(result.clipped, `${entry.id} clipped controls`).toEqual([]);
       expect(result.overlaps, `${entry.id} overlapping controls`).toEqual([]);
+      expect(result.viewportBounds.left, `${entry.id} left viewport crop`).toBeGreaterThanOrEqual(-1);
+      expect(result.viewportBounds.right, `${entry.id} right viewport crop`)
+        .toBeLessThanOrEqual(result.viewportBounds.viewportWidth + 1);
+      expect(result.viewportBounds.width, `${entry.id} viewport width`)
+        .toBeLessThanOrEqual(result.viewportBounds.viewportWidth + 1);
       expect(result.horizontalOverflow, `${entry.id} horizontal overflow`).toBeLessThanOrEqual(1);
       expect(result.documentOverflow, `${entry.id} document overflow`).toBeLessThanOrEqual(1);
     }

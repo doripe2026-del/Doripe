@@ -55,6 +55,7 @@ const navigateBack = (state) => {
   return {
     state: { ...state, currentScreenId: nextScreenId, history, toast: null },
     nextScreenId,
+    historyMode: "back",
     effect: "none"
   };
 };
@@ -199,8 +200,8 @@ function isValidPassword(value) {
 }
 
 function submitLogin(state) {
-  if (!hasFormKey(state, "email") && !hasFormKey(state, "password")) {
-    return navigateTo("b1")(state);
+  if (!hasFormKey(state, "email") || !hasFormKey(state, "password")) {
+    return errorResult(state, "이메일과 비밀번호를 입력해 주세요");
   }
   const valid = state.form?.email?.trim().toLowerCase() === "dori@doripe.kr"
     && state.form?.password === "Doripe123";
@@ -208,15 +209,14 @@ function submitLogin(state) {
 }
 
 function sendResetEmail(state) {
-  if (!hasFormKey(state, "email") || isValidEmail(state.form.email)) {
-    return navigateTo("a6")(state);
-  }
-  return errorResult(state, "올바른 이메일을 입력해 주세요");
+  return hasFormKey(state, "email") && isValidEmail(state.form.email)
+    ? navigateTo("a6")(state)
+    : errorResult(state, "올바른 이메일을 입력해 주세요");
 }
 
 function saveResetPassword(state) {
-  if (!hasFormKey(state, "newPassword") && !hasFormKey(state, "passwordConfirmation")) {
-    return navigateTo("a3")(state);
+  if (!hasFormKey(state, "newPassword") || !hasFormKey(state, "passwordConfirmation")) {
+    return errorResult(state, "새 비밀번호를 모두 입력해 주세요");
   }
   const valid = isValidPassword(state.form?.newPassword)
     && state.form.newPassword === state.form?.passwordConfirmation;
@@ -224,7 +224,7 @@ function saveResetPassword(state) {
 }
 
 function continueFromEmail(state) {
-  if (!hasFormKey(state, "email")) return navigateTo("a12")(state);
+  if (!hasFormKey(state, "email")) return errorResult(state, "이메일을 입력해 주세요");
   const email = state.form.email.trim().toLowerCase();
   if (!isValidEmail(email)) return navigateTo("a10")(state);
   if (email === "doripe@example.com") return navigateTo("a11")(state);
@@ -232,28 +232,66 @@ function continueFromEmail(state) {
 }
 
 function continueFromPassword(state) {
-  if (!hasFormKey(state, "password")) return navigateTo("a14")(state);
+  if (!hasFormKey(state, "password")) return errorResult(state, "비밀번호를 입력해 주세요");
   return navigateTo(isValidPassword(state.form.password) ? "a14" : "a13")(state);
 }
 
 function continueFromBirthYear(state) {
-  if (!hasFormKey(state, "birthYear")) return navigateTo("a15")(state);
+  if (!hasFormKey(state, "birthYear")) return errorResult(state, "출생연도를 선택해 주세요");
   return /^\d{4}$/.test(state.form.birthYear)
     ? navigateTo("a15")(state)
     : errorResult(state, "출생연도를 선택해 주세요");
 }
 
 function continueFromGender(state) {
-  if (!hasFormKey(state, "gender")) return navigateTo("a16")(state);
+  if (!hasFormKey(state, "gender")) return errorResult(state, "성별을 선택해 주세요");
   return ["female", "male", "unspecified"].includes(state.form.gender)
     ? navigateTo("a16")(state)
     : errorResult(state, "성별을 선택해 주세요");
 }
 
 function continueFromNickname(state) {
-  if (!hasFormKey(state, "nickname")) return navigateTo("a18")(state);
+  if (!hasFormKey(state, "nickname")) return errorResult(state, "닉네임을 입력해 주세요");
   const nickname = state.form.nickname.trim();
   return navigateTo(nickname.length >= 2 && nickname !== "도리" ? "a18" : "a17")(state);
+}
+
+function resendResetEmail(state) {
+  return idleResult(state, {
+    form: { ...(state.form || {}), resetEmailResent: true }
+  });
+}
+
+function continueFromHabit(state) {
+  return typeof state.form?.habit === "string" && state.form.habit.length > 0
+    ? navigateTo("a20")(state)
+    : errorResult(state, "장소 탐색 습관을 선택해 주세요");
+}
+
+function skipHabit(state) {
+  return navigateTo("a19")({
+    ...state,
+    form: { ...(state.form || {}), habit: state.form?.habit || "unknown" }
+  });
+}
+
+function continueFromSource(state) {
+  return typeof state.form?.source === "string" && state.form.source.length > 0
+    ? navigateTo("a20")(state)
+    : errorResult(state, "알게 된 경로를 선택해 주세요");
+}
+
+function skipSource(state) {
+  return navigateTo("a20")({
+    ...state,
+    form: { ...(state.form || {}), source: state.form?.source || "unknown" }
+  });
+}
+
+function confirmNeighborhood(state) {
+  return typeof state.form?.neighborhoodId === "string" && state.form.neighborhoodId.length > 0
+    ? navigateTo("a21")(state)
+    : errorResult(state, "동네를 선택해 주세요");
 }
 
 const selectCanonicalValue = (selectionId, formId) => (state, payload) => {
@@ -299,7 +337,11 @@ export const TRANSITIONS = Object.freeze({
     "forgot-password": navigateTo("a5")
   }),
   a5: defineTransitions("a5", { "go-back": navigateBack, "update-email": updateEmail, "send-reset-email": sendResetEmail }),
-  a6: defineTransitions("a6", { "go-back": navigateBack, "return-to-login": navigateTo("a3") }),
+  a6: defineTransitions("a6", {
+    "go-back": navigateBack,
+    "return-to-login": navigateTo("a3"),
+    "resend-reset-email": resendResetEmail
+  }),
   a7: defineTransitions("a7", {
     "go-back": navigateBack,
     "update-new-password": updateNewPassword,
@@ -324,19 +366,19 @@ export const TRANSITIONS = Object.freeze({
   a18: defineTransitions("a18", {
     "go-back": navigateBack,
     "select-place-source": selectCanonicalValue("placeSource", "habit"),
-    "choose-location": navigateTo("a20"),
-    "skip-question": navigateTo("a19")
+    "choose-location": continueFromHabit,
+    "skip-question": skipHabit
   }),
   a19: defineTransitions("a19", {
     "go-back": navigateBack,
     "select-referral-source": selectCanonicalValue("referralSource", "source"),
-    "continue-sign-up": navigateTo("a20"),
-    "skip-question": navigateTo("a20")
+    "continue-sign-up": continueFromSource,
+    "skip-question": skipSource
   }),
   a20: defineTransitions("a20", {
     "go-back": navigateBack,
     "select-neighborhood": selectCanonicalValue("neighborhood", "neighborhoodId"),
-    "confirm-neighborhood": navigateTo("a21")
+    "confirm-neighborhood": confirmNeighborhood
   }),
   a21: defineTransitions("a21", {}),
   a22: defineTransitions("a22", {}),

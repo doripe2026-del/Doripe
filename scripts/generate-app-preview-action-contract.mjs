@@ -56,18 +56,28 @@ function onboardingFields(screenId, fields) {
 add("a1", "start", "action/start", "button", navigate("a9"));
 add("a1", "login", "action/login", "text-button", navigate("a3"));
 
-for (const screenId of ["a3", "a4"]) {
+function loginScreenActions(screenId, { createAccountSource, submitLoginSource }) {
   add(screenId, "update-email", "field/email/bg", "input", state("form.email"));
   add(screenId, "update-password", "field/password/bg", "input", state("form.password"));
-  add(screenId, "create-account", "action/primary/bg#2", "button", navigate("a9"));
-  add(screenId, "submit-login", "action/primary/bg", "button", navigate("b1"));
+  add(screenId, "create-account", createAccountSource, "button", navigate("a9"));
+  add(screenId, "submit-login", submitLoginSource, "button", navigate("b1"));
   add(screenId, "forgot-password", "action/forgot-password", "text-button", navigate("a5"));
 }
+
+loginScreenActions("a3", {
+  createAccountSource: "action/primary/bg#2",
+  submitLoginSource: "action/primary/bg"
+});
+loginScreenActions("a4", {
+  createAccountSource: "action/primary/bg",
+  submitLoginSource: "action/primary/bg#2"
+});
 
 onboardingFields("a5", [["update-email", "field/email/bg", "form.email"]]);
 add("a5", "send-reset-email", "action/next", "button", navigate("a6"));
 add("a6", "go-back", "action/back", "icon-button", history());
 add("a6", "return-to-login", "action/primary", "button", navigate("a3"));
+add("a6", "resend-reset-email", "resend", "text-button", state("form.resetEmailResent"));
 
 for (const screenId of ["a7", "a8"]) {
   onboardingFields(screenId, [

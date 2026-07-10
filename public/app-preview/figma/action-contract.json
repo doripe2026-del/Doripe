@@ -104,24 +104,24 @@
     {
       "screenId": "a4",
       "actionId": "create-account",
-      "source": "action/primary/bg#2",
+      "source": "action/primary/bg",
       "kind": "button",
       "effect": {
         "type": "navigate",
         "destination": "a9"
       },
-      "evidence": "The action/primary/bg#2 control is visible in the A4 reference."
+      "evidence": "The action/primary/bg control is visible in the A4 reference."
     },
     {
       "screenId": "a4",
       "actionId": "submit-login",
-      "source": "action/primary/bg",
+      "source": "action/primary/bg#2",
       "kind": "button",
       "effect": {
         "type": "navigate",
         "destination": "b1"
       },
-      "evidence": "The action/primary/bg control is visible in the A4 reference."
+      "evidence": "The action/primary/bg#2 control is visible in the A4 reference."
     },
     {
       "screenId": "a4",
@@ -186,6 +186,17 @@
         "destination": "a3"
       },
       "evidence": "The action/primary control is visible in the A6 reference."
+    },
+    {
+      "screenId": "a6",
+      "actionId": "resend-reset-email",
+      "source": "resend",
+      "kind": "text-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "form.resetEmailResent"
+      },
+      "evidence": "The resend control is visible in the A6 reference."
     },
     {
       "screenId": "a7",

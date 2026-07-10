@@ -309,6 +309,15 @@
   font-weight: 700;
 }
 
+.onboarding-a3 .a3-primary-measure {
+  position: absolute;
+  top: 676.5px;
+  left: 36px;
+  width: 321px;
+  height: 108.5px;
+  pointer-events: none;
+}
+
 .onboarding-a3 .a3-create,
 .onboarding-a3 .a3-login {
   position: absolute;
@@ -1139,10 +1148,18 @@
   font-weight: 700;
 }
 
-.onboarding-a15 .a15-option__radio {
+.onboarding-a15 .a15-option > .a15-option__radio-visual {
   position: absolute;
   top: 20.5px;
   left: 289px;
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
+.onboarding-a15 .a15-option__radio {
+  position: absolute;
+  inset: 0;
   width: 17px;
   height: 17px;
 }
@@ -1155,8 +1172,8 @@
 
 .onboarding-a15 .a15-option__check {
   position: absolute;
-  top: 23.5px;
-  left: 292px;
+  top: 3px;
+  left: 3px;
   width: 11px;
   height: 11px;
 }
@@ -1919,6 +1936,7 @@
   left: 0;
   width: 393px;
   height: 25px;
+  background: transparent;
   color: #111111;
   font-size: 12px;
   font-weight: 700;
@@ -1961,4 +1979,12 @@
   .onboarding-a20 .a20-region { transform: translateY(-80px); }
   .onboarding-a20 .a20-summary { bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
   .onboarding-a20 .a20-start { bottom: calc(37px + env(safe-area-inset-bottom, 0px)); }
+}
+
+@media (max-width: 392px) {
+  .onboarding-screen {
+    left: 50%;
+    transform: translateX(-50%) scale(calc(100vw / 393px));
+    transform-origin: top center;
+  }
 }
