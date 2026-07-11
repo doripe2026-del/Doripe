@@ -299,7 +299,7 @@ function dispatchTargetAction(target, { rerender = true } = {}) {
       writeScreenIdToUrl(result.nextScreenId, { replace: result.historyMode === "back" });
     }
   } else {
-    if (rerender) renderScreen(screenId);
+    if (rerender) renderScreen(interactionState.currentScreenId);
     refreshCurrentBrowserEntry();
   }
   void runDomEffect(result.effect, screenId, payload);

@@ -335,6 +335,11 @@ function selectSavedFilter(state, payload) {
 }
 
 function applySavedFilters(state) {
+  if (state.overlays?.includes("feed-filter-sheet")) {
+    return idleResult(state, {
+      overlays: state.overlays.filter((overlay) => overlay !== "feed-filter-sheet")
+    });
+  }
   const destination = state.selections?.filterReturnScreen === "c2" ? "c2" : "c1";
   return navigateTo(destination)(state);
 }
@@ -477,7 +482,7 @@ export const TRANSITIONS = Object.freeze({
   b1: defineTransitions("b1", {
     "show-following": selectValue("feedTab"),
     "show-discover": navigateTo("b2"),
-    "open-filter": selectValue("feedFilter"),
+    "open-filter": openOverlay("feed-filter-sheet"),
     "open-following-list": navigateTo("b13"),
     "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
     "open-place": selectPlaceMediaAndNavigate("b4"),
@@ -486,7 +491,7 @@ export const TRANSITIONS = Object.freeze({
   b2: defineTransitions("b2", {
     "show-following": navigateTo("b1"),
     "show-discover": selectValue("feedTab"),
-    "open-filter": selectValue("feedFilter"),
+    "open-filter": openOverlay("feed-filter-sheet"),
     "open-place": selectPlaceMediaAndNavigate("b4")
   }),
   b3: defineTransitions("b3", {

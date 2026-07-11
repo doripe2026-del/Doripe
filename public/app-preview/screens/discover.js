@@ -1,4 +1,5 @@
 import { COMMENTS, MEDIA, PLACES, TAGS, USERS } from "../fixtures.js";
+import { renderFilters } from "./saved.js";
 
 const NODE_IDS = Object.freeze({
   b1: "446:507", b2: "446:596", b3: "446:646", b4: "446:682",
@@ -132,7 +133,7 @@ function brand(screenId) {
   return wrap;
 }
 
-function feedHeader(screenId, state) {
+function feedHeader(screenId) {
   const header = element("header", "discover-feed-header");
   const tabs = element("div", "discover-tabs");
   const discover = actionButton("Discover", "show-discover", { value: "discover" }, screenId === "b2" ? "is-selected" : "");
@@ -150,16 +151,6 @@ function feedHeader(screenId, state) {
   filter.append(filterIcon, element("span", "", "필터"), downIcon);
   header.append(brand(screenId), tabs, filter);
 
-  if (state?.selections?.feedFilter === "menu") {
-    const menu = element("div", "discover-filter-menu");
-    menu.dataset.testid = "filter-menu";
-    for (const [label, value] of [["전체", "all"], ["조용한 곳", "quiet"], ["데이트", "date"]]) {
-      const option = actionButton(label, "open-filter", { value }, "discover-filter-option");
-      option.textContent = label;
-      menu.append(option);
-    }
-    header.append(menu);
-  }
   return header;
 }
 
@@ -297,7 +288,7 @@ function followingStrip() {
 function renderFeed(screenId, state) {
   const root = screenRoot(screenId, "discover-feed-screen");
   root.dataset.measureKey = screenId === "b1" ? "Header / top bar" : "Feed / masonry grid";
-  root.append(feedHeader(screenId, state));
+  root.append(feedHeader(screenId));
   if (screenId === "b1") root.append(followingStrip());
   root.append(masonryFeed(screenId, state));
   if (screenId === "b1") {
@@ -308,6 +299,13 @@ function renderFeed(screenId, state) {
     const top = actionButton("맨 위로", "scroll-to-top", {}, "discover-scroll-top");
     top.addEventListener("click", () => root.querySelector("[data-testid=discover-feed]")?.scrollTo({ top: 0, behavior: "smooth" }));
     root.append(topVisual, top);
+  }
+  if (state?.overlays?.includes("feed-filter-sheet")) {
+    const filters = renderFilters(state);
+    filters.classList.add("discover-filter-overlay");
+    filters.dataset.testid = "feed-filter-sheet";
+    filters.dataset.sourceScreen = "c3";
+    root.append(filters);
   }
   return root;
 }

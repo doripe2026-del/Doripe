@@ -117,20 +117,25 @@ test("all current Flow B frames render as semantic screens without full-screen r
   }
 });
 
-test("discover and following feeds switch, filter, scroll, and open content", async ({ page }) => {
+test("discover and following feeds switch, open the C3 filter sheet, scroll, and open content", async ({ page }) => {
   const following = await gotoScreen(page, "b1");
   const feed = following.locator("[data-testid=discover-feed]");
   await expect(feed).toHaveCSS("overflow-y", "auto");
   await following.getByRole("button", { name: "Discover" }).click();
   await expect(page).toHaveURL(/screen=b2/);
   await page.getByRole("button", { name: "필터" }).click();
-  await expect(page.locator("[data-testid=filter-menu]")).toBeVisible();
-  const allCount = await page.locator("[data-testid=media-tile]").count();
-  await page.getByRole("button", { name: "조용한 곳" }).click();
+  await expect(page).toHaveURL(/screen=b2/);
+  const filterSheet = page.locator("[data-testid=feed-filter-sheet]");
+  await expect(filterSheet).toBeVisible();
+  await expect(filterSheet).toHaveAttribute("data-source-screen", "c3");
+  await expect(filterSheet.getByRole("heading", { name: "어떤 장소를 다시 볼까요?" })).toBeVisible();
   await expect(page.locator("[data-testid=filter-menu]")).toHaveCount(0);
-  const quietCount = await page.locator("[data-testid=media-tile]").count();
-  expect(quietCount).toBeGreaterThan(0);
-  expect(quietCount).toBeLessThan(allCount);
+  await filterSheet.getByRole("button", { name: "친구랑" }).click();
+  await filterSheet.getByRole("button", { name: "저장 장소 다시 정렬하기" }).click();
+  await expect(filterSheet).toHaveCount(0);
+  await expect(page).toHaveURL(/screen=b2/);
+  const filteredState = await page.evaluate(() => JSON.parse(localStorage.getItem("doripe_app_preview_v1")));
+  expect(filteredState.selections.situation).toBe("tag-friends");
   await page.locator("[data-testid=discover-feed]").evaluate((element) => { element.scrollTop = 300; });
   const selectedMediaId = await page.locator("[data-testid=media-tile]").first().getAttribute("data-media-id");
   await page.locator("[data-testid=media-tile]").first().click();

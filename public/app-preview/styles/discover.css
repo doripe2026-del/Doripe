@@ -97,20 +97,28 @@
 .discover-screen--b2::after,
 .discover-screen--b3::after { position: absolute; z-index: 20; right: 0; bottom: 0; left: 0; height: 18px; background: #000; content: ""; }
 
-.discover-filter-menu {
+.saved-screen--c3.discover-filter-overlay {
   position: absolute;
-  top: 70px;
-  right: 14px;
-  display: grid;
-  width: 132px;
+  z-index: 50;
+  inset: 0;
   overflow: hidden;
-  border: 1px solid #e5e5e5;
-  border-radius: 7px;
-  background: #fff;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  border-radius: 28px;
+  background: rgb(19 24 21 / 38%);
+  animation: discover-filter-dim-in 180ms ease-out both;
 }
 
-.discover-filter-option { height: 38px; border: 0; border-bottom: 1px solid #eee; background: #fff; text-align: left; padding: 0 14px; }
+.discover-filter-overlay .saved-filter-sheet {
+  animation: discover-filter-sheet-in 260ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes discover-filter-dim-in {
+  from { background: rgb(19 24 21 / 0%); }
+}
+
+@keyframes discover-filter-sheet-in {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
 .discover-following-strip { position: absolute; z-index: 5; top: 86px; left: 24px; display: flex; width: 345px; height: 58px; align-items: center; border: 1px solid #08cc69; border-radius: 22px; background: #f2fff7; padding: 0 18px; gap: 12px; }
 .discover-following-strip__avatars { position: absolute; top: 11px; left: 20px; display: flex; align-items: center; }
 .discover-following-strip__profile { width: 34px; height: 34px; margin-right: -14px; overflow: hidden; border: 0; border-radius: 50%; background: transparent; padding: 0; }

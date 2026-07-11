@@ -233,7 +233,7 @@ const FILTER_GROUPS = Object.freeze([
   { title: "분위기", action: "select-mood", key: "mood", tags: ["tag-quiet", "tag-emotional", "tag-good-for-talking", "tag-sophisticated", "tag-bright", "tag-dark"] }
 ]);
 
-function renderFilters(state) {
+export function renderFilters(state) {
   const screen = root("c3");
   const sheet = el("div", "saved-filter-sheet");
   sheet.append(el("span", "saved-handle"), el("h1", "", "어떤 장소를 다시 볼까요?"), el("p", "saved-filter-sheet__lead", "저장한 장소를 지금 상황에 맞게 정리해드릴게요"));

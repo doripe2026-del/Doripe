@@ -907,7 +907,7 @@
       "kind": "button",
       "effect": {
         "type": "state",
-        "stateKey": "selections.feedFilter"
+        "stateKey": "overlays.feed-filter-sheet"
       },
       "evidence": "The Header / filter pill control is visible in the B1 reference."
     },
@@ -1133,7 +1133,7 @@
       "kind": "button",
       "effect": {
         "type": "state",
-        "stateKey": "selections.feedFilter"
+        "stateKey": "overlays.feed-filter-sheet"
       },
       "evidence": "The Header / filter pill control is visible in the B2 reference."
     },
