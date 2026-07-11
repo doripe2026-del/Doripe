@@ -215,11 +215,14 @@ try {
         };
       });
       const routes = [...document.querySelectorAll('.folder-route-line path')];
+      const saveScene = document.querySelector('#motionSceneNearby').getBoundingClientRect();
+      const c5Screen = document.querySelector('.nearby-c5-screen').getBoundingClientRect();
       return {
         width: innerWidth,
         pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         scenes,
         counters,
+        c5WidthRatio: round(c5Screen.width / saveScene.width),
         routeLength: round(routes.reduce((total, route) => total + route.getTotalLength(), 0)),
       };
     })()`);
@@ -230,6 +233,7 @@ try {
       `engagement counter escaped the place photo at ${width}px (${JSON.stringify(report.counters)})`,
     );
     assert.ok(report.routeLength > 500, `folder route is missing at ${width}px`);
+    assert.ok(report.c5WidthRatio >= 0.38, `C5 screen is too small to read at ${width}px (${report.c5WidthRatio})`);
     for (const scene of report.scenes) {
       assert.ok(scene.clientWidth > 0, `${scene.id} collapsed at ${width}px`);
       assert.ok(

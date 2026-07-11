@@ -40,6 +40,7 @@ test("discovery overlays large icon-only engagement counts on the place photo", 
 test("nearby uses C5 and exactly three photo candidates", () => {
   const nearby = scene("motionSceneNearby", "</div>\n            </div>\n          </article>");
   assert.match(nearby, /c5-route-view\.avif/);
+  assert.match(nearby, /c5-route-view\.avif[^>]*loading="eager"/);
   assert.equal(count(nearby, /class="nearby-place-card/g), 3);
   assert.equal(count(nearby, /data-course-candidate="[123]"/g), 3);
   assert.equal(count(nearby, /class="nearby-tray__item/g), 3);
@@ -50,6 +51,7 @@ test("course connects three place cards into a social folder without navigation"
   const course = scene("motionSceneCourse", '<div class="journey-copy');
   assert.equal(count(course, /class="folder-route-card/g), 3);
   assert.match(course, /class="folder-route-line"/);
+  assert.equal(count(course, /<path d=/g), 1);
   assert.match(course, /class="day-folder"/);
   assert.equal(count(course, /class="course-reaction /g), 5);
   for (const reaction of ["saved", "invite", "curator", "likes", "complete"]) {

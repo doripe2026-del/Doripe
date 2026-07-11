@@ -62,6 +62,10 @@ for (const tag of imageTags) {
   assert(/decoding="async"/.test(tag), `motion image must decode asynchronously: ${tag}`);
 }
 for (const tag of lowerMotionMarkup.matchAll(/<img\b[^>]*>/g)) {
+  if (/c5-route-view\.avif/.test(tag[0])) {
+    assert(/loading="eager"[^>]*fetchpriority="high"/.test(tag[0]), `C5 screen must be prioritized: ${tag[0]}`);
+    continue;
+  }
   assert(/loading="lazy"/.test(tag[0]), `lower motion image must load lazily: ${tag[0]}`);
 }
 assert(

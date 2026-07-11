@@ -32,6 +32,10 @@
   stroke-dashoffset: 0;
 }
 
+.landing-motion--course[data-motion-state="final"] .folder-route-line {
+  opacity: 0;
+}
+
 .landing-motion--course[data-motion-state="final"] .folder-route-card {
   opacity: 0;
   transform: translate(-50%, -50%) scale(.08);
@@ -433,8 +437,9 @@
 .nearby-c5-screen {
   top: 4%;
   left: 3%;
-  width: 33%;
+  width: 41%;
   aspect-ratio: 393 / 852;
+  filter: contrast(1.07) saturate(1.08);
   animation: nearbyScreen 6.4s ease-in-out infinite;
 }
 
@@ -443,7 +448,7 @@
   right: 3%;
   z-index: 2;
   display: grid;
-  width: 60%;
+  width: 55%;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
@@ -519,7 +524,7 @@
   right: 3%;
   bottom: 4%;
   z-index: 3;
-  width: 60%;
+  width: 55%;
   padding: 15px 17px;
   border: 1px solid rgba(18, 202, 107, .28);
   border-radius: 20px;
@@ -628,8 +633,8 @@
   stroke: #12ca6b;
   stroke-width: 7;
   stroke-linecap: round;
-  stroke-dasharray: 520;
-  stroke-dashoffset: 520;
+  stroke-dasharray: 1100;
+  stroke-dashoffset: 1100;
   filter: drop-shadow(0 5px 9px rgba(18, 202, 107, .2));
   animation: folderRouteDraw 7.2s ease-in-out infinite;
   animation-play-state: inherit;
@@ -852,8 +857,10 @@
 }
 
 @keyframes folderRouteDraw {
-  0%, 20%, 100% { stroke-dashoffset: 520; }
-  54%, 92% { stroke-dashoffset: 0; }
+  0%, 20%, 100% { opacity: 0; stroke-dashoffset: 1100; }
+  23% { opacity: 1; stroke-dashoffset: 1100; }
+  50%, 60% { opacity: 1; stroke-dashoffset: 0; }
+  68%, 99% { opacity: 0; stroke-dashoffset: 0; }
 }
 
 @keyframes folderComplete {
@@ -931,8 +938,8 @@
   .discovery-quote > div strong { font-size: 9px; }
   .discovery-quote p { margin-top: 7px; font-size: 12px; }
 
-  .nearby-c5-screen { top: 4%; left: 2%; width: 36%; }
-  .nearby-place-grid { top: 7%; right: 2%; width: 59%; gap: 9px; }
+  .nearby-c5-screen { top: 4%; left: 2%; width: 41%; }
+  .nearby-place-grid { top: 7%; right: 2%; width: 55%; gap: 9px; }
   .nearby-place-card { grid-template-rows: 76px auto; border-radius: 14px; }
   .nearby-place-card > img { height: 76px; }
   .nearby-place-card > div { padding: 8px 7px 9px 28px; }
@@ -940,7 +947,7 @@
   .nearby-place-card strong { font-size: 10px; }
   .nearby-place-card small { font-size: 8px; }
   .nearby-place-card:nth-child(3) { width: calc(58% - 5px); }
-  .nearby-course-tray { right: 2%; bottom: 5%; width: 59%; padding: 10px; border-radius: 14px; }
+  .nearby-course-tray { right: 2%; bottom: 5%; width: 55%; padding: 10px; border-radius: 14px; }
   .nearby-course-tray > strong { margin-bottom: 7px; font-size: 9px; }
   .nearby-course-tray ol { gap: 5px; }
   .nearby-tray__item { grid-template-columns: 30px minmax(0, 1fr); gap: 4px; }
@@ -1006,4 +1013,5 @@
     transform: translate(-50%, -50%) scale(.08);
   }
   .landing-motion--course .day-folder { transform: translate(-50%, -50%); }
+  .landing-motion--course .folder-route-line { opacity: 0; }
 }

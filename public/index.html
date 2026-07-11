@@ -1123,7 +1123,7 @@
                 aria-label="선택한 장소 주변에서 함께 갈 장소를 추천하고 코스 후보로 정리하는 화면"
               >
                 <figure class="nearby-c5-screen" data-motion-layer="nearby-screen" aria-hidden="true">
-                  <img src="/img/landing-motion/c5-route-view.avif" width="393" height="852" loading="lazy" decoding="async" alt="" />
+                  <img src="/img/landing-motion/c5-route-view.avif" width="393" height="852" loading="eager" fetchpriority="high" decoding="async" alt="" />
                 </figure>
                 <div class="nearby-place-grid" data-motion-layer="nearby-candidates" aria-hidden="true">
                   <article class="nearby-place-card is-selected" data-course-candidate="1">
@@ -1162,9 +1162,7 @@
                 aria-label="세 장소가 루트로 연결되어 하나의 하루 코스 폴더가 되고 친구들이 반응하는 화면"
               >
                 <svg class="folder-route-line" data-motion-layer="folder-route" viewBox="0 0 720 620" preserveAspectRatio="none" aria-hidden="true">
-                  <path d="M92 118 C190 112 238 252 360 310" />
-                  <path d="M112 492 C210 472 260 362 360 310" />
-                  <path d="M620 148 C530 154 468 244 360 310" />
+                  <path d="M175 120 C118 210 120 330 170 430 C245 420 285 338 360 310 C430 280 460 190 515 160" />
                 </svg>
                 <article class="folder-route-card folder-route-card--one" data-motion-layer="folder-place" aria-hidden="true">
                   <b>1</b><img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><strong>리틀넥 연남</strong>
