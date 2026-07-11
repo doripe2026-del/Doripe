@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import actionContract from "../../public/app-preview/figma/action-contract.json" with { type: "json" };
@@ -100,4 +102,31 @@ test("inventory equals the exact 55-screen current governed node set", () => {
   for (const screen of inventory) {
     assert.equal(screen.reference, `/app-preview/assets/references/${screen.id}.png`);
   }
+});
+
+test("C/D/E reference reindex is documented by exact live node and content hash", async () => {
+  const manifest = JSON.parse(await readFile(
+    new URL("../../public/app-preview/figma/current-flow-reindex.json", import.meta.url),
+    "utf8"
+  ));
+  const inventoryByNode = new Map(inventory.map((screen) => [screen.nodeId, screen]));
+
+  assert.equal(manifest.baselineCommit, "902475dddd5a690f10ac219b7966f16bbb47f9e7");
+  assert.deepEqual(manifest.topLevelCounts, { A: 22, B: 13, C: 6, D: 9, E: 5 });
+  assert.equal(manifest.moves.length, 19);
+  assert.deepEqual(manifest.unchanged, [{ id: "e2", nodeId: "446:2850" }]);
+
+  for (const move of manifest.moves) {
+    const current = inventoryByNode.get(move.nodeId);
+    assert.equal(current?.id, move.toId, move.nodeId);
+    const bytes = await readFile(new URL(`../../public${current.reference}`, import.meta.url));
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), move.sha256, move.toId);
+  }
+
+  assert.deepEqual(
+    manifest.removedHistoricalNodes.map(({ fromId, nodeId }) => [fromId, nodeId]),
+    [["c2", "446:1348"], ["d7", "446:2341"], ["d9", "446:2462"], ["d10", "446:2530"]]
+  );
+  assert.ok(manifest.removedHistoricalNodes.every(({ nodeId }) => !inventoryByNode.has(nodeId)));
+  assert.deepEqual(manifest.retiredReferenceAliases, ["d14", "e1", "e7"]);
 });
