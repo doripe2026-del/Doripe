@@ -669,13 +669,13 @@
 }
 
 .folder-route-card--two {
-  --start-x: -190px;
-  --start-y: 120px;
+  --start-x: 155px;
+  --start-y: -150px;
 }
 
 .folder-route-card--three {
-  --start-x: 155px;
-  --start-y: -150px;
+  --start-x: -10px;
+  --start-y: 160px;
 }
 
 .folder-route-card > img {
@@ -966,8 +966,8 @@
   .folder-route-card > strong { padding: 10px; font-size: 10px; }
   .folder-route-card > b { top: -13px; left: calc(50% - 14px); width: 28px; height: 28px; border-width: 2px; font-size: 10px; }
   .folder-route-card--one { --start-x: -110px; --start-y: -150px; }
-  .folder-route-card--two { --start-x: -115px; --start-y: 105px; }
-  .folder-route-card--three { --start-x: 100px; --start-y: -120px; }
+  .folder-route-card--two { --start-x: 100px; --start-y: -120px; }
+  .folder-route-card--three { --start-x: 0; --start-y: 105px; }
   .day-folder { width: 54%; padding: 18px 16px 15px; border-radius: 20px; }
   .day-folder::before { top: -27px; left: 20px; height: 29px; border-radius: 16px 16px 0 0; }
   .day-folder > span { font-size: 7px; }
