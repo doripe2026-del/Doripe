@@ -8,7 +8,7 @@ Create four static Figma concepts for the landing page before rebuilding the mot
 
 - Use the latest frames from the Doripe Figma file, not the legacy exported UI used in the current landing prototype.
 - Keep one complete app screen visible in every concept. Do not replace the product with detached fragments only.
-- Duplicate and scale original Figma layers so interface text and shapes remain sharp.
+- Use the original high-resolution embedded UI assets at their preserved aspect ratio so interface text and shapes remain sharp.
 - Preserve the complete phone-screen aspect ratio. Do not crop the left or right edges.
 - Use AI imagery primarily inside place photos, UGC photos, profile photos, and enlarged photographic extensions outside the screen.
 - Do not generate UI, buttons, labels, maps, or Korean text with AI.
@@ -56,14 +56,15 @@ Create four static Figma concepts for the landing page before rebuilding the mot
 - Name frames `01 Hero`, `02 Social Discovery`, `03 Nearby Recommendations`, and `04 Shared Day Folder`.
 - Place the frames in one horizontal row with consistent spacing.
 - Use original Figma screen clones at approximately 393 x 852 visual size.
-- Keep all UI and advertising overlays editable.
-- AI image fills may be raster assets, but UI must remain editable Figma layers.
+- Keep all newly created advertising overlays editable.
+- The latest Doripe screens are flattened source images in Figma, so preserve those exact high-resolution source images instead of recreating their UI. AI image fills may remain raster assets.
 
 ## Acceptance Criteria
 
 - Every frame includes one complete, uncropped latest UI screen.
 - No legacy landing-export UI appears.
 - UI is sharp at 100% zoom.
+- Original UI text, icons, and layout are not regenerated or redrawn.
 - AI photography feels like one coherent Doripe campaign.
 - Nearby recommendation and course-candidate cards all contain photos.
 - The final concept uses pins-to-folder and social reactions, with no navigation motif.
