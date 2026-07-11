@@ -182,7 +182,12 @@ test("contract effects agree with pure transition results", () => {
         habit: "instagram-saved",
         source: "instagram",
         neighborhoodId: "seongsu"
-      }
+      },
+      selections: record.screenId === "c7" ? {
+        selectedRouteId: "route-1",
+        selectedPlaceId: "place-1",
+        replacementPlaceId: "place-2"
+      } : {}
     });
     const result = dispatchAction(record.screenId, record.actionId, { state, ...actionPayload });
 

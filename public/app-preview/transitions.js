@@ -1,6 +1,7 @@
 import actionContract from "./figma/action-contract.json" with { type: "json" };
 import inventory from "./figma/screen-inventory.json" with { type: "json" };
 import { DEFAULT_STATE } from "./state.js";
+import { ROUTES } from "./fixtures.js";
 
 const contractActionsByScreen = new Map();
 for (const record of actionContract.actions) {
@@ -320,6 +321,63 @@ const toggleCommentLike = toggleListValue("likedCommentIds", "commentId");
 const addRoutePlace = addListValue("routePlaceIds", "placeId");
 const noChange = (state) => idleResult(state);
 
+function selectSavedFilter(state, payload) {
+  const value = valueFrom(payload);
+  if (value !== "filters") return selectValue("savedFilter")(state, payload);
+  const nextState = {
+    ...state,
+    selections: {
+      ...(state.selections || {}),
+      filterReturnScreen: state.currentScreenId
+    }
+  };
+  return navigateTo("c3")(nextState);
+}
+
+function applySavedFilters(state) {
+  const destination = state.selections?.filterReturnScreen === "c2" ? "c2" : "c1";
+  return navigateTo(destination)(state);
+}
+
+function startRoutePlaceReplacement(state, payload) {
+  const placeId = payload?.placeId ?? payload?.id;
+  if (typeof placeId !== "string" || placeId.length === 0) return errorResult(state);
+  const route = ROUTES.find((item) => item.id === state.selections?.selectedRouteId) || ROUTES[0];
+  return navigateTo("c7")({
+    ...state,
+    routePlaceIds: state.routePlaceIds?.length ? [...state.routePlaceIds] : [...route.placeIds],
+    selections: {
+      ...(state.selections || {}),
+      selectedPlaceId: placeId,
+      replacementPlaceId: placeId
+    }
+  });
+}
+
+function confirmRoutePlaceReplacement(state) {
+  const previousId = state.selections?.selectedPlaceId;
+  const replacementId = state.selections?.replacementPlaceId;
+  if (!previousId || !replacementId) return errorResult(state, "교체할 장소를 선택해 주세요");
+  const route = ROUTES.find((item) => item.id === state.selections?.selectedRouteId) || ROUTES[0];
+  const current = state.routePlaceIds?.length ? state.routePlaceIds : route.placeIds;
+  const routePlaceIds = current.map((placeId) => placeId === previousId ? replacementId : placeId);
+  return navigateTo("c6")({
+    ...state,
+    routePlaceIds,
+    selections: {
+      ...(state.selections || {}),
+      replacementPlaceId: replacementId
+    }
+  });
+}
+
+function closeSavedPlaceCard(state) {
+  const selections = { ...(state.selections || {}) };
+  delete selections.selectedPlaceId;
+  selections.savedPlaceCardOpen = false;
+  return idleResult(state, { selections });
+}
+
 function submitComment(state, payload) {
   const body = state.form?.comment?.trim();
   const placeId = state.selections?.selectedPlaceId || payload?.placeId;
@@ -526,14 +584,14 @@ export const TRANSITIONS = Object.freeze({
   c1: defineTransitions("c1", {
     "show-saved-places": selectValue("savedTab"),
     "show-saved-routes": navigateTo("c2"),
-    "select-filter-tag": selectValue("savedFilter"),
+    "select-filter-tag": selectSavedFilter,
     "open-place": selectAndNavigate("c4", "selectedPlaceId", "placeId"),
     "add-place-to-route": addRoutePlace
   }),
   c2: defineTransitions("c2", {
     "show-saved-places": navigateTo("c1"),
     "show-saved-routes": selectValue("savedTab"),
-    "select-filter-tag": selectValue("savedFilter"),
+    "select-filter-tag": selectSavedFilter,
     "open-route-map": openOverlay("saved-route-map", "selectedRouteId", "routeId"),
     "open-route": selectAndNavigate("c6", "selectedRouteId", "routeId")
   }),
@@ -541,12 +599,12 @@ export const TRANSITIONS = Object.freeze({
     "select-situation": selectValue("situation"),
     "select-time": selectValue("time"),
     "select-mood": selectValue("mood"),
-    "apply-filters": navigateTo("c1"),
+    "apply-filters": applySavedFilters,
     "reset-filters": resetFilterSelections
   }),
   c4: defineTransitions("c4", {
     "go-back": navigateBack,
-    "close-place-card": clearSelection("selectedPlaceId"),
+    "close-place-card": closeSavedPlaceCard,
     "locate-user": noChange,
     "open-place": selectAndNavigate("b10", "selectedPlaceId", "placeId")
   }),
@@ -554,16 +612,16 @@ export const TRANSITIONS = Object.freeze({
     "go-back": navigateBack,
     "open-share": shareTarget("route"),
     "start-navigation": openOverlay("external-map"),
-    "replace-route-place": selectAndNavigate("c7", "selectedPlaceId", "placeId"),
+    "replace-route-place": startRoutePlaceReplacement,
     "open-place": selectAndNavigate("b10", "selectedPlaceId", "placeId")
   }),
   c7: defineTransitions("c7", {
     "go-back": navigateBack,
     "select-filter-tag": selectValue("savedFilter"),
-    "select-place": addRoutePlace,
+    "select-place": selectValue("replacementPlaceId", "placeId"),
     "toggle-place-like": togglePlaceLike,
     "replace-place": selectValue("replacementPlaceId", "placeId"),
-    "confirm-place-selection": navigateTo("c6")
+    "confirm-place-selection": confirmRoutePlaceReplacement
   }),
   d1: defineTransitions("d1", {
     "select-start-place": selectAndNavigate("d4", "selectedPlaceId", "placeId"),
