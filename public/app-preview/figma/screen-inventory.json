@@ -369,6 +369,13 @@
     "reference": "/app-preview/assets/references/b1.png",
     "masks": [
       {
+        "x": 18,
+        "y": 172,
+        "width": 352,
+        "height": 680,
+        "reason": "photo"
+      },
+      {
         "x": 192,
         "y": 172,
         "width": 178,

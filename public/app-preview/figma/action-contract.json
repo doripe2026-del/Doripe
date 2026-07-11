@@ -1092,17 +1092,6 @@
     },
     {
       "screenId": "b1",
-      "actionId": "create-route",
-      "source": "Floating / add route CTA",
-      "kind": "button",
-      "effect": {
-        "type": "navigate",
-        "destination": "d1"
-      },
-      "evidence": "The Floating / add route CTA control is visible in the B1 reference."
-    },
-    {
-      "screenId": "b1",
       "actionId": "scroll-to-top",
       "source": "Floating / scroll to top",
       "kind": "icon-button",
@@ -5182,6 +5171,13 @@
       "kind": "measured-control-layer",
       "reason": "visual-child",
       "evidence": "A15 gender radio#3 is the radio-circle artwork inside a separately contracted named gender row."
+    },
+    {
+      "screenId": "b1",
+      "source": "Floating / add route CTA",
+      "kind": "measured-control-layer",
+      "reason": "product-removed-control",
+      "evidence": "B1 Floating / add route CTA is intentionally omitted from the web prototype by the current product decision."
     },
     {
       "screenId": "b1",

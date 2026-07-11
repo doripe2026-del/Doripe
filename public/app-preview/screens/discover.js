@@ -168,7 +168,8 @@ const FEED_RECTS = Object.freeze({
   b1: [
     [24, 178, 166, 221], [198, 178, 166, 124], [24, 407, 166, 93],
     [198, 310, 166, 221], [24, 508, 166, 124], [198, 539, 166, 93],
-    [24, 640, 166, 166], [198, 640, 166, 212], [24, 814, 166, 166]
+    [24, 640, 166, 166], [198, 640, 166, 260], [24, 814, 166, 221],
+    [198, 908, 166, 166], [24, 1043, 166, 93]
   ],
   b2: [
     [19.949, 82, 171.563, 210], [195.503, 82, 177.548, 84], [195.503, 168, 177.548, 168],
@@ -185,6 +186,31 @@ const FEED_RECTS = Object.freeze({
     [197.497, 744, 181.538, 90]
   ]
 });
+
+const CONTINUATION_HEIGHTS = Object.freeze([124, 221, 93, 166, 260, 136, 108, 152]);
+
+function extendedFeedRects(screenId, count) {
+  const base = FEED_RECTS[screenId].map((rect) => [...rect]);
+  if (count <= base.length) return base.slice(0, count);
+
+  const columns = [...new Set(base.map(([x]) => x))].map((x) => {
+    const rects = base.filter((rect) => rect[0] === x);
+    return {
+      x,
+      width: rects[0][2],
+      bottom: Math.max(...rects.map((rect) => rect[1] + rect[3]))
+    };
+  });
+
+  for (let index = base.length; index < count; index += 1) {
+    const column = columns.reduce((shortest, candidate) => candidate.bottom < shortest.bottom ? candidate : shortest);
+    const height = CONTINUATION_HEIGHTS[index % CONTINUATION_HEIGHTS.length];
+    const y = column.bottom + 8;
+    base.push([column.x, y, column.width, height]);
+    column.bottom = y + height;
+  }
+  return base;
+}
 
 function mediaTile(media, height, rect) {
   const place = byId(PLACES, media.placeId);
@@ -226,14 +252,15 @@ function masonryFeed(screenId, state) {
   }
   const filter = state?.selections?.feedFilter;
   const filterTagId = filter === "quiet" ? "tag-quiet" : filter === "date" ? "tag-date" : null;
-  const visibleMedia = MEDIA.slice(0, 13).filter((media) => {
+  const visibleMedia = MEDIA.filter((media) => {
     if (!filter || filter === "all" || filter === "menu") return true;
     const place = byId(PLACES, media.placeId);
     return filterTagId ? place.tagIds.includes(filterTagId) : true;
   });
-  const rects = FEED_RECTS[screenId];
-  visibleMedia.slice(0, rects.length).forEach((media, index) => feed.append(mediaTile(media, FEED_HEIGHTS[index], rects[index])));
+  const rects = extendedFeedRects(screenId, visibleMedia.length);
+  visibleMedia.forEach((media, index) => feed.append(mediaTile(media, FEED_HEIGHTS[index % FEED_HEIGHTS.length], rects[index])));
   const spacer = element("span", "discover-feed__spacer");
+  spacer.style.setProperty("--feed-end", `${Math.max(...rects.map((rect) => rect[1] + rect[3])) + 16}px`);
   feed.append(spacer);
   return feed;
 }
@@ -255,7 +282,7 @@ function feedStatusMessage(message, retryable = false) {
 function followingStrip() {
   const strip = element("div", "discover-following-strip");
   const avatars = element("span", "discover-following-strip__avatars");
-  USERS.slice(0, 5).forEach((user) => {
+  USERS.slice(0, 4).forEach((user) => {
     const profile = actionButton(`${user.handle} 프로필 보기`, "open-profile", { userId: user.id }, "discover-following-strip__profile");
     profile.append(avatarImage(user));
     avatars.append(profile);
@@ -274,12 +301,13 @@ function renderFeed(screenId, state) {
   if (screenId === "b1") root.append(followingStrip());
   root.append(masonryFeed(screenId, state));
   if (screenId === "b1") {
-    const route = actionButton("코스 추가", "create-route", {}, "discover-route-add");
-    route.textContent = "+  추가";
+    const topVisual = element("img", "discover-scroll-top-visual");
+    topVisual.src = "/app-preview/assets/discover/figma-scroll-top.svg";
+    topVisual.alt = "";
+    topVisual.setAttribute("aria-hidden", "true");
     const top = actionButton("맨 위로", "scroll-to-top", {}, "discover-scroll-top");
-    top.textContent = "↑";
     top.addEventListener("click", () => root.querySelector("[data-testid=discover-feed]")?.scrollTo({ top: 0, behavior: "smooth" }));
-    root.append(route, top);
+    root.append(topVisual, top);
   }
   return root;
 }

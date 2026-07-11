@@ -133,9 +133,11 @@ export function validateFlowBLiveEvidence({ evidence, inventory, referenceHashes
     || b1.sourceScreenshot.height !== 924
     || b1.sourceScreenshot.maxDimension !== 924
     || !/^[a-f0-9]{64}$/.test(b1.sourceScreenshot.sha256)
-    || b1.normalization?.type !== "center-crop-to-frame-bounds"
-    || ["insetTop", "insetRight", "insetBottom", "insetLeft"]
-      .some((key) => b1.normalization[key] !== 36)
+    || b1.normalization?.type !== "crop-to-frame-bounds"
+    || b1.normalization.insetTop !== 24
+    || b1.normalization.insetRight !== 36
+    || b1.normalization.insetBottom !== 48
+    || b1.normalization.insetLeft !== 36
   ) {
     throw new Error("B1 live evidence must record the reviewed shadow-bound frame crop");
   }

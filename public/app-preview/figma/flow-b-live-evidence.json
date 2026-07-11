@@ -2,7 +2,7 @@
   "version": 1,
   "fileKey": "TfZAtv9JUy508otim4P23w",
   "rootNodeId": "446:33",
-  "capturedAt": "2026-07-10T15:46:26Z",
+  "capturedAt": "2026-07-11T15:21:01Z",
   "capture": {
     "designContextTool": "get_design_context",
     "screenshotTool": "get_screenshot",
@@ -14,7 +14,7 @@
     "All 13 exact top-level Flow B nodes were read with live design context and screenshot tools.",
     "Node 446:1018 is nested inside B8 and is excluded.",
     "The current top-level Flow sections contain 55 screens: A 22, B 13, C 6, D 9, and E 5; stale historical C/D/E entries are excluded.",
-    "B1 has a 36px outer shadow on every edge; its native 465x924 screenshot was center-cropped to the exact 393x852 frame bounds."
+    "B1 has asymmetric outer shadow bounds; its native 465x924 screenshot was cropped at x=36, y=24 to the exact 393x852 frame bounds."
   ],
   "screens": [
     {
@@ -24,7 +24,7 @@
       "width": 393,
       "height": 852,
       "designContextRead": true,
-      "liveScreenshotSha256": "ac78c352712ecc11177e2fe16112e2e21ce212f44810226b7f618841f7291b47",
+      "liveScreenshotSha256": "ee0d9078f70a026ff04eceea7b68b365c56e2ff43deb5b6d38d134057cad292c",
       "sourceScreenshot": {
         "width": 465,
         "height": 924,
@@ -32,10 +32,10 @@
         "sha256": "4d22503f6fd2a45bce0c0acb22e1da87edf655c6d5134b0015f4e7cc0391e022"
       },
       "normalization": {
-        "type": "center-crop-to-frame-bounds",
-        "insetTop": 36,
+        "type": "crop-to-frame-bounds",
+        "insetTop": 24,
         "insetRight": 36,
-        "insetBottom": 36,
+        "insetBottom": 48,
         "insetLeft": 36
       }
     },

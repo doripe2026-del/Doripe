@@ -155,7 +155,6 @@ add("b1", "open-filter", "Header / filter pill", "button", state("selections.fee
 add("b1", "open-following-list", "Following / list CTA", "button", navigate("b13"));
 addSources("b1", "open-profile", measuredKeys("b1", /^Ellipse(?:#\d+)?$/), "avatar", navigate("b12", "selectedUserId"));
 addSources("b1", "open-place", measuredKeys("b1", /^Feed \/ media tile \d+(?:#\d+)?$/), "media-card", navigate("b4", "selectedPlaceId"));
-add("b1", "create-route", "Floating / add route CTA", "button", navigate("d1"));
 add("b1", "scroll-to-top", "Floating / scroll to top", "icon-button", state("scrollTop"));
 
 add("b2", "show-following", "segment label", "tab", navigate("b1"));
@@ -463,6 +462,7 @@ const visibleControlPatterns = [
 export const ALLOWED_NONINTERACTIVE_REASONS = new Set([
   "composite-container",
   "decorative-media",
+  "product-removed-control",
   "read-only-status",
   "static-validation-status",
   "visual-child"
@@ -521,6 +521,12 @@ for (const screenId of ["b1", "b2"]) {
     (source) => `${screenId.toUpperCase()} ${source} is text inside the separately contracted Header / filter pill hit target.`
   );
 }
+reviewNoninteractive(
+  "b1",
+  ["Floating / add route CTA"],
+  "product-removed-control",
+  () => "B1 Floating / add route CTA is intentionally omitted from the web prototype by the current product decision."
+);
 for (const screenId of ["b4", "b5", "b6"]) {
   reviewNoninteractive(
     screenId,

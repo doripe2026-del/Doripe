@@ -481,7 +481,6 @@ export const TRANSITIONS = Object.freeze({
     "open-following-list": navigateTo("b13"),
     "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
     "open-place": selectPlaceMediaAndNavigate("b4"),
-    "create-route": navigateTo("d1"),
     "scroll-to-top": noChange
   }),
   b2: defineTransitions("b2", {

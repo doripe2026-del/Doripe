@@ -139,6 +139,40 @@ test("discover and following feeds switch, filter, scroll, and open content", as
   expect(persisted.selections.selectedMediaId).toBe(selectedMediaId);
 });
 
+test("B1 and B2 keep a full masonry feed and B1 has no add button", async ({ page }) => {
+  for (const screenId of ["b1", "b2"]) {
+    const screen = await gotoScreen(page, screenId);
+    const feed = screen.locator("[data-testid=discover-feed]");
+    await expect(feed.locator("[data-testid=media-tile]")).toHaveCount(36);
+
+    const dimensions = await feed.evaluate((element) => ({
+      clientHeight: element.clientHeight,
+      scrollHeight: element.scrollHeight
+    }));
+    expect(dimensions.scrollHeight).toBeGreaterThan(dimensions.clientHeight * 2);
+
+    await feed.evaluate((element) => { element.scrollTop = element.scrollHeight; });
+    await expect(feed.locator("[data-testid=media-tile]").last()).toBeInViewport();
+  }
+
+  const following = await gotoScreen(page, "b1");
+  await expect(following.locator(".discover-route-add")).toHaveCount(0);
+
+  const geometry = await following.evaluate((root) => {
+    const relativeRect = (selector) => {
+      const frame = root.getBoundingClientRect();
+      const rect = root.querySelector(selector).getBoundingClientRect();
+      return { x: rect.x - frame.x, y: rect.y - frame.y, width: rect.width, height: rect.height };
+    };
+    return {
+      followingStrip: relativeRect(".discover-following-strip"),
+      filter: relativeRect(".discover-filter-button")
+    };
+  });
+  expect(geometry.followingStrip).toEqual({ x: 24, y: 86, width: 345, height: 58 });
+  expect(geometry.filter).toEqual({ x: 287, y: 27, width: 93, height: 39 });
+});
+
 test("content details expose working media, social, place, and route actions", async ({ page }) => {
   await gotoScreen(page, "b4");
   await page.getByRole("button", { name: "좋아요", exact: true }).click();
