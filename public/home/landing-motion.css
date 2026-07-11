@@ -605,13 +605,13 @@
 
 @keyframes nearbyCandidate {
   0%, 16%, 100% { opacity: 0; transform: translateY(16px) scale(.92); }
-  29%, 62% { opacity: 1; transform: none; }
-  74%, 96% { opacity: 0; transform: translateY(12px) scale(.94); }
+  29%, 56% { opacity: 1; transform: none; }
+  67%, 96% { opacity: 0; transform: translateY(12px) scale(.94); }
 }
 
 @keyframes nearbyTray {
-  0%, 57%, 100% { opacity: 0; transform: translateY(18px) scale(.97); }
-  70%, 94% { opacity: 1; transform: none; }
+  0%, 47%, 100% { opacity: 0; transform: translateY(18px) scale(.97); }
+  59%, 94% { opacity: 1; transform: none; }
 }
 
 .landing-motion--course {
@@ -860,15 +860,15 @@
 
 @keyframes folderPlace {
   0%, 8%, 100% { opacity: 0; transform: translate(calc(-50% + var(--start-x)), calc(-50% + var(--start-y) + 18px)) scale(.9); }
-  20%, 48% { opacity: 1; transform: translate(calc(-50% + var(--start-x)), calc(-50% + var(--start-y))) scale(1); }
-  67% { opacity: 1; transform: translate(-50%, -50%) scale(.18); }
+  20%, 56% { opacity: 1; transform: translate(calc(-50% + var(--start-x)), calc(-50% + var(--start-y))) scale(1); }
+  68% { opacity: 1; transform: translate(-50%, -50%) scale(.18); }
   72%, 94% { opacity: 0; transform: translate(-50%, -50%) scale(.08); }
 }
 
 @keyframes folderRouteDraw {
   0%, 20%, 100% { opacity: 0; stroke-dashoffset: 1100; }
   23% { opacity: 1; stroke-dashoffset: 1100; }
-  50%, 60% { opacity: 1; stroke-dashoffset: 0; }
+  50%, 56% { opacity: 1; stroke-dashoffset: 0; }
   68%, 99% { opacity: 0; stroke-dashoffset: 0; }
 }
 

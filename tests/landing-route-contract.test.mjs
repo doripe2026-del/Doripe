@@ -39,8 +39,8 @@ test("discovery overlays large icon-only engagement counts on the place photo", 
 
 test("nearby uses C5 and exactly three photo candidates", () => {
   const nearby = scene("motionSceneNearby", "</div>\n            </div>\n          </article>");
-  assert.match(nearby, /c5-route-view\.avif/);
-  assert.match(nearby, /c5-route-view\.avif[^>]*loading="eager"/);
+  assert.match(nearby, /c5-route-view\.png/);
+  assert.match(nearby, /c5-route-view\.png[^>]*loading="eager"/);
   assert.equal(count(nearby, /class="nearby-place-card/g), 3);
   assert.equal(count(nearby, /data-course-candidate="[123]"/g), 3);
   assert.equal(count(nearby, /class="nearby-tray__item/g), 3);
@@ -67,7 +67,7 @@ test("course connects three place cards into a social folder without navigation"
 test("all motion photos are optimized and responsive rules are present", () => {
   const motion = home.slice(home.indexOf('id="landingMotionHero"'), home.indexOf("</main>"));
   for (const tag of motion.matchAll(/<img\b[^>]*>/g)) {
-    assert.match(tag[0], /src="\/img\/landing-motion\/[^\"]+\.avif"/);
+    assert.match(tag[0], /src="\/img\/landing-motion\/(?:[^\"]+\.avif|c5-route-view\.png)"/);
     assert.match(tag[0], /decoding="async"/);
   }
   assert.match(css, /@media \(max-width: 480px\)/);

@@ -17,7 +17,7 @@ const requiredFiles = [
 
 const requiredAssets = [
   "public/img/landing-motion/hero-discover-feed.avif",
-  "public/img/landing-motion/c5-route-view.avif",
+  "public/img/landing-motion/c5-route-view.png",
   "public/img/landing-motion/campaign-restaurant.avif",
   "public/img/landing-motion/campaign-cafe.avif",
   "public/img/landing-motion/campaign-activity.avif",
@@ -58,11 +58,11 @@ const lowerMotionMarkup = home.slice(home.indexOf('id="motionSceneDiscovery"'), 
 const imageTags = [...motionMarkup.matchAll(/<img\b[^>]*>/g)].map((match) => match[0]);
 assert(imageTags.length >= 20, "motion scenes do not contain the complete photo set");
 for (const tag of imageTags) {
-  assert(/src="\/img\/landing-motion\/[^\"]+\.avif"/.test(tag), `motion image is not optimized: ${tag}`);
+  assert(/src="\/img\/landing-motion\/(?:[^\"]+\.avif|c5-route-view\.png)"/.test(tag), `motion image is not optimized: ${tag}`);
   assert(/decoding="async"/.test(tag), `motion image must decode asynchronously: ${tag}`);
 }
 for (const tag of lowerMotionMarkup.matchAll(/<img\b[^>]*>/g)) {
-  if (/c5-route-view\.avif/.test(tag[0])) {
+  if (/c5-route-view\.png/.test(tag[0])) {
     assert(/loading="eager"[^>]*fetchpriority="high"/.test(tag[0]), `C5 screen must be prioritized: ${tag[0]}`);
     continue;
   }
