@@ -11,6 +11,7 @@ const BROWSER_HISTORY_KEY = "doripeAppPreview";
 const SCREEN_TEARDOWN_EVENT = "app-preview:screen-teardown";
 const SCREEN_NAVIGATE_EVENT = "app-preview:screen-navigate";
 const FEED_STATUS_EVENT = "app-preview:feed-status";
+const DETAIL_SHEET_STATE_EVENT = "app-preview:detail-sheet-state";
 let interactionState = state.getState();
 let activePointerTarget = null;
 let pendingHistoryBack = null;
@@ -280,7 +281,8 @@ async function runDomEffect(effect, screenId, payload) {
 
 function dispatchTargetAction(target, { rerender = true } = {}) {
   const actionId = target.dataset.action;
-  const screenId = target.closest("[data-screen-id]")?.dataset.screenId
+  const screenId = target.dataset.actionScreenId
+    || target.closest("[data-screen-id]")?.dataset.screenId
     || interactionState.currentScreenId;
   const payload = readActionPayload(target);
   const result = dispatchAction(screenId, actionId, payload);
@@ -361,6 +363,16 @@ document.addEventListener(FEED_STATUS_EVENT, (event) => {
   });
   interactionState = state.getState();
   renderScreen(interactionState.currentScreenId);
+  refreshCurrentBrowserEntry();
+});
+document.addEventListener(DETAIL_SHEET_STATE_EVENT, (event) => {
+  const detailSheetState = event.detail?.state;
+  if (!["collapsed", "medium", "expanded"].includes(detailSheetState)) return;
+  state.replace({
+    ...interactionState,
+    selections: { ...(interactionState.selections || {}), detailSheetState }
+  });
+  interactionState = state.getState();
   refreshCurrentBrowserEntry();
 });
 document.addEventListener("click", (event) => {

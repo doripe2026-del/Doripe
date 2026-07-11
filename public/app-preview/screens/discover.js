@@ -8,6 +8,7 @@ const NODE_IDS = Object.freeze({
   b12: "446:2792", b13: "446:3042"
 });
 const FEED_STATUS_EVENT = "app-preview:feed-status";
+const DETAIL_SHEET_STATE_EVENT = "app-preview:detail-sheet-state";
 
 const byId = (items, id) => items.find((item) => item.id === id);
 const selectedPlace = (state) => byId(PLACES, state?.selections?.selectedPlaceId) || PLACES[0];
@@ -389,35 +390,87 @@ function placeSummary(place, screenId) {
 }
 
 function bindSheetGesture(sheet) {
+  const handle = sheet.querySelector(".discover-sheet-handle");
+  const dragZone = sheet.querySelector(".discover-sheet-drag-zone");
+  const states = ["collapsed", "medium", "expanded"];
   let startY = 0;
-  let startTime = 0;
   let active = false;
-  sheet.addEventListener("pointerdown", (event) => {
-    if (event.target.closest("button, input") && !event.target.closest(".discover-sheet-handle")) return;
+  let suppressPointerClick = false;
+
+  const moveTo = (direction) => {
+    const currentIndex = Math.max(0, states.indexOf(sheet.dataset.sheetState));
+    const nextIndex = Math.max(0, Math.min(states.length - 1, currentIndex + direction));
+    sheet.dataset.sheetState = states[nextIndex];
+    sheet.style.removeProperty("--sheet-drag-y");
+    document.dispatchEvent(new CustomEvent(DETAIL_SHEET_STATE_EVENT, {
+      detail: { state: sheet.dataset.sheetState }
+    }));
+  };
+
+  dragZone.addEventListener("pointerdown", (event) => {
     active = true;
     startY = event.clientY;
-    startTime = performance.now();
-    sheet.setPointerCapture?.(event.pointerId);
+    suppressPointerClick = true;
+    dragZone.setPointerCapture?.(event.pointerId);
+    sheet.dataset.dragging = "true";
+    event.preventDefault();
   });
-  sheet.addEventListener("pointerup", (event) => {
+  dragZone.addEventListener("pointermove", (event) => {
+    if (!active) return;
+    const distance = Math.max(-140, Math.min(140, event.clientY - startY));
+    sheet.style.setProperty("--sheet-drag-y", `${distance}px`);
+  });
+  dragZone.addEventListener("pointerup", (event) => {
     if (!active) return;
     active = false;
     const distance = event.clientY - startY;
-    const velocity = distance / Math.max(performance.now() - startTime, 1);
-    if (distance < -56 || velocity < -0.65) sheet.dataset.sheetState = "expanded";
-    else if (distance > 56 || velocity > 0.65) sheet.querySelector(".discover-sheet-handle")?.click();
+    delete sheet.dataset.dragging;
+    if (distance <= -56) moveTo(1);
+    else if (distance >= 56) moveTo(-1);
+    else sheet.style.removeProperty("--sheet-drag-y");
+    setTimeout(() => { suppressPointerClick = false; }, 0);
   });
-  sheet.addEventListener("pointercancel", () => { active = false; });
+  dragZone.addEventListener("pointercancel", () => {
+    active = false;
+    delete sheet.dataset.dragging;
+    sheet.style.removeProperty("--sheet-drag-y");
+    suppressPointerClick = false;
+  });
+  handle.addEventListener("click", (event) => {
+    if (!suppressPointerClick) return;
+    suppressPointerClick = false;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  });
+  handle.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      event.stopPropagation();
+      moveTo(1);
+    } else if (event.key === "ArrowDown") {
+      event.preventDefault();
+      event.stopPropagation();
+      moveTo(-1);
+    }
+  });
 }
 
 function placeSheet(screenId, place, state) {
   const sheet = element("section", "discover-place-sheet");
   sheet.dataset.testid = "place-sheet";
   sheet.dataset.placeId = place.id;
-  sheet.dataset.sheetState = screenId === "b6" || screenId === "b10" ? "expanded" : "collapsed";
+  const defaultSheetState = screenId === "b6" || screenId === "b10"
+    ? "expanded"
+    : screenId === "b5" ? "collapsed" : "medium";
+  const rememberedSheetState = state?.selections?.detailSheetState;
+  sheet.dataset.sheetState = ["collapsed", "medium", "expanded"].includes(rememberedSheetState)
+    ? rememberedSheetState
+    : defaultSheetState;
   if (["b5", "b6", "b10"].includes(screenId)) sheet.dataset.measureKey = "Sheet / background";
   const handle = actionButton("장소 상세 닫기", "close-place", {}, "discover-sheet-handle");
-  sheet.append(handle, placeSummary(place, screenId));
+  const dragZone = element("div", "discover-sheet-drag-zone");
+  dragZone.append(handle);
+  sheet.append(dragZone, placeSummary(place, screenId));
   sheet.append(
     infoRow("주소", place.address, "open-place-map", { placeId: place.id }, "⌖"),
     infoRow("영업시간", "매일 12:00 - 20:00", "open-business-hours", { placeId: place.id }, "◷"),
@@ -476,7 +529,7 @@ function placeSheet(screenId, place, state) {
   });
   sheet.append(mediaStrip);
 
-  if (["b4", "b6"].includes(screenId)) {
+  if (["b4", "b5", "b6"].includes(screenId)) {
     const related = element("div", "discover-section-title");
     related.classList.add("discover-detail-related-title");
     related.append(element("strong", "", "관련 장소"));
@@ -490,10 +543,11 @@ function placeSheet(screenId, place, state) {
     relatedHeader.append(relatedAll);
     sheet.append(relatedHeader);
   }
-  if (screenId === "b6" || screenId === "b10") {
+  if (["b4", "b5", "b6", "b10"].includes(screenId)) {
     const route = actionButton("이 장소로 코스 만들기", "create-route", { placeId: place.id }, "discover-create-route");
+    if (screenId !== "b10") route.dataset.actionScreenId = "b6";
     const routeIcon = element("img", "discover-create-route__icon");
-    routeIcon.src = `/app-preview/assets/discover/figma-route-${screenId}.svg`;
+    routeIcon.src = `/app-preview/assets/discover/figma-route-${screenId === "b10" ? "b10" : "b6"}.svg`;
     routeIcon.alt = "";
     route.append(routeIcon, element("span", "", "이 장소로 코스 만들기"));
     sheet.append(route);
@@ -546,7 +600,6 @@ function renderPhotoViewer(state) {
   root.dataset.measureKey = "overlay / black dim / opacity 78";
   const dots = element("div", "discover-viewer__dots");
   const mediaFrame = element("div", "discover-viewer__frame");
-  const metadata = element("div", "discover-viewer__metadata");
   const close = actionButton("사진 닫기", "close-photo", {}, "discover-viewer__close");
   close.append(iconAsset("close", "discover-close-icon"));
   const previous = localButton("이전 사진", "discover-viewer__previous");
@@ -559,12 +612,6 @@ function renderPhotoViewer(state) {
       width: 345, height: 612, eager: true, testId: "viewer-media", mediaId: items[index].id
     }));
     dots.replaceChildren(...items.slice(0, 5).map((_, dotIndex) => element("span", dotIndex === index ? "is-active" : "")));
-    const uploader = byId(USERS, items[index].userId);
-    const placeLink = actionButton(`${place.name} 공식 화면`, "open-official-place", { placeId: place.id }, "discover-viewer__place-link");
-    placeLink.textContent = place.name;
-    const profileLink = actionButton(`${uploader.handle} 프로필 보기`, "open-profile", { userId: uploader.id }, "discover-viewer__profile-link");
-    profileLink.textContent = uploader.handle;
-    metadata.replaceChildren(placeLink, profileLink);
     for (const link of root.querySelectorAll('link[rel="preload"]')) link.remove();
     for (let offset = 1; offset <= 2; offset += 1) {
       const preload = document.createElement("link");
@@ -587,7 +634,7 @@ function renderPhotoViewer(state) {
     if (Math.abs(distance) >= 56 || Math.abs(velocity) >= 0.65) step(distance < 0 ? 1 : -1);
   });
   mediaFrame.addEventListener("pointercancel", () => { dragStart = null; });
-  root.append(dots, close, previous, mediaFrame, next, metadata);
+  root.append(dots, close, previous, mediaFrame, next);
   update();
   return root;
 }

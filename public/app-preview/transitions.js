@@ -76,6 +76,7 @@ const selectPlaceMediaAndNavigate = (nextScreenId) => (state, payload) => {
   const placeId = payload?.placeId ?? payload?.id;
   const mediaId = payload?.mediaId;
   const selections = { ...(state.selections || {}) };
+  delete selections.detailSheetState;
   if (typeof placeId === "string" && placeId.length > 0) selections.selectedPlaceId = placeId;
   if (typeof mediaId === "string" && mediaId.length > 0) selections.selectedMediaId = mediaId;
   else delete selections.selectedMediaId;

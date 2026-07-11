@@ -183,7 +183,7 @@
 .discover-back-icon { display: block; width: 24px; height: 24px; }
 .discover-grid-screen > .discover-circle-back { position: fixed; z-index: 8; top: 28px; margin-left: 18px; width: 42px; height: 42px; border-radius: 50%; }
 
-.discover-detail-screen { background: #181818; }
+.discover-detail-screen { background: #181818; user-select: none; }
 .discover-detail-hero { position: absolute; inset: 0 0 auto; width: 393px; height: 437px; border: 0; background: #222; padding: 0; }
 .discover-screen--b10 .discover-detail-hero { height: 388px; }
 .discover-author-pill { position: absolute; z-index: 3; top: 289px; left: 17px; display: flex; width: 76px; height: 32px; align-items: center; gap: 6px; border: 1px solid rgb(255 255 255 / 42%); border-radius: 16px; background: rgb(46 46 46 / 46%); color: #fff; padding: 3px; }
@@ -200,12 +200,15 @@
 .discover-round-action__asset { position: absolute; top: -10px; left: -18px; display: block; width: 86px; height: 86px; pointer-events: none; }
 .discover-close-icon { width: 24px; height: 24px; filter: brightness(0) invert(1); }
 
-.discover-place-sheet { position: absolute; z-index: 3; top: 328px; left: 0; width: 393px; min-height: 610px; overflow: hidden; border-radius: 26px 26px 0 0; background: #fff; padding: 3px 22px 82px; transition: top 180ms ease; touch-action: none; }
-.discover-screen--b5 .discover-place-sheet { top: 610px; height: 242px; min-height: 242px; }
-.discover-screen--b6 .discover-place-sheet { top: 150px; height: 702px; min-height: 702px; border-radius: 24px 24px 0 0; box-shadow: 0 0 14px rgb(0 0 0 / 10%); }
+.discover-place-sheet { position: absolute; z-index: 3; top: 328px; left: 0; width: 393px; height: 524px; min-height: 0; overflow: hidden; border-radius: 26px 26px 0 0; background: #fff; padding: 3px 22px 82px; transform: translateY(var(--sheet-drag-y, 0)); transition: top 220ms cubic-bezier(.2, .8, .2, 1), height 220ms cubic-bezier(.2, .8, .2, 1), transform 120ms ease; }
 .discover-screen--b10 .discover-place-sheet { top: 242px; height: 610px; min-height: 610px; border-radius: 22px 22px 0 0; box-shadow: 0 -3px 14px rgb(0 0 0 / 5%); }
-.discover-place-sheet[data-sheet-state="expanded"] { top: 150px; }
-.discover-screen--b10 .discover-place-sheet[data-sheet-state="expanded"] { top: 242px; }
+.discover-place-sheet[data-dragging="true"] { transition: none; }
+.discover-place-sheet[data-sheet-state="collapsed"] { top: 610px; height: 242px; }
+.discover-place-sheet[data-sheet-state="medium"] { top: 328px; height: 524px; }
+.discover-place-sheet[data-sheet-state="expanded"] { top: 150px; height: 702px; overflow-y: auto; overscroll-behavior: contain; border-radius: 24px 24px 0 0; box-shadow: 0 0 14px rgb(0 0 0 / 10%); }
+.discover-screen--b6 .discover-place-sheet[data-sheet-state="expanded"] { min-height: 702px; }
+.discover-screen--b10 .discover-place-sheet[data-sheet-state="expanded"] { top: 242px; height: 610px; min-height: 610px; }
+.discover-sheet-drag-zone { position: sticky; z-index: 5; top: 0; width: 100%; height: 22px; touch-action: none; }
 .discover-sheet-handle { display: block; width: 55px; height: 4px; margin: 6px auto 0; border: 0; border-radius: 3px; background: #d4d4d4; padding: 0; }
 .discover-place-summary { display: flex; min-height: 96px; align-items: center; gap: 14px; }
 .discover-screen--b10 .discover-place-summary { min-height: 108px; padding-top: 22px; }
@@ -292,21 +295,20 @@
 .discover-create-route > span { position: absolute; top: 12px; left: 68px; width: 165px; height: 20px; font-size: 15px; font-weight: 700; line-height: 20px; text-align: left; }
 .discover-screen--b10 .discover-create-route__icon { top: 15px; }
 .discover-screen--b10 .discover-create-route > span { top: 13px; }
+.discover-screen--b4 .discover-create-route,
+.discover-screen--b5 .discover-create-route { position: absolute; top: 638px; left: 62px; margin: 0; }
+.discover-place-sheet:not([data-sheet-state="expanded"]) .discover-create-route { display: none; }
 
 .discover-viewer { background: #050505; }
-.discover-viewer__dots { position: absolute; top: 42px; left: 156px; display: flex; gap: 9px; }
+.discover-viewer__dots { position: absolute; top: 42px; left: 50%; display: flex; gap: 9px; transform: translateX(-50%); }
 .discover-viewer__dots span { width: 8px; height: 8px; border-radius: 50%; background: #bbb; }
 .discover-viewer__dots span.is-active { background: #0dc96a; }
-.discover-viewer__frame { position: absolute; top: 92px; left: 24px; width: 345px; height: 612px; overflow: hidden; border-radius: 22px; touch-action: pan-y; }
+.discover-viewer__frame { position: absolute; top: 120px; left: 24px; width: 345px; height: 612px; overflow: hidden; border-radius: 22px; touch-action: pan-y; }
 .discover-viewer__close { position: absolute; z-index: 3; top: 32px; right: 24px; width: 46px; height: 46px; border: 1px solid #555; border-radius: 50%; background: #242424; color: #fff; font-size: 28px; }
 .discover-viewer__previous,
-.discover-viewer__next { position: absolute; z-index: 2; top: 92px; width: 70px; height: 612px; border: 0; background: transparent; color: transparent; }
+.discover-viewer__next { position: absolute; z-index: 2; top: 120px; width: 70px; height: 612px; border: 0; background: transparent; color: transparent; }
 .discover-viewer__previous { left: 0; }
 .discover-viewer__next { right: 0; }
-.discover-viewer__metadata { position: absolute; bottom: 52px; left: 24px; display: flex; width: 345px; height: 72px; flex-direction: column; justify-content: center; border: 1px solid #555; border-radius: 22px; background: #242424; color: #fff; padding: 0 20px; text-align: left; }
-.discover-viewer__metadata button { width: max-content; border: 0; background: transparent; padding: 0; color: #fff; text-align: left; }
-.discover-viewer__place-link { font-size: 17px; font-weight: 700; }
-.discover-viewer__profile-link { margin-top: 7px; color: #aaa !important; font-size: 12px; }
 
 .discover-overlay-screen { background: #000; }
 .discover-screen--b8 { background: #70706f; }
@@ -471,7 +473,22 @@
 .discover-screen--b5 .discover-detail-comments-title,
 .discover-screen--b5 .discover-detail-comment,
 .discover-screen--b5 .discover-detail-other-title,
-.discover-screen--b5 .discover-media-strip { display: none; }
+.discover-screen--b5 .discover-media-strip,
+.discover-screen--b5 .discover-detail-related-title,
+.discover-screen--b5 .discover-related-mini { display: none; }
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-detail-comments-title,
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-detail-other-title,
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-detail-related-title { display: flex; }
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-detail-comment { display: block; }
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-media-strip,
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-related-mini { display: grid; }
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-detail-comments-title { position: absolute; top: 279px; right: 22px; left: 22px; }
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-detail-comment[data-comment-index="0"] { position: absolute; top: 303px; right: 22px; left: 22px; }
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-detail-comment[data-comment-index="1"] { position: absolute; top: 349px; right: 22px; left: 22px; }
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-detail-other-title { position: absolute; top: 389px; right: 22px; left: 22px; }
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-media-strip { position: absolute; top: 417px; right: 22px; left: 22px; }
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-detail-related-title { position: absolute; top: 482px; right: 22px; left: 22px; }
+.discover-screen--b5 .discover-place-sheet[data-sheet-state="expanded"] .discover-related-mini { position: absolute; top: 510px; right: 22px; left: 22px; }
 .discover-following-user { position: relative; display: flex; min-height: 122px; align-items: center; border-bottom: 1px solid #e4e4e4; }
 .discover-following-list { position: absolute; top: 138px; right: 26px; left: 25px; }
 .discover-following-user__profile { display: grid; width: 260px; height: 110px; grid-template-columns: 62px 1fr; grid-template-rows: 26px 23px 43px; border: 0; background: transparent; padding: 12px 0; text-align: left; }
