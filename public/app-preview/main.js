@@ -10,6 +10,7 @@ const resetButton = document.querySelector("#review-reset");
 const BROWSER_HISTORY_KEY = "doripeAppPreview";
 const SCREEN_TEARDOWN_EVENT = "app-preview:screen-teardown";
 const SCREEN_NAVIGATE_EVENT = "app-preview:screen-navigate";
+const FEED_STATUS_EVENT = "app-preview:feed-status";
 let interactionState = state.getState();
 let activePointerTarget = null;
 let pendingHistoryBack = null;
@@ -165,7 +166,8 @@ function restoreBrowserNavigation(snapshot, screenId) {
     state.replace({
       ...currentState,
       currentScreenId: screenId,
-      history: [...snapshotState.history]
+      history: [...snapshotState.history],
+      selections: structuredClone(snapshotState.selections || {})
     });
     return;
   }
@@ -185,7 +187,7 @@ function renderFromUrl(event) {
   let selectedScreenId = screenId || state.getState().currentScreenId;
   if (event?.type === "popstate" && pendingHistoryBack) {
     selectedScreenId = pendingHistoryBack.nextScreenId;
-    state.replace(pendingHistoryBack.state);
+    restoreBrowserNavigation(event.state?.[BROWSER_HISTORY_KEY], selectedScreenId);
     pendingHistoryBack = null;
   } else if (event?.type === "popstate") {
     restoreBrowserNavigation(event.state?.[BROWSER_HISTORY_KEY], selectedScreenId);
@@ -349,6 +351,17 @@ function isChangeOnlyControl(target) {
 window.addEventListener("popstate", renderFromUrl);
 document.addEventListener(SCREEN_NAVIGATE_EVENT, (event) => {
   navigate(event.detail.screenId, { replace: event.detail.replace === true });
+});
+document.addEventListener(FEED_STATUS_EVENT, (event) => {
+  const feedStatus = event.detail?.status;
+  if (!["ready", "loading", "error", "empty"].includes(feedStatus)) return;
+  state.replace({
+    ...interactionState,
+    selections: { ...(interactionState.selections || {}), feedStatus }
+  });
+  interactionState = state.getState();
+  renderScreen(interactionState.currentScreenId);
+  refreshCurrentBrowserEntry();
 });
 document.addEventListener("click", (event) => {
   const target = event.target.closest?.("[data-action]");

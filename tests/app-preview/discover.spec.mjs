@@ -9,7 +9,8 @@ const FLOW_B_IDS = Array.from({ length: 13 }, (_, index) => `b${index + 1}`);
 test.use({ viewport: { width: 393, height: 852 } });
 
 test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() => localStorage.clear());
+  await page.goto("/app-preview/");
+  await page.evaluate(() => localStorage.clear());
 });
 
 async function gotoScreen(page, screenId) {
@@ -124,11 +125,18 @@ test("discover and following feeds switch, filter, scroll, and open content", as
   await expect(page).toHaveURL(/screen=b2/);
   await page.getByRole("button", { name: "필터" }).click();
   await expect(page.locator("[data-testid=filter-menu]")).toBeVisible();
+  const allCount = await page.locator("[data-testid=media-tile]").count();
   await page.getByRole("button", { name: "조용한 곳" }).click();
   await expect(page.locator("[data-testid=filter-menu]")).toHaveCount(0);
+  const quietCount = await page.locator("[data-testid=media-tile]").count();
+  expect(quietCount).toBeGreaterThan(0);
+  expect(quietCount).toBeLessThan(allCount);
   await page.locator("[data-testid=discover-feed]").evaluate((element) => { element.scrollTop = 300; });
+  const selectedMediaId = await page.locator("[data-testid=media-tile]").first().getAttribute("data-media-id");
   await page.locator("[data-testid=media-tile]").first().click();
   await expect(page).toHaveURL(/screen=b4/);
+  const persisted = await page.evaluate(() => JSON.parse(localStorage.getItem("doripe_app_preview_v1")));
+  expect(persisted.selections.selectedMediaId).toBe(selectedMediaId);
 });
 
 test("content details expose working media, social, place, and route actions", async ({ page }) => {
@@ -141,6 +149,8 @@ test("content details expose working media, social, place, and route actions", a
   await expect(page).toHaveURL(/screen=b8/);
   await page.getByPlaceholder("댓글 추가하기").fill("다시 가고 싶어요");
   await page.getByRole("button", { name: "댓글 등록" }).click();
+  await expect(page.locator("[data-testid=comment-list]")).toContainText("다시 가고 싶어요");
+  await page.getByRole("button", { name: /댓글 좋아요/ }).first().click();
   await expect(page.locator("[data-testid=comment-list]")).toContainText("다시 가고 싶어요");
   await page.getByRole("button", { name: "댓글 닫기" }).click();
   await page.getByRole("button", { name: "장소 공식 화면" }).click();
@@ -185,6 +195,24 @@ test("detail sheet drag uses a threshold and preserves the selected place on can
   await expect(sheet).toHaveAttribute("data-sheet-state", "expanded");
 });
 
+test("detail sheet handle closes to its opener with keyboard or a downward drag", async ({ page }) => {
+  await gotoScreen(page, "b2");
+  await page.locator("[data-testid=media-tile]").first().click();
+  await expect(page).toHaveURL(/screen=b4/);
+  await page.getByRole("button", { name: "장소 상세 닫기" }).focus();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/screen=b2/);
+
+  await page.locator("[data-testid=media-tile]").first().click();
+  const handle = page.getByRole("button", { name: "장소 상세 닫기" });
+  const box = await handle.boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2, box.y + 90);
+  await page.mouse.up();
+  await expect(page).toHaveURL(/screen=b2/);
+});
+
 test("official place links to hours, media, related places, map, and browser back", async ({ page }) => {
   await gotoScreen(page, "b10");
   await page.getByRole("button", { name: "영업시간 보기" }).click();
@@ -197,21 +225,72 @@ test("official place links to hours, media, related places, map, and browser bac
   await expect(page).toHaveURL(/screen=b10/);
   await page.getByRole("button", { name: "관련 장소 전체보기" }).click();
   await expect(page).toHaveURL(/screen=b11/);
+  const originalPlaceName = await page.locator(".discover-related-query strong").textContent();
   await page.locator("[data-testid=related-place]").first().click();
   await expect(page).toHaveURL(/screen=b10/);
+  await page.goBack();
+  await expect(page.locator(".discover-related-query strong")).toHaveText(originalPlaceName);
 });
 
 test("profiles and following list use dynamic users and toggle follow state", async ({ page }) => {
   await gotoScreen(page, "b13");
   const row = page.locator("[data-testid=following-user]").first();
-  await row.getByRole("button", { name: "팔로우" }).click();
-  await expect(row.getByRole("button", { name: "언팔로우" })).toBeVisible();
+  await expect(page.locator(".discover-following-count")).toHaveText("6명 팔로잉");
   await row.getByRole("button", { name: /프로필 보기/ }).click();
   await expect(page).toHaveURL(/screen=b12/);
   await page.getByRole("button", { name: "언팔로우" }).click();
   await expect(page.getByRole("button", { name: "팔로우" })).toBeVisible();
   await page.locator("[data-testid=profile-content]").first().click();
   await expect(page).toHaveURL(/screen=b4/);
+});
+
+test("place and profile media screens never borrow unrelated media", async ({ page }) => {
+  await gotoScreen(page, "b11");
+  await page.locator("[data-testid=related-place]").first().click();
+  const selectedPlaceId = await page.locator("[data-testid=place-sheet]").getAttribute("data-place-id");
+  await page.getByRole("button", { name: "다른 사진 전체보기" }).click();
+  const otherPlaceIds = await page.locator("[data-testid=media-tile]").evaluateAll((tiles) => tiles.map((tile) => tile.dataset.placeId));
+  expect(otherPlaceIds).toHaveLength(3);
+  expect(new Set(otherPlaceIds)).toEqual(new Set([selectedPlaceId]));
+
+  await gotoScreen(page, "b12");
+  const selectedUser = await page.locator(".discover-profile-header h1").textContent();
+  const profileMedia = await page.locator("[data-testid=profile-content]").count();
+  expect(selectedUser).toBe("dori");
+  expect(profileMedia).toBeGreaterThan(0);
+});
+
+test("related-place navigation clears media from the previous place", async ({ page }) => {
+  await gotoScreen(page, "b4");
+  await page.getByRole("button", { name: /브런치가든 연남 열기/ }).click();
+  await expect(page).toHaveURL(/screen=b10/);
+  await expect(page.locator(".discover-detail-hero img")).toHaveAttribute("alt", /브런치가든 연남/);
+});
+
+test("feed collection exposes loading, error, and empty states", async ({ page }) => {
+  for (const [status, text] of [
+    ["loading", null],
+    ["error", "피드를 불러오지 못했어요"],
+    ["empty", "조건에 맞는 장소가 아직 없어요"]
+  ]) {
+    await page.goto("/app-preview/?screen=b2");
+    await page.evaluate((nextStatus) => {
+      const state = JSON.parse(localStorage.getItem("doripe_app_preview_v1"));
+      state.selections = { ...state.selections, feedStatus: nextStatus };
+      localStorage.setItem("doripe_app_preview_v1", JSON.stringify(state));
+    }, status);
+    await page.reload();
+    const feed = page.locator("[data-testid=discover-feed]");
+    await expect(feed).toHaveAttribute("data-feed-status", status);
+    if (text) await expect(feed).toContainText(text);
+    else await expect(feed.locator(".discover-feed-skeleton")).toHaveCount(6);
+    if (status === "error") {
+      await page.getByRole("button", { name: "피드 다시 시도" }).click();
+      await expect(page.locator("[data-testid=media-tile]").first()).toBeVisible();
+      await page.reload();
+      await expect(page.locator("[data-testid=media-tile]").first()).toBeVisible();
+    }
+  }
 });
 
 test("Flow B remains usable without crop or overlap at supported viewport sizes", async ({ page }) => {

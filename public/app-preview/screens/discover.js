@@ -6,6 +6,7 @@ const NODE_IDS = Object.freeze({
   b9: "446:1070", b10: "446:1106", b11: "446:2667",
   b12: "446:2792", b13: "446:3042"
 });
+const FEED_STATUS_EVENT = "app-preview:feed-status";
 
 const byId = (items, id) => items.find((item) => item.id === id);
 const selectedPlace = (state) => byId(PLACES, state?.selections?.selectedPlaceId) || PLACES[0];
@@ -187,7 +188,10 @@ const FEED_RECTS = Object.freeze({
 
 function mediaTile(media, height, rect) {
   const place = byId(PLACES, media.placeId);
-  const button = actionButton(`${place.name} 콘텐츠 열기`, "open-place", { placeId: place.id }, "discover-feed-tile");
+  const button = actionButton(`${place.name} 콘텐츠 열기`, "open-place", {
+    placeId: place.id,
+    mediaId: media.id
+  }, "discover-feed-tile");
   button.dataset.testid = "media-tile";
   button.style.setProperty("--tile-height", `${height}px`);
   if (rect) {
@@ -204,17 +208,48 @@ function masonryFeed(screenId, state) {
   const feed = element("div", "discover-feed");
   feed.dataset.testid = "discover-feed";
   feed.dataset.layout = screenId;
+  const feedStatus = state?.selections?.feedStatus || "ready";
+  if (feedStatus !== "ready") {
+    feed.dataset.feedStatus = feedStatus;
+    if (feedStatus === "loading") {
+      const timeout = setTimeout(() => {
+        if (feed.isConnected) document.dispatchEvent(new CustomEvent(FEED_STATUS_EVENT, { detail: { status: "error" } }));
+      }, 8000);
+      feed.addEventListener("app-preview:screen-teardown", () => clearTimeout(timeout), { once: true });
+      for (let index = 0; index < 6; index += 1) feed.append(element("span", "discover-feed-skeleton"));
+    } else if (feedStatus === "error") {
+      feed.append(feedStatusMessage("피드를 불러오지 못했어요", true));
+    } else {
+      feed.append(feedStatusMessage("조건에 맞는 장소가 아직 없어요"));
+    }
+    return feed;
+  }
   const filter = state?.selections?.feedFilter;
+  const filterTagId = filter === "quiet" ? "tag-quiet" : filter === "date" ? "tag-date" : null;
   const visibleMedia = MEDIA.slice(0, 13).filter((media) => {
     if (!filter || filter === "all" || filter === "menu") return true;
     const place = byId(PLACES, media.placeId);
-    return tagsForPlace(place).some((tag) => tag.group === "mood" || tag.group === "situation");
+    return filterTagId ? place.tagIds.includes(filterTagId) : true;
   });
   const rects = FEED_RECTS[screenId];
   visibleMedia.slice(0, rects.length).forEach((media, index) => feed.append(mediaTile(media, FEED_HEIGHTS[index], rects[index])));
   const spacer = element("span", "discover-feed__spacer");
   feed.append(spacer);
   return feed;
+}
+
+function feedStatusMessage(message, retryable = false) {
+  const status = element("div", "discover-feed-status");
+  status.append(element("p", "", message));
+  if (retryable) {
+    const retry = localButton("피드 다시 시도", "discover-feed-status__retry");
+    retry.textContent = "다시 시도";
+    retry.addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent(FEED_STATUS_EVENT, { detail: { status: "ready" } }));
+    });
+    status.append(retry);
+  }
+  return status;
 }
 
 function followingStrip() {
@@ -255,7 +290,14 @@ function renderOtherMedia(state) {
   const back = actionButton("뒤로 가기", "go-back", {}, "discover-circle-back");
   addBackIcon(back);
   root.append(back);
-  root.append(masonryFeed("b3", state));
+  const place = selectedPlace(state);
+  const feed = element("div", "discover-feed");
+  feed.dataset.testid = "discover-feed";
+  feed.dataset.layout = "b3";
+  mediaForPlace(place).forEach((media, index) => {
+    feed.append(mediaTile(media, FEED_HEIGHTS[index], FEED_RECTS.b3[index]));
+  });
+  root.append(feed);
   return root;
 }
 
@@ -325,7 +367,7 @@ function bindSheetGesture(sheet) {
   let startTime = 0;
   let active = false;
   sheet.addEventListener("pointerdown", (event) => {
-    if (event.target.closest("button, input")) return;
+    if (event.target.closest("button, input") && !event.target.closest(".discover-sheet-handle")) return;
     active = true;
     startY = event.clientY;
     startTime = performance.now();
@@ -337,7 +379,7 @@ function bindSheetGesture(sheet) {
     const distance = event.clientY - startY;
     const velocity = distance / Math.max(performance.now() - startTime, 1);
     if (distance < -56 || velocity < -0.65) sheet.dataset.sheetState = "expanded";
-    else if (distance > 56 || velocity > 0.65) sheet.dataset.sheetState = "collapsed";
+    else if (distance > 56 || velocity > 0.65) sheet.querySelector(".discover-sheet-handle")?.click();
   });
   sheet.addEventListener("pointercancel", () => { active = false; });
 }
@@ -348,7 +390,8 @@ function placeSheet(screenId, place, state) {
   sheet.dataset.placeId = place.id;
   sheet.dataset.sheetState = screenId === "b6" || screenId === "b10" ? "expanded" : "collapsed";
   if (["b5", "b6", "b10"].includes(screenId)) sheet.dataset.measureKey = "Sheet / background";
-  sheet.append(element("span", "discover-sheet-handle"), placeSummary(place, screenId));
+  const handle = actionButton("장소 상세 닫기", "close-place", {}, "discover-sheet-handle");
+  sheet.append(handle, placeSummary(place, screenId));
   sheet.append(
     infoRow("주소", place.address, "open-place-map", { placeId: place.id }, "⌖"),
     infoRow("영업시간", "매일 12:00 - 20:00", "open-business-hours", { placeId: place.id }, "◷"),
@@ -395,9 +438,7 @@ function placeSheet(screenId, place, state) {
   otherHeader.append(other);
   sheet.append(otherHeader);
   const mediaStrip = element("div", "discover-media-strip");
-  const stripMedia = screenId === "b10"
-    ? [...mediaForPlace(place), ...MEDIA.filter((item) => item.placeId !== place.id)].slice(1, 5)
-    : mediaForPlace(place).slice(1);
+  const stripMedia = mediaForPlace(place).slice(1, 5);
   stripMedia.forEach((media) => {
     const button = actionButton(`${media.alt} 보기`, "open-photo", { mediaId: media.id }, "discover-media-strip__item");
     const uploader = byId(USERS, media.userId);
@@ -458,7 +499,8 @@ function relatedMiniCards(place) {
 
 function renderPlaceDetail(screenId, state) {
   const place = selectedPlace(state);
-  const media = byId(MEDIA, state?.selections?.selectedMediaId) || mediaForPlace(place)[0];
+  const selectedMedia = byId(MEDIA, state?.selections?.selectedMediaId);
+  const media = selectedMedia?.placeId === place.id ? selectedMedia : mediaForPlace(place)[0];
   const root = screenRoot(screenId, "discover-detail-screen");
   if (screenId === "b4") root.dataset.measureKey = "Content / place detail screen";
   const heroButton = actionButton(`${place.name} 사진 확대`, "open-photo", { mediaId: media.id }, "discover-detail-hero");
@@ -526,8 +568,11 @@ function renderPhotoViewer(state) {
 
 function renderComments(state) {
   const place = selectedPlace(state);
-  const placeComments = COMMENTS.filter((comment) => comment.placeId === place.id);
-  const displayedComments = [...placeComments, ...COMMENTS.filter((comment) => comment.placeId !== place.id)].slice(0, 4);
+  const submittedComments = (state?.submittedComments || []).filter((comment) => comment.placeId === place.id);
+  const displayedComments = [
+    ...COMMENTS.filter((comment) => comment.placeId === place.id),
+    ...submittedComments
+  ];
   const root = screenRoot("b8", "discover-overlay-screen");
   root.dataset.measureKey = "overlay / black dim background";
   const sheet = element("section", "discover-comments-sheet");
@@ -535,22 +580,17 @@ function renderComments(state) {
   const close = actionButton("댓글 닫기", "close-comments", {}, "discover-circle-back");
   addBackIcon(close);
   const title = element("h1", "", "댓글");
-  title.append(element("span", "", ` ${displayedComments.length + (state?.form?.comment ? 1 : 0)}`));
+  title.append(element("span", "", ` ${displayedComments.length}`));
   const list = element("div", "discover-comments-list");
   list.dataset.testid = "comment-list";
   displayedComments.forEach((comment) => list.append(commentItem(comment, state)));
-  if (state?.form?.comment && state?.toast?.kind === "success") {
-    const submitted = element("article", "discover-comment");
-    submitted.append(element("strong", "", "나"), element("p", "", state.form.comment));
-    list.append(submitted);
-  }
   const composer = element("div", "discover-comment-composer");
   const input = element("input", "");
   input.type = "text";
   input.placeholder = "댓글 추가하기";
   input.value = state?.form?.comment || "";
   input.dataset.action = "update-comment";
-  const submit = actionButton("댓글 등록", "submit-comment", {}, "discover-submit-comment");
+  const submit = actionButton("댓글 등록", "submit-comment", { placeId: place.id }, "discover-submit-comment");
   submit.textContent = "↑";
   composer.append(input, submit);
   sheet.append(close, title, list, composer);
@@ -603,7 +643,7 @@ function renderRelatedPlaces(state) {
 function renderProfile(state) {
   const user = selectedUser(state);
   const content = MEDIA.filter((media) => media.userId === user.id);
-  const items = content.length >= 7 ? content : [...content, ...MEDIA].slice(0, 7);
+  const items = content.slice(0, 7);
   const root = screenRoot("b12", "discover-profile-screen");
   const back = actionButton("뒤로 가기", "go-back", {}, "discover-circle-back");
   addBackIcon(back);
@@ -625,7 +665,10 @@ function renderProfile(state) {
   });
   const grid = element("div", "discover-profile-grid");
   items.forEach((media, index) => {
-    const button = actionButton(`${media.alt} 콘텐츠 열기`, "open-content", { placeId: media.placeId }, "discover-profile-content");
+    const button = actionButton(`${media.alt} 콘텐츠 열기`, "open-content", {
+      placeId: media.placeId,
+      mediaId: media.id
+    }, "discover-profile-content");
     button.dataset.testid = "profile-content";
     button.append(semanticMedia(media, "", { width: index % 2 ? 164 : 173, height: FEED_HEIGHTS[index] || 150 }));
     grid.append(button);
@@ -640,19 +683,21 @@ function renderFollowing(state) {
   const back = actionButton("뒤로 가기", "go-back", {}, "discover-square-back");
   addBackIcon(back);
   const title = element("h1", "", "팔로잉 목록");
-  root.append(back, title, element("p", "discover-following-count", `${USERS.length * 2}명 팔로잉`));
+  const followedIds = new Set(state?.followedUserIds || []);
+  const followedUsers = USERS.filter((user) => followedIds.has(user.id));
+  root.append(back, title, element("p", "discover-following-count", `${followedUsers.length}명 팔로잉`));
   const list = element("div", "discover-following-list");
-  USERS.forEach((user) => {
+  if (followedUsers.length === 0) list.append(element("p", "discover-following-empty", "아직 팔로우한 계정이 없어요"));
+  followedUsers.forEach((user) => {
     const row = element("article", "discover-following-user");
     row.dataset.testid = "following-user";
     const profile = actionButton(`${user.handle} 프로필 보기`, "open-profile", { userId: user.id }, "discover-following-user__profile");
     profile.append(avatarImage(user), element("strong", "", user.handle), element("span", "", user.bio));
     const photos = element("div", "discover-following-user__photos");
-    MEDIA.filter((media) => media.userId === user.id).concat(MEDIA).slice(0, 3).forEach((media) => photos.append(semanticMedia(media, "", { width: 43, height: 43 })));
+    MEDIA.filter((media) => media.userId === user.id).slice(0, 3).forEach((media) => photos.append(semanticMedia(media, "", { width: 43, height: 43 })));
     profile.append(photos);
-    const followed = state?.followedUserIds?.includes(user.id);
-    const follow = actionButton(followed ? "언팔로우" : "팔로우", "toggle-follow", { userId: user.id }, "discover-follow-button is-outline");
-    follow.textContent = followed ? "팔로잉" : "팔로우";
+    const follow = actionButton("언팔로우", "toggle-follow", { userId: user.id }, "discover-follow-button is-outline");
+    follow.textContent = "팔로잉";
     row.append(profile, follow);
     list.append(row);
   });

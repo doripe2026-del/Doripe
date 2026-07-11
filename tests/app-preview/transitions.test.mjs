@@ -356,7 +356,10 @@ test("save, follow, and share actions implement the brief contract", () => {
     "place-1"
   );
   assert.equal(
-    dispatchAction("b12", "toggle-follow", { userId: "user-1" }).state.followedUserIds[0],
+    dispatchAction("b12", "toggle-follow", {
+      state: { ...structuredClone(DEFAULT_STATE), followedUserIds: [] },
+      userId: "user-1"
+    }).state.followedUserIds[0],
     "user-1"
   );
   assert.equal(
@@ -391,6 +394,35 @@ test("state changes are immutable and same-screen selections do not navigate", (
   assert.equal(selected.state.selections.gender, "female");
   assert.deepEqual(state.selections, {});
   assert.equal(saved.state.reviewStatus.b1, "complete");
+});
+
+test("opening feed media preserves both the selected place and selected media", () => {
+  const result = dispatchAction("b2", "open-place", {
+    placeId: "place-2",
+    mediaId: "media-5"
+  });
+
+  assert.equal(result.nextScreenId, "b4");
+  assert.equal(result.state.selections.selectedPlaceId, "place-2");
+  assert.equal(result.state.selections.selectedMediaId, "media-5");
+});
+
+test("submitted comments persist independently from the composer field", () => {
+  const state = {
+    ...structuredClone(DEFAULT_STATE),
+    currentScreenId: "b8",
+    selections: { selectedPlaceId: "place-1" },
+    form: { comment: "다시 가고 싶어요" }
+  };
+  const submitted = dispatchAction("b8", "submit-comment", { state });
+  const liked = dispatchAction("b8", "toggle-comment-like", {
+    state: submitted.state,
+    commentId: "comment-1"
+  });
+
+  assert.equal(submitted.state.form.comment, "");
+  assert.equal(submitted.state.submittedComments[0].body, "다시 가고 싶어요");
+  assert.equal(liked.state.submittedComments[0].body, "다시 가고 싶어요");
 });
 
 test("unknown screens and actions return an error toast instead of throwing", () => {

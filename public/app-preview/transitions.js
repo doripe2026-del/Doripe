@@ -71,6 +71,16 @@ const selectAndNavigate = (nextScreenId, selectionId, payloadKey) => (state, pay
   return navigateTo(nextScreenId)(nextState);
 };
 
+const selectPlaceMediaAndNavigate = (nextScreenId) => (state, payload) => {
+  const placeId = payload?.placeId ?? payload?.id;
+  const mediaId = payload?.mediaId;
+  const selections = { ...(state.selections || {}) };
+  if (typeof placeId === "string" && placeId.length > 0) selections.selectedPlaceId = placeId;
+  if (typeof mediaId === "string" && mediaId.length > 0) selections.selectedMediaId = mediaId;
+  else delete selections.selectedMediaId;
+  return navigateTo(nextScreenId)({ ...state, selections });
+};
+
 const clearSelection = (selectionId) => (state) => {
   const selections = { ...(state.selections || {}) };
   delete selections[selectionId];
@@ -310,6 +320,30 @@ const toggleCommentLike = toggleListValue("likedCommentIds", "commentId");
 const addRoutePlace = addListValue("routePlaceIds", "placeId");
 const noChange = (state) => idleResult(state);
 
+function submitComment(state, payload) {
+  const body = state.form?.comment?.trim();
+  const placeId = state.selections?.selectedPlaceId || payload?.placeId;
+  if (!body || !placeId) return errorResult(state, "댓글을 입력해 주세요");
+  const submittedComments = state.submittedComments || [];
+  const comment = {
+    id: `local-comment-${submittedComments.length + 1}`,
+    placeId,
+    userId: "user-1",
+    body,
+    likeCount: 0,
+    createdAt: "local"
+  };
+  return {
+    state: {
+      ...state,
+      submittedComments: [...submittedComments, comment],
+      form: { ...(state.form || {}), comment: "" },
+      toast: { kind: "success", message: "댓글을 등록했어요", duration: 2500 }
+    },
+    effect: "none"
+  };
+}
+
 function defineTransitions(screenId, handlers) {
   const expected = ACTIONS_BY_SCREEN[screenId];
   const actual = Object.keys(handlers);
@@ -388,7 +422,7 @@ export const TRANSITIONS = Object.freeze({
     "open-filter": selectValue("feedFilter"),
     "open-following-list": navigateTo("b13"),
     "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
-    "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId"),
+    "open-place": selectPlaceMediaAndNavigate("b4"),
     "create-route": navigateTo("d1"),
     "scroll-to-top": noChange
   }),
@@ -396,17 +430,17 @@ export const TRANSITIONS = Object.freeze({
     "show-following": navigateTo("b1"),
     "show-discover": selectValue("feedTab"),
     "open-filter": selectValue("feedFilter"),
-    "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId")
+    "open-place": selectPlaceMediaAndNavigate("b4")
   }),
   b3: defineTransitions("b3", {
     "go-back": navigateBack,
-    "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId")
+    "open-place": selectPlaceMediaAndNavigate("b4")
   }),
   b4: defineTransitions("b4", {
     "close-place": navigateBack,
     "open-photo": selectAndNavigate("b7", "selectedMediaId", "mediaId"),
     "toggle-media-like": toggleMediaLike,
-    "open-comments": navigateTo("b8"),
+    "open-comments": selectAndNavigate("b8", "selectedPlaceId", "placeId"),
     "open-business-hours": navigateTo("b9"),
     "open-place-map": selectAndNavigate("c4", "selectedPlaceId", "placeId"),
     "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
@@ -414,14 +448,14 @@ export const TRANSITIONS = Object.freeze({
     "save-place": savePlace,
     "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
     "open-official-place": selectAndNavigate("b10", "selectedPlaceId", "placeId"),
-    "open-related-place": selectAndNavigate("b10", "selectedPlaceId", "placeId"),
+    "open-related-place": selectPlaceMediaAndNavigate("b10"),
     "toggle-comment-like": toggleCommentLike
   }),
   b5: defineTransitions("b5", {
     "close-place": navigateBack,
     "open-photo": selectAndNavigate("b7", "selectedMediaId", "mediaId"),
     "toggle-media-like": toggleMediaLike,
-    "open-comments": navigateTo("b8"),
+    "open-comments": selectAndNavigate("b8", "selectedPlaceId", "placeId"),
     "open-business-hours": navigateTo("b9"),
     "open-place-map": selectAndNavigate("c4", "selectedPlaceId", "placeId"),
     "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
@@ -434,14 +468,14 @@ export const TRANSITIONS = Object.freeze({
     "close-place": navigateBack,
     "open-photo": selectAndNavigate("b7", "selectedMediaId", "mediaId"),
     "toggle-media-like": toggleMediaLike,
-    "open-comments": navigateTo("b8"),
+    "open-comments": selectAndNavigate("b8", "selectedPlaceId", "placeId"),
     "open-business-hours": navigateTo("b9"),
     "open-place-map": selectAndNavigate("c4", "selectedPlaceId", "placeId"),
     "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
     "save-place": savePlace,
     "open-official-place": selectAndNavigate("b10", "selectedPlaceId", "placeId"),
-    "open-related-place": selectAndNavigate("b10", "selectedPlaceId", "placeId"),
+    "open-related-place": selectPlaceMediaAndNavigate("b10"),
     "toggle-comment-like": toggleCommentLike,
     "create-route": navigateTo("d1")
   }),
@@ -453,7 +487,7 @@ export const TRANSITIONS = Object.freeze({
   b8: defineTransitions("b8", {
     "close-comments": navigateBack,
     "update-comment": updateComment,
-    "submit-comment": showToast("success", "댓글을 등록했어요"),
+    "submit-comment": submitComment,
     "toggle-comment-like": toggleCommentLike,
     "open-profile": selectAndNavigate("b12", "selectedUserId", "userId")
   }),
@@ -462,7 +496,7 @@ export const TRANSITIONS = Object.freeze({
     "close-place": navigateBack,
     "open-photo": selectAndNavigate("b7", "selectedMediaId", "mediaId"),
     "toggle-media-like": toggleMediaLike,
-    "open-comments": navigateTo("b8"),
+    "open-comments": selectAndNavigate("b8", "selectedPlaceId", "placeId"),
     "open-business-hours": navigateTo("b9"),
     "open-place-map": selectAndNavigate("c4", "selectedPlaceId", "placeId"),
     "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
@@ -476,13 +510,13 @@ export const TRANSITIONS = Object.freeze({
   }),
   b11: defineTransitions("b11", {
     "go-back": navigateBack,
-    "open-place": selectAndNavigate("b10", "selectedPlaceId", "placeId"),
+    "open-place": selectPlaceMediaAndNavigate("b10"),
     "toggle-place-like": togglePlaceLike
   }),
   b12: defineTransitions("b12", {
     "go-back": navigateBack,
     "toggle-follow": toggleFollow,
-    "open-content": selectAndNavigate("b4", "selectedPlaceId", "placeId")
+    "open-content": selectPlaceMediaAndNavigate("b4")
   }),
   b13: defineTransitions("b13", {
     "go-back": navigateBack,

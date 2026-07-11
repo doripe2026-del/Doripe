@@ -1,4 +1,7 @@
 export const PREVIEW_STORAGE_KEY = "doripe_app_preview_v1";
+const INITIAL_FOLLOWED_USER_IDS = Object.freeze([
+  "user-1", "user-2", "user-3", "user-4", "user-5", "user-6"
+]);
 
 export const DEFAULT_STATE = Object.freeze({
   currentScreenId: "a1",
@@ -10,7 +13,8 @@ export const DEFAULT_STATE = Object.freeze({
   likedMediaIds: [],
   likedPlaceIds: [],
   likedCommentIds: [],
-  followedUserIds: [],
+  submittedComments: [],
+  followedUserIds: INITIAL_FOLLOWED_USER_IDS,
   routePlaceIds: [],
   overlays: [],
   toast: null
@@ -27,7 +31,8 @@ function cloneDefaultState() {
     likedMediaIds: [],
     likedPlaceIds: [],
     likedCommentIds: [],
-    followedUserIds: [],
+    submittedComments: [],
+    followedUserIds: [...INITIAL_FOLLOWED_USER_IDS],
     routePlaceIds: [],
     overlays: []
   };
