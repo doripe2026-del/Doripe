@@ -250,6 +250,87 @@ export function resolveFlowACoverage({
   };
 }
 
+const FLOW_B_COVERAGE_REASONS = new Set([
+  "descendant-owned-by-semantic-composite",
+  "dynamic-media-owned-by-semantic-slot"
+]);
+
+export function validateFlowBCoverageManifest({ manifest, inventory, measurements }) {
+  if (manifest?.version !== 1 || !Array.isArray(manifest.rendered) || !Array.isArray(manifest.classifications)) {
+    throw new Error("Invalid Flow B coverage manifest");
+  }
+
+  const screens = new Map(inventory
+    .filter((screen) => screen.group === "B")
+    .map((screen) => [screen.id, screen]));
+  const coverage = new Map();
+  const claim = (screenId, figmaNodeId, source, kind) => {
+    const screen = screens.get(screenId);
+    if (!screen) throw new Error(`Unknown Flow B coverage screen: ${screenId}`);
+    if (figmaNodeId !== screen.nodeId || measurements[screenId]?.nodeId !== figmaNodeId) {
+      throw new Error(`Flow B coverage node mismatch: ${screenId}/${figmaNodeId}`);
+    }
+    if (!Object.hasOwn(measurements[screenId].elements, source)) {
+      throw new Error(`Unknown Flow B measurement coverage source: ${screenId}/${source}`);
+    }
+    const key = `${screenId}\0${source}`;
+    if (coverage.has(key)) throw new Error(`Duplicate Flow B measurement coverage: ${screenId}/${source}`);
+    coverage.set(key, kind);
+  };
+
+  for (const record of manifest.rendered) {
+    if (!Array.isArray(record.sources) || record.sources.length === 0) {
+      throw new Error(`Flow B rendered coverage has no sources: ${record.screenId}`);
+    }
+    for (const source of record.sources) claim(record.screenId, record.figmaNodeId, source, "rendered");
+  }
+  for (const record of manifest.classifications) {
+    claim(record.screenId, record.figmaNodeId, record.source, "classified");
+    if (!FLOW_B_COVERAGE_REASONS.has(record.reason)) {
+      throw new Error(`Unsupported Flow B coverage reason: ${record.screenId}/${record.source}/${record.reason}`);
+    }
+    if (typeof record.evidence !== "string" || !record.evidence.includes(record.screenId.toUpperCase()) || !record.evidence.includes(record.source) || record.evidence.length < 40) {
+      throw new Error(`Missing narrow Flow B coverage evidence: ${record.screenId}/${record.source}`);
+    }
+  }
+  for (const [screenId, screen] of screens) {
+    for (const source of Object.keys(measurements[screenId].elements)) {
+      if (!coverage.has(`${screenId}\0${source}`)) {
+        throw new Error(`Flow B measurement absent from rendered DOM and coverage manifest: ${screenId}/${source}`);
+      }
+    }
+    const rendered = manifest.rendered.find((record) => record.screenId === screenId);
+    if (!rendered || rendered.figmaNodeId !== screen.nodeId) {
+      throw new Error(`Missing Flow B rendered coverage record: ${screenId}`);
+    }
+  }
+  return coverage;
+}
+
+export function resolveFlowBCoverage({ screenId, nodeId, measurementKeys, renderedSources, classifications }) {
+  const renderedCounts = new Map();
+  for (const source of renderedSources) renderedCounts.set(source, (renderedCounts.get(source) || 0) + 1);
+  const classified = new Map(classifications
+    .filter((record) => record.screenId === screenId)
+    .map((record) => [record.source, record]));
+
+  for (const source of measurementKeys) {
+    const renderedCount = renderedCounts.get(source) || 0;
+    const classification = classified.get(source);
+    if (renderedCount > 1) throw new Error(`Flow B measurement has multiple DOM owners: ${screenId}/${source}`);
+    if (renderedCount === 0 && !classification) throw new Error(`Flow B measurement absent from rendered DOM and coverage manifest: ${screenId}/${source}`);
+    if (renderedCount === 1 && classification) throw new Error(`Flow B measurement is both rendered and classified: ${screenId}/${source}`);
+    if (classification && classification.figmaNodeId !== nodeId) throw new Error(`Flow B classification node mismatch: ${screenId}/${source}`);
+  }
+  for (const source of renderedCounts.keys()) {
+    if (!measurementKeys.includes(source)) throw new Error(`Unknown rendered Flow B measurement: ${screenId}/${source}`);
+  }
+  return {
+    rendered: measurementKeys.filter((source) => renderedCounts.has(source)),
+    classified: measurementKeys.filter((source) => classified.has(source))
+  };
+}
+
 export function validateFlowAAssetPolicy({
   policy,
   flowAScreenIds,

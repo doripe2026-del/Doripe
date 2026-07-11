@@ -8,6 +8,8 @@ export const DEFAULT_STATE = Object.freeze({
   selections: {},
   savedPlaceIds: [],
   likedMediaIds: [],
+  likedPlaceIds: [],
+  likedCommentIds: [],
   followedUserIds: [],
   routePlaceIds: [],
   overlays: [],
@@ -23,6 +25,8 @@ function cloneDefaultState() {
     selections: {},
     savedPlaceIds: [],
     likedMediaIds: [],
+    likedPlaceIds: [],
+    likedCommentIds: [],
     followedUserIds: [],
     routePlaceIds: [],
     overlays: []

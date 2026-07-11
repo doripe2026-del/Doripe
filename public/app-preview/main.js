@@ -93,7 +93,7 @@ function renderReviewList() {
 }
 
 function renderEvidenceScreen(screen) {
-  const renderedScreen = screen.render();
+  const renderedScreen = screen.render(interactionState);
   teardownRenderedScreen();
   phoneRoot.replaceChildren(renderedScreen);
   persistVisibleDefaults(renderedScreen);
@@ -276,7 +276,7 @@ async function runDomEffect(effect, screenId, payload) {
   }
 }
 
-function dispatchTargetAction(target) {
+function dispatchTargetAction(target, { rerender = true } = {}) {
   const actionId = target.dataset.action;
   const screenId = target.closest("[data-screen-id]")?.dataset.screenId
     || interactionState.currentScreenId;
@@ -297,6 +297,7 @@ function dispatchTargetAction(target) {
       writeScreenIdToUrl(result.nextScreenId, { replace: result.historyMode === "back" });
     }
   } else {
+    if (rerender) renderScreen(screenId);
     refreshCurrentBrowserEntry();
   }
   void runDomEffect(result.effect, screenId, payload);
@@ -364,7 +365,7 @@ document.addEventListener("input", (event) => {
   const target = event.target.closest?.("[data-action]");
   if (!target || handleReviewAction(target.dataset.action, target.getAttribute("data-id"))) return;
   if (isChangeOnlyControl(target)) return;
-  dispatchTargetAction(target);
+  dispatchTargetAction(target, { rerender: false });
 });
 
 document.addEventListener("change", (event) => {

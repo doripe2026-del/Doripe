@@ -8,12 +8,12 @@ function freezeItems(items) {
 }
 
 export const USERS = freezeItems([
-  { id: "user-1", handle: "dori", name: "도리", avatarUrl: "/app-preview/assets/references/e1.png" },
-  { id: "user-2", handle: "yeon_", name: "연", avatarUrl: "/app-preview/assets/references/e7.png" },
-  { id: "user-3", handle: "minsu", name: "민수", avatarUrl: "/app-preview/assets/references/e7.png" },
-  { id: "user-4", handle: "hyejin", name: "혜진", avatarUrl: "/app-preview/assets/references/e7.png" },
-  { id: "user-5", handle: "jia", name: "지아", avatarUrl: "/app-preview/assets/references/e7.png" },
-  { id: "user-6", handle: "sua", name: "수아", avatarUrl: "/app-preview/assets/references/e7.png" }
+  { id: "user-1", handle: "dori", name: "도리", bio: "연남과 망원의 좋은 장면을 모아요", avatarUrl: "/app-preview/assets/discover/avatar-figma-dori.svg" },
+  { id: "user-2", handle: "yeon_", name: "연", bio: "연남동 장소 큐레이션", avatarUrl: "/app-preview/assets/discover/avatar-2.png" },
+  { id: "user-3", handle: "minsu", name: "민수", bio: "맛집과 카페를 떠돌아요", avatarUrl: "/app-preview/assets/discover/avatar-3.png" },
+  { id: "user-4", handle: "hyejin", name: "혜진", bio: "따뜻한 공간을 좋아해요", avatarUrl: "/app-preview/assets/discover/avatar-1.png" },
+  { id: "user-5", handle: "jia", name: "지아", bio: "일상 속 작은 여행을 기록해요", avatarUrl: "/app-preview/assets/discover/avatar-2.png" },
+  { id: "user-6", handle: "sua", name: "수아", bio: "감각적인 장소를 담아요", avatarUrl: "/app-preview/assets/discover/avatar-3.png" }
 ]);
 
 export const TAGS = freezeItems([
@@ -60,7 +60,7 @@ const placeSpecs = [
   { id: "place-12", name: "앤티크 커피", userId: "user-5", tagIds: ["tag-cafe-dessert", "tag-dark", "tag-walk-ten-minutes"], address: "서울 마포구 연희로 25", latitude: 37.5609, longitude: 126.9281 }
 ];
 
-const referenceScreens = ["b4", "b5", "b6", "b7", "b10", "c3", "c4", "d6", "d8", "d9", "d12", "d14"];
+const discoverAssets = ["feed-1", "feed-2", "feed-3", "feed-4", "feed-5", "feed-6"];
 
 export const MEDIA = freezeItems(placeSpecs.flatMap((place, placeIndex) => (
   [0, 1, 2].map((offset) => {
@@ -70,7 +70,7 @@ export const MEDIA = freezeItems(placeSpecs.flatMap((place, placeIndex) => (
       placeId: place.id,
       userId: USERS[(placeIndex + offset) % USERS.length].id,
       kind: offset === 2 && placeIndex % 3 === 0 ? "video" : "photo",
-      src: `/app-preview/assets/references/${referenceScreens[placeIndex]}.png`,
+      src: `/app-preview/assets/discover/${discoverAssets[(placeIndex * 3 + offset) % discoverAssets.length]}.png`,
       alt: `${place.name} ${offset + 1}`,
       createdAt: `2026-06-${String((placeIndex * 2 + offset) % 28 + 1).padStart(2, "0")}T09:00:00.000Z`
     };

@@ -534,6 +534,7 @@ test("main owns delegated action events and keeps sharing as a DOM effect", asyn
     source.indexOf('document.addEventListener("change"'),
     source.indexOf('document.addEventListener("keydown"')
   );
-  assert.ok(inputHandler.indexOf("isChangeOnlyControl(target)") < inputHandler.indexOf("dispatchTargetAction(target)"));
+  assert.ok(inputHandler.indexOf("isChangeOnlyControl(target)") < inputHandler.indexOf("dispatchTargetAction(target, { rerender: false })"));
+  assert.match(inputHandler, /dispatchTargetAction\(target, \{ rerender: false \}\)/);
   assert.ok(changeHandler.indexOf("!isChangeOnlyControl(target)") < changeHandler.indexOf("dispatchTargetAction(target)"));
 });

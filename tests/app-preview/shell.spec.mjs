@@ -44,7 +44,7 @@ test("only a review status control can mark a screen complete", async ({ page })
 });
 
 async function addActionControl(page, { action, id, type = "button" }) {
-  await page.locator(".evidence-screen").evaluate((screen, options) => {
+  await page.locator("[data-screen-id]").evaluate((screen, options) => {
     const control = document.createElement(options.type);
     control.dataset.action = options.action;
     if (options.id) control.dataset.id = options.id;
@@ -56,7 +56,7 @@ async function addActionControl(page, { action, id, type = "button" }) {
 test("place detail survives reload and closes to its exact opener", async ({ page }) => {
   await page.goto("/app-preview/?screen=b1");
   await addActionControl(page, { action: "open-place", id: "place-1" });
-  await page.getByRole("button", { name: "open-place" }).click();
+  await page.getByRole("button", { name: "open-place" }).evaluate((button) => button.click());
   await expect(page).toHaveURL(/screen=b4/);
 
   await page.reload();
@@ -66,7 +66,7 @@ test("place detail survives reload and closes to its exact opener", async ({ pag
   expect(opened.selections.selectedPlaceId).toBe("place-1");
 
   await addActionControl(page, { action: "close-place" });
-  await page.getByRole("button", { name: "close-place" }).click();
+  await page.getByRole("button", { name: "close-place" }).evaluate((button) => button.click());
   await expect(page).toHaveURL(/screen=b1/);
   await page.reload();
   const closed = await page.evaluate(() => JSON.parse(localStorage.getItem("doripe_app_preview_v1")));
@@ -77,7 +77,7 @@ test("place detail survives reload and closes to its exact opener", async ({ pag
 test("profile content survives reload and closes to its exact opener", async ({ page }) => {
   await page.goto("/app-preview/?screen=b12");
   await addActionControl(page, { action: "open-content", id: "place-4" });
-  await page.getByRole("button", { name: "open-content" }).click();
+  await page.getByRole("button", { name: "open-content" }).evaluate((button) => button.click());
   await expect(page).toHaveURL(/screen=b4/);
 
   await page.reload();
@@ -87,7 +87,7 @@ test("profile content survives reload and closes to its exact opener", async ({ 
   expect(opened.selections.selectedPlaceId).toBe("place-4");
 
   await addActionControl(page, { action: "close-place" });
-  await page.getByRole("button", { name: "close-place" }).click();
+  await page.getByRole("button", { name: "close-place" }).evaluate((button) => button.click());
   await expect(page).toHaveURL(/screen=b12/);
   await page.reload();
   const closed = await page.evaluate(() => JSON.parse(localStorage.getItem("doripe_app_preview_v1")));

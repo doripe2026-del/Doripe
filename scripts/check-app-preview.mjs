@@ -6,6 +6,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import {
   validateFlowACoverageManifest,
+  validateFlowBCoverageManifest,
   validateFlowAAssetPolicy,
   validateFlowALiveEvidence,
   validateFlowBLiveEvidence
@@ -26,6 +27,7 @@ const registryFiles = [
   "public/app-preview/figma/flow-a-coverage-manifest.json",
   "public/app-preview/figma/flow-a-live-evidence.json",
   "public/app-preview/figma/flow-b-live-evidence.json",
+  "public/app-preview/figma/flow-b-coverage-manifest.json",
   "public/app-preview/figma/screen-inventory.json",
   "public/app-preview/figma/screen-measurements.json",
   "public/app-preview/figma/visual-masks.json"
@@ -99,6 +101,7 @@ const flowAAssetPolicy = registries.get("public/app-preview/figma/flow-a-asset-p
 const flowACoverageManifest = registries.get("public/app-preview/figma/flow-a-coverage-manifest.json");
 const flowALiveEvidence = registries.get("public/app-preview/figma/flow-a-live-evidence.json");
 const flowBLiveEvidence = registries.get("public/app-preview/figma/flow-b-live-evidence.json");
+const flowBCoverageManifest = registries.get("public/app-preview/figma/flow-b-coverage-manifest.json");
 const inventoryIds = inventory.map((screen) => screen.id);
 const sortedInventoryIds = [...inventoryIds].sort();
 
@@ -126,6 +129,7 @@ for (const record of [...actionContract.actions, ...actionContract.nonInteractiv
 }
 
 validateFlowACoverageManifest({ manifest: flowACoverageManifest, inventory, measurements });
+validateFlowBCoverageManifest({ manifest: flowBCoverageManifest, inventory, measurements });
 for (const record of actionContract.actions) {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(record.actionId)) {
     throw new Error(`Invalid action ID: ${record.screenId}/${record.actionId}`);

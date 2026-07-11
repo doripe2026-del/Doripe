@@ -83,12 +83,26 @@ test("Flow B references match the current read-only Figma capture registry", asy
   }), /missing screen/);
 });
 
-test("Flow B measurements and masks cover exact frame geometry without masking text or controls", () => {
+test("Flow B measurements and masks cover exact frame geometry and only mask dynamic content", () => {
+  const overlaps = (left, right) => (
+    left.x < right.x + right.width
+    && right.x < left.x + left.width
+    && left.y < right.y + right.height
+    && right.y < left.y + left.height
+  );
+  const dynamicSource = /(photo|media|avatar|data\/|user|username|bio|comment|tag|chip|count|stat num|creator|caption|place name|related-place|distance|meta|pill|walk time|following|filter|segment|save|route|address|opening-hours|menu)/i;
+
   for (const [screenId, nodeId] of expectedFlowB) {
     assert.equal(measurements[screenId].nodeId, nodeId);
     assert.deepEqual(measurements[screenId].frame, { width: 393, height: 852 });
     assert.ok(Array.isArray(masks[screenId]));
-    assert.ok(masks[screenId].every(({ reason }) => ["photo", "video"].includes(reason)), screenId);
+    assert.ok(masks[screenId].every(({ reason }) => ["photo", "video", "user-generated-text"].includes(reason)), screenId);
+    for (const mask of masks[screenId].filter(({ reason }) => reason === "user-generated-text")) {
+      const measuredDynamicRegions = Object.entries(measurements[screenId].elements)
+        .filter(([source]) => dynamicSource.test(source))
+        .map(([, rect]) => rect);
+      assert.ok(measuredDynamicRegions.some((rect) => overlaps(mask, rect)), `${screenId}/${JSON.stringify(mask)}`);
+    }
   }
 });
 
