@@ -389,7 +389,6 @@ export const TRANSITIONS = Object.freeze({
     "open-following-list": navigateTo("b13"),
     "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
     "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId"),
-    "save-place": savePlace,
     "create-route": navigateTo("d1"),
     "scroll-to-top": noChange
   }),
@@ -409,7 +408,7 @@ export const TRANSITIONS = Object.freeze({
     "toggle-media-like": toggleMediaLike,
     "open-comments": navigateTo("b8"),
     "open-business-hours": navigateTo("b9"),
-    "open-place-map": selectAndNavigate("c5", "selectedPlaceId", "placeId"),
+    "open-place-map": selectAndNavigate("c4", "selectedPlaceId", "placeId"),
     "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
     "save-place": savePlace,
@@ -424,7 +423,7 @@ export const TRANSITIONS = Object.freeze({
     "toggle-media-like": toggleMediaLike,
     "open-comments": navigateTo("b8"),
     "open-business-hours": navigateTo("b9"),
-    "open-place-map": selectAndNavigate("c5", "selectedPlaceId", "placeId"),
+    "open-place-map": selectAndNavigate("c4", "selectedPlaceId", "placeId"),
     "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
     "save-place": savePlace,
@@ -437,7 +436,7 @@ export const TRANSITIONS = Object.freeze({
     "toggle-media-like": toggleMediaLike,
     "open-comments": navigateTo("b8"),
     "open-business-hours": navigateTo("b9"),
-    "open-place-map": selectAndNavigate("c5", "selectedPlaceId", "placeId"),
+    "open-place-map": selectAndNavigate("c4", "selectedPlaceId", "placeId"),
     "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
     "save-place": savePlace,
@@ -465,12 +464,12 @@ export const TRANSITIONS = Object.freeze({
     "toggle-media-like": toggleMediaLike,
     "open-comments": navigateTo("b8"),
     "open-business-hours": navigateTo("b9"),
-    "open-place-map": selectAndNavigate("c5", "selectedPlaceId", "placeId"),
+    "open-place-map": selectAndNavigate("c4", "selectedPlaceId", "placeId"),
     "open-menu": openOverlay("place-menu", "selectedPlaceId", "placeId"),
     "open-share": shareTarget("place"),
     "save-place": savePlace,
     "toggle-comment-like": toggleCommentLike,
-    "create-route": navigateTo("d1"),
+    "create-route": navigateTo("d4"),
     "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
     "open-other-media": navigateTo("b3"),
     "open-related-places": navigateTo("b11")
@@ -491,125 +490,118 @@ export const TRANSITIONS = Object.freeze({
     "open-profile": selectAndNavigate("b12", "selectedUserId", "userId")
   }),
   c1: defineTransitions("c1", {
-    "select-situation": selectValue("situation"),
-    "select-time": selectValue("time"),
-    "select-mood": selectValue("mood"),
-    "apply-filters": navigateTo("c3"),
-    "reset-filters": resetFilterSelections
+    "show-saved-places": selectValue("savedTab"),
+    "show-saved-routes": navigateTo("c2"),
+    "select-filter-tag": selectValue("savedFilter"),
+    "open-place": selectAndNavigate("c4", "selectedPlaceId", "placeId"),
+    "add-place-to-route": addRoutePlace
   }),
   c2: defineTransitions("c2", {
+    "show-saved-places": navigateTo("c1"),
+    "show-saved-routes": selectValue("savedTab"),
+    "select-filter-tag": selectValue("savedFilter"),
+    "open-route-map": openOverlay("saved-route-map", "selectedRouteId", "routeId"),
+    "open-route": selectAndNavigate("c6", "selectedRouteId", "routeId")
+  }),
+  c3: defineTransitions("c3", {
     "select-situation": selectValue("situation"),
     "select-time": selectValue("time"),
     "select-mood": selectValue("mood"),
-    "apply-filters": navigateTo("c3"),
+    "apply-filters": navigateTo("c1"),
     "reset-filters": resetFilterSelections
   }),
-  c3: defineTransitions("c3", {
+  c4: defineTransitions("c4", {
+    "go-back": navigateBack,
+    "close-place-card": clearSelection("selectedPlaceId"),
+    "locate-user": noChange,
+    "open-place": selectAndNavigate("b10", "selectedPlaceId", "placeId")
+  }),
+  c6: defineTransitions("c6", {
+    "go-back": navigateBack,
+    "open-share": shareTarget("route"),
+    "start-navigation": openOverlay("external-map"),
+    "replace-route-place": selectAndNavigate("c7", "selectedPlaceId", "placeId"),
+    "open-place": selectAndNavigate("b10", "selectedPlaceId", "placeId")
+  }),
+  c7: defineTransitions("c7", {
     "go-back": navigateBack,
     "select-filter-tag": selectValue("savedFilter"),
     "select-place": addRoutePlace,
     "toggle-place-like": togglePlaceLike,
     "replace-place": selectValue("replacementPlaceId", "placeId"),
-    "confirm-place-selection": navigateTo("c4")
+    "confirm-place-selection": navigateTo("c6")
   }),
-  c4: defineTransitions("c4", {
-    "show-saved-places": navigateTo("c6"),
-    "show-saved-routes": selectValue("savedTab"),
-    "select-filter-tag": selectValue("savedFilter"),
-    "open-route-map": selectAndNavigate("d9", "selectedRouteId", "routeId"),
-    "open-route": selectAndNavigate("d10", "selectedRouteId", "routeId")
+  d1: defineTransitions("d1", {
+    "select-start-place": selectAndNavigate("d4", "selectedPlaceId", "placeId"),
+    "open-photo-menu": openOverlay("photo-menu", "selectedMediaId", "mediaId")
   }),
-  c5: defineTransitions("c5", {
+  d2: defineTransitions("d2", {
+    "go-back": navigateBack,
+    "locate-user": noChange,
+    "confirm-start-location": navigateTo("d4")
+  }),
+  d3: defineTransitions("d3", {
+    "select-start-place": selectAndNavigate("d4", "selectedPlaceId", "placeId")
+  }),
+  d4: defineTransitions("d4", {
     "go-back": navigateBack,
     "close-place-card": clearSelection("selectedPlaceId"),
     "locate-user": noChange,
-    "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId")
+    "confirm-start-place": navigateTo("d5")
   }),
-  c6: defineTransitions("c6", {
-    "show-saved-places": selectValue("savedTab"),
-    "show-saved-routes": navigateTo("c4"),
-    "select-filter-tag": selectValue("savedFilter"),
-    "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId"),
-    "add-place-to-route": addRoutePlace
-  }),
-  d1: defineTransitions("d1", { "go-back": navigateBack, "locate-user": noChange, "start-nearby": navigateTo("d2") }),
-  d2: defineTransitions("d2", {
+  d5: defineTransitions("d5", {
     "go-back": navigateBack,
     "show-saved-places": selectValue("routeSourceTab"),
-    "show-discover": navigateTo("d3"),
+    "show-discover": navigateTo("d6"),
     "change-filter": selectValue("routeFilter"),
     "select-filter-tag": selectValue("routeFilter"),
     "add-place": addRoutePlace,
-    "confirm-route-places": navigateTo("d4")
+    "confirm-route-places": navigateTo("d7")
   }),
-  d3: defineTransitions("d3", {
+  d6: defineTransitions("d6", {
     "go-back": navigateBack,
-    "show-saved-places": navigateTo("d2"),
+    "show-saved-places": navigateTo("d5"),
     "show-discover": selectValue("routeSourceTab"),
     "change-filter": selectValue("routeFilter"),
     "select-filter-tag": selectValue("routeFilter"),
     "add-place": addRoutePlace,
-    "confirm-route-places": navigateTo("d4")
+    "confirm-route-places": navigateTo("d7")
   }),
-  d4: defineTransitions("d4", {
+  d7: defineTransitions("d7", {
     "go-back": navigateBack,
-    "change-places": navigateTo("d2"),
-    "create-route": navigateTo("d5"),
+    "change-places": navigateTo("d5"),
+    "create-route": navigateTo("d8"),
     "open-discover": navigateTo("b2"),
-    "open-saved": navigateTo("c6"),
+    "open-saved": navigateTo("c1"),
     "open-routes": navigateTo("d1"),
-    "open-settings": navigateTo("e3")
+    "open-settings": navigateTo("e1")
   }),
-  d5: defineTransitions("d5", {
+  d8: defineTransitions("d8", {
     "go-back": navigateBack,
     "update-route-name": updateRouteName,
     "clear-route-name": clearField("routeName"),
-    "save-route": navigateTo("d6"),
+    "save-route": navigateTo("d9"),
     "open-discover": navigateTo("b2"),
-    "open-saved": navigateTo("c6"),
+    "open-saved": navigateTo("c1"),
     "open-routes": navigateTo("d1"),
-    "open-settings": navigateTo("e3")
-  }),
-  d6: defineTransitions("d6", {
-    "go-back": navigateBack,
-    "open-share": shareTarget("route"),
-    "start-navigation": navigateTo("d7"),
-    "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId"),
-    "open-discover": navigateTo("b2"),
-    "open-saved": navigateTo("c6"),
-    "open-routes": navigateTo("d1"),
-    "open-settings": navigateTo("e3")
-  }),
-  d7: defineTransitions("d7", { "go-back": navigateBack, "open-route-list": navigateTo("d8"), "stop-navigation": navigateBack }),
-  d8: defineTransitions("d8", {
-    "go-back": navigateBack,
-    "open-share": shareTarget("route"),
-    "start-navigation": navigateTo("d7"),
-    "replace-route-place": selectValue("replacementPlaceId", "placeId"),
-    "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId")
+    "open-settings": navigateTo("e1")
   }),
   d9: defineTransitions("d9", {
     "go-back": navigateBack,
     "open-share": shareTarget("route"),
-    "start-navigation": navigateTo("d7"),
-    "replace-route-place": selectValue("replacementPlaceId", "placeId"),
-    "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId")
+    "start-navigation": openOverlay("external-map"),
+    "open-place": selectAndNavigate("b10", "selectedPlaceId", "placeId"),
+    "open-discover": navigateTo("b2"),
+    "open-saved": navigateTo("c1"),
+    "open-routes": navigateTo("d1"),
+    "open-settings": navigateTo("e1")
   }),
-  d10: defineTransitions("d10", {
-    "close-route": navigateBack,
-    "open-share": shareTarget("route"),
-    "open-place": selectAndNavigate("b4", "selectedPlaceId", "placeId")
-  }),
-  d11: defineTransitions("d11", {
-    "go-back": navigateBack,
-    "close-place-card": clearSelection("selectedPlaceId"),
-    "locate-user": noChange,
-    "start-nearby": navigateTo("d2")
-  }),
-  d12: defineTransitions("d12", { "open-photo-grid": navigateTo("d13") }),
-  d13: defineTransitions("d13", {
-    "open-photo": selectAndNavigate("b7", "selectedMediaId", "mediaId"),
-    "open-photo-menu": openOverlay("photo-menu", "selectedMediaId", "mediaId")
+  e1: defineTransitions("e1", {
+    "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
+    "open-account-settings": navigateTo("e3"),
+    "open-notification-settings": navigateTo("e4"),
+    "open-contact": navigateTo("e5"),
+    "open-terms": selectValue("settingsSection")
   }),
   e2: defineTransitions("e2", {
     "go-back": navigateBack,
@@ -618,16 +610,9 @@ export const TRANSITIONS = Object.freeze({
     "show-profile-places": selectValue("profileTab"),
     "show-profile-routes": selectValue("profileTab"),
     "edit-media": openOverlay("media-editor", "selectedMediaId", "mediaId"),
-    "save-profile": navigateTo("b12")
+    "save-profile": navigateTo("e1")
   }),
   e3: defineTransitions("e3", {
-    "open-profile": selectAndNavigate("b12", "selectedUserId", "userId"),
-    "open-account-settings": navigateTo("e4"),
-    "open-notification-settings": navigateTo("e5"),
-    "open-contact": navigateTo("e6"),
-    "open-terms": selectValue("settingsSection")
-  }),
-  e4: defineTransitions("e4", {
     "go-back": navigateBack,
     "update-current-password": updateCurrentPassword,
     "update-new-password": updateNewPassword,
@@ -637,7 +622,7 @@ export const TRANSITIONS = Object.freeze({
     logout: navigateTo("a3"),
     "delete-account": navigateTo("a1")
   }),
-  e5: defineTransitions("e5", {
+  e4: defineTransitions("e4", {
     "go-back": navigateBack,
     "toggle-all-notifications": toggleSetting("all"),
     "toggle-saved-place-updates": toggleSetting("savedPlaceUpdates"),
@@ -645,7 +630,7 @@ export const TRANSITIONS = Object.freeze({
     "toggle-comment-likes": toggleSetting("commentLikes"),
     "toggle-marketing": toggleSetting("marketing")
   }),
-  e6: defineTransitions("e6", {
+  e5: defineTransitions("e5", {
     "go-back": navigateBack,
     "update-message": updateMessage,
     "send-message": showToast("success", "문의를 보냈어요")

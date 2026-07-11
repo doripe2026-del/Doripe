@@ -354,7 +354,7 @@ test("shared geometry is backed by identical measurements in multiple final scre
     });
   }
 
-  for (const screenId of ["a5", "a10", "b12", "e6"]) {
+  for (const screenId of ["a5", "a10", "b12", "e5"]) {
     assert.deepEqual(
       {
         width: measurements[screenId].elements["action/back/bg"].width,
@@ -364,7 +364,7 @@ test("shared geometry is backed by identical measurements in multiple final scre
     );
   }
 
-  for (const screenId of ["d4", "d5", "d6"]) {
+  for (const screenId of ["d7", "d8", "d9"]) {
     const elements = measurements[screenId].elements;
     const nav = elements["Bottom nav / glass bg"];
     assert.deepEqual(nav, {
@@ -397,9 +397,9 @@ test("shared geometry is backed by identical measurements in multiple final scre
     }, { x: 131, y: -8, width: 58, height: 58 });
   }
 
-  for (const screenId of ["c1", "c2", "c6"]) {
-    assert.equal(measurements[screenId].elements.handle.width, 55);
-    assert.equal(measurements[screenId].elements.handle.height, 5);
+  for (const [screenId, elementName] of [["c1", "handle"], ["c6", "Sheet handle"]]) {
+    assert.equal(measurements[screenId].elements[elementName].width, 55);
+    assert.equal(measurements[screenId].elements[elementName].height, 5);
   }
 
   for (const screenId of ["b4", "b5", "b10"]) {
@@ -407,7 +407,7 @@ test("shared geometry is backed by identical measurements in multiple final scre
     assert.equal(measurements[screenId].elements["Hero / author avatar"].height, 24);
   }
 
-  for (const screenId of ["d2", "d3"]) {
+  for (const screenId of ["d5", "d6"]) {
     assert.equal(measurements[screenId].elements["Chip/bg#3"].width, 80.06);
     assert.equal(measurements[screenId].elements["Chip/bg#3"].height, 30);
   }

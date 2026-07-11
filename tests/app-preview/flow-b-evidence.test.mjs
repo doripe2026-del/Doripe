@@ -36,13 +36,15 @@ const actionsFor = (screenId, actionId) => actionContract.actions.filter((record
 ));
 
 test("Flow B inventory contains the 13 exact live top-level screens", () => {
-  assert.equal(inventory.length, 59);
+  assert.equal(inventory.length, 55);
   assert.deepEqual(
     inventory.filter(({ group }) => group === "B").map(({ id, nodeId }) => [id, nodeId]),
     expectedFlowB
   );
   assert.ok(!inventory.some(({ nodeId }) => nodeId === "446:1018"));
-  assert.ok(!inventory.some(({ id }) => ["d14", "e1", "e7"].includes(id)));
+  assert.ok(!inventory.some(({ nodeId }) => (
+    ["446:1348", "446:2341", "446:2462", "446:2530"].includes(nodeId)
+  )));
   assert.equal(new Set(inventory.map(({ id }) => id)).size, inventory.length);
   assert.equal(new Set(inventory.map(({ nodeId }) => nodeId)).size, inventory.length);
 });

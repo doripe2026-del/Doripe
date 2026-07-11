@@ -13,7 +13,7 @@
   "notes": [
     "All 13 exact top-level Flow B nodes were read with live design context and screenshot tools.",
     "Node 446:1018 is nested inside B8 and is excluded.",
-    "B11-B13 reclassify stale D14, E1, and E7 entries for the same live nodes, preserving 59 unique total screens.",
+    "The current top-level Flow sections contain 55 screens: A 22, B 13, C 6, D 9, and E 5; stale historical C/D/E entries are excluded.",
     "B1 has a 36px outer shadow on every edge; its native 465x924 screenshot was center-cropped to the exact 393x852 frame bounds."
   ],
   "screens": [

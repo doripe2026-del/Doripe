@@ -155,9 +155,6 @@ add("b1", "open-filter", "Header / filter pill", "button", state("selections.fee
 add("b1", "open-following-list", "Following / list CTA", "button", navigate("b13"));
 addSources("b1", "open-profile", measuredKeys("b1", /^Ellipse(?:#\d+)?$/), "avatar", navigate("b12", "selectedUserId"));
 addSources("b1", "open-place", measuredKeys("b1", /^Feed \/ media tile \d+(?:#\d+)?$/), "media-card", navigate("b4", "selectedPlaceId"));
-add("b1", "save-place", "Feed / masonry grid", "gesture-target", state("savedPlaceIds"), {
-  evidence: "B1's dynamic feed is flattened and masked in the reference; the measured masonry composite is the only retained source for the brief-required save-place state action."
-});
 add("b1", "create-route", "Floating / add route CTA", "button", navigate("d1"));
 add("b1", "scroll-to-top", "Floating / scroll to top", "icon-button", state("scrollTop"));
 
@@ -178,7 +175,8 @@ function placeDetailActions(screenId, {
   profileSource,
   officialPlaceSource,
   related = false,
-  route = false
+  route = false,
+  routeDestination = "d1"
 }) {
   add(screenId, "close-place", handleSource, "sheet-handle", history(), {
     evidence: `The ${screenId.toUpperCase()} reference shows a dismissible bottom sheet handle; no separate back control is measured.`
@@ -187,7 +185,7 @@ function placeDetailActions(screenId, {
   add(screenId, "toggle-media-like", "hero-action/like", "icon-button", state("likedMediaIds"));
   add(screenId, "open-comments", "hero-action/comment", "icon-button", navigate("b8"));
   add(screenId, "open-business-hours", hoursSource, "row", navigate("b9"));
-  add(screenId, "open-place-map", addressSource, "row", navigate("c5", "selectedPlaceId"));
+  add(screenId, "open-place-map", addressSource, "row", navigate("c4", "selectedPlaceId"));
   add(screenId, "open-menu", menuSource, "row", overlay("place-menu"));
   add(screenId, "open-share", "CTA / share button bg", "button", share("place"));
   add(screenId, "save-place", "CTA / save button bg", "button", state("savedPlaceIds"));
@@ -199,7 +197,7 @@ function placeDetailActions(screenId, {
     addSources(screenId, "open-related-place", measuredKeys(screenId, /^Related places \/ card \d+$/), "place-card", navigate("b10", "selectedPlaceId"));
     addSources(screenId, "toggle-comment-like", measuredKeys(screenId, /^slot\/comment-item\/like-icon(?:#\d+)?$/), "icon-button", state("likedCommentIds"));
   }
-  if (route) add(screenId, "create-route", "Floating route CTA / text", "button", navigate("d1"));
+  if (route) add(screenId, "create-route", "Floating route CTA / text", "button", navigate(routeDestination));
 }
 
 placeDetailActions("b4", {
@@ -229,7 +227,8 @@ placeDetailActions("b10", {
   addressSource: "slot/info-row/address",
   menuSource: "slot/info-row/menu",
   related: true,
-  route: true
+  route: true,
+  routeDestination: "d4"
 });
 add("b10", "open-profile", "Hero / author pill", "profile", navigate("b12", "selectedUserId"));
 add("b10", "open-other-media", "slot/other-photo/item/media", "text-button", navigate("b3"));
@@ -270,123 +269,108 @@ function filterSheetActions(screenId) {
   addSources(screenId, "select-situation", buttons.slice(0, 4), "option-button", state("selections.situation"));
   addSources(screenId, "select-time", buttons.slice(4, 8), "option-button", state("selections.time"));
   addSources(screenId, "select-mood", buttons.slice(8, 14), "option-button", state("selections.mood"));
-  add(screenId, "apply-filters", "CTA", "button", navigate("c3"));
+  add(screenId, "apply-filters", "CTA", "button", navigate("c1"));
   add(screenId, "reset-filters", "button#15", "text-button", state("filterSelections"));
 }
 
-filterSheetActions("c1");
-filterSheetActions("c2");
+filterSheetActions("c3");
 
-add("c3", "go-back", "button / back", "icon-button", history());
-addSources("c3", "select-filter-tag", measuredKeys("c3", /^filter(?:#\d+)?$/), "chip", state("selections.savedFilter"));
-add("c3", "select-place", "status / selected", "icon-button", state("routePlaceIds"));
-addSources("c3", "toggle-place-like", measuredKeys("c3", /^status \/ like(?:#\d+)?$/), "icon-button", state("likedPlaceIds"));
-addSources("c3", "replace-place", measuredKeys("c3", /^button(?:#\d+)?$/), "button", state("selections.replacementPlaceId"));
-add("c3", "confirm-place-selection", "CTA", "button", navigate("c4"));
+add("c7", "go-back", "button / back", "icon-button", history());
+addSources("c7", "select-filter-tag", measuredKeys("c7", /^filter(?:#\d+)?$/), "chip", state("selections.savedFilter"));
+add("c7", "select-place", "status / selected", "icon-button", state("routePlaceIds"));
+addSources("c7", "toggle-place-like", measuredKeys("c7", /^status \/ like(?:#\d+)?$/), "icon-button", state("likedPlaceIds"));
+addSources("c7", "replace-place", measuredKeys("c7", /^button(?:#\d+)?$/), "button", state("selections.replacementPlaceId"));
+add("c7", "confirm-place-selection", "CTA", "button", navigate("c6"));
 
-add("c4", "show-saved-places", "icon / bookmark", "tab", navigate("c6"), {
-  evidence: "The measured bookmark icon is the distinct place-tab affordance in C4."
+add("c2", "show-saved-places", "icon / bookmark", "tab", navigate("c1"), {
+  evidence: "The measured bookmark icon is the distinct place-tab affordance in C2."
 });
-add("c4", "show-saved-routes", "icon / route", "tab", state("selections.savedTab"), {
-  evidence: "The measured route icon is the distinct route-tab affordance in C4."
+add("c2", "show-saved-routes", "icon / route", "tab", state("selections.savedTab"), {
+  evidence: "The measured route icon is the distinct route-tab affordance in C2."
 });
-addSources("c4", "select-filter-tag", measuredKeys("c4", /^chip(?:#\d+)?$/), "chip", state("selections.savedFilter"));
-addSources("c4", "open-route-map", ["button", "button#3", "button#5"], "button", navigate("d9", "selectedRouteId"));
-addSources("c4", "open-route", ["button#2", "button#4", "button#6"], "button", navigate("d10", "selectedRouteId"));
+addSources("c2", "select-filter-tag", measuredKeys("c2", /^chip(?:#\d+)?$/), "chip", state("selections.savedFilter"));
+addSources("c2", "open-route-map", ["button", "button#3", "button#5"], "button", overlay("saved-route-map"));
+addSources("c2", "open-route", ["button#2", "button#4", "button#6"], "button", navigate("c6", "selectedRouteId"));
 
-add("c5", "go-back", "button / back floating", "icon-button", history());
-add("c5", "close-place-card", "button / close place card", "icon-button", state("selections.selectedPlaceId"));
-add("c5", "locate-user", "button / locate floating", "icon-button", state("mapViewport"));
-add("c5", "open-place", "place card / selected saved place", "place-card", navigate("b4", "selectedPlaceId"));
+add("c4", "go-back", "button / back floating", "icon-button", history());
+add("c4", "close-place-card", "button / close place card", "icon-button", state("selections.selectedPlaceId"));
+add("c4", "locate-user", "button / locate floating", "icon-button", state("mapViewport"));
+add("c4", "open-place", "place card / selected saved place", "place-card", navigate("b10", "selectedPlaceId"));
 
-add("c6", "show-saved-places", "icon / bookmark", "tab", state("selections.savedTab"));
-add("c6", "show-saved-routes", "icon / route", "tab", navigate("c4"));
-addSources("c6", "select-filter-tag", measuredKeys("c6", /^chip(?:#\d+)?$/), "chip", state("selections.savedFilter"));
-addSources("c6", "open-place", measuredKeys("c6", /^(?:list row|recommend card)(?:#\d+)?$/), "place-card", navigate("b4", "selectedPlaceId"));
-addSources("c6", "add-place-to-route", measuredKeys("c6", /^icon \/ add route(?:#\d+)?$/), "icon-button", state("routePlaceIds"));
+add("c1", "show-saved-places", "icon / bookmark", "tab", state("selections.savedTab"));
+add("c1", "show-saved-routes", "icon / route", "tab", navigate("c2"));
+addSources("c1", "select-filter-tag", measuredKeys("c1", /^chip(?:#\d+)?$/), "chip", state("selections.savedFilter"));
+addSources("c1", "open-place", measuredKeys("c1", /^(?:list row|recommend card)(?:#\d+)?$/), "place-card", navigate("c4", "selectedPlaceId"));
+addSources("c1", "add-place-to-route", measuredKeys("c1", /^icon \/ add route(?:#\d+)?$/), "icon-button", state("routePlaceIds"));
 
-add("d1", "go-back", "Back button / bg", "icon-button", history());
-add("d1", "locate-user", "Locate button / bg", "icon-button", state("mapViewport"));
-add("d1", "start-nearby", "Start CTA / bg", "button", navigate("d2"));
+add("c6", "go-back", "Icon / back sheet", "icon-button", history());
+add("c6", "open-share", "Button / share bg", "button", share("route"));
+add("c6", "open-share", "Icon / share-2 / header", "icon-button", share("route"));
+add("c6", "start-navigation", "Button / navigate bg", "button", overlay("external-map"));
+addSources("c6", "replace-route-place", ["Change place bg 1", "Change place bg 2", "Change place bg 3"], "icon-button", navigate("c7", "selectedPlaceId"));
+addSources("c6", "open-place", ["Place photo crop 1", "Place photo crop 2", "Place photo crop 3"], "place-card", navigate("b10", "selectedPlaceId"));
+
+addSources("d1", "select-start-place", measuredKeys("d1", /^Candidate photo slot \d+$/), "media", navigate("d4", "selectedPlaceId"));
+addSources("d1", "open-photo-menu", measuredKeys("d1", /^Photo menu(?:#\d+)?$/), "icon-button", overlay("photo-menu"));
+
+add("d2", "go-back", "Back button / bg", "icon-button", history());
+add("d2", "locate-user", "Locate button / bg", "icon-button", state("mapViewport"));
+add("d2", "confirm-start-location", "Start CTA / bg", "button", navigate("d4"));
+
+add("d3", "select-start-place", "Bottom sheet / selected place photos", "sheet", navigate("d4", "selectedPlaceId"));
+
+add("d4", "go-back", "Back button", "icon-button", history());
+add("d4", "close-place-card", "Close icon", "icon-button", state("selections.selectedPlaceId"));
+add("d4", "locate-user", "Target button", "icon-button", state("mapViewport"));
+add("d4", "confirm-start-place", "Floating CTA / start here", "button", navigate("d5"));
 
 function routeCandidateActions(screenId, savedSource, discoverSource, addSourcesForScreen) {
   add(screenId, "go-back", "Back button / bg", "icon-button", history());
-  add(screenId, "show-saved-places", savedSource, "tab", screenId === "d2" ? state("selections.routeSourceTab") : navigate("d2"));
-  add(screenId, "show-discover", discoverSource, "tab", screenId === "d3" ? state("selections.routeSourceTab") : navigate("d3"));
+  add(screenId, "show-saved-places", savedSource, "tab", screenId === "d5" ? state("selections.routeSourceTab") : navigate("d5"));
+  add(screenId, "show-discover", discoverSource, "tab", screenId === "d6" ? state("selections.routeSourceTab") : navigate("d6"));
   add(screenId, "change-filter", "Filter / change bg", "button", state("selections.routeFilter"));
   addSources(screenId, "select-filter-tag", measuredKeys(screenId, /^Chip\/bg(?:#\d+)?$/), "chip", state("selections.routeFilter"));
   addSources(screenId, "add-place", addSourcesForScreen, "icon-button", state("routePlaceIds"));
-  add(screenId, "confirm-route-places", "CTA / route add bg", "button", navigate("d4"));
+  add(screenId, "confirm-route-places", "CTA / route add bg", "button", navigate("d7"));
 }
 
 routeCandidateActions(
-  "d2",
+  "d5",
   "Segmented / saved active",
   "Segmented / discover text",
   ["icon/lucide#5", "icon/lucide#6", "icon/lucide#7"]
 );
 routeCandidateActions(
-  "d3",
+  "d6",
   "Segmented / saved text",
   "Segmented / discover active",
-  measuredKeys("d3", /^Discover card\/action bg(?:#\d+)?$/)
+  measuredKeys("d6", /^Discover card\/action bg(?:#\d+)?$/)
 );
 
 function bottomNav(screenId) {
   add(screenId, "open-discover", "Icon / nav discover", "nav-button", navigate("b2"));
-  add(screenId, "open-saved", "Icon / nav saved", "nav-button", navigate("c6"));
+  add(screenId, "open-saved", "Icon / nav saved", "nav-button", navigate("c1"));
   add(screenId, "open-routes", "Icon / nav route active", "nav-button", navigate("d1"));
-  add(screenId, "open-settings", "Icon / nav settings", "nav-button", navigate("e3"));
+  add(screenId, "open-settings", "Icon / nav settings", "nav-button", navigate("e1"));
 }
 
-add("d4", "go-back", "Top / back button bg", "icon-button", history());
-add("d4", "change-places", "Button / change place bg", "button", navigate("d2"));
-add("d4", "create-route", "Button / create route bg", "button", navigate("d5"));
-bottomNav("d4");
+add("d7", "go-back", "Top / back button bg", "icon-button", history());
+add("d7", "change-places", "Button / change place bg", "button", navigate("d5"));
+add("d7", "create-route", "Button / create route bg", "button", navigate("d8"));
+bottomNav("d7");
 
-add("d5", "go-back", "Top / back button bg", "icon-button", history());
-add("d5", "update-route-name", "Input / route name bg", "input", state("form.routeName"));
-add("d5", "clear-route-name", "Icon / clear input", "icon-button", state("form.routeName"));
-add("d5", "save-route", "Button / save route bg", "button", navigate("d6"));
-bottomNav("d5");
+add("d8", "go-back", "Top / back button bg", "icon-button", history());
+add("d8", "update-route-name", "Input / route name bg", "input", state("form.routeName"));
+add("d8", "clear-route-name", "Icon / clear input", "icon-button", state("form.routeName"));
+add("d8", "save-route", "Button / save route bg", "button", navigate("d9"));
+bottomNav("d8");
 
-add("d6", "go-back", "Icon / back", "icon-button", history());
-add("d6", "open-share", "Button / share bg", "button", share("route"));
-add("d6", "open-share", "Icon / share top", "icon-button", share("route"));
-add("d6", "start-navigation", "Button / navigation bg", "button", navigate("d7"));
-addSources("d6", "open-place", ["Icon / chevron right 1", "Icon / chevron right 2", "Icon / chevron right 3"], "row", navigate("b4", "selectedPlaceId"));
-bottomNav("d6");
-
-add("d7", "go-back", "Top / back bg", "icon-button", history());
-add("d7", "open-route-list", "Button / route list bg", "button", navigate("d8"));
-add("d7", "stop-navigation", "Button / stop bg", "button", history());
-
-function routeDetailActions(screenId, backSource) {
-  add(screenId, "go-back", backSource, "icon-button", history());
-  add(screenId, "open-share", "Button / share bg", "button", share("route"));
-  add(screenId, "open-share", "Icon / share-2 / header", "icon-button", share("route"));
-  add(screenId, "start-navigation", "Button / navigate bg", "button", navigate("d7"));
-  addSources(screenId, "replace-route-place", ["Change place bg 1", "Change place bg 2", "Change place bg 3"], "icon-button", state("selections.replacementPlaceId"));
-  addSources(screenId, "open-place", ["Place photo crop 1", "Place photo crop 2", "Place photo crop 3"], "place-card", navigate("b4", "selectedPlaceId"));
-}
-
-routeDetailActions("d8", "Icon / back sheet");
-routeDetailActions("d9", "Icon / back sheet");
-
-add("d10", "close-route", "Sheet handle", "sheet-handle", history(), {
-  evidence: "D10 has no measured back button; the visible measured sheet handle is the route-detail dismiss control."
-});
-add("d10", "open-share", "Button / share route bg", "button", share("route"));
-addSources("d10", "open-place", ["Place photo crop 1", "Place photo crop 2", "Place photo crop 3"], "place-card", navigate("b4", "selectedPlaceId"));
-
-add("d11", "go-back", "Back button", "icon-button", history());
-add("d11", "close-place-card", "Close icon", "icon-button", state("selections.selectedPlaceId"));
-add("d11", "locate-user", "Target button", "icon-button", state("mapViewport"));
-add("d11", "start-nearby", "Floating CTA / start here", "button", navigate("d2"));
-
-add("d12", "open-photo-grid", "Bottom sheet / selected place photos", "sheet", navigate("d13"));
-addSources("d13", "open-photo", measuredKeys("d13", /^Candidate photo slot \d+$/), "media", navigate("b7", "selectedMediaId"));
-addSources("d13", "open-photo-menu", measuredKeys("d13", /^Photo menu(?:#\d+)?$/), "icon-button", overlay("photo-menu"));
+add("d9", "go-back", "Icon / back", "icon-button", history());
+add("d9", "open-share", "Button / share bg", "button", share("route"));
+add("d9", "open-share", "Icon / share top", "icon-button", share("route"));
+add("d9", "start-navigation", "Button / navigation bg", "button", overlay("external-map"));
+addSources("d9", "open-place", ["Icon / chevron right 1", "Icon / chevron right 2", "Icon / chevron right 3"], "row", navigate("b10", "selectedPlaceId"));
+bottomNav("d9");
 
 add("e2", "go-back", "action/back", "icon-button", history());
 add("e2", "update-nickname", "field/nickname/bg", "input", state("form.nickname"));
@@ -394,25 +378,25 @@ add("e2", "update-bio", "field/value/bg", "input", state("form.bio"));
 add("e2", "show-profile-places", "segment place", "tab", state("selections.profileTab"));
 add("e2", "show-profile-routes", "segment route", "tab", state("selections.profileTab"));
 add("e2", "edit-media", "action/primary", "button", overlay("media-editor"));
-add("e2", "save-profile", "action/save", "button", navigate("b12"));
+add("e2", "save-profile", "action/save", "button", navigate("e1"));
 addSources("e2", "open-media", measuredKeys("e2", /^media\/photo\/crop-asset(?:#\d+)?$/), "media", navigate("b7", "selectedMediaId"));
 
-add("e3", "open-profile", "profile/avatar", "row", navigate("b12", "selectedUserId"));
-add("e3", "open-account-settings", "slot/settings-row/chevron", "row", navigate("e4"));
-add("e3", "open-notification-settings", "slot/settings-row/chevron#2", "row", navigate("e5"));
-add("e3", "open-contact", "slot/settings-row/chevron#3", "row", navigate("e6"));
-add("e3", "open-terms", "slot/settings-row/chevron#4", "row", state("selections.settingsSection"));
+add("e1", "open-profile", "profile/avatar", "row", navigate("b12", "selectedUserId"));
+add("e1", "open-account-settings", "slot/settings-row/chevron", "row", navigate("e3"));
+add("e1", "open-notification-settings", "slot/settings-row/chevron#2", "row", navigate("e4"));
+add("e1", "open-contact", "slot/settings-row/chevron#3", "row", navigate("e5"));
+add("e1", "open-terms", "slot/settings-row/chevron#4", "row", state("selections.settingsSection"));
+
+add("e3", "go-back", "action/back", "icon-button", history());
+add("e3", "update-current-password", "field/current-password/bg", "input", state("form.currentPassword"));
+add("e3", "update-new-password", "field/new-password/bg", "input", state("form.newPassword"));
+add("e3", "update-password-confirmation", "field/new-password-confirm/bg", "input", state("form.passwordConfirmation"));
+add("e3", "save-password", "action/save-password", "button", state("toast"));
+add("e3", "forgot-password", "action/forgot-password", "text-button", navigate("a5"));
+add("e3", "logout", "action/logout", "button", navigate("a3"));
+add("e3", "delete-account", "action/delete-account", "text-button", navigate("a1"));
 
 add("e4", "go-back", "action/back", "icon-button", history());
-add("e4", "update-current-password", "field/current-password/bg", "input", state("form.currentPassword"));
-add("e4", "update-new-password", "field/new-password/bg", "input", state("form.newPassword"));
-add("e4", "update-password-confirmation", "field/new-password-confirm/bg", "input", state("form.passwordConfirmation"));
-add("e4", "save-password", "action/save-password", "button", state("toast"));
-add("e4", "forgot-password", "action/forgot-password", "text-button", navigate("a5"));
-add("e4", "logout", "action/logout", "button", navigate("a3"));
-add("e4", "delete-account", "action/delete-account", "text-button", navigate("a1"));
-
-add("e5", "go-back", "action/back", "icon-button", history());
 const notificationActions = [
   "toggle-all-notifications",
   "toggle-saved-place-updates",
@@ -421,16 +405,16 @@ const notificationActions = [
   "toggle-marketing"
 ];
 notificationActions.forEach((actionId, index) => add(
-  "e5",
+  "e4",
   actionId,
   index === 0 ? "ui/toggle/bg" : `ui/toggle/bg#${index + 1}`,
   "toggle",
   state(`selections.notifications.${actionId}`)
 ));
 
-add("e6", "go-back", "action/back", "icon-button", history());
-add("e6", "update-message", "field/message/bg", "textarea", state("form.message"));
-add("e6", "send-message", "action/send", "button", state("toast"));
+add("e5", "go-back", "action/back", "icon-button", history());
+add("e5", "update-message", "field/message/bg", "textarea", state("form.message"));
+add("e5", "send-message", "action/send", "button", state("toast"));
 
 const visibleControlPatterns = [
   /^action\/[^/]+$/i,
@@ -596,7 +580,7 @@ reviewNoninteractive(
   "decorative-media",
   (source) => `B13 ${source} is a noninteractive photo preview inside a following row; the Brain contract routes the row avatar to B12.`
 );
-for (const screenId of ["c1", "c2"]) {
+for (const screenId of ["c3"]) {
   reviewNoninteractive(
     screenId,
     ["bottom sheet / filter only"],
@@ -605,36 +589,36 @@ for (const screenId of ["c1", "c2"]) {
   );
 }
 reviewNoninteractive(
-  "c3",
+  "c7",
   ["bottom fixed CTA area"],
   "composite-container",
-  (source) => `C3 ${source} is the fixed footer surface around the separately measured confirmation CTA.`
+  (source) => `C7 ${source} is the fixed footer surface around the separately measured confirmation CTA.`
 );
 reviewNoninteractive(
-  "c4",
+  "c2",
   ["toggle / place route"],
   "composite-container",
-  (source) => `C4 ${source} is the shared tab track; icon / bookmark and icon / route are the two distinct contracted tab sources.`
+  (source) => `C2 ${source} is the shared tab track; icon / bookmark and icon / route are the two distinct contracted tab sources.`
 );
 reviewNoninteractive(
-  "c4",
+  "c2",
   ["route card", "route card#2", "route card#3"],
   "composite-container",
-  (source) => `C4 ${source} groups one route summary with separately measured 경로 보기 and 상세 보기 buttons; the card has no additional whole-card action.`
+  (source) => `C2 ${source} groups one route summary with separately measured 경로 보기 and 상세 보기 buttons; the card has no additional whole-card action.`
 );
 reviewNoninteractive(
-  "c6",
+  "c1",
   ["toggle / place route"],
   "composite-container",
-  (source) => `C6 ${source} is the shared tab track; icon / bookmark and icon / route are the two distinct contracted tab sources.`
+  (source) => `C1 ${source} is the shared tab track; icon / bookmark and icon / route are the two distinct contracted tab sources.`
 );
 reviewNoninteractive(
-  "d1",
+  "d2",
   ["Start CTA / icon bg", "Start CTA / text"],
   "visual-child",
-  (source) => `D1 ${source} is artwork inside the separately contracted Start CTA / bg button.`
+  (source) => `D2 ${source} is artwork inside the separately contracted Start CTA / bg button.`
 );
-for (const [screenId, inactiveTabText] of [["d2", "Segmented / saved text"], ["d3", "Segmented / discover text"]]) {
+for (const [screenId, inactiveTabText] of [["d5", "Segmented / saved text"], ["d6", "Segmented / discover text"]]) {
   reviewNoninteractive(
     screenId,
     ["Segmented / bg"],
@@ -649,28 +633,28 @@ for (const [screenId, inactiveTabText] of [["d2", "Segmented / saved text"], ["d
   );
 }
 reviewNoninteractive(
-  "d11",
+  "d4",
   ["CTA text"],
   "visual-child",
-  (source) => `D11 ${source} is the label inside the separately contracted Floating CTA / start here button.`
+  (source) => `D4 ${source} is the label inside the separately contracted Floating CTA / start here button.`
 );
 reviewNoninteractive(
-  "d13",
+  "d1",
   ["Photo grid sheet"],
   "composite-container",
-  (source) => `D13 ${source} is the sheet surface containing ten photo slots and nine separately contracted photo-menu buttons.`
+  (source) => `D1 ${source} is the sheet surface containing ten photo slots and nine separately contracted photo-menu buttons.`
+);
+reviewNoninteractive(
+  "e3",
+  ["field/email/bg"],
+  "read-only-status",
+  (source) => `E3 ${source} displays the verified account email as read-only; the reference provides no email edit affordance.`
 );
 reviewNoninteractive(
   "e4",
-  ["field/email/bg"],
-  "read-only-status",
-  (source) => `E4 ${source} displays the verified account email as read-only; the reference provides no email edit affordance.`
-);
-reviewNoninteractive(
-  "e5",
   ["ui/toggle/knob", "ui/toggle/knob#2", "ui/toggle/knob#3", "ui/toggle/knob#4", "ui/toggle/knob#5"],
   "visual-child",
-  (source) => `E5 ${source} is the moving knob artwork inside its separately contracted toggle background.`
+  (source) => `E4 ${source} is the moving knob artwork inside its separately contracted toggle background.`
 );
 
 export const NONINTERACTIVE_OVERRIDES = Object.freeze(reviewedOverrides);

@@ -6,7 +6,7 @@ import { getScreen, listScreens } from "../../public/app-preview/screen-registry
 test("registry creates one valid screen definition for every evidence item", () => {
   const screens = listScreens();
 
-  assert.equal(screens.length, 59);
+  assert.equal(screens.length, 55);
   assert.equal(screens.length, inventory.length);
   assert.equal(new Set(screens.map((screen) => screen.id)).size, inventory.length);
 

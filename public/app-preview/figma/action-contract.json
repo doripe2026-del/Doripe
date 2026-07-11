@@ -1092,17 +1092,6 @@
     },
     {
       "screenId": "b1",
-      "actionId": "save-place",
-      "source": "Feed / masonry grid",
-      "kind": "gesture-target",
-      "effect": {
-        "type": "state",
-        "stateKey": "savedPlaceIds"
-      },
-      "evidence": "B1's dynamic feed is flattened and masked in the reference; the measured masonry composite is the only retained source for the brief-required save-place state action."
-    },
-    {
-      "screenId": "b1",
       "actionId": "create-route",
       "source": "Floating / add route CTA",
       "kind": "button",
@@ -1543,7 +1532,7 @@
       "kind": "row",
       "effect": {
         "type": "navigate",
-        "destination": "c5",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
       "evidence": "The Info / address row control is visible in the B4 reference."
@@ -1713,7 +1702,7 @@
       "kind": "row",
       "effect": {
         "type": "navigate",
-        "destination": "c5",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
       "evidence": "The Info / address row control is visible in the B5 reference."
@@ -1837,7 +1826,7 @@
       "kind": "row",
       "effect": {
         "type": "navigate",
-        "destination": "c5",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
       "evidence": "The Info / address row control is visible in the B6 reference."
@@ -2006,7 +1995,7 @@
       "kind": "row",
       "effect": {
         "type": "navigate",
-        "destination": "c5",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
       "evidence": "The slot/info-row/address control is visible in the B10 reference."
@@ -2073,7 +2062,7 @@
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "d1"
+        "destination": "d4"
       },
       "evidence": "The Floating route CTA / text control is visible in the B10 reference."
     },
@@ -2681,7 +2670,7 @@
       "evidence": "The media/avatar/crop-asset#11 control is visible in the B13 reference."
     },
     {
-      "screenId": "c1",
+      "screenId": "c3",
       "actionId": "select-situation",
       "source": "button",
       "kind": "option-button",
@@ -2689,361 +2678,185 @@
         "type": "state",
         "stateKey": "selections.situation"
       },
-      "evidence": "The button control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-situation",
-      "source": "button#2",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.situation"
-      },
-      "evidence": "The button#2 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-situation",
-      "source": "button#3",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.situation"
-      },
-      "evidence": "The button#3 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-situation",
-      "source": "button#4",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.situation"
-      },
-      "evidence": "The button#4 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-time",
-      "source": "button#5",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.time"
-      },
-      "evidence": "The button#5 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-time",
-      "source": "button#6",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.time"
-      },
-      "evidence": "The button#6 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-time",
-      "source": "button#7",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.time"
-      },
-      "evidence": "The button#7 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-time",
-      "source": "button#8",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.time"
-      },
-      "evidence": "The button#8 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-mood",
-      "source": "button#9",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#9 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-mood",
-      "source": "button#10",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#10 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-mood",
-      "source": "button#11",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#11 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-mood",
-      "source": "button#12",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#12 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-mood",
-      "source": "button#13",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#13 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "select-mood",
-      "source": "button#14",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#14 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "apply-filters",
-      "source": "CTA",
-      "kind": "button",
-      "effect": {
-        "type": "navigate",
-        "destination": "c3"
-      },
-      "evidence": "The CTA control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c1",
-      "actionId": "reset-filters",
-      "source": "button#15",
-      "kind": "text-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "filterSelections"
-      },
-      "evidence": "The button#15 control is visible in the C1 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-situation",
-      "source": "button",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.situation"
-      },
-      "evidence": "The button control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-situation",
-      "source": "button#2",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.situation"
-      },
-      "evidence": "The button#2 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-situation",
-      "source": "button#3",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.situation"
-      },
-      "evidence": "The button#3 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-situation",
-      "source": "button#4",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.situation"
-      },
-      "evidence": "The button#4 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-time",
-      "source": "button#5",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.time"
-      },
-      "evidence": "The button#5 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-time",
-      "source": "button#6",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.time"
-      },
-      "evidence": "The button#6 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-time",
-      "source": "button#7",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.time"
-      },
-      "evidence": "The button#7 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-time",
-      "source": "button#8",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.time"
-      },
-      "evidence": "The button#8 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-mood",
-      "source": "button#9",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#9 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-mood",
-      "source": "button#10",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#10 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-mood",
-      "source": "button#11",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#11 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-mood",
-      "source": "button#12",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#12 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-mood",
-      "source": "button#13",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#13 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "select-mood",
-      "source": "button#14",
-      "kind": "option-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.mood"
-      },
-      "evidence": "The button#14 control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "apply-filters",
-      "source": "CTA",
-      "kind": "button",
-      "effect": {
-        "type": "navigate",
-        "destination": "c3"
-      },
-      "evidence": "The CTA control is visible in the C2 reference."
-    },
-    {
-      "screenId": "c2",
-      "actionId": "reset-filters",
-      "source": "button#15",
-      "kind": "text-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "filterSelections"
-      },
-      "evidence": "The button#15 control is visible in the C2 reference."
+      "evidence": "The button control is visible in the C3 reference."
     },
     {
       "screenId": "c3",
+      "actionId": "select-situation",
+      "source": "button#2",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.situation"
+      },
+      "evidence": "The button#2 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-situation",
+      "source": "button#3",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.situation"
+      },
+      "evidence": "The button#3 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-situation",
+      "source": "button#4",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.situation"
+      },
+      "evidence": "The button#4 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-time",
+      "source": "button#5",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.time"
+      },
+      "evidence": "The button#5 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-time",
+      "source": "button#6",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.time"
+      },
+      "evidence": "The button#6 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-time",
+      "source": "button#7",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.time"
+      },
+      "evidence": "The button#7 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-time",
+      "source": "button#8",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.time"
+      },
+      "evidence": "The button#8 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-mood",
+      "source": "button#9",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.mood"
+      },
+      "evidence": "The button#9 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-mood",
+      "source": "button#10",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.mood"
+      },
+      "evidence": "The button#10 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-mood",
+      "source": "button#11",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.mood"
+      },
+      "evidence": "The button#11 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-mood",
+      "source": "button#12",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.mood"
+      },
+      "evidence": "The button#12 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-mood",
+      "source": "button#13",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.mood"
+      },
+      "evidence": "The button#13 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "select-mood",
+      "source": "button#14",
+      "kind": "option-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.mood"
+      },
+      "evidence": "The button#14 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "apply-filters",
+      "source": "CTA",
+      "kind": "button",
+      "effect": {
+        "type": "navigate",
+        "destination": "c1"
+      },
+      "evidence": "The CTA control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c3",
+      "actionId": "reset-filters",
+      "source": "button#15",
+      "kind": "text-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "filterSelections"
+      },
+      "evidence": "The button#15 control is visible in the C3 reference."
+    },
+    {
+      "screenId": "c7",
       "actionId": "go-back",
       "source": "button / back",
       "kind": "icon-button",
       "effect": {
         "type": "history"
       },
-      "evidence": "The button / back control is visible in the C3 reference."
+      "evidence": "The button / back control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "select-filter-tag",
       "source": "filter",
       "kind": "chip",
@@ -3051,10 +2864,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The filter control is visible in the C3 reference."
+      "evidence": "The filter control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "select-filter-tag",
       "source": "filter#2",
       "kind": "chip",
@@ -3062,10 +2875,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The filter#2 control is visible in the C3 reference."
+      "evidence": "The filter#2 control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "select-filter-tag",
       "source": "filter#3",
       "kind": "chip",
@@ -3073,10 +2886,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The filter#3 control is visible in the C3 reference."
+      "evidence": "The filter#3 control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "select-filter-tag",
       "source": "filter#4",
       "kind": "chip",
@@ -3084,10 +2897,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The filter#4 control is visible in the C3 reference."
+      "evidence": "The filter#4 control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "select-filter-tag",
       "source": "filter#5",
       "kind": "chip",
@@ -3095,10 +2908,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The filter#5 control is visible in the C3 reference."
+      "evidence": "The filter#5 control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "select-place",
       "source": "status / selected",
       "kind": "icon-button",
@@ -3106,10 +2919,10 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The status / selected control is visible in the C3 reference."
+      "evidence": "The status / selected control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "toggle-place-like",
       "source": "status / like",
       "kind": "icon-button",
@@ -3117,10 +2930,10 @@
         "type": "state",
         "stateKey": "likedPlaceIds"
       },
-      "evidence": "The status / like control is visible in the C3 reference."
+      "evidence": "The status / like control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "toggle-place-like",
       "source": "status / like#2",
       "kind": "icon-button",
@@ -3128,10 +2941,10 @@
         "type": "state",
         "stateKey": "likedPlaceIds"
       },
-      "evidence": "The status / like#2 control is visible in the C3 reference."
+      "evidence": "The status / like#2 control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "toggle-place-like",
       "source": "status / like#3",
       "kind": "icon-button",
@@ -3139,10 +2952,10 @@
         "type": "state",
         "stateKey": "likedPlaceIds"
       },
-      "evidence": "The status / like#3 control is visible in the C3 reference."
+      "evidence": "The status / like#3 control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "replace-place",
       "source": "button",
       "kind": "button",
@@ -3150,10 +2963,10 @@
         "type": "state",
         "stateKey": "selections.replacementPlaceId"
       },
-      "evidence": "The button control is visible in the C3 reference."
+      "evidence": "The button control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "replace-place",
       "source": "button#2",
       "kind": "button",
@@ -3161,10 +2974,10 @@
         "type": "state",
         "stateKey": "selections.replacementPlaceId"
       },
-      "evidence": "The button#2 control is visible in the C3 reference."
+      "evidence": "The button#2 control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "replace-place",
       "source": "button#3",
       "kind": "button",
@@ -3172,10 +2985,10 @@
         "type": "state",
         "stateKey": "selections.replacementPlaceId"
       },
-      "evidence": "The button#3 control is visible in the C3 reference."
+      "evidence": "The button#3 control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "replace-place",
       "source": "button#4",
       "kind": "button",
@@ -3183,32 +2996,32 @@
         "type": "state",
         "stateKey": "selections.replacementPlaceId"
       },
-      "evidence": "The button#4 control is visible in the C3 reference."
+      "evidence": "The button#4 control is visible in the C7 reference."
     },
     {
-      "screenId": "c3",
+      "screenId": "c7",
       "actionId": "confirm-place-selection",
       "source": "CTA",
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "c4"
+        "destination": "c6"
       },
-      "evidence": "The CTA control is visible in the C3 reference."
+      "evidence": "The CTA control is visible in the C7 reference."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "show-saved-places",
       "source": "icon / bookmark",
       "kind": "tab",
       "effect": {
         "type": "navigate",
-        "destination": "c6"
+        "destination": "c1"
       },
-      "evidence": "The measured bookmark icon is the distinct place-tab affordance in C4."
+      "evidence": "The measured bookmark icon is the distinct place-tab affordance in C2."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "show-saved-routes",
       "source": "icon / route",
       "kind": "tab",
@@ -3216,10 +3029,10 @@
         "type": "state",
         "stateKey": "selections.savedTab"
       },
-      "evidence": "The measured route icon is the distinct route-tab affordance in C4."
+      "evidence": "The measured route icon is the distinct route-tab affordance in C2."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "select-filter-tag",
       "source": "chip",
       "kind": "chip",
@@ -3227,10 +3040,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip control is visible in the C4 reference."
+      "evidence": "The chip control is visible in the C2 reference."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "select-filter-tag",
       "source": "chip#2",
       "kind": "chip",
@@ -3238,10 +3051,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#2 control is visible in the C4 reference."
+      "evidence": "The chip#2 control is visible in the C2 reference."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "select-filter-tag",
       "source": "chip#3",
       "kind": "chip",
@@ -3249,10 +3062,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#3 control is visible in the C4 reference."
+      "evidence": "The chip#3 control is visible in the C2 reference."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "select-filter-tag",
       "source": "chip#4",
       "kind": "chip",
@@ -3260,10 +3073,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#4 control is visible in the C4 reference."
+      "evidence": "The chip#4 control is visible in the C2 reference."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "select-filter-tag",
       "source": "chip#5",
       "kind": "chip",
@@ -3271,92 +3084,89 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#5 control is visible in the C4 reference."
+      "evidence": "The chip#5 control is visible in the C2 reference."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "open-route-map",
       "source": "button",
       "kind": "button",
       "effect": {
-        "type": "navigate",
-        "destination": "d9",
-        "selectionKey": "selectedRouteId"
+        "type": "overlay",
+        "overlayId": "saved-route-map"
       },
-      "evidence": "The button control is visible in the C4 reference."
+      "evidence": "The button control is visible in the C2 reference."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "open-route-map",
       "source": "button#3",
       "kind": "button",
       "effect": {
-        "type": "navigate",
-        "destination": "d9",
-        "selectionKey": "selectedRouteId"
+        "type": "overlay",
+        "overlayId": "saved-route-map"
       },
-      "evidence": "The button#3 control is visible in the C4 reference."
+      "evidence": "The button#3 control is visible in the C2 reference."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "open-route-map",
       "source": "button#5",
       "kind": "button",
       "effect": {
-        "type": "navigate",
-        "destination": "d9",
-        "selectionKey": "selectedRouteId"
+        "type": "overlay",
+        "overlayId": "saved-route-map"
       },
-      "evidence": "The button#5 control is visible in the C4 reference."
+      "evidence": "The button#5 control is visible in the C2 reference."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "open-route",
       "source": "button#2",
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "d10",
+        "destination": "c6",
         "selectionKey": "selectedRouteId"
       },
-      "evidence": "The button#2 control is visible in the C4 reference."
+      "evidence": "The button#2 control is visible in the C2 reference."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "open-route",
       "source": "button#4",
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "d10",
+        "destination": "c6",
         "selectionKey": "selectedRouteId"
       },
-      "evidence": "The button#4 control is visible in the C4 reference."
+      "evidence": "The button#4 control is visible in the C2 reference."
     },
     {
-      "screenId": "c4",
+      "screenId": "c2",
       "actionId": "open-route",
       "source": "button#6",
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "d10",
+        "destination": "c6",
         "selectionKey": "selectedRouteId"
       },
-      "evidence": "The button#6 control is visible in the C4 reference."
+      "evidence": "The button#6 control is visible in the C2 reference."
     },
     {
-      "screenId": "c5",
+      "screenId": "c4",
       "actionId": "go-back",
       "source": "button / back floating",
       "kind": "icon-button",
       "effect": {
         "type": "history"
       },
-      "evidence": "The button / back floating control is visible in the C5 reference."
+      "evidence": "The button / back floating control is visible in the C4 reference."
     },
     {
-      "screenId": "c5",
+      "screenId": "c4",
       "actionId": "close-place-card",
       "source": "button / close place card",
       "kind": "icon-button",
@@ -3364,10 +3174,10 @@
         "type": "state",
         "stateKey": "selections.selectedPlaceId"
       },
-      "evidence": "The button / close place card control is visible in the C5 reference."
+      "evidence": "The button / close place card control is visible in the C4 reference."
     },
     {
-      "screenId": "c5",
+      "screenId": "c4",
       "actionId": "locate-user",
       "source": "button / locate floating",
       "kind": "icon-button",
@@ -3375,22 +3185,22 @@
         "type": "state",
         "stateKey": "mapViewport"
       },
-      "evidence": "The button / locate floating control is visible in the C5 reference."
+      "evidence": "The button / locate floating control is visible in the C4 reference."
     },
     {
-      "screenId": "c5",
+      "screenId": "c4",
       "actionId": "open-place",
       "source": "place card / selected saved place",
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "b10",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The place card / selected saved place control is visible in the C5 reference."
+      "evidence": "The place card / selected saved place control is visible in the C4 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "show-saved-places",
       "source": "icon / bookmark",
       "kind": "tab",
@@ -3398,21 +3208,21 @@
         "type": "state",
         "stateKey": "selections.savedTab"
       },
-      "evidence": "The icon / bookmark control is visible in the C6 reference."
+      "evidence": "The icon / bookmark control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "show-saved-routes",
       "source": "icon / route",
       "kind": "tab",
       "effect": {
         "type": "navigate",
-        "destination": "c4"
+        "destination": "c2"
       },
-      "evidence": "The icon / route control is visible in the C6 reference."
+      "evidence": "The icon / route control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip",
       "kind": "chip",
@@ -3420,10 +3230,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip control is visible in the C6 reference."
+      "evidence": "The chip control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#2",
       "kind": "chip",
@@ -3431,10 +3241,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#2 control is visible in the C6 reference."
+      "evidence": "The chip#2 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#3",
       "kind": "chip",
@@ -3442,10 +3252,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#3 control is visible in the C6 reference."
+      "evidence": "The chip#3 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#4",
       "kind": "chip",
@@ -3453,10 +3263,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#4 control is visible in the C6 reference."
+      "evidence": "The chip#4 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#5",
       "kind": "chip",
@@ -3464,10 +3274,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#5 control is visible in the C6 reference."
+      "evidence": "The chip#5 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#6",
       "kind": "chip",
@@ -3475,10 +3285,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#6 control is visible in the C6 reference."
+      "evidence": "The chip#6 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#7",
       "kind": "chip",
@@ -3486,10 +3296,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#7 control is visible in the C6 reference."
+      "evidence": "The chip#7 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#8",
       "kind": "chip",
@@ -3497,10 +3307,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#8 control is visible in the C6 reference."
+      "evidence": "The chip#8 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#9",
       "kind": "chip",
@@ -3508,10 +3318,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#9 control is visible in the C6 reference."
+      "evidence": "The chip#9 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#10",
       "kind": "chip",
@@ -3519,10 +3329,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#10 control is visible in the C6 reference."
+      "evidence": "The chip#10 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#11",
       "kind": "chip",
@@ -3530,10 +3340,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#11 control is visible in the C6 reference."
+      "evidence": "The chip#11 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#12",
       "kind": "chip",
@@ -3541,10 +3351,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#12 control is visible in the C6 reference."
+      "evidence": "The chip#12 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#13",
       "kind": "chip",
@@ -3552,10 +3362,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#13 control is visible in the C6 reference."
+      "evidence": "The chip#13 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#14",
       "kind": "chip",
@@ -3563,10 +3373,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#14 control is visible in the C6 reference."
+      "evidence": "The chip#14 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#15",
       "kind": "chip",
@@ -3574,10 +3384,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#15 control is visible in the C6 reference."
+      "evidence": "The chip#15 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#16",
       "kind": "chip",
@@ -3585,10 +3395,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#16 control is visible in the C6 reference."
+      "evidence": "The chip#16 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#17",
       "kind": "chip",
@@ -3596,10 +3406,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#17 control is visible in the C6 reference."
+      "evidence": "The chip#17 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#18",
       "kind": "chip",
@@ -3607,10 +3417,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#18 control is visible in the C6 reference."
+      "evidence": "The chip#18 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#19",
       "kind": "chip",
@@ -3618,10 +3428,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#19 control is visible in the C6 reference."
+      "evidence": "The chip#19 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#20",
       "kind": "chip",
@@ -3629,10 +3439,10 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#20 control is visible in the C6 reference."
+      "evidence": "The chip#20 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "select-filter-tag",
       "source": "chip#21",
       "kind": "chip",
@@ -3640,106 +3450,106 @@
         "type": "state",
         "stateKey": "selections.savedFilter"
       },
-      "evidence": "The chip#21 control is visible in the C6 reference."
+      "evidence": "The chip#21 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "open-place",
       "source": "recommend card",
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The recommend card control is visible in the C6 reference."
+      "evidence": "The recommend card control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "open-place",
       "source": "recommend card#2",
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The recommend card#2 control is visible in the C6 reference."
+      "evidence": "The recommend card#2 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "open-place",
       "source": "recommend card#3",
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The recommend card#3 control is visible in the C6 reference."
+      "evidence": "The recommend card#3 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "open-place",
       "source": "list row",
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The list row control is visible in the C6 reference."
+      "evidence": "The list row control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "open-place",
       "source": "list row#2",
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The list row#2 control is visible in the C6 reference."
+      "evidence": "The list row#2 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "open-place",
       "source": "list row#3",
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The list row#3 control is visible in the C6 reference."
+      "evidence": "The list row#3 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "open-place",
       "source": "list row#4",
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The list row#4 control is visible in the C6 reference."
+      "evidence": "The list row#4 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "open-place",
       "source": "list row#5",
       "kind": "place-card",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "c4",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The list row#5 control is visible in the C6 reference."
+      "evidence": "The list row#5 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "add-place-to-route",
       "source": "icon / add route",
       "kind": "icon-button",
@@ -3747,10 +3557,10 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The icon / add route control is visible in the C6 reference."
+      "evidence": "The icon / add route control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "add-place-to-route",
       "source": "icon / add route#2",
       "kind": "icon-button",
@@ -3758,10 +3568,10 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The icon / add route#2 control is visible in the C6 reference."
+      "evidence": "The icon / add route#2 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "add-place-to-route",
       "source": "icon / add route#3",
       "kind": "icon-button",
@@ -3769,10 +3579,10 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The icon / add route#3 control is visible in the C6 reference."
+      "evidence": "The icon / add route#3 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "add-place-to-route",
       "source": "icon / add route#4",
       "kind": "icon-button",
@@ -3780,10 +3590,10 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The icon / add route#4 control is visible in the C6 reference."
+      "evidence": "The icon / add route#4 control is visible in the C1 reference."
     },
     {
-      "screenId": "c6",
+      "screenId": "c1",
       "actionId": "add-place-to-route",
       "source": "icon / add route#5",
       "kind": "icon-button",
@@ -3791,39 +3601,341 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The icon / add route#5 control is visible in the C6 reference."
+      "evidence": "The icon / add route#5 control is visible in the C1 reference."
     },
     {
-      "screenId": "d1",
+      "screenId": "c6",
       "actionId": "go-back",
-      "source": "Back button / bg",
+      "source": "Icon / back sheet",
       "kind": "icon-button",
       "effect": {
         "type": "history"
       },
-      "evidence": "The Back button / bg control is visible in the D1 reference."
+      "evidence": "The Icon / back sheet control is visible in the C6 reference."
     },
     {
-      "screenId": "d1",
-      "actionId": "locate-user",
-      "source": "Locate button / bg",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "mapViewport"
-      },
-      "evidence": "The Locate button / bg control is visible in the D1 reference."
-    },
-    {
-      "screenId": "d1",
-      "actionId": "start-nearby",
-      "source": "Start CTA / bg",
+      "screenId": "c6",
+      "actionId": "open-share",
+      "source": "Button / share bg",
       "kind": "button",
       "effect": {
-        "type": "navigate",
-        "destination": "d2"
+        "type": "share",
+        "targetType": "route"
       },
-      "evidence": "The Start CTA / bg control is visible in the D1 reference."
+      "evidence": "The Button / share bg control is visible in the C6 reference."
+    },
+    {
+      "screenId": "c6",
+      "actionId": "open-share",
+      "source": "Icon / share-2 / header",
+      "kind": "icon-button",
+      "effect": {
+        "type": "share",
+        "targetType": "route"
+      },
+      "evidence": "The Icon / share-2 / header control is visible in the C6 reference."
+    },
+    {
+      "screenId": "c6",
+      "actionId": "start-navigation",
+      "source": "Button / navigate bg",
+      "kind": "button",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "external-map"
+      },
+      "evidence": "The Button / navigate bg control is visible in the C6 reference."
+    },
+    {
+      "screenId": "c6",
+      "actionId": "replace-route-place",
+      "source": "Change place bg 1",
+      "kind": "icon-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "c7",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Change place bg 1 control is visible in the C6 reference."
+    },
+    {
+      "screenId": "c6",
+      "actionId": "replace-route-place",
+      "source": "Change place bg 2",
+      "kind": "icon-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "c7",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Change place bg 2 control is visible in the C6 reference."
+    },
+    {
+      "screenId": "c6",
+      "actionId": "replace-route-place",
+      "source": "Change place bg 3",
+      "kind": "icon-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "c7",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Change place bg 3 control is visible in the C6 reference."
+    },
+    {
+      "screenId": "c6",
+      "actionId": "open-place",
+      "source": "Place photo crop 1",
+      "kind": "place-card",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Place photo crop 1 control is visible in the C6 reference."
+    },
+    {
+      "screenId": "c6",
+      "actionId": "open-place",
+      "source": "Place photo crop 2",
+      "kind": "place-card",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Place photo crop 2 control is visible in the C6 reference."
+    },
+    {
+      "screenId": "c6",
+      "actionId": "open-place",
+      "source": "Place photo crop 3",
+      "kind": "place-card",
+      "effect": {
+        "type": "navigate",
+        "destination": "b10",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Place photo crop 3 control is visible in the C6 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "select-start-place",
+      "source": "Candidate photo slot 1",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Candidate photo slot 1 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "select-start-place",
+      "source": "Candidate photo slot 2",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Candidate photo slot 2 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "select-start-place",
+      "source": "Candidate photo slot 3",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Candidate photo slot 3 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "select-start-place",
+      "source": "Candidate photo slot 4",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Candidate photo slot 4 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "select-start-place",
+      "source": "Candidate photo slot 5",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Candidate photo slot 5 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "select-start-place",
+      "source": "Candidate photo slot 6",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Candidate photo slot 6 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "select-start-place",
+      "source": "Candidate photo slot 7",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Candidate photo slot 7 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "select-start-place",
+      "source": "Candidate photo slot 8",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Candidate photo slot 8 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "select-start-place",
+      "source": "Candidate photo slot 9",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Candidate photo slot 9 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "select-start-place",
+      "source": "Candidate photo slot 10",
+      "kind": "media",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Candidate photo slot 10 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "open-photo-menu",
+      "source": "Photo menu",
+      "kind": "icon-button",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "photo-menu"
+      },
+      "evidence": "The Photo menu control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "open-photo-menu",
+      "source": "Photo menu#2",
+      "kind": "icon-button",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "photo-menu"
+      },
+      "evidence": "The Photo menu#2 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "open-photo-menu",
+      "source": "Photo menu#3",
+      "kind": "icon-button",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "photo-menu"
+      },
+      "evidence": "The Photo menu#3 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "open-photo-menu",
+      "source": "Photo menu#4",
+      "kind": "icon-button",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "photo-menu"
+      },
+      "evidence": "The Photo menu#4 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "open-photo-menu",
+      "source": "Photo menu#5",
+      "kind": "icon-button",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "photo-menu"
+      },
+      "evidence": "The Photo menu#5 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "open-photo-menu",
+      "source": "Photo menu#6",
+      "kind": "icon-button",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "photo-menu"
+      },
+      "evidence": "The Photo menu#6 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "open-photo-menu",
+      "source": "Photo menu#7",
+      "kind": "icon-button",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "photo-menu"
+      },
+      "evidence": "The Photo menu#7 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "open-photo-menu",
+      "source": "Photo menu#8",
+      "kind": "icon-button",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "photo-menu"
+      },
+      "evidence": "The Photo menu#8 control is visible in the D1 reference."
+    },
+    {
+      "screenId": "d1",
+      "actionId": "open-photo-menu",
+      "source": "Photo menu#9",
+      "kind": "icon-button",
+      "effect": {
+        "type": "overlay",
+        "overlayId": "photo-menu"
+      },
+      "evidence": "The Photo menu#9 control is visible in the D1 reference."
     },
     {
       "screenId": "d2",
@@ -3837,6 +3949,93 @@
     },
     {
       "screenId": "d2",
+      "actionId": "locate-user",
+      "source": "Locate button / bg",
+      "kind": "icon-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "mapViewport"
+      },
+      "evidence": "The Locate button / bg control is visible in the D2 reference."
+    },
+    {
+      "screenId": "d2",
+      "actionId": "confirm-start-location",
+      "source": "Start CTA / bg",
+      "kind": "button",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4"
+      },
+      "evidence": "The Start CTA / bg control is visible in the D2 reference."
+    },
+    {
+      "screenId": "d3",
+      "actionId": "select-start-place",
+      "source": "Bottom sheet / selected place photos",
+      "kind": "sheet",
+      "effect": {
+        "type": "navigate",
+        "destination": "d4",
+        "selectionKey": "selectedPlaceId"
+      },
+      "evidence": "The Bottom sheet / selected place photos control is visible in the D3 reference."
+    },
+    {
+      "screenId": "d4",
+      "actionId": "go-back",
+      "source": "Back button",
+      "kind": "icon-button",
+      "effect": {
+        "type": "history"
+      },
+      "evidence": "The Back button control is visible in the D4 reference."
+    },
+    {
+      "screenId": "d4",
+      "actionId": "close-place-card",
+      "source": "Close icon",
+      "kind": "icon-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "selections.selectedPlaceId"
+      },
+      "evidence": "The Close icon control is visible in the D4 reference."
+    },
+    {
+      "screenId": "d4",
+      "actionId": "locate-user",
+      "source": "Target button",
+      "kind": "icon-button",
+      "effect": {
+        "type": "state",
+        "stateKey": "mapViewport"
+      },
+      "evidence": "The Target button control is visible in the D4 reference."
+    },
+    {
+      "screenId": "d4",
+      "actionId": "confirm-start-place",
+      "source": "Floating CTA / start here",
+      "kind": "button",
+      "effect": {
+        "type": "navigate",
+        "destination": "d5"
+      },
+      "evidence": "The Floating CTA / start here control is visible in the D4 reference."
+    },
+    {
+      "screenId": "d5",
+      "actionId": "go-back",
+      "source": "Back button / bg",
+      "kind": "icon-button",
+      "effect": {
+        "type": "history"
+      },
+      "evidence": "The Back button / bg control is visible in the D5 reference."
+    },
+    {
+      "screenId": "d5",
       "actionId": "show-saved-places",
       "source": "Segmented / saved active",
       "kind": "tab",
@@ -3844,21 +4043,21 @@
         "type": "state",
         "stateKey": "selections.routeSourceTab"
       },
-      "evidence": "The Segmented / saved active control is visible in the D2 reference."
+      "evidence": "The Segmented / saved active control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "show-discover",
       "source": "Segmented / discover text",
       "kind": "tab",
       "effect": {
         "type": "navigate",
-        "destination": "d3"
+        "destination": "d6"
       },
-      "evidence": "The Segmented / discover text control is visible in the D2 reference."
+      "evidence": "The Segmented / discover text control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "change-filter",
       "source": "Filter / change bg",
       "kind": "button",
@@ -3866,10 +4065,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Filter / change bg control is visible in the D2 reference."
+      "evidence": "The Filter / change bg control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg",
       "kind": "chip",
@@ -3877,10 +4076,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg control is visible in the D2 reference."
+      "evidence": "The Chip/bg control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#2",
       "kind": "chip",
@@ -3888,10 +4087,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#2 control is visible in the D2 reference."
+      "evidence": "The Chip/bg#2 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#3",
       "kind": "chip",
@@ -3899,10 +4098,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#3 control is visible in the D2 reference."
+      "evidence": "The Chip/bg#3 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#4",
       "kind": "chip",
@@ -3910,10 +4109,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#4 control is visible in the D2 reference."
+      "evidence": "The Chip/bg#4 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#5",
       "kind": "chip",
@@ -3921,10 +4120,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#5 control is visible in the D2 reference."
+      "evidence": "The Chip/bg#5 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#6",
       "kind": "chip",
@@ -3932,10 +4131,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#6 control is visible in the D2 reference."
+      "evidence": "The Chip/bg#6 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#7",
       "kind": "chip",
@@ -3943,10 +4142,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#7 control is visible in the D2 reference."
+      "evidence": "The Chip/bg#7 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#8",
       "kind": "chip",
@@ -3954,10 +4153,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#8 control is visible in the D2 reference."
+      "evidence": "The Chip/bg#8 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#9",
       "kind": "chip",
@@ -3965,10 +4164,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#9 control is visible in the D2 reference."
+      "evidence": "The Chip/bg#9 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#10",
       "kind": "chip",
@@ -3976,10 +4175,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#10 control is visible in the D2 reference."
+      "evidence": "The Chip/bg#10 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#11",
       "kind": "chip",
@@ -3987,10 +4186,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#11 control is visible in the D2 reference."
+      "evidence": "The Chip/bg#11 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#12",
       "kind": "chip",
@@ -3998,10 +4197,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#12 control is visible in the D2 reference."
+      "evidence": "The Chip/bg#12 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "add-place",
       "source": "icon/lucide#5",
       "kind": "icon-button",
@@ -4009,10 +4208,10 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The icon/lucide#5 control is visible in the D2 reference."
+      "evidence": "The icon/lucide#5 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "add-place",
       "source": "icon/lucide#6",
       "kind": "icon-button",
@@ -4020,10 +4219,10 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The icon/lucide#6 control is visible in the D2 reference."
+      "evidence": "The icon/lucide#6 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "add-place",
       "source": "icon/lucide#7",
       "kind": "icon-button",
@@ -4031,42 +4230,42 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The icon/lucide#7 control is visible in the D2 reference."
+      "evidence": "The icon/lucide#7 control is visible in the D5 reference."
     },
     {
-      "screenId": "d2",
+      "screenId": "d5",
       "actionId": "confirm-route-places",
       "source": "CTA / route add bg",
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "d4"
+        "destination": "d7"
       },
-      "evidence": "The CTA / route add bg control is visible in the D2 reference."
+      "evidence": "The CTA / route add bg control is visible in the D5 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "go-back",
       "source": "Back button / bg",
       "kind": "icon-button",
       "effect": {
         "type": "history"
       },
-      "evidence": "The Back button / bg control is visible in the D3 reference."
+      "evidence": "The Back button / bg control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "show-saved-places",
       "source": "Segmented / saved text",
       "kind": "tab",
       "effect": {
         "type": "navigate",
-        "destination": "d2"
+        "destination": "d5"
       },
-      "evidence": "The Segmented / saved text control is visible in the D3 reference."
+      "evidence": "The Segmented / saved text control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "show-discover",
       "source": "Segmented / discover active",
       "kind": "tab",
@@ -4074,10 +4273,10 @@
         "type": "state",
         "stateKey": "selections.routeSourceTab"
       },
-      "evidence": "The Segmented / discover active control is visible in the D3 reference."
+      "evidence": "The Segmented / discover active control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "change-filter",
       "source": "Filter / change bg",
       "kind": "button",
@@ -4085,10 +4284,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Filter / change bg control is visible in the D3 reference."
+      "evidence": "The Filter / change bg control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg",
       "kind": "chip",
@@ -4096,10 +4295,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg control is visible in the D3 reference."
+      "evidence": "The Chip/bg control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#2",
       "kind": "chip",
@@ -4107,10 +4306,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#2 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#2 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#3",
       "kind": "chip",
@@ -4118,10 +4317,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#3 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#3 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#4",
       "kind": "chip",
@@ -4129,10 +4328,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#4 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#4 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#5",
       "kind": "chip",
@@ -4140,10 +4339,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#5 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#5 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#6",
       "kind": "chip",
@@ -4151,10 +4350,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#6 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#6 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#7",
       "kind": "chip",
@@ -4162,10 +4361,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#7 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#7 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#8",
       "kind": "chip",
@@ -4173,10 +4372,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#8 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#8 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#9",
       "kind": "chip",
@@ -4184,10 +4383,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#9 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#9 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#10",
       "kind": "chip",
@@ -4195,10 +4394,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#10 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#10 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#11",
       "kind": "chip",
@@ -4206,10 +4405,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#11 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#11 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#12",
       "kind": "chip",
@@ -4217,10 +4416,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#12 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#12 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#13",
       "kind": "chip",
@@ -4228,10 +4427,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#13 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#13 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "select-filter-tag",
       "source": "Chip/bg#14",
       "kind": "chip",
@@ -4239,10 +4438,10 @@
         "type": "state",
         "stateKey": "selections.routeFilter"
       },
-      "evidence": "The Chip/bg#14 control is visible in the D3 reference."
+      "evidence": "The Chip/bg#14 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "add-place",
       "source": "Discover card/action bg",
       "kind": "icon-button",
@@ -4250,10 +4449,10 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The Discover card/action bg control is visible in the D3 reference."
+      "evidence": "The Discover card/action bg control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "add-place",
       "source": "Discover card/action bg#2",
       "kind": "icon-button",
@@ -4261,10 +4460,10 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The Discover card/action bg#2 control is visible in the D3 reference."
+      "evidence": "The Discover card/action bg#2 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "add-place",
       "source": "Discover card/action bg#3",
       "kind": "icon-button",
@@ -4272,10 +4471,10 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The Discover card/action bg#3 control is visible in the D3 reference."
+      "evidence": "The Discover card/action bg#3 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "add-place",
       "source": "Discover card/action bg#4",
       "kind": "icon-button",
@@ -4283,53 +4482,53 @@
         "type": "state",
         "stateKey": "routePlaceIds"
       },
-      "evidence": "The Discover card/action bg#4 control is visible in the D3 reference."
+      "evidence": "The Discover card/action bg#4 control is visible in the D6 reference."
     },
     {
-      "screenId": "d3",
+      "screenId": "d6",
       "actionId": "confirm-route-places",
       "source": "CTA / route add bg",
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "d4"
+        "destination": "d7"
       },
-      "evidence": "The CTA / route add bg control is visible in the D3 reference."
+      "evidence": "The CTA / route add bg control is visible in the D6 reference."
     },
     {
-      "screenId": "d4",
+      "screenId": "d7",
       "actionId": "go-back",
       "source": "Top / back button bg",
       "kind": "icon-button",
       "effect": {
         "type": "history"
       },
-      "evidence": "The Top / back button bg control is visible in the D4 reference."
+      "evidence": "The Top / back button bg control is visible in the D7 reference."
     },
     {
-      "screenId": "d4",
+      "screenId": "d7",
       "actionId": "change-places",
       "source": "Button / change place bg",
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "d2"
+        "destination": "d5"
       },
-      "evidence": "The Button / change place bg control is visible in the D4 reference."
+      "evidence": "The Button / change place bg control is visible in the D7 reference."
     },
     {
-      "screenId": "d4",
+      "screenId": "d7",
       "actionId": "create-route",
       "source": "Button / create route bg",
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "d5"
+        "destination": "d8"
       },
-      "evidence": "The Button / create route bg control is visible in the D4 reference."
+      "evidence": "The Button / create route bg control is visible in the D7 reference."
     },
     {
-      "screenId": "d4",
+      "screenId": "d7",
       "actionId": "open-discover",
       "source": "Icon / nav discover",
       "kind": "nav-button",
@@ -4337,21 +4536,21 @@
         "type": "navigate",
         "destination": "b2"
       },
-      "evidence": "The Icon / nav discover control is visible in the D4 reference."
+      "evidence": "The Icon / nav discover control is visible in the D7 reference."
     },
     {
-      "screenId": "d4",
+      "screenId": "d7",
       "actionId": "open-saved",
       "source": "Icon / nav saved",
       "kind": "nav-button",
       "effect": {
         "type": "navigate",
-        "destination": "c6"
+        "destination": "c1"
       },
-      "evidence": "The Icon / nav saved control is visible in the D4 reference."
+      "evidence": "The Icon / nav saved control is visible in the D7 reference."
     },
     {
-      "screenId": "d4",
+      "screenId": "d7",
       "actionId": "open-routes",
       "source": "Icon / nav route active",
       "kind": "nav-button",
@@ -4359,31 +4558,31 @@
         "type": "navigate",
         "destination": "d1"
       },
-      "evidence": "The Icon / nav route active control is visible in the D4 reference."
+      "evidence": "The Icon / nav route active control is visible in the D7 reference."
     },
     {
-      "screenId": "d4",
+      "screenId": "d7",
       "actionId": "open-settings",
       "source": "Icon / nav settings",
       "kind": "nav-button",
       "effect": {
         "type": "navigate",
-        "destination": "e3"
+        "destination": "e1"
       },
-      "evidence": "The Icon / nav settings control is visible in the D4 reference."
+      "evidence": "The Icon / nav settings control is visible in the D7 reference."
     },
     {
-      "screenId": "d5",
+      "screenId": "d8",
       "actionId": "go-back",
       "source": "Top / back button bg",
       "kind": "icon-button",
       "effect": {
         "type": "history"
       },
-      "evidence": "The Top / back button bg control is visible in the D5 reference."
+      "evidence": "The Top / back button bg control is visible in the D8 reference."
     },
     {
-      "screenId": "d5",
+      "screenId": "d8",
       "actionId": "update-route-name",
       "source": "Input / route name bg",
       "kind": "input",
@@ -4391,10 +4590,10 @@
         "type": "state",
         "stateKey": "form.routeName"
       },
-      "evidence": "The Input / route name bg control is visible in the D5 reference."
+      "evidence": "The Input / route name bg control is visible in the D8 reference."
     },
     {
-      "screenId": "d5",
+      "screenId": "d8",
       "actionId": "clear-route-name",
       "source": "Icon / clear input",
       "kind": "icon-button",
@@ -4402,21 +4601,21 @@
         "type": "state",
         "stateKey": "form.routeName"
       },
-      "evidence": "The Icon / clear input control is visible in the D5 reference."
+      "evidence": "The Icon / clear input control is visible in the D8 reference."
     },
     {
-      "screenId": "d5",
+      "screenId": "d8",
       "actionId": "save-route",
       "source": "Button / save route bg",
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "d6"
+        "destination": "d9"
       },
-      "evidence": "The Button / save route bg control is visible in the D5 reference."
+      "evidence": "The Button / save route bg control is visible in the D8 reference."
     },
     {
-      "screenId": "d5",
+      "screenId": "d8",
       "actionId": "open-discover",
       "source": "Icon / nav discover",
       "kind": "nav-button",
@@ -4424,21 +4623,21 @@
         "type": "navigate",
         "destination": "b2"
       },
-      "evidence": "The Icon / nav discover control is visible in the D5 reference."
+      "evidence": "The Icon / nav discover control is visible in the D8 reference."
     },
     {
-      "screenId": "d5",
+      "screenId": "d8",
       "actionId": "open-saved",
       "source": "Icon / nav saved",
       "kind": "nav-button",
       "effect": {
         "type": "navigate",
-        "destination": "c6"
+        "destination": "c1"
       },
-      "evidence": "The Icon / nav saved control is visible in the D5 reference."
+      "evidence": "The Icon / nav saved control is visible in the D8 reference."
     },
     {
-      "screenId": "d5",
+      "screenId": "d8",
       "actionId": "open-routes",
       "source": "Icon / nav route active",
       "kind": "nav-button",
@@ -4446,294 +4645,28 @@
         "type": "navigate",
         "destination": "d1"
       },
-      "evidence": "The Icon / nav route active control is visible in the D5 reference."
+      "evidence": "The Icon / nav route active control is visible in the D8 reference."
     },
     {
-      "screenId": "d5",
+      "screenId": "d8",
       "actionId": "open-settings",
       "source": "Icon / nav settings",
       "kind": "nav-button",
       "effect": {
         "type": "navigate",
-        "destination": "e3"
+        "destination": "e1"
       },
-      "evidence": "The Icon / nav settings control is visible in the D5 reference."
+      "evidence": "The Icon / nav settings control is visible in the D8 reference."
     },
     {
-      "screenId": "d6",
+      "screenId": "d9",
       "actionId": "go-back",
       "source": "Icon / back",
       "kind": "icon-button",
       "effect": {
         "type": "history"
       },
-      "evidence": "The Icon / back control is visible in the D6 reference."
-    },
-    {
-      "screenId": "d6",
-      "actionId": "open-share",
-      "source": "Button / share bg",
-      "kind": "button",
-      "effect": {
-        "type": "share",
-        "targetType": "route"
-      },
-      "evidence": "The Button / share bg control is visible in the D6 reference."
-    },
-    {
-      "screenId": "d6",
-      "actionId": "open-share",
-      "source": "Icon / share top",
-      "kind": "icon-button",
-      "effect": {
-        "type": "share",
-        "targetType": "route"
-      },
-      "evidence": "The Icon / share top control is visible in the D6 reference."
-    },
-    {
-      "screenId": "d6",
-      "actionId": "start-navigation",
-      "source": "Button / navigation bg",
-      "kind": "button",
-      "effect": {
-        "type": "navigate",
-        "destination": "d7"
-      },
-      "evidence": "The Button / navigation bg control is visible in the D6 reference."
-    },
-    {
-      "screenId": "d6",
-      "actionId": "open-place",
-      "source": "Icon / chevron right 1",
-      "kind": "row",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The Icon / chevron right 1 control is visible in the D6 reference."
-    },
-    {
-      "screenId": "d6",
-      "actionId": "open-place",
-      "source": "Icon / chevron right 2",
-      "kind": "row",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The Icon / chevron right 2 control is visible in the D6 reference."
-    },
-    {
-      "screenId": "d6",
-      "actionId": "open-place",
-      "source": "Icon / chevron right 3",
-      "kind": "row",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The Icon / chevron right 3 control is visible in the D6 reference."
-    },
-    {
-      "screenId": "d6",
-      "actionId": "open-discover",
-      "source": "Icon / nav discover",
-      "kind": "nav-button",
-      "effect": {
-        "type": "navigate",
-        "destination": "b2"
-      },
-      "evidence": "The Icon / nav discover control is visible in the D6 reference."
-    },
-    {
-      "screenId": "d6",
-      "actionId": "open-saved",
-      "source": "Icon / nav saved",
-      "kind": "nav-button",
-      "effect": {
-        "type": "navigate",
-        "destination": "c6"
-      },
-      "evidence": "The Icon / nav saved control is visible in the D6 reference."
-    },
-    {
-      "screenId": "d6",
-      "actionId": "open-routes",
-      "source": "Icon / nav route active",
-      "kind": "nav-button",
-      "effect": {
-        "type": "navigate",
-        "destination": "d1"
-      },
-      "evidence": "The Icon / nav route active control is visible in the D6 reference."
-    },
-    {
-      "screenId": "d6",
-      "actionId": "open-settings",
-      "source": "Icon / nav settings",
-      "kind": "nav-button",
-      "effect": {
-        "type": "navigate",
-        "destination": "e3"
-      },
-      "evidence": "The Icon / nav settings control is visible in the D6 reference."
-    },
-    {
-      "screenId": "d7",
-      "actionId": "go-back",
-      "source": "Top / back bg",
-      "kind": "icon-button",
-      "effect": {
-        "type": "history"
-      },
-      "evidence": "The Top / back bg control is visible in the D7 reference."
-    },
-    {
-      "screenId": "d7",
-      "actionId": "open-route-list",
-      "source": "Button / route list bg",
-      "kind": "button",
-      "effect": {
-        "type": "navigate",
-        "destination": "d8"
-      },
-      "evidence": "The Button / route list bg control is visible in the D7 reference."
-    },
-    {
-      "screenId": "d7",
-      "actionId": "stop-navigation",
-      "source": "Button / stop bg",
-      "kind": "button",
-      "effect": {
-        "type": "history"
-      },
-      "evidence": "The Button / stop bg control is visible in the D7 reference."
-    },
-    {
-      "screenId": "d8",
-      "actionId": "go-back",
-      "source": "Icon / back sheet",
-      "kind": "icon-button",
-      "effect": {
-        "type": "history"
-      },
-      "evidence": "The Icon / back sheet control is visible in the D8 reference."
-    },
-    {
-      "screenId": "d8",
-      "actionId": "open-share",
-      "source": "Button / share bg",
-      "kind": "button",
-      "effect": {
-        "type": "share",
-        "targetType": "route"
-      },
-      "evidence": "The Button / share bg control is visible in the D8 reference."
-    },
-    {
-      "screenId": "d8",
-      "actionId": "open-share",
-      "source": "Icon / share-2 / header",
-      "kind": "icon-button",
-      "effect": {
-        "type": "share",
-        "targetType": "route"
-      },
-      "evidence": "The Icon / share-2 / header control is visible in the D8 reference."
-    },
-    {
-      "screenId": "d8",
-      "actionId": "start-navigation",
-      "source": "Button / navigate bg",
-      "kind": "button",
-      "effect": {
-        "type": "navigate",
-        "destination": "d7"
-      },
-      "evidence": "The Button / navigate bg control is visible in the D8 reference."
-    },
-    {
-      "screenId": "d8",
-      "actionId": "replace-route-place",
-      "source": "Change place bg 1",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.replacementPlaceId"
-      },
-      "evidence": "The Change place bg 1 control is visible in the D8 reference."
-    },
-    {
-      "screenId": "d8",
-      "actionId": "replace-route-place",
-      "source": "Change place bg 2",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.replacementPlaceId"
-      },
-      "evidence": "The Change place bg 2 control is visible in the D8 reference."
-    },
-    {
-      "screenId": "d8",
-      "actionId": "replace-route-place",
-      "source": "Change place bg 3",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.replacementPlaceId"
-      },
-      "evidence": "The Change place bg 3 control is visible in the D8 reference."
-    },
-    {
-      "screenId": "d8",
-      "actionId": "open-place",
-      "source": "Place photo crop 1",
-      "kind": "place-card",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The Place photo crop 1 control is visible in the D8 reference."
-    },
-    {
-      "screenId": "d8",
-      "actionId": "open-place",
-      "source": "Place photo crop 2",
-      "kind": "place-card",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The Place photo crop 2 control is visible in the D8 reference."
-    },
-    {
-      "screenId": "d8",
-      "actionId": "open-place",
-      "source": "Place photo crop 3",
-      "kind": "place-card",
-      "effect": {
-        "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
-      },
-      "evidence": "The Place photo crop 3 control is visible in the D8 reference."
-    },
-    {
-      "screenId": "d9",
-      "actionId": "go-back",
-      "source": "Icon / back sheet",
-      "kind": "icon-button",
-      "effect": {
-        "type": "history"
-      },
-      "evidence": "The Icon / back sheet control is visible in the D9 reference."
+      "evidence": "The Icon / back control is visible in the D9 reference."
     },
     {
       "screenId": "d9",
@@ -4749,423 +4682,104 @@
     {
       "screenId": "d9",
       "actionId": "open-share",
-      "source": "Icon / share-2 / header",
+      "source": "Icon / share top",
       "kind": "icon-button",
       "effect": {
         "type": "share",
         "targetType": "route"
       },
-      "evidence": "The Icon / share-2 / header control is visible in the D9 reference."
+      "evidence": "The Icon / share top control is visible in the D9 reference."
     },
     {
       "screenId": "d9",
       "actionId": "start-navigation",
-      "source": "Button / navigate bg",
+      "source": "Button / navigation bg",
       "kind": "button",
       "effect": {
-        "type": "navigate",
-        "destination": "d7"
+        "type": "overlay",
+        "overlayId": "external-map"
       },
-      "evidence": "The Button / navigate bg control is visible in the D9 reference."
-    },
-    {
-      "screenId": "d9",
-      "actionId": "replace-route-place",
-      "source": "Change place bg 1",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.replacementPlaceId"
-      },
-      "evidence": "The Change place bg 1 control is visible in the D9 reference."
-    },
-    {
-      "screenId": "d9",
-      "actionId": "replace-route-place",
-      "source": "Change place bg 2",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.replacementPlaceId"
-      },
-      "evidence": "The Change place bg 2 control is visible in the D9 reference."
-    },
-    {
-      "screenId": "d9",
-      "actionId": "replace-route-place",
-      "source": "Change place bg 3",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.replacementPlaceId"
-      },
-      "evidence": "The Change place bg 3 control is visible in the D9 reference."
+      "evidence": "The Button / navigation bg control is visible in the D9 reference."
     },
     {
       "screenId": "d9",
       "actionId": "open-place",
-      "source": "Place photo crop 1",
-      "kind": "place-card",
+      "source": "Icon / chevron right 1",
+      "kind": "row",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "b10",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The Place photo crop 1 control is visible in the D9 reference."
+      "evidence": "The Icon / chevron right 1 control is visible in the D9 reference."
     },
     {
       "screenId": "d9",
       "actionId": "open-place",
-      "source": "Place photo crop 2",
-      "kind": "place-card",
+      "source": "Icon / chevron right 2",
+      "kind": "row",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "b10",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The Place photo crop 2 control is visible in the D9 reference."
+      "evidence": "The Icon / chevron right 2 control is visible in the D9 reference."
     },
     {
       "screenId": "d9",
       "actionId": "open-place",
-      "source": "Place photo crop 3",
-      "kind": "place-card",
+      "source": "Icon / chevron right 3",
+      "kind": "row",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
+        "destination": "b10",
         "selectionKey": "selectedPlaceId"
       },
-      "evidence": "The Place photo crop 3 control is visible in the D9 reference."
+      "evidence": "The Icon / chevron right 3 control is visible in the D9 reference."
     },
     {
-      "screenId": "d10",
-      "actionId": "close-route",
-      "source": "Sheet handle",
-      "kind": "sheet-handle",
-      "effect": {
-        "type": "history"
-      },
-      "evidence": "D10 has no measured back button; the visible measured sheet handle is the route-detail dismiss control."
-    },
-    {
-      "screenId": "d10",
-      "actionId": "open-share",
-      "source": "Button / share route bg",
-      "kind": "button",
-      "effect": {
-        "type": "share",
-        "targetType": "route"
-      },
-      "evidence": "The Button / share route bg control is visible in the D10 reference."
-    },
-    {
-      "screenId": "d10",
-      "actionId": "open-place",
-      "source": "Place photo crop 1",
-      "kind": "place-card",
+      "screenId": "d9",
+      "actionId": "open-discover",
+      "source": "Icon / nav discover",
+      "kind": "nav-button",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
+        "destination": "b2"
       },
-      "evidence": "The Place photo crop 1 control is visible in the D10 reference."
+      "evidence": "The Icon / nav discover control is visible in the D9 reference."
     },
     {
-      "screenId": "d10",
-      "actionId": "open-place",
-      "source": "Place photo crop 2",
-      "kind": "place-card",
+      "screenId": "d9",
+      "actionId": "open-saved",
+      "source": "Icon / nav saved",
+      "kind": "nav-button",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
+        "destination": "c1"
       },
-      "evidence": "The Place photo crop 2 control is visible in the D10 reference."
+      "evidence": "The Icon / nav saved control is visible in the D9 reference."
     },
     {
-      "screenId": "d10",
-      "actionId": "open-place",
-      "source": "Place photo crop 3",
-      "kind": "place-card",
+      "screenId": "d9",
+      "actionId": "open-routes",
+      "source": "Icon / nav route active",
+      "kind": "nav-button",
       "effect": {
         "type": "navigate",
-        "destination": "b4",
-        "selectionKey": "selectedPlaceId"
+        "destination": "d1"
       },
-      "evidence": "The Place photo crop 3 control is visible in the D10 reference."
+      "evidence": "The Icon / nav route active control is visible in the D9 reference."
     },
     {
-      "screenId": "d11",
-      "actionId": "go-back",
-      "source": "Back button",
-      "kind": "icon-button",
-      "effect": {
-        "type": "history"
-      },
-      "evidence": "The Back button control is visible in the D11 reference."
-    },
-    {
-      "screenId": "d11",
-      "actionId": "close-place-card",
-      "source": "Close icon",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.selectedPlaceId"
-      },
-      "evidence": "The Close icon control is visible in the D11 reference."
-    },
-    {
-      "screenId": "d11",
-      "actionId": "locate-user",
-      "source": "Target button",
-      "kind": "icon-button",
-      "effect": {
-        "type": "state",
-        "stateKey": "mapViewport"
-      },
-      "evidence": "The Target button control is visible in the D11 reference."
-    },
-    {
-      "screenId": "d11",
-      "actionId": "start-nearby",
-      "source": "Floating CTA / start here",
-      "kind": "button",
+      "screenId": "d9",
+      "actionId": "open-settings",
+      "source": "Icon / nav settings",
+      "kind": "nav-button",
       "effect": {
         "type": "navigate",
-        "destination": "d2"
+        "destination": "e1"
       },
-      "evidence": "The Floating CTA / start here control is visible in the D11 reference."
-    },
-    {
-      "screenId": "d12",
-      "actionId": "open-photo-grid",
-      "source": "Bottom sheet / selected place photos",
-      "kind": "sheet",
-      "effect": {
-        "type": "navigate",
-        "destination": "d13"
-      },
-      "evidence": "The Bottom sheet / selected place photos control is visible in the D12 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo",
-      "source": "Candidate photo slot 1",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The Candidate photo slot 1 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo",
-      "source": "Candidate photo slot 2",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The Candidate photo slot 2 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo",
-      "source": "Candidate photo slot 3",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The Candidate photo slot 3 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo",
-      "source": "Candidate photo slot 4",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The Candidate photo slot 4 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo",
-      "source": "Candidate photo slot 5",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The Candidate photo slot 5 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo",
-      "source": "Candidate photo slot 6",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The Candidate photo slot 6 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo",
-      "source": "Candidate photo slot 7",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The Candidate photo slot 7 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo",
-      "source": "Candidate photo slot 8",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The Candidate photo slot 8 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo",
-      "source": "Candidate photo slot 9",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The Candidate photo slot 9 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo",
-      "source": "Candidate photo slot 10",
-      "kind": "media",
-      "effect": {
-        "type": "navigate",
-        "destination": "b7",
-        "selectionKey": "selectedMediaId"
-      },
-      "evidence": "The Candidate photo slot 10 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo-menu",
-      "source": "Photo menu",
-      "kind": "icon-button",
-      "effect": {
-        "type": "overlay",
-        "overlayId": "photo-menu"
-      },
-      "evidence": "The Photo menu control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo-menu",
-      "source": "Photo menu#2",
-      "kind": "icon-button",
-      "effect": {
-        "type": "overlay",
-        "overlayId": "photo-menu"
-      },
-      "evidence": "The Photo menu#2 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo-menu",
-      "source": "Photo menu#3",
-      "kind": "icon-button",
-      "effect": {
-        "type": "overlay",
-        "overlayId": "photo-menu"
-      },
-      "evidence": "The Photo menu#3 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo-menu",
-      "source": "Photo menu#4",
-      "kind": "icon-button",
-      "effect": {
-        "type": "overlay",
-        "overlayId": "photo-menu"
-      },
-      "evidence": "The Photo menu#4 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo-menu",
-      "source": "Photo menu#5",
-      "kind": "icon-button",
-      "effect": {
-        "type": "overlay",
-        "overlayId": "photo-menu"
-      },
-      "evidence": "The Photo menu#5 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo-menu",
-      "source": "Photo menu#6",
-      "kind": "icon-button",
-      "effect": {
-        "type": "overlay",
-        "overlayId": "photo-menu"
-      },
-      "evidence": "The Photo menu#6 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo-menu",
-      "source": "Photo menu#7",
-      "kind": "icon-button",
-      "effect": {
-        "type": "overlay",
-        "overlayId": "photo-menu"
-      },
-      "evidence": "The Photo menu#7 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo-menu",
-      "source": "Photo menu#8",
-      "kind": "icon-button",
-      "effect": {
-        "type": "overlay",
-        "overlayId": "photo-menu"
-      },
-      "evidence": "The Photo menu#8 control is visible in the D13 reference."
-    },
-    {
-      "screenId": "d13",
-      "actionId": "open-photo-menu",
-      "source": "Photo menu#9",
-      "kind": "icon-button",
-      "effect": {
-        "type": "overlay",
-        "overlayId": "photo-menu"
-      },
-      "evidence": "The Photo menu#9 control is visible in the D13 reference."
+      "evidence": "The Icon / nav settings control is visible in the D9 reference."
     },
     {
       "screenId": "e2",
@@ -5239,12 +4853,12 @@
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "b12"
+        "destination": "e1"
       },
       "evidence": "The action/save control is visible in the E2 reference."
     },
     {
-      "screenId": "e3",
+      "screenId": "e1",
       "actionId": "open-profile",
       "source": "profile/avatar",
       "kind": "row",
@@ -5253,43 +4867,43 @@
         "destination": "b12",
         "selectionKey": "selectedUserId"
       },
-      "evidence": "The profile/avatar control is visible in the E3 reference."
+      "evidence": "The profile/avatar control is visible in the E1 reference."
     },
     {
-      "screenId": "e3",
+      "screenId": "e1",
       "actionId": "open-account-settings",
       "source": "slot/settings-row/chevron",
       "kind": "row",
       "effect": {
         "type": "navigate",
-        "destination": "e4"
+        "destination": "e3"
       },
-      "evidence": "The slot/settings-row/chevron control is visible in the E3 reference."
+      "evidence": "The slot/settings-row/chevron control is visible in the E1 reference."
     },
     {
-      "screenId": "e3",
+      "screenId": "e1",
       "actionId": "open-notification-settings",
       "source": "slot/settings-row/chevron#2",
       "kind": "row",
       "effect": {
         "type": "navigate",
-        "destination": "e5"
+        "destination": "e4"
       },
-      "evidence": "The slot/settings-row/chevron#2 control is visible in the E3 reference."
+      "evidence": "The slot/settings-row/chevron#2 control is visible in the E1 reference."
     },
     {
-      "screenId": "e3",
+      "screenId": "e1",
       "actionId": "open-contact",
       "source": "slot/settings-row/chevron#3",
       "kind": "row",
       "effect": {
         "type": "navigate",
-        "destination": "e6"
+        "destination": "e5"
       },
-      "evidence": "The slot/settings-row/chevron#3 control is visible in the E3 reference."
+      "evidence": "The slot/settings-row/chevron#3 control is visible in the E1 reference."
     },
     {
-      "screenId": "e3",
+      "screenId": "e1",
       "actionId": "open-terms",
       "source": "slot/settings-row/chevron#4",
       "kind": "row",
@@ -5297,7 +4911,94 @@
         "type": "state",
         "stateKey": "selections.settingsSection"
       },
-      "evidence": "The slot/settings-row/chevron#4 control is visible in the E3 reference."
+      "evidence": "The slot/settings-row/chevron#4 control is visible in the E1 reference."
+    },
+    {
+      "screenId": "e3",
+      "actionId": "go-back",
+      "source": "action/back",
+      "kind": "icon-button",
+      "effect": {
+        "type": "history"
+      },
+      "evidence": "The action/back control is visible in the E3 reference."
+    },
+    {
+      "screenId": "e3",
+      "actionId": "update-current-password",
+      "source": "field/current-password/bg",
+      "kind": "input",
+      "effect": {
+        "type": "state",
+        "stateKey": "form.currentPassword"
+      },
+      "evidence": "The field/current-password/bg control is visible in the E3 reference."
+    },
+    {
+      "screenId": "e3",
+      "actionId": "update-new-password",
+      "source": "field/new-password/bg",
+      "kind": "input",
+      "effect": {
+        "type": "state",
+        "stateKey": "form.newPassword"
+      },
+      "evidence": "The field/new-password/bg control is visible in the E3 reference."
+    },
+    {
+      "screenId": "e3",
+      "actionId": "update-password-confirmation",
+      "source": "field/new-password-confirm/bg",
+      "kind": "input",
+      "effect": {
+        "type": "state",
+        "stateKey": "form.passwordConfirmation"
+      },
+      "evidence": "The field/new-password-confirm/bg control is visible in the E3 reference."
+    },
+    {
+      "screenId": "e3",
+      "actionId": "save-password",
+      "source": "action/save-password",
+      "kind": "button",
+      "effect": {
+        "type": "state",
+        "stateKey": "toast"
+      },
+      "evidence": "The action/save-password control is visible in the E3 reference."
+    },
+    {
+      "screenId": "e3",
+      "actionId": "forgot-password",
+      "source": "action/forgot-password",
+      "kind": "text-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "a5"
+      },
+      "evidence": "The action/forgot-password control is visible in the E3 reference."
+    },
+    {
+      "screenId": "e3",
+      "actionId": "logout",
+      "source": "action/logout",
+      "kind": "button",
+      "effect": {
+        "type": "navigate",
+        "destination": "a3"
+      },
+      "evidence": "The action/logout control is visible in the E3 reference."
+    },
+    {
+      "screenId": "e3",
+      "actionId": "delete-account",
+      "source": "action/delete-account",
+      "kind": "text-button",
+      "effect": {
+        "type": "navigate",
+        "destination": "a1"
+      },
+      "evidence": "The action/delete-account control is visible in the E3 reference."
     },
     {
       "screenId": "e4",
@@ -5311,80 +5012,58 @@
     },
     {
       "screenId": "e4",
-      "actionId": "update-current-password",
-      "source": "field/current-password/bg",
-      "kind": "input",
+      "actionId": "toggle-all-notifications",
+      "source": "ui/toggle/bg",
+      "kind": "toggle",
       "effect": {
         "type": "state",
-        "stateKey": "form.currentPassword"
+        "stateKey": "selections.notifications.toggle-all-notifications"
       },
-      "evidence": "The field/current-password/bg control is visible in the E4 reference."
+      "evidence": "The ui/toggle/bg control is visible in the E4 reference."
     },
     {
       "screenId": "e4",
-      "actionId": "update-new-password",
-      "source": "field/new-password/bg",
-      "kind": "input",
+      "actionId": "toggle-saved-place-updates",
+      "source": "ui/toggle/bg#2",
+      "kind": "toggle",
       "effect": {
         "type": "state",
-        "stateKey": "form.newPassword"
+        "stateKey": "selections.notifications.toggle-saved-place-updates"
       },
-      "evidence": "The field/new-password/bg control is visible in the E4 reference."
+      "evidence": "The ui/toggle/bg#2 control is visible in the E4 reference."
     },
     {
       "screenId": "e4",
-      "actionId": "update-password-confirmation",
-      "source": "field/new-password-confirm/bg",
-      "kind": "input",
+      "actionId": "toggle-route-recommendations",
+      "source": "ui/toggle/bg#3",
+      "kind": "toggle",
       "effect": {
         "type": "state",
-        "stateKey": "form.passwordConfirmation"
+        "stateKey": "selections.notifications.toggle-route-recommendations"
       },
-      "evidence": "The field/new-password-confirm/bg control is visible in the E4 reference."
+      "evidence": "The ui/toggle/bg#3 control is visible in the E4 reference."
     },
     {
       "screenId": "e4",
-      "actionId": "save-password",
-      "source": "action/save-password",
-      "kind": "button",
+      "actionId": "toggle-comment-likes",
+      "source": "ui/toggle/bg#4",
+      "kind": "toggle",
       "effect": {
         "type": "state",
-        "stateKey": "toast"
+        "stateKey": "selections.notifications.toggle-comment-likes"
       },
-      "evidence": "The action/save-password control is visible in the E4 reference."
+      "evidence": "The ui/toggle/bg#4 control is visible in the E4 reference."
     },
     {
       "screenId": "e4",
-      "actionId": "forgot-password",
-      "source": "action/forgot-password",
-      "kind": "text-button",
+      "actionId": "toggle-marketing",
+      "source": "ui/toggle/bg#5",
+      "kind": "toggle",
       "effect": {
-        "type": "navigate",
-        "destination": "a5"
+        "type": "state",
+        "stateKey": "selections.notifications.toggle-marketing"
       },
-      "evidence": "The action/forgot-password control is visible in the E4 reference."
-    },
-    {
-      "screenId": "e4",
-      "actionId": "logout",
-      "source": "action/logout",
-      "kind": "button",
-      "effect": {
-        "type": "navigate",
-        "destination": "a3"
-      },
-      "evidence": "The action/logout control is visible in the E4 reference."
-    },
-    {
-      "screenId": "e4",
-      "actionId": "delete-account",
-      "source": "action/delete-account",
-      "kind": "text-button",
-      "effect": {
-        "type": "navigate",
-        "destination": "a1"
-      },
-      "evidence": "The action/delete-account control is visible in the E4 reference."
+      "evidence": "The ui/toggle/bg#5 control is visible in the E4 reference."
     },
     {
       "screenId": "e5",
@@ -5398,71 +5077,6 @@
     },
     {
       "screenId": "e5",
-      "actionId": "toggle-all-notifications",
-      "source": "ui/toggle/bg",
-      "kind": "toggle",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.notifications.toggle-all-notifications"
-      },
-      "evidence": "The ui/toggle/bg control is visible in the E5 reference."
-    },
-    {
-      "screenId": "e5",
-      "actionId": "toggle-saved-place-updates",
-      "source": "ui/toggle/bg#2",
-      "kind": "toggle",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.notifications.toggle-saved-place-updates"
-      },
-      "evidence": "The ui/toggle/bg#2 control is visible in the E5 reference."
-    },
-    {
-      "screenId": "e5",
-      "actionId": "toggle-route-recommendations",
-      "source": "ui/toggle/bg#3",
-      "kind": "toggle",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.notifications.toggle-route-recommendations"
-      },
-      "evidence": "The ui/toggle/bg#3 control is visible in the E5 reference."
-    },
-    {
-      "screenId": "e5",
-      "actionId": "toggle-comment-likes",
-      "source": "ui/toggle/bg#4",
-      "kind": "toggle",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.notifications.toggle-comment-likes"
-      },
-      "evidence": "The ui/toggle/bg#4 control is visible in the E5 reference."
-    },
-    {
-      "screenId": "e5",
-      "actionId": "toggle-marketing",
-      "source": "ui/toggle/bg#5",
-      "kind": "toggle",
-      "effect": {
-        "type": "state",
-        "stateKey": "selections.notifications.toggle-marketing"
-      },
-      "evidence": "The ui/toggle/bg#5 control is visible in the E5 reference."
-    },
-    {
-      "screenId": "e6",
-      "actionId": "go-back",
-      "source": "action/back",
-      "kind": "icon-button",
-      "effect": {
-        "type": "history"
-      },
-      "evidence": "The action/back control is visible in the E6 reference."
-    },
-    {
-      "screenId": "e6",
       "actionId": "update-message",
       "source": "field/message/bg",
       "kind": "textarea",
@@ -5470,10 +5084,10 @@
         "type": "state",
         "stateKey": "form.message"
       },
-      "evidence": "The field/message/bg control is visible in the E6 reference."
+      "evidence": "The field/message/bg control is visible in the E5 reference."
     },
     {
-      "screenId": "e6",
+      "screenId": "e5",
       "actionId": "send-message",
       "source": "action/send",
       "kind": "button",
@@ -5481,7 +5095,7 @@
         "type": "state",
         "stateKey": "toast"
       },
-      "evidence": "The action/send control is visible in the E6 reference."
+      "evidence": "The action/send control is visible in the E5 reference."
     }
   ],
   "nonInteractive": [
@@ -5743,188 +5357,6 @@
       "kind": "measured-control-layer",
       "reason": "visual-child",
       "evidence": "B10 Floating route CTA / icon is presentation artwork inside the separately contracted Floating route CTA / text control."
-    },
-    {
-      "screenId": "c1",
-      "source": "bottom sheet / filter only",
-      "kind": "measured-control-layer",
-      "reason": "composite-container",
-      "evidence": "C1 bottom sheet / filter only is the filter-sheet surface containing separately measured option buttons, apply CTA, and reset text."
-    },
-    {
-      "screenId": "c2",
-      "source": "bottom sheet / filter only",
-      "kind": "measured-control-layer",
-      "reason": "composite-container",
-      "evidence": "C2 bottom sheet / filter only is the filter-sheet surface containing separately measured option buttons, apply CTA, and reset text."
-    },
-    {
-      "screenId": "c3",
-      "source": "bottom fixed CTA area",
-      "kind": "measured-control-layer",
-      "reason": "composite-container",
-      "evidence": "C3 bottom fixed CTA area is the fixed footer surface around the separately measured confirmation CTA."
-    },
-    {
-      "screenId": "c4",
-      "source": "toggle / place route",
-      "kind": "measured-control-layer",
-      "reason": "composite-container",
-      "evidence": "C4 toggle / place route is the shared tab track; icon / bookmark and icon / route are the two distinct contracted tab sources."
-    },
-    {
-      "screenId": "c4",
-      "source": "route card",
-      "kind": "measured-control-layer",
-      "reason": "composite-container",
-      "evidence": "C4 route card groups one route summary with separately measured 경로 보기 and 상세 보기 buttons; the card has no additional whole-card action."
-    },
-    {
-      "screenId": "c4",
-      "source": "route card#2",
-      "kind": "measured-control-layer",
-      "reason": "composite-container",
-      "evidence": "C4 route card#2 groups one route summary with separately measured 경로 보기 and 상세 보기 buttons; the card has no additional whole-card action."
-    },
-    {
-      "screenId": "c4",
-      "source": "route card#3",
-      "kind": "measured-control-layer",
-      "reason": "composite-container",
-      "evidence": "C4 route card#3 groups one route summary with separately measured 경로 보기 and 상세 보기 buttons; the card has no additional whole-card action."
-    },
-    {
-      "screenId": "c6",
-      "source": "toggle / place route",
-      "kind": "measured-control-layer",
-      "reason": "composite-container",
-      "evidence": "C6 toggle / place route is the shared tab track; icon / bookmark and icon / route are the two distinct contracted tab sources."
-    },
-    {
-      "screenId": "d1",
-      "source": "Start CTA / icon bg",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "D1 Start CTA / icon bg is artwork inside the separately contracted Start CTA / bg button."
-    },
-    {
-      "screenId": "d1",
-      "source": "Start CTA / text",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "D1 Start CTA / text is artwork inside the separately contracted Start CTA / bg button."
-    },
-    {
-      "screenId": "d2",
-      "source": "Segmented / bg",
-      "kind": "measured-control-layer",
-      "reason": "composite-container",
-      "evidence": "D2 Segmented / bg is the shared route-source tab track around separately contracted tab elements."
-    },
-    {
-      "screenId": "d2",
-      "source": "Segmented / saved text",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "D2 Segmented / saved text is label artwork inside a separately contracted tab, filter button, or route CTA source."
-    },
-    {
-      "screenId": "d2",
-      "source": "Filter / change text",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "D2 Filter / change text is label artwork inside a separately contracted tab, filter button, or route CTA source."
-    },
-    {
-      "screenId": "d2",
-      "source": "CTA / route label",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "D2 CTA / route label is label artwork inside a separately contracted tab, filter button, or route CTA source."
-    },
-    {
-      "screenId": "d3",
-      "source": "Segmented / bg",
-      "kind": "measured-control-layer",
-      "reason": "composite-container",
-      "evidence": "D3 Segmented / bg is the shared route-source tab track around separately contracted tab elements."
-    },
-    {
-      "screenId": "d3",
-      "source": "Segmented / discover text",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "D3 Segmented / discover text is label artwork inside a separately contracted tab, filter button, or route CTA source."
-    },
-    {
-      "screenId": "d3",
-      "source": "Filter / change text",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "D3 Filter / change text is label artwork inside a separately contracted tab, filter button, or route CTA source."
-    },
-    {
-      "screenId": "d3",
-      "source": "CTA / route label",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "D3 CTA / route label is label artwork inside a separately contracted tab, filter button, or route CTA source."
-    },
-    {
-      "screenId": "d11",
-      "source": "CTA text",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "D11 CTA text is the label inside the separately contracted Floating CTA / start here button."
-    },
-    {
-      "screenId": "d13",
-      "source": "Photo grid sheet",
-      "kind": "measured-control-layer",
-      "reason": "composite-container",
-      "evidence": "D13 Photo grid sheet is the sheet surface containing ten photo slots and nine separately contracted photo-menu buttons."
-    },
-    {
-      "screenId": "e4",
-      "source": "field/email/bg",
-      "kind": "measured-control-layer",
-      "reason": "read-only-status",
-      "evidence": "E4 field/email/bg displays the verified account email as read-only; the reference provides no email edit affordance."
-    },
-    {
-      "screenId": "e5",
-      "source": "ui/toggle/knob",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "E5 ui/toggle/knob is the moving knob artwork inside its separately contracted toggle background."
-    },
-    {
-      "screenId": "e5",
-      "source": "ui/toggle/knob#2",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "E5 ui/toggle/knob#2 is the moving knob artwork inside its separately contracted toggle background."
-    },
-    {
-      "screenId": "e5",
-      "source": "ui/toggle/knob#3",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "E5 ui/toggle/knob#3 is the moving knob artwork inside its separately contracted toggle background."
-    },
-    {
-      "screenId": "e5",
-      "source": "ui/toggle/knob#4",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "E5 ui/toggle/knob#4 is the moving knob artwork inside its separately contracted toggle background."
-    },
-    {
-      "screenId": "e5",
-      "source": "ui/toggle/knob#5",
-      "kind": "measured-control-layer",
-      "reason": "visual-child",
-      "evidence": "E5 ui/toggle/knob#5 is the moving knob artwork inside its separately contracted toggle background."
     },
     {
       "screenId": "b12",
@@ -6240,6 +5672,181 @@
       "kind": "measured-control-layer",
       "reason": "composite-container",
       "evidence": "B13 action/primary groups the back and six separately contracted follow button backgrounds; it is not an additional control."
+    },
+    {
+      "screenId": "c1",
+      "source": "toggle / place route",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "C1 toggle / place route is the shared tab track; icon / bookmark and icon / route are the two distinct contracted tab sources."
+    },
+    {
+      "screenId": "c2",
+      "source": "toggle / place route",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "C2 toggle / place route is the shared tab track; icon / bookmark and icon / route are the two distinct contracted tab sources."
+    },
+    {
+      "screenId": "c2",
+      "source": "route card",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "C2 route card groups one route summary with separately measured 경로 보기 and 상세 보기 buttons; the card has no additional whole-card action."
+    },
+    {
+      "screenId": "c2",
+      "source": "route card#2",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "C2 route card#2 groups one route summary with separately measured 경로 보기 and 상세 보기 buttons; the card has no additional whole-card action."
+    },
+    {
+      "screenId": "c2",
+      "source": "route card#3",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "C2 route card#3 groups one route summary with separately measured 경로 보기 and 상세 보기 buttons; the card has no additional whole-card action."
+    },
+    {
+      "screenId": "c3",
+      "source": "bottom sheet / filter only",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "C3 bottom sheet / filter only is the filter-sheet surface containing separately measured option buttons, apply CTA, and reset text."
+    },
+    {
+      "screenId": "c7",
+      "source": "bottom fixed CTA area",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "C7 bottom fixed CTA area is the fixed footer surface around the separately measured confirmation CTA."
+    },
+    {
+      "screenId": "d1",
+      "source": "Photo grid sheet",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "D1 Photo grid sheet is the sheet surface containing ten photo slots and nine separately contracted photo-menu buttons."
+    },
+    {
+      "screenId": "d2",
+      "source": "Start CTA / icon bg",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "D2 Start CTA / icon bg is artwork inside the separately contracted Start CTA / bg button."
+    },
+    {
+      "screenId": "d2",
+      "source": "Start CTA / text",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "D2 Start CTA / text is artwork inside the separately contracted Start CTA / bg button."
+    },
+    {
+      "screenId": "d4",
+      "source": "CTA text",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "D4 CTA text is the label inside the separately contracted Floating CTA / start here button."
+    },
+    {
+      "screenId": "d5",
+      "source": "Segmented / bg",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "D5 Segmented / bg is the shared route-source tab track around separately contracted tab elements."
+    },
+    {
+      "screenId": "d5",
+      "source": "Segmented / saved text",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "D5 Segmented / saved text is label artwork inside a separately contracted tab, filter button, or route CTA source."
+    },
+    {
+      "screenId": "d5",
+      "source": "Filter / change text",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "D5 Filter / change text is label artwork inside a separately contracted tab, filter button, or route CTA source."
+    },
+    {
+      "screenId": "d5",
+      "source": "CTA / route label",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "D5 CTA / route label is label artwork inside a separately contracted tab, filter button, or route CTA source."
+    },
+    {
+      "screenId": "d6",
+      "source": "Segmented / bg",
+      "kind": "measured-control-layer",
+      "reason": "composite-container",
+      "evidence": "D6 Segmented / bg is the shared route-source tab track around separately contracted tab elements."
+    },
+    {
+      "screenId": "d6",
+      "source": "Segmented / discover text",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "D6 Segmented / discover text is label artwork inside a separately contracted tab, filter button, or route CTA source."
+    },
+    {
+      "screenId": "d6",
+      "source": "Filter / change text",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "D6 Filter / change text is label artwork inside a separately contracted tab, filter button, or route CTA source."
+    },
+    {
+      "screenId": "d6",
+      "source": "CTA / route label",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "D6 CTA / route label is label artwork inside a separately contracted tab, filter button, or route CTA source."
+    },
+    {
+      "screenId": "e3",
+      "source": "field/email/bg",
+      "kind": "measured-control-layer",
+      "reason": "read-only-status",
+      "evidence": "E3 field/email/bg displays the verified account email as read-only; the reference provides no email edit affordance."
+    },
+    {
+      "screenId": "e4",
+      "source": "ui/toggle/knob",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "E4 ui/toggle/knob is the moving knob artwork inside its separately contracted toggle background."
+    },
+    {
+      "screenId": "e4",
+      "source": "ui/toggle/knob#2",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "E4 ui/toggle/knob#2 is the moving knob artwork inside its separately contracted toggle background."
+    },
+    {
+      "screenId": "e4",
+      "source": "ui/toggle/knob#3",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "E4 ui/toggle/knob#3 is the moving knob artwork inside its separately contracted toggle background."
+    },
+    {
+      "screenId": "e4",
+      "source": "ui/toggle/knob#4",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "E4 ui/toggle/knob#4 is the moving knob artwork inside its separately contracted toggle background."
+    },
+    {
+      "screenId": "e4",
+      "source": "ui/toggle/knob#5",
+      "kind": "measured-control-layer",
+      "reason": "visual-child",
+      "evidence": "E4 ui/toggle/knob#5 is the moving knob artwork inside its separately contracted toggle background."
     }
   ]
 }

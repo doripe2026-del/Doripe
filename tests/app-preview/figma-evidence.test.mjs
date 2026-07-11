@@ -296,9 +296,9 @@ test("every final screen has complete and internally consistent Figma evidence",
     assert.equal(png.readUInt32BE(20), 852);
   }
 
-  const c6MapMasks = masks.c6.filter((mask) => mask.reason === "map");
-  assert.ok(c6MapMasks.length > 0);
-  assert.ok(c6MapMasks.every((mask) => mask.y + mask.height <= 220));
+  const c1MapMasks = masks.c1.filter((mask) => mask.reason === "map");
+  assert.ok(c1MapMasks.length > 0);
+  assert.ok(c1MapMasks.every((mask) => mask.y + mask.height <= 220));
 
   const b4ProtectedUi = [
     { x: 17, y: 289, width: 76, height: 32 },
@@ -312,7 +312,7 @@ test("every final screen has complete and internally consistent Figma evidence",
   }
 
   const flattenedRouteHero = { x: 0, y: 0, width: 393, height: 386 };
-  for (const screenId of ["d8", "d9"]) {
+  for (const screenId of ["c6"]) {
     assert.ok(masks[screenId].every((mask) => !overlaps(mask, flattenedRouteHero)));
   }
 

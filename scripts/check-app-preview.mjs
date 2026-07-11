@@ -102,7 +102,7 @@ const flowBLiveEvidence = registries.get("public/app-preview/figma/flow-b-live-e
 const inventoryIds = inventory.map((screen) => screen.id);
 const sortedInventoryIds = [...inventoryIds].sort();
 
-if (inventory.length !== 59) throw new Error("Figma inventory must contain the 59 unique live screens");
+if (inventory.length !== 55) throw new Error("Figma inventory must contain the 55 current live screens");
 if (new Set(inventoryIds).size !== inventory.length) throw new Error("Figma screen IDs must be unique");
 if (new Set(inventory.map((screen) => screen.nodeId)).size !== inventory.length) {
   throw new Error("Figma node IDs must be globally unique");
@@ -243,7 +243,7 @@ validateFlowAAssetPolicy({
 });
 
 const flattenedRouteHero = { x: 0, y: 0, width: 393, height: 386 };
-for (const screenId of ["d8", "d9"]) {
+for (const screenId of ["c6"]) {
   if (masks[screenId].some((mask) => overlaps(mask, flattenedRouteHero))) {
     throw new Error(`${screenId.toUpperCase()} masks must not intersect the flattened composite hero`);
   }

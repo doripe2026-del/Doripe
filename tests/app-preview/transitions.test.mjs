@@ -194,18 +194,18 @@ test("contract effects agree with pure transition results", () => {
   }
 });
 
-test("contract records the corrected B4, B6, and D13 evidence", () => {
+test("contract records the corrected B4, B6, and current D1 evidence", () => {
   const b4Actions = actionIdsForScreen("b4");
   const b6Actions = actionIdsForScreen("b6");
-  const d13PhotoMenus = actionContract.actions.filter((record) => (
-    record.screenId === "d13" && /^Photo menu(?:#\d+)?$/.test(record.source)
+  const d1PhotoMenus = actionContract.actions.filter((record) => (
+    record.screenId === "d1" && /^Photo menu(?:#\d+)?$/.test(record.source)
   ));
 
   assert.ok(!b4Actions.includes("go-back"));
   assert.ok(!b4Actions.includes("create-route"));
   assert.ok(b6Actions.includes("create-route"));
-  assert.equal(d13PhotoMenus.length, 9);
-  assert.ok(d13PhotoMenus.every((record) => record.actionId === "open-photo-menu"));
+  assert.equal(d1PhotoMenus.length, 9);
+  assert.ok(d1PhotoMenus.every((record) => record.actionId === "open-photo-menu"));
 });
 
 test("A4 action sources follow the visible login and signup controls", () => {
@@ -314,26 +314,26 @@ test("B12 exposes only its measured follow action and B4 rows are interactive", 
 
   assert.ok(!b12Actions.includes("edit-profile"));
   assert.equal(b4BySource.get("Info / address row").actionId, "open-place-map");
-  assert.equal(b4BySource.get("Info / address row").effect.destination, "c5");
+  assert.equal(b4BySource.get("Info / address row").effect.destination, "c4");
   assert.equal(b4BySource.get("Info / menu row").actionId, "open-menu");
   assert.equal(b4BySource.get("Info / menu row").effect.type, "overlay");
 });
 
 test("route controls use their distinct measured buttons", () => {
-  const c4RouteMapSources = actionContract.actions
-    .filter((record) => record.screenId === "c4" && record.actionId === "open-route-map")
+  const c2RouteMapSources = actionContract.actions
+    .filter((record) => record.screenId === "c2" && record.actionId === "open-route-map")
     .map((record) => record.source);
-  const c4DetailSources = actionContract.actions
-    .filter((record) => record.screenId === "c4" && record.actionId === "open-route")
+  const c2DetailSources = actionContract.actions
+    .filter((record) => record.screenId === "c2" && record.actionId === "open-route")
     .map((record) => record.source);
-  const d2AddSources = actionContract.actions
-    .filter((record) => record.screenId === "d2" && record.actionId === "add-place")
+  const d5AddSources = actionContract.actions
+    .filter((record) => record.screenId === "d5" && record.actionId === "add-place")
     .map((record) => record.source);
 
-  assert.deepEqual(c4RouteMapSources, ["button", "button#3", "button#5"]);
-  assert.deepEqual(c4DetailSources, ["button#2", "button#4", "button#6"]);
-  assert.deepEqual(d2AddSources, ["icon/lucide#5", "icon/lucide#6", "icon/lucide#7"]);
-  assert.ok(actionIdsForScreen("d10").includes("close-route"));
+  assert.deepEqual(c2RouteMapSources, ["button", "button#3", "button#5"]);
+  assert.deepEqual(c2DetailSources, ["button#2", "button#4", "button#6"]);
+  assert.deepEqual(d5AddSources, ["icon/lucide#5", "icon/lucide#6", "icon/lucide#7"]);
+  assert.ok(actionIdsForScreen("c6").includes("go-back"));
 });
 
 test("every transition destination is a valid registry screen", () => {
@@ -352,7 +352,7 @@ test("every transition destination is a valid registry screen", () => {
 
 test("save, follow, and share actions implement the brief contract", () => {
   assert.equal(
-    dispatchAction("b1", "save-place", { placeId: "place-1" }).state.savedPlaceIds[0],
+    dispatchAction("b4", "save-place", { placeId: "place-1" }).state.savedPlaceIds[0],
     "place-1"
   );
   assert.equal(
@@ -380,7 +380,7 @@ test("state changes are immutable and same-screen selections do not navigate", (
     toast: null
   };
 
-  const saved = dispatchAction("b1", "save-place", { state, placeId: "place-1" });
+  const saved = dispatchAction("b4", "save-place", { state, placeId: "place-1" });
   const selected = dispatchAction("a15", "select-gender", { state, value: "female" });
 
   assert.notEqual(saved.state, state);
@@ -448,33 +448,33 @@ test("detail and media close actions return to their exact opener", () => {
 test("opening profile and route records selected fixture ids immutably", () => {
   const profileState = previewState("b13");
   const profile = dispatchAction("b13", "open-profile", { state: profileState, userId: "user-2" });
-  const route = dispatchAction("c4", "open-route", {
-    state: previewState("c4"),
+  const route = dispatchAction("c2", "open-route", {
+    state: previewState("c2"),
     routeId: "route-2"
   });
 
   assert.equal(profile.state.selections.selectedUserId, "user-2");
   assert.equal(profile.nextScreenId, "b12");
   assert.equal(route.state.selections.selectedRouteId, "route-2");
-  assert.equal(route.nextScreenId, "d10");
+  assert.equal(route.nextScreenId, "c6");
   assert.deepEqual(profileState.selections, {});
 });
 
 test("route detail closes to its exact opener", () => {
-  const route = dispatchAction("c4", "open-route", {
-    state: previewState("c4"),
+  const route = dispatchAction("c2", "open-route", {
+    state: previewState("c2"),
     routeId: "route-2"
   });
-  const closed = dispatchAction("d10", "close-route", { state: route.state });
+  const closed = dispatchAction("c6", "go-back", { state: route.state });
 
-  assert.equal(route.nextScreenId, "d10");
+  assert.equal(route.nextScreenId, "c6");
   assert.equal(route.state.selections.selectedRouteId, "route-2");
-  assert.equal(closed.nextScreenId, "c4");
+  assert.equal(closed.nextScreenId, "c2");
   assert.deepEqual(closed.state.history, []);
 });
 
 test("filter reset preserves non-filter selections", () => {
-  const state = previewState("c1", {
+  const state = previewState("c3", {
     selections: {
       birthYear: 1995,
       profileTab: "places",
@@ -488,7 +488,7 @@ test("filter reset preserves non-filter selections", () => {
       routeFilter: "walk"
     }
   });
-  const result = dispatchAction("c1", "reset-filters", { state });
+  const result = dispatchAction("c3", "reset-filters", { state });
 
   assert.deepEqual(result.state.selections, {
     birthYear: 1995,
