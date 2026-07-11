@@ -74,3 +74,9 @@ test("all motion photos are optimized and responsive rules are present", () => {
   assert.match(css, /@media \(max-width: 390px\)/);
   assert.doesNotMatch(css, /font-size\s*:[^;}]*(?:vw|vh|vmin|vmax|cqw|cqh)/i);
 });
+
+test("nested discovery and save animations inherit the scene playback clock", () => {
+  for (const selector of ["photo-engagement__item", "nearby-place-card"]) {
+    assert.match(css, new RegExp(`\\.${selector}\\s*\\{[^}]*animation-play-state:\\s*inherit`, "s"));
+  }
+});

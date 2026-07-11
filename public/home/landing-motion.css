@@ -26,6 +26,13 @@
   transform: none;
 }
 
+.landing-motion[data-motion-state="final"] .photo-engagement__item,
+.landing-motion[data-motion-state="final"] .nearby-place-card {
+  animation: none !important;
+  opacity: 1;
+  transform: none;
+}
+
 .landing-motion--hero[data-motion-state="final"] .hero-photo-connectors path,
 .landing-motion--course[data-motion-state="final"] .folder-route-line path {
   animation: none !important;
@@ -320,8 +327,9 @@
   align-items: center;
   gap: 7px;
   color: #fff;
-  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, .8));
+  text-shadow: 0 3px 8px rgba(0, 0, 0, .8);
   animation: engagementPulse 6.2s ease-in-out infinite;
+  animation-play-state: inherit;
 }
 
 .photo-engagement__item > span {
@@ -425,9 +433,9 @@
 }
 
 @keyframes engagementPulse {
-  0%, 42%, 100% { opacity: 0; transform: translateX(12px) scale(.78); }
-  54%, 88% { opacity: 1; transform: none; }
-  62% { transform: scale(1.1); }
+  0%, 38%, 100% { opacity: 0; transform: translateY(8px) scale(.9); }
+  49% { opacity: 1; transform: translateY(0) scale(1.06); }
+  57%, 90% { opacity: 1; transform: none; }
 }
 
 .landing-motion--nearby {
@@ -464,6 +472,7 @@
   background: #fff;
   box-shadow: 0 18px 44px rgba(18, 50, 31, .14);
   animation: nearbyCandidate 6.4s cubic-bezier(.16, 1, .3, 1) infinite;
+  animation-play-state: inherit;
 }
 
 .nearby-place-card:nth-child(2) { animation-delay: .14s; }
@@ -590,19 +599,19 @@
 }
 
 @keyframes nearbyScreen {
-  0%, 100% { opacity: .76; transform: translateX(-8px) scale(.97); }
-  14%, 90% { opacity: 1; transform: none; }
+  0%, 100% { opacity: .82; transform: translateX(-5px) scale(.98); }
+  10%, 94% { opacity: 1; transform: none; }
 }
 
 @keyframes nearbyCandidate {
-  0%, 18%, 100% { opacity: 0; transform: translateY(20px) scale(.9); }
-  34%, 72% { opacity: 1; transform: none; }
-  84% { opacity: .4; transform: translateY(28px) scale(.82); }
+  0%, 16%, 100% { opacity: 0; transform: translateY(16px) scale(.92); }
+  29%, 62% { opacity: 1; transform: none; }
+  74%, 96% { opacity: 0; transform: translateY(12px) scale(.94); }
 }
 
 @keyframes nearbyTray {
-  0%, 54%, 100% { opacity: 0; transform: translateY(22px); }
-  70%, 92% { opacity: 1; transform: none; }
+  0%, 57%, 100% { opacity: 0; transform: translateY(18px) scale(.97); }
+  70%, 94% { opacity: 1; transform: none; }
 }
 
 .landing-motion--course {
@@ -927,10 +936,10 @@
   .discovery-place-photo > figcaption strong { font-size: 13px; }
   .discovery-place-photo > figcaption span { display: none; }
   .photo-engagement { right: 5%; bottom: 23%; left: 5%; gap: 8px; }
-  .photo-engagement__item { gap: 4px; }
-  .photo-engagement__item > span { width: 25px; height: 25px; font-size: 23px; }
+  .photo-engagement__item { gap: 3px; }
+  .photo-engagement__item > span { width: 24px; height: 24px; font-size: 23px; }
   .photo-engagement__item svg { width: 22px; height: 22px; }
-  .photo-engagement__item b { font-size: 14px; }
+  .photo-engagement__item b { font-size: 13px; }
   .discovery-quote { width: 47%; padding: 10px 11px 12px; border-radius: 15px; }
   .discovery-quote--friend { left: 4%; bottom: 8%; }
   .discovery-quote--curator { right: 2%; bottom: 12%; }
@@ -1002,6 +1011,12 @@
     animation: none !important;
     transition: none !important;
     will-change: auto;
+  }
+  .photo-engagement__item,
+  .nearby-place-card {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
   }
   .hero-photo-connectors path,
   .folder-route-line path {

@@ -202,6 +202,10 @@ try {
             const rect = node.getBoundingClientRect();
             return rect.left < box.left - 2 || rect.right > box.right + 2;
           }).map((node) => node.className),
+          wide: [...scene.querySelectorAll('*')].filter((node) => {
+            const rect = node.getBoundingClientRect();
+            return rect.width > 0 && (rect.left < box.left - 2 || rect.right > box.right + 2);
+          }).slice(0, 8).map((node) => ({ className: node.className?.baseVal ?? node.className, tag: node.tagName })),
           brokenImages: [...scene.querySelectorAll('img')].filter((image) => !image.complete || image.naturalWidth === 0).length,
         };
       });
@@ -238,7 +242,7 @@ try {
       assert.ok(scene.clientWidth > 0, `${scene.id} collapsed at ${width}px`);
       assert.ok(
         scene.scrollWidth <= scene.clientWidth + 2,
-        `${scene.id} overflows internally at ${width}px (${scene.scrollWidth}/${scene.clientWidth})`,
+        `${scene.id} overflows internally at ${width}px (${scene.scrollWidth}/${scene.clientWidth}; ${JSON.stringify(scene.wide)})`,
       );
       assert.deepEqual(scene.escaped, [], `${scene.id} has escaped layers at ${width}px`);
       assert.equal(scene.brokenImages, 0, `${scene.id} has broken images at ${width}px`);
