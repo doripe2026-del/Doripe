@@ -55,6 +55,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="/home/landing-motion.css" />
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -191,116 +192,6 @@
   .hero-sub {
     font-size: 18px;
     letter-spacing: -.45px;
-  }
-  .phone-stage {
-    position: relative;
-    min-height: 660px;
-    perspective: 1200px;
-    transform-style: preserve-3d;
-  }
-  .phone-stage::before {
-    content: "";
-    position: absolute;
-    inset: 14% -4% 16% 10%;
-    border-radius: 48px;
-    background:
-      linear-gradient(135deg, rgba(0,132,255,.2), rgba(34,255,136,.08) 42%, rgba(255,255,255,.58)),
-      linear-gradient(90deg, rgba(255,255,255,.7), rgba(255,255,255,0));
-    box-shadow: inset 0 1px 1px rgba(255,255,255,.8), 0 34px 100px rgba(0,91,176,.12);
-    filter: blur(12px);
-    opacity: .72;
-    transform: rotate(-8deg) skewX(-7deg);
-  }
-  .orbit {
-    position: absolute;
-    inset: 0;
-    transform-style: preserve-3d;
-    z-index: 2;
-  }
-  .iphone {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: clamp(172px, 14.5vw, 238px);
-    aspect-ratio: 9 / 19.35;
-    padding: 5px;
-    border-radius: 36px;
-    background:
-      linear-gradient(145deg, rgba(255,255,255,.86), rgba(240,247,255,.34) 48%, rgba(0,132,255,.08)),
-      rgba(255,255,255,.48);
-    border: 1px solid rgba(0,64,130,.13);
-    box-shadow: 0 34px 90px rgba(0,54,110,.18), inset 0 1px 1px rgba(255,255,255,.96);
-    overflow: visible;
-    transform: translate(-50%, -50%);
-    animation: counterOrbit 13s cubic-bezier(.62,0,.38,1) infinite;
-    animation-delay: var(--delay);
-  }
-  .iphone::before {
-    display: none;
-  }
-  .iphone::after {
-    content: "";
-    position: absolute;
-    inset: 5px;
-    z-index: 4;
-    border-radius: 31px;
-    box-shadow: inset 0 0 0 1px rgba(6,34,63,.08), inset 0 1px 1px rgba(255,255,255,.5);
-    pointer-events: none;
-  }
-  .screen {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 31px;
-    background: #f7f2e8;
-    box-shadow: 0 14px 34px rgba(12,53,93,.12);
-  }
-  .screen img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: inherit;
-  }
-  .iphone:nth-child(1) { --delay: 0s; z-index: 5; }
-  .iphone:nth-child(2) { --delay: -4.33s; z-index: 4; }
-  .iphone:nth-child(3) { --delay: -8.66s; z-index: 3; }
-  @keyframes counterOrbit {
-    0% {
-      transform: translate(-50%, -50%) translate3d(176px, 38px, 140px) rotate(-8deg) scale(1.08);
-      opacity: 1;
-      filter: saturate(1.04) brightness(1);
-    }
-    24% {
-      transform: translate(-50%, -50%) translate3d(-62px, 132px, 38px) rotate(-19deg) scale(.9);
-      opacity: .82;
-      filter: saturate(.9) brightness(.92);
-    }
-    50% {
-      transform: translate(-50%, -50%) translate3d(-258px, -22px, -126px) rotate(-28deg) scale(.7);
-      opacity: .52;
-      filter: saturate(.72) brightness(.82);
-    }
-    76% {
-      transform: translate(-50%, -50%) translate3d(18px, -166px, 42px) rotate(14deg) scale(.9);
-      opacity: .82;
-      filter: saturate(.92) brightness(.94);
-    }
-    100% {
-      transform: translate(-50%, -50%) translate3d(176px, 38px, 140px) rotate(-8deg) scale(1.08);
-      opacity: 1;
-      filter: saturate(1.04) brightness(1);
-    }
-  }
-  .phone-shadow {
-    position: absolute;
-    left: 50%;
-    bottom: 62px;
-    width: min(580px, 82vw);
-    height: 96px;
-    transform: translateX(-50%) skewX(-10deg);
-    background: linear-gradient(90deg, transparent, rgba(0,132,255,.16), rgba(0,0,0,.1), transparent);
-    filter: blur(24px);
   }
   .section-title {
     font-family: var(--font-ko);
@@ -698,17 +589,6 @@
     filter: grayscale(1);
     opacity: .56;
   }
-  @media (max-width: 1023px) {
-    .phone-stage { min-height: 560px; }
-    .phone-stage::before { inset: 18% -8% 18% 0; transform: rotate(-7deg) skewX(-6deg); }
-    @keyframes counterOrbit {
-      0% { transform: translate(-50%, -50%) translate3d(96px, 44px, 118px) rotate(-7deg) scale(1.03); opacity: 1; }
-      24% { transform: translate(-50%, -50%) translate3d(-34px, 108px, 20px) rotate(-18deg) scale(.86); opacity: .82; }
-      50% { transform: translate(-50%, -50%) translate3d(-126px, -18px, -98px) rotate(-27deg) scale(.68); opacity: .5; }
-      76% { transform: translate(-50%, -50%) translate3d(-12px, -128px, 24px) rotate(13deg) scale(.86); opacity: .82; }
-      100% { transform: translate(-50%, -50%) translate3d(96px, 44px, 118px) rotate(-7deg) scale(1.03); opacity: 1; }
-    }
-  }
   @media (max-width: 900px) {
     .home-page h1,
     .home-page h2,
@@ -786,7 +666,6 @@
     main section:first-of-type .primary-cta {
       max-width: calc(100vw - 40px);
     }
-    .phone-stage { min-height: 430px; margin-top: -10px; }
     .chat-bubble {
       width: 94%;
       padding: 21px 20px 22px;
@@ -837,11 +716,6 @@
       border-radius: 30px;
     }
   }
-  @media (max-width: 767px) {
-    .iphone { width: 144px; padding: 4px; border-radius: 28px; }
-    .iphone::after { inset: 4px; border-radius: 24px; }
-    .screen { border-radius: 24px; }
-  }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: .01ms !important;
@@ -850,10 +724,198 @@
       scroll-behavior: auto !important;
     }
     .reveal { opacity: 1; transform: none; }
-    .iphone:nth-child(n+2) { display: none; }
-    .iphone { transform: translate(-50%, -50%) !important; opacity: 1; }
   }
 </style>
+<noscript data-landing-no-js>
+  <style>
+    .home-shell { position: relative; min-height: 100vh; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    [data-fallback-count] { visibility: visible !important; }
+
+    header {
+      position: sticky;
+      top: 30px;
+      z-index: 50;
+      display: flex;
+      width: fit-content;
+      max-width: 100%;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+    header .liquid-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+    }
+    header .liquid-nav > a:first-child {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      font-family: var(--font-latin);
+      font-size: 24px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    header .liquid-nav img { display: block; width: 36px; height: 36px; object-fit: cover; }
+    header .nav-links { display: flex; align-items: center; gap: 4px; padding: 0 16px; }
+    header .nav-links a { padding: 8px 12px; color: rgba(7,17,31,.62); text-decoration: none; }
+    header .liquid-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    header .liquid-button span,
+    .primary-cta span {
+      display: flex;
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--blue);
+    }
+    header .liquid-button span {
+      width: 28px;
+      height: 28px;
+      flex-basis: 28px;
+      background: var(--ink);
+      color: #fff;
+    }
+
+    main#home {
+      position: relative;
+      z-index: 10;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 96px 64px 40px;
+    }
+    main#home > section { padding: 112px 0; }
+    main#home > section:first-child {
+      display: grid;
+      min-height: calc(100vh - 130px);
+      grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+      align-items: center;
+      gap: 32px;
+      padding: 0;
+    }
+    main#home > section:first-child > div:first-child { position: relative; z-index: 10; max-width: 720px; }
+    main#home > section:first-child > div:first-child > div:first-child {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba(0,0,0,.1);
+      border-radius: 16px;
+      background: rgba(255,255,255,.45);
+    }
+    main#home > section:first-child > div:first-child > div:first-child > span:first-child {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    main#home > section:first-child > div:first-child > div:first-child > span:last-child {
+      color: rgba(7,17,31,.72);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    main#home .hero-title { margin: 28px 0 0; font-weight: 800; }
+    main#home .hero-sub { max-width: 610px; margin: 24px 0 0; color: var(--muted); line-height: 2; }
+    main#home > section:first-child > div:first-child > div:last-child {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    main#home > section:first-child > div:first-child > div:last-child p { margin: 0; color: var(--muted); }
+    .primary-cta {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    #features > div,
+    #product > div { max-width: 1320px; margin: 0 auto; }
+    #features > div {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      align-items: start;
+      gap: 80px;
+    }
+    #features > div > div:first-child { position: sticky; top: 128px; }
+    #features .section-title,
+    #product .section-title { margin: 20px 0 0; font-weight: 900; }
+    #product > div > div:first-child { max-width: 820px; }
+    #product > div > div:first-child > p:last-child { max-width: 680px; margin-top: 24px; color: var(--muted); line-height: 2; }
+    #product .journey-stack { margin-top: 80px; }
+
+    #pricing { position: relative; padding: 112px 64px; text-align: center; }
+    #pricing > div { position: relative; z-index: 10; max-width: 980px; margin: 0 auto; }
+    #pricing .cta-title { margin: 0; color: var(--ink); }
+    #pricing p { max-width: 672px; margin: 24px auto 0; color: var(--muted); line-height: 2; }
+    #pricing > div > div { margin-top: 36px; }
+    footer { padding: 32px 64px; }
+    footer > div {
+      display: flex;
+      max-width: 1600px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    footer a { color: inherit; text-decoration: none; }
+    footer > div > div { display: flex; gap: 12px; }
+    footer > div > div:first-child { flex-direction: column; gap: 4px; }
+    #mobileNotifyBar { display: none !important; }
+
+    @media (max-width: 900px) {
+      header { top: 14px; width: 100%; padding: 0; }
+      header .liquid-nav { width: min(390px, calc(100vw - 28px)); }
+      header .liquid-nav > a:first-child { font-size: 22px; }
+      header .nav-links { order: 3; width: 100%; justify-content: center; padding: 0; }
+      header .nav-links a { flex: 1; padding: 6px 8px; text-align: center; }
+      main#home { padding: 80px 20px 40px; }
+      main#home > section { padding: 80px 0; }
+      main#home > section:first-child {
+        display: grid;
+        min-height: auto;
+        max-width: 340px;
+        grid-template-columns: 1fr;
+        margin: 0 auto;
+        gap: 40px;
+        padding: 32px 0 0;
+      }
+      main#home > section:first-child > div:first-child > div:last-child { align-items: flex-start; flex-direction: column; }
+      #features > div { grid-template-columns: 1fr; gap: 48px; }
+      #features > div > div:first-child { position: static; }
+      #product .journey-stack { margin-top: 64px; }
+      #pricing { padding: 80px 20px; }
+      footer { padding: 32px 20px; }
+      footer > div { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</noscript>
 </head>
 <body class="home-page">
 <div class="home-shell relative min-h-screen">
@@ -883,18 +945,18 @@
     <section class="grid min-h-[calc(100vh-130px)] grid-cols-1 items-center gap-8 lg:grid-cols-[.92fr_1.08fr]">
       <div class="relative z-10 max-w-[720px]">
         <div class="reveal inline-flex items-center gap-2 rounded-[16px] border border-black/10 bg-white/45 px-3 py-2 shadow-[inset_0_4px_4px_rgba(255,255,255,.35)] backdrop-blur-[30px]">
-          <span class="rounded-full bg-bluebrand px-2 py-1 text-xs font-bold text-white shadow-[0_10px_24px_rgba(0,132,255,.22)]">
+          <span data-protected-copy="hero-proof-score" class="rounded-full bg-bluebrand px-2 py-1 text-xs font-bold text-white shadow-[0_10px_24px_rgba(0,132,255,.22)]">
             92.1%
           </span>
-          <span class="text-sm font-semibold text-ink/72">초기 설문에서 사용 의향을 보였어요</span>
+          <span data-protected-copy="hero-proof" class="text-sm font-semibold text-ink/72">초기 설문에서 사용 의향을 보였어요</span>
         </div>
 
-        <h1 class="hero-title reveal mt-7 font-bold text-ink">
+        <h1 data-protected-copy="hero-title" class="hero-title reveal mt-7 font-bold text-ink">
           오늘 어디 갈지,<br />
           떠오르는 곳이 없다면.
         </h1>
 
-        <p class="hero-sub reveal mt-6 max-w-[610px] font-inter leading-8 text-muted">
+        <p data-protected-copy="hero-sub" class="hero-sub reveal mt-6 max-w-[610px] font-inter leading-8 text-muted">
           검색어가 없어도 괜찮아요. 오늘의 분위기에 맞는 카페, 식당, 술집, 샵을 가볍게 넘겨보세요.
         </p>
 
@@ -905,33 +967,57 @@
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </span>
           </a>
-          <p class="text-sm font-medium text-muted">
+          <p data-protected-copy="hero-count" class="text-sm font-medium text-muted">
             <span id="signupCountHero" class="font-bold text-bluebrand" data-fallback-count="10000" style="visibility:hidden">10,000</span>명이 Doripe를 먼저 확인했어요
           </p>
         </div>
       </div>
 
-      <div class="phone-stage reveal" aria-label="Doripe 앱 목업 모션">
-        <div class="phone-shadow" aria-hidden="true"></div>
-        <div class="orbit">
-          <div class="iphone">
-            <div class="screen"><img src="/img/figma-ui/hero-discover-feed.png" alt="Doripe 발견 피드 화면" /></div>
-          </div>
-          <div class="iphone">
-            <div class="screen"><img src="/img/figma-ui/hero-saved-route-empty.png" alt="Doripe 저장 경로 화면" /></div>
-          </div>
-          <div class="iphone">
-            <div class="screen"><img src="/img/figma-ui/hero-map-candidates.png" alt="Doripe 지도 후보 화면" /></div>
-          </div>
-        </div>
+      <div
+        id="landingMotionHero"
+        class="landing-motion landing-motion--hero"
+        data-motion-scene
+        data-motion-state="final"
+        role="img"
+        aria-label="친구와 큐레이터의 장소 사진에서 주변 코스를 발견하고 공유하는 Doripe 흐름"
+      >
+        <figure class="hero-feed-screen" data-motion-layer="hero-screen" aria-hidden="true">
+          <img src="/img/figma-ui/hero-discover-feed.png" width="590" height="1278" loading="eager" decoding="async" fetchpriority="high" alt="" />
+        </figure>
+        <svg class="hero-photo-connectors" data-motion-layer="hero-connectors" viewBox="0 0 720 660" aria-hidden="true">
+          <path d="M250 205 C300 205 316 214 346 228" />
+          <path d="M472 172 C516 160 544 152 582 158" />
+          <path d="M468 474 C522 498 548 514 586 522" />
+        </svg>
+        <figure class="hero-photo-expansion hero-photo-expansion--restaurant" data-motion-layer="hero-photo" aria-hidden="true">
+          <img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="eager" decoding="async" alt="" />
+          <figcaption class="hero-profile-chip" data-profile-kind="curator">
+            <img src="/img/landing-motion/profile-curator-01.avif" width="180" height="180" loading="eager" decoding="async" alt="" />
+            <strong>동네수집가</strong><span aria-label="공식 큐레이터">✓</span>
+          </figcaption>
+        </figure>
+        <figure class="hero-photo-expansion hero-photo-expansion--cafe" data-motion-layer="hero-photo" aria-hidden="true">
+          <img src="/img/landing-motion/campaign-cafe.avif" width="1000" height="750" loading="eager" decoding="async" alt="" />
+          <figcaption class="hero-profile-chip" data-profile-kind="friend">
+            <img src="/img/landing-motion/profile-friend-01.avif" width="180" height="180" loading="eager" decoding="async" alt="" />
+            <strong>오늘도산책</strong>
+          </figcaption>
+        </figure>
+        <figure class="hero-photo-expansion hero-photo-expansion--alley" data-motion-layer="hero-photo" aria-hidden="true">
+          <img src="/img/landing-motion/campaign-alley.avif" width="1000" height="750" loading="eager" decoding="async" alt="" />
+          <figcaption class="hero-profile-chip" data-profile-kind="friend">
+            <img src="/img/landing-motion/profile-friend-02.avif" width="180" height="180" loading="eager" decoding="async" alt="" />
+            <strong>주말기록</strong>
+          </figcaption>
+        </figure>
       </div>
     </section>
 
     <section id="features" class="relative overflow-hidden px-0 py-20 md:py-28">
       <div class="mx-auto grid max-w-[1320px] grid-cols-1 items-start gap-12 lg:grid-cols-[.9fr_1.1fr] lg:gap-20">
         <div class="reveal lg:sticky lg:top-32">
-          <p class="font-brand text-sm font-black uppercase tracking-[.18em] text-bluebrand">Before Doripe</p>
-          <h2 class="section-title mt-5 font-black text-ink">
+          <p data-protected-copy="features-kicker" class="font-brand text-sm font-black uppercase tracking-[.18em] text-bluebrand">Before Doripe</p>
+          <h2 data-protected-copy="features-title" class="section-title mt-5 font-black text-ink">
             이런 적,<br />
             있으시지 않나요?
           </h2>
@@ -939,20 +1025,20 @@
 
         <div class="chat-thread">
           <article class="chat-bubble left reveal">
-            <div class="chat-meta">약속 잡기 전</div>
-            <p class="chat-text">😵 오늘 어디 갈지 정해야 하는데, 딱 떠오르는 장소가 없어... 큰일이야 ㅠ_ㅠ</p>
+            <div data-protected-copy="chat-1-meta" class="chat-meta">약속 잡기 전</div>
+            <p data-protected-copy="chat-1-text" class="chat-text">😵 오늘 어디 갈지 정해야 하는데, 딱 떠오르는 장소가 없어... 큰일이야 ㅠ_ㅠ</p>
           </article>
           <article class="chat-bubble right reveal">
-            <div class="chat-meta">검색창 앞</div>
-            <p class="chat-text">😰 조용하고 아늑한 분위기의 술집을 가고 싶은데, 뭐라고 검색해야 할지 모르겠어 ㅠㅠ</p>
+            <div data-protected-copy="chat-2-meta" class="chat-meta">검색창 앞</div>
+            <p data-protected-copy="chat-2-text" class="chat-text">😰 조용하고 아늑한 분위기의 술집을 가고 싶은데, 뭐라고 검색해야 할지 모르겠어 ㅠㅠ</p>
           </article>
           <article class="chat-bubble left reveal">
-            <div class="chat-meta">나가기 직전</div>
-            <p class="chat-text">🫠 인스타에 저장한 곳은 많은데, 막상 약속 잡을 때 다시 찾기가 귀찮아...</p>
+            <div data-protected-copy="chat-3-meta" class="chat-meta">나가기 직전</div>
+            <p data-protected-copy="chat-3-text" class="chat-text">🫠 인스타에 저장한 곳은 많은데, 막상 약속 잡을 때 다시 찾기가 귀찮아...</p>
           </article>
           <article class="chat-bubble right reveal">
-            <div class="chat-meta">동선 확인 중</div>
-            <p class="chat-text">😳 마음에 드는 장소를 찾아도, 실제로 내가 오늘 갈 동선에 넣을 수 있을지 잘 모르겠어...</p>
+            <div data-protected-copy="chat-4-meta" class="chat-meta">동선 확인 중</div>
+            <p data-protected-copy="chat-4-text" class="chat-text">😳 마음에 드는 장소를 찾아도, 실제로 내가 오늘 갈 동선에 넣을 수 있을지 잘 모르겠어...</p>
           </article>
         </div>
       </div>
@@ -961,27 +1047,59 @@
     <section id="product" class="relative overflow-hidden px-0 py-20 md:py-28">
       <div class="mx-auto max-w-[1320px]">
         <div class="reveal max-w-[820px]">
-          <p class="font-brand text-sm font-black uppercase tracking-[.18em] text-bluebrand">How it works</p>
-          <h2 class="section-title mt-5 font-black text-ink">
+          <p data-protected-copy="product-kicker" class="font-brand text-sm font-black uppercase tracking-[.18em] text-bluebrand">How it works</p>
+          <h2 data-protected-copy="product-title" class="section-title mt-5 font-black text-ink">
             장소는 발견하고, 고르고,<br />
             떠나세요.
           </h2>
-          <p class="mt-6 max-w-[680px] text-base leading-8 tracking-[-.5px] text-muted">
+          <p data-protected-copy="product-intro" class="mt-6 max-w-[680px] text-base leading-8 tracking-[-.5px] text-muted">
             Doripe는 단순히 장소를 검색하는 앱이 아니라, 사용자의 취향에 맞는 장소를 발견합니다.
           </p>
         </div>
 
         <div class="journey-stack mt-20">
           <article class="journey-row">
-            <div class="journey-visual reveal">
-              <div class="journey-phone">
-                <img src="/img/figma-ui/discover.png" alt="Doripe 발견 화면" />
+            <div class="journey-visual">
+              <div
+                id="motionSceneDiscovery"
+                class="landing-motion landing-motion--discovery"
+                data-motion-scene
+                data-motion-state="final"
+                role="img"
+                aria-label="유저와 큐레이터의 사진과 영상으로 장소를 발견하는 화면"
+              >
+                <figure class="discovery-feed-screen" data-motion-layer="discovery-feed" aria-hidden="true">
+                  <img src="/img/figma-ui/hero-discover-feed.png" width="590" height="1278" loading="lazy" decoding="async" alt="" />
+                </figure>
+                <figure class="discovery-place-photo" data-motion-layer="discovery-photo" aria-hidden="true">
+                  <img src="/img/landing-motion/campaign-alley.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                  <figcaption><strong>연남 골목의 작은 숍</strong><span>소품/체험</span></figcaption>
+                  <ul class="photo-engagement" data-motion-layer="photo-engagement">
+                    <li class="photo-engagement__item" data-engagement="likes">
+                      <span aria-hidden="true">♥</span><b>1,284</b>
+                    </li>
+                    <li class="photo-engagement__item" data-engagement="comments">
+                      <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-4-.9L3 21l1.7-4.1A8.2 8.2 0 1 1 21 11.5Z" /></svg></span><b>96</b>
+                    </li>
+                    <li class="photo-engagement__item" data-engagement="saves">
+                      <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4Z" /></svg></span><b>312</b>
+                    </li>
+                  </ul>
+                </figure>
+                <blockquote class="discovery-quote discovery-quote--friend" data-motion-layer="discovery-quote" aria-hidden="true">
+                  <div><img src="/img/landing-motion/profile-friend-01.avif" width="180" height="180" loading="lazy" decoding="async" alt="" /><strong>오늘도산책</strong></div>
+                  <p>“여기 분위기 진짜 좋아”</p>
+                </blockquote>
+                <blockquote class="discovery-quote discovery-quote--curator" data-motion-layer="discovery-quote" aria-hidden="true">
+                  <div><img src="/img/landing-motion/profile-curator-02.avif" width="180" height="180" loading="lazy" decoding="async" alt="" /><strong>서울의틈</strong><span>✓</span></div>
+                  <p>“오후 네 시쯤 가면<br />빛이 정말 예뻐요”</p>
+                </blockquote>
               </div>
             </div>
             <div class="journey-copy reveal">
-              <p class="journey-kicker">Discover</p>
-              <h3 class="journey-title">검색어 대신 분위기로 찾아요.</h3>
-              <p class="journey-text">
+              <p data-protected-copy="discover-kicker" class="journey-kicker">Discover</p>
+              <h3 data-protected-copy="discover-title" class="journey-title">검색어 대신 분위기로 찾아요.</h3>
+              <p data-protected-copy="discover-text" class="journey-text">
                 "성수 카페"처럼 넓게 검색하지 않고, 나에게 필요한 분위기와 상황에 맞춰 장소를 탐색합니다. 다양한 장소 사진을 먼저 보고, 나의 취향에 맞는 장소만 따로 남길 수 있어요.
               </p>
             </div>
@@ -989,29 +1107,104 @@
 
           <article class="journey-row reverse">
             <div class="journey-copy reveal">
-              <p class="journey-kicker">Save</p>
-              <h3 class="journey-title">나중에 다시 찾기 쉬운 방식으로 저장해요.</h3>
-              <p class="journey-text">
+              <p data-protected-copy="save-kicker" class="journey-kicker">Save</p>
+              <h3 data-protected-copy="save-title" class="journey-title">나중에 다시 찾기 쉬운 방식으로 저장해요.</h3>
+              <p data-protected-copy="save-text" class="journey-text">
                 인스타 저장함이나 지도 핀처럼 쌓이기만 하는 방식에서 벗어나, "데이트", "조용한 술집", "혼자 가기 좋은 곳"처럼 상황 태그와 필터로 다시 찾기 쉽게 정리해요.
               </p>
             </div>
-            <div class="journey-visual reveal">
-              <div class="journey-phone">
-                <img src="/img/figma-ui/saved.png" alt="Doripe 저장함 화면" />
+            <div class="journey-visual">
+              <div
+                id="motionSceneNearby"
+                class="landing-motion landing-motion--nearby"
+                data-motion-scene
+                data-motion-state="final"
+                role="img"
+                aria-label="선택한 장소 주변에서 함께 갈 장소를 추천하고 코스 후보로 정리하는 화면"
+              >
+                <figure class="nearby-c5-screen" data-motion-layer="nearby-screen" aria-hidden="true">
+                  <img src="/img/landing-motion/c5-route-view.png" width="590" height="1276" loading="eager" fetchpriority="high" decoding="async" alt="" />
+                </figure>
+                <div class="nearby-place-grid" data-motion-layer="nearby-candidates" aria-hidden="true">
+                  <article class="nearby-place-card is-selected" data-course-candidate="1">
+                    <img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                    <div><b>1</b><strong>리틀넥 연남</strong><small>식당 · 선택한 장소</small></div>
+                  </article>
+                  <article class="nearby-place-card" data-course-candidate="2">
+                    <img src="/img/landing-motion/campaign-cafe.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                    <div><b>2</b><strong>창가의 오후</strong><small>카페 · 도보 6분</small></div>
+                  </article>
+                  <article class="nearby-place-card" data-course-candidate="3">
+                    <img src="/img/landing-motion/campaign-activity.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                    <div><b>3</b><strong>작은 도예실</strong><small>놀거리 · 도보 8분</small></div>
+                  </article>
+                </div>
+                <div class="nearby-course-tray" data-motion-layer="course-tray" aria-hidden="true">
+                  <strong>오늘의 코스 후보</strong>
+                  <ol>
+                    <li class="nearby-tray__item"><b>1</b><img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><span>식당</span></li>
+                    <li class="nearby-tray__item"><b>2</b><img src="/img/landing-motion/campaign-cafe.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><span>카페</span></li>
+                    <li class="nearby-tray__item"><b>3</b><img src="/img/landing-motion/campaign-activity.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><span>도예실</span></li>
+                  </ol>
+                </div>
               </div>
             </div>
           </article>
 
           <article class="journey-row">
-            <div class="journey-visual reveal">
-              <div class="journey-phone">
-                <img src="/img/figma-ui/route-plan-generated.png" alt="Doripe 루트 계획 화면" />
+            <div class="journey-visual">
+              <div
+                id="motionSceneCourse"
+                class="landing-motion landing-motion--course"
+                data-motion-scene
+                data-motion-state="final"
+                role="img"
+                aria-label="세 장소가 루트로 연결되어 하나의 하루 코스 폴더가 되고 친구들이 반응하는 화면"
+              >
+                <svg class="folder-route-line" data-motion-layer="folder-route" viewBox="0 0 720 620" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M150 92 C220 110 280 145 330 190 C380 220 455 180 530 142 C480 210 420 260 360 300 C320 340 310 410 350 470" />
+                </svg>
+                <article class="folder-route-card folder-route-card--one" data-motion-layer="folder-place" aria-hidden="true">
+                  <b>1</b><img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><strong>리틀넥 연남</strong>
+                </article>
+                <article class="folder-route-card folder-route-card--two" data-motion-layer="folder-place" aria-hidden="true">
+                  <b>2</b><img src="/img/landing-motion/campaign-cafe.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><strong>창가의 오후</strong>
+                </article>
+                <article class="folder-route-card folder-route-card--three" data-motion-layer="folder-place" aria-hidden="true">
+                  <b>3</b><img src="/img/landing-motion/campaign-activity.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><strong>작은 도예실</strong>
+                </article>
+                <section class="day-folder" data-motion-layer="day-folder" aria-hidden="true">
+                  <span>ROUTE COMPLETE</span><strong>연남에서 보내는 하루</strong><small>3곳 · 친구와 공유</small>
+                  <div>
+                    <img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                    <img src="/img/landing-motion/campaign-cafe.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                    <img src="/img/landing-motion/campaign-activity.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                  </div>
+                </section>
+                <div class="course-reaction course-reaction--saved" data-motion-layer="course-reaction" data-course-reaction="saved" aria-hidden="true">
+                  <img src="/img/landing-motion/profile-friend-01.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
+                  <span><b>오늘도산책</b><strong>여기 저장했어요</strong></span>
+                </div>
+                <div class="course-reaction course-reaction--invite" data-motion-layer="course-reaction" data-course-reaction="invite" aria-hidden="true">
+                  <img src="/img/landing-motion/profile-friend-02.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
+                  <span><b>주말기록</b><strong>다음 주에 같이 가자!</strong></span>
+                </div>
+                <div class="course-reaction course-reaction--curator" data-motion-layer="course-reaction" data-course-reaction="curator" aria-hidden="true">
+                  <img src="/img/landing-motion/profile-curator-02.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
+                  <span><b>서울의틈 <i>✓</i></b><strong>이 코스 진짜 좋아요</strong></span>
+                </div>
+                <div class="course-reaction course-reaction--likes" data-motion-layer="course-reaction" data-course-reaction="likes" aria-hidden="true">
+                  <em>♥</em><strong>128명이 좋아해요</strong>
+                </div>
+                <div class="course-reaction course-reaction--complete" data-motion-layer="course-reaction" data-course-reaction="complete" aria-hidden="true">
+                  <em>✓</em><strong>코스 저장 완료</strong>
+                </div>
               </div>
             </div>
             <div class="journey-copy reveal">
-              <p class="journey-kicker">Go</p>
-              <h3 class="journey-title">나만의 코스를 만들고, 떠나보세요.</h3>
-              <p class="journey-text">
+              <p data-protected-copy="go-kicker" class="journey-kicker">Go</p>
+              <h3 data-protected-copy="go-title" class="journey-title">나만의 코스를 만들고, 떠나보세요.</h3>
+              <p data-protected-copy="go-text" class="journey-text">
                 카페, 식당, 술집까지 이어서 가려면 순서와 동선이 복잡해지기 쉽습니다. Doripe에서는 장소를 지도 위에서 한 번에 보고, 오늘 움직일 동선을 간단하게 정리할 수 있어요.
               </p>
             </div>
@@ -1026,11 +1219,11 @@
 <section id="pricing" class="relative overflow-hidden bg-white px-5 py-20 text-center md:px-10 md:py-28 lg:px-16">
   <div class="glow-field opacity-50" aria-hidden="true"></div>
   <div class="relative z-10 mx-auto max-w-[980px]">
-    <h2 class="cta-title reveal text-ink">
+    <h2 data-protected-copy="final-title" class="cta-title reveal text-ink">
       저장해두고 잊고 있던 장소,<br />
       가고 싶을 때, <br class="md:hidden" />다시 꺼내보세요.
     </h2>
-    <p class="reveal mx-auto mt-6 max-w-2xl text-base leading-8 text-muted">
+    <p data-protected-copy="final-sub" class="reveal mx-auto mt-6 max-w-2xl text-base leading-8 text-muted">
       Doripe 베타가 열리면 가장 먼저 알려드릴게요.
     </p>
     <div class="reveal mt-9">
@@ -1041,7 +1234,7 @@
         </span>
       </a>
     </div>
-    <p class="reveal mt-5 text-sm font-medium text-muted">
+    <p data-protected-copy="final-count" class="reveal mt-5 text-sm font-medium text-muted">
       <span id="signupCountFinal" class="font-bold text-bluebrand" data-fallback-count="10000" style="visibility:hidden">10,000</span>명이 Doripe를 먼저 확인했어요
     </p>
   </div>
@@ -1113,7 +1306,8 @@
 
   const mobileNotifyBar = document.getElementById('mobileNotifyBar');
   const businessSection = document.getElementById('business');
-  if (mobileNotifyBar && businessSection) {
+  const supportsIntersectionObserver = typeof window.IntersectionObserver === 'function';
+  if (mobileNotifyBar && businessSection && supportsIntersectionObserver) {
     const mobileBarObserver = new IntersectionObserver((entries) => {
       const businessVisible = entries.some((entry) => entry.isIntersecting);
       mobileNotifyBar.classList.toggle('is-hidden', businessVisible);
@@ -1121,12 +1315,17 @@
     mobileBarObserver.observe(businessSection);
   }
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('show');
-    });
-  }, { rootMargin: '-70px' });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  if (supportsIntersectionObserver) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+      });
+    }, { rootMargin: '-70px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('show'));
+  }
 </script>
+<script type="module" src="/home/landing-motion.js"></script>
 </body>
 </html>
