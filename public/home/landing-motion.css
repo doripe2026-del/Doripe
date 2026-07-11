@@ -615,19 +615,18 @@
 }
 
 .landing-motion--course {
-  background: linear-gradient(115deg, rgba(244, 252, 247, .98), #fff 52%, rgba(247, 248, 255, .98));
+  background-color: #f7f7f3;
+  background-image: linear-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2)), url("/img/landing-motion/course-map-background.jpg");
+  background-position: center;
+  background-size: cover;
 }
 
 .landing-motion--course::before {
   content: "";
   position: absolute;
-  right: 0;
-  bottom: -16%;
-  width: 52%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: rgba(68, 242, 139, .2);
-  filter: blur(56px);
+  inset: 0;
+  background: rgba(255, 255, 255, .08);
+  pointer-events: none;
 }
 
 .folder-route-line {
@@ -672,13 +671,11 @@
 .folder-route-card--two {
   --start-x: -190px;
   --start-y: 120px;
-  animation-delay: .14s;
 }
 
 .folder-route-card--three {
   --start-x: 155px;
   --start-y: -150px;
-  animation-delay: .28s;
 }
 
 .folder-route-card > img {

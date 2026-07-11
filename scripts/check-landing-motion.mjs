@@ -13,10 +13,11 @@ const requiredFiles = [
   "scripts/serve-landing.mjs",
   "tests/landing-route-contract.test.mjs",
   "tests/landing-route-geometry.browser.mjs",
+  "public/img/figma-ui/hero-discover-feed.png",
 ];
 
 const requiredAssets = [
-  "public/img/landing-motion/hero-discover-feed.avif",
+  "public/img/landing-motion/course-map-background.jpg",
   "public/img/landing-motion/c5-route-view.png",
   "public/img/landing-motion/campaign-restaurant.avif",
   "public/img/landing-motion/campaign-cafe.avif",
@@ -58,7 +59,7 @@ const lowerMotionMarkup = home.slice(home.indexOf('id="motionSceneDiscovery"'), 
 const imageTags = [...motionMarkup.matchAll(/<img\b[^>]*>/g)].map((match) => match[0]);
 assert(imageTags.length >= 20, "motion scenes do not contain the complete photo set");
 for (const tag of imageTags) {
-  assert(/src="\/img\/landing-motion\/(?:[^\"]+\.avif|c5-route-view\.png)"/.test(tag), `motion image is not optimized: ${tag}`);
+  assert(/src="(?:\/img\/landing-motion\/(?:[^\"]+\.avif|c5-route-view\.png)|\/img\/figma-ui\/hero-discover-feed\.png)"/.test(tag), `motion image is not optimized: ${tag}`);
   assert(/decoding="async"/.test(tag), `motion image must decode asynchronously: ${tag}`);
 }
 for (const tag of lowerMotionMarkup.matchAll(/<img\b[^>]*>/g)) {
@@ -69,7 +70,7 @@ for (const tag of lowerMotionMarkup.matchAll(/<img\b[^>]*>/g)) {
   assert(/loading="lazy"/.test(tag[0]), `lower motion image must load lazily: ${tag[0]}`);
 }
 assert(
-  /hero-discover-feed\.avif"[^>]*loading="eager"[^>]*fetchpriority="high"/.test(motionMarkup),
+  /hero-discover-feed\.png"[^>]*loading="eager"[^>]*fetchpriority="high"/.test(motionMarkup),
   "primary hero screen must be prioritized",
 );
 

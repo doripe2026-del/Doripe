@@ -19,6 +19,7 @@ function count(source, pattern) {
 test("hero uses one complete feed and three expanded photos with social identities", () => {
   const hero = scene("landingMotionHero", "</section>");
   assert.match(hero, /class="hero-feed-screen"/);
+  assert.match(hero, /\/img\/figma-ui\/hero-discover-feed\.png/);
   assert.equal(count(hero, /class="hero-photo-expansion/g), 3);
   assert.ok(count(hero, /class="hero-profile-chip/g) >= 3);
   assert.equal(count(hero, /data-profile-kind="friend"/g), 2);
@@ -27,6 +28,7 @@ test("hero uses one complete feed and three expanded photos with social identiti
 
 test("discovery overlays large icon-only engagement counts on the place photo", () => {
   const discovery = scene("motionSceneDiscovery", '<div class="journey-copy');
+  assert.match(discovery, /\/img\/figma-ui\/hero-discover-feed\.png/);
   assert.match(discovery, /class="discovery-place-photo"/);
   assert.equal(count(discovery, /class="discovery-quote/g), 2);
   assert.equal(count(discovery, /class="photo-engagement__item/g), 3);
@@ -52,6 +54,7 @@ test("course connects three place cards into a social folder without navigation"
   assert.equal(count(course, /class="folder-route-card/g), 3);
   assert.match(course, /class="folder-route-line"/);
   assert.equal(count(course, /<path d=/g), 1);
+  assert.match(css, /course-map-background\.jpg/);
   assert.match(course, /class="day-folder"/);
   assert.equal(count(course, /class="course-reaction /g), 5);
   for (const reaction of ["saved", "invite", "curator", "likes", "complete"]) {
@@ -67,7 +70,7 @@ test("course connects three place cards into a social folder without navigation"
 test("all motion photos are optimized and responsive rules are present", () => {
   const motion = home.slice(home.indexOf('id="landingMotionHero"'), home.indexOf("</main>"));
   for (const tag of motion.matchAll(/<img\b[^>]*>/g)) {
-    assert.match(tag[0], /src="\/img\/landing-motion\/(?:[^\"]+\.avif|c5-route-view\.png)"/);
+    assert.match(tag[0], /src="(?:\/img\/landing-motion\/(?:[^\"]+\.avif|c5-route-view\.png)|\/img\/figma-ui\/hero-discover-feed\.png)"/);
     assert.match(tag[0], /decoding="async"/);
   }
   assert.match(css, /@media \(max-width: 480px\)/);
@@ -79,4 +82,5 @@ test("nested discovery and save animations inherit the scene playback clock", ()
   for (const selector of ["photo-engagement__item", "nearby-place-card"]) {
     assert.match(css, new RegExp(`\\.${selector}\\s*\\{[^}]*animation-play-state:\\s*inherit`, "s"));
   }
+  assert.doesNotMatch(css, /\.folder-route-card--(?:two|three)\s*\{[^}]*animation-delay/s);
 });
