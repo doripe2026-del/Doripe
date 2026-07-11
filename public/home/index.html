@@ -979,77 +979,37 @@
         data-motion-scene
         data-motion-state="final"
         role="img"
-        aria-label="유저와 큐레이터의 장소 콘텐츠가 주변 장소 추천과 하루 코스, 친구 공유와 길찾기로 이어지는 Doripe 흐름"
+        aria-label="친구와 큐레이터의 장소 사진에서 주변 코스를 발견하고 공유하는 Doripe 흐름"
       >
-        <div class="motion-ugc-stack" data-motion-layer="ugc" aria-hidden="true">
-          <figure class="motion-ugc-card motion-ugc-card--one">
-            <img src="/img/landing-motion/hero-discover-feed.avif" width="590" height="1278" loading="eager" decoding="async" fetchpriority="high" alt="" />
-            <figcaption><img src="/img/landing-motion/creator-01.avif" width="128" height="160" loading="eager" decoding="async" alt="" />도리데이</figcaption>
-          </figure>
-          <figure class="motion-ugc-card motion-ugc-card--two">
-            <img src="/img/landing-motion/discover-photo-next.avif" width="393" height="852" loading="eager" decoding="async" alt="" />
-            <figcaption><img src="/img/landing-motion/creator-02.avif" width="128" height="160" loading="eager" decoding="async" alt="" />주말의연남</figcaption>
-          </figure>
-        </div>
-        <div class="motion-selected-place" data-motion-layer="selection" aria-hidden="true">
-          <img src="/img/landing-motion/discover.avif" width="393" height="852" loading="eager" decoding="async" alt="" />
-        </div>
-        <div class="motion-nearby motion-route-flow" data-motion-layer="nearby" aria-hidden="true">
-          <svg
-            class="hero-route-line"
-            data-motion-layer="hero-route-line"
-            viewBox="0 0 320 420"
-            width="320"
-            height="420"
-            preserveAspectRatio="xMidYMid meet"
-          >
-            <path d="M72 92 C208 118 34 188 118 220 C170 248 190 292 246 326" />
-          </svg>
-          <article
-            class="motion-route-stop motion-route-stop--one"
-            data-motion-layer="hero-route-stop"
-            data-hero-route-stop="1"
-          >
-            <span class="motion-route-card" data-motion-layer="hero-route-card">
-              <strong>카페 이페메라</strong><small>카페 · 도보 6분</small>
-            </span>
-            <b class="motion-route-pin" data-motion-layer="hero-route-pin">1</b>
-          </article>
-          <article
-            class="motion-route-stop motion-route-stop--two"
-            data-motion-layer="hero-route-stop"
-            data-hero-route-stop="2"
-          >
-            <span class="motion-route-card" data-motion-layer="hero-route-card">
-              <strong>오브젝트 성수</strong><small>소품샵 · 도보 8분</small>
-            </span>
-            <b class="motion-route-pin" data-motion-layer="hero-route-pin">2</b>
-          </article>
-          <article
-            class="motion-route-stop motion-route-stop--three"
-            data-motion-layer="hero-route-stop"
-            data-hero-route-stop="3"
-          >
-            <span class="motion-route-card" data-motion-layer="hero-route-card">
-              <strong>연남 다이닝</strong><small>식당 · 도보 11분</small>
-            </span>
-            <b class="motion-route-pin" data-motion-layer="hero-route-pin">3</b>
-          </article>
-          <div class="motion-navigation" data-motion-layer="navigation">
-            <span class="navigation-marker-icon">↗</span><strong>길찾기 시작</strong>
-          </div>
-        </div>
-        <div class="motion-course" data-motion-layer="course" aria-hidden="true">
-          <img src="/img/landing-motion/route-plan-generated.avif" width="393" height="852" loading="eager" decoding="async" alt="" />
-          <svg viewBox="0 0 320 180"><path d="M38 138 C92 58 186 142 278 42" /></svg>
-        </div>
-        <div class="motion-share-card" data-motion-layer="share" aria-hidden="true">
-          <strong>연남 하루 코스</strong><span>3곳 · 친구에게 공유</span>
-        </div>
-        <div class="motion-friend-handoff" data-motion-layer="friend-handoff" aria-hidden="true">
-          <img src="/img/landing-motion/creator-04.avif" width="160" height="160" loading="eager" decoding="async" alt="" />
-          <span>친구가 코스를 받았어요</span>
-        </div>
+        <figure class="hero-feed-screen" data-motion-layer="hero-screen" aria-hidden="true">
+          <img src="/img/landing-motion/hero-discover-feed.avif" width="590" height="1278" loading="eager" decoding="async" fetchpriority="high" alt="" />
+        </figure>
+        <svg class="hero-photo-connectors" data-motion-layer="hero-connectors" viewBox="0 0 720 660" aria-hidden="true">
+          <path d="M250 205 C300 205 316 214 346 228" />
+          <path d="M472 172 C516 160 544 152 582 158" />
+          <path d="M468 474 C522 498 548 514 586 522" />
+        </svg>
+        <figure class="hero-photo-expansion hero-photo-expansion--restaurant" data-motion-layer="hero-photo" aria-hidden="true">
+          <img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="eager" decoding="async" alt="" />
+          <figcaption class="hero-profile-chip" data-profile-kind="curator">
+            <img src="/img/landing-motion/profile-curator-01.avif" width="180" height="180" loading="eager" decoding="async" alt="" />
+            <strong>동네수집가</strong><span aria-label="공식 큐레이터">✓</span>
+          </figcaption>
+        </figure>
+        <figure class="hero-photo-expansion hero-photo-expansion--cafe" data-motion-layer="hero-photo" aria-hidden="true">
+          <img src="/img/landing-motion/campaign-cafe.avif" width="1000" height="750" loading="eager" decoding="async" alt="" />
+          <figcaption class="hero-profile-chip" data-profile-kind="friend">
+            <img src="/img/landing-motion/profile-friend-01.avif" width="180" height="180" loading="eager" decoding="async" alt="" />
+            <strong>오늘도산책</strong>
+          </figcaption>
+        </figure>
+        <figure class="hero-photo-expansion hero-photo-expansion--alley" data-motion-layer="hero-photo" aria-hidden="true">
+          <img src="/img/landing-motion/campaign-alley.avif" width="1000" height="750" loading="eager" decoding="async" alt="" />
+          <figcaption class="hero-profile-chip" data-profile-kind="friend">
+            <img src="/img/landing-motion/profile-friend-02.avif" width="180" height="180" loading="eager" decoding="async" alt="" />
+            <strong>주말기록</strong>
+          </figcaption>
+        </figure>
       </div>
     </section>
 
@@ -1108,15 +1068,32 @@
                 role="img"
                 aria-label="유저와 큐레이터의 사진과 영상으로 장소를 발견하는 화면"
               >
-                <div class="discovery-ui" data-motion-layer="creator-posts" aria-hidden="true">
+                <figure class="discovery-feed-screen" data-motion-layer="discovery-feed" aria-hidden="true">
                   <img src="/img/landing-motion/hero-discover-feed.avif" width="590" height="1278" loading="lazy" decoding="async" alt="" />
-                </div>
-                <div class="creator-reaction" data-motion-layer="creator-reaction" aria-hidden="true">
-                  <img src="/img/landing-motion/creator-03.avif" width="128" height="160" loading="lazy" decoding="async" alt="" />
-                  <span>여기 분위기 좋아</span>
-                </div>
-                <div class="video-indicator" data-motion-layer="creator-posts" aria-hidden="true">▶</div>
-                <div class="place-selection is-active" data-motion-layer="place-selection" aria-hidden="true">♥</div>
+                </figure>
+                <figure class="discovery-place-photo" data-motion-layer="discovery-photo" aria-hidden="true">
+                  <img src="/img/landing-motion/campaign-alley.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                  <figcaption><strong>연남 골목의 작은 숍</strong><span>소품/체험</span></figcaption>
+                  <ul class="photo-engagement" data-motion-layer="photo-engagement">
+                    <li class="photo-engagement__item" data-engagement="likes">
+                      <span aria-hidden="true">♥</span><b>1,284</b>
+                    </li>
+                    <li class="photo-engagement__item" data-engagement="comments">
+                      <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-4-.9L3 21l1.7-4.1A8.2 8.2 0 1 1 21 11.5Z" /></svg></span><b>96</b>
+                    </li>
+                    <li class="photo-engagement__item" data-engagement="saves">
+                      <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4Z" /></svg></span><b>312</b>
+                    </li>
+                  </ul>
+                </figure>
+                <blockquote class="discovery-quote discovery-quote--friend" data-motion-layer="discovery-quote" aria-hidden="true">
+                  <div><img src="/img/landing-motion/profile-friend-01.avif" width="180" height="180" loading="lazy" decoding="async" alt="" /><strong>오늘도산책</strong></div>
+                  <p>“여기 분위기 진짜 좋아”</p>
+                </blockquote>
+                <blockquote class="discovery-quote discovery-quote--curator" data-motion-layer="discovery-quote" aria-hidden="true">
+                  <div><img src="/img/landing-motion/profile-curator-02.avif" width="180" height="180" loading="lazy" decoding="async" alt="" /><strong>서울의틈</strong><span>✓</span></div>
+                  <p>“오후 네 시쯤 가면<br />빛이 정말 예뻐요”</p>
+                </blockquote>
               </div>
             </div>
             <div class="journey-copy reveal">
@@ -1145,36 +1122,29 @@
                 role="img"
                 aria-label="선택한 장소 주변에서 함께 갈 장소를 추천하고 코스 후보로 정리하는 화면"
               >
-                <figure class="scene-map-backdrop" aria-hidden="true">
-                  <img src="/img/landing-motion/hero-map-candidates.avif" width="590" height="1278" loading="lazy" decoding="async" alt="" />
+                <figure class="nearby-c5-screen" data-motion-layer="nearby-screen" aria-hidden="true">
+                  <img src="/img/landing-motion/c5-route-view.avif" width="393" height="852" loading="lazy" decoding="async" alt="" />
                 </figure>
-                <article class="anchor-place" data-motion-layer="anchor-place" aria-hidden="true">
-                  <img src="/img/landing-motion/discover.avif" width="393" height="852" loading="lazy" decoding="async" alt="" />
-                </article>
-                <div class="nearby-candidates" data-motion-layer="nearby-candidates" aria-hidden="true">
-                  <span class="nearby-candidate is-selected is-course-stop" data-motion-layer="candidate-card" data-course-order="2">
-                    <strong>카페 이페메라</strong>
-                    <small>카페 · 도보 6분</small>
-                  </span>
-                  <span class="nearby-candidate is-course-stop" data-motion-layer="candidate-card" data-course-order="3">
-                    <strong>오브젝트 성수</strong>
-                    <small>소품샵 · 도보 8분</small>
-                  </span>
-                  <span class="nearby-candidate" data-motion-layer="candidate-card">
-                    <strong>난포</strong>
-                    <small>식당 · 도보 11분</small>
-                  </span>
-                  <span class="nearby-candidate" data-motion-layer="candidate-card">
-                    <strong>포도도</strong>
-                    <small>바 · 도보 13분</small>
-                  </span>
+                <div class="nearby-place-grid" data-motion-layer="nearby-candidates" aria-hidden="true">
+                  <article class="nearby-place-card is-selected" data-course-candidate="1">
+                    <img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                    <div><b>1</b><strong>리틀넥 연남</strong><small>식당 · 선택한 장소</small></div>
+                  </article>
+                  <article class="nearby-place-card" data-course-candidate="2">
+                    <img src="/img/landing-motion/campaign-cafe.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                    <div><b>2</b><strong>창가의 오후</strong><small>카페 · 도보 6분</small></div>
+                  </article>
+                  <article class="nearby-place-card" data-course-candidate="3">
+                    <img src="/img/landing-motion/campaign-activity.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                    <div><b>3</b><strong>작은 도예실</strong><small>놀거리 · 도보 8분</small></div>
+                  </article>
                 </div>
-                <div class="course-tray" data-motion-layer="course-tray" aria-hidden="true">
-                  <strong>코스 후보</strong>
+                <div class="nearby-course-tray" data-motion-layer="course-tray" aria-hidden="true">
+                  <strong>오늘의 코스 후보</strong>
                   <ol>
-                    <li data-course-stop="1"><b>1</b><span>도라이트 카페</span></li>
-                    <li data-course-stop="2"><b>2</b><span>카페 이페메라</span></li>
-                    <li data-course-stop="3"><b>3</b><span>오브젝트 성수</span></li>
+                    <li class="nearby-tray__item"><b>1</b><img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><span>식당</span></li>
+                    <li class="nearby-tray__item"><b>2</b><img src="/img/landing-motion/campaign-cafe.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><span>카페</span></li>
+                    <li class="nearby-tray__item"><b>3</b><img src="/img/landing-motion/campaign-activity.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><span>도예실</span></li>
                   </ol>
                 </div>
               </div>
@@ -1189,58 +1159,39 @@
                 data-motion-scene
                 data-motion-state="final"
                 role="img"
-                aria-label="장소가 하루 코스로 연결되고 친구에게 공유되어 길찾기로 이어지는 화면"
+                aria-label="세 장소가 루트로 연결되어 하나의 하루 코스 폴더가 되고 친구들이 반응하는 화면"
               >
-                <figure class="scene-map-backdrop" aria-hidden="true">
-                  <img src="/img/landing-motion/hero-map-candidates.avif" width="590" height="1278" loading="lazy" decoding="async" alt="" />
-                </figure>
-                <div class="route-places" data-motion-layer="route-places" aria-hidden="true">
-                  <div class="route-place route-place--one" data-course-place="1">
-                    <figure class="route-place-card" data-motion-layer="route-place-card">
-                      <img src="/img/landing-motion/discover.avif" width="393" height="852" loading="lazy" decoding="async" alt="" />
-                      <figcaption>도라이트 카페</figcaption>
-                    </figure>
-                    <span class="route-pin" data-motion-layer="route-pin"><b>1</b><small>카페</small></span>
-                  </div>
-                  <div class="route-place route-place--two" data-course-place="2">
-                    <figure class="route-place-card" data-motion-layer="route-place-card">
-                      <img src="/img/landing-motion/discover-photo-next.avif" width="393" height="852" loading="lazy" decoding="async" alt="" />
-                      <figcaption>오브젝트 성수</figcaption>
-                    </figure>
-                    <span class="route-pin" data-motion-layer="route-pin"><b>2</b><small>소품샵</small></span>
-                  </div>
-                  <div class="route-place route-place--three" data-course-place="3">
-                    <figure class="route-place-card" data-motion-layer="route-place-card">
-                      <img src="/img/landing-motion/route-plan-generated.avif" width="393" height="852" loading="lazy" decoding="async" alt="" />
-                      <figcaption>연남 다이닝</figcaption>
-                    </figure>
-                    <span class="route-pin" data-motion-layer="route-pin"><b>3</b><small>식당</small></span>
-                  </div>
-                </div>
-                <svg
-                  class="route-line"
-                  data-motion-layer="route-line"
-                  viewBox="0 0 320 420"
-                  width="320"
-                  height="420"
-                  preserveAspectRatio="xMidYMid meet"
-                  aria-hidden="true"
-                >
-                  <path data-motion-layer="route-path" d="M72 92 C208 118 34 188 118 220 C170 248 190 292 246 326" />
+                <svg class="folder-route-line" data-motion-layer="folder-route" viewBox="0 0 720 620" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M100 150 C180 150 170 392 310 392 C430 392 422 142 530 142 C630 142 620 470 690 470" />
                 </svg>
-                <div class="share-card" data-motion-layer="share-card" aria-hidden="true">
-                  <span>코스 공유됨</span>
-                  <strong>연남 하루 코스</strong>
-                  <small>3곳 · 1시간 40분</small>
-                </div>
-                <div class="recipient" data-motion-layer="recipient" aria-hidden="true">
-                  <img src="/img/landing-motion/creator-04.avif" width="160" height="160" loading="lazy" decoding="async" alt="" />
-                  <span>친구가 코스를 열었어요</span>
-                </div>
-                <div class="route-navigation-track" data-motion-layer="navigation-handoff" aria-hidden="true">
-                  <div class="navigation-handoff" data-motion-layer="navigation-marker">
-                    <span class="navigation-marker-icon">↗</span><strong>길찾기 시작</strong>
+                <article class="folder-route-card folder-route-card--one" data-motion-layer="folder-place" aria-hidden="true">
+                  <b>1</b><img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><strong>리틀넥 연남</strong>
+                </article>
+                <article class="folder-route-card folder-route-card--two" data-motion-layer="folder-place" aria-hidden="true">
+                  <b>2</b><img src="/img/landing-motion/campaign-cafe.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><strong>창가의 오후</strong>
+                </article>
+                <article class="folder-route-card folder-route-card--three" data-motion-layer="folder-place" aria-hidden="true">
+                  <b>3</b><img src="/img/landing-motion/campaign-activity.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><strong>작은 도예실</strong>
+                </article>
+                <section class="day-folder" data-motion-layer="day-folder" aria-hidden="true">
+                  <span>ROUTE COMPLETE</span><strong>연남에서 보내는 하루</strong><small>3곳 · 친구와 공유</small>
+                  <div>
+                    <img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                    <img src="/img/landing-motion/campaign-cafe.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                    <img src="/img/landing-motion/campaign-activity.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
                   </div>
+                </section>
+                <div class="folder-social" data-motion-layer="folder-social" aria-hidden="true">
+                  <div class="folder-profiles">
+                    <img class="folder-profile" src="/img/landing-motion/profile-friend-01.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
+                    <img class="folder-profile" src="/img/landing-motion/profile-friend-02.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
+                    <img class="folder-profile" src="/img/landing-motion/profile-curator-01.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
+                    <img class="folder-profile" src="/img/landing-motion/profile-curator-02.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
+                    <b>+18</b>
+                  </div>
+                  <span data-folder-reaction="likes">♥ 1,284</span>
+                  <span data-folder-reaction="comments">댓글 96</span>
+                  <span data-folder-reaction="saves">저장 312</span>
                 </div>
               </div>
             </div>

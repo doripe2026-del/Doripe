@@ -5,51 +5,66 @@ import { readFile } from "node:fs/promises";
 const home = await readFile(new URL("../public/home/index.html", import.meta.url), "utf8");
 const css = await readFile(new URL("../public/home/landing-motion.css", import.meta.url), "utf8");
 
-function cssBlock(source, marker) {
-  const markerIndex = source.indexOf(marker);
-  assert.notEqual(markerIndex, -1, `missing ${marker}`);
-  const openIndex = source.indexOf("{", markerIndex);
-  let depth = 0;
-  for (let index = openIndex; index < source.length; index += 1) {
-    if (source[index] === "{") depth += 1;
-    if (source[index] !== "}") continue;
-    depth -= 1;
-    if (depth === 0) return source.slice(openIndex + 1, index);
-  }
-  assert.fail(`unclosed ${marker}`);
+function scene(id, nextMarker) {
+  const start = home.indexOf(`id="${id}"`);
+  const end = home.indexOf(nextMarker, start);
+  assert.ok(start >= 0 && end > start, `could not isolate ${id}`);
+  return home.slice(start, end);
 }
 
-test("hero and course markers share the same responsive SVG route geometry", () => {
-  const heroPath = home.match(/class="hero-route-line"[\s\S]*?<path[^>]*d="([^"]+)"/)?.[1];
-  const coursePath = home.match(/class="route-line"[\s\S]*?<path[^>]*d="([^"]+)"/)?.[1];
-  assert.ok(heroPath, "hero route path missing");
-  assert.equal(heroPath, coursePath);
-  assert.match(home, /motion-route-flow[\s\S]*motion-navigation[\s\S]*navigation-marker-icon/);
-  assert.match(home, /route-navigation-track[\s\S]*navigation-handoff[\s\S]*navigation-marker-icon/);
-  assert.doesNotMatch(css, /offset-(?:path|distance|rotate)\s*:/);
+function count(source, pattern) {
+  return [...source.matchAll(pattern)].length;
+}
+
+test("hero uses one complete feed and three expanded photos with social identities", () => {
+  const hero = scene("landingMotionHero", "</section>");
+  assert.match(hero, /class="hero-feed-screen"/);
+  assert.equal(count(hero, /class="hero-photo-expansion/g), 3);
+  assert.ok(count(hero, /class="hero-profile-chip/g) >= 3);
+  assert.equal(count(hero, /data-profile-kind="friend"/g), 2);
+  assert.ok(count(hero, /data-profile-kind="curator"/g) >= 1);
 });
 
-test("route navigation uses multiple path-derived responsive transform waypoints", () => {
-  for (const name of ["heroNavigation", "startNavigation"]) {
-    const keyframes = cssBlock(css, `@keyframes ${name}`);
-    const waypoints = [...keyframes.matchAll(/translate\(([-.\d]+)%,\s*([-.\d]+)%\)/g)];
-    assert.ok(waypoints.length >= 5, `${name} needs at least five responsive waypoints`);
-    assert.doesNotMatch(keyframes, /translate\([^)]*px/);
-    const properties = [...keyframes.matchAll(/([a-z][a-z-]*)\s*:/g)].map((match) => match[1]);
-    assert.ok(properties.every((property) => property === "opacity" || property === "transform"));
+test("discovery overlays large icon-only engagement counts on the place photo", () => {
+  const discovery = scene("motionSceneDiscovery", '<div class="journey-copy');
+  assert.match(discovery, /class="discovery-place-photo"/);
+  assert.equal(count(discovery, /class="discovery-quote/g), 2);
+  assert.equal(count(discovery, /class="photo-engagement__item/g), 3);
+  assert.match(discovery, /data-engagement="likes"[\s\S]*?>1,284</);
+  assert.match(discovery, /data-engagement="comments"[\s\S]*?>96</);
+  assert.match(discovery, /data-engagement="saves"[\s\S]*?>312</);
+  assert.doesNotMatch(discovery, /Engagement bar|댓글 96|저장 312/);
+  assert.match(css, /\.photo-engagement\s*\{[^}]*position:\s*absolute/s);
+});
+
+test("nearby uses C5 and exactly three photo candidates", () => {
+  const nearby = scene("motionSceneNearby", "</div>\n            </div>\n          </article>");
+  assert.match(nearby, /c5-route-view\.avif/);
+  assert.equal(count(nearby, /class="nearby-place-card/g), 3);
+  assert.equal(count(nearby, /data-course-candidate="[123]"/g), 3);
+  assert.equal(count(nearby, /class="nearby-tray__item/g), 3);
+  assert.doesNotMatch(nearby, /data-course-candidate="4"/);
+});
+
+test("course connects three place cards into a social folder without navigation", () => {
+  const course = scene("motionSceneCourse", '<div class="journey-copy');
+  assert.equal(count(course, /class="folder-route-card/g), 3);
+  assert.match(course, /class="folder-route-line"/);
+  assert.match(course, /class="day-folder"/);
+  assert.equal(count(course, /class="folder-profile"/g), 4);
+  for (const reaction of ["likes", "comments", "saves"]) {
+    assert.match(course, new RegExp(`data-folder-reaction="${reaction}"`));
   }
+  assert.doesNotMatch(course, /navigation-handoff|navigation-marker|길찾기/);
 });
 
-test("hero route visibly draws while cards become pins", () => {
-  assert.match(home, /class="hero-route-line"[^>]*data-motion-layer="hero-route-line"/);
-  const pathRule = cssBlock(css, ".landing-motion--hero .hero-route-line path");
-  assert.match(pathRule, /stroke-dasharray:\s*700/);
-  assert.match(pathRule, /stroke-dashoffset:\s*700/);
-  assert.match(pathRule, /animation:\s*heroRouteDraw\s+8s/);
-
-  const draw = cssBlock(css, "@keyframes heroRouteDraw");
-  assert.match(draw, /stroke-dashoffset:\s*700/);
-  assert.match(draw, /stroke-dashoffset:\s*0/);
-  const properties = [...draw.matchAll(/([a-z][a-z-]*)\s*:/g)].map((match) => match[1]);
-  assert.ok(properties.every((property) => property === "stroke-dashoffset"));
+test("all motion photos are optimized and responsive rules are present", () => {
+  const motion = home.slice(home.indexOf('id="landingMotionHero"'), home.indexOf("</main>"));
+  for (const tag of motion.matchAll(/<img\b[^>]*>/g)) {
+    assert.match(tag[0], /src="\/img\/landing-motion\/[^\"]+\.avif"/);
+    assert.match(tag[0], /decoding="async"/);
+  }
+  assert.match(css, /@media \(max-width: 480px\)/);
+  assert.match(css, /@media \(max-width: 390px\)/);
+  assert.doesNotMatch(css, /font-size\s*:[^;}]*(?:vw|vh|vmin|vmax|cqw|cqh)/i);
 });

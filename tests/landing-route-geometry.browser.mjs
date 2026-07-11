@@ -1,29 +1,14 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { access, mkdtemp, readdir, rm } from "node:fs/promises";
+import { constants } from "node:fs";
 import { createServer as createTcpServer } from "node:net";
 import { homedir, tmpdir } from "node:os";
 import { basename, join } from "node:path";
-import { constants } from "node:fs";
 import { createLandingPreviewServer } from "../scripts/serve-landing.mjs";
 
-const TOLERANCE_PX = 8;
-const VIEWPORTS = [1440, 520, 390, 320];
-const CASES = [
-  {
-    sceneId: "landingMotionHero",
-    markerSelector: ".motion-navigation .navigation-marker-icon",
-    pathSelector: ".hero-route-line path",
-    times: [7120, 7280, 7440, 7600, 7760],
-  },
-  {
-    sceneId: "motionSceneCourse",
-    markerSelector: ".navigation-handoff .navigation-marker-icon",
-    pathSelector: ".route-line path",
-    times: [6052, 6188, 6324, 6460, 6596],
-  },
-];
-
+const VIEWPORTS = [1440, 900, 480, 390, 320];
+const SCENES = ["landingMotionHero", "motionSceneDiscovery", "motionSceneNearby", "motionSceneCourse"];
 const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 function listen(server) {
@@ -34,9 +19,7 @@ function listen(server) {
 }
 
 function close(server) {
-  return new Promise((resolve, reject) => {
-    server.close((error) => error ? reject(error) : resolve());
-  });
+  return new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
 }
 
 async function freePort() {
@@ -68,11 +51,8 @@ async function findCachedChromium(root) {
     }
     for (const entry of entries) {
       const path = join(directory, entry.name);
-      if (entry.isDirectory()) {
-        queue.push(path);
-        continue;
-      }
-      if (["chrome-headless-shell", "Google Chrome for Testing"].includes(entry.name)
+      if (entry.isDirectory()) queue.push(path);
+      else if (["chrome-headless-shell", "Google Chrome for Testing"].includes(entry.name)
         && await isExecutable(path)) return path;
     }
   }
@@ -80,16 +60,13 @@ async function findCachedChromium(root) {
 }
 
 async function chromiumExecutable() {
-  const candidates = [
+  for (const candidate of [
     process.env.CHROME_PATH,
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     "/Applications/Chromium.app/Contents/MacOS/Chromium",
     "/usr/bin/google-chrome",
-    "/usr/bin/google-chrome-stable",
     "/usr/bin/chromium",
-    "/usr/bin/chromium-browser",
-  ];
-  for (const candidate of candidates) {
+  ]) {
     if (await isExecutable(candidate)) return candidate;
   }
   return findCachedChromium(join(homedir(), "Library", "Caches", "ms-playwright"));
@@ -102,7 +79,7 @@ async function waitForDebugger(port, browser) {
       const response = await fetch(`http://127.0.0.1:${port}/json/list`);
       if (response.ok) return response.json();
     } catch {
-      // Chromium has not opened its debugger socket yet.
+      // Chrome is still opening the debugger socket.
     }
     await sleep(100);
   }
@@ -125,7 +102,7 @@ class CdpClient {
         const pending = this.pending.get(message.id);
         if (!pending) return;
         this.pending.delete(message.id);
-        if (message.error) pending.reject(new Error(`${pending.method}: ${message.error.message}`));
+        if (message.error) pending.reject(new Error(message.error.message));
         else pending.resolve(message.result);
         return;
       }
@@ -137,7 +114,7 @@ class CdpClient {
     await this.ready;
     const id = this.nextId++;
     return new Promise((resolve, reject) => {
-      this.pending.set(id, { method, resolve, reject });
+      this.pending.set(id, { resolve, reject });
       this.socket.send(JSON.stringify({ id, method, params }));
     });
   }
@@ -164,14 +141,8 @@ class CdpClient {
 }
 
 async function evaluate(client, expression) {
-  const result = await client.send("Runtime.evaluate", {
-    expression,
-    awaitPromise: true,
-    returnByValue: true,
-  });
-  if (result.exceptionDetails) {
-    throw new Error(result.exceptionDetails.exception?.description ?? result.exceptionDetails.text);
-  }
+  const result = await client.send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true });
+  if (result.exceptionDetails) throw new Error(result.exceptionDetails.exception?.description ?? result.exceptionDetails.text);
   return result.result.value;
 }
 
@@ -181,89 +152,12 @@ async function navigate(client, url) {
   await loaded;
 }
 
-async function sampleDistance(client, testCase, time) {
-  await evaluate(client, `(() => {
-    const scene = document.getElementById(${JSON.stringify(testCase.sceneId)});
-    scene.scrollIntoView({ block: "center", behavior: "instant" });
-    scene.dataset.motionState = "playing";
-  })()`);
-  await sleep(80);
-  return evaluate(client, `(() => {
-    const scene = document.getElementById(${JSON.stringify(testCase.sceneId)});
-    for (const animation of scene.getAnimations({ subtree: true })) {
-      animation.pause();
-      animation.currentTime = ${time};
-    }
-    const marker = scene.querySelector(${JSON.stringify(testCase.markerSelector)});
-    const path = scene.querySelector(${JSON.stringify(testCase.pathSelector)});
-    if (!marker || !path) return { missing: { marker: !marker, path: !path } };
-
-    const markerBox = marker.getBoundingClientRect();
-    const label = marker.parentElement.querySelector("strong");
-    const labelBox = label?.getBoundingClientRect();
-    const labelStyle = label ? getComputedStyle(label) : null;
-    const markerCenter = {
-      x: markerBox.left + markerBox.width / 2,
-      y: markerBox.top + markerBox.height / 2,
-    };
-    const matrix = path.getScreenCTM();
-    const length = path.getTotalLength();
-    let nearest = { distance: Infinity, x: 0, y: 0 };
-    for (let index = 0; index <= 1200; index += 1) {
-      const point = path.getPointAtLength(length * index / 1200);
-      const screenPoint = new DOMPoint(point.x, point.y).matrixTransform(matrix);
-      const distance = Math.hypot(screenPoint.x - markerCenter.x, screenPoint.y - markerCenter.y);
-      if (distance < nearest.distance) nearest = { distance, x: screenPoint.x, y: screenPoint.y };
-    }
-    return {
-      distance: Math.round(nearest.distance * 100) / 100,
-      marker: {
-        x: Math.round(markerCenter.x * 100) / 100,
-        y: Math.round(markerCenter.y * 100) / 100,
-        left: Math.round(markerBox.left * 100) / 100,
-        right: Math.round(markerBox.right * 100) / 100,
-      },
-      nearest: {
-        x: Math.round(nearest.x * 100) / 100,
-        y: Math.round(nearest.y * 100) / 100,
-      },
-      opacity: Number(getComputedStyle(marker.parentElement).opacity),
-      viewportWidth: innerWidth,
-      label: labelStyle?.display === "none" ? null : {
-        left: Math.round(labelBox.left * 100) / 100,
-        right: Math.round(labelBox.right * 100) / 100,
-      },
-    };
-  })()`);
-}
-
-async function sampleHeroRouteDraw(client, time) {
-  await evaluate(client, `(() => {
-    const scene = document.getElementById("landingMotionHero");
-    scene.scrollIntoView({ block: "center", behavior: "instant" });
-    scene.dataset.motionState = "playing";
-    for (const animation of scene.getAnimations({ subtree: true })) {
-      animation.pause();
-      animation.currentTime = ${time};
-    }
-  })()`);
-  return evaluate(client, `(() => {
-    const path = document.querySelector("#landingMotionHero .hero-route-line path");
-    const line = path.closest("svg");
-    return {
-      time: ${time},
-      strokeDashoffset: Math.round(Number.parseFloat(getComputedStyle(path).strokeDashoffset) * 100) / 100,
-      opacity: Math.round(Number(getComputedStyle(line).opacity) * 100) / 100,
-    };
-  })()`);
-}
-
 const executable = await chromiumExecutable();
-assert.ok(executable, "Set CHROME_PATH or install Chromium to run route geometry regression");
+assert.ok(executable, "Set CHROME_PATH or install Chromium to run landing visual geometry checks");
 const preview = createLandingPreviewServer();
 const previewAddress = await listen(preview);
 const debugPort = await freePort();
-const userDataDir = await mkdtemp(join(tmpdir(), "doripe-route-geometry-"));
+const userDataDir = await mkdtemp(join(tmpdir(), "doripe-landing-geometry-"));
 const browser = spawn(executable, [
   "--headless",
   "--no-sandbox",
@@ -281,48 +175,74 @@ try {
   client = new CdpClient(page.webSocketDebuggerUrl);
   await Promise.all([client.send("Page.enable"), client.send("Runtime.enable")]);
 
-  const measurements = [];
-  let heroRouteDraw = [];
+  const reports = [];
   for (const width of VIEWPORTS) {
-    await client.send("Emulation.setDeviceMetricsOverride", {
-      width,
-      height: 900,
-      deviceScaleFactor: 1,
-      mobile: false,
-    });
-    await navigate(client, `http://127.0.0.1:${previewAddress.port}/?route-geometry=${width}`);
-    if (width === VIEWPORTS[0]) {
-      for (const time of [4160, 4960, 5760]) {
-        heroRouteDraw.push(await sampleHeroRouteDraw(client, time));
+    await client.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 480 });
+    await navigate(client, `http://127.0.0.1:${previewAddress.port}/?visual-geometry=${width}`);
+    await evaluate(client, `(async () => {
+      for (const id of ${JSON.stringify(SCENES)}) {
+        document.getElementById(id).scrollIntoView({ block: 'center', behavior: 'instant' });
+        await new Promise((resolve) => setTimeout(resolve, 120));
       }
-      assert.ok(heroRouteDraw[0].strokeDashoffset >= 699);
-      assert.ok(heroRouteDraw[1].strokeDashoffset > 0 && heroRouteDraw[1].strokeDashoffset < 700);
-      assert.ok(heroRouteDraw[2].strokeDashoffset <= 1);
+    })()`);
+    await sleep(120);
+    const report = await evaluate(client, `(() => {
+      document.querySelectorAll('[data-motion-scene]').forEach((scene) => { scene.dataset.motionState = 'final'; });
+      const round = (value) => Math.round(value * 100) / 100;
+      const scenes = ${JSON.stringify(SCENES)}.map((id) => {
+        const scene = document.getElementById(id);
+        const box = scene.getBoundingClientRect();
+        const named = [...scene.querySelectorAll('.hero-photo-expansion, .discovery-place-photo, .nearby-place-card, .nearby-course-tray, .folder-route-card, .day-folder, .folder-social')];
+        return {
+          id,
+          box: { left: round(box.left), right: round(box.right), width: round(box.width) },
+          scrollWidth: scene.scrollWidth,
+          clientWidth: scene.clientWidth,
+          escaped: named.filter((node) => {
+            const rect = node.getBoundingClientRect();
+            return rect.left < box.left - 2 || rect.right > box.right + 2;
+          }).map((node) => node.className),
+          brokenImages: [...scene.querySelectorAll('img')].filter((image) => !image.complete || image.naturalWidth === 0).length,
+        };
+      });
+      const photo = document.querySelector('.discovery-place-photo').getBoundingClientRect();
+      const counters = [...document.querySelectorAll('.photo-engagement__item')].map((node) => {
+        const rect = node.getBoundingClientRect();
+        return {
+          inside: rect.left >= photo.left - 2 && rect.right <= photo.right + 2 && rect.top >= photo.top - 2 && rect.bottom <= photo.bottom + 2,
+          rect: { left: round(rect.left), right: round(rect.right), top: round(rect.top), bottom: round(rect.bottom) },
+          photo: { left: round(photo.left), right: round(photo.right), top: round(photo.top), bottom: round(photo.bottom) },
+        };
+      });
+      const route = document.querySelector('.folder-route-line path');
+      return {
+        width: innerWidth,
+        pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        scenes,
+        counters,
+        routeLength: round(route.getTotalLength()),
+      };
+    })()`);
+
+    assert.ok(report.pageOverflow <= 1, `page overflows by ${report.pageOverflow}px at ${width}px`);
+    assert.ok(
+      report.counters.every((counter) => counter.inside),
+      `engagement counter escaped the place photo at ${width}px (${JSON.stringify(report.counters)})`,
+    );
+    assert.ok(report.routeLength > 500, `folder route is missing at ${width}px`);
+    for (const scene of report.scenes) {
+      assert.ok(scene.clientWidth > 0, `${scene.id} collapsed at ${width}px`);
+      assert.ok(
+        scene.scrollWidth <= scene.clientWidth + 2,
+        `${scene.id} overflows internally at ${width}px (${scene.scrollWidth}/${scene.clientWidth})`,
+      );
+      assert.deepEqual(scene.escaped, [], `${scene.id} has escaped layers at ${width}px`);
+      assert.equal(scene.brokenImages, 0, `${scene.id} has broken images at ${width}px`);
     }
-    for (const testCase of CASES) {
-      for (const time of testCase.times) {
-        const sample = await sampleDistance(client, testCase, time);
-        assert.ok(!sample.missing, `${testCase.sceneId} route or marker missing at ${width}px`);
-        assert.ok(
-          sample.distance <= TOLERANCE_PX,
-          `${testCase.sceneId} marker is ${sample.distance}px from its route at ${width}px/${time}ms`,
-        );
-        assert.ok(sample.marker.left >= 0 && sample.marker.right <= sample.viewportWidth);
-        if (sample.label) {
-          assert.ok(sample.label.left >= 0 && sample.label.right <= sample.viewportWidth);
-        }
-        measurements.push({ width, scene: testCase.sceneId, time, ...sample });
-      }
-    }
+    reports.push(report);
   }
 
-  console.log(JSON.stringify({
-    browser: basename(executable),
-    tolerancePx: TOLERANCE_PX,
-    maxDistancePx: Math.max(...measurements.map((sample) => sample.distance)),
-    heroRouteDraw,
-    measurements,
-  }, null, 2));
+  console.log(JSON.stringify({ browser: basename(executable), viewports: reports }, null, 2));
 } finally {
   client?.close();
   browser.kill("SIGTERM");
