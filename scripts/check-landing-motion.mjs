@@ -86,7 +86,7 @@ for (const marker of [
   'class="nearby-course-tray"',
   'class="folder-route-line"',
   'class="day-folder"',
-  'class="folder-social"',
+  'class="course-reaction ',
 ]) {
   assert(home.includes(marker), `motion markup missing ${marker}`);
 }
@@ -94,6 +94,7 @@ for (const marker of [
 assert((home.match(/data-course-candidate="[123]"/g) ?? []).length === 3, "nearby scene must contain three candidates");
 assert((home.match(/class="photo-engagement__item"/g) ?? []).length === 3, "discovery needs three icon counters");
 assert((home.match(/class="folder-route-card/g) ?? []).length === 3, "course needs three routed place cards");
+assert((home.match(/class="course-reaction /g) ?? []).length === 5, "course needs five scattered reactions");
 
 const discoveryStart = home.indexOf('id="motionSceneDiscovery"');
 const discoveryEnd = home.indexOf('<div class="journey-copy', discoveryStart);

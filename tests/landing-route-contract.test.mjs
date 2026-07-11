@@ -51,10 +51,14 @@ test("course connects three place cards into a social folder without navigation"
   assert.equal(count(course, /class="folder-route-card/g), 3);
   assert.match(course, /class="folder-route-line"/);
   assert.match(course, /class="day-folder"/);
-  assert.equal(count(course, /class="folder-profile"/g), 4);
-  for (const reaction of ["likes", "comments", "saves"]) {
-    assert.match(course, new RegExp(`data-folder-reaction="${reaction}"`));
+  assert.equal(count(course, /class="course-reaction /g), 5);
+  for (const reaction of ["saved", "invite", "curator", "likes", "complete"]) {
+    assert.match(course, new RegExp(`data-course-reaction="${reaction}"`));
   }
+  assert.match(course, /여기 저장했어요/);
+  assert.match(course, /다음 주에 같이 가자!/);
+  assert.match(course, /이 코스 진짜 좋아요/);
+  assert.match(course, /코스 저장 완료/);
   assert.doesNotMatch(course, /navigation-handoff|navigation-marker|길찾기/);
 });
 

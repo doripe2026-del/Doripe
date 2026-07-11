@@ -192,7 +192,7 @@ try {
       const scenes = ${JSON.stringify(SCENES)}.map((id) => {
         const scene = document.getElementById(id);
         const box = scene.getBoundingClientRect();
-        const named = [...scene.querySelectorAll('.hero-photo-expansion, .discovery-place-photo, .nearby-place-card, .nearby-course-tray, .folder-route-card, .day-folder, .folder-social')];
+        const named = [...scene.querySelectorAll('.hero-photo-expansion, .discovery-place-photo, .nearby-place-card, .nearby-course-tray, .folder-route-card, .day-folder, .course-reaction')];
         return {
           id,
           box: { left: round(box.left), right: round(box.right), width: round(box.width) },
@@ -214,13 +214,13 @@ try {
           photo: { left: round(photo.left), right: round(photo.right), top: round(photo.top), bottom: round(photo.bottom) },
         };
       });
-      const route = document.querySelector('.folder-route-line path');
+      const routes = [...document.querySelectorAll('.folder-route-line path')];
       return {
         width: innerWidth,
         pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         scenes,
         counters,
-        routeLength: round(route.getTotalLength()),
+        routeLength: round(routes.reduce((total, route) => total + route.getTotalLength(), 0)),
       };
     })()`);
 

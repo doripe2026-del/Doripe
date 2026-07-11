@@ -1162,7 +1162,9 @@
                 aria-label="세 장소가 루트로 연결되어 하나의 하루 코스 폴더가 되고 친구들이 반응하는 화면"
               >
                 <svg class="folder-route-line" data-motion-layer="folder-route" viewBox="0 0 720 620" preserveAspectRatio="none" aria-hidden="true">
-                  <path d="M100 150 C180 150 170 392 310 392 C430 392 422 142 530 142 C630 142 620 470 690 470" />
+                  <path d="M92 118 C190 112 238 252 360 310" />
+                  <path d="M112 492 C210 472 260 362 360 310" />
+                  <path d="M620 148 C530 154 468 244 360 310" />
                 </svg>
                 <article class="folder-route-card folder-route-card--one" data-motion-layer="folder-place" aria-hidden="true">
                   <b>1</b><img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><strong>리틀넥 연남</strong>
@@ -1181,17 +1183,23 @@
                     <img src="/img/landing-motion/campaign-activity.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
                   </div>
                 </section>
-                <div class="folder-social" data-motion-layer="folder-social" aria-hidden="true">
-                  <div class="folder-profiles">
-                    <img class="folder-profile" src="/img/landing-motion/profile-friend-01.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
-                    <img class="folder-profile" src="/img/landing-motion/profile-friend-02.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
-                    <img class="folder-profile" src="/img/landing-motion/profile-curator-01.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
-                    <img class="folder-profile" src="/img/landing-motion/profile-curator-02.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
-                    <b>+18</b>
-                  </div>
-                  <span data-folder-reaction="likes">♥ 1,284</span>
-                  <span data-folder-reaction="comments">댓글 96</span>
-                  <span data-folder-reaction="saves">저장 312</span>
+                <div class="course-reaction course-reaction--saved" data-motion-layer="course-reaction" data-course-reaction="saved" aria-hidden="true">
+                  <img src="/img/landing-motion/profile-friend-01.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
+                  <span><b>오늘도산책</b><strong>여기 저장했어요</strong></span>
+                </div>
+                <div class="course-reaction course-reaction--invite" data-motion-layer="course-reaction" data-course-reaction="invite" aria-hidden="true">
+                  <img src="/img/landing-motion/profile-friend-02.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
+                  <span><b>주말기록</b><strong>다음 주에 같이 가자!</strong></span>
+                </div>
+                <div class="course-reaction course-reaction--curator" data-motion-layer="course-reaction" data-course-reaction="curator" aria-hidden="true">
+                  <img src="/img/landing-motion/profile-curator-02.avif" width="180" height="180" loading="lazy" decoding="async" alt="" />
+                  <span><b>서울의틈 <i>✓</i></b><strong>이 코스 진짜 좋아요</strong></span>
+                </div>
+                <div class="course-reaction course-reaction--likes" data-motion-layer="course-reaction" data-course-reaction="likes" aria-hidden="true">
+                  <em>♥</em><strong>128명이 좋아해요</strong>
+                </div>
+                <div class="course-reaction course-reaction--complete" data-motion-layer="course-reaction" data-course-reaction="complete" aria-hidden="true">
+                  <em>✓</em><strong>코스 저장 완료</strong>
                 </div>
               </div>
             </div>
