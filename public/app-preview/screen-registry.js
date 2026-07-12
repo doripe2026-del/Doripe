@@ -3,6 +3,7 @@ import inventory from "./figma/screen-inventory.json" with { type: "json" };
 import { ONBOARDING_RENDERERS } from "./screens/onboarding.js";
 import { DISCOVER_RENDERERS } from "./screens/discover.js";
 import { SAVED_RENDERERS } from "./screens/saved.js";
+import { ROUTE_RENDERERS } from "./screens/routes.js";
 
 const actionsByScreenId = new Map();
 for (const record of actionContract.actions) {
@@ -33,7 +34,9 @@ const screens = Object.freeze(inventory.map((item) => {
     ? ONBOARDING_RENDERERS[item.id]
     : item.group === "B"
       ? DISCOVER_RENDERERS[item.id]
-      : item.group === "C" ? SAVED_RENDERERS[item.id] : null;
+      : item.group === "C"
+        ? SAVED_RENDERERS[item.id]
+        : item.group === "D" ? ROUTE_RENDERERS[item.id] : null;
   return Object.freeze({
     id: item.id,
     name: item.name,
