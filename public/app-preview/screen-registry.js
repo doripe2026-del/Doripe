@@ -4,6 +4,7 @@ import { ONBOARDING_RENDERERS } from "./screens/onboarding.js";
 import { DISCOVER_RENDERERS } from "./screens/discover.js";
 import { SAVED_RENDERERS } from "./screens/saved.js";
 import { ROUTE_RENDERERS } from "./screens/routes.js";
+import { SETTINGS_RENDERERS } from "./screens/settings.js";
 
 const actionsByScreenId = new Map();
 for (const record of actionContract.actions) {
@@ -36,7 +37,9 @@ const screens = Object.freeze(inventory.map((item) => {
       ? DISCOVER_RENDERERS[item.id]
       : item.group === "C"
         ? SAVED_RENDERERS[item.id]
-        : item.group === "D" ? ROUTE_RENDERERS[item.id] : null;
+        : item.group === "D"
+          ? ROUTE_RENDERERS[item.id]
+          : item.group === "E" ? SETTINGS_RENDERERS[item.id] : null;
   return Object.freeze({
     id: item.id,
     name: item.name,

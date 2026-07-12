@@ -439,8 +439,9 @@ function bindSheetGesture(sheet) {
   const dragZone = sheet.querySelector(".discover-sheet-drag-zone");
   const states = ["collapsed", "medium", "expanded"];
   let startY = 0;
-  let active = false;
+  let pointerId = null;
   let suppressPointerClick = false;
+  dragZone.style.touchAction = "none";
 
   const moveTo = (direction) => {
     const currentIndex = Math.max(0, states.indexOf(sheet.dataset.sheetState));
@@ -452,34 +453,48 @@ function bindSheetGesture(sheet) {
     }));
   };
 
-  dragZone.addEventListener("pointerdown", (event) => {
-    active = true;
-    startY = event.clientY;
-    suppressPointerClick = true;
-    dragZone.setPointerCapture?.(event.pointerId);
-    sheet.dataset.dragging = "true";
-    event.preventDefault();
-  });
-  dragZone.addEventListener("pointermove", (event) => {
-    if (!active) return;
+  const move = (event) => {
+    if (pointerId !== event.pointerId) return;
     const distance = Math.max(-140, Math.min(140, event.clientY - startY));
     sheet.style.setProperty("--sheet-drag-y", `${distance}px`);
-  });
-  dragZone.addEventListener("pointerup", (event) => {
-    if (!active) return;
-    active = false;
+  };
+  const cleanup = () => {
+    window.removeEventListener("pointermove", move);
+    window.removeEventListener("pointerup", finish);
+    window.removeEventListener("pointercancel", cancel);
+  };
+  const finish = (event) => {
+    if (pointerId !== event.pointerId) return;
     const distance = event.clientY - startY;
+    pointerId = null;
     delete sheet.dataset.dragging;
+    cleanup();
     if (distance <= -56) moveTo(1);
     else if (distance >= 56) moveTo(-1);
     else sheet.style.removeProperty("--sheet-drag-y");
     setTimeout(() => { suppressPointerClick = false; }, 0);
-  });
-  dragZone.addEventListener("pointercancel", () => {
-    active = false;
+  };
+  const cancel = (event) => {
+    if (pointerId !== event.pointerId) return;
+    pointerId = null;
     delete sheet.dataset.dragging;
     sheet.style.removeProperty("--sheet-drag-y");
     suppressPointerClick = false;
+    cleanup();
+  };
+
+  sheet.addEventListener("pointerdown", (event) => {
+    if (event.clientY - sheet.getBoundingClientRect().top > 96) return;
+    const interactiveTarget = event.target.closest?.("button, a, input, textarea, select");
+    if (interactiveTarget && !event.target.closest?.(".discover-sheet-drag-zone")) return;
+    pointerId = event.pointerId;
+    startY = event.clientY;
+    suppressPointerClick = true;
+    sheet.dataset.dragging = "true";
+    event.preventDefault();
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", finish);
+    window.addEventListener("pointercancel", cancel);
   });
   handle.addEventListener("click", (event) => {
     if (!suppressPointerClick) return;
@@ -498,6 +513,7 @@ function bindSheetGesture(sheet) {
       moveTo(-1);
     }
   });
+  sheet.addEventListener("app-preview:screen-teardown", cleanup, { once: true });
 }
 
 function placeSheet(screenId, place, state) {

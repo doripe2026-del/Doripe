@@ -217,5 +217,8 @@
 .saved-replace-confirm { position: absolute; top: 7px; left: 186px; width: 186px; height: 45px; border-radius: 8px; color: #fff; background: #00bf57; box-shadow: 0 4px 10px rgb(0 0 0 / 10%); font-size: 14px !important; font-weight: 700 !important; }
 
 @media (max-width: 392px) {
-  .saved-screen { transform-origin: top left; }
+  .saved-screen {
+    transform: scale(calc(100vw / 393px));
+    transform-origin: top left;
+  }
 }

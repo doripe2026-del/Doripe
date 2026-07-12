@@ -11,6 +11,7 @@ test.use({ viewport: { width: 393, height: 852 } });
 test.beforeEach(async ({ page }) => {
   await page.goto("/app-preview/");
   await page.evaluate(() => localStorage.clear());
+  await page.reload();
 });
 
 async function gotoScreen(page, screenId) {

@@ -1,7 +1,7 @@
 import actionContract from "./figma/action-contract.json" with { type: "json" };
 import inventory from "./figma/screen-inventory.json" with { type: "json" };
 import { DEFAULT_STATE } from "./state.js";
-import { ROUTES } from "./fixtures.js";
+import { PLACES, ROUTES } from "./fixtures.js";
 
 const contractActionsByScreen = new Map();
 for (const record of actionContract.actions) {
@@ -157,10 +157,25 @@ const toggleSetting = (settingId) => (state, payload) => {
     ? payload.checked
     : !notifications[settingId];
 
+  const nextNotifications = settingId === "all"
+    ? {
+        all: checked,
+        savedPlaceUpdates: checked,
+        routeRecommendations: checked,
+        commentLikes: checked,
+        marketing: checked
+      }
+    : { ...notifications, [settingId]: checked };
+
+  if (settingId !== "all") {
+    const children = ["savedPlaceUpdates", "routeRecommendations", "commentLikes", "marketing"];
+    nextNotifications.all = children.every((key) => nextNotifications[key] === true);
+  }
+
   return idleResult(state, {
     selections: {
       ...(state.selections || {}),
-      notifications: { ...notifications, [settingId]: checked }
+      notifications: nextNotifications
     }
   });
 };
@@ -320,7 +335,54 @@ const toggleMediaLike = toggleListValue("likedMediaIds", "mediaId");
 const togglePlaceLike = toggleListValue("likedPlaceIds", "placeId");
 const toggleCommentLike = toggleListValue("likedCommentIds", "commentId");
 const addRoutePlace = addListValue("routePlaceIds", "placeId");
+const toggleRoutePlace = toggleListValue("routePlaceIds", "placeId");
 const noChange = (state) => idleResult(state);
+
+function confirmRoutePlaces(state) {
+  return (state.routePlaceIds || []).length >= 2
+    ? navigateTo("d7")(state)
+    : errorResult(state, "코스에 넣을 장소를 2곳 이상 선택해 주세요");
+}
+
+function saveRouteName(state) {
+  const routeName = state.form?.routeName?.trim();
+  return routeName
+    ? navigateTo("d9")({ ...state, form: { ...(state.form || {}), routeName } })
+    : errorResult(state, "코스 이름을 입력해 주세요");
+}
+
+function saveAccountPassword(state) {
+  if (!state.form?.currentPassword || !state.form?.newPassword || !state.form?.passwordConfirmation) {
+    return errorResult(state, "비밀번호를 모두 입력해 주세요");
+  }
+  if (!isValidPassword(state.form.newPassword)) {
+    return errorResult(state, "새 비밀번호는 영문과 숫자를 포함해 8자 이상이어야 해요");
+  }
+  if (state.form.currentPassword !== "Doripe123") {
+    return errorResult(state, "현재 비밀번호가 올바르지 않아요");
+  }
+  if (state.form.newPassword !== state.form.passwordConfirmation) {
+    return errorResult(state, "새 비밀번호가 일치하지 않아요");
+  }
+  return showToast("success", "비밀번호를 변경했어요")(state);
+}
+
+function confirmStartPlace(state) {
+  if (state.selections?.startPlaceCardOpen === false) {
+    return errorResult(state, "시작 장소를 먼저 선택해 주세요");
+  }
+  const selectedPlaceId = state.selections?.selectedPlaceId || PLACES[0].id;
+  return navigateTo("d5")({
+    ...state,
+    selections: { ...(state.selections || {}), selectedPlaceId, startPlaceCardOpen: true }
+  });
+}
+
+function sendContactMessage(state) {
+  const message = state.form?.message?.trim();
+  if (!message) return errorResult(state, "문의 내용을 입력해 주세요");
+  return showToast("success", "문의가 접수되었어요")(state);
+}
 
 function selectSavedFilter(state, payload) {
   const value = valueFrom(payload);
@@ -381,6 +443,13 @@ function closeSavedPlaceCard(state) {
   const selections = { ...(state.selections || {}) };
   delete selections.selectedPlaceId;
   selections.savedPlaceCardOpen = false;
+  return idleResult(state, { selections });
+}
+
+function closeStartPlaceCard(state) {
+  const selections = { ...(state.selections || {}) };
+  delete selections.selectedPlaceId;
+  selections.startPlaceCardOpen = false;
   return idleResult(state, { selections });
 }
 
@@ -642,9 +711,9 @@ export const TRANSITIONS = Object.freeze({
   }),
   d4: defineTransitions("d4", {
     "go-back": navigateBack,
-    "close-place-card": clearSelection("selectedPlaceId"),
+    "close-place-card": closeStartPlaceCard,
     "locate-user": noChange,
-    "confirm-start-place": navigateTo("d5")
+    "confirm-start-place": confirmStartPlace
   }),
   d5: defineTransitions("d5", {
     "go-back": navigateBack,
@@ -652,8 +721,8 @@ export const TRANSITIONS = Object.freeze({
     "show-discover": navigateTo("d6"),
     "change-filter": selectValue("routeFilter"),
     "select-filter-tag": selectValue("routeFilter"),
-    "add-place": addRoutePlace,
-    "confirm-route-places": navigateTo("d7")
+    "add-place": toggleRoutePlace,
+    "confirm-route-places": confirmRoutePlaces
   }),
   d6: defineTransitions("d6", {
     "go-back": navigateBack,
@@ -661,8 +730,8 @@ export const TRANSITIONS = Object.freeze({
     "show-discover": selectValue("routeSourceTab"),
     "change-filter": selectValue("routeFilter"),
     "select-filter-tag": selectValue("routeFilter"),
-    "add-place": addRoutePlace,
-    "confirm-route-places": navigateTo("d7")
+    "add-place": toggleRoutePlace,
+    "confirm-route-places": confirmRoutePlaces
   }),
   d7: defineTransitions("d7", {
     "go-back": navigateBack,
@@ -677,7 +746,7 @@ export const TRANSITIONS = Object.freeze({
     "go-back": navigateBack,
     "update-route-name": updateRouteName,
     "clear-route-name": clearField("routeName"),
-    "save-route": navigateTo("d9"),
+    "save-route": saveRouteName,
     "open-discover": navigateTo("b2"),
     "open-saved": navigateTo("c1"),
     "open-routes": navigateTo("d1"),
@@ -714,7 +783,7 @@ export const TRANSITIONS = Object.freeze({
     "update-current-password": updateCurrentPassword,
     "update-new-password": updateNewPassword,
     "update-password-confirmation": updatePasswordConfirmation,
-    "save-password": showToast("success", "비밀번호를 변경했어요"),
+    "save-password": saveAccountPassword,
     "forgot-password": navigateTo("a5"),
     logout: navigateTo("a3"),
     "delete-account": navigateTo("a1")
@@ -730,7 +799,7 @@ export const TRANSITIONS = Object.freeze({
   e5: defineTransitions("e5", {
     "go-back": navigateBack,
     "update-message": updateMessage,
-    "send-message": showToast("success", "문의를 보냈어요")
+    "send-message": sendContactMessage
   })
 });
 

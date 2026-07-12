@@ -151,7 +151,7 @@ test("all Flow C screens keep fixed frame geometry without horizontal overflow",
         scrollWidth: element.scrollWidth,
         viewportWidth: document.documentElement.clientWidth
       }));
-      expect(geometry.width).toBe(393);
+      expect(geometry.width).toBeCloseTo(Math.min(393, viewport.width), 1);
       expect(geometry.scrollWidth).toBeLessThanOrEqual(393);
       expect(geometry.viewportWidth).toBe(viewport.width);
     }

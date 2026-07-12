@@ -97,11 +97,83 @@ test("D7 uses the measured fixed frame without horizontal overflow", async ({ pa
       height: element.getBoundingClientRect().height,
       scrollWidth: element.scrollWidth
     }));
-    expect(geometry).toEqual({ width: 393, height: 852, scrollWidth: 393 });
+    const scale = viewport.width < 393 ? viewport.width / 393 : 1;
+    expect(geometry.width).toBeCloseTo(393 * scale, 1);
+    expect(geometry.height).toBeCloseTo(852 * scale, 1);
+    expect(geometry.scrollWidth).toBe(393);
   }
 });
 
 test("D7 stays within two percent of the current Figma frame", async ({ page }) => {
   const screen = await gotoRouteConfirmation(page, ["place-1", "place-7", "place-8"]);
   expect(await visualDiffRatio(page, screen)).toBeLessThanOrEqual(0.02);
+});
+
+test("the complete course flow works from the draggable start sheet to a saved course", async ({ page }) => {
+  await page.goto("/app-preview/?screen=d1");
+  await expect(page.locator('[data-screen-id="d1"]')).toHaveAttribute("data-render-mode", "semantic");
+  await expect(page.getByRole("navigation", { name: "주요 메뉴" })).toBeVisible();
+
+  const handle = page.locator(".route-start-handle");
+  const box = await handle.boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2, box.y + 140, { steps: 8 });
+  await page.mouse.up();
+  await expect(page).toHaveURL(/screen=d2/);
+
+  await page.getByRole("button", { name: "여기서 시작하기" }).click();
+  await expect(page).toHaveURL(/screen=d4/);
+  await page.getByRole("button", { name: "여기서 시작하기" }).click();
+  await expect(page).toHaveURL(/screen=d5/);
+
+  await page.getByRole("button", { name: /포털로빈.*추가/ }).click();
+  await page.getByRole("button", { name: /소이연남.*추가/ }).click();
+  await expect(page.getByText("2곳 선택됨", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "선택한 장소로 코스 만들기" }).click();
+  await expect(page).toHaveURL(/screen=d7/);
+  await page.getByRole("button", { name: "코스 만들기" }).click();
+  await expect(page).toHaveURL(/screen=d8/);
+
+  const routeName = page.getByRole("textbox", { name: "코스 이름" });
+  await routeName.fill("연남 저녁 산책 코스");
+  await page.getByRole("button", { name: "코스 저장하기" }).click();
+  await expect(page).toHaveURL(/screen=d9/);
+  await expect(page.getByRole("heading", { name: "연남 저녁 산책 코스" })).toBeVisible();
+});
+
+test("course candidate cards toggle, filters persist, and Discover candidates share the selection", async ({ page }) => {
+  await page.goto("/app-preview/?screen=d5");
+  const firstBefore = await page.locator(".route-saved-candidate h3").first().textContent();
+  await page.getByRole("button", { name: "오후 필터" }).click();
+  await expect(page.getByRole("button", { name: "오후 필터" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".route-saved-candidate h3").first()).toHaveText("브런치가든 연남");
+  expect(firstBefore).not.toBe("브런치가든 연남");
+
+  const add = page.getByRole("button", { name: /포털로빈/ });
+  await add.click();
+  await expect(add).toHaveAttribute("aria-pressed", "true");
+  await add.click();
+  await expect(add).toHaveAttribute("aria-pressed", "false");
+
+  await page.getByRole("tab", { name: "발견하기" }).click();
+  await expect(page).toHaveURL(/screen=d6/);
+  await expect(page.locator('[data-screen-id="d6"]')).toHaveAttribute("data-render-mode", "semantic");
+});
+
+test("course start, nearby recommendation, and sheet keyboard controls keep valid state", async ({ page }) => {
+  await page.goto("/app-preview/?screen=d1");
+  await page.locator(".route-start-handle").focus();
+  await page.keyboard.press("ArrowDown");
+  await expect(page).toHaveURL(/screen=d2/);
+
+  await page.goto("/app-preview/?screen=d4");
+  await page.getByRole("button", { name: "선택 장소 닫기" }).click();
+  await expect(page.getByRole("button", { name: "여기서 시작하기" })).toBeDisabled();
+
+  await page.goto("/app-preview/?screen=d9");
+  await page.getByRole("button", { name: "연남방앗간 장소 보기" }).click();
+  await expect(page).toHaveURL(/screen=b10/);
+  const state = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)), STORAGE_KEY);
+  expect(state.selections.selectedPlaceId).toBe("place-9");
 });

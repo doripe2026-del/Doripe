@@ -179,10 +179,12 @@ test("contract effects agree with pure transition results", () => {
         birthYear: "2000",
         gender: "female",
         nickname: "dori",
+        routeName: "연남 저녁 코스",
         habit: "instagram-saved",
         source: "instagram",
         neighborhoodId: "seongsu"
       },
+      routePlaceIds: ["place-1", "place-2"],
       selections: record.screenId === "c7" ? {
         selectedRouteId: "route-1",
         selectedPlaceId: "place-1",
@@ -371,6 +373,16 @@ test("save, follow, and share actions implement the brief contract", () => {
     dispatchAction("b4", "open-share", { type: "place", id: "place-1" }).effect,
     "share"
   );
+});
+
+test("saved-list add is idempotent while candidate selection can be toggled", () => {
+  const initial = { ...structuredClone(DEFAULT_STATE), routePlaceIds: [] };
+  const firstAdd = dispatchAction("c1", "add-place-to-route", { state: initial, placeId: "place-1" });
+  const secondAdd = dispatchAction("c1", "add-place-to-route", { state: firstAdd.state, placeId: "place-1" });
+  assert.deepEqual(secondAdd.state.routePlaceIds, ["place-1"]);
+
+  const removed = dispatchAction("d5", "add-place", { state: secondAdd.state, placeId: "place-1" });
+  assert.deepEqual(removed.state.routePlaceIds, []);
 });
 
 test("state changes are immutable and same-screen selections do not navigate", () => {

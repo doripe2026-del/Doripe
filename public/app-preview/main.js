@@ -13,6 +13,9 @@ const SCREEN_NAVIGATE_EVENT = "app-preview:screen-navigate";
 const FEED_STATUS_EVENT = "app-preview:feed-status";
 const DETAIL_SHEET_STATE_EVENT = "app-preview:detail-sheet-state";
 const FEED_FILTER_DISMISS_EVENT = "app-preview:feed-filter-dismiss";
+const OVERLAY_DISMISS_EVENT = "app-preview:overlay-dismiss";
+const SELECTION_CLEAR_EVENT = "app-preview:selection-clear";
+const MEDIA_HIDE_EVENT = "app-preview:media-hide";
 let interactionState = state.getState();
 let activePointerTarget = null;
 let pendingHistoryBack = null;
@@ -380,6 +383,43 @@ document.addEventListener(FEED_FILTER_DISMISS_EVENT, () => {
   state.replace({
     ...interactionState,
     overlays: (interactionState.overlays || []).filter((overlay) => overlay !== "feed-filter-sheet")
+  });
+  interactionState = state.getState();
+  renderScreen(interactionState.currentScreenId);
+  refreshCurrentBrowserEntry();
+});
+document.addEventListener(OVERLAY_DISMISS_EVENT, (event) => {
+  const overlayId = event.detail?.overlayId;
+  if (!overlayId) return;
+  state.replace({
+    ...interactionState,
+    overlays: (interactionState.overlays || []).filter((overlay) => overlay !== overlayId)
+  });
+  interactionState = state.getState();
+  renderScreen(interactionState.currentScreenId);
+  refreshCurrentBrowserEntry();
+});
+document.addEventListener(SELECTION_CLEAR_EVENT, (event) => {
+  const keys = Array.isArray(event.detail?.keys) ? event.detail.keys : [];
+  if (!keys.length) return;
+  const selections = { ...(interactionState.selections || {}) };
+  keys.forEach((key) => delete selections[key]);
+  state.replace({ ...interactionState, selections });
+  interactionState = state.getState();
+  renderScreen(interactionState.currentScreenId);
+  refreshCurrentBrowserEntry();
+});
+document.addEventListener(MEDIA_HIDE_EVENT, (event) => {
+  const mediaId = event.detail?.mediaId;
+  if (!mediaId) return;
+  const hiddenMediaIds = interactionState.hiddenMediaIds?.includes(mediaId)
+    ? [...interactionState.hiddenMediaIds]
+    : [...(interactionState.hiddenMediaIds || []), mediaId];
+  state.replace({
+    ...interactionState,
+    hiddenMediaIds,
+    overlays: (interactionState.overlays || []).filter((overlay) => overlay !== "photo-menu"),
+    toast: { kind: "success", message: "이 사진을 숨겼어요", duration: 2500 }
   });
   interactionState = state.getState();
   renderScreen(interactionState.currentScreenId);
