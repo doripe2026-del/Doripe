@@ -111,6 +111,14 @@
   animation: discover-filter-sheet-in 260ms cubic-bezier(.2, .8, .2, 1) both;
 }
 
+.saved-screen--c3.discover-filter-overlay.is-closing {
+  animation: discover-filter-dim-out 180ms ease-in both;
+}
+
+.discover-filter-overlay.is-closing .saved-filter-sheet {
+  animation: discover-filter-sheet-out 180ms ease-in both;
+}
+
 @keyframes discover-filter-dim-in {
   from { background: rgb(19 24 21 / 0%); }
 }
@@ -118,6 +126,14 @@
 @keyframes discover-filter-sheet-in {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
+}
+
+@keyframes discover-filter-dim-out {
+  to { background: rgb(19 24 21 / 0%); }
+}
+
+@keyframes discover-filter-sheet-out {
+  to { transform: translateY(100%); }
 }
 .discover-following-strip { position: absolute; z-index: 5; top: 86px; left: 24px; display: flex; width: 345px; height: 58px; align-items: center; border: 1px solid #08cc69; border-radius: 22px; background: #f2fff7; padding: 0 18px; gap: 12px; }
 .discover-following-strip__avatars { position: absolute; top: 11px; left: 20px; display: flex; align-items: center; }

@@ -9,6 +9,7 @@ const NODE_IDS = Object.freeze({
 });
 const FEED_STATUS_EVENT = "app-preview:feed-status";
 const DETAIL_SHEET_STATE_EVENT = "app-preview:detail-sheet-state";
+const FEED_FILTER_DISMISS_EVENT = "app-preview:feed-filter-dismiss";
 
 const byId = (items, id) => items.find((item) => item.id === id);
 const selectedPlace = (state) => byId(PLACES, state?.selections?.selectedPlaceId) || PLACES[0];
@@ -286,6 +287,49 @@ function followingStrip() {
   return strip;
 }
 
+function bindFeedFilterDismiss(overlay) {
+  const sheet = overlay.querySelector(".saved-filter-sheet");
+  const handle = overlay.querySelector(".saved-handle");
+  let startY = 0;
+  let active = false;
+  let dismissTimer = null;
+
+  const dismiss = () => {
+    if (overlay.classList.contains("is-closing")) return;
+    overlay.classList.add("is-closing");
+    sheet.style.removeProperty("transform");
+    dismissTimer = setTimeout(() => {
+      document.dispatchEvent(new CustomEvent(FEED_FILTER_DISMISS_EVENT));
+    }, 180);
+  };
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) dismiss();
+  });
+  handle.addEventListener("pointerdown", (event) => {
+    active = true;
+    startY = event.clientY;
+    handle.setPointerCapture?.(event.pointerId);
+    event.preventDefault();
+  });
+  handle.addEventListener("pointermove", (event) => {
+    if (!active) return;
+    const distance = Math.max(0, Math.min(180, event.clientY - startY));
+    sheet.style.transform = `translateY(${distance}px)`;
+  });
+  handle.addEventListener("pointerup", (event) => {
+    if (!active) return;
+    active = false;
+    if (event.clientY - startY >= 56) dismiss();
+    else sheet.style.removeProperty("transform");
+  });
+  handle.addEventListener("pointercancel", () => {
+    active = false;
+    sheet.style.removeProperty("transform");
+  });
+  overlay.addEventListener("app-preview:screen-teardown", () => clearTimeout(dismissTimer), { once: true });
+}
+
 function renderFeed(screenId, state) {
   const root = screenRoot(screenId, "discover-feed-screen");
   root.dataset.measureKey = screenId === "b1" ? "Header / top bar" : "Feed / masonry grid";
@@ -306,6 +350,7 @@ function renderFeed(screenId, state) {
     filters.classList.add("discover-filter-overlay");
     filters.dataset.testid = "feed-filter-sheet";
     filters.dataset.sourceScreen = "c3";
+    bindFeedFilterDismiss(filters);
     root.append(filters);
   }
   return root;

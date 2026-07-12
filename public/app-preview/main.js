@@ -12,6 +12,7 @@ const SCREEN_TEARDOWN_EVENT = "app-preview:screen-teardown";
 const SCREEN_NAVIGATE_EVENT = "app-preview:screen-navigate";
 const FEED_STATUS_EVENT = "app-preview:feed-status";
 const DETAIL_SHEET_STATE_EVENT = "app-preview:detail-sheet-state";
+const FEED_FILTER_DISMISS_EVENT = "app-preview:feed-filter-dismiss";
 let interactionState = state.getState();
 let activePointerTarget = null;
 let pendingHistoryBack = null;
@@ -373,6 +374,15 @@ document.addEventListener(DETAIL_SHEET_STATE_EVENT, (event) => {
     selections: { ...(interactionState.selections || {}), detailSheetState }
   });
   interactionState = state.getState();
+  refreshCurrentBrowserEntry();
+});
+document.addEventListener(FEED_FILTER_DISMISS_EVENT, () => {
+  state.replace({
+    ...interactionState,
+    overlays: (interactionState.overlays || []).filter((overlay) => overlay !== "feed-filter-sheet")
+  });
+  interactionState = state.getState();
+  renderScreen(interactionState.currentScreenId);
   refreshCurrentBrowserEntry();
 });
 document.addEventListener("click", (event) => {

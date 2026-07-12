@@ -144,6 +144,30 @@ test("discover and following feeds switch, open the C3 filter sheet, scroll, and
   expect(persisted.selections.selectedMediaId).toBe(selectedMediaId);
 });
 
+test("feed filter sheet closes from its backdrop or a downward drag", async ({ page }) => {
+  const screen = await gotoScreen(page, "b1");
+  const openFilter = screen.getByRole("button", { name: "필터", exact: true });
+
+  await openFilter.click();
+  let overlay = page.locator("[data-testid=feed-filter-sheet]");
+  await expect(overlay).toBeVisible();
+  await overlay.click({ position: { x: 20, y: 100 } });
+  await expect(overlay).toHaveCount(0);
+  await expect(page).toHaveURL(/screen=b1/);
+
+  await openFilter.click();
+  overlay = page.locator("[data-testid=feed-filter-sheet]");
+  const handle = overlay.locator(".saved-handle");
+  await page.waitForTimeout(300);
+  const box = await handle.boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2, box.y + 100, { steps: 8 });
+  await page.mouse.up();
+  await expect(overlay).toHaveCount(0);
+  await expect(page).toHaveURL(/screen=b1/);
+});
+
 test("B1 and B2 keep a full masonry feed and B1 has no add button", async ({ page }) => {
   for (const screenId of ["b1", "b2"]) {
     const screen = await gotoScreen(page, screenId);
