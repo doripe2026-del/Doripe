@@ -287,15 +287,14 @@
 .route-complete-place__copy small { color: #666; font-size: 10px; }
 .route-complete-place__copy em { color: #999; font-size: 10px; font-style: normal; }
 .route-complete-chevron { width: 18px; height: 18px; transform: rotate(180deg); opacity: .5; }
-.route-nearby { margin: 5px 24px 0; }
-.route-nearby h2 { display: inline; margin: 0; font-size: 17px; }
-.route-nearby-more { float: right; border: 0; background: transparent; color: #08b95e; font-size: 11px; font-weight: 700; }
-.route-nearby-card { position: relative; height: 66px; margin-top: 9px; border: 1px solid #e1e5e2; border-radius: 8px; padding: 8px 40px 8px 80px; }
-.route-nearby-card > img:first-child { position: absolute; top: 8px; left: 10px; width: 52px; height: 50px; border-radius: 7px; object-fit: cover; }
-.route-nearby-card strong,
-.route-nearby-card small { display: block; }
-.route-nearby-card small { margin-top: 7px; color: #8a908d; font-size: 10px; }
-.route-nearby-card > img:last-child { position: absolute; top: 22px; right: 12px; width: 18px; height: 18px; }
+.route-nearby { position: absolute; top: 699px; left: 24px; width: 345px; height: 89px; margin: 0; }
+.route-nearby h2 { position: absolute; top: 0; left: 0; margin: 0; font-size: 16px; line-height: 20px; }
+.route-nearby-more { position: absolute; top: 4px; right: 0; border: 0; background: transparent; color: #08b95e; padding: 0; font-size: 12px; font-weight: 700; line-height: 15px; }
+.route-nearby-card { position: absolute; top: 23px; left: 0; display: block; width: 345px; height: 66px; margin: 0; border: 1px solid #e1e5e2; border-radius: 8px; background: #fff; padding: 0; text-align: left; }
+.route-nearby-card > img:first-child { position: absolute; top: 8px; left: 9px; width: 50px; height: 50px; border-radius: 7px; object-fit: cover; }
+.route-nearby-card strong { position: absolute; top: 9px; left: 79px; display: block; font-size: 15px; line-height: 19px; }
+.route-nearby-card small { position: absolute; top: 34px; left: 79px; display: block; color: #8a908d; font-size: 11px; line-height: 14px; }
+.route-nearby-card > img:last-child { position: absolute; top: 21px; right: 8px; width: 20px; height: 20px; }
 .route-complete-screen > .route-confirm-nav { position: fixed; top: auto; bottom: 6px; }
 .route-navigation-overlay { position: fixed; inset: 0; z-index: 20; display: grid; place-items: end center; background: rgb(0 0 0 / 28%); }
 .route-navigation-dialog { width: 393px; border-radius: 24px 24px 0 0; background: #fff; padding: 26px 24px 34px; text-align: center; }

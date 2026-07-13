@@ -177,3 +177,19 @@ test("course start, nearby recommendation, and sheet keyboard controls keep vali
   const state = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)), STORAGE_KEY);
   expect(state.selections.selectedPlaceId).toBe("place-9");
 });
+
+test("D9 nearby recommendation matches the Figma position and width", async ({ page }) => {
+  await page.goto("/app-preview/?screen=d9&static=1");
+  const geometry = await page.locator(".route-nearby").evaluate((section) => {
+    const sectionBox = section.getBoundingClientRect();
+    const cardBox = section.querySelector(".route-nearby-card").getBoundingClientRect();
+    return {
+      section: { x: sectionBox.x, y: sectionBox.y, width: sectionBox.width, height: sectionBox.height },
+      card: { x: cardBox.x, y: cardBox.y, width: cardBox.width, height: cardBox.height }
+    };
+  });
+  expect(geometry).toEqual({
+    section: { x: 24, y: 699, width: 345, height: 89 },
+    card: { x: 24, y: 722, width: 345, height: 66 }
+  });
+});
