@@ -14,6 +14,7 @@
 - Do not run production Vercel commands or alter Supabase schema.
 - Generate at most two posts per day; generate one when only one candidate meets quality gates.
 - Use only `PLACE/EVENT`, `COLLECTION`, and `ROUTE` information-carousel templates.
+- Cover only places, routes, and events in the Republic of Korea. Every candidate must carry `countryCode: "KR"` and an official source that verifies its domestic location; reject all other candidates before scoring.
 - Lock design layers after initial approval; later runs may change only `slot:*` photo and copy layers.
 - Use real web photos only. Never use AI-generated imagery or existing AI files under `public/instagram-pinned-feed/assets/`.
 - Prefer reuse-permitted photos. Record source URL, credit, and rights status for every photo.
@@ -65,6 +66,22 @@ import {
   parseTemplateContract,
 } from "../../scripts/instagram-content/contracts.mjs";
 
+const domesticCandidate = {
+  id: "seongsu-route",
+  type: "route",
+  title: "성수 산책 코스",
+  hook: "주말 반나절 코스",
+  countryCode: "KR",
+  domesticEvidenceSourceId: "official-place",
+  region: "서울 성동구",
+  placeIds: ["place-a"],
+  expiresAt: null,
+  sources: [{ id: "official-place", kind: "official", url: "https://example.go.kr/place-a", title: "장소 안내", publisher: "공공기관", checkedAt: "2026-07-14T00:00:00.000Z" }],
+  assets: [{ id: "photo-a", kind: "web_photo", localPath: "/tmp/photo-a.jpg", sourceUrl: "https://example.com/photo-a", credit: "Example", rightsStatus: "not_found", privacyNote: "" }],
+  editorialElements: ["selection_reason", "map_or_route"],
+  scores: { sendPotential: 5, saveValue: 5, brandFit: 5, timeliness: 4, photoQuality: 4, originalityPotential: 5, factCompleteness: 5, reusePermission: 2 },
+};
+
 test("template contract accepts three locked carousel templates", () => {
   const contract = parseTemplateContract({
     version: 1,
@@ -82,6 +99,12 @@ test("template contract accepts three locked carousel templates", () => {
 
 test("candidate rejects AI assets and incomplete source records", () => {
   assert.throws(() => parseCandidate({ id: "bad", type: "place_event", assets: [{ kind: "ai" }] }));
+});
+
+test("candidate rejects overseas content or domestic claims without official evidence", () => {
+  assert.equal(parseCandidate(domesticCandidate).countryCode, "KR");
+  assert.throws(() => parseCandidate({ ...domesticCandidate, countryCode: "JP" }));
+  assert.throws(() => parseCandidate({ ...domesticCandidate, domesticEvidenceSourceId: "missing" }), /official source/i);
 });
 
 test("package requires caption, sources, review, and exported PNG files", () => {
@@ -113,6 +136,7 @@ export const EDITORIAL_ELEMENTS = Object.freeze([
 
 const sourceSchema = z.object({
   id: z.string().min(1),
+  kind: z.enum(["official", "editorial", "social"]),
   url: z.string().url(),
   title: z.string().min(1),
   publisher: z.string().min(1),
@@ -145,6 +169,8 @@ const candidateSchema = z.object({
   type: z.enum(CONTENT_TYPES),
   title: z.string().min(1).max(120),
   hook: z.string().min(1).max(120),
+  countryCode: z.literal("KR"),
+  domesticEvidenceSourceId: z.string().min(1),
   region: z.string().min(1).max(80),
   placeIds: z.array(z.string().min(1)).min(1),
   expiresAt: z.string().datetime().nullable(),
@@ -152,6 +178,11 @@ const candidateSchema = z.object({
   assets: z.array(assetSchema).min(1),
   editorialElements: z.array(z.enum(EDITORIAL_ELEMENTS)).min(2),
   scores: scoreSchema,
+}).superRefine((candidate, context) => {
+  const evidence = candidate.sources.find(({ id }) => id === candidate.domesticEvidenceSourceId);
+  if (!evidence || evidence.kind !== "official") {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ["domesticEvidenceSourceId"], message: "Domestic location requires a matching official source" });
+  }
 });
 
 const templateSchema = z.object({
@@ -208,7 +239,7 @@ Add to `package.json`:
 
 Run: `npm run test:instagram-content`
 
-Expected: 3 tests PASS.
+Expected: 4 tests PASS.
 
 - [ ] **Step 5: Commit Task 1**
 
@@ -814,6 +845,7 @@ test("daily runbook contains every required safety and output gate", async () =>
   const text = await readFile("docs/ops/instagram-content-daily-runbook.md", "utf8");
   for (const phrase of [
     "매일 최대 2개",
+    "대한민국 국내만",
     "AI 이미지 금지",
     "비팔로워 도달",
     "원본성 검수",
@@ -836,8 +868,8 @@ The runbook must instruct the automation to:
 
 1. Read the Doripe Brain home, brand message, marketing content operation, and content-rights documents.
 2. Read `docs/instagram-content/template-contract.json`, 30-day history, and `performance.csv`.
-3. Research current places/routes/events with official sources first and record the verification time.
-4. Generate at least six candidates, score them with the fixed eight dimensions, and use the CLI to select at most two.
+3. Research only current places/routes/events located in the Republic of Korea, using official sources first, and record the verification time.
+4. Add `countryCode: "KR"` and a matching official `domesticEvidenceSourceId` to every candidate. Reject overseas or unverified candidates before generating at least six eligible candidates, scoring them with the fixed eight dimensions, and using the CLI to select at most two.
 5. Collect only real web photos; never call image generation. Reject `restricted` assets and flag `not_found` rights.
 6. Write a specific hook, one send-or-save CTA, natural location keywords, fact source IDs, and at least two editorial elements.
 7. Duplicate the correct Figma template, replace only `slot:*` layers, and hide unused optional slides.
