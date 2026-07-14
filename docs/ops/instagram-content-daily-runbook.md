@@ -181,6 +181,14 @@ originality, caption, sources, layout 네 결과가 모두 `ok: true`일 때만 
 
 Figma 슬라이드를 순서대로 각각 1080 × 1350 PNG로 export한다. PNG 경로는 모두 달라야 하며 `exports.json`의 배열 순서가 게시 순서다.
 
+같은 실행 날짜의 sequence 규칙은 고정이다.
+
+- 첫 번째 선택 게시물: sequence 1
+- 두 번째 선택 게시물: sequence 2
+- 같은 날짜에 sequence를 중복 사용하지 않는다.
+
+첫 번째 게시물의 `exports.json` 예시:
+
 ```json
 {
   "sequence": 1,
@@ -191,6 +199,22 @@ Figma 슬라이드를 순서대로 각각 1080 × 1350 PNG로 export한다. PNG 
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/04.png",
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/05.png",
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/06.png"
+  ]
+}
+```
+
+두 번째 게시물의 `exports.json` 예시:
+
+```json
+{
+  "sequence": 2,
+  "files": [
+    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/01.png",
+    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/02.png",
+    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/03.png",
+    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/04.png",
+    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/05.png",
+    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/06.png"
   ]
 }
 ```

@@ -109,6 +109,28 @@ test("writer atomically creates sequential images and review-ready text files", 
   assert.equal(dayEntries.some((name) => name.includes(".writing-")), false);
 });
 
+test("writer uses the Asia/Seoul calendar day while preserving ISO manifest time", async () => {
+  const outputRoot = await mkdtemp(join(tmpdir(), "doripe-instagram-"));
+  const png = await createPng(join(outputRoot, "exports"), "cover.png", 1);
+  const boundaryTime = new Date("2026-07-13T23:00:00.000Z");
+
+  const result = await writeProductionPackage({
+    outputRoot,
+    sequence: 1,
+    draft,
+    exportedPngs: [png],
+    validation,
+    now: boundaryTime,
+  });
+
+  assert.equal(
+    result.directory,
+    join(outputRoot, "2026-07-14", "01-seongsu-weekend-route"),
+  );
+  assert.equal(result.manifest.createdAt, "2026-07-13T23:00:00.000Z");
+  await assert.rejects(access(join(outputRoot, "2026-07-13")));
+});
+
 test("writer rejects empty or missing PNG exports before creating output", async () => {
   const outputRoot = await mkdtemp(join(tmpdir(), "doripe-instagram-"));
   const input = { outputRoot, sequence: 1, draft, validation, now };

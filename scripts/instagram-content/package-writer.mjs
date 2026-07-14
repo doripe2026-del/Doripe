@@ -14,6 +14,22 @@ import { parsePackageManifest } from "./contracts.mjs";
 
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 const VALIDATION_GATES = Object.freeze(["originality", "caption", "sources", "layout"]);
+const SEOUL_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  timeZone: "Asia/Seoul",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+function formatSeoulDate(date) {
+  const parts = Object.fromEntries(
+    SEOUL_DATE_FORMATTER
+      .formatToParts(date)
+      .filter(({ type }) => type !== "literal")
+      .map(({ type, value }) => [type, value]),
+  );
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
 
 function requireArray(value, label) {
   if (!Array.isArray(value)) throw new Error(`${label} must be an array`);
@@ -158,7 +174,7 @@ export async function writeProductionPackage(options) {
   validateExportList(exportedPngs);
   requireSuccessfulValidation(validation);
 
-  const date = now.toISOString().slice(0, 10);
+  const date = formatSeoulDate(now);
   const folderName = `${String(sequence).padStart(2, "0")}-${candidateId}`;
   const dayDir = join(resolve(outputRoot), date);
   const directory = join(dayDir, folderName);
