@@ -1,10 +1,12 @@
-export const PERFORMANCE_HEADER = "post_id,posted_at,type,topic,reach,views,non_follower_reach_rate,sends,saves,likes,profile_visits,follows";
+export const PERFORMANCE_HEADER = "post_id,posted_at,type,topic,place_type,editorial_angle,reach,views,non_follower_reach_rate,sends,saves,likes,profile_visits,follows,sends_per_reach";
 
 const KEYS = Object.freeze([
   "postId",
   "postedAt",
   "type",
   "topic",
+  "placeType",
+  "editorialAngle",
   "reach",
   "views",
   "nonFollowerReachRate",
@@ -13,9 +15,21 @@ const KEYS = Object.freeze([
   "likes",
   "profileVisits",
   "follows",
+  "sendsPerReach",
 ]);
-const TEXT_KEYS = Object.freeze(KEYS.slice(0, 4));
-const NUMERIC_KEYS = Object.freeze(KEYS.slice(4));
+const TEXT_KEYS = Object.freeze(KEYS.slice(0, 6));
+const NUMERIC_KEYS = Object.freeze(KEYS.slice(6));
+
+function expectedSendsPerReach(row) {
+  return row.reach > 0 ? row.sends / row.reach : 0;
+}
+
+function requireConsistentSendRatio(row) {
+  const expected = expectedSendsPerReach(row);
+  if (Math.abs(row.sendsPerReach - expected) > 1e-9) {
+    throw new Error("Performance row sends per reach ratio contradicts sends and reach");
+  }
+}
 
 function requireFiniteMetrics(row) {
   for (const key of NUMERIC_KEYS) {
@@ -42,7 +56,7 @@ function parseDataLine(line, lineNumber) {
   }
 
   if (values.length !== KEYS.length) {
-    throw new Error(`Performance row ${lineNumber} must contain exactly 12 columns`);
+    throw new Error(`Performance row ${lineNumber} must contain exactly 15 columns`);
   }
   if (values.some((value) => typeof value !== "string")) {
     throw new Error(`Malformed performance.csv row ${lineNumber}: columns must be JSON strings`);
@@ -62,6 +76,7 @@ function parseDataLine(line, lineNumber) {
   }
 
   requireTextFields(row);
+  requireConsistentSendRatio(row);
   return row;
 }
 
@@ -83,13 +98,17 @@ export function parsePerformanceCsv(text) {
 }
 
 export function appendPerformanceRow(text, row) {
-  requireTextFields(row);
-  requireFiniteMetrics(row);
+  const normalizedRow = {
+    ...row,
+    sendsPerReach: row.reach > 0 ? row.sends / row.reach : 0,
+  };
+  requireTextFields(normalizedRow);
+  requireFiniteMetrics(normalizedRow);
 
   const existing = typeof text === "string" ? text.trim() : "";
   if (existing) parsePerformanceCsv(existing);
 
-  const values = KEYS.map((key) => JSON.stringify(String(row[key])));
+  const values = KEYS.map((key) => JSON.stringify(String(normalizedRow[key])));
   return `${existing || PERFORMANCE_HEADER}\n${values.join(",")}\n`;
 }
 
@@ -100,16 +119,16 @@ export function buildPerformanceBoosts(rows) {
   for (const row of rows) {
     requireTextFields(row);
     requireFiniteMetrics(row);
-    const ratio = row.reach > 0 ? (row.sends + row.saves) / row.reach : 0;
-    const ratios = grouped.get(row.type) ?? [];
-    ratios.push(ratio);
-    grouped.set(row.type, ratios);
+    requireConsistentSendRatio(row);
+    const ratios = grouped.get(row.editorialAngle) ?? [];
+    ratios.push(row.sendsPerReach);
+    grouped.set(row.editorialAngle, ratios);
   }
 
   const boosts = [];
-  for (const [type, ratios] of grouped) {
+  for (const [editorialAngle, ratios] of grouped) {
     const average = ratios.reduce((sum, value) => sum + value, 0) / ratios.length;
-    boosts.push([type, average >= 0.15 ? 5 : average >= 0.08 ? 2 : 0]);
+    boosts.push([editorialAngle, average >= 0.1 ? 5 : average >= 0.05 ? 2 : 0]);
   }
   return Object.fromEntries(boosts);
 }

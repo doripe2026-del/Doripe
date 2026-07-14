@@ -4,6 +4,26 @@ import { PHOTO_ROLES, SHOT_TYPES } from "./photo-aesthetic.mjs";
 
 export const CONTENT_TYPES = Object.freeze(["place_event", "collection", "route"]);
 export const RIGHTS_STATUSES = Object.freeze(["confirmed", "not_found", "restricted"]);
+export const PLACE_TYPES = Object.freeze([
+  "cafe",
+  "restaurant",
+  "bar",
+  "exhibition",
+  "shop",
+  "walk",
+  "park",
+  "architecture",
+  "market",
+  "mixed",
+]);
+export const EDITORIAL_ANGLES = Object.freeze([
+  "hidden_gem",
+  "fresh_pairing",
+  "situational_pick",
+  "timely_window",
+  "neighborhood_lens",
+  "route_story",
+]);
 export const EDITORIAL_ELEMENTS = Object.freeze([
   "selection_reason",
   "comparison",
@@ -67,8 +87,18 @@ const candidateSchema = z.object({
   title: z.string().min(1).max(120),
   hook: z.string().min(1).max(120),
   countryCode: z.literal("KR"),
+  cityCode: z.literal("SEOUL"),
   domesticEvidenceSourceId: z.string().min(1),
   region: z.string().min(1).max(80),
+  officialAddress: z.string().min(1).max(160),
+  placeTypes: z.array(z.enum(PLACE_TYPES)).min(1).refine(
+    (types) => new Set(types).size === types.length,
+    "Place types must be unique",
+  ),
+  editorialAngle: z.enum(EDITORIAL_ANGLES),
+  editorialAngleNote: z.string().trim().min(10).max(240),
+  familiarity: z.enum(["emerging", "well_known"]),
+  shareThesis: z.string().trim().min(10).max(160),
   placeIds: z.array(z.string().min(1)).min(1),
   expiresAt: z.string().datetime().nullable(),
   sources: z.array(sourceSchema).min(1),
@@ -78,10 +108,19 @@ const candidateSchema = z.object({
     "Candidate requires at least two unique editorial elements",
   ),
   scores: scoreSchema,
-}).superRefine((candidate, context) => {
+}).strict().superRefine((candidate, context) => {
   const evidence = candidate.sources.find(({ id }) => id === candidate.domesticEvidenceSourceId);
   if (!evidence || evidence.kind !== "official") {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ["domesticEvidenceSourceId"], message: "Domestic location requires a matching official source" });
+  }
+  if (!candidate.region.includes("서울")) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ["region"], message: "Candidate region must be in Seoul" });
+  }
+  if (!/^서울(?:특별시)?(?:\s|$)/.test(candidate.officialAddress)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ["officialAddress"], message: "Official address must be in Seoul" });
+  }
+  if (candidate.familiarity === "well_known" && candidate.editorialAngle === "hidden_gem") {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ["editorialAngle"], message: "A well-known place requires a new editorial angle, not hidden-gem framing" });
   }
 });
 
@@ -115,7 +154,7 @@ const brandEndSchema = z.object({
 const templateContractSchema = z.object({
   version: z.literal(1),
   fileKey: z.string().min(1),
-  pageName: z.literal("Instagram Content Automation"),
+  pageName: z.literal("INSTAGRAM FEED V2 / SHAREABLE DISCOVERY"),
   canvas: z.object({ width: z.literal(1080), height: z.literal(1350), safeInsetX: z.literal(34) }),
   brandEnd: brandEndSchema,
   templates: z.array(templateSchema).length(3),

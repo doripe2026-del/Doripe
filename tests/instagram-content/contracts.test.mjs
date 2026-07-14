@@ -14,8 +14,15 @@ const domesticCandidate = {
   title: "성수 산책 코스",
   hook: "주말 반나절 코스",
   countryCode: "KR",
+  cityCode: "SEOUL",
   domesticEvidenceSourceId: "official-place",
   region: "서울 성동구",
+  officialAddress: "서울특별시 성동구 연무장길 1",
+  placeTypes: ["cafe", "walk"],
+  editorialAngle: "route_story",
+  editorialAngleNote: "서로 다른 취향의 두 장소를 반나절 산책으로 새롭게 잇는다.",
+  familiarity: "well_known",
+  shareThesis: "친구에게 그대로 보내 주말 약속을 잡기 좋은 동선이다.",
   placeIds: ["place-a"],
   expiresAt: null,
   sources: [{ id: "official-place", kind: "official", url: "https://example.go.kr/place-a", title: "장소 안내", publisher: "공공기관", checkedAt: "2026-07-14T00:00:00.000Z" }],
@@ -49,7 +56,7 @@ test("template contract accepts three locked carousel templates", () => {
   const contract = parseTemplateContract({
     version: 1,
     fileKey: "figma-file-key",
-    pageName: "Instagram Content Automation",
+    pageName: "INSTAGRAM FEED V2 / SHAREABLE DISCOVERY",
     canvas: { width: 1080, height: 1350, safeInsetX: 34 },
     brandEnd: {
       backgroundHex: "#050505",
@@ -157,6 +164,32 @@ test("candidate rejects overseas content or domestic claims without official evi
   assert.equal(parseCandidate(domesticCandidate).countryCode, "KR");
   assert.throws(() => parseCandidate({ ...domesticCandidate, countryCode: "JP" }));
   assert.throws(() => parseCandidate({ ...domesticCandidate, domesticEvidenceSourceId: "missing" }), /official source/i);
+});
+
+test("candidate is limited to Seoul and requires an official Seoul address", () => {
+  assert.equal(parseCandidate(domesticCandidate).cityCode, "SEOUL");
+  for (const mutation of [
+    { cityCode: "BUSAN" },
+    { region: "부산 해운대구" },
+    { officialAddress: "부산광역시 해운대구 달맞이길 1" },
+  ]) {
+    assert.throws(() => parseCandidate({ ...domesticCandidate, ...mutation }), /Seoul|서울|cityCode/i);
+  }
+});
+
+test("candidate requires place type, editorial angle, and a concrete share thesis", () => {
+  for (const key of ["placeTypes", "editorialAngle", "editorialAngleNote", "familiarity", "shareThesis"]) {
+    const invalid = { ...domesticCandidate };
+    delete invalid[key];
+    assert.throws(() => parseCandidate(invalid));
+  }
+});
+
+test("well-known places cannot use a hidden-gem angle", () => {
+  assert.throws(() => parseCandidate({
+    ...domesticCandidate,
+    editorialAngle: "hidden_gem",
+  }), /well-known|hidden-gem|새 관점/i);
 });
 
 test("candidate requires at least two unique editorial elements", () => {

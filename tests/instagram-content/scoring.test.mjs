@@ -30,14 +30,14 @@ test("scoring fixtures are parsed domestic candidates", () => {
 });
 
 test("weighted score prioritizes sends and saves", () => {
-  assert.equal(scoreCandidate(base, {}), 92);
+  assert.equal(scoreCandidate(base, {}), 93);
 });
 
-test("optional performance boosts are applied and capped", () => {
+test("optional editorial-angle performance boosts are applied and capped", () => {
   assert.equal(scoreCandidate(boostedCollection), 60);
-  assert.equal(scoreCandidate(boostedCollection, { collection: 10 }), 70);
-  assert.equal(scoreCandidate(base, { route: 20 }), 100);
-  assert.equal(scoreCandidate(boostedCollection, { collection: -100 }), 0);
+  assert.equal(scoreCandidate(boostedCollection, { fresh_pairing: 10 }), 70);
+  assert.equal(scoreCandidate(base, { route_story: 20 }), 100);
+  assert.equal(scoreCandidate(boostedCollection, { fresh_pairing: -100 }), 0);
 });
 
 test("same place within 30 days is duplicate", () => {
@@ -66,7 +66,7 @@ test("history entries with malformed dates are ignored", () => {
 test("daily selection returns at most two non-duplicates at or above 70", () => {
   assert.deepEqual(selectDailyCandidates([boostedCollection], [], {}, 2), []);
   assert.deepEqual(
-    selectDailyCandidates([base, newEvent, boostedCollection], [], { collection: 10 }, 10)
+    selectDailyCandidates([base, newEvent, boostedCollection], [], { fresh_pairing: 10 }, 10)
       .map(({ id }) => id),
     ["seongsu-weekend-route", "new-event"],
   );

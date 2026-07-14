@@ -4,7 +4,7 @@
 
 ## 절대 규칙
 
-- 조사 대상은 대한민국 국내만 허용한다. 해외이거나 국내 여부를 공식 자료로 확인할 수 없으면 제외한다.
+- 조사 대상은 서울만 허용한다. 서울 공식 주소를 확인할 수 없으면 제외한다.
 - 실제 웹 사진만 사용한다. AI 이미지 금지이며 `imagegen을 호출하지 않는다`.
 - `rightsStatus: "restricted"` 사진은 즉시 제외한다.
 - 원본 사진을 Git에 커밋하지 않는다. 다운로드와 중간 작업은 저장소 밖의 임시 폴더에서만 한다.
@@ -56,32 +56,35 @@ npm run instagram:content -- check-template docs/instagram-content/template-cont
 
 이 명령이 실패하면 그날 작업을 중단하고 오류를 보고한다.
 
-## 2. 국내 후보 최소 6개 조사
+## 2. 서울 후보 최소 6개 조사
 
-현재 운영 중인 장소·코스·행사를 웹에서 조사한다. 공식 출처 우선 순서는 정부·지자체·공공기관, 장소나 행사 공식 홈페이지, 공식 보도자료다. 블로그나 SNS만으로 국내 위치나 운영 사실을 확정하지 않는다.
+현재 운영 중인 서울의 장소·코스·행사를 웹에서 조사한다. 공식 출처 우선 순서는 정부·지자체·공공기관, 장소나 행사 공식 홈페이지, 공식 보도자료다. 블로그나 SNS만으로 서울 위치나 운영 사실을 확정하지 않는다.
 
 각 source에는 URL, 제목, 발행처와 ISO 8601 형식의 확인 시각(`checkedAt`)을 기록한다. 모든 후보는 다음 조건을 만족해야 한다.
 
 - `countryCode: "KR"`
+- `cityCode: "SEOUL"`
 - `domesticEvidenceSourceId`가 후보의 `kind: "official"` source ID와 정확히 일치
-- 대한민국 위치와 현재 운영 사실을 공식 source가 뒷받침
+- `officialAddress`가 서울 주소이고 현재 운영 사실을 공식 source가 뒷받침
+- 실제 장소 성격을 나타내는 `placeTypes`를 1개 이상 기록
+- `editorialAngle`, 구체적인 `editorialAngleNote`, 친구에게 보낼 이유인 `shareThesis`를 기록
 - 서로 다른 `placeIds`와 실제 장소 정보
 - 최소 2개의 실질적인 편집 요소를 만들 수 있음
 
-해외·위치 미확인·공식 증거가 없는 후보를 먼저 제거한 뒤 유효 후보를 최소 6개 확보한다. 6개를 확보하지 못하면 사실을 꾸미지 말고 작업을 중단해 후보 부족을 보고한다.
+서울 밖·위치 미확인·공식 증거가 없는 후보를 먼저 제거한 뒤 유효 후보를 최소 6개 확보한다. 유명 장소도 허용하지만 `hidden_gem`으로 포장하지 않고 새로운 조합·상황·동네 관점·루트처럼 분명한 새 관점이 있어야 한다. 장소 카테고리별 고정 카테고리 쿼터를 두지 않는다. 모든 후보가 같은 기준으로 공유 가능성을 경쟁한다. 6개를 확보하지 못하면 사실을 꾸미지 말고 작업을 중단해 후보 부족을 보고한다.
 
 각 후보의 다음 8개 점수를 0~5로 기록한다. 콜론 뒤 숫자는 CLI가 100점 환산에 사용하는 고정 가중치다.
 
-1. sendPotential: 20
+1. sendPotential: 25
 2. saveValue: 15
 3. brandFit: 15
-4. timeliness: 15
+4. timeliness: 10
 5. photoQuality: 10
 6. originalityPotential: 10
 7. factCompleteness: 10
 8. reusePermission: 5
 
-이전 성과에서는 sends, saves, reach와 비팔로워 도달(`non_follower_reach_rate`)을 참고한다. 수치를 추측하지 않는다.
+이전 성과에서는 `editorial_angle`별 `sends_per_reach`를 가장 먼저 본다. `place_type`, 콘텐츠 형식인 `type`, reach, sends, saves와 비팔로워 도달(`non_follower_reach_rate`)도 함께 기록하되 수치를 추측하지 않는다. 가산점은 좋아요나 카테고리가 아니라 실제 보내기 비율을 편집 관점별로 학습해 적용한다.
 
 ## 3. 실제 사진과 권리 확인
 
@@ -111,7 +114,7 @@ npm run instagram:content -- check-template docs/instagram-content/template-cont
 npm run instagram:content -- score "$CANDIDATES_JSON" "$HISTORY_JSON" "$PERFORMANCE_CSV" "$SELECTED_JSON"
 ```
 
-CLI가 국내 계약을 다시 검사하고, 30일 중복을 제외하고, 70점 이상을 매일 최대 2개 선택한다. 가능한 후보 구성이라면 `place_event`, `collection`, `route` 중 가능하면 서로 다른 콘텐츠 유형을 선택한다. 다만 다양성을 만들기 위해 점수를 고치거나 70점 기준을 낮추지 않는다.
+CLI가 서울 계약을 다시 검사하고, 30일 중복을 제외하고, 70점 이상을 매일 최대 2개 선택한다. 콘텐츠 유형이나 장소 카테고리 배분보다 공유 가능성 점수가 높은 순서가 우선이다. 다양성을 만들기 위해 점수를 고치거나 70점 기준을 낮추지 않는다.
 
 선택 결과가 1개 또는 0개면 그대로 다음 단계의 수를 줄이고 최종 보고에 부족 사유를 적는다.
 
@@ -134,11 +137,11 @@ CLI가 국내 계약을 다시 검사하고, 30일 중복을 제외하고, 70점
 
 ## 6. 승인된 Figma 템플릿 편집
 
-Figma connector로 파일 `9btf9oUzIvw3JQq4OPyYEn`의 `Instagram Content Automation` 페이지를 열고, 후보 유형과 일치하는 root를 복제한다.
+Figma connector로 파일 `9btf9oUzIvw3JQq4OPyYEn`의 `INSTAGRAM FEED V2 / SHAREABLE DISCOVERY` 페이지를 열고, 후보 유형과 일치하는 root를 복제한다. `REFERENCE` 페이지는 참고 전용이며 자동화 대상으로 사용하지 않는다.
 
-- `PLACE_EVENT: 43:25`
-- `COLLECTION: 50:31`
-- `ROUTE: 46:49`
+- `PLACE_EVENT: 77:26`
+- `COLLECTION: 77:47`
+- `ROUTE: 77:74`
 
 복제본에서는 `slot:* 레이어만` 텍스트·사진·credit 값으로 교체한다. root 구조, 캔버스, safe area와 공통 스타일은 바꾸지 않는다. 사용하지 않는 선택 슬라이드는 숨긴다. 템플릿 계약의 최소·최대 슬라이드 수를 지킨다.
 
@@ -174,7 +177,7 @@ ROUTE 7장 예시는 다음과 같다. 다른 유형은 canonical 계약의 `id`
 ```json
 {
   "templateId": "route",
-  "rootNodeId": "46:49",
+  "rootNodeId": "77:74",
   "canvas": { "width": 1080, "height": 1350 },
   "slideCount": 7,
   "slides": [

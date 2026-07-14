@@ -32,26 +32,34 @@ test("daily runbook starts from the required Brain and repository contracts", as
   ]);
 });
 
-test("daily runbook enforces Korean-only research and a six-candidate minimum", async () => {
+test("daily runbook enforces Seoul-only shareable research and a six-candidate minimum", async () => {
   const text = await readRunbook();
 
   requirePhrases(text, [
-    "대한민국 국내만",
+    "서울만",
     "공식 출처 우선",
     "확인 시각",
     "countryCode: \"KR\"",
+    "cityCode: \"SEOUL\"",
     "domesticEvidenceSourceId",
+    "officialAddress",
+    "placeTypes",
+    "editorialAngle",
+    "shareThesis",
+    "유명 장소",
+    "고정 카테고리 쿼터를 두지 않는다",
     "최소 6개",
-    "sendPotential: 20",
+    "sendPotential: 25",
     "saveValue: 15",
     "brandFit: 15",
-    "timeliness: 15",
+    "timeliness: 10",
     "photoQuality: 10",
     "originalityPotential: 10",
     "factCompleteness: 10",
     "reusePermission: 5",
     "매일 최대 2개",
-    "가능하면 서로 다른 콘텐츠 유형",
+    "sends_per_reach",
+    "editorial_angle",
   ]);
 });
 
@@ -116,9 +124,10 @@ test("daily runbook locks Figma roots, slot edits, and visual correction order",
   const text = await readRunbook();
 
   requirePhrases(text, [
-    "PLACE_EVENT: 43:25",
-    "COLLECTION: 50:31",
-    "ROUTE: 46:49",
+    "INSTAGRAM FEED V2 / SHAREABLE DISCOVERY",
+    "PLACE_EVENT: 77:26",
+    "COLLECTION: 77:47",
+    "ROUTE: 77:74",
     "Figma connector",
     "slot:* 레이어만",
     "사용하지 않는 선택 슬라이드는 숨긴다",

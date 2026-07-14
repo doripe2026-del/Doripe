@@ -1,7 +1,7 @@
 {
   "version": 1,
   "fileKey": "9btf9oUzIvw3JQq4OPyYEn",
-  "pageName": "Instagram Content Automation",
+  "pageName": "INSTAGRAM FEED V2 / SHAREABLE DISCOVERY",
   "canvas": {
     "width": 1080,
     "height": 1350,
@@ -29,7 +29,7 @@
       "id": "place_event",
       "minSlides": 6,
       "maxSlides": 8,
-      "rootNodeId": "43:25",
+      "rootNodeId": "77:26",
       "slots": [
         "slot:title",
         "slot:subtitle",
@@ -42,7 +42,7 @@
       "id": "collection",
       "minSlides": 7,
       "maxSlides": 11,
-      "rootNodeId": "50:31",
+      "rootNodeId": "77:47",
       "slots": [
         "slot:title",
         "slot:subtitle",
@@ -57,7 +57,7 @@
       "id": "route",
       "minSlides": 7,
       "maxSlides": 9,
-      "rootNodeId": "46:49",
+      "rootNodeId": "77:74",
       "slots": [
         "slot:title",
         "slot:subtitle",

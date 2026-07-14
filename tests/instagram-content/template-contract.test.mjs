@@ -10,9 +10,9 @@ import { parseTemplateContract } from "../../scripts/instagram-content/contracts
 const execFileAsync = promisify(execFile);
 const fileKey = "9btf9oUzIvw3JQq4OPyYEn";
 const approvedRoots = {
-  place_event: "43:25",
-  collection: "50:31",
-  route: "46:49",
+  place_event: "77:26",
+  collection: "77:47",
+  route: "77:74",
 };
 const expectedSlots = {
   place_event: ["slot:title", "slot:subtitle", "slot:photo:01", "slot:credit", "slot:brand-question"],
@@ -36,6 +36,7 @@ test("tracked Figma template contract is complete", async () => {
   const raw = JSON.parse(await readFile("docs/instagram-content/template-contract.json", "utf8"));
   const contract = parseTemplateContract(raw);
   assert.equal(contract.fileKey, fileKey);
+  assert.equal(contract.pageName, "INSTAGRAM FEED V2 / SHAREABLE DISCOVERY");
   assert.deepEqual(contract.canvas, { width: 1080, height: 1350, safeInsetX: 34 });
   assert.deepEqual(contract.brandEnd, {
     backgroundHex: "#050505",

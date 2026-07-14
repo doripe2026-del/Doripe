@@ -19,7 +19,7 @@ const slideRanges = {
 const contract = parseTemplateContract({
   version: 1,
   fileKey: input.fileKey,
-  pageName: "Instagram Content Automation",
+  pageName: "INSTAGRAM FEED V2 / SHAREABLE DISCOVERY",
   canvas: { width: 1080, height: 1350, safeInsetX: 34 },
   brandEnd: {
     backgroundHex: "#050505",
