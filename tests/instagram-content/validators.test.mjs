@@ -232,13 +232,17 @@ test("caption blocks direct imperative calls without banning non-imperative word
     "👉 Save this post.",
     "If this helped, save this post.",
     "For later, share this with a friend.",
+    "Do not forget to save this post.",
+    "If this helped—save this post.",
+    "Don’t forget to share this.",
+    "For later–send this to a friend.",
   ]) {
     assert.throws(() => validateCaption({ ...validDraft, caption }), /direct CTA/i);
   }
 
   assert.deepEqual(validateCaption({
     ...validDraft,
-    caption: "저장과 공유가 자연스럽게 이어지는 장소를 확인한 기록입니다. We check every source before publication. The download page is under review.",
+    caption: "저장과 공유가 자연스럽게 이어지는 장소를 확인한 기록입니다. We check every source before publication. The download page is under review. This guide explains how people save places in Doripe.",
   }), { ok: true });
 });
 

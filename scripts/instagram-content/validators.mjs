@@ -1,7 +1,7 @@
 import { EDITORIAL_ELEMENTS } from "./contracts.mjs";
 
 const KOREAN_DIRECT_CTA_PATTERN = /(?:보내\s*(?:주세요|보세요|세요)|전달\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요)|(?:저장|공유|팔로우|확인|다운로드|설치|클릭|신청|북마크)\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요)|눌러\s*(?:주세요|보세요|세요)|알림(?:을)?\s*(?:신청|설정)?\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요))/i;
-const ENGLISH_DIRECT_CTA_PATTERN = /^(?:please\s+)?(?:send|save|share|follow|download|install|click|tap|check)\b/i;
+const ENGLISH_DIRECT_CTA_PATTERN = /^(?:(?:please\s+)?(?:send|save|share|follow|download|install|click|tap|check)|(?:do not|don['’]t)\s+forget\s+to\s+(?:send|save|share|follow|download|install|click|tap|check))\b/i;
 const BRAND_QUESTION_KEYWORDS = Object.freeze({
   place_event: ["전시", "행사", "이곳", "이 장소", "갈 장소", "함께 갈"],
   collection: ["취향", "장소", "발견", "모음"],
@@ -11,6 +11,7 @@ const BRAND_QUESTION_KEYWORDS = Object.freeze({
 function containsDirectCta(value) {
   if (KOREAN_DIRECT_CTA_PATTERN.test(value)) return true;
   return String(value)
+    .replace(/[—–]/g, ", ")
     .split(/(?:[.!?,;:]\s+|\n+)/)
     .some((segment) => ENGLISH_DIRECT_CTA_PATTERN.test(
       segment.trim().replace(/^[^A-Za-z]+/, ""),
