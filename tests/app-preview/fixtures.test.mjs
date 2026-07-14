@@ -9,6 +9,11 @@ import {
   USERS
 } from "../../public/app-preview/fixtures.js";
 import {
+  createFailingFixtureRepository,
+  createFixtureRepository,
+  getRepository
+} from "../../public/app-preview/data/fixture-repository.js";
+import {
   createFailingFixtureAdapter,
   createFixtureAdapter,
   getAdapter
@@ -105,34 +110,81 @@ test("fixtures contain no orphan references", () => {
   }
 });
 
-test("fixture adapters return clones and deterministic operation results", async () => {
-  const adapter = createFixtureAdapter();
-  const places = await adapter.getPlaces();
+test("fixture repository returns a cloned normalized snapshot", async () => {
+  const repository = createFixtureRepository();
+  const bootstrap = await repository.getBootstrap();
 
-  assert.deepEqual(places, PLACES);
-  assert.notEqual(places, PLACES);
-  assert.deepEqual(await adapter.getUsers(), USERS);
-  assert.deepEqual(await adapter.getTags(), TAGS);
-  assert.deepEqual(await adapter.getRoutes(), ROUTES);
-  assert.deepEqual(await adapter.savePlace("place-1"), { placeId: "place-1", saved: true });
-  assert.deepEqual(await adapter.followUser("user-1"), { userId: "user-1", followed: true });
-  assert.equal(getAdapter().mode, "fixture");
-  assert.equal(getAdapter("fixture").mode, "fixture");
-  assert.throws(() => getAdapter("production"), /Unsupported preview adapter: production/);
+  assert.equal(repository.mode, "fixture");
+  assert.deepEqual(bootstrap.places, PLACES);
+  assert.deepEqual(bootstrap.media, MEDIA);
+  assert.deepEqual(bootstrap.profiles, USERS);
+  assert.deepEqual(bootstrap.tags, TAGS);
+  assert.deepEqual(bootstrap.courses, ROUTES);
+  assert.ok(bootstrap.contents.some((item) => item.type === "place"));
+  assert.ok(bootstrap.contents.some((item) => item.type === "course"));
+  assert.deepEqual(await repository.getFeed(), bootstrap.contents);
+  assert.notEqual(bootstrap.places, PLACES);
+  assert.notEqual(await repository.getBootstrap(), bootstrap);
 });
 
-test("failing fixture adapter rejects mutations with stable errors", async () => {
+test("fixture repository exposes deterministic reads, mutations, and failures", async () => {
+  const repository = createFixtureRepository();
+  const contentId = "content-place-1";
+
+  assert.deepEqual(await repository.getContentDetail(contentId), {
+    id: contentId,
+    type: "place",
+    authorProfileId: "user-1",
+    placeId: "place-1",
+    courseId: null,
+    mediaIds: PLACES[0].mediaIds,
+    tagIds: PLACES[0].tagIds
+  });
+  assert.deepEqual(await repository.getPlaceDetail("place-1"), PLACES[0]);
+  assert.deepEqual(await repository.getCourseDetail("route-1"), ROUTES[0]);
+  assert.deepEqual(await repository.getPublicProfile("user-1"), USERS[0]);
+  assert.deepEqual(await repository.getSavedPlaces({ ids: ["place-2", "place-1"] }), [PLACES[0], PLACES[1]]);
+  assert.deepEqual(await repository.getSavedCourses({ ids: ["route-2"] }), [ROUTES[1]]);
+  assert.deepEqual(await repository.savePlace("place-1"), { placeId: "place-1", saved: true });
+  assert.deepEqual(await repository.unsavePlace("place-1"), { placeId: "place-1", saved: false });
+  assert.deepEqual(await repository.saveCourse("route-1"), { courseId: "route-1", saved: true });
+  assert.deepEqual(await repository.unsaveCourse("route-1"), { courseId: "route-1", saved: false });
+  assert.deepEqual(await repository.followProfile("user-1"), { profileId: "user-1", followed: true });
+  assert.deepEqual(await repository.unfollowProfile("user-1"), { profileId: "user-1", followed: false });
+  assert.deepEqual(await repository.likeContent(contentId), { contentId, liked: true });
+  assert.deepEqual(await repository.unlikeContent(contentId), { contentId, liked: false });
+  assert.deepEqual((await repository.getComments(contentId)).map((item) => item.contentId), [contentId, contentId]);
+  assert.deepEqual(await repository.createComment(contentId, "새 댓글"), {
+    id: "comment-local",
+    contentId,
+    body: "새 댓글"
+  });
+  assert.deepEqual(await repository.createCourse({ name: "새 코스" }), { id: "saved-route-1", name: "새 코스" });
+  assert.deepEqual(await repository.updateCourse("route-1", { name: "수정 코스" }), { id: "route-1", name: "수정 코스" });
+  await assert.rejects(
+    repository.getPlaceDetail("missing"),
+    (error) => error.code === "FIXTURE_NOT_FOUND" && error.resource === "place" && error.resourceId === "missing"
+  );
+});
+
+test("adapter compatibility aliases preserve repository modes and failures", async () => {
   const adapter = createFailingFixtureAdapter();
 
   assert.equal(adapter.mode, "fixture-error");
-  assert.deepEqual(await adapter.getPlaces(), PLACES);
+  assert.deepEqual((await adapter.getBootstrap()).places, PLACES);
   await assert.rejects(
     adapter.savePlace("place-1"),
     (error) => error.code === "FIXTURE_OPERATION_FAILED" && error.operation === "savePlace"
   );
   await assert.rejects(
-    adapter.followUser("user-1"),
-    (error) => error.code === "FIXTURE_OPERATION_FAILED" && error.operation === "followUser"
+    adapter.followProfile("user-1"),
+    (error) => error.code === "FIXTURE_OPERATION_FAILED" && error.operation === "followProfile"
   );
+  assert.equal(createFixtureAdapter().mode, "fixture");
+  assert.equal(createFailingFixtureRepository().mode, "fixture-error");
+  assert.equal(getAdapter().mode, "fixture");
+  assert.equal(getAdapter("fixture").mode, "fixture");
   assert.equal(getAdapter("fixture-error").mode, "fixture-error");
+  assert.equal(getRepository().mode, "fixture");
+  assert.throws(() => getAdapter("production"), /Unsupported preview repository: production/);
 });
