@@ -22,6 +22,7 @@ const VALIDATION_GATES = Object.freeze([
   "originality",
   "caption",
   "sources",
+  "aesthetic",
   "layout",
   "presentation",
 ]);
@@ -187,7 +188,7 @@ function requireSuccessfulValidation(validation) {
   }
 }
 
-function buildSourcesText(draft) {
+function buildSourcesText(draft, validation) {
   const factSources = requireArray(draft.candidate?.sources, "Candidate sources");
   const photoAssets = requireArray(draft.candidate?.assets, "Candidate assets");
   const lines = ["[Fact sources]"];
@@ -210,6 +211,10 @@ function buildSourcesText(draft) {
       `Source URL: ${asset.sourceUrl}`,
       `Credit: ${asset.credit}`,
       `Rights status: ${asset.rightsStatus}`,
+      `Photo role: ${asset.photoRole}`,
+      `Shot type: ${asset.shotType}`,
+      `Dimensions: ${asset.width}x${asset.height}`,
+      `Aesthetic score: ${validation.aesthetic.scores.find(({ id }) => id === asset.id)?.score}`,
       "",
     );
   }
@@ -240,6 +245,11 @@ function buildReviewText(draft, validation) {
     "",
     "Rights warnings:",
     ...(rightsWarnings.size > 0 ? [...rightsWarnings].map((warning) => `- ${warning}`) : ["- None"]),
+    "",
+    "Aesthetic warnings:",
+    ...(validation.aesthetic.warnings.length > 0
+      ? validation.aesthetic.warnings.map((warning) => `- ${warning}`)
+      : ["- None"]),
     "",
     "Privacy notes:",
     ...(privacyNotes.length > 0 ? privacyNotes.map((note) => `- ${note}`) : ["- None recorded"]),
@@ -298,7 +308,7 @@ export async function writeProductionPackage(options) {
     }
 
     await writeFile(join(temporary, "caption.txt"), `${draft.caption.trim()}\n`);
-    await writeFile(join(temporary, "sources.txt"), buildSourcesText(draft));
+    await writeFile(join(temporary, "sources.txt"), buildSourcesText(draft, validation));
     await writeFile(join(temporary, "review.txt"), buildReviewText(draft, validation));
     files.push("caption.txt", "sources.txt", "review.txt", "manifest.json");
 

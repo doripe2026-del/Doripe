@@ -10,6 +10,7 @@ import {
   validateDraftBundle,
   validateLayoutEvidence,
   validateOriginality,
+  validatePhotoAesthetic,
   validateSlideEvidence,
   validateSources,
 } from "../../scripts/instagram-content/validators.mjs";
@@ -185,6 +186,33 @@ test("every source asset requires a source URL and credit", () => {
 test("missing or empty asset arrays fail with a validation error", () => {
   assert.throws(() => validateSources({}), /assets.*array/i);
   assert.throws(() => validateSources({ assets: [] }), /at least one asset/i);
+});
+
+test("editorial photos require score 70, short edge 1080, and varied shots", () => {
+  const candidate = validDraft.candidate;
+  const asset = candidate.assets[0];
+  assert.throws(() => validatePhotoAesthetic({
+    ...candidate,
+    assets: [{ ...asset, aestheticScores: {
+      naturalLight: 1,
+      placeSpecificity: 1,
+      composition: 1,
+      livedExperience: 1,
+      paletteCoherence: 1,
+    } }],
+  }), /aesthetic.*70/i);
+  assert.throws(() => validatePhotoAesthetic({
+    ...candidate,
+    assets: [{ ...asset, width: 1079, height: 2000 }],
+  }), /short edge.*1080/i);
+  assert.throws(() => validatePhotoAesthetic({
+    ...candidate,
+    assets: Array.from({ length: 4 }, (_, index) => ({
+      ...asset,
+      id: `same-${index}`,
+      shotType: "interior",
+    })),
+  }), /three shot types/i);
 });
 
 test("caption requires location, two keyword phrases, and fact source IDs", () => {
@@ -478,6 +506,24 @@ test("draft bundle validates every quality gate", () => {
       },
       caption: { ok: true },
       sources: { ok: true, warnings: [] },
+      aesthetic: {
+        ok: true,
+        scores: [{ id: "photo-seongsu-route", score: 82 }],
+        mix: {
+          counts: { place: 1, people: 0, food_or_detail: 0 },
+          ratios: { place: 1, people: 0, food_or_detail: 0 },
+          warnings: [
+            "Photo mix place is 1, target 0.5",
+            "Photo mix people is 0, target 0.25",
+            "Photo mix food_or_detail is 0, target 0.25",
+          ],
+        },
+        warnings: [
+          "Photo mix place is 1, target 0.5",
+          "Photo mix people is 0, target 0.25",
+          "Photo mix food_or_detail is 0, target 0.25",
+        ],
+      },
       layout: { ok: true },
       presentation: { ok: true },
     },

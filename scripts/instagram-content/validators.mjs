@@ -1,4 +1,8 @@
 import { EDITORIAL_ELEMENTS } from "./contracts.mjs";
+import {
+  scorePhotoAesthetic,
+  summarizePhotoMix,
+} from "./photo-aesthetic.mjs";
 
 const KOREAN_DIRECT_CTA_PATTERN = /(?:보내\s*(?:주세요|보세요|세요)|전달\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요)|(?:저장|공유|팔로우|확인|다운로드|설치|클릭|신청|북마크)\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요)|눌러\s*(?:주세요|보세요|세요)|알림(?:을)?\s*(?:신청|설정)?\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요))/i;
 const ENGLISH_DIRECT_CTA_PATTERN = /^(?:(?:please\s+)?(?:send|save|share|follow|download|install|click|tap|check)|(?:do not|don['’]t)\s+forget\s+to\s+(?:send|save|share|follow|download|install|click|tap|check))\b/i;
@@ -57,6 +61,31 @@ export function validateSources(draft) {
     }
   }
   return { ok: true, warnings };
+}
+
+export function validatePhotoAesthetic(candidate) {
+  const assets = requireArray(candidate?.assets, "Assets");
+  if (assets.length === 0) throw new Error("At least one asset is required");
+  const scores = assets.map((asset) => ({
+    id: asset.id,
+    score: scorePhotoAesthetic(asset),
+  }));
+  for (const [index, asset] of assets.entries()) {
+    if (asset.countryCode !== "KR" || asset.aiGenerated !== false) {
+      throw new Error(`Photo must be domestic and non-AI: ${asset.id}`);
+    }
+    if (Math.min(asset.width, asset.height) < 1080) {
+      throw new Error(`Photo short edge must be at least 1080: ${asset.id}`);
+    }
+    if (scores[index].score < 70) {
+      throw new Error(`Photo aesthetic score must be at least 70: ${asset.id}`);
+    }
+  }
+  if (assets.length >= 4 && new Set(assets.map(({ shotType }) => shotType)).size < 3) {
+    throw new Error("Four or more photos require at least three shot types");
+  }
+  const mix = summarizePhotoMix(assets);
+  return { ok: true, scores, mix, warnings: mix.warnings };
 }
 
 export function validateCaption(draft) {
@@ -307,6 +336,7 @@ export function validateDraftBundle(input) {
   const originality = validateOriginality(draft.candidate);
   const caption = validateCaption(draft);
   const sources = validateSources(draft.candidate);
+  const aesthetic = validatePhotoAesthetic(draft.candidate);
   validateExpectedTemplate(draft, expectedTemplate, layoutEvidence);
   const layout = validateLayoutEvidence(layoutEvidence);
   const presentation = validateSlideEvidence(draft, layoutEvidence);
@@ -315,6 +345,7 @@ export function validateDraftBundle(input) {
     originality,
     caption,
     sources,
+    aesthetic,
     layout,
     presentation,
   };

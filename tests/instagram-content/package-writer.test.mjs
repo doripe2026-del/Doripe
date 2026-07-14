@@ -33,6 +33,24 @@ const validation = {
     ok: true,
     warnings: [`Rights not confirmed: ${draft.candidate.assets[0].sourceUrl}`],
   },
+  aesthetic: {
+    ok: true,
+    scores: [{ id: draft.candidate.assets[0].id, score: 82 }],
+    mix: {
+      counts: { place: 1, people: 0, food_or_detail: 0 },
+      ratios: { place: 1, people: 0, food_or_detail: 0 },
+      warnings: [
+        "Photo mix place is 1, target 0.5",
+        "Photo mix people is 0, target 0.25",
+        "Photo mix food_or_detail is 0, target 0.25",
+      ],
+    },
+    warnings: [
+      "Photo mix place is 1, target 0.5",
+      "Photo mix people is 0, target 0.25",
+      "Photo mix food_or_detail is 0, target 0.25",
+    ],
+  },
   layout: { ok: true },
   presentation: { ok: true },
 };
@@ -84,6 +102,10 @@ test("writer atomically creates sequential images and review-ready text files", 
   assert.match(sources, /https:\/\/example\.com\/photo-seongsu-route/);
   assert.match(sources, /Example/);
   assert.match(sources, /not_found/);
+  assert.match(sources, /Photo role: place/);
+  assert.match(sources, /Shot type: interior/);
+  assert.match(sources, /Dimensions: 1600x2000/);
+  assert.match(sources, /Aesthetic score: 82/);
 
   const review = await readFile(join(result.directory, "review.txt"), "utf8");
   assert.match(review, /Location tag: 서울 성동구/);
@@ -93,9 +115,11 @@ test("writer atomically creates sequential images and review-ready text files", 
   assert.match(review, /Originality: PASS/i);
   assert.match(review, /Caption: PASS/i);
   assert.match(review, /Sources: PASS/i);
+  assert.match(review, /Aesthetic: PASS/i);
   assert.match(review, /Layout: PASS/i);
   assert.match(review, /Presentation: PASS/i);
   assert.match(review, /Human checks/i);
+  assert.match(review, /Photo mix people is 0/);
 
   const manifestOnDisk = parsePackageManifest(JSON.parse(
     await readFile(join(result.directory, "manifest.json"), "utf8"),
@@ -233,7 +257,7 @@ test("writer fully decodes PNGs and rejects corrupt or incomplete structures", a
 test("writer requires every automatic validation gate to succeed", async () => {
   const outputRoot = await mkdtemp(join(tmpdir(), "doripe-instagram-"));
   const png = await createPng(join(outputRoot, "exports"), "cover.png", 1);
-  const gateNames = ["originality", "caption", "sources", "layout", "presentation"];
+  const gateNames = ["originality", "caption", "sources", "aesthetic", "layout", "presentation"];
 
   for (const [index, gate] of gateNames.entries()) {
     const incomplete = { ...validation, [gate]: undefined };
