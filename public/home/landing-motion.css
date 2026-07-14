@@ -696,7 +696,7 @@
   stroke-dasharray: 1100;
   stroke-dashoffset: 1100;
   filter: drop-shadow(0 5px 9px rgba(18, 202, 107, .2));
-  animation: folderRouteDraw var(--scene-duration) ease-in-out infinite;
+  animation: folderRouteDraw 7.2s ease-in-out infinite;
   animation-play-state: inherit;
 }
 
@@ -712,7 +712,7 @@
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 22px 56px rgba(18, 50, 31, .16);
-  animation: folderPlace var(--scene-duration) cubic-bezier(.16, 1, .3, 1) infinite;
+  animation: folderPlace 7.2s cubic-bezier(.16, 1, .3, 1) infinite;
 }
 
 .folder-route-card--one {
@@ -776,7 +776,7 @@
   border-radius: 28px;
   background: rgba(255, 255, 255, .98);
   box-shadow: 0 26px 74px rgba(18, 202, 107, .22);
-  animation: folderComplete var(--scene-duration) cubic-bezier(.16, 1, .3, 1) infinite;
+  animation: folderComplete 7.2s cubic-bezier(.16, 1, .3, 1) infinite;
 }
 
 .day-folder::before {
@@ -836,7 +836,7 @@
   background: rgba(255, 255, 255, .97);
   box-shadow: 0 14px 34px rgba(18, 50, 31, .14);
   color: #17241b;
-  animation: courseReaction var(--scene-duration) cubic-bezier(.16, 1, .3, 1) infinite;
+  animation: courseReaction 7.2s cubic-bezier(.16, 1, .3, 1) infinite;
 }
 
 .course-reaction--saved { top: 17%; left: 3%; --reaction-x: 28px; --reaction-y: 34px; }
@@ -909,28 +909,28 @@
 
 @keyframes folderPlace {
   0%, 8%, 100% { opacity: 0; transform: translate(calc(-50% + var(--start-x)), calc(-50% + var(--start-y) + 18px)) scale(.9); }
-  20%, 52% { opacity: 1; transform: translate(calc(-50% + var(--start-x)), calc(-50% + var(--start-y))) scale(1); }
-  62% { opacity: 1; transform: translate(-50%, -50%) scale(.18); }
-  66%, 96% { opacity: 0; transform: translate(-50%, -50%) scale(.08); }
+  20%, 56% { opacity: 1; transform: translate(calc(-50% + var(--start-x)), calc(-50% + var(--start-y))) scale(1); }
+  68% { opacity: 1; transform: translate(-50%, -50%) scale(.18); }
+  72%, 94% { opacity: 0; transform: translate(-50%, -50%) scale(.08); }
 }
 
 @keyframes folderRouteDraw {
-  0%, 18%, 100% { opacity: 0; stroke-dashoffset: 1100; }
-  21% { opacity: 1; stroke-dashoffset: 1100; }
-  48%, 52% { opacity: 1; stroke-dashoffset: 0; }
-  62%, 99% { opacity: 0; stroke-dashoffset: 0; }
+  0%, 20%, 100% { opacity: 0; stroke-dashoffset: 1100; }
+  23% { opacity: 1; stroke-dashoffset: 1100; }
+  50%, 56% { opacity: 1; stroke-dashoffset: 0; }
+  68%, 99% { opacity: 0; stroke-dashoffset: 0; }
 }
 
 @keyframes folderComplete {
-  0%, 57%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.72); }
-  63% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
-  68%, 96% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  0%, 62%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.72); }
+  74% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+  82%, 96% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
 @keyframes courseReaction {
-  0%, 61%, 100% { opacity: 0; transform: translate(var(--reaction-x), var(--reaction-y)) scale(.82); }
-  67% { opacity: 1; transform: translate(0, 0) scale(1.06); }
-  72%, 98% { opacity: 1; transform: none; }
+  0%, 66%, 100% { opacity: 0; transform: translate(var(--reaction-x), var(--reaction-y)) scale(.82); }
+  75% { opacity: 1; transform: translate(0, 0) scale(1.06); }
+  79%, 99% { opacity: 1; transform: none; }
 }
 
 .landing-motion .is-media-missing {

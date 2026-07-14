@@ -84,3 +84,11 @@ test("nested discovery and save animations inherit the scene playback clock", ()
   }
   assert.doesNotMatch(css, /\.folder-route-card--(?:two|three)\s*\{[^}]*animation-delay/s);
 });
+
+test("course keeps the approved previous motion timing", () => {
+  for (const animation of ["folderRouteDraw", "folderPlace", "folderComplete", "courseReaction"]) {
+    assert.match(css, new RegExp(`animation:\\s*${animation}\\s+7\\.2s`));
+  }
+  assert.match(css, /@keyframes folderRouteDraw\s*\{[\s\S]*?50%, 56%[^}]*stroke-dashoffset:\s*0;[\s\S]*?68%, 99%[^}]*opacity:\s*0;/);
+  assert.match(css, /@keyframes folderComplete\s*\{[\s\S]*?74%[^}]*opacity:\s*1;[\s\S]*?82%, 96%[^}]*opacity:\s*1;/);
+});
