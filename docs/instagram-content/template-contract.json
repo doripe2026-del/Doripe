@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "fileKey": "9btf9oUzIvw3JQq4OPyYEn",
+  "pageName": "Instagram Content Automation",
+  "canvas": {
+    "width": 1080,
+    "height": 1350,
+    "safeInsetX": 34
+  },
+  "templates": [
+    {
+      "id": "place_event",
+      "minSlides": 5,
+      "maxSlides": 7,
+      "rootNodeId": "28:14",
+      "slots": [
+        "slot:title",
+        "slot:subtitle",
+        "slot:photo:01",
+        "slot:place:01",
+        "slot:body:01",
+        "slot:info:location",
+        "slot:info:date",
+        "slot:cta",
+        "slot:credit"
+      ]
+    },
+    {
+      "id": "collection",
+      "minSlides": 6,
+      "maxSlides": 10,
+      "rootNodeId": "28:15",
+      "slots": [
+        "slot:title",
+        "slot:subtitle",
+        "slot:photo:01",
+        "slot:place:01",
+        "slot:body:01",
+        "slot:cta",
+        "slot:credit"
+      ]
+    },
+    {
+      "id": "route",
+      "minSlides": 6,
+      "maxSlides": 8,
+      "rootNodeId": "28:16",
+      "slots": [
+        "slot:title",
+        "slot:subtitle",
+        "slot:photo:01",
+        "slot:place:01",
+        "slot:body:01",
+        "slot:info:location",
+        "slot:cta",
+        "slot:credit"
+      ]
+    }
+  ]
+}
