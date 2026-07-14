@@ -57,6 +57,7 @@
 }
 
 .landing-motion--hero {
+  --scene-duration: 9s;
   min-height: 660px;
   border-radius: 42px;
   background: rgba(255, 255, 255, .38);
@@ -80,7 +81,7 @@
   border-radius: 22px;
   background: #fff;
   box-shadow: 0 28px 70px rgba(18, 50, 31, .13);
-  animation: heroScreen 7.4s ease-in-out infinite;
+  animation: heroScreen var(--scene-duration) ease-in-out infinite;
 }
 
 .hero-feed-screen > img {
@@ -95,7 +96,7 @@
   width: 100%;
   height: 100%;
   overflow: visible;
-  animation: heroConnectors 7.4s ease-in-out infinite;
+  animation: heroConnectors var(--scene-duration) ease-in-out infinite;
 }
 
 .hero-photo-connectors path {
@@ -106,7 +107,7 @@
   stroke-dasharray: 230;
   stroke-dashoffset: 230;
   filter: drop-shadow(0 4px 7px rgba(18, 202, 107, .18));
-  animation: heroConnectorDraw 7.4s ease-in-out infinite;
+  animation: heroConnectorDraw var(--scene-duration) ease-in-out infinite;
   animation-play-state: inherit;
 }
 
@@ -118,7 +119,7 @@
   border-radius: 22px;
   background: #fff;
   box-shadow: 0 24px 58px rgba(18, 50, 31, .17);
-  animation: heroPhoto 7.4s cubic-bezier(.16, 1, .3, 1) infinite;
+  animation: heroPhoto var(--scene-duration) cubic-bezier(.16, 1, .3, 1) infinite;
 }
 
 .hero-photo-expansion--restaurant {
@@ -196,6 +197,49 @@
   font-size: 11px;
 }
 
+.hero-flow-steps {
+  position: absolute;
+  right: 50%;
+  bottom: 4.5%;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: max-content;
+  margin: 0;
+  padding: 8px;
+  border: 1px solid rgba(10, 143, 81, .16);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 18px 40px rgba(18, 50, 31, .14);
+  list-style: none;
+  transform: translateX(50%);
+  animation: heroFlow var(--scene-duration) cubic-bezier(.16, 1, .3, 1) infinite;
+}
+
+.hero-flow-steps li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 9px;
+  border-radius: 12px;
+  color: #26382e;
+  font-size: 11px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.hero-flow-steps b {
+  display: grid;
+  width: 21px;
+  height: 21px;
+  place-items: center;
+  border-radius: 50%;
+  background: #12ca6b;
+  color: #fff;
+  font-size: 9px;
+}
+
 @keyframes heroScreen {
   0%, 100% { opacity: .86; transform: translateX(-50%) scale(.96); }
   12%, 88% { opacity: 1; transform: translateX(-50%) scale(1); }
@@ -217,6 +261,11 @@
   28%, 88% { stroke-dashoffset: 0; }
 }
 
+@keyframes heroFlow {
+  0%, 42%, 100% { opacity: 0; transform: translate(50%, 14px) scale(.94); }
+  54%, 91% { opacity: 1; transform: translateX(50%) scale(1); }
+}
+
 .landing-motion--discovery,
 .landing-motion--nearby,
 .landing-motion--course {
@@ -225,6 +274,10 @@
   border-radius: 34px;
   background: linear-gradient(135deg, rgba(239, 251, 244, .74), rgba(255, 255, 255, .9) 52%, rgba(246, 248, 255, .8));
 }
+
+.landing-motion--discovery { --scene-duration: 8s; }
+.landing-motion--nearby { --scene-duration: 8.4s; }
+.landing-motion--course { --scene-duration: 9s; }
 
 .landing-motion--discovery [data-motion-layer],
 .landing-motion--nearby [data-motion-layer],
@@ -249,7 +302,7 @@
 }
 
 .discovery-feed-screen {
-  animation: discoveryFeed 6.2s ease-in-out infinite;
+  animation: discoveryFeed var(--scene-duration) ease-in-out infinite;
 }
 
 .discovery-feed-screen img,
@@ -270,7 +323,7 @@
   border-radius: 28px;
   background: #fff;
   box-shadow: 0 28px 70px rgba(18, 50, 31, .18);
-  animation: discoveryPhoto 6.2s ease-in-out infinite;
+  animation: discoveryPhoto var(--scene-duration) ease-in-out infinite;
 }
 
 .discovery-place-photo > img {
@@ -328,7 +381,7 @@
   gap: 7px;
   color: #fff;
   text-shadow: 0 3px 8px rgba(0, 0, 0, .8);
-  animation: engagementPulse 6.2s ease-in-out infinite;
+  animation: engagementPulse var(--scene-duration) ease-in-out infinite;
   animation-play-state: inherit;
 }
 
@@ -367,7 +420,7 @@
   background: rgba(255, 255, 255, .98);
   box-shadow: 0 18px 42px rgba(18, 35, 26, .17);
   color: #101712;
-  animation: discoveryQuote 6.2s cubic-bezier(.16, 1, .3, 1) infinite;
+  animation: discoveryQuote var(--scene-duration) cubic-bezier(.16, 1, .3, 1) infinite;
 }
 
 .discovery-quote--friend {
@@ -448,7 +501,7 @@
   width: 41%;
   aspect-ratio: 393 / 852;
   filter: contrast(1.07) saturate(1.08);
-  animation: nearbyScreen 6.4s ease-in-out infinite;
+  animation: nearbyScreen var(--scene-duration) ease-in-out infinite;
 }
 
 .nearby-place-grid {
@@ -471,7 +524,7 @@
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 18px 44px rgba(18, 50, 31, .14);
-  animation: nearbyCandidate 6.4s cubic-bezier(.16, 1, .3, 1) infinite;
+  animation: nearbyCandidate var(--scene-duration) cubic-bezier(.16, 1, .3, 1) infinite;
   animation-play-state: inherit;
 }
 
@@ -539,7 +592,7 @@
   border-radius: 20px;
   background: rgba(255, 255, 255, .98);
   box-shadow: 0 18px 44px rgba(18, 50, 31, .13);
-  animation: nearbyTray 6.4s ease-in-out infinite;
+  animation: nearbyTray var(--scene-duration) ease-in-out infinite;
 }
 
 .nearby-course-tray > strong {
@@ -605,13 +658,12 @@
 
 @keyframes nearbyCandidate {
   0%, 16%, 100% { opacity: 0; transform: translateY(16px) scale(.92); }
-  29%, 56% { opacity: 1; transform: none; }
-  67%, 96% { opacity: 0; transform: translateY(12px) scale(.94); }
+  29%, 94% { opacity: 1; transform: none; }
 }
 
 @keyframes nearbyTray {
-  0%, 47%, 100% { opacity: 0; transform: translateY(18px) scale(.97); }
-  59%, 94% { opacity: 1; transform: none; }
+  0%, 43%, 100% { opacity: 0; transform: translateY(18px) scale(.97); }
+  55%, 94% { opacity: 1; transform: none; }
 }
 
 .landing-motion--course {
@@ -644,7 +696,7 @@
   stroke-dasharray: 1100;
   stroke-dashoffset: 1100;
   filter: drop-shadow(0 5px 9px rgba(18, 202, 107, .2));
-  animation: folderRouteDraw 7.2s ease-in-out infinite;
+  animation: folderRouteDraw var(--scene-duration) ease-in-out infinite;
   animation-play-state: inherit;
 }
 
@@ -660,7 +712,7 @@
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 22px 56px rgba(18, 50, 31, .16);
-  animation: folderPlace 7.2s cubic-bezier(.16, 1, .3, 1) infinite;
+  animation: folderPlace var(--scene-duration) cubic-bezier(.16, 1, .3, 1) infinite;
 }
 
 .folder-route-card--one {
@@ -724,7 +776,7 @@
   border-radius: 28px;
   background: rgba(255, 255, 255, .98);
   box-shadow: 0 26px 74px rgba(18, 202, 107, .22);
-  animation: folderComplete 7.2s cubic-bezier(.16, 1, .3, 1) infinite;
+  animation: folderComplete var(--scene-duration) cubic-bezier(.16, 1, .3, 1) infinite;
 }
 
 .day-folder::before {
@@ -784,7 +836,7 @@
   background: rgba(255, 255, 255, .97);
   box-shadow: 0 14px 34px rgba(18, 50, 31, .14);
   color: #17241b;
-  animation: courseReaction 7.2s cubic-bezier(.16, 1, .3, 1) infinite;
+  animation: courseReaction var(--scene-duration) cubic-bezier(.16, 1, .3, 1) infinite;
 }
 
 .course-reaction--saved { top: 17%; left: 3%; --reaction-x: 28px; --reaction-y: 34px; }
@@ -857,28 +909,28 @@
 
 @keyframes folderPlace {
   0%, 8%, 100% { opacity: 0; transform: translate(calc(-50% + var(--start-x)), calc(-50% + var(--start-y) + 18px)) scale(.9); }
-  20%, 56% { opacity: 1; transform: translate(calc(-50% + var(--start-x)), calc(-50% + var(--start-y))) scale(1); }
-  68% { opacity: 1; transform: translate(-50%, -50%) scale(.18); }
-  72%, 94% { opacity: 0; transform: translate(-50%, -50%) scale(.08); }
+  20%, 52% { opacity: 1; transform: translate(calc(-50% + var(--start-x)), calc(-50% + var(--start-y))) scale(1); }
+  62% { opacity: 1; transform: translate(-50%, -50%) scale(.18); }
+  66%, 96% { opacity: 0; transform: translate(-50%, -50%) scale(.08); }
 }
 
 @keyframes folderRouteDraw {
-  0%, 20%, 100% { opacity: 0; stroke-dashoffset: 1100; }
-  23% { opacity: 1; stroke-dashoffset: 1100; }
-  50%, 56% { opacity: 1; stroke-dashoffset: 0; }
-  68%, 99% { opacity: 0; stroke-dashoffset: 0; }
+  0%, 18%, 100% { opacity: 0; stroke-dashoffset: 1100; }
+  21% { opacity: 1; stroke-dashoffset: 1100; }
+  48%, 52% { opacity: 1; stroke-dashoffset: 0; }
+  62%, 99% { opacity: 0; stroke-dashoffset: 0; }
 }
 
 @keyframes folderComplete {
-  0%, 62%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.72); }
-  74% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
-  82%, 96% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  0%, 57%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.72); }
+  63% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+  68%, 96% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
 @keyframes courseReaction {
-  0%, 66%, 100% { opacity: 0; transform: translate(var(--reaction-x), var(--reaction-y)) scale(.82); }
-  75% { opacity: 1; transform: translate(0, 0) scale(1.06); }
-  79%, 99% { opacity: 1; transform: none; }
+  0%, 61%, 100% { opacity: 0; transform: translate(var(--reaction-x), var(--reaction-y)) scale(.82); }
+  67% { opacity: 1; transform: translate(0, 0) scale(1.06); }
+  72%, 98% { opacity: 1; transform: none; }
 }
 
 .landing-motion .is-media-missing {
@@ -900,7 +952,7 @@
 
 @media (max-width: 900px) {
   .landing-motion--hero {
-    min-height: 470px;
+    min-height: 430px;
     margin-top: -6px;
     border-radius: 28px;
   }
@@ -909,10 +961,12 @@
   .hero-profile-chip { top: 7px; left: 7px; padding: 4px 8px 4px 4px; font-size: 10px; }
   .hero-profile-chip img { width: 25px; height: 25px; flex-basis: 25px; }
   .hero-profile-chip span { width: 15px; height: 15px; flex-basis: 15px; font-size: 9px; }
+  .hero-flow-steps { bottom: 3%; padding: 6px; border-radius: 15px; }
+  .hero-flow-steps li { gap: 4px; padding: 6px; font-size: 9px; }
+  .hero-flow-steps b { width: 18px; height: 18px; font-size: 8px; }
 }
 
 @media (max-width: 480px) {
-  .landing-motion--hero,
   .landing-motion--discovery,
   .landing-motion--nearby,
   .landing-motion--course {
@@ -920,7 +974,7 @@
     border-radius: 26px;
   }
 
-  .hero-feed-screen { top: 4%; width: 38%; }
+  .hero-feed-screen { top: 2%; width: 50%; }
   .hero-photo-expansion--restaurant { top: 21%; left: 0; width: 34%; }
   .hero-photo-expansion--cafe { top: 14%; right: 0; width: 31%; }
   .hero-photo-expansion--alley { right: 1%; bottom: 16%; width: 29%; }
@@ -988,10 +1042,10 @@
 }
 
 @media (max-width: 390px) {
-  .landing-motion--hero,
   .landing-motion--discovery,
   .landing-motion--nearby,
   .landing-motion--course { min-height: 470px; }
+  .landing-motion--hero { min-height: 410px; }
   .photo-engagement { right: 3%; left: 3%; gap: 3px; }
   .photo-engagement__item { gap: 2px; }
   .photo-engagement__item > span { width: 20px; height: 20px; font-size: 20px; }
