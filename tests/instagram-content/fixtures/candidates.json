@@ -1,0 +1,131 @@
+[
+  {
+    "id": "seongsu-weekend-route",
+    "type": "route",
+    "title": "성수 주말 코스",
+    "hook": "성수에서 보내는 반나절",
+    "countryCode": "KR",
+    "domesticEvidenceSourceId": "official-seongsu-route",
+    "region": "서울 성동구",
+    "placeIds": ["place-a", "place-b"],
+    "expiresAt": null,
+    "sources": [
+      {
+        "id": "official-seongsu-route",
+        "kind": "official",
+        "url": "https://example.go.kr/seongsu-route",
+        "title": "성수 지역 안내",
+        "publisher": "공공기관",
+        "checkedAt": "2026-07-14T00:00:00.000Z"
+      }
+    ],
+    "assets": [
+      {
+        "id": "photo-seongsu-route",
+        "kind": "web_photo",
+        "localPath": "/tmp/photo-seongsu-route.jpg",
+        "sourceUrl": "https://example.com/photo-seongsu-route",
+        "credit": "Example",
+        "rightsStatus": "not_found",
+        "privacyNote": ""
+      }
+    ],
+    "editorialElements": ["selection_reason", "map_or_route"],
+    "scores": {
+      "sendPotential": 5,
+      "saveValue": 5,
+      "brandFit": 5,
+      "timeliness": 4,
+      "photoQuality": 4,
+      "originalityPotential": 5,
+      "factCompleteness": 5,
+      "reusePermission": 2
+    }
+  },
+  {
+    "id": "new-event",
+    "type": "place_event",
+    "title": "이번 주말 새 행사",
+    "hook": "지금 확인할 서울 행사",
+    "countryCode": "KR",
+    "domesticEvidenceSourceId": "official-new-event",
+    "region": "서울 종로구",
+    "placeIds": ["place-c"],
+    "expiresAt": "2026-07-20T00:00:00.000Z",
+    "sources": [
+      {
+        "id": "official-new-event",
+        "kind": "official",
+        "url": "https://example.go.kr/new-event",
+        "title": "행사 안내",
+        "publisher": "공공기관",
+        "checkedAt": "2026-07-14T00:00:00.000Z"
+      }
+    ],
+    "assets": [
+      {
+        "id": "photo-new-event",
+        "kind": "web_photo",
+        "localPath": "/tmp/photo-new-event.jpg",
+        "sourceUrl": "https://example.com/photo-new-event",
+        "credit": "Example",
+        "rightsStatus": "not_found",
+        "privacyNote": ""
+      }
+    ],
+    "editorialElements": ["selection_reason", "practical_info"],
+    "scores": {
+      "sendPotential": 4,
+      "saveValue": 5,
+      "brandFit": 5,
+      "timeliness": 4,
+      "photoQuality": 4,
+      "originalityPotential": 5,
+      "factCompleteness": 5,
+      "reusePermission": 2
+    }
+  },
+  {
+    "id": "boosted-collection",
+    "type": "collection",
+    "title": "망원 카페 모음",
+    "hook": "취향 따라 고르는 망원 카페",
+    "countryCode": "KR",
+    "domesticEvidenceSourceId": "official-mangwon-collection",
+    "region": "서울 마포구",
+    "placeIds": ["place-d", "place-e"],
+    "expiresAt": null,
+    "sources": [
+      {
+        "id": "official-mangwon-collection",
+        "kind": "official",
+        "url": "https://example.go.kr/mangwon-collection",
+        "title": "망원 지역 안내",
+        "publisher": "공공기관",
+        "checkedAt": "2026-07-14T00:00:00.000Z"
+      }
+    ],
+    "assets": [
+      {
+        "id": "photo-mangwon-collection",
+        "kind": "web_photo",
+        "localPath": "/tmp/photo-mangwon-collection.jpg",
+        "sourceUrl": "https://example.com/photo-mangwon-collection",
+        "credit": "Example",
+        "rightsStatus": "not_found",
+        "privacyNote": ""
+      }
+    ],
+    "editorialElements": ["comparison", "recommended_context"],
+    "scores": {
+      "sendPotential": 3,
+      "saveValue": 3,
+      "brandFit": 3,
+      "timeliness": 3,
+      "photoQuality": 3,
+      "originalityPotential": 3,
+      "factCompleteness": 3,
+      "reusePermission": 3
+    }
+  }
+]
