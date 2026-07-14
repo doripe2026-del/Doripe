@@ -209,6 +209,13 @@ test("caption blocks direct imperative calls without banning non-imperative word
   }), { ok: true });
 });
 
+test("caption blocks the 보내세요 direct imperative form", () => {
+  assert.throws(
+    () => validateCaption({ ...validDraft, caption: "친구에게 보내세요." }),
+    /direct CTA/i,
+  );
+});
+
 test("every caption fact source ID must match a candidate source", () => {
   assert.throws(
     () => validateCaption({

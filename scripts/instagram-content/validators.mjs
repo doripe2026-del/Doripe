@@ -1,6 +1,6 @@
 import { EDITORIAL_ELEMENTS } from "./contracts.mjs";
 
-const DIRECT_CTA_PATTERN = /(?:보내|저장|공유|팔로우|확인|다운로드)(?:해)?\s*(?:주세요|하세요)/i;
+const DIRECT_CTA_PATTERN = /(?:보내\s*(?:주세요|세요)|(?:저장|공유|팔로우|확인|다운로드)(?:해\s*주세요|\s*하세요))/i;
 
 function requireArray(value, label) {
   if (!Array.isArray(value)) throw new Error(`${label} must be an array`);
