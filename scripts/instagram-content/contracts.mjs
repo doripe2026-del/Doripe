@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { posix } from "node:path";
+import { PHOTO_ROLES, SHOT_TYPES } from "./photo-aesthetic.mjs";
 
 export const CONTENT_TYPES = Object.freeze(["place_event", "collection", "route"]);
 export const RIGHTS_STATUSES = Object.freeze(["confirmed", "not_found", "restricted"]);
@@ -21,6 +22,14 @@ const sourceSchema = z.object({
   checkedAt: z.string().datetime(),
 });
 
+const aestheticScoresSchema = z.object({
+  naturalLight: z.number().min(0).max(5),
+  placeSpecificity: z.number().min(0).max(5),
+  composition: z.number().min(0).max(5),
+  livedExperience: z.number().min(0).max(5),
+  paletteCoherence: z.number().min(0).max(5),
+}).strict();
+
 const assetSchema = z.object({
   id: z.string().min(1),
   kind: z.literal("web_photo"),
@@ -32,7 +41,14 @@ const assetSchema = z.object({
   credit: z.string().min(1),
   rightsStatus: z.enum(RIGHTS_STATUSES),
   privacyNote: z.string().default(""),
-});
+  countryCode: z.literal("KR"),
+  aiGenerated: z.literal(false),
+  width: z.number().int().positive(),
+  height: z.number().int().positive(),
+  photoRole: z.enum(PHOTO_ROLES),
+  shotType: z.enum(SHOT_TYPES),
+  aestheticScores: aestheticScoresSchema,
+}).strict();
 
 const scoreSchema = z.object({
   sendPotential: z.number().min(0).max(5),

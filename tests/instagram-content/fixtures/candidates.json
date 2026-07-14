@@ -27,7 +27,20 @@
         "sourceUrl": "https://example.com/photo-seongsu-route",
         "credit": "Example",
         "rightsStatus": "not_found",
-        "privacyNote": ""
+        "privacyNote": "",
+        "countryCode": "KR",
+        "aiGenerated": false,
+        "width": 1600,
+        "height": 2000,
+        "photoRole": "place",
+        "shotType": "interior",
+        "aestheticScores": {
+          "naturalLight": 4,
+          "placeSpecificity": 5,
+          "composition": 4,
+          "livedExperience": 3,
+          "paletteCoherence": 4
+        }
       }
     ],
     "editorialElements": ["selection_reason", "map_or_route"],
@@ -70,7 +83,20 @@
         "sourceUrl": "https://example.com/photo-new-event",
         "credit": "Example",
         "rightsStatus": "not_found",
-        "privacyNote": ""
+        "privacyNote": "",
+        "countryCode": "KR",
+        "aiGenerated": false,
+        "width": 1600,
+        "height": 2000,
+        "photoRole": "place",
+        "shotType": "exterior",
+        "aestheticScores": {
+          "naturalLight": 4,
+          "placeSpecificity": 5,
+          "composition": 4,
+          "livedExperience": 3,
+          "paletteCoherence": 4
+        }
       }
     ],
     "editorialElements": ["selection_reason", "practical_info"],
@@ -113,7 +139,20 @@
         "sourceUrl": "https://example.com/photo-mangwon-collection",
         "credit": "Example",
         "rightsStatus": "not_found",
-        "privacyNote": ""
+        "privacyNote": "",
+        "countryCode": "KR",
+        "aiGenerated": false,
+        "width": 1600,
+        "height": 2000,
+        "photoRole": "place",
+        "shotType": "interior",
+        "aestheticScores": {
+          "naturalLight": 4,
+          "placeSpecificity": 5,
+          "composition": 4,
+          "livedExperience": 3,
+          "paletteCoherence": 4
+        }
       }
     ],
     "editorialElements": ["comparison", "recommended_context"],

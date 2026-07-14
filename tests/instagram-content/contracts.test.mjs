@@ -19,7 +19,28 @@ const domesticCandidate = {
   placeIds: ["place-a"],
   expiresAt: null,
   sources: [{ id: "official-place", kind: "official", url: "https://example.go.kr/place-a", title: "장소 안내", publisher: "공공기관", checkedAt: "2026-07-14T00:00:00.000Z" }],
-  assets: [{ id: "photo-a", kind: "web_photo", localPath: "/tmp/photo-a.jpg", sourceUrl: "https://example.com/photo-a", credit: "Example", rightsStatus: "not_found", privacyNote: "" }],
+  assets: [{
+    id: "photo-a",
+    kind: "web_photo",
+    localPath: "/tmp/photo-a.jpg",
+    sourceUrl: "https://example.com/photo-a",
+    credit: "Example",
+    rightsStatus: "not_found",
+    privacyNote: "",
+    countryCode: "KR",
+    aiGenerated: false,
+    width: 1600,
+    height: 2000,
+    photoRole: "place",
+    shotType: "interior",
+    aestheticScores: {
+      naturalLight: 4,
+      placeSpecificity: 5,
+      composition: 4,
+      livedExperience: 3,
+      paletteCoherence: 4,
+    },
+  }],
   editorialElements: ["selection_reason", "map_or_route"],
   scores: { sendPotential: 5, saveValue: 5, brandFit: 5, timeliness: 4, photoQuality: 4, originalityPotential: 5, factCompleteness: 5, reusePermission: 2 },
 };
@@ -75,6 +96,24 @@ test("candidate rejects an AI asset kind on an otherwise valid candidate", () =>
     ...domesticCandidate,
     assets: [{ ...domesticCandidate.assets[0], kind: "ai" }],
   }), /web_photo/i);
+});
+
+test("candidate requires domestic non-AI editorial photo metadata", () => {
+  const asset = domesticCandidate.assets[0];
+  assert.equal(parseCandidate(domesticCandidate).assets[0].countryCode, "KR");
+  for (const mutation of [
+    { countryCode: "JP" },
+    { aiGenerated: true },
+    { width: 0 },
+    { height: 0 },
+    { photoRole: "unknown" },
+    { shotType: "unknown" },
+  ]) {
+    assert.throws(() => parseCandidate({
+      ...domesticCandidate,
+      assets: [{ ...asset, ...mutation }],
+    }));
+  }
 });
 
 test("candidate rejects incomplete source records", () => {
