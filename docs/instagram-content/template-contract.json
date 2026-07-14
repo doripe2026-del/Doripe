@@ -10,25 +10,21 @@
   "templates": [
     {
       "id": "place_event",
-      "minSlides": 5,
-      "maxSlides": 7,
+      "minSlides": 6,
+      "maxSlides": 8,
       "rootNodeId": "28:14",
       "slots": [
         "slot:title",
         "slot:subtitle",
         "slot:photo:01",
-        "slot:place:01",
-        "slot:body:01",
-        "slot:info:location",
-        "slot:info:date",
-        "slot:cta",
-        "slot:credit"
+        "slot:credit",
+        "slot:brand-question"
       ]
     },
     {
       "id": "collection",
-      "minSlides": 6,
-      "maxSlides": 10,
+      "minSlides": 7,
+      "maxSlides": 11,
       "rootNodeId": "28:15",
       "slots": [
         "slot:title",
@@ -36,14 +32,14 @@
         "slot:photo:01",
         "slot:place:01",
         "slot:body:01",
-        "slot:cta",
-        "slot:credit"
+        "slot:credit",
+        "slot:brand-question"
       ]
     },
     {
       "id": "route",
-      "minSlides": 6,
-      "maxSlides": 8,
+      "minSlides": 7,
+      "maxSlides": 9,
       "rootNodeId": "28:16",
       "slots": [
         "slot:title",
@@ -52,8 +48,8 @@
         "slot:place:01",
         "slot:body:01",
         "slot:info:location",
-        "slot:cta",
-        "slot:credit"
+        "slot:credit",
+        "slot:brand-question"
       ]
     }
   ]

@@ -89,11 +89,14 @@ const draftSchema = z.object({
   version: z.literal(1),
   candidate: candidateSchema,
   caption: z.string().min(1),
-  cta: z.enum(["save", "send"]),
+  brandQuestion: z.string().trim().min(1).max(60).refine(
+    (value) => value.endsWith("?"),
+    "Brand question must end with ?",
+  ),
   keywordPhrases: z.array(z.string().min(1)).min(2).max(6),
   locationTag: z.string().min(1),
   factSourceIds: z.array(z.string().min(1)).min(1),
-});
+}).strict();
 
 const packageManifestSchema = z.object({
   version: z.literal(1),

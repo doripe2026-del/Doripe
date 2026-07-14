@@ -15,9 +15,14 @@ const approvedRoots = {
   route: "28:16",
 };
 const expectedSlots = {
-  place_event: ["slot:title", "slot:subtitle", "slot:photo:01", "slot:place:01", "slot:body:01", "slot:info:location", "slot:info:date", "slot:cta", "slot:credit"],
-  collection: ["slot:title", "slot:subtitle", "slot:photo:01", "slot:place:01", "slot:body:01", "slot:cta", "slot:credit"],
-  route: ["slot:title", "slot:subtitle", "slot:photo:01", "slot:place:01", "slot:body:01", "slot:info:location", "slot:cta", "slot:credit"],
+  place_event: ["slot:title", "slot:subtitle", "slot:photo:01", "slot:credit", "slot:brand-question"],
+  collection: ["slot:title", "slot:subtitle", "slot:photo:01", "slot:place:01", "slot:body:01", "slot:credit", "slot:brand-question"],
+  route: ["slot:title", "slot:subtitle", "slot:photo:01", "slot:place:01", "slot:body:01", "slot:info:location", "slot:credit", "slot:brand-question"],
+};
+const expectedSlideRanges = {
+  place_event: { minSlides: 6, maxSlides: 8 },
+  collection: { minSlides: 7, maxSlides: 11 },
+  route: { minSlides: 7, maxSlides: 9 },
 };
 
 const assertNoReferenceAssetMetadata = (contract) => {
@@ -36,6 +41,10 @@ test("tracked Figma template contract is complete", async () => {
   for (const template of contract.templates) {
     assert.equal(template.rootNodeId, approvedRoots[template.id]);
     assert.deepEqual(template.slots, expectedSlots[template.id]);
+    assert.deepEqual(
+      { minSlides: template.minSlides, maxSlides: template.maxSlides },
+      expectedSlideRanges[template.id],
+    );
     assert.equal(new Set(template.slots).size, template.slots.length);
   }
   assertNoReferenceAssetMetadata(contract);
@@ -60,5 +69,12 @@ test("contract writer emits approved roots without Daytrip reference asset metad
     Object.fromEntries(contract.templates.map(({ id, rootNodeId }) => [id, rootNodeId])),
     approvedRoots,
   );
+  for (const template of contract.templates) {
+    assert.deepEqual(template.slots, expectedSlots[template.id]);
+    assert.deepEqual(
+      { minSlides: template.minSlides, maxSlides: template.maxSlides },
+      expectedSlideRanges[template.id],
+    );
+  }
   assertNoReferenceAssetMetadata(contract);
 });

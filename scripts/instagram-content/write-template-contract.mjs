@@ -10,6 +10,12 @@ for (const key of required) {
   if (!input[key]) throw new Error(`Missing ${key}= value`);
 }
 
+const slideRanges = {
+  place_event: { minSlides: 6, maxSlides: 8 },
+  collection: { minSlides: 7, maxSlides: 11 },
+  route: { minSlides: 7, maxSlides: 9 },
+};
+
 const contract = parseTemplateContract({
   version: 1,
   fileKey: input.fileKey,
@@ -18,25 +24,19 @@ const contract = parseTemplateContract({
   templates: [
     {
       id: "place_event",
-      minSlides: 5,
-      maxSlides: 7,
+      ...slideRanges.place_event,
       rootNodeId: input.placeEventNodeId,
       slots: [
         "slot:title",
         "slot:subtitle",
         "slot:photo:01",
-        "slot:place:01",
-        "slot:body:01",
-        "slot:info:location",
-        "slot:info:date",
-        "slot:cta",
         "slot:credit",
+        "slot:brand-question",
       ],
     },
     {
       id: "collection",
-      minSlides: 6,
-      maxSlides: 10,
+      ...slideRanges.collection,
       rootNodeId: input.collectionNodeId,
       slots: [
         "slot:title",
@@ -44,14 +44,13 @@ const contract = parseTemplateContract({
         "slot:photo:01",
         "slot:place:01",
         "slot:body:01",
-        "slot:cta",
         "slot:credit",
+        "slot:brand-question",
       ],
     },
     {
       id: "route",
-      minSlides: 6,
-      maxSlides: 8,
+      ...slideRanges.route,
       rootNodeId: input.routeNodeId,
       slots: [
         "slot:title",
@@ -60,8 +59,8 @@ const contract = parseTemplateContract({
         "slot:place:01",
         "slot:body:01",
         "slot:info:location",
-        "slot:cta",
         "slot:credit",
+        "slot:brand-question",
       ],
     },
   ],

@@ -44,7 +44,7 @@
     }
   },
   "caption": "기존 콘텐츠에 출처만 덧붙인 재게시 초안입니다.",
-  "cta": "save",
+  "brandQuestion": "내 취향으로 새로운 하루를 만들고 싶다면?",
   "keywordPhrases": ["성수 데이트", "서울 산책 코스"],
   "locationTag": "서울 성동구",
   "factSourceIds": ["official-seongsu-route"]

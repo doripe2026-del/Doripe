@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import {
   parseCandidate,
+  parseDraft,
   parsePackageManifest,
   parseTemplateContract,
 } from "../../scripts/instagram-content/contracts.mjs";
@@ -29,12 +31,22 @@ test("template contract accepts three locked carousel templates", () => {
     pageName: "Instagram Content Automation",
     canvas: { width: 1080, height: 1350, safeInsetX: 34 },
     templates: [
-      { id: "place_event", minSlides: 5, maxSlides: 7, rootNodeId: "1:1", slots: ["slot:title", "slot:photo:01", "slot:cta"] },
-      { id: "collection", minSlides: 6, maxSlides: 10, rootNodeId: "1:2", slots: ["slot:title", "slot:photo:01", "slot:cta"] },
-      { id: "route", minSlides: 6, maxSlides: 8, rootNodeId: "1:3", slots: ["slot:title", "slot:photo:01", "slot:cta"] },
+      { id: "place_event", minSlides: 6, maxSlides: 8, rootNodeId: "1:1", slots: ["slot:title", "slot:photo:01", "slot:brand-question"] },
+      { id: "collection", minSlides: 7, maxSlides: 11, rootNodeId: "1:2", slots: ["slot:title", "slot:photo:01", "slot:brand-question"] },
+      { id: "route", minSlides: 7, maxSlides: 9, rootNodeId: "1:3", slots: ["slot:title", "slot:photo:01", "slot:brand-question"] },
     ],
   });
   assert.equal(contract.templates.length, 3);
+});
+
+test("draft requires a question-shaped brand line and rejects legacy CTA", async () => {
+  const fixture = JSON.parse(await readFile(
+    new URL("./fixtures/valid-draft.json", import.meta.url),
+    "utf8",
+  ));
+  assert.equal(parseDraft(fixture).brandQuestion.endsWith("?"), true);
+  assert.throws(() => parseDraft({ ...fixture, brandQuestion: "장소를 더 발견해요" }), /brand question/i);
+  assert.throws(() => parseDraft({ ...fixture, cta: "save" }), /unrecognized|cta/i);
 });
 
 test("candidate rejects an AI asset kind on an otherwise valid candidate", () => {
