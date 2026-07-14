@@ -13,7 +13,13 @@ import { extname, join, resolve } from "node:path";
 import { parsePackageManifest } from "./contracts.mjs";
 
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
-const VALIDATION_GATES = Object.freeze(["originality", "caption", "sources", "layout"]);
+const VALIDATION_GATES = Object.freeze([
+  "originality",
+  "caption",
+  "sources",
+  "layout",
+  "presentation",
+]);
 const SEOUL_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
   timeZone: "Asia/Seoul",
   year: "numeric",

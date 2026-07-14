@@ -49,6 +49,30 @@ function validRouteLayoutEvidence() {
     rootNodeId: route.rootNodeId,
     canvas: templateContract.canvas,
     slideCount: route.minSlides,
+    slides: [
+      {
+        role: "cover",
+        textSlots: ["slot:title", "slot:subtitle", "slot:credit"],
+        visibleText: [validDraft.candidate.title],
+        hasDoripeLogo: true,
+      },
+      ...Array.from({ length: route.minSlides - 2 }, () => ({
+        role: "content",
+        textSlots: [],
+        visibleText: [],
+        hasDoripeLogo: true,
+      })),
+      {
+        role: "brand_end",
+        textSlots: ["slot:brand-question"],
+        visibleText: [validDraft.brandQuestion, "Doripe."],
+        brandQuestion: validDraft.brandQuestion,
+        hasDoripeLogo: true,
+        hasBrandWordmark: true,
+        hasPhoneMockup: true,
+        backgroundHex: "#050505",
+      },
+    ],
     slots: route.slots.map((name) =>
       name.startsWith("slot:photo:")
         ? { name, editable: true }
@@ -240,7 +264,13 @@ test("validate checks layout evidence against the canonical template contract", 
     Object.fromEntries(
       Object.entries(validation).map(([name, result]) => [name, result.ok]),
     ),
-    { originality: true, caption: true, sources: true, layout: true },
+    {
+      originality: true,
+      caption: true,
+      sources: true,
+      layout: true,
+      presentation: true,
+    },
   );
 
   const invalidResult = runCli(
@@ -372,7 +402,7 @@ test("finalize writes a complete package when PNG exports exactly match the slid
   const manifest = await readJson(join(packageDirectory, "manifest.json"));
   assert.equal(manifest.candidateId, validDraft.candidate.id);
   const review = await readFile(join(packageDirectory, "review.txt"), "utf8");
-  for (const gate of ["Originality", "Caption", "Sources", "Layout"]) {
+  for (const gate of ["Originality", "Caption", "Sources", "Layout", "Presentation"]) {
     assert.match(review, new RegExp(`- ${gate}: PASS`));
   }
 });

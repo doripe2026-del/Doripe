@@ -10,6 +10,7 @@ import {
   validateDraftBundle,
   validateLayoutEvidence,
   validateOriginality,
+  validateSlideEvidence,
   validateSources,
 } from "../../scripts/instagram-content/validators.mjs";
 
@@ -24,11 +25,36 @@ const templateContract = parseTemplateContract(JSON.parse(await readFile(
   "utf8",
 )));
 const routeTemplate = templateContract.templates.find(({ id }) => id === "route");
+const validRouteSlides = [
+  {
+    role: "cover",
+    textSlots: ["slot:title", "slot:subtitle", "slot:credit"],
+    visibleText: [validDraft.candidate.title],
+    hasDoripeLogo: true,
+  },
+  ...Array.from({ length: routeTemplate.minSlides - 2 }, () => ({
+    role: "content",
+    textSlots: [],
+    visibleText: [],
+    hasDoripeLogo: true,
+  })),
+  {
+    role: "brand_end",
+    textSlots: ["slot:brand-question"],
+    visibleText: [validDraft.brandQuestion, "Doripe."],
+    brandQuestion: validDraft.brandQuestion,
+    hasDoripeLogo: true,
+    hasBrandWordmark: true,
+    hasPhoneMockup: true,
+    backgroundHex: "#050505",
+  },
+];
 const validLayoutEvidence = {
   templateId: routeTemplate.id,
   rootNodeId: routeTemplate.rootNodeId,
   canvas: { width: 1080, height: 1350 },
   slideCount: routeTemplate.minSlides,
+  slides: validRouteSlides,
   slots: routeTemplate.slots.map((name) => name.startsWith("slot:photo:")
     ? { name, editable: true }
     : {
@@ -38,6 +64,54 @@ const validLayoutEvidence = {
         midWordBreak: false,
         baseFontSize: 64,
         fontSize: 57.6,
+      }),
+};
+const placeEventTemplate = templateContract.templates.find(({ id }) => id === "place_event");
+const placeEventDraft = parseDraft({
+  ...structuredClone(validDraft),
+  candidate: {
+    ...structuredClone(validDraft.candidate),
+    type: "place_event",
+  },
+  brandQuestion: "이 전시 다음에 갈 장소가 궁금하다면?",
+});
+const validSlides = [
+  {
+    role: "cover",
+    textSlots: ["slot:title", "slot:subtitle", "slot:credit"],
+    visibleText: ["서촌의 낯선 기록 실험"],
+    hasDoripeLogo: true,
+  },
+  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true },
+  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true },
+  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true },
+  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true },
+  {
+    role: "brand_end",
+    textSlots: ["slot:brand-question"],
+    visibleText: ["이 전시 다음에 갈 장소가 궁금하다면?", "Doripe."],
+    brandQuestion: "이 전시 다음에 갈 장소가 궁금하다면?",
+    hasDoripeLogo: true,
+    hasBrandWordmark: true,
+    hasPhoneMockup: true,
+    backgroundHex: "#050505",
+  },
+];
+const placeEventLayout = {
+  templateId: placeEventTemplate.id,
+  rootNodeId: placeEventTemplate.rootNodeId,
+  canvas: { width: 1080, height: 1350 },
+  slideCount: placeEventTemplate.minSlides,
+  slides: validSlides,
+  slots: placeEventTemplate.slots.map((name) => name.startsWith("slot:photo:")
+    ? { name, editable: true }
+    : {
+        name,
+        editable: true,
+        overflows: false,
+        midWordBreak: false,
+        baseFontSize: 64,
+        fontSize: 64,
       }),
 };
 
@@ -114,6 +188,12 @@ test("caption requires location, two keyword phrases, and fact source IDs", () =
   assert.deepEqual(validateCaption(validDraft), { ok: true });
 });
 
+test("caption blocks direct calls to send, save, or share", () => {
+  for (const caption of ["친구에게 보내주세요.", "나중을 위해 저장하세요.", "같이 공유해 주세요."]) {
+    assert.throws(() => validateCaption({ ...validDraft, caption }), /direct CTA/i);
+  }
+});
+
 test("every caption fact source ID must match a candidate source", () => {
   assert.throws(
     () => validateCaption({
@@ -180,6 +260,28 @@ test("missing or empty layout slot arrays fail with a validation error", () => {
   assert.throws(() => validateLayoutEvidence({ slots: [] }), /at least one layout slot/i);
 });
 
+test("place and event photo slides may not contain text", () => {
+  assert.throws(() => validateSlideEvidence(placeEventDraft, {
+    ...placeEventLayout,
+    slides: validSlides.map((slide, index) => index === 1
+      ? { ...slide, textSlots: ["slot:body:01"] }
+      : slide),
+  }), /photo.*text/i);
+});
+
+test("the brand end slide requires a phone mockup", () => {
+  assert.throws(() => validateSlideEvidence(placeEventDraft, {
+    ...placeEventLayout,
+    slides: validSlides.map((slide, index) => index === 5
+      ? { ...slide, hasPhoneMockup: false }
+      : slide),
+  }), /phone mockup/i);
+});
+
+test("valid slide evidence passes presentation validation", () => {
+  assert.deepEqual(validateSlideEvidence(placeEventDraft, placeEventLayout), { ok: true });
+});
+
 test("draft bundle validates every quality gate", () => {
   assert.deepEqual(
     validateDraftBundle({
@@ -195,6 +297,7 @@ test("draft bundle validates every quality gate", () => {
       caption: { ok: true },
       sources: { ok: true, warnings: [] },
       layout: { ok: true },
+      presentation: { ok: true },
     },
   );
 });

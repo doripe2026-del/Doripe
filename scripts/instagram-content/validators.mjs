@@ -1,5 +1,7 @@
 import { EDITORIAL_ELEMENTS } from "./contracts.mjs";
 
+const DIRECT_CTA_PATTERN = /(보내\s*주세요|저장\s*하세요|공유해\s*주세요|팔로우\s*하세요)/i;
+
 function requireArray(value, label) {
   if (!Array.isArray(value)) throw new Error(`${label} must be an array`);
   return value;
@@ -42,6 +44,10 @@ export function validateSources(draft) {
 }
 
 export function validateCaption(draft) {
+  if (DIRECT_CTA_PATTERN.test(draft?.caption ?? "")) {
+    throw new Error("Direct CTA is not allowed in the caption");
+  }
+
   if (typeof draft?.locationTag !== "string" || !draft.locationTag.trim()) {
     throw new Error("Location tag is required");
   }
@@ -101,6 +107,51 @@ export function validateLayoutEvidence(evidence) {
     }
     if (slot.fontSize < slot.baseFontSize * 0.9) {
       throw new Error(`Text may not shrink below 90%: ${slot.name}`);
+    }
+  }
+  return { ok: true };
+}
+
+export function validateSlideEvidence(draft, evidence) {
+  const slides = requireArray(evidence?.slides, "Slide evidence");
+  if (slides.length !== evidence.slideCount) {
+    throw new Error("Slide evidence count must match slideCount");
+  }
+  if (slides[0]?.role !== "cover") throw new Error("First slide must be cover");
+
+  const last = slides.at(-1);
+  if (last?.role !== "brand_end") throw new Error("Last slide must be brand_end");
+  if (last.backgroundHex?.toUpperCase() !== "#050505") {
+    throw new Error("Brand end background must be #050505");
+  }
+  if (last.hasPhoneMockup !== true) throw new Error("Brand end requires a phone mockup");
+  if (last.hasDoripeLogo !== true) throw new Error("Brand end requires a Doripe logo");
+  if (last.hasBrandWordmark !== true) {
+    throw new Error("Brand end requires the Doripe wordmark");
+  }
+  if (!last.textSlots?.includes("slot:brand-question")) {
+    throw new Error("Brand end requires slot:brand-question");
+  }
+  if (last.brandQuestion !== draft.brandQuestion) {
+    throw new Error("Brand question must match the draft");
+  }
+
+  for (const slide of slides) {
+    const visibleText = requireArray(slide.visibleText, "Visible slide text");
+    if (visibleText.some((value) => DIRECT_CTA_PATTERN.test(value))) {
+      throw new Error("Direct CTA is not allowed on slides");
+    }
+  }
+
+  if (draft.candidate?.type === "place_event") {
+    for (const slide of slides.slice(1, -1)) {
+      if (slide.role !== "photo") {
+        throw new Error("Place/event middle slides must be photo slides");
+      }
+      if (!Array.isArray(slide.textSlots) || slide.textSlots.length !== 0) {
+        throw new Error("Place/event photo slides may not contain text");
+      }
+      if (slide.hasDoripeLogo !== true) throw new Error("Photo slide requires Doripe logo");
     }
   }
   return { ok: true };
@@ -197,11 +248,13 @@ export function validateDraftBundle(input) {
   const sources = validateSources(draft.candidate);
   validateExpectedTemplate(draft, expectedTemplate, layoutEvidence);
   const layout = validateLayoutEvidence(layoutEvidence);
+  const presentation = validateSlideEvidence(draft, layoutEvidence);
 
   return {
     originality,
     caption,
     sources,
     layout,
+    presentation,
   };
 }

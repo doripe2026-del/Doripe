@@ -29,6 +29,7 @@ const validation = {
     warnings: [`Rights not confirmed: ${draft.candidate.assets[0].sourceUrl}`],
   },
   layout: { ok: true },
+  presentation: { ok: true },
 };
 const now = new Date("2026-07-14T00:00:00.000Z");
 
@@ -90,6 +91,7 @@ test("writer atomically creates sequential images and review-ready text files", 
   assert.match(review, /Caption: PASS/i);
   assert.match(review, /Sources: PASS/i);
   assert.match(review, /Layout: PASS/i);
+  assert.match(review, /Presentation: PASS/i);
   assert.match(review, /Human checks/i);
 
   const manifestOnDisk = parsePackageManifest(JSON.parse(
@@ -168,7 +170,7 @@ test("writer rejects a non-PNG file renamed with a png extension", async () => {
 test("writer requires every automatic validation gate to succeed", async () => {
   const outputRoot = await mkdtemp(join(tmpdir(), "doripe-instagram-"));
   const png = await createPng(join(outputRoot, "exports"), "cover.png", 1);
-  const gateNames = ["originality", "caption", "sources", "layout"];
+  const gateNames = ["originality", "caption", "sources", "layout", "presentation"];
 
   for (const [index, gate] of gateNames.entries()) {
     const incomplete = { ...validation, [gate]: undefined };
