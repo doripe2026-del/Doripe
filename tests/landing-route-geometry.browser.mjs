@@ -192,7 +192,7 @@ try {
       const scenes = ${JSON.stringify(SCENES)}.map((id) => {
         const scene = document.getElementById(id);
         const box = scene.getBoundingClientRect();
-        const named = [...scene.querySelectorAll('.hero-photo-expansion, .discovery-place-photo, .nearby-place-card, .nearby-course-tray, .folder-route-card, .day-folder, .course-reaction')];
+        const named = [...scene.querySelectorAll('.hero-photo-expansion, .discovery-place-photo, .nearby-place-card, .nearby-course-tray, .folder-route-card, .day-folder-back, .day-folder, .course-reaction')];
         return {
           id,
           box: { left: round(box.left), right: round(box.right), width: round(box.width) },
@@ -255,5 +255,5 @@ try {
   client?.close();
   browser.kill("SIGTERM");
   await close(preview);
-  await rm(userDataDir, { recursive: true, force: true });
+  await rm(userDataDir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 }
