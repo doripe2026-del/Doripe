@@ -157,7 +157,7 @@ export function validateLayoutEvidence(evidence) {
   return { ok: true };
 }
 
-export function validateSlideEvidence(draft, evidence) {
+export function validateSlideEvidence(draft, evidence, expectedTemplate) {
   const slides = requireArray(evidence?.slides, "Slide evidence");
   if (slides.length !== evidence.slideCount) {
     throw new Error("Slide evidence count must match slideCount");
@@ -179,8 +179,32 @@ export function validateSlideEvidence(draft, evidence) {
   if (last.doripeLogoColorHex !== "#20F58A") {
     throw new Error("Brand end Doripe logo must be #20F58A");
   }
-  if (last.hasBrandWordmark !== true) {
-    throw new Error("Brand end requires the Doripe wordmark");
+  if (last.hasBrandWordmark !== false) {
+    throw new Error("Brand end uses the icon asset without a wordmark");
+  }
+
+  const brandEnd = expectedTemplate?.brandEnd;
+  if (!brandEnd) throw new Error("Expected template brand end is required");
+  if (last.usesActualAppCapture !== true) {
+    throw new Error("Brand end requires actual app capture");
+  }
+  if (last.appScreenKind !== brandEnd.appScreen.kind) {
+    throw new Error("App screen kind must match actual capture");
+  }
+  if (last.appScreenSourcePath !== brandEnd.appScreen.sourcePath) {
+    throw new Error("App screen source must match the contract");
+  }
+  if (
+    last.appScreenWidth !== brandEnd.appScreen.width
+    || last.appScreenHeight !== brandEnd.appScreen.height
+  ) {
+    throw new Error("App screen dimensions must match the contract");
+  }
+  if (last.appScreenSha256 !== brandEnd.appScreen.sha256) {
+    throw new Error("App screen SHA-256 must match the contract");
+  }
+  if (last.logoSha256 !== brandEnd.logo.sha256) {
+    throw new Error("Doripe logo SHA-256 must match the contract");
   }
   if (!last.textSlots?.includes("slot:brand-question")) {
     throw new Error("Brand end requires slot:brand-question");
@@ -198,12 +222,11 @@ export function validateSlideEvidence(draft, evidence) {
     (value) => typeof value === "string" && value.trim().endsWith("?"),
   );
   if (
-    finalVisibleText.length !== 2
+    finalVisibleText.length !== 1
     || finalVisibleText[0] !== draft.brandQuestion
-    || finalVisibleText[1] !== "Doripe."
     || visibleQuestions.length !== 1
   ) {
-    throw new Error("Brand end visible text must be exactly the draft question and Doripe.");
+    throw new Error("Brand end visible text must be exactly the draft question");
   }
 
   for (const slide of slides) {
@@ -339,7 +362,7 @@ export function validateDraftBundle(input) {
   const aesthetic = validatePhotoAesthetic(draft.candidate);
   validateExpectedTemplate(draft, expectedTemplate, layoutEvidence);
   const layout = validateLayoutEvidence(layoutEvidence);
-  const presentation = validateSlideEvidence(draft, layoutEvidence);
+  const presentation = validateSlideEvidence(draft, layoutEvidence, expectedTemplate);
 
   return {
     originality,

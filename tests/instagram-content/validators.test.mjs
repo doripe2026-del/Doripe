@@ -25,6 +25,25 @@ const templateContract = parseTemplateContract(JSON.parse(await readFile(
   new URL("../../docs/instagram-content/template-contract.json", import.meta.url),
   "utf8",
 )));
+const makeBrandEndSlide = (nodeId, brandQuestion) => ({
+  role: "brand_end",
+  nodeId,
+  textSlots: ["slot:brand-question"],
+  visibleText: [brandQuestion],
+  brandQuestion,
+  hasDoripeLogo: true,
+  doripeLogoColorHex: "#20F58A",
+  logoSha256: templateContract.brandEnd.logo.sha256,
+  hasBrandWordmark: false,
+  hasPhoneMockup: true,
+  usesActualAppCapture: true,
+  appScreenKind: "actual_discover_capture",
+  appScreenSourcePath: templateContract.brandEnd.appScreen.sourcePath,
+  appScreenWidth: 393,
+  appScreenHeight: 852,
+  appScreenSha256: templateContract.brandEnd.appScreen.sha256,
+  backgroundHex: "#050505",
+});
 const routeTemplate = templateContract.templates.find(({ id }) => id === "route");
 const validRouteSlides = [
   {
@@ -41,18 +60,7 @@ const validRouteSlides = [
     visibleText: [],
     hasDoripeLogo: true,
   })),
-  {
-    role: "brand_end",
-    nodeId: `100:${routeTemplate.minSlides}`,
-    textSlots: ["slot:brand-question"],
-    visibleText: [validDraft.brandQuestion, "Doripe."],
-    brandQuestion: validDraft.brandQuestion,
-    hasDoripeLogo: true,
-    doripeLogoColorHex: "#20F58A",
-    hasBrandWordmark: true,
-    hasPhoneMockup: true,
-    backgroundHex: "#050505",
-  },
+  makeBrandEndSlide(`100:${routeTemplate.minSlides}`, validDraft.brandQuestion),
 ];
 const validLayoutEvidence = {
   templateId: routeTemplate.id,
@@ -100,18 +108,7 @@ const validSlides = [
   { role: "photo", nodeId: "200:3", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
   { role: "photo", nodeId: "200:4", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
   { role: "photo", nodeId: "200:5", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
-  {
-    role: "brand_end",
-    nodeId: "200:6",
-    textSlots: ["slot:brand-question"],
-    visibleText: ["이 전시 다음에 갈 장소가 궁금하다면?", "Doripe."],
-    brandQuestion: "이 전시 다음에 갈 장소가 궁금하다면?",
-    hasDoripeLogo: true,
-    doripeLogoColorHex: "#20F58A",
-    hasBrandWordmark: true,
-    hasPhoneMockup: true,
-    backgroundHex: "#050505",
-  },
+  makeBrandEndSlide("200:6", "이 전시 다음에 갈 장소가 궁금하다면?"),
 ];
 const placeEventLayout = {
   templateId: placeEventTemplate.id,
@@ -353,14 +350,14 @@ test("place and event photo slides may not contain text", () => {
     slides: validSlides.map((slide, index) => index === 1
       ? { ...slide, textSlots: ["slot:body:01"] }
       : slide),
-  }), /photo.*text/i);
+  }, templateContract), /photo.*text/i);
 
   assert.throws(() => validateSlideEvidence(placeEventDraft, {
     ...placeEventLayout,
     slides: validSlides.map((slide, index) => index === 1
       ? { ...slide, visibleText: ["중간 장 문구"] }
       : slide),
-  }), /photo.*text/i);
+  }, templateContract), /photo.*text/i);
 });
 
 test("every slide requires a Figma node ID", () => {
@@ -370,7 +367,7 @@ test("every slide requires a Figma node ID", () => {
       slides: validRouteSlides.map((slide, index) => index === 1
         ? { ...slide, nodeId }
         : slide),
-    }), /node ID/i);
+    }, templateContract), /node ID/i);
   }
 });
 
@@ -388,7 +385,7 @@ test("place and event photo slides require a photo and only the exact allowed el
       slides: validSlides.map((slide, index) => index === 1
         ? { ...slide, ...replacement }
         : slide),
-    }), /photo|element kinds/i);
+    }, templateContract), /photo|element kinds/i);
   }
 });
 
@@ -404,7 +401,7 @@ test("slides reject direct imperative calls", () => {
       slides: validRouteSlides.map((slide, index) => index === 0
         ? { ...slide, visibleText: [visibleText] }
         : slide),
-    }), /direct CTA/i);
+    }, templateContract), /direct CTA/i);
   }
 });
 
@@ -415,7 +412,7 @@ test("the brand end slide requires the exact green Doripe logo color", () => {
       slides: validSlides.map((slide, index) => index === 5
         ? { ...slide, doripeLogoColorHex }
         : slide),
-    }), /logo.*#20F58A/i);
+    }, templateContract), /logo.*#20F58A/i);
   }
 });
 
@@ -426,6 +423,13 @@ test("the brand end slide rejects every missing required condition", () => {
     ["hasPhoneMockup", /phone mockup/i],
     ["hasDoripeLogo", /Doripe logo/i],
     ["hasBrandWordmark", /wordmark/i],
+    ["usesActualAppCapture", /actual app capture/i],
+    ["appScreenKind", /app screen kind/i],
+    ["appScreenSourcePath", /app screen source/i],
+    ["appScreenWidth", /app screen dimensions/i],
+    ["appScreenHeight", /app screen dimensions/i],
+    ["appScreenSha256", /app screen SHA-256/i],
+    ["logoSha256", /logo SHA-256/i],
     ["textSlots", /slot:brand-question/i],
     ["brandQuestion", /brand question.*match/i],
   ];
@@ -436,23 +440,47 @@ test("the brand end slide rejects every missing required condition", () => {
     assert.throws(() => validateSlideEvidence(placeEventDraft, {
       ...placeEventLayout,
       slides: [...validSlides.slice(0, -1), finalSlide],
-    }), expectedError, `missing ${field} should fail`);
+    }, templateContract), expectedError, `missing ${field} should fail`);
   }
 });
 
-test("the brand end slide requires exactly the draft question and Doripe wordmark", () => {
+test("the brand end slide requires exactly the draft question without a wordmark", () => {
   for (const visibleText of [
     [],
-    ["이 전시가 아닌 다른 질문?", "Doripe."],
-    [placeEventDraft.brandQuestion],
-    [placeEventDraft.brandQuestion, "Doripe"],
-    [placeEventDraft.brandQuestion, "Doripe.", "추가 문구"],
-    [placeEventDraft.brandQuestion, "다른 질문?", "Doripe."],
+    ["이 전시가 아닌 다른 질문?"],
+    [placeEventDraft.brandQuestion, "Doripe."],
+    [placeEventDraft.brandQuestion, "추가 문구"],
+    ["다른 질문?", placeEventDraft.brandQuestion],
   ]) {
     assert.throws(() => validateSlideEvidence(placeEventDraft, {
       ...placeEventLayout,
       slides: [...validSlides.slice(0, -1), { ...validSlides.at(-1), visibleText }],
-    }), /visible text|question|Doripe\./i);
+    }, templateContract), /visible text|question|wordmark/i);
+  }
+});
+
+test("the brand end slide uses the exact actual Discover capture and Desktop logo", () => {
+  for (const mutation of [
+    { usesActualAppCapture: false },
+    { appScreenKind: "figma_redraw" },
+    { appScreenSourcePath: "fake.png" },
+    { appScreenWidth: 392 },
+    { appScreenHeight: 851 },
+    { appScreenSha256: "0".repeat(64) },
+    { logoSha256: "0".repeat(64) },
+    { hasBrandWordmark: true },
+  ]) {
+    assert.throws(() => validateDraftBundle({
+      draft: placeEventDraft,
+      expectedTemplate: templateContract,
+      layoutEvidence: {
+        ...placeEventLayout,
+        slides: [...placeEventLayout.slides.slice(0, -1), {
+          ...placeEventLayout.slides.at(-1),
+          ...mutation,
+        }],
+      },
+    }), /actual|capture|app screen|logo|wordmark/i);
   }
 });
 
@@ -467,7 +495,7 @@ test("brand questions must be deterministically relevant to the content type", (
           ? {
               ...slide,
               brandQuestion: collectionDraft.brandQuestion,
-              visibleText: [collectionDraft.brandQuestion, "Doripe."],
+              visibleText: [collectionDraft.brandQuestion],
             }
           : slide),
     }],
@@ -480,16 +508,17 @@ test("brand questions must be deterministically relevant to the content type", (
           ? {
               ...slide,
               brandQuestion: "오늘 저녁 뭐 먹을까?",
-              visibleText: ["오늘 저녁 뭐 먹을까?", "Doripe."],
+              visibleText: ["오늘 저녁 뭐 먹을까?"],
             }
           : slide),
       },
+      templateContract,
     ), /relevant|content type/i);
   }
 });
 
 test("valid slide evidence passes presentation validation", () => {
-  assert.deepEqual(validateSlideEvidence(placeEventDraft, placeEventLayout), { ok: true });
+  assert.deepEqual(validateSlideEvidence(placeEventDraft, placeEventLayout, templateContract), { ok: true });
 });
 
 test("draft bundle validates every quality gate", () => {

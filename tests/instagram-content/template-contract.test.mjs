@@ -10,9 +10,9 @@ import { parseTemplateContract } from "../../scripts/instagram-content/contracts
 const execFileAsync = promisify(execFile);
 const fileKey = "9btf9oUzIvw3JQq4OPyYEn";
 const approvedRoots = {
-  place_event: "28:14",
-  collection: "28:15",
-  route: "28:16",
+  place_event: "43:25",
+  collection: "50:31",
+  route: "46:49",
 };
 const expectedSlots = {
   place_event: ["slot:title", "slot:subtitle", "slot:photo:01", "slot:credit", "slot:brand-question"],
@@ -25,10 +25,10 @@ const expectedSlideRanges = {
   route: { minSlides: 7, maxSlides: 9 },
 };
 
-const assertNoReferenceAssetMetadata = (contract) => {
+const assertNoDaytripReferenceMetadata = (contract) => {
   assert.doesNotMatch(
     JSON.stringify(contract),
-    /daytrip|daytrip-reference|imageHash|assetPath|sourcePath/i,
+    /daytrip|daytrip-reference|imageHash/i,
   );
 };
 
@@ -37,6 +37,23 @@ test("tracked Figma template contract is complete", async () => {
   const contract = parseTemplateContract(raw);
   assert.equal(contract.fileKey, fileKey);
   assert.deepEqual(contract.canvas, { width: 1080, height: 1350, safeInsetX: 34 });
+  assert.deepEqual(contract.brandEnd, {
+    backgroundHex: "#050505",
+    appScreen: {
+      kind: "actual_discover_capture",
+      sourcePath: "public/app-preview/assets/references/b2.png",
+      width: 393,
+      height: 852,
+      sha256: "0a1ede7e8b24ab705c4f71a50dab92cfccc8b57a49f8b46451d28da036d4e250",
+    },
+    logo: {
+      sourcePath: "public/instagram-pinned-feed/assets/doripe-icon-green.png",
+      width: 500,
+      height: 500,
+      colorHex: "#20F58A",
+      sha256: "b18f6f59e483b6363a94c96a10b67e092a231df6d29497d2a2f7cbec40905a76",
+    },
+  });
   assert.deepEqual(contract.templates.map(({ id }) => id).sort(), ["collection", "place_event", "route"]);
   for (const template of contract.templates) {
     assert.equal(template.rootNodeId, approvedRoots[template.id]);
@@ -47,7 +64,7 @@ test("tracked Figma template contract is complete", async () => {
     );
     assert.equal(new Set(template.slots).size, template.slots.length);
   }
-  assertNoReferenceAssetMetadata(contract);
+  assertNoDaytripReferenceMetadata(contract);
 });
 
 test("contract writer emits approved roots without Daytrip reference asset metadata", async (t) => {
@@ -69,6 +86,9 @@ test("contract writer emits approved roots without Daytrip reference asset metad
     Object.fromEntries(contract.templates.map(({ id, rootNodeId }) => [id, rootNodeId])),
     approvedRoots,
   );
+  assert.equal(contract.brandEnd.appScreen.kind, "actual_discover_capture");
+  assert.equal(contract.brandEnd.appScreen.sha256, "0a1ede7e8b24ab705c4f71a50dab92cfccc8b57a49f8b46451d28da036d4e250");
+  assert.equal(contract.brandEnd.logo.sha256, "b18f6f59e483b6363a94c96a10b67e092a231df6d29497d2a2f7cbec40905a76");
   for (const template of contract.templates) {
     assert.deepEqual(template.slots, expectedSlots[template.id]);
     assert.deepEqual(
@@ -76,5 +96,5 @@ test("contract writer emits approved roots without Daytrip reference asset metad
       expectedSlideRanges[template.id],
     );
   }
-  assertNoReferenceAssetMetadata(contract);
+  assertNoDaytripReferenceMetadata(contract);
 });

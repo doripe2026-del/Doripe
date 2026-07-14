@@ -21,6 +21,23 @@ const contract = parseTemplateContract({
   fileKey: input.fileKey,
   pageName: "Instagram Content Automation",
   canvas: { width: 1080, height: 1350, safeInsetX: 34 },
+  brandEnd: {
+    backgroundHex: "#050505",
+    appScreen: {
+      kind: "actual_discover_capture",
+      sourcePath: "public/app-preview/assets/references/b2.png",
+      width: 393,
+      height: 852,
+      sha256: "0a1ede7e8b24ab705c4f71a50dab92cfccc8b57a49f8b46451d28da036d4e250",
+    },
+    logo: {
+      sourcePath: "public/instagram-pinned-feed/assets/doripe-icon-green.png",
+      width: 500,
+      height: 500,
+      colorHex: "#20F58A",
+      sha256: "b18f6f59e483b6363a94c96a10b67e092a231df6d29497d2a2f7cbec40905a76",
+    },
+  },
   templates: [
     {
       id: "place_event",

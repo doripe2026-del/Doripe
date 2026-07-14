@@ -70,12 +70,19 @@ function validRouteLayoutEvidence() {
         role: "brand_end",
         nodeId: `100:${route.minSlides}`,
         textSlots: ["slot:brand-question"],
-        visibleText: [validDraft.brandQuestion, "Doripe."],
+        visibleText: [validDraft.brandQuestion],
         brandQuestion: validDraft.brandQuestion,
         hasDoripeLogo: true,
         doripeLogoColorHex: "#20F58A",
-        hasBrandWordmark: true,
+        logoSha256: templateContract.brandEnd.logo.sha256,
+        hasBrandWordmark: false,
         hasPhoneMockup: true,
+        usesActualAppCapture: true,
+        appScreenKind: "actual_discover_capture",
+        appScreenSourcePath: templateContract.brandEnd.appScreen.sourcePath,
+        appScreenWidth: 393,
+        appScreenHeight: 852,
+        appScreenSha256: templateContract.brandEnd.appScreen.sha256,
         backgroundHex: "#050505",
       },
     ],
@@ -130,8 +137,19 @@ test("each CLI command checks its exact argument count before reading files", ()
 test("check-template accepts the canonical contract and rejects invalid contracts or JSON", async () => {
   const directory = await makeTempDirectory();
   const invalidPath = join(directory, "invalid-template.json");
+  const invalidHashPath = join(directory, "invalid-hash-template.json");
   const malformedPath = join(directory, "malformed-template.json");
   await writeJson(invalidPath, {});
+  await writeJson(invalidHashPath, {
+    ...templateContract,
+    brandEnd: {
+      ...templateContract.brandEnd,
+      appScreen: {
+        ...templateContract.brandEnd.appScreen,
+        sha256: "0".repeat(64),
+      },
+    },
+  });
   await writeFile(malformedPath, "{", "utf8");
 
   const validResult = runCli(["check-template", templatePath], { cwd: directory });
@@ -149,6 +167,12 @@ test("check-template accepts the canonical contract and rejects invalid contract
   });
   assert.notEqual(malformedResult.status, 0);
   assert.match(malformedResult.stderr, /Invalid JSON/i);
+
+  const invalidHashResult = runCli(["check-template", invalidHashPath], {
+    cwd: directory,
+  });
+  assert.notEqual(invalidHashResult.status, 0);
+  assert.match(invalidHashResult.stderr, /SHA-256.*template contract/i);
 });
 
 test("score parses domestic candidates, caps selection at two, and tolerates missing or empty performance CSV", async () => {

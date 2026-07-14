@@ -93,11 +93,31 @@ const templateSchema = z.object({
   slots: z.array(z.string().regex(/^slot:/)).min(3),
 });
 
+const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
+const brandEndSchema = z.object({
+  backgroundHex: z.literal("#050505"),
+  appScreen: z.object({
+    kind: z.literal("actual_discover_capture"),
+    sourcePath: z.literal("public/app-preview/assets/references/b2.png"),
+    width: z.literal(393),
+    height: z.literal(852),
+    sha256: sha256Schema,
+  }).strict(),
+  logo: z.object({
+    sourcePath: z.literal("public/instagram-pinned-feed/assets/doripe-icon-green.png"),
+    width: z.literal(500),
+    height: z.literal(500),
+    colorHex: z.literal("#20F58A"),
+    sha256: sha256Schema,
+  }).strict(),
+}).strict();
+
 const templateContractSchema = z.object({
   version: z.literal(1),
   fileKey: z.string().min(1),
   pageName: z.literal("Instagram Content Automation"),
   canvas: z.object({ width: z.literal(1080), height: z.literal(1350), safeInsetX: z.literal(34) }),
+  brandEnd: brandEndSchema,
   templates: z.array(templateSchema).length(3),
 });
 

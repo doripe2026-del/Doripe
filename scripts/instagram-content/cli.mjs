@@ -20,6 +20,7 @@ const CANONICAL_TEMPLATE_URL = new URL(
   "../../docs/instagram-content/template-contract.json",
   import.meta.url,
 );
+const REPO_ROOT_URL = new URL("../../", import.meta.url);
 
 const COMMANDS = Object.freeze({
   "check-template": {
@@ -107,8 +108,23 @@ function parseHistory(value) {
   });
 }
 
+async function verifyTemplateBrandAssets(contract) {
+  for (const [label, asset] of [
+    ["app screen", contract.brandEnd.appScreen],
+    ["Doripe logo", contract.brandEnd.logo],
+  ]) {
+    const bytes = await readFile(new URL(asset.sourcePath, REPO_ROOT_URL));
+    const actual = createHash("sha256").update(bytes).digest("hex");
+    if (actual !== asset.sha256) {
+      throw new Error(`${label} SHA-256 does not match template contract`);
+    }
+  }
+}
+
 async function loadCanonicalTemplate() {
-  return parseTemplateContract(await readJson(CANONICAL_TEMPLATE_URL));
+  const contract = parseTemplateContract(await readJson(CANONICAL_TEMPLATE_URL));
+  await verifyTemplateBrandAssets(contract);
+  return contract;
 }
 
 async function validateBoundExports(exports, layoutEvidence) {
@@ -172,7 +188,8 @@ async function main() {
   }
 
   if (command === "check-template") {
-    parseTemplateContract(await readJson(args[0]));
+    const contract = parseTemplateContract(await readJson(args[0]));
+    await verifyTemplateBrandAssets(contract);
     console.log("Instagram template contract passed.");
     return;
   }
