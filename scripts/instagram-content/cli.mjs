@@ -170,6 +170,15 @@ async function main() {
   if (!exports || typeof exports !== "object" || Array.isArray(exports)) {
     throw new Error("Exports must be an object with sequence and files");
   }
+  const exportCount = Array.isArray(exports.files) ? exports.files.length : null;
+  if (exportCount !== layoutEvidence.slideCount) {
+    throw new Error(
+      `PNG export count must match validated slide count: expected ${layoutEvidence.slideCount}, received ${exportCount ?? "non-array"}`,
+    );
+  }
+  if (new Set(exports.files).size !== exportCount) {
+    throw new Error("PNG export paths must be unique for every slide");
+  }
   const result = await writeProductionPackage({
     outputRoot: args[3],
     sequence: exports.sequence,

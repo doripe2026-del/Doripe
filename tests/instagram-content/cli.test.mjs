@@ -252,7 +252,7 @@ test("validate checks layout evidence against the canonical template contract", 
   await assert.rejects(access(invalidValidationPath));
 });
 
-test("finalize validates the draft and writes a complete package from real PNG exports", async () => {
+test("finalize rejects an export count that differs from the validated slide count", async () => {
   const directory = await makeTempDirectory();
   const draftPath = join(directory, "draft.json");
   const layoutPath = join(directory, "layout-evidence.json");
@@ -274,12 +274,82 @@ test("finalize validates the draft and writes a complete package from real PNG e
     ["finalize", draftPath, layoutPath, exportsPath, outputRoot],
     { cwd: directory },
   );
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /export.*count|slide.*count|6/i);
+  await assert.rejects(access(outputRoot));
+});
+
+test("finalize rejects duplicate export paths used to satisfy the slide count", async () => {
+  const directory = await makeTempDirectory();
+  const draftPath = join(directory, "draft.json");
+  const layoutPath = join(directory, "layout-evidence.json");
+  const pngPath = join(directory, "slide.png");
+  const exportsPath = join(directory, "exports.json");
+  const outputRoot = join(directory, "packages");
+  const layoutEvidence = validRouteLayoutEvidence();
+  const pngBytes = Buffer.from([
+    0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x01,
+  ]);
+
+  await Promise.all([
+    writeJson(draftPath, validDraft),
+    writeJson(layoutPath, layoutEvidence),
+    writeFile(pngPath, pngBytes),
+    writeJson(exportsPath, {
+      sequence: 1,
+      files: Array(layoutEvidence.slideCount).fill(pngPath),
+    }),
+  ]);
+
+  const result = runCli(
+    ["finalize", draftPath, layoutPath, exportsPath, outputRoot],
+    { cwd: directory },
+  );
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /unique|duplicate/i);
+  await assert.rejects(access(outputRoot));
+});
+
+test("finalize writes a complete package when PNG exports exactly match the slide count", async () => {
+  const directory = await makeTempDirectory();
+  const draftPath = join(directory, "draft.json");
+  const layoutPath = join(directory, "layout-evidence.json");
+  const exportsPath = join(directory, "exports.json");
+  const outputRoot = join(directory, "packages");
+  const pngPaths = Array.from(
+    { length: validRouteLayoutEvidence().slideCount },
+    (_, index) => join(directory, `slide-${index + 1}.png`),
+  );
+  const pngBytes = pngPaths.map((_, index) =>
+    Buffer.from([
+      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, index + 1,
+    ]),
+  );
+
+  await Promise.all([
+    writeJson(draftPath, validDraft),
+    writeJson(layoutPath, validRouteLayoutEvidence()),
+    ...pngPaths.map((pngPath, index) => writeFile(pngPath, pngBytes[index])),
+    writeJson(exportsPath, { sequence: 1, files: pngPaths }),
+  ]);
+
+  const result = runCli(
+    ["finalize", draftPath, layoutPath, exportsPath, outputRoot],
+    { cwd: directory },
+  );
   assert.equal(result.status, 0, result.stderr);
 
   const packageDirectory = result.stdout.trim();
   assert.ok(packageDirectory.startsWith(outputRoot));
   const expectedFiles = [
     "01-cover.png",
+    "02-content.png",
+    "03-content.png",
+    "04-content.png",
+    "05-content.png",
+    "06-content.png",
     "caption.txt",
     "sources.txt",
     "review.txt",
@@ -289,8 +359,16 @@ test("finalize validates the draft and writes a complete package from real PNG e
     expectedFiles.map((fileName) => access(join(packageDirectory, fileName))),
   );
 
-  const packagedPng = await readFile(join(packageDirectory, "01-cover.png"));
-  assert.deepEqual(packagedPng, pngBytes);
+  await Promise.all(
+    pngBytes.map(async (bytes, index) => {
+      const prefix = String(index + 1).padStart(2, "0");
+      const label = index === 0 ? "cover" : "content";
+      const packagedPng = await readFile(
+        join(packageDirectory, `${prefix}-${label}.png`),
+      );
+      assert.deepEqual(packagedPng, bytes);
+    }),
+  );
   const manifest = await readJson(join(packageDirectory, "manifest.json"));
   assert.equal(manifest.candidateId, validDraft.candidate.id);
   const review = await readFile(join(packageDirectory, "review.txt"), "utf8");
