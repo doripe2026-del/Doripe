@@ -75,13 +75,27 @@ test("daily runbook defines copy and editorial quality gates", async () => {
 
   requirePhrases(text, [
     "구체적인 hook",
-    "send 또는 save 중 정확히 하나",
+    "60자 이내의 질문",
     "자연스러운 장소 키워드",
     "factSourceIds",
     "최소 2개의 editorialElements",
     "원본성 검수",
     "비팔로워 도달",
   ]);
+});
+
+test("daily runbook documents the CTA-free carousel presentation contract", async () => {
+  const runbook = await readRunbook();
+
+  for (const phrase of [
+    "brandQuestion",
+    "brand_end",
+    "사진과 Doripe 심볼만",
+    "직접 CTA를 넣지 않는다",
+    "hasPhoneMockup",
+  ]) {
+    assert.match(runbook, new RegExp(phrase));
+  }
 });
 
 test("daily runbook locks Figma roots, slot edits, and visual correction order", async () => {

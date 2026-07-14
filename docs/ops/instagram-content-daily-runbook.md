@@ -112,13 +112,16 @@ CLI가 국내 계약을 다시 검사하고, 30일 중복을 제외하고, 70점
 선택된 후보마다 별도의 `draft.json`을 만든다. 다음을 모두 포함한다.
 
 - 장소와 사용 상황이 드러나는 구체적인 hook
-- send 또는 save 중 정확히 하나의 CTA
+- `cta` 필드는 넣지 않는다.
+- `brandQuestion`은 60자 이내의 질문으로 쓰고 반드시 `?`로 끝낸다.
 - 검색어 나열이 아닌 자연스러운 장소 키워드 2~6개
 - 후보 source ID와 일치하는 `factSourceIds`
 - 최소 2개의 editorialElements: 선택 이유, 비교, 추천 상황, 지도·코스, 실용 정보, 순서가 있는 이야기 중 선택
 - Instagram 위치 태그 제안 1개
 
-사진 위에 출처만 얹은 재게시물은 실패다. 큐레이터의 선택 이유와 구조가 있는지 원본성 검수를 한다. 하나의 게시물에는 하나의 핵심 메시지와 하나의 CTA만 둔다.
+사진 위에 출처만 얹은 재게시물은 실패다. 큐레이터의 선택 이유와 구조가 있는지 원본성 검수를 한다. 하나의 게시물에는 하나의 핵심 메시지만 둔다.
+
+캡션에는 검증된 사실·출처·방문정보와 자연스러운 장소 키워드를 유지하되, “보내주세요”, “저장하세요”, “공유하세요”, “확인하세요”, “다운로드하세요” 같은 직접 CTA를 넣지 않는다. `brandQuestion`도 행동을 명령하는 문장이 아니라 콘텐츠와 Doripe의 발견 경험을 잇는 질문이어야 한다.
 
 ## 6. 승인된 Figma 템플릿 편집
 
@@ -129,6 +132,11 @@ Figma connector로 파일 `9btf9oUzIvw3JQq4OPyYEn`의 `Instagram Content Automat
 - `ROUTE: 28:16`
 
 복제본에서는 `slot:* 레이어만` 텍스트·사진·credit 값으로 교체한다. root 구조, 캔버스, safe area와 공통 스타일은 바꾸지 않는다. 사용하지 않는 선택 슬라이드는 숨긴다. 템플릿 계약의 최소·최대 슬라이드 수를 지킨다.
+
+- `place_event`의 표지와 마지막 장 사이 중간 장은 모든 텍스트 slot을 비우거나 숨겨 텍스트를 모두 제거한다. 중간 장에는 사진과 Doripe 심볼만 남긴다.
+- 각 carousel의 마지막 장은 해당 root에 있는 승인된 공통 `BRAND_END` 프레임을 복제해 사용하고 직접 새로 만들지 않는다.
+- 마지막 장의 역할은 `brand_end`다. 검은 배경 `#050505`, 폰 목업, Doripe 워드마크, 정확한 초록색 `#20F58A` Doripe 로고를 유지하고 `slot:brand-question`에 draft의 `brandQuestion`을 그대로 넣는다.
+- 표지, 중간 장, 마지막 장 어디에도 직접 CTA를 넣지 않는다.
 
 각 슬라이드를 스크린샷으로 확인한다.
 
@@ -144,14 +152,40 @@ CLI는 `docs/instagram-content/template-contract.json` 전체를 canonical `expe
 
 `layout-evidence.json`에는 선택한 계약의 모든 slot을 정확히 한 번 기록한다. 빠진 slot과 추가 slot은 모두 실패다. 모든 slot은 `editable: true`여야 한다. 사진 slot을 제외한 모든 텍스트 slot에는 `overflows`, `midWordBreak`, `baseFontSize`, `fontSize`를 실제 검사값으로 기록한다.
 
-ROUTE 6장 예시는 다음과 같다. 다른 유형은 canonical 계약의 `id`, `rootNodeId`, slide 범위와 slot 목록을 그대로 사용한다.
+또한 `slides` 배열에는 실제 게시 순서대로 모든 슬라이드의 presentation 증거를 기록한다. `slides.length`는 `slideCount`와 같아야 하고, 첫 장은 `cover`, 마지막 장은 `brand_end`여야 한다. 각 `visibleText`는 화면에 실제로 보이는 문구와 일치해야 한다.
+
+ROUTE 7장 예시는 다음과 같다. 다른 유형은 canonical 계약의 `id`, `rootNodeId`, slide 범위와 slot 목록을 그대로 사용한다.
 
 ```json
 {
   "templateId": "route",
   "rootNodeId": "28:16",
   "canvas": { "width": 1080, "height": 1350 },
-  "slideCount": 6,
+  "slideCount": 7,
+  "slides": [
+    {
+      "role": "cover",
+      "textSlots": ["slot:title", "slot:subtitle", "slot:credit"],
+      "visibleText": ["서울숲에서 성수까지 걷는 오후"],
+      "hasDoripeLogo": true
+    },
+    { "role": "content", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
+    { "role": "content", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
+    { "role": "content", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
+    { "role": "content", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
+    { "role": "content", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
+    {
+      "role": "brand_end",
+      "textSlots": ["slot:brand-question"],
+      "visibleText": ["내 취향으로 새로운 하루를 만들고 싶다면?", "Doripe."],
+      "brandQuestion": "내 취향으로 새로운 하루를 만들고 싶다면?",
+      "hasDoripeLogo": true,
+      "doripeLogoColorHex": "#20F58A",
+      "hasBrandWordmark": true,
+      "hasPhoneMockup": true,
+      "backgroundHex": "#050505"
+    }
+  ],
   "slots": [
     { "name": "slot:title", "editable": true, "overflows": false, "midWordBreak": false, "baseFontSize": 64, "fontSize": 64 },
     { "name": "slot:subtitle", "editable": true, "overflows": false, "midWordBreak": false, "baseFontSize": 40, "fontSize": 40 },
@@ -159,8 +193,8 @@ ROUTE 6장 예시는 다음과 같다. 다른 유형은 canonical 계약의 `id`
     { "name": "slot:place:01", "editable": true, "overflows": false, "midWordBreak": false, "baseFontSize": 48, "fontSize": 48 },
     { "name": "slot:body:01", "editable": true, "overflows": false, "midWordBreak": false, "baseFontSize": 32, "fontSize": 32 },
     { "name": "slot:info:location", "editable": true, "overflows": false, "midWordBreak": false, "baseFontSize": 28, "fontSize": 28 },
-    { "name": "slot:cta", "editable": true, "overflows": false, "midWordBreak": false, "baseFontSize": 30, "fontSize": 30 },
-    { "name": "slot:credit", "editable": true, "overflows": false, "midWordBreak": false, "baseFontSize": 24, "fontSize": 24 }
+    { "name": "slot:credit", "editable": true, "overflows": false, "midWordBreak": false, "baseFontSize": 24, "fontSize": 24 },
+    { "name": "slot:brand-question", "editable": true, "overflows": false, "midWordBreak": false, "baseFontSize": 30, "fontSize": 30 }
   ]
 }
 ```
@@ -175,7 +209,7 @@ VALIDATION_JSON="$WORK_ROOT/<candidate-id>/validation.json"
 npm run instagram:content -- validate "$DRAFT_JSON" "$LAYOUT_JSON" "$VALIDATION_JSON"
 ```
 
-originality, caption, sources, layout 네 결과가 모두 `ok: true`일 때만 export로 넘어간다.
+originality, caption, sources, layout, presentation 다섯 결과가 모두 `ok: true`일 때만 export로 넘어간다. `presentation`은 `slides` 배열, `brand_end`, place_event의 텍스트 없는 중간 장, 직접 CTA 금지와 공통 마지막 장 구성을 검사한다.
 
 ## 8. PNG export와 package 생성
 
@@ -198,7 +232,8 @@ Figma 슬라이드를 순서대로 각각 1080 × 1350 PNG로 export한다. PNG 
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/03.png",
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/04.png",
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/05.png",
-    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/06.png"
+    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/06.png",
+    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/07.png"
   ]
 }
 ```
@@ -214,7 +249,8 @@ Figma 슬라이드를 순서대로 각각 1080 × 1350 PNG로 export한다. PNG 
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/03.png",
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/04.png",
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/05.png",
-    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/06.png"
+    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/06.png",
+    "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/07.png"
   ]
 }
 ```
