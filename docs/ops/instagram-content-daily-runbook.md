@@ -111,6 +111,7 @@ CLI가 국내 계약을 다시 검사하고, 30일 중복을 제외하고, 70점
 
 선택된 후보마다 별도의 `draft.json`을 만든다. 다음을 모두 포함한다.
 
+- breaking schema 변경 뒤의 draft version은 2로 고정한다. 템플릿 계약과 package manifest의 version은 계속 1이다.
 - 장소와 사용 상황이 드러나는 구체적인 hook
 - `cta` 필드는 넣지 않는다.
 - `brandQuestion`은 60자 이내의 질문으로 쓰고 반드시 `?`로 끝낸다.
@@ -153,6 +154,9 @@ CLI는 `docs/instagram-content/template-contract.json` 전체를 canonical `expe
 `layout-evidence.json`에는 선택한 계약의 모든 slot을 정확히 한 번 기록한다. 빠진 slot과 추가 slot은 모두 실패다. 모든 slot은 `editable: true`여야 한다. 사진 slot을 제외한 모든 텍스트 slot에는 `overflows`, `midWordBreak`, `baseFontSize`, `fontSize`를 실제 검사값으로 기록한다.
 
 또한 `slides` 배열에는 실제 게시 순서대로 모든 슬라이드의 presentation 증거를 기록한다. `slides.length`는 `slideCount`와 같아야 하고, 첫 장은 `cover`, 마지막 장은 `brand_end`여야 한다. 각 `visibleText`는 화면에 실제로 보이는 문구와 일치해야 한다.
+
+- `brand_end.visibleText`는 `[draft.brandQuestion, "Doripe."]` 두 항목만 정확히 기록한다. 질문은 정확히 하나이고 `?`로 끝나야 한다.
+- `place_event` 중간 사진 장은 `hasPhoto: true`와 `visibleElementKinds: ["photo", "safe_region", "doripe_logo"]`를 기록한다. gradient, accent, badge 같은 다른 요소가 있으면 실패다.
 
 ROUTE 7장 예시는 다음과 같다. 다른 유형은 canonical 계약의 `id`, `rootNodeId`, slide 범위와 slot 목록을 그대로 사용한다.
 
@@ -214,6 +218,8 @@ originality, caption, sources, layout, presentation 다섯 결과가 모두 `ok:
 ## 8. PNG export와 package 생성
 
 Figma 슬라이드를 순서대로 각각 1080 × 1350 PNG로 export한다. PNG 경로는 모두 달라야 하며 `exports.json`의 배열 순서가 게시 순서다.
+
+`finalize`는 각 파일의 PNG signature와 첫 PNG IHDR chunk를 읽어 실제 크기가 정확히 1080 × 1350인지 확인한다. 확장자만 `.png`인 파일, signature뿐인 가짜 파일, 잘못된 IHDR 또는 다른 크기는 package에 복사하지 않는다.
 
 같은 실행 날짜의 sequence 규칙은 고정이다.
 

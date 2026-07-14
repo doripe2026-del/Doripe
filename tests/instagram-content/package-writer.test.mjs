@@ -33,12 +33,23 @@ const validation = {
 };
 const now = new Date("2026-07-14T00:00:00.000Z");
 
-async function createPng(directory, name, marker) {
+function pngHeader(width = 1080, height = 1350, marker = 0) {
+  const bytes = Buffer.alloc(33);
+  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(bytes, 0);
+  bytes.writeUInt32BE(13, 8);
+  bytes.write("IHDR", 12, "ascii");
+  bytes.writeUInt32BE(width, 16);
+  bytes.writeUInt32BE(height, 20);
+  bytes[24] = 8;
+  bytes[25] = 6;
+  bytes[32] = marker;
+  return bytes;
+}
+
+async function createPng(directory, name, marker, width = 1080, height = 1350) {
   await mkdir(directory, { recursive: true });
   const path = join(directory, name);
-  await writeFile(path, Buffer.from([
-    0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, marker,
-  ]));
+  await writeFile(path, pngHeader(width, height, marker));
   return path;
 }
 
@@ -165,6 +176,37 @@ test("writer rejects a non-PNG file renamed with a png extension", async () => {
     /PNG signature/i,
   );
   await assert.rejects(access(join(outputRoot, "2026-07-14", "01-seongsu-weekend-route")));
+});
+
+test("writer rejects signature-only pseudo-PNGs, invalid IHDR chunks, and wrong dimensions", async () => {
+  const outputRoot = await mkdtemp(join(tmpdir(), "doripe-instagram-"));
+  const signatureOnly = join(outputRoot, "signature-only.png");
+  const invalidIhdr = join(outputRoot, "invalid-ihdr.png");
+  const invalidIhdrFields = join(outputRoot, "invalid-ihdr-fields.png");
+  const wrongDimensions = await createPng(outputRoot, "wrong-size.png", 1, 1080, 1080);
+  await writeFile(signatureOnly, Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
+  const invalidHeader = pngHeader();
+  invalidHeader.write("IDAT", 12, "ascii");
+  await writeFile(invalidIhdr, invalidHeader);
+  const invalidFieldsHeader = pngHeader();
+  invalidFieldsHeader[26] = 1;
+  await writeFile(invalidIhdrFields, invalidFieldsHeader);
+
+  for (const [source, expected] of [
+    [signatureOnly, /IHDR|structure/i],
+    [invalidIhdr, /IHDR/i],
+    [invalidIhdrFields, /IHDR/i],
+    [wrongDimensions, /1080x1350|dimensions/i],
+  ]) {
+    await assert.rejects(writeProductionPackage({
+      outputRoot,
+      sequence: 1,
+      draft,
+      exportedPngs: [source],
+      validation,
+      now,
+    }), expected);
+  }
 });
 
 test("writer requires every automatic validation gate to succeed", async () => {

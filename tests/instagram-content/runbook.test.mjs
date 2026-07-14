@@ -134,6 +134,8 @@ test("daily runbook requires complete canonical layout evidence and matching exp
     "1080 × 1350",
     "exports.files.length === layoutEvidence.slideCount",
     "서로 다른 PNG 경로",
+    "draft version은 2",
+    "PNG IHDR",
     "첫 번째 선택 게시물: sequence 1",
     "두 번째 선택 게시물: sequence 2",
     "같은 날짜에 sequence를 중복 사용하지 않는다",

@@ -89,6 +89,19 @@ function validRouteLayoutEvidence() {
   };
 }
 
+function pngHeader(width = 1080, height = 1350, marker = 0) {
+  const bytes = Buffer.alloc(33);
+  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(bytes, 0);
+  bytes.writeUInt32BE(13, 8);
+  bytes.write("IHDR", 12, "ascii");
+  bytes.writeUInt32BE(width, 16);
+  bytes.writeUInt32BE(height, 20);
+  bytes[24] = 8;
+  bytes[25] = 6;
+  bytes[32] = marker;
+  return bytes;
+}
+
 test("CLI prints usage and exits non-zero without a command", () => {
   const result = runCli([]);
 
@@ -290,9 +303,7 @@ test("finalize rejects an export count that differs from the validated slide cou
   const pngPath = join(directory, "slide.png");
   const exportsPath = join(directory, "exports.json");
   const outputRoot = join(directory, "packages");
-  const pngBytes = Buffer.from([
-    0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x01,
-  ]);
+  const pngBytes = pngHeader();
 
   await Promise.all([
     writeJson(draftPath, validDraft),
@@ -319,9 +330,7 @@ test("finalize rejects duplicate export paths used to satisfy the slide count", 
   const exportsPath = join(directory, "exports.json");
   const outputRoot = join(directory, "packages");
   const layoutEvidence = validRouteLayoutEvidence();
-  const pngBytes = Buffer.from([
-    0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x01,
-  ]);
+  const pngBytes = pngHeader();
 
   await Promise.all([
     writeJson(draftPath, validDraft),
@@ -353,11 +362,7 @@ test("finalize writes a complete package when PNG exports exactly match the slid
     { length: validRouteLayoutEvidence().slideCount },
     (_, index) => join(directory, `slide-${index + 1}.png`),
   );
-  const pngBytes = pngPaths.map((_, index) =>
-    Buffer.from([
-      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, index + 1,
-    ]),
-  );
+  const pngBytes = pngPaths.map((_, index) => pngHeader(1080, 1350, index + 1));
 
   await Promise.all([
     writeJson(draftPath, validDraft),

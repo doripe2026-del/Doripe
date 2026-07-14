@@ -49,6 +49,27 @@ test("draft requires a question-shaped brand line and rejects legacy CTA", async
   assert.throws(() => parseDraft({ ...fixture, cta: "save" }), /unrecognized|cta/i);
 });
 
+test("draft schema uses version 2 while template and package contracts remain version 1", async () => {
+  const fixture = JSON.parse(await readFile(
+    new URL("./fixtures/valid-draft.json", import.meta.url),
+    "utf8",
+  ));
+
+  assert.equal(parseDraft(fixture).version, 2);
+  assert.throws(() => parseDraft({ ...fixture, version: 1 }), /version|invalid/i);
+  const canonicalTemplate = parseTemplateContract(JSON.parse(await readFile(
+    new URL("../../docs/instagram-content/template-contract.json", import.meta.url),
+    "utf8",
+  )));
+  assert.equal(canonicalTemplate.version, 1);
+  assert.equal(parsePackageManifest({
+    version: 1,
+    candidateId: domesticCandidate.id,
+    createdAt: "2026-07-14T00:00:00.000Z",
+    files: ["01-cover.png", "caption.txt", "sources.txt", "review.txt"],
+  }).version, 1);
+});
+
 test("candidate rejects an AI asset kind on an otherwise valid candidate", () => {
   assert.throws(() => parseCandidate({
     ...domesticCandidate,

@@ -86,7 +86,7 @@ const templateContractSchema = z.object({
 });
 
 const draftSchema = z.object({
-  version: z.literal(1),
+  version: z.literal(2),
   candidate: candidateSchema,
   caption: z.string().min(1),
   brandQuestion: z.string().trim().min(1).max(60).refine(

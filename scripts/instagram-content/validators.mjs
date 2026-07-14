@@ -1,6 +1,16 @@
 import { EDITORIAL_ELEMENTS } from "./contracts.mjs";
 
-const DIRECT_CTA_PATTERN = /(?:보내\s*(?:주세요|세요)|(?:저장|공유|팔로우|확인|다운로드)(?:해\s*주세요|\s*하세요))/i;
+const KOREAN_DIRECT_CTA_PATTERN = /(?:보내\s*(?:주세요|보세요|세요)|전달\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요)|(?:저장|공유|팔로우|확인|다운로드|설치|클릭|신청)\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요)|눌러\s*(?:주세요|보세요|세요)|알림(?:을)?\s*(?:신청|설정)?\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요))/i;
+const ENGLISH_DIRECT_CTA_PATTERN = /^(?:please\s+)?(?:send|save|share|follow|download|install|click|tap|check)\b/i;
+
+function containsDirectCta(value) {
+  if (KOREAN_DIRECT_CTA_PATTERN.test(value)) return true;
+  return String(value)
+    .split(/(?:[.!?]\s+|\n+)/)
+    .some((segment) => ENGLISH_DIRECT_CTA_PATTERN.test(
+      segment.trim().replace(/^[^A-Za-z]+/, ""),
+    ));
+}
 
 function requireArray(value, label) {
   if (!Array.isArray(value)) throw new Error(`${label} must be an array`);
@@ -44,7 +54,7 @@ export function validateSources(draft) {
 }
 
 export function validateCaption(draft) {
-  if (DIRECT_CTA_PATTERN.test(draft?.caption ?? "")) {
+  if (containsDirectCta(draft?.caption ?? "")) {
     throw new Error("Direct CTA is not allowed in the caption");
   }
 
@@ -139,9 +149,22 @@ export function validateSlideEvidence(draft, evidence) {
     throw new Error("Brand question must match the draft");
   }
 
+  const finalVisibleText = requireArray(last.visibleText, "Brand end visible text");
+  const visibleQuestions = finalVisibleText.filter(
+    (value) => typeof value === "string" && value.trim().endsWith("?"),
+  );
+  if (
+    finalVisibleText.length !== 2
+    || finalVisibleText[0] !== draft.brandQuestion
+    || finalVisibleText[1] !== "Doripe."
+    || visibleQuestions.length !== 1
+  ) {
+    throw new Error("Brand end visible text must be exactly the draft question and Doripe.");
+  }
+
   for (const slide of slides) {
     const visibleText = requireArray(slide.visibleText, "Visible slide text");
-    if (visibleText.some((value) => DIRECT_CTA_PATTERN.test(value))) {
+    if (visibleText.some((value) => containsDirectCta(value))) {
       throw new Error("Direct CTA is not allowed on slides");
     }
   }
@@ -158,6 +181,23 @@ export function validateSlideEvidence(draft, evidence) {
         throw new Error("Place/event photo slides may not contain visible text");
       }
       if (slide.hasDoripeLogo !== true) throw new Error("Photo slide requires Doripe logo");
+      if (slide.hasPhoto !== true) throw new Error("Photo slide requires an actual photo");
+
+      const visibleElementKinds = requireArray(
+        slide.visibleElementKinds,
+        "Photo slide visible element kinds",
+      );
+      const expectedKinds = ["photo", "safe_region", "doripe_logo"];
+      const actualKindSet = new Set(visibleElementKinds);
+      if (
+        visibleElementKinds.length !== expectedKinds.length
+        || actualKindSet.size !== expectedKinds.length
+        || expectedKinds.some((kind) => !actualKindSet.has(kind))
+      ) {
+        throw new Error(
+          "Photo slide visible element kinds must be exactly photo, safe_region, doripe_logo",
+        );
+      }
     }
   }
   return { ok: true };

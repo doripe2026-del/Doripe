@@ -83,10 +83,10 @@ const validSlides = [
     visibleText: ["서촌의 낯선 기록 실험"],
     hasDoripeLogo: true,
   },
-  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true },
-  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true },
-  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true },
-  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true },
+  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
+  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
+  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
+  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
   {
     role: "brand_end",
     textSlots: ["slot:brand-question"],
@@ -199,13 +199,29 @@ test("caption blocks direct imperative calls without banning non-imperative word
     "공유하세요.",
     "지금 확인하세요.",
     "다운로드하세요.",
+    "친구에게 전달해 주세요.",
+    "링크를 눌러보세요.",
+    "앱을 설치하세요.",
+    "버튼을 클릭해 보세요.",
+    "지금 신청하세요.",
+    "알림 신청해 주세요.",
+    "Send this to a friend.",
+    "Please save this post.",
+    "Share with someone you love.",
+    "Follow for more places.",
+    "Download the app.",
+    "Install Doripe.",
+    "Click the link.",
+    "Tap here.",
+    "Check it out.",
+    "👉 Save this post.",
   ]) {
     assert.throws(() => validateCaption({ ...validDraft, caption }), /direct CTA/i);
   }
 
   assert.deepEqual(validateCaption({
     ...validDraft,
-    caption: "저장과 공유가 자연스럽게 이어지는 장소를 확인한 기록입니다.",
+    caption: "저장과 공유가 자연스럽게 이어지는 장소를 확인한 기록입니다. We check every source before publication. The download page is under review.",
   }), { ok: true });
 });
 
@@ -298,6 +314,24 @@ test("place and event photo slides may not contain text", () => {
   }), /photo.*text/i);
 });
 
+test("place and event photo slides require a photo and only the exact allowed element kinds", () => {
+  for (const replacement of [
+    { hasPhoto: false },
+    { visibleElementKinds: ["safe_region", "doripe_logo"] },
+    { visibleElementKinds: ["photo", "safe_region", "doripe_logo", "gradient"] },
+    { visibleElementKinds: ["photo", "safe_region", "doripe_logo", "accent"] },
+    { visibleElementKinds: ["photo", "safe_region", "doripe_logo", "badge"] },
+    { visibleElementKinds: ["photo", "doripe_logo"] },
+  ]) {
+    assert.throws(() => validateSlideEvidence(placeEventDraft, {
+      ...placeEventLayout,
+      slides: validSlides.map((slide, index) => index === 1
+        ? { ...slide, ...replacement }
+        : slide),
+    }), /photo|element kinds/i);
+  }
+});
+
 test("slides reject direct imperative calls", () => {
   for (const visibleText of [
     "저장해 주세요.",
@@ -343,6 +377,22 @@ test("the brand end slide rejects every missing required condition", () => {
       ...placeEventLayout,
       slides: [...validSlides.slice(0, -1), finalSlide],
     }), expectedError, `missing ${field} should fail`);
+  }
+});
+
+test("the brand end slide requires exactly the draft question and Doripe wordmark", () => {
+  for (const visibleText of [
+    [],
+    ["이 전시가 아닌 다른 질문?", "Doripe."],
+    [placeEventDraft.brandQuestion],
+    [placeEventDraft.brandQuestion, "Doripe"],
+    [placeEventDraft.brandQuestion, "Doripe.", "추가 문구"],
+    [placeEventDraft.brandQuestion, "다른 질문?", "Doripe."],
+  ]) {
+    assert.throws(() => validateSlideEvidence(placeEventDraft, {
+      ...placeEventLayout,
+      slides: [...validSlides.slice(0, -1), { ...validSlides.at(-1), visibleText }],
+    }), /visible text|question|Doripe\./i);
   }
 });
 

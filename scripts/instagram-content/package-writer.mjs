@@ -13,6 +13,10 @@ import { extname, join, resolve } from "node:path";
 import { parsePackageManifest } from "./contracts.mjs";
 
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+const PNG_IHDR_LENGTH = 13;
+const PNG_HEADER_BYTES = 33;
+const REQUIRED_PNG_WIDTH = 1080;
+const REQUIRED_PNG_HEIGHT = 1350;
 const VALIDATION_GATES = Object.freeze([
   "originality",
   "caption",
@@ -67,16 +71,49 @@ async function validatePngFile(source) {
   const sourceStat = await stat(source);
   if (!sourceStat.isFile()) throw new Error(`PNG export is not a file: ${source}`);
 
-  const signature = Buffer.alloc(PNG_SIGNATURE.length);
+  const header = Buffer.alloc(PNG_HEADER_BYTES);
   const handle = await open(source, "r");
   let bytesRead;
   try {
-    ({ bytesRead } = await handle.read(signature, 0, signature.length, 0));
+    ({ bytesRead } = await handle.read(header, 0, header.length, 0));
   } finally {
     await handle.close();
   }
-  if (bytesRead !== PNG_SIGNATURE.length || !signature.equals(PNG_SIGNATURE)) {
+  if (bytesRead < PNG_SIGNATURE.length || !header.subarray(0, 8).equals(PNG_SIGNATURE)) {
     throw new Error(`PNG signature is invalid: ${source}`);
+  }
+  if (bytesRead < PNG_HEADER_BYTES) {
+    throw new Error(`PNG structure is missing a complete IHDR chunk: ${source}`);
+  }
+  if (
+    header.readUInt32BE(8) !== PNG_IHDR_LENGTH
+    || header.toString("ascii", 12, 16) !== "IHDR"
+  ) {
+    throw new Error(`PNG first chunk must be a valid IHDR: ${source}`);
+  }
+  const bitDepth = header[24];
+  const colorType = header[25];
+  const validBitDepths = {
+    0: [1, 2, 4, 8, 16],
+    2: [8, 16],
+    3: [1, 2, 4, 8],
+    4: [8, 16],
+    6: [8, 16],
+  };
+  if (
+    !validBitDepths[colorType]?.includes(bitDepth)
+    || header[26] !== 0
+    || header[27] !== 0
+    || ![0, 1].includes(header[28])
+  ) {
+    throw new Error(`PNG IHDR fields are invalid: ${source}`);
+  }
+  const width = header.readUInt32BE(16);
+  const height = header.readUInt32BE(20);
+  if (width !== REQUIRED_PNG_WIDTH || height !== REQUIRED_PNG_HEIGHT) {
+    throw new Error(
+      `PNG dimensions must be exactly 1080x1350: ${source} is ${width}x${height}`,
+    );
   }
 }
 
