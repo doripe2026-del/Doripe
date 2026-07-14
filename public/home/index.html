@@ -1022,16 +1022,16 @@
 
         <div class="chat-thread">
           <article class="chat-bubble left reveal">
-            <div data-protected-copy="chat-1-meta" class="chat-meta">검색창 앞</div>
-            <p data-protected-copy="chat-1-text" class="chat-text">“뭐라고 검색해야 할지 모르겠어요.”</p>
+            <div data-protected-copy="chat-1-meta" class="chat-meta">장소를 찾다가</div>
+            <p data-protected-copy="chat-1-text" class="chat-text">“글보다 사진과 영상으로 분위기를 먼저 보고 싶어요.”</p>
           </article>
           <article class="chat-bubble right reveal">
-            <div data-protected-copy="chat-2-meta" class="chat-meta">저장함을 보다가</div>
-            <p data-protected-copy="chat-2-text" class="chat-text">“저장한 곳은 많은데 오늘 갈 곳은 못 고르겠어요.”</p>
+            <div data-protected-copy="chat-2-meta" class="chat-meta">식당을 정한 뒤</div>
+            <p data-protected-copy="chat-2-text" class="chat-text">“밥 먹고 갈 카페와 놀 거리도 따로 찾아야 해요.”</p>
           </article>
           <article class="chat-bubble left reveal">
-            <div data-protected-copy="chat-3-meta" class="chat-meta">약속을 짜다가</div>
-            <p data-protected-copy="chat-3-text" class="chat-text">“마음에 든 장소들을 하루 코스로 잇기 어려워요.”</p>
+            <div data-protected-copy="chat-3-meta" class="chat-meta">감도 높은 큐레이터를 보다가</div>
+            <p data-protected-copy="chat-3-text" class="chat-text">“큐레이터가 고른 장소와 하루 코스를 따라가고 싶어요.”</p>
           </article>
         </div>
       </div>
@@ -1157,6 +1157,15 @@
                 <svg class="folder-route-line" data-motion-layer="folder-route" viewBox="0 0 720 620" preserveAspectRatio="none" aria-hidden="true">
                   <path d="M150 92 C220 110 280 145 330 190 C380 220 455 180 530 142 C480 210 420 260 360 300 C320 340 310 410 350 470" />
                 </svg>
+                <svg class="day-folder-back" data-motion-layer="day-folder" viewBox="0 0 24 24" preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="dayFolderBackFill" x1="2" y1="3" x2="21" y2="13" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#c9f8da" />
+                      <stop offset="1" stop-color="#8ee7ae" />
+                    </linearGradient>
+                  </defs>
+                  <path fill="url(#dayFolderBackFill)" d="M1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+                </svg>
                 <article class="folder-route-card folder-route-card--one" data-motion-layer="folder-place" aria-hidden="true">
                   <b>1</b><img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><strong>리틀넥 연남</strong>
                 </article>
@@ -1167,11 +1176,17 @@
                   <b>3</b><img src="/img/landing-motion/campaign-activity.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" /><strong>작은 도예실</strong>
                 </article>
                 <section class="day-folder" data-motion-layer="day-folder" aria-hidden="true">
-                  <span>ROUTE COMPLETE</span><strong>연남에서 보내는 하루</strong><small>3곳 · 친구와 공유</small>
-                  <div>
-                    <img src="/img/landing-motion/campaign-restaurant.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
-                    <img src="/img/landing-motion/campaign-cafe.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
-                    <img src="/img/landing-motion/campaign-activity.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
+                  <svg class="day-folder__front" viewBox="0 0 24 24" preserveAspectRatio="none" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="dayFolderFrontFill" x1="2" y1="11" x2="22" y2="21" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#24dc7b" />
+                        <stop offset="1" stop-color="#0ebd62" />
+                      </linearGradient>
+                    </defs>
+                    <path fill="url(#dayFolderFrontFill)" d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15Z" />
+                  </svg>
+                  <div class="day-folder__label">
+                    <span>DAY COURSE</span><strong>연남에서 보내는 하루</strong><small>장소 3곳을 담았어요</small>
                   </div>
                 </section>
                 <div class="course-reaction course-reaction--saved" data-motion-layer="course-reaction" data-course-reaction="saved" aria-hidden="true">

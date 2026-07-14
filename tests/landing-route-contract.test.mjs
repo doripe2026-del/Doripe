@@ -55,7 +55,11 @@ test("course connects three place cards into a social folder without navigation"
   assert.match(course, /class="folder-route-line"/);
   assert.equal(count(course, /<path d=/g), 1);
   assert.match(css, /course-map-background\.jpg/);
+  assert.match(course, /class="day-folder-back"/);
   assert.match(course, /class="day-folder"/);
+  assert.match(course, /class="day-folder__label"/);
+  assert.match(course, /M1\.5 10\.146V6a3 3 0 0 1 3-3/);
+  assert.match(course, /M19\.5 21a3 3 0 0 0 3-3/);
   assert.equal(count(course, /class="course-reaction /g), 5);
   for (const reaction of ["saved", "invite", "curator", "likes", "complete"]) {
     assert.match(course, new RegExp(`data-course-reaction="${reaction}"`));
@@ -85,10 +89,13 @@ test("nested discovery and save animations inherit the scene playback clock", ()
   assert.doesNotMatch(css, /\.folder-route-card--(?:two|three)\s*\{[^}]*animation-delay/s);
 });
 
-test("course keeps the approved previous motion timing", () => {
+test("course moves all three places into the route folder at the same handoff", () => {
   for (const animation of ["folderRouteDraw", "folderPlace", "folderComplete", "courseReaction"]) {
     assert.match(css, new RegExp(`animation:\\s*${animation}\\s+7\\.2s`));
   }
-  assert.match(css, /@keyframes folderRouteDraw\s*\{[\s\S]*?50%, 56%[^}]*stroke-dashoffset:\s*0;[\s\S]*?68%, 99%[^}]*opacity:\s*0;/);
-  assert.match(css, /@keyframes folderComplete\s*\{[\s\S]*?74%[^}]*opacity:\s*1;[\s\S]*?82%, 96%[^}]*opacity:\s*1;/);
+  assert.match(css, /@keyframes folderRouteDraw\s*\{[\s\S]*?50%, 54%[^}]*stroke-dashoffset:\s*0;[\s\S]*?58%, 99%[^}]*opacity:\s*0;/);
+  assert.match(css, /@keyframes folderPlace\s*\{[\s\S]*?60%[^}]*var\(--start-left\)[\s\S]*?70%[^}]*left:\s*50%/);
+  assert.match(css, /\.day-folder-back\s*\{[^}]*top:\s*50%;[^}]*left:\s*50%;/s);
+  assert.match(css, /\.day-folder\s*\{[^}]*top:\s*50%;[^}]*left:\s*50%;/s);
+  assert.doesNotMatch(css, /\.folder-route-card--(?:two|three)\s*\{[^}]*animation-delay/s);
 });

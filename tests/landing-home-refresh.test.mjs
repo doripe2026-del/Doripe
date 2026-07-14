@@ -25,9 +25,9 @@ test("home tells the inspire, explore, share story with three concise pains", ()
     assert.match(home, new RegExp(`>${label}<`));
   }
   assert.equal(count(/class="chat-bubble /g), 3);
-  assert.match(home, /뭐라고 검색해야 할지 모르겠어요/);
-  assert.match(home, /저장한 곳은 많은데 오늘 갈 곳은 못 고르겠어요/);
-  assert.match(home, /마음에 든 장소들을 하루 코스로 잇기 어려워요/);
+  assert.match(home, /글보다 사진과 영상으로 분위기를 먼저 보고 싶어요/);
+  assert.match(home, /밥 먹고 갈 카페와 놀 거리도 따로 찾아야 해요/);
+  assert.match(home, /큐레이터가 고른 장소와 하루 코스를 따라가고 싶어요/);
 });
 
 test("home uses local compiled styles and optimized loading priorities", () => {
