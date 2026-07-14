@@ -22,16 +22,22 @@ fixture.candidate.assets[0].rightsStatus = "not_found";
 fixture.candidate.assets[0].privacyNote = "식별 가능한 얼굴이 있는지 확인 필요";
 const draft = parseDraft(fixture);
 const validation = {
+  originality: { ok: true, elements: ["selection_reason", "map_or_route"] },
+  caption: { ok: true },
   sources: {
+    ok: true,
     warnings: [`Rights not confirmed: ${draft.candidate.assets[0].sourceUrl}`],
   },
+  layout: { ok: true },
 };
 const now = new Date("2026-07-14T00:00:00.000Z");
 
 async function createPng(directory, name, marker) {
   await mkdir(directory, { recursive: true });
   const path = join(directory, name);
-  await writeFile(path, Buffer.from([0x89, 0x50, 0x4e, 0x47, marker]));
+  await writeFile(path, Buffer.from([
+    0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, marker,
+  ]));
   return path;
 }
 
@@ -79,6 +85,11 @@ test("writer atomically creates sequential images and review-ready text files", 
   assert.match(review, /Location tag: 서울 성동구/);
   assert.match(review, /Rights not confirmed/);
   assert.match(review, /식별 가능한 얼굴/);
+  assert.match(review, /Automatic gates/i);
+  assert.match(review, /Originality: PASS/i);
+  assert.match(review, /Caption: PASS/i);
+  assert.match(review, /Sources: PASS/i);
+  assert.match(review, /Layout: PASS/i);
   assert.match(review, /Human checks/i);
 
   const manifestOnDisk = parsePackageManifest(JSON.parse(
@@ -111,6 +122,58 @@ test("writer rejects empty or missing PNG exports before creating output", async
     /at least one PNG export/i,
   );
   await assert.rejects(access(join(outputRoot, "2026-07-14")));
+});
+
+test("writer rejects a non-PNG file renamed with a png extension", async () => {
+  const outputRoot = await mkdtemp(join(tmpdir(), "doripe-instagram-"));
+  const fakePng = join(outputRoot, "renamed.png");
+  await writeFile(fakePng, "this is not a png\n");
+
+  await assert.rejects(
+    writeProductionPackage({
+      outputRoot,
+      sequence: 1,
+      draft,
+      exportedPngs: [fakePng],
+      validation,
+      now,
+    }),
+    /PNG signature/i,
+  );
+  await assert.rejects(access(join(outputRoot, "2026-07-14", "01-seongsu-weekend-route")));
+});
+
+test("writer requires every automatic validation gate to succeed", async () => {
+  const outputRoot = await mkdtemp(join(tmpdir(), "doripe-instagram-"));
+  const png = await createPng(join(outputRoot, "exports"), "cover.png", 1);
+  const gateNames = ["originality", "caption", "sources", "layout"];
+
+  for (const [index, gate] of gateNames.entries()) {
+    const incomplete = { ...validation, [gate]: undefined };
+    await assert.rejects(
+      writeProductionPackage({
+        outputRoot,
+        sequence: index + 1,
+        draft,
+        exportedPngs: [png],
+        validation: incomplete,
+        now,
+      }),
+      new RegExp(`successful validation.*${gate}`, "i"),
+    );
+  }
+
+  await assert.rejects(
+    writeProductionPackage({
+      outputRoot,
+      sequence: 5,
+      draft,
+      exportedPngs: [png],
+      validation: { ...validation, layout: { ok: false } },
+      now,
+    }),
+    /successful validation.*layout/i,
+  );
 });
 
 test("writer rejects unsafe sequence and candidate identifiers", async () => {
@@ -181,4 +244,28 @@ test("failed writes preserve existing output and remove only their temporary dir
   await assert.rejects(access(join(dayDir, "02-seongsu-weekend-route")));
   assert.equal((await readdir(dayDir)).some((name) => name.includes(".writing-")), false);
   assert.equal(await readFile(sentinel, "utf8"), "keep me\n");
+});
+
+test("a failure after the first PNG copy removes the in-progress package", async () => {
+  const outputRoot = await mkdtemp(join(tmpdir(), "doripe-instagram-"));
+  const exportsDir = join(outputRoot, "exports");
+  const validPng = await createPng(exportsDir, "first.png", 1);
+  const invalidPng = join(exportsDir, "second.png");
+  await writeFile(invalidPng, "renamed non-PNG\n");
+
+  await assert.rejects(
+    writeProductionPackage({
+      outputRoot,
+      sequence: 1,
+      draft,
+      exportedPngs: [validPng, invalidPng],
+      validation,
+      now,
+    }),
+    /PNG signature/i,
+  );
+
+  const dayDir = join(outputRoot, "2026-07-14");
+  await assert.rejects(access(join(dayDir, "01-seongsu-weekend-route")));
+  assert.equal((await readdir(dayDir)).some((name) => name.includes(".writing-")), false);
 });

@@ -3,6 +3,7 @@ import {
   lstat,
   mkdir,
   mkdtemp,
+  open,
   rename,
   rm,
   stat,
@@ -10,6 +11,9 @@ import {
 } from "node:fs/promises";
 import { extname, join, resolve } from "node:path";
 import { parsePackageManifest } from "./contracts.mjs";
+
+const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+const VALIDATION_GATES = Object.freeze(["originality", "caption", "sources", "layout"]);
 
 function requireArray(value, label) {
   if (!Array.isArray(value)) throw new Error(`${label} must be an array`);
@@ -26,7 +30,7 @@ async function requireMissingDirectory(directory) {
   throw new Error(`Package directory already exists: ${directory}`);
 }
 
-async function validateExports(exportedPngs) {
+function validateExportList(exportedPngs) {
   if (!Array.isArray(exportedPngs) || exportedPngs.length === 0) {
     throw new Error("At least one PNG export is required");
   }
@@ -34,8 +38,31 @@ async function validateExports(exportedPngs) {
     if (typeof source !== "string" || !source.trim() || extname(source).toLowerCase() !== ".png") {
       throw new Error("Every export must be a PNG file path");
     }
-    const sourceStat = await stat(source);
-    if (!sourceStat.isFile()) throw new Error(`PNG export is not a file: ${source}`);
+  }
+}
+
+async function validatePngFile(source) {
+  const sourceStat = await stat(source);
+  if (!sourceStat.isFile()) throw new Error(`PNG export is not a file: ${source}`);
+
+  const signature = Buffer.alloc(PNG_SIGNATURE.length);
+  const handle = await open(source, "r");
+  let bytesRead;
+  try {
+    ({ bytesRead } = await handle.read(signature, 0, signature.length, 0));
+  } finally {
+    await handle.close();
+  }
+  if (bytesRead !== PNG_SIGNATURE.length || !signature.equals(PNG_SIGNATURE)) {
+    throw new Error(`PNG signature is invalid: ${source}`);
+  }
+}
+
+function requireSuccessfulValidation(validation) {
+  for (const gate of VALIDATION_GATES) {
+    if (!validation?.[gate] || validation[gate].ok !== true) {
+      throw new Error(`Complete successful validation is required: ${gate}`);
+    }
   }
 }
 
@@ -87,6 +114,9 @@ function buildReviewText(draft, validation) {
   return [
     `Location tag: ${draft.locationTag}`,
     "",
+    "Automatic gates:",
+    ...VALIDATION_GATES.map((gate) => `- ${gate[0].toUpperCase()}${gate.slice(1)}: PASS`),
+    "",
     "Rights warnings:",
     ...(rightsWarnings.size > 0 ? [...rightsWarnings].map((warning) => `- ${warning}`) : ["- None"]),
     "",
@@ -125,7 +155,8 @@ export async function writeProductionPackage(options) {
   if (!(now instanceof Date) || !Number.isFinite(now.getTime())) {
     throw new Error("A valid package timestamp is required");
   }
-  await validateExports(exportedPngs);
+  validateExportList(exportedPngs);
+  requireSuccessfulValidation(validation);
 
   const date = now.toISOString().slice(0, 10);
   const folderName = `${String(sequence).padStart(2, "0")}-${candidateId}`;
@@ -140,6 +171,7 @@ export async function writeProductionPackage(options) {
     const files = [];
     for (const [index, source] of exportedPngs.entries()) {
       const target = `${String(index + 1).padStart(2, "0")}-${index === 0 ? "cover" : "content"}.png`;
+      await validatePngFile(source);
       await copyFile(source, join(temporary, target));
       files.push(target);
     }
