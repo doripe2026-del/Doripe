@@ -21,6 +21,9 @@
     "setup:deployment-guard": "node scripts/install-deployment-shell-guard.mjs",
     "check:mvp-app": "node scripts/check-mvp-app.mjs",
     "build:admin": "node scripts/build-admin.mjs",
+    "test:instagram-content": "node --test tests/instagram-content/*.test.mjs",
+    "check:instagram-content": "npm run test:instagram-content && node scripts/instagram-content/cli.mjs check-template docs/instagram-content/template-contract.json",
+    "instagram:content": "node scripts/instagram-content/cli.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
