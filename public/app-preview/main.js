@@ -1,9 +1,17 @@
 import { getScreen, listScreens } from "./screen-registry.js";
 import { createPreviewState } from "./state.js";
 import { dispatchAction } from "./transitions.js";
+import { getAdapter } from "./api-adapter.js";
+import { createDataCatalog } from "./data/selectors.js";
+import { createAppDataStore } from "./data/store.js";
 
 const groups = ["A", "B", "C", "D", "E"];
-const state = createPreviewState();
+const repository = getAdapter("fixture");
+const dataStore = createAppDataStore({ repository });
+await dataStore.load();
+const dataSnapshot = dataStore.getSnapshot();
+const dataCatalog = createDataCatalog(dataSnapshot);
+const state = createPreviewState({ catalog: dataCatalog });
 const phoneRoot = document.querySelector("#phone-root");
 const reviewList = document.querySelector("#review-list");
 const resetButton = document.querySelector("#review-reset");
@@ -99,7 +107,7 @@ function renderReviewList() {
 }
 
 function renderEvidenceScreen(screen) {
-  const renderedScreen = screen.render(interactionState);
+  const renderedScreen = screen.render(interactionState, dataSnapshot);
   teardownRenderedScreen();
   phoneRoot.replaceChildren(renderedScreen);
   persistVisibleDefaults(renderedScreen);
@@ -206,7 +214,7 @@ function renderFromUrl(event) {
 
 function readActionPayload(target) {
   const id = target.getAttribute("data-id");
-  const payload = { state: interactionState };
+  const payload = { state: interactionState, data: dataSnapshot };
 
   if (id !== null) payload.id = id;
   if (target.dataset.type) payload.type = target.dataset.type;

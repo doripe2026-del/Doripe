@@ -46,11 +46,14 @@ const screens = Object.freeze(inventory.map((item) => {
     group: item.group,
     figmaNodeId: item.nodeId,
     reference: item.reference,
-    render: semanticRenderer || (() => renderEvidenceScreen({
-      id: item.id,
-      figmaNodeId: item.nodeId,
-      reference: item.reference
-    })),
+    // Renderers receive interaction state followed by the loaded data snapshot.
+    render: (state, data) => semanticRenderer
+      ? semanticRenderer(state, data)
+      : renderEvidenceScreen({
+          id: item.id,
+          figmaNodeId: item.nodeId,
+          reference: item.reference
+        }),
     actions: Object.freeze(actionsByScreenId.get(item.id) || [])
   });
 }));
