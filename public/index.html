@@ -3,26 +3,26 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Doripe - 분위기로 고르고 다시 꺼내 쓰는 장소 앱</title>
-<meta name="description" content="저장만 해두고 잊힌 장소를 오늘의 기분, 동네, 동선에 맞게 다시 꺼내는 Doripe 베타입니다." />
+<title>Doripe - 사진에서 발견해 오늘의 코스로</title>
+<meta name="description" content="취향에 맞는 사진에서 장소를 발견하고, 가까운 장소를 이어 오늘의 코스를 만드는 Doripe입니다." />
 <meta name="robots" content="index,follow" />
 <meta name="google-site-verification" content="-0x5473PvEuPwcYQr9y5G7akJUHZrSOGGIQCGEbqXNI" />
 <meta name="naver-site-verification" content="55e51518b5114c32f9dd3d3d19c3ca24d6678ef0" />
-<link rel="canonical" href="https://doripe.vercel.app/" />
+<link rel="canonical" href="https://doripe.kr/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Doripe" />
 <meta property="og:locale" content="ko_KR" />
-<meta property="og:title" content="Doripe - 오늘 갈 곳을 취향대로 고르는 방법" />
-<meta property="og:description" content="인스타 저장글, 지도 핀, 친구 추천까지. 흩어진 장소를 오늘 갈 수 있는 선택으로 다시 꺼내세요." />
-<meta property="og:url" content="https://doripe.vercel.app/" />
-<meta property="og:image" content="https://doripe.vercel.app/og-image-v2.png" />
+<meta property="og:title" content="Doripe - 사진에서 발견해 오늘의 코스로" />
+<meta property="og:description" content="사진에서 장소를 발견하고, 가까운 장소를 이어 오늘의 코스를 만들어보세요." />
+<meta property="og:url" content="https://doripe.kr/" />
+<meta property="og:image" content="https://doripe.kr/og-image-v2.png" />
 <meta property="og:image:alt" content="Doripe 앱 소개 이미지" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Doripe - 오늘 갈 곳을 취향대로 고르는 방법" />
-<meta name="twitter:description" content="분위기와 상황에 맞는 장소를 발견하고 저장하고 다시 꺼내 쓰세요." />
-<meta name="twitter:image" content="https://doripe.vercel.app/og-image-v2.png" />
+<meta name="twitter:title" content="Doripe - 사진에서 발견해 오늘의 코스로" />
+<meta name="twitter:description" content="사진에서 장소를 발견하고, 가까운 장소를 이어 오늘의 코스를 만들어보세요." />
+<meta name="twitter:image" content="https://doripe.kr/og-image-v2.png" />
 <meta name="twitter:image:alt" content="Doripe 앱 소개 이미지" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="alternate icon" type="image/png" href="/favicon.png" />
@@ -33,20 +33,20 @@
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://doripe.vercel.app/#organization",
+      "@id": "https://doripe.kr/#organization",
       "name": "Doripe",
-      "url": "https://doripe.vercel.app/",
-      "logo": "https://doripe.vercel.app/favicon.png",
+      "url": "https://doripe.kr/",
+      "logo": "https://doripe.kr/favicon.png",
       "email": "support@doripe.kr"
     },
     {
       "@type": "WebSite",
-      "@id": "https://doripe.vercel.app/#website",
+      "@id": "https://doripe.kr/#website",
       "name": "Doripe",
-      "url": "https://doripe.vercel.app/",
+      "url": "https://doripe.kr/",
       "inLanguage": "ko-KR",
-      "publisher": { "@id": "https://doripe.vercel.app/#organization" },
-      "description": "분위기와 상황에 맞는 장소를 발견하고 저장하고 다시 꺼내 쓰는 장소 취향 서비스"
+      "publisher": { "@id": "https://doripe.kr/#organization" },
+      "description": "사진에서 장소를 발견하고 가까운 장소를 이어 오늘의 코스를 만드는 장소 취향 서비스"
     }
   ]
 }
@@ -55,34 +55,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="/home/home.css" />
 <link rel="stylesheet" href="/home/landing-motion.css" />
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          bluebrand: '#0084ff',
-          blueglow: '#60B1FF',
-          deepblue: '#319AFF',
-          ink: '#07111f',
-          muted: '#5d6b7c',
-          doripe: '#22ff88',
-          cream: '#f8fbff'
-        },
-        fontFamily: {
-          fustat: ['Fustat', 'Pretendard Variable', 'Pretendard', 'Inter', 'system-ui', 'sans-serif'],
-          pretendard: ['Pretendard Variable', 'Pretendard', 'Inter', 'system-ui', 'sans-serif'],
-          inter: ['Pretendard Variable', 'Pretendard', 'Inter', 'system-ui', 'sans-serif']
-        }
-      }
-    }
-  };
-</script>
 <style>
   :root {
-    --blue: #0084ff;
-    --green: #22ff88;
+    --primary: #0a8f51;
+    --accent: #22ff88;
+    --blue: var(--primary);
+    --green: var(--accent);
     --ink: #07111f;
     --font-ko: 'Pretendard Variable', Pretendard, Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     --font-latin: Fustat, 'Pretendard Variable', Pretendard, Inter, system-ui, sans-serif;
@@ -110,7 +90,7 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  ::selection { background: rgba(0,132,255,.18); color: #04101d; }
+  ::selection { background: rgba(10,143,81,.18); color: #04101d; }
   .font-brand { font-family: var(--font-latin); }
   .home-shell {
     overflow-x: clip;
@@ -129,7 +109,7 @@
     width: 620px;
     height: 520px;
     border-radius: 999px;
-    background: #60B1FF;
+    background: #91e9bb;
     filter: blur(105px);
     opacity: .32;
   }
@@ -141,7 +121,7 @@
     width: 430px;
     height: 360px;
     border-radius: 999px;
-    background: #319AFF;
+    background: #63d99a;
     filter: blur(95px);
     opacity: .2;
   }
@@ -151,7 +131,7 @@
     -webkit-backdrop-filter: blur(50px);
     border: 1px solid rgba(0,0,0,.1);
     border-radius: 16px;
-    box-shadow: inset 0 4px 4px rgba(255,255,255,.25), 0 24px 80px rgba(0,76,145,.08);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.25), 0 24px 80px rgba(10,99,60,.08);
   }
   .liquid-button {
     background: rgba(255,255,255,.34);
@@ -161,22 +141,22 @@
     box-shadow: inset 0 4px 4px rgba(255,255,255,.35);
   }
   .primary-cta {
-    background: rgba(0,132,255,.8);
+    background: rgba(10,143,81,.8);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
     border-radius: 16px;
     color: #fff;
-    box-shadow: inset 0 4px 4px rgba(255,255,255,.35), 0 22px 60px rgba(0,132,255,.26);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.35), 0 22px 60px rgba(10,143,81,.26);
     transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
   }
   .primary-cta:hover {
     transform: scale(1.02);
-    background: rgba(0,132,255,.88);
-    box-shadow: inset 0 4px 4px rgba(255,255,255,.38), 0 28px 72px rgba(0,132,255,.32);
+    background: rgba(10,143,81,.88);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.38), 0 28px 72px rgba(10,143,81,.32);
   }
   .hero-title {
     font-family: var(--font-ko);
-    font-size: clamp(48px, 6.25vw, 75px);
+    font-size: 68px;
     line-height: 1.05;
     letter-spacing: -1.2px;
   }
@@ -195,7 +175,7 @@
   }
   .section-title {
     font-family: var(--font-ko);
-    font-size: clamp(34px, 5vw, 68px);
+    font-size: 60px;
     line-height: 1.02;
     letter-spacing: -1.25px;
   }
@@ -203,7 +183,7 @@
   #product,
   #business,
   #company,
-  #pricing {
+  #finalCtaSection {
     background: transparent;
   }
   body.home-page #business,
@@ -211,7 +191,7 @@
     display: none;
   }
   #features > .glow-field,
-  #pricing > .glow-field {
+  #finalCtaSection > .glow-field {
     display: none;
   }
   .site-footer {
@@ -222,7 +202,7 @@
   .soft-card {
     background: rgba(255,255,255,.62);
     border: 1px solid rgba(8,36,72,.09);
-    box-shadow: 0 30px 90px rgba(0,74,142,.08), inset 0 1px 1px rgba(255,255,255,.7);
+    box-shadow: 0 30px 90px rgba(10,99,60,.08), inset 0 1px 1px rgba(255,255,255,.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
@@ -238,7 +218,7 @@
     border: 1px solid rgba(0,0,0,.09);
     border-radius: 30px;
     background: rgba(255,255,255,.34);
-    box-shadow: inset 0 4px 4px rgba(255,255,255,.32), 0 28px 90px rgba(0,74,142,.09);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.32), 0 28px 90px rgba(10,99,60,.09);
     backdrop-filter: blur(42px);
     -webkit-backdrop-filter: blur(42px);
     overflow: hidden;
@@ -249,7 +229,7 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(180deg, rgba(255,255,255,.66), rgba(255,255,255,.14) 42%, rgba(0,132,255,.13));
+    background: linear-gradient(180deg, rgba(255,255,255,.66), rgba(255,255,255,.14) 42%, rgba(10,143,81,.13));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -261,7 +241,7 @@
   }
   .chat-bubble.right {
     align-self: flex-end;
-    border-color: rgba(0,132,255,.16);
+    border-color: rgba(10,143,81,.16);
     border-bottom-right-radius: 10px;
     background: linear-gradient(135deg, rgba(232,246,255,.54), rgba(255,255,255,.26));
   }
@@ -277,7 +257,7 @@
   .chat-text {
     margin-top: 14px;
     font-family: var(--font-ko);
-    font-size: clamp(24px, 2.25vw, 34px);
+    font-size: 30px;
     font-weight: 800;
     line-height: 1.18;
     letter-spacing: -.45px;
@@ -310,7 +290,7 @@
     width: min(520px, 88%);
     aspect-ratio: 1 / 1;
     border-radius: 48px;
-    background: linear-gradient(135deg, rgba(0,132,255,.18), rgba(34,255,136,.09), rgba(255,255,255,.55));
+    background: linear-gradient(135deg, rgba(10,143,81,.18), rgba(34,255,136,.09), rgba(255,255,255,.55));
     filter: blur(20px);
     transform: rotate(-9deg);
   }
@@ -323,7 +303,7 @@
     border-radius: 44px;
     border: 1px solid rgba(0,64,130,.13);
     background: rgba(255,255,255,.54);
-    box-shadow: inset 0 4px 4px rgba(255,255,255,.42), 0 34px 110px rgba(0,74,142,.14);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.42), 0 34px 110px rgba(10,99,60,.14);
     backdrop-filter: blur(32px);
     -webkit-backdrop-filter: blur(32px);
   }
@@ -349,7 +329,7 @@
   .journey-title {
     margin-top: 18px;
     font-family: var(--font-ko);
-    font-size: clamp(38px, 5vw, 72px);
+    font-size: 60px;
     line-height: .98;
     letter-spacing: -1.2px;
     font-weight: 900;
@@ -383,7 +363,7 @@
     border-radius: 28px;
     background: rgba(255,255,255,.42);
     border: 1px solid rgba(8,36,72,.09);
-    box-shadow: inset 0 4px 4px rgba(255,255,255,.28), 0 24px 70px rgba(0,74,142,.07);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.28), 0 24px 70px rgba(10,99,60,.07);
     backdrop-filter: blur(34px);
     -webkit-backdrop-filter: blur(34px);
   }
@@ -394,7 +374,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 16px;
-    background: rgba(0,132,255,.1);
+    background: rgba(10,143,81,.1);
     color: var(--blue);
     font-family: var(--font-latin);
     font-weight: 900;
@@ -422,7 +402,7 @@
     padding: clamp(24px, 3vw, 40px);
     background: rgba(255,255,255,.46);
     border: 1px solid rgba(0,0,0,.1);
-    box-shadow: inset 0 4px 4px rgba(255,255,255,.3), 0 34px 110px rgba(0,74,142,.12);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.3), 0 34px 110px rgba(10,99,60,.12);
     backdrop-filter: blur(46px);
     -webkit-backdrop-filter: blur(46px);
     overflow: hidden;
@@ -471,9 +451,9 @@
     transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
   }
   .pilot-field input:focus {
-    border-color: rgba(0,132,255,.55);
+    border-color: rgba(10,143,81,.55);
     background: rgba(255,255,255,.86);
-    box-shadow: 0 0 0 4px rgba(0,132,255,.12), inset 0 1px 1px rgba(255,255,255,.8);
+    box-shadow: 0 0 0 4px rgba(10,143,81,.12), inset 0 1px 1px rgba(255,255,255,.8);
   }
   .consent-box {
     display: grid;
@@ -536,7 +516,7 @@
     border-radius: 28px;
     background: rgba(255,255,255,.42);
     border: 1px solid rgba(8,36,72,.09);
-    box-shadow: inset 0 4px 4px rgba(255,255,255,.28), 0 24px 80px rgba(0,74,142,.07);
+    box-shadow: inset 0 4px 4px rgba(255,255,255,.28), 0 24px 80px rgba(10,99,60,.07);
     backdrop-filter: blur(34px);
     -webkit-backdrop-filter: blur(34px);
   }
@@ -571,7 +551,7 @@
   }
   .cta-title {
     font-family: var(--font-ko);
-    font-size: clamp(46px, 7.4vw, 96px);
+    font-size: 84px;
     line-height: .98;
     letter-spacing: -1.4px;
     font-weight: 900;
@@ -609,19 +589,13 @@
     .liquid-nav {
       width: min(390px, calc(100vw - 28px));
       max-width: min(390px, calc(100vw - 28px));
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: space-between;
       row-gap: 7px;
       padding: 8px 10px 10px;
     }
     .nav-links {
-      order: 3;
-      display: flex !important;
-      width: 100%;
-      justify-content: center;
-      gap: 4px;
-      padding: 0;
-      font-size: 12px;
+      display: none !important;
     }
     .nav-links a {
       flex: 1;
@@ -641,13 +615,16 @@
     .hero-title {
       width: min(340px, calc(100vw - 40px));
       max-width: min(340px, calc(100vw - 40px));
-      font-size: clamp(42px, 12vw, 56px);
+      margin-top: 18px !important;
+      font-size: 42px;
       letter-spacing: -.9px;
     }
     .hero-sub {
       width: min(340px, calc(100vw - 40px));
       max-width: min(340px, calc(100vw - 40px));
       font-size: 16px;
+      line-height: 1.65 !important;
+      margin-top: 14px !important;
       letter-spacing: -.25px;
     }
     main {
@@ -658,6 +635,16 @@
       max-width: 340px;
       margin-left: auto;
       margin-right: auto;
+    }
+    main#home {
+      padding-top: 56px !important;
+    }
+    main#home > section:first-child {
+      gap: 18px !important;
+      padding-top: 18px !important;
+    }
+    main#home > section:first-child > div:first-child > div:last-child {
+      margin-top: 20px !important;
     }
     main section:first-of-type p,
     main section:first-of-type h1 {
@@ -702,7 +689,7 @@
       border-radius: 31px;
     }
     .journey-title {
-      font-size: clamp(36px, 11vw, 54px);
+      font-size: 44px;
       letter-spacing: -.8px;
     }
     .pilot-grid,
@@ -715,6 +702,16 @@
     .pilot-form-panel {
       border-radius: 30px;
     }
+    .section-title { font-size: 46px; }
+    .cta-title { font-size: 52px; }
+  }
+  @media (max-width: 390px) {
+    .hero-title { font-size: 36px; }
+    .hero-sub { font-size: 15px; }
+    .section-title { font-size: 40px; }
+    .journey-title { font-size: 38px; }
+    .cta-title { font-size: 44px; }
+    .chat-text { font-size: 21px; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -730,8 +727,6 @@
   <style>
     .home-shell { position: relative; min-height: 100vh; }
     .reveal { opacity: 1 !important; transform: none !important; }
-    [data-fallback-count] { visibility: visible !important; }
-
     header {
       position: sticky;
       top: 30px;
@@ -868,11 +863,11 @@
     #product > div > div:first-child > p:last-child { max-width: 680px; margin-top: 24px; color: var(--muted); line-height: 2; }
     #product .journey-stack { margin-top: 80px; }
 
-    #pricing { position: relative; padding: 112px 64px; text-align: center; }
-    #pricing > div { position: relative; z-index: 10; max-width: 980px; margin: 0 auto; }
-    #pricing .cta-title { margin: 0; color: var(--ink); }
-    #pricing p { max-width: 672px; margin: 24px auto 0; color: var(--muted); line-height: 2; }
-    #pricing > div > div { margin-top: 36px; }
+    #finalCtaSection { position: relative; padding: 112px 64px; text-align: center; }
+    #finalCtaSection > div { position: relative; z-index: 10; max-width: 980px; margin: 0 auto; }
+    #finalCtaSection .cta-title { margin: 0; color: var(--ink); }
+    #finalCtaSection p { max-width: 672px; margin: 24px auto 0; color: var(--muted); line-height: 2; }
+    #finalCtaSection > div > div { margin-top: 36px; }
     footer { padding: 32px 64px; }
     footer > div {
       display: flex;
@@ -910,7 +905,7 @@
       #features > div { grid-template-columns: 1fr; gap: 48px; }
       #features > div > div:first-child { position: static; }
       #product .journey-stack { margin-top: 64px; }
-      #pricing { padding: 80px 20px; }
+      #finalCtaSection { padding: 80px 20px; }
       footer { padding: 32px 20px; }
       footer > div { align-items: flex-start; flex-direction: column; }
     }
@@ -932,7 +927,7 @@
         <a href="/business" class="rounded-xl px-3 py-2 transition hover:bg-white/45 hover:text-ink">Business</a>
         <a href="/company" class="rounded-xl px-3 py-2 transition hover:bg-white/45 hover:text-ink">Company</a>
       </nav>
-      <a href="/notify" class="liquid-button group flex items-center gap-2 rounded-[14px] px-3 py-2 text-[13px] font-semibold text-ink transition hover:bg-white/50">
+      <a href="/notify" data-cta-location="header" class="liquid-button group flex items-center gap-2 rounded-[14px] px-3 py-2 text-[13px] font-semibold text-ink transition hover:bg-white/50">
         알림신청
         <span class="flex h-7 w-7 items-center justify-center rounded-full bg-ink text-white transition group-hover:translate-x-0.5" aria-hidden="true">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -942,34 +937,31 @@
   </header>
 
   <main id="home" class="relative z-10 mx-auto max-w-[1600px] px-5 pb-10 pt-20 md:px-10 md:pt-24 lg:px-16">
-    <section class="grid min-h-[calc(100vh-130px)] grid-cols-1 items-center gap-8 lg:grid-cols-[.92fr_1.08fr]">
+    <section id="heroSection" class="grid min-h-[calc(100vh-130px)] grid-cols-1 items-center gap-8 lg:grid-cols-[.92fr_1.08fr]">
       <div class="relative z-10 max-w-[720px]">
         <div class="reveal inline-flex items-center gap-2 rounded-[16px] border border-black/10 bg-white/45 px-3 py-2 shadow-[inset_0_4px_4px_rgba(255,255,255,.35)] backdrop-blur-[30px]">
-          <span data-protected-copy="hero-proof-score" class="rounded-full bg-bluebrand px-2 py-1 text-xs font-bold text-white shadow-[0_10px_24px_rgba(0,132,255,.22)]">
+          <span data-protected-copy="hero-proof-score" class="rounded-full bg-bluebrand px-2 py-1 text-xs font-bold text-white shadow-[0_10px_24px_rgba(10,143,81,.22)]">
             92.1%
           </span>
           <span data-protected-copy="hero-proof" class="text-sm font-semibold text-ink/72">초기 설문에서 사용 의향을 보였어요</span>
         </div>
 
         <h1 data-protected-copy="hero-title" class="hero-title reveal mt-7 font-bold text-ink">
-          오늘 어디 갈지,<br />
-          떠오르는 곳이 없다면.
+          감도 높은 사진에서,<br />
+          오늘 갈 곳을 발견하세요.
         </h1>
 
         <p data-protected-copy="hero-sub" class="hero-sub reveal mt-6 max-w-[610px] font-inter leading-8 text-muted">
-          검색어가 없어도 괜찮아요. 오늘의 분위기에 맞는 카페, 식당, 술집, 샵을 가볍게 넘겨보세요.
+          내 취향에 맞는 장소를 고르고, 가까운 장소를 이어 나만의 하루를 만들어보세요.
         </p>
 
         <div class="reveal mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-          <a href="/notify" class="primary-cta group inline-flex w-fit items-center gap-4 px-5 py-3.5 text-[15px] font-semibold">
+          <a href="/notify" data-cta-location="hero" class="primary-cta group inline-flex w-fit items-center gap-4 px-5 py-3.5 text-[15px] font-semibold">
             알림신청
             <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-bluebrand transition group-hover:translate-x-0.5" aria-hidden="true">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </span>
           </a>
-          <p data-protected-copy="hero-count" class="text-sm font-medium text-muted">
-            <span id="signupCountHero" class="font-bold text-bluebrand" data-fallback-count="10000" style="visibility:hidden">10,000</span>명이 Doripe를 먼저 확인했어요
-          </p>
         </div>
       </div>
 
@@ -982,7 +974,7 @@
         aria-label="친구와 큐레이터의 장소 사진에서 주변 코스를 발견하고 공유하는 Doripe 흐름"
       >
         <figure class="hero-feed-screen" data-motion-layer="hero-screen" aria-hidden="true">
-          <img src="/img/figma-ui/hero-discover-feed.png" width="590" height="1278" loading="eager" decoding="async" fetchpriority="high" alt="" />
+          <img src="/img/landing-motion/hero-discover-feed.avif" width="590" height="1278" loading="eager" decoding="async" fetchpriority="high" alt="" />
         </figure>
         <svg class="hero-photo-connectors" data-motion-layer="hero-connectors" viewBox="0 0 720 660" aria-hidden="true">
           <path d="M250 205 C300 205 316 214 346 228" />
@@ -1010,6 +1002,11 @@
             <strong>주말기록</strong>
           </figcaption>
         </figure>
+        <ol class="hero-flow-steps" data-motion-layer="hero-flow" aria-hidden="true">
+          <li><b>1</b><span>사진 발견</span></li>
+          <li><b>2</b><span>주변 선택</span></li>
+          <li><b>3</b><span>코스 완성</span></li>
+        </ol>
       </div>
     </section>
 
@@ -1025,20 +1022,16 @@
 
         <div class="chat-thread">
           <article class="chat-bubble left reveal">
-            <div data-protected-copy="chat-1-meta" class="chat-meta">약속 잡기 전</div>
-            <p data-protected-copy="chat-1-text" class="chat-text">😵 오늘 어디 갈지 정해야 하는데, 딱 떠오르는 장소가 없어... 큰일이야 ㅠ_ㅠ</p>
+            <div data-protected-copy="chat-1-meta" class="chat-meta">검색창 앞</div>
+            <p data-protected-copy="chat-1-text" class="chat-text">“뭐라고 검색해야 할지 모르겠어요.”</p>
           </article>
           <article class="chat-bubble right reveal">
-            <div data-protected-copy="chat-2-meta" class="chat-meta">검색창 앞</div>
-            <p data-protected-copy="chat-2-text" class="chat-text">😰 조용하고 아늑한 분위기의 술집을 가고 싶은데, 뭐라고 검색해야 할지 모르겠어 ㅠㅠ</p>
+            <div data-protected-copy="chat-2-meta" class="chat-meta">저장함을 보다가</div>
+            <p data-protected-copy="chat-2-text" class="chat-text">“저장한 곳은 많은데 오늘 갈 곳은 못 고르겠어요.”</p>
           </article>
           <article class="chat-bubble left reveal">
-            <div data-protected-copy="chat-3-meta" class="chat-meta">나가기 직전</div>
-            <p data-protected-copy="chat-3-text" class="chat-text">🫠 인스타에 저장한 곳은 많은데, 막상 약속 잡을 때 다시 찾기가 귀찮아...</p>
-          </article>
-          <article class="chat-bubble right reveal">
-            <div data-protected-copy="chat-4-meta" class="chat-meta">동선 확인 중</div>
-            <p data-protected-copy="chat-4-text" class="chat-text">😳 마음에 드는 장소를 찾아도, 실제로 내가 오늘 갈 동선에 넣을 수 있을지 잘 모르겠어...</p>
+            <div data-protected-copy="chat-3-meta" class="chat-meta">약속을 짜다가</div>
+            <p data-protected-copy="chat-3-text" class="chat-text">“마음에 든 장소들을 하루 코스로 잇기 어려워요.”</p>
           </article>
         </div>
       </div>
@@ -1049,11 +1042,11 @@
         <div class="reveal max-w-[820px]">
           <p data-protected-copy="product-kicker" class="font-brand text-sm font-black uppercase tracking-[.18em] text-bluebrand">How it works</p>
           <h2 data-protected-copy="product-title" class="section-title mt-5 font-black text-ink">
-            장소는 발견하고, 고르고,<br />
-            떠나세요.
+            발견한 장소가,<br />
+            오늘의 코스가 되는 순간.
           </h2>
           <p data-protected-copy="product-intro" class="mt-6 max-w-[680px] text-base leading-8 tracking-[-.5px] text-muted">
-            Doripe는 단순히 장소를 검색하는 앱이 아니라, 사용자의 취향에 맞는 장소를 발견합니다.
+            유저와 큐레이터가 올린 사진에서 장소를 발견하고, 가까운 장소를 이어 친구와 공유할 수 있어요.
           </p>
         </div>
 
@@ -1069,7 +1062,7 @@
                 aria-label="유저와 큐레이터의 사진과 영상으로 장소를 발견하는 화면"
               >
                 <figure class="discovery-feed-screen" data-motion-layer="discovery-feed" aria-hidden="true">
-                  <img src="/img/figma-ui/hero-discover-feed.png" width="590" height="1278" loading="lazy" decoding="async" alt="" />
+                  <img src="/img/landing-motion/hero-discover-feed.avif" width="590" height="1278" loading="lazy" decoding="async" alt="" />
                 </figure>
                 <figure class="discovery-place-photo" data-motion-layer="discovery-photo" aria-hidden="true">
                   <img src="/img/landing-motion/campaign-alley.avif" width="1000" height="750" loading="lazy" decoding="async" alt="" />
@@ -1097,20 +1090,20 @@
               </div>
             </div>
             <div class="journey-copy reveal">
-              <p data-protected-copy="discover-kicker" class="journey-kicker">Discover</p>
-              <h3 data-protected-copy="discover-title" class="journey-title">검색어 대신 분위기로 찾아요.</h3>
+              <p data-protected-copy="discover-kicker" class="journey-kicker">INSPIRE</p>
+              <h3 data-protected-copy="discover-title" class="journey-title">누군가의 취향에서 시작해요.</h3>
               <p data-protected-copy="discover-text" class="journey-text">
-                "성수 카페"처럼 넓게 검색하지 않고, 나에게 필요한 분위기와 상황에 맞춰 장소를 탐색합니다. 다양한 장소 사진을 먼저 보고, 나의 취향에 맞는 장소만 따로 남길 수 있어요.
+                친구와 큐레이터가 올린 사진과 영상을 넘겨보며, 검색어 없이도 내 취향에 맞는 공간을 발견해요.
               </p>
             </div>
           </article>
 
           <article class="journey-row reverse">
             <div class="journey-copy reveal">
-              <p data-protected-copy="save-kicker" class="journey-kicker">Save</p>
-              <h3 data-protected-copy="save-title" class="journey-title">나중에 다시 찾기 쉬운 방식으로 저장해요.</h3>
+              <p data-protected-copy="save-kicker" class="journey-kicker">EXPLORE</p>
+              <h3 data-protected-copy="save-title" class="journey-title">가까운 장소들을 함께 골라요.</h3>
               <p data-protected-copy="save-text" class="journey-text">
-                인스타 저장함이나 지도 핀처럼 쌓이기만 하는 방식에서 벗어나, "데이트", "조용한 술집", "혼자 가기 좋은 곳"처럼 상황 태그와 필터로 다시 찾기 쉽게 정리해요.
+                마음에 든 장소를 고르면, 주변에서 함께 가기 좋은 식당·카페·놀거리를 취향에 맞춰 추천해요.
               </p>
             </div>
             <div class="journey-visual">
@@ -1123,7 +1116,7 @@
                 aria-label="선택한 장소 주변에서 함께 갈 장소를 추천하고 코스 후보로 정리하는 화면"
               >
                 <figure class="nearby-c5-screen" data-motion-layer="nearby-screen" aria-hidden="true">
-                  <img src="/img/landing-motion/c5-route-view.png" width="590" height="1276" loading="eager" fetchpriority="high" decoding="async" alt="" />
+                  <img src="/img/landing-motion/c5-route-view.avif" width="590" height="1275" loading="lazy" decoding="async" alt="" />
                 </figure>
                 <div class="nearby-place-grid" data-motion-layer="nearby-candidates" aria-hidden="true">
                   <article class="nearby-place-card is-selected" data-course-candidate="1">
@@ -1202,10 +1195,10 @@
               </div>
             </div>
             <div class="journey-copy reveal">
-              <p data-protected-copy="go-kicker" class="journey-kicker">Go</p>
-              <h3 data-protected-copy="go-title" class="journey-title">나만의 코스를 만들고, 떠나보세요.</h3>
+              <p data-protected-copy="go-kicker" class="journey-kicker">SHARE</p>
+              <h3 data-protected-copy="go-title" class="journey-title">세 곳이 모여 하나의 하루가 돼요.</h3>
               <p data-protected-copy="go-text" class="journey-text">
-                카페, 식당, 술집까지 이어서 가려면 순서와 동선이 복잡해지기 쉽습니다. Doripe에서는 장소를 지도 위에서 한 번에 보고, 오늘 움직일 동선을 간단하게 정리할 수 있어요.
+                선택한 장소들을 하나의 코스로 묶고, 친구에게 공유해 함께 저장하고 반응할 수 있어요.
               </p>
             </div>
           </article>
@@ -1216,27 +1209,24 @@
   </main>
 </div>
 
-<section id="pricing" class="relative overflow-hidden bg-white px-5 py-20 text-center md:px-10 md:py-28 lg:px-16">
+<section id="finalCtaSection" class="relative overflow-hidden bg-white px-5 py-20 text-center md:px-10 md:py-28 lg:px-16">
   <div class="glow-field opacity-50" aria-hidden="true"></div>
   <div class="relative z-10 mx-auto max-w-[980px]">
     <h2 data-protected-copy="final-title" class="cta-title reveal text-ink">
-      저장해두고 잊고 있던 장소,<br />
-      가고 싶을 때, <br class="md:hidden" />다시 꺼내보세요.
+      가고 싶은 한 장소를,<br />
+      오늘의 코스로 이어보세요.
     </h2>
     <p data-protected-copy="final-sub" class="reveal mx-auto mt-6 max-w-2xl text-base leading-8 text-muted">
       Doripe 베타가 열리면 가장 먼저 알려드릴게요.
     </p>
     <div class="reveal mt-9">
-      <a href="/notify" class="primary-cta inline-flex items-center gap-4 px-5 py-3.5 text-[15px] font-semibold">
+      <a href="/notify" data-cta-location="final" class="primary-cta inline-flex items-center gap-4 px-5 py-3.5 text-[15px] font-semibold">
         알림신청
         <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-bluebrand" aria-hidden="true">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </span>
       </a>
     </div>
-    <p data-protected-copy="final-count" class="reveal mt-5 text-sm font-medium text-muted">
-      <span id="signupCountFinal" class="font-bold text-bluebrand" data-fallback-count="10000" style="visibility:hidden">10,000</span>명이 Doripe를 먼저 확인했어요
-    </p>
   </div>
 </section>
 
@@ -1254,9 +1244,9 @@
   </div>
 </footer>
 
-<div id="mobileNotifyBar" class="fixed bottom-0 left-0 right-0 z-50 md:hidden">
+<div id="mobileNotifyBar" class="is-hidden fixed bottom-0 left-0 right-0 z-50 md:hidden">
   <div class="px-5 pb-4 pt-8" style="background:linear-gradient(0deg, rgba(255,255,255,1) 42%, rgba(255,255,255,.88), transparent);">
-    <a href="/notify" class="primary-cta flex w-full items-center justify-center gap-3 py-3.5 text-center text-sm font-semibold">알림신청</a>
+    <a href="/notify" data-cta-location="mobile" class="primary-cta flex w-full items-center justify-center gap-3 py-3.5 text-center text-sm font-semibold">알림신청</a>
   </div>
 </div>
 
@@ -1274,45 +1264,43 @@
     });
   }
 
-  fetch('/api/track', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ type:'page_view', route:'/', ...(campaignCode ? { campaignCode } : {}) }),
-    keepalive: true
-  }).catch(()=>{});
-
-  const countIds = ['signupCountHero','signupCountCompany','signupCountFinal'];
-  const countEls = countIds.map((id) => document.getElementById(id)).filter(Boolean);
-  const fallbackCount = countEls.reduce((max, el) => {
-    const value = Number(el.dataset.fallbackCount || el.textContent || 1);
-    return Number.isFinite(value) ? Math.max(max, value) : max;
-  }, 10000);
-  const countFormatter = new Intl.NumberFormat('ko-KR');
-
-  function setDisplayCount(value) {
-    const displayedCount = Math.max(1, Math.round(value));
-    countEls.forEach((el) => {
-      el.textContent = countFormatter.format(displayedCount);
-      el.style.visibility = 'visible';
-    });
+  function trackEvent(payload, preferBeacon = false) {
+    const body = JSON.stringify({ route:'/', ...(campaignCode ? { campaignCode } : {}), ...payload });
+    if (preferBeacon && navigator.sendBeacon) {
+      const sent = navigator.sendBeacon('/api/track', new Blob([body], { type:'application/json' }));
+      if (sent) return;
+    }
+    fetch('/api/track', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body,
+      keepalive: true
+    }).catch(()=>{});
   }
 
-  fetch('/api/count', { cache: 'no-store' }).then(r => r.json()).then(j => {
-    const latestCount = Number(j?.count);
-    setDisplayCount(Number.isFinite(latestCount) ? latestCount : fallbackCount);
-  }).catch(() => {
-    setDisplayCount(fallbackCount);
+  trackEvent({ type:'page_view' });
+  document.querySelectorAll('[data-cta-location]').forEach((cta) => {
+    cta.addEventListener('click', () => {
+      trackEvent({ type:'cta_click', ctaLocation: cta.dataset.ctaLocation }, true);
+    });
   });
 
   const mobileNotifyBar = document.getElementById('mobileNotifyBar');
-  const businessSection = document.getElementById('business');
+  const heroSection = document.getElementById('heroSection');
+  const finalCtaSection = document.getElementById('finalCtaSection');
   const supportsIntersectionObserver = typeof window.IntersectionObserver === 'function';
-  if (mobileNotifyBar && businessSection && supportsIntersectionObserver) {
+  if (mobileNotifyBar && heroSection && finalCtaSection && supportsIntersectionObserver) {
+    const visibleSections = new Set();
     const mobileBarObserver = new IntersectionObserver((entries) => {
-      const businessVisible = entries.some((entry) => entry.isIntersecting);
-      mobileNotifyBar.classList.toggle('is-hidden', businessVisible);
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) visibleSections.add(entry.target.id);
+        else visibleSections.delete(entry.target.id);
+      });
+      const shouldHide = visibleSections.has('heroSection') || visibleSections.has('finalCtaSection');
+      mobileNotifyBar.classList.toggle('is-hidden', shouldHide);
     }, { threshold: 0.12 });
-    mobileBarObserver.observe(businessSection);
+    mobileBarObserver.observe(heroSection);
+    mobileBarObserver.observe(finalCtaSection);
   }
 
   if (supportsIntersectionObserver) {

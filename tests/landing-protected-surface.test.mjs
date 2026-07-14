@@ -16,7 +16,7 @@ test("landing copy blocks and every notify CTA match the approved surface", () =
 });
 
 test("changing or removing one protected copy block fails the contract", () => {
-  const changed = home.replace("오늘 어디 갈지,", "오늘 뭐 할지,");
+  const changed = home.replace("감도 높은 사진에서,", "마음에 드는 사진에서,");
   assert.throws(
     () => assertProtectedLandingSurface(changed),
     /protected landing copy/i,
@@ -31,7 +31,7 @@ test("changing or removing one protected copy block fails the contract", () => {
 
 test("changing one notify CTA text or href fails the contract", () => {
   const changedText = home.replace(
-    /(<a href="\/notify" class="primary-cta group[\s\S]*?)알림신청/,
+    /(<a href="\/notify"[^>]*class="primary-cta group[\s\S]*?)알림신청/,
     "$1베타 신청",
   );
   assert.throws(
@@ -40,8 +40,8 @@ test("changing one notify CTA text or href fails the contract", () => {
   );
 
   const changedHref = home.replace(
-    'href="/notify" class="primary-cta group',
-    'href="/waitlist" class="primary-cta group',
+    'href="/notify" data-cta-location="hero"',
+    'href="/waitlist" data-cta-location="hero"',
   );
   assert.throws(
     () => assertProtectedLandingSurface(changedHref),
