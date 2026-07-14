@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { posix } from "node:path";
 
 export const CONTENT_TYPES = Object.freeze(["place_event", "collection", "route"]);
 export const RIGHTS_STATUSES = Object.freeze(["confirmed", "not_found", "restricted"]);
@@ -23,7 +24,10 @@ const sourceSchema = z.object({
 const assetSchema = z.object({
   id: z.string().min(1),
   kind: z.literal("web_photo"),
-  localPath: z.string().min(1),
+  localPath: z.string().min(1).refine((localPath) => {
+    const normalizedPath = posix.normalize(localPath.replaceAll("\\", "/"));
+    return !/(?:^|\/)public\/instagram-pinned-feed\/assets(?:\/|$)/.test(normalizedPath);
+  }, "AI asset folder is forbidden"),
   sourceUrl: z.string().url(),
   credit: z.string().min(1),
   rightsStatus: z.enum(RIGHTS_STATUSES),
@@ -53,7 +57,10 @@ const candidateSchema = z.object({
   expiresAt: z.string().datetime().nullable(),
   sources: z.array(sourceSchema).min(1),
   assets: z.array(assetSchema).min(1),
-  editorialElements: z.array(z.enum(EDITORIAL_ELEMENTS)).min(2),
+  editorialElements: z.array(z.enum(EDITORIAL_ELEMENTS)).min(2).refine(
+    (elements) => new Set(elements).size >= 2,
+    "Candidate requires at least two unique editorial elements",
+  ),
   scores: scoreSchema,
 }).superRefine((candidate, context) => {
   const evidence = candidate.sources.find(({ id }) => id === candidate.domesticEvidenceSourceId);
