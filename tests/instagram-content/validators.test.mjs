@@ -44,6 +44,7 @@ const validRouteSlides = [
     visibleText: [validDraft.brandQuestion, "Doripe."],
     brandQuestion: validDraft.brandQuestion,
     hasDoripeLogo: true,
+    doripeLogoColorHex: "#20F58A",
     hasBrandWordmark: true,
     hasPhoneMockup: true,
     backgroundHex: "#050505",
@@ -92,6 +93,7 @@ const validSlides = [
     visibleText: ["이 전시 다음에 갈 장소가 궁금하다면?", "Doripe."],
     brandQuestion: "이 전시 다음에 갈 장소가 궁금하다면?",
     hasDoripeLogo: true,
+    doripeLogoColorHex: "#20F58A",
     hasBrandWordmark: true,
     hasPhoneMockup: true,
     backgroundHex: "#050505",
@@ -188,10 +190,23 @@ test("caption requires location, two keyword phrases, and fact source IDs", () =
   assert.deepEqual(validateCaption(validDraft), { ok: true });
 });
 
-test("caption blocks direct calls to send, save, or share", () => {
-  for (const caption of ["친구에게 보내주세요.", "나중을 위해 저장하세요.", "같이 공유해 주세요."]) {
+test("caption blocks direct imperative calls without banning non-imperative words", () => {
+  for (const caption of [
+    "친구에게 보내주세요.",
+    "나중을 위해 저장하세요.",
+    "저장해 주세요.",
+    "같이 공유해 주세요.",
+    "공유하세요.",
+    "지금 확인하세요.",
+    "다운로드하세요.",
+  ]) {
     assert.throws(() => validateCaption({ ...validDraft, caption }), /direct CTA/i);
   }
+
+  assert.deepEqual(validateCaption({
+    ...validDraft,
+    caption: "저장과 공유가 자연스럽게 이어지는 장소를 확인한 기록입니다.",
+  }), { ok: true });
 });
 
 test("every caption fact source ID must match a candidate source", () => {
@@ -267,15 +282,61 @@ test("place and event photo slides may not contain text", () => {
       ? { ...slide, textSlots: ["slot:body:01"] }
       : slide),
   }), /photo.*text/i);
-});
 
-test("the brand end slide requires a phone mockup", () => {
   assert.throws(() => validateSlideEvidence(placeEventDraft, {
     ...placeEventLayout,
-    slides: validSlides.map((slide, index) => index === 5
-      ? { ...slide, hasPhoneMockup: false }
+    slides: validSlides.map((slide, index) => index === 1
+      ? { ...slide, visibleText: ["중간 장 문구"] }
       : slide),
-  }), /phone mockup/i);
+  }), /photo.*text/i);
+});
+
+test("slides reject direct imperative calls", () => {
+  for (const visibleText of [
+    "저장해 주세요.",
+    "공유하세요.",
+    "지금 확인하세요.",
+    "다운로드하세요.",
+  ]) {
+    assert.throws(() => validateSlideEvidence(validDraft, {
+      ...validLayoutEvidence,
+      slides: validRouteSlides.map((slide, index) => index === 0
+        ? { ...slide, visibleText: [visibleText] }
+        : slide),
+    }), /direct CTA/i);
+  }
+});
+
+test("the brand end slide requires the exact green Doripe logo color", () => {
+  for (const doripeLogoColorHex of [undefined, "#20f58a", "#FFFFFF"]) {
+    assert.throws(() => validateSlideEvidence(placeEventDraft, {
+      ...placeEventLayout,
+      slides: validSlides.map((slide, index) => index === 5
+        ? { ...slide, doripeLogoColorHex }
+        : slide),
+    }), /logo.*#20F58A/i);
+  }
+});
+
+test("the brand end slide rejects every missing required condition", () => {
+  const missingConditions = [
+    ["role", /brand_end/i],
+    ["backgroundHex", /background.*#050505/i],
+    ["hasPhoneMockup", /phone mockup/i],
+    ["hasDoripeLogo", /Doripe logo/i],
+    ["hasBrandWordmark", /wordmark/i],
+    ["textSlots", /slot:brand-question/i],
+    ["brandQuestion", /brand question.*match/i],
+  ];
+
+  for (const [field, expectedError] of missingConditions) {
+    const finalSlide = { ...validSlides.at(-1) };
+    delete finalSlide[field];
+    assert.throws(() => validateSlideEvidence(placeEventDraft, {
+      ...placeEventLayout,
+      slides: [...validSlides.slice(0, -1), finalSlide],
+    }), expectedError, `missing ${field} should fail`);
+  }
 });
 
 test("valid slide evidence passes presentation validation", () => {

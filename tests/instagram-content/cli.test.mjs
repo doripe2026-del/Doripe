@@ -68,6 +68,7 @@ function validRouteLayoutEvidence() {
         visibleText: [validDraft.brandQuestion, "Doripe."],
         brandQuestion: validDraft.brandQuestion,
         hasDoripeLogo: true,
+        doripeLogoColorHex: "#20F58A",
         hasBrandWordmark: true,
         hasPhoneMockup: true,
         backgroundHex: "#050505",
