@@ -95,6 +95,14 @@ npm run instagram:content -- check-template docs/instagram-content/template-cont
 
 사진은 `$WORK_ROOT/assets/` 아래에만 저장한다. 원본 사진을 Git에 커밋하지 않는다. 저장소의 `public/`이나 테스트 fixture로 복사하지 않는다.
 
+사진의 시각 기준은 **밝은 로컬 에디토리얼**이다. 장소의 성격이 드러나는 자연광 사진을 우선하고, 한 package의 목표 비율은 **장소 50% · 사람 25% · 음식·디테일 25%**로 둔다. 사람이 나오는 사진은 과도하게 연출된 정면 포즈보다 공간 안에서 걷거나 머무는 자연스러운 뒷모습을 우선한다. 음식과 디테일은 장소 경험을 구체적으로 보여주는 경우에만 고른다.
+
+- 모든 사진은 감도 점수 70점 이상이어야 한다.
+- 모든 사진은 짧은 변 1080px 이상이어야 한다.
+- 사진이 4장 이상이면 최소 3개의 shotType을 사용한다.
+- 어둡거나 흐린 사진, 회색빛이 강한 사진, 장소를 구분하기 어려운 범용 사진은 제외한다.
+- 목표 비율을 정확히 맞추지 못하더라도 임의로 낮은 품질 사진을 넣지 않고 `review.txt`에 mix 경고를 남긴다.
+
 ## 4. 후보 점수 계산과 선택
 
 후보 JSON과 history JSON을 준비한 뒤 다음 명령을 실행한다.
@@ -128,15 +136,18 @@ CLI가 국내 계약을 다시 검사하고, 30일 중복을 제외하고, 70점
 
 Figma connector로 파일 `9btf9oUzIvw3JQq4OPyYEn`의 `Instagram Content Automation` 페이지를 열고, 후보 유형과 일치하는 root를 복제한다.
 
-- `PLACE_EVENT: 28:14`
-- `COLLECTION: 28:15`
-- `ROUTE: 28:16`
+- `PLACE_EVENT: 43:25`
+- `COLLECTION: 50:31`
+- `ROUTE: 46:49`
 
 복제본에서는 `slot:* 레이어만` 텍스트·사진·credit 값으로 교체한다. root 구조, 캔버스, safe area와 공통 스타일은 바꾸지 않는다. 사용하지 않는 선택 슬라이드는 숨긴다. 템플릿 계약의 최소·최대 슬라이드 수를 지킨다.
 
 - `place_event`의 표지와 마지막 장 사이 중간 장은 모든 텍스트 slot을 비우거나 숨겨 텍스트를 모두 제거한다. 중간 장에는 사진과 Doripe 심볼만 남긴다.
 - 각 carousel의 마지막 장은 해당 root에 있는 승인된 공통 `BRAND_END` 프레임을 복제해 사용하고 직접 새로 만들지 않는다.
-- 마지막 장의 역할은 `brand_end`다. 검은 배경 `#050505`, 폰 목업, Doripe 워드마크, 정확한 초록색 `#20F58A` Doripe 로고를 유지하고 `slot:brand-question`에 draft의 `brandQuestion`을 그대로 넣는다.
+- 마지막 장의 역할은 `brand_end`다. 검은 배경 `#050505`, 폰 목업과 정확한 초록색 `#20F58A` Doripe 심볼을 유지하고 `slot:brand-question`에 draft의 `brandQuestion`을 그대로 넣는다. 워드마크는 넣지 않는다.
+- 폰 안에는 실제 Discover 캡처 `public/app-preview/assets/references/b2.png`를 사용한다. 종류는 `actual_discover_capture`, 원본 크기는 393 × 852이며 Figma에서 다시 그리지 않는다.
+- Doripe 심볼은 `/Users/cityboy/Desktop/Doripe Assets/icon removed.png`를 사용한다. 텍스트 워드마크나 대체 아이콘으로 바꾸지 않는다.
+- 마지막 카드의 질문만 콘텐츠별로 바꾸고, 모든 콘텐츠에 같은 앱 화면을 사용한다.
 - 표지, 중간 장, 마지막 장 어디에도 직접 CTA를 넣지 않는다.
 
 각 슬라이드를 스크린샷으로 확인한다.
@@ -155,7 +166,7 @@ CLI는 `docs/instagram-content/template-contract.json` 전체를 canonical `expe
 
 또한 `slides` 배열에는 실제 게시 순서대로 모든 슬라이드의 presentation 증거를 기록한다. `slides.length`는 `slideCount`와 같아야 하고, 첫 장은 `cover`, 마지막 장은 `brand_end`여야 한다. 각 슬라이드의 `nodeId`는 실제 export 대상 Figma frame ID와 일치하는 `숫자:숫자` 형식이어야 한다. 각 `visibleText`는 화면에 실제로 보이는 문구와 일치해야 한다.
 
-- `brand_end.visibleText`는 `[draft.brandQuestion, "Doripe."]` 두 항목만 정확히 기록한다. 질문은 정확히 하나이고 `?`로 끝나야 한다.
+- `brand_end.visibleText`는 `[draft.brandQuestion]` 한 항목만 정확히 기록한다. 질문은 정확히 하나이고 `?`로 끝나야 한다.
 - `place_event` 중간 사진 장은 `hasPhoto: true`와 `visibleElementKinds: ["photo", "safe_region", "doripe_logo"]`를 기록한다. gradient, accent, badge 같은 다른 요소가 있으면 실패다.
 
 ROUTE 7장 예시는 다음과 같다. 다른 유형은 canonical 계약의 `id`, `rootNodeId`, slide 범위와 slot 목록을 그대로 사용한다.
@@ -163,7 +174,7 @@ ROUTE 7장 예시는 다음과 같다. 다른 유형은 canonical 계약의 `id`
 ```json
 {
   "templateId": "route",
-  "rootNodeId": "28:16",
+  "rootNodeId": "46:49",
   "canvas": { "width": 1080, "height": 1350 },
   "slideCount": 7,
   "slides": [
@@ -183,12 +194,19 @@ ROUTE 7장 예시는 다음과 같다. 다른 유형은 canonical 계약의 `id`
       "role": "brand_end",
       "nodeId": "100:7",
       "textSlots": ["slot:brand-question"],
-      "visibleText": ["내 취향으로 새로운 하루를 만들고 싶다면?", "Doripe."],
+      "visibleText": ["내 취향으로 새로운 하루를 만들고 싶다면?"],
       "brandQuestion": "내 취향으로 새로운 하루를 만들고 싶다면?",
       "hasDoripeLogo": true,
       "doripeLogoColorHex": "#20F58A",
-      "hasBrandWordmark": true,
+      "logoSha256": "b18f6f59e483b6363a94c96a10b67e092a231df6d29497d2a2f7cbec40905a76",
+      "hasBrandWordmark": false,
       "hasPhoneMockup": true,
+      "usesActualAppCapture": true,
+      "appScreenKind": "actual_discover_capture",
+      "appScreenSourcePath": "public/app-preview/assets/references/b2.png",
+      "appScreenWidth": 393,
+      "appScreenHeight": 852,
+      "appScreenSha256": "0a1ede7e8b24ab705c4f71a50dab92cfccc8b57a49f8b46451d28da036d4e250",
       "backgroundHex": "#050505"
     }
   ],

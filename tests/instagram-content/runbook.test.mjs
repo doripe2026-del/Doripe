@@ -70,6 +70,20 @@ test("daily runbook bans generated images and records photo rights", async () =>
   ]);
 });
 
+test("daily runbook defines the bright local editorial photo bar", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "밝은 로컬 에디토리얼",
+    "장소 50% · 사람 25% · 음식·디테일 25%",
+    "감도 점수 70점 이상",
+    "짧은 변 1080px 이상",
+    "최소 3개의 shotType",
+    "어둡거나 흐린 사진",
+    "자연스러운 뒷모습",
+  ]);
+});
+
 test("daily runbook defines copy and editorial quality gates", async () => {
   const text = await readRunbook();
 
@@ -102,9 +116,9 @@ test("daily runbook locks Figma roots, slot edits, and visual correction order",
   const text = await readRunbook();
 
   requirePhrases(text, [
-    "PLACE_EVENT: 28:14",
-    "COLLECTION: 28:15",
-    "ROUTE: 28:16",
+    "PLACE_EVENT: 43:25",
+    "COLLECTION: 50:31",
+    "ROUTE: 46:49",
     "Figma connector",
     "slot:* 레이어만",
     "사용하지 않는 선택 슬라이드는 숨긴다",
@@ -114,6 +128,19 @@ test("daily runbook locks Figma roots, slot edits, and visual correction order",
     "90%",
     "단어 중간 줄바꿈",
     "34px",
+  ]);
+});
+
+test("daily runbook locks the actual Discover capture and Desktop icon", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "public/app-preview/assets/references/b2.png",
+    "actual_discover_capture",
+    "393 × 852",
+    "/Users/cityboy/Desktop/Doripe Assets/icon removed.png",
+    "Figma에서 다시 그리지 않는다",
+    "모든 콘텐츠에 같은 앱 화면",
   ]);
 });
 
