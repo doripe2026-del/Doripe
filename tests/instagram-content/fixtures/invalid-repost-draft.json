@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "candidate": {
+    "id": "seongsu-repost",
+    "type": "route",
+    "title": "성수 주말 코스 재게시",
+    "hook": "출처만 덧붙인 재게시",
+    "countryCode": "KR",
+    "domesticEvidenceSourceId": "official-seongsu-route",
+    "region": "서울 성동구",
+    "placeIds": ["place-a", "place-b"],
+    "expiresAt": null,
+    "sources": [
+      {
+        "id": "official-seongsu-route",
+        "kind": "official",
+        "url": "https://example.go.kr/seongsu-route",
+        "title": "성수 지역 안내",
+        "publisher": "공공기관",
+        "checkedAt": "2026-07-14T00:00:00.000Z"
+      }
+    ],
+    "assets": [
+      {
+        "id": "photo-seongsu-repost",
+        "kind": "web_photo",
+        "localPath": "/tmp/photo-seongsu-repost.jpg",
+        "sourceUrl": "https://example.com/photo-seongsu-repost",
+        "credit": "Example",
+        "rightsStatus": "confirmed",
+        "privacyNote": ""
+      }
+    ],
+    "editorialElements": ["selection_reason"],
+    "scores": {
+      "sendPotential": 3,
+      "saveValue": 3,
+      "brandFit": 2,
+      "timeliness": 3,
+      "photoQuality": 4,
+      "originalityPotential": 1,
+      "factCompleteness": 4,
+      "reusePermission": 5
+    }
+  },
+  "caption": "기존 콘텐츠에 출처만 덧붙인 재게시 초안입니다.",
+  "cta": "save",
+  "keywordPhrases": ["성수 데이트", "서울 산책 코스"],
+  "locationTag": "서울 성동구",
+  "factSourceIds": ["official-seongsu-route"]
+}
