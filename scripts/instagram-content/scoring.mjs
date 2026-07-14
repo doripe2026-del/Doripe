@@ -26,6 +26,10 @@ export function isDuplicateCandidate(candidate, history, now = new Date()) {
 }
 
 export function selectDailyCandidates(candidates, history, boosts = {}, limit = 2) {
+  const normalizedLimit = Number.isFinite(limit) && limit > 0
+    ? Math.min(2, Math.floor(limit))
+    : 0;
+
   return candidates
     .filter((candidate) => !isDuplicateCandidate(candidate, history))
     .map((candidate) => ({
@@ -34,5 +38,5 @@ export function selectDailyCandidates(candidates, history, boosts = {}, limit = 
     }))
     .filter(({ totalScore }) => totalScore >= 70)
     .sort((a, b) => b.totalScore - a.totalScore || a.id.localeCompare(b.id))
-    .slice(0, Math.min(2, limit));
+    .slice(0, normalizedLimit);
 }
