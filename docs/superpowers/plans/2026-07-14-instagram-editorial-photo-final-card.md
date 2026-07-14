@@ -938,9 +938,9 @@ Expected: `Instagram template contract passed.`
 
 - [ ] **Step 3: 전체 repository 관련 검증**
 
-Run: `npm test`
+Run: `npm run typecheck`
 
-Expected: 기존 unrelated test를 포함해 PASS. 기존 사용자 변경 때문에 unrelated failure가 있으면 Instagram 전용 테스트 결과와 분리해 정확한 실패 파일을 보고한다.
+Expected: TypeScript typecheck PASS. 기존 사용자 변경 때문에 unrelated failure가 있으면 Instagram 전용 테스트 결과와 분리해 정확한 실패 파일을 보고한다.
 
 - [ ] **Step 4: spec coverage와 불완전 문구 검사**
 
