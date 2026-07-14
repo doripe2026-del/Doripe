@@ -1,12 +1,17 @@
 import { EDITORIAL_ELEMENTS } from "./contracts.mjs";
 
-const KOREAN_DIRECT_CTA_PATTERN = /(?:보내\s*(?:주세요|보세요|세요)|전달\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요)|(?:저장|공유|팔로우|확인|다운로드|설치|클릭|신청)\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요)|눌러\s*(?:주세요|보세요|세요)|알림(?:을)?\s*(?:신청|설정)?\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요))/i;
+const KOREAN_DIRECT_CTA_PATTERN = /(?:보내\s*(?:주세요|보세요|세요)|전달\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요)|(?:저장|공유|팔로우|확인|다운로드|설치|클릭|신청|북마크)\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요)|눌러\s*(?:주세요|보세요|세요)|알림(?:을)?\s*(?:신청|설정)?\s*(?:해\s*주세요|해주세요|하세요|해\s*보세요|해보세요))/i;
 const ENGLISH_DIRECT_CTA_PATTERN = /^(?:please\s+)?(?:send|save|share|follow|download|install|click|tap|check)\b/i;
+const BRAND_QUESTION_KEYWORDS = Object.freeze({
+  place_event: ["전시", "행사", "이곳", "이 장소", "갈 장소", "함께 갈"],
+  collection: ["취향", "장소", "발견", "모음"],
+  route: ["코스", "루트", "하루", "취향", "산책"],
+});
 
 function containsDirectCta(value) {
   if (KOREAN_DIRECT_CTA_PATTERN.test(value)) return true;
   return String(value)
-    .split(/(?:[.!?]\s+|\n+)/)
+    .split(/(?:[.!?,;:]\s+|\n+)/)
     .some((segment) => ENGLISH_DIRECT_CTA_PATTERN.test(
       segment.trim().replace(/^[^A-Za-z]+/, ""),
     ));
@@ -127,6 +132,11 @@ export function validateSlideEvidence(draft, evidence) {
   if (slides.length !== evidence.slideCount) {
     throw new Error("Slide evidence count must match slideCount");
   }
+  for (const slide of slides) {
+    if (typeof slide?.nodeId !== "string" || !/^\d+:\d+$/.test(slide.nodeId)) {
+      throw new Error("Every slide requires a valid Figma node ID");
+    }
+  }
   if (slides[0]?.role !== "cover") throw new Error("First slide must be cover");
 
   const last = slides.at(-1);
@@ -147,6 +157,10 @@ export function validateSlideEvidence(draft, evidence) {
   }
   if (last.brandQuestion !== draft.brandQuestion) {
     throw new Error("Brand question must match the draft");
+  }
+  const relevantKeywords = BRAND_QUESTION_KEYWORDS[draft.candidate?.type] ?? [];
+  if (!relevantKeywords.some((keyword) => draft.brandQuestion.includes(keyword))) {
+    throw new Error("Brand question must be relevant to the content type");
   }
 
   const finalVisibleText = requireArray(last.visibleText, "Brand end visible text");

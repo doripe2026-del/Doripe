@@ -15,6 +15,11 @@ import {
   parsePackageManifest,
 } from "../../scripts/instagram-content/contracts.mjs";
 import { writeProductionPackage } from "../../scripts/instagram-content/package-writer.mjs";
+import {
+  makeRgbaPng,
+  pngChunk,
+  PNG_SIGNATURE,
+} from "./helpers/png.mjs";
 
 const fixtureUrl = new URL("./fixtures/valid-draft.json", import.meta.url);
 const fixture = JSON.parse(await readFile(fixtureUrl, "utf8"));
@@ -33,23 +38,10 @@ const validation = {
 };
 const now = new Date("2026-07-14T00:00:00.000Z");
 
-function pngHeader(width = 1080, height = 1350, marker = 0) {
-  const bytes = Buffer.alloc(33);
-  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(bytes, 0);
-  bytes.writeUInt32BE(13, 8);
-  bytes.write("IHDR", 12, "ascii");
-  bytes.writeUInt32BE(width, 16);
-  bytes.writeUInt32BE(height, 20);
-  bytes[24] = 8;
-  bytes[25] = 6;
-  bytes[32] = marker;
-  return bytes;
-}
-
 async function createPng(directory, name, marker, width = 1080, height = 1350) {
   await mkdir(directory, { recursive: true });
   const path = join(directory, name);
-  await writeFile(path, pngHeader(width, height, marker));
+  await writeFile(path, makeRgbaPng({ width, height, marker }));
   return path;
 }
 
@@ -178,24 +170,53 @@ test("writer rejects a non-PNG file renamed with a png extension", async () => {
   await assert.rejects(access(join(outputRoot, "2026-07-14", "01-seongsu-weekend-route")));
 });
 
-test("writer rejects signature-only pseudo-PNGs, invalid IHDR chunks, and wrong dimensions", async () => {
+test("writer fully decodes PNGs and rejects corrupt or incomplete structures", async () => {
   const outputRoot = await mkdtemp(join(tmpdir(), "doripe-instagram-"));
+  const headerOnly = join(outputRoot, "header-only.png");
   const signatureOnly = join(outputRoot, "signature-only.png");
   const invalidIhdr = join(outputRoot, "invalid-ihdr.png");
   const invalidIhdrFields = join(outputRoot, "invalid-ihdr-fields.png");
+  const badCrc = join(outputRoot, "bad-crc.png");
+  const corruptIdat = join(outputRoot, "corrupt-idat.png");
+  const trailingIdat = join(outputRoot, "trailing-idat.png");
+  const missingIend = join(outputRoot, "missing-iend.png");
   const wrongDimensions = await createPng(outputRoot, "wrong-size.png", 1, 1080, 1080);
-  await writeFile(signatureOnly, Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
-  const invalidHeader = pngHeader();
+  await writeFile(signatureOnly, PNG_SIGNATURE);
+  await writeFile(headerOnly, makeRgbaPng().subarray(0, 33));
+
+  const valid = makeRgbaPng();
+  const invalidHeader = Buffer.from(valid);
   invalidHeader.write("IDAT", 12, "ascii");
   await writeFile(invalidIhdr, invalidHeader);
-  const invalidFieldsHeader = pngHeader();
+  const invalidFieldsHeader = Buffer.from(valid);
   invalidFieldsHeader[26] = 1;
   await writeFile(invalidIhdrFields, invalidFieldsHeader);
+  const badCrcBytes = Buffer.from(valid);
+  badCrcBytes[29] ^= 0xff;
+  await writeFile(badCrc, badCrcBytes);
+  await writeFile(corruptIdat, Buffer.concat([
+    valid.subarray(0, 33),
+    pngChunk("IDAT", Buffer.from([0x00, 0x01, 0x02, 0x03])),
+    pngChunk("IEND"),
+  ]));
+  const idatLength = valid.readUInt32BE(33);
+  const validIdatData = valid.subarray(41, 41 + idatLength);
+  await writeFile(trailingIdat, Buffer.concat([
+    valid.subarray(0, 33),
+    pngChunk("IDAT", Buffer.concat([validIdatData, Buffer.from([0x00, 0x01])])),
+    pngChunk("IEND"),
+  ]));
+  await writeFile(missingIend, makeRgbaPng({ includeIend: false }));
 
   for (const [source, expected] of [
-    [signatureOnly, /IHDR|structure/i],
+    [signatureOnly, /IHDR|truncated|structure/i],
+    [headerOnly, /IDAT|IEND|truncated|structure/i],
     [invalidIhdr, /IHDR/i],
     [invalidIhdrFields, /IHDR/i],
+    [badCrc, /CRC/i],
+    [corruptIdat, /IDAT|inflate|decode/i],
+    [trailingIdat, /IDAT|trailing|decode/i],
+    [missingIend, /IEND/i],
     [wrongDimensions, /1080x1350|dimensions/i],
   ]) {
     await assert.rejects(writeProductionPackage({

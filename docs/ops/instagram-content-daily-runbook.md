@@ -153,7 +153,7 @@ CLI는 `docs/instagram-content/template-contract.json` 전체를 canonical `expe
 
 `layout-evidence.json`에는 선택한 계약의 모든 slot을 정확히 한 번 기록한다. 빠진 slot과 추가 slot은 모두 실패다. 모든 slot은 `editable: true`여야 한다. 사진 slot을 제외한 모든 텍스트 slot에는 `overflows`, `midWordBreak`, `baseFontSize`, `fontSize`를 실제 검사값으로 기록한다.
 
-또한 `slides` 배열에는 실제 게시 순서대로 모든 슬라이드의 presentation 증거를 기록한다. `slides.length`는 `slideCount`와 같아야 하고, 첫 장은 `cover`, 마지막 장은 `brand_end`여야 한다. 각 `visibleText`는 화면에 실제로 보이는 문구와 일치해야 한다.
+또한 `slides` 배열에는 실제 게시 순서대로 모든 슬라이드의 presentation 증거를 기록한다. `slides.length`는 `slideCount`와 같아야 하고, 첫 장은 `cover`, 마지막 장은 `brand_end`여야 한다. 각 슬라이드의 `nodeId`는 실제 export 대상 Figma frame ID와 일치하는 `숫자:숫자` 형식이어야 한다. 각 `visibleText`는 화면에 실제로 보이는 문구와 일치해야 한다.
 
 - `brand_end.visibleText`는 `[draft.brandQuestion, "Doripe."]` 두 항목만 정확히 기록한다. 질문은 정확히 하나이고 `?`로 끝나야 한다.
 - `place_event` 중간 사진 장은 `hasPhoto: true`와 `visibleElementKinds: ["photo", "safe_region", "doripe_logo"]`를 기록한다. gradient, accent, badge 같은 다른 요소가 있으면 실패다.
@@ -169,17 +169,19 @@ ROUTE 7장 예시는 다음과 같다. 다른 유형은 canonical 계약의 `id`
   "slides": [
     {
       "role": "cover",
+      "nodeId": "100:1",
       "textSlots": ["slot:title", "slot:subtitle", "slot:credit"],
       "visibleText": ["서울숲에서 성수까지 걷는 오후"],
       "hasDoripeLogo": true
     },
-    { "role": "content", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
-    { "role": "content", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
-    { "role": "content", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
-    { "role": "content", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
-    { "role": "content", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
+    { "role": "content", "nodeId": "100:2", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
+    { "role": "content", "nodeId": "100:3", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
+    { "role": "content", "nodeId": "100:4", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
+    { "role": "content", "nodeId": "100:5", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
+    { "role": "content", "nodeId": "100:6", "textSlots": [], "visibleText": [], "hasDoripeLogo": true },
     {
       "role": "brand_end",
+      "nodeId": "100:7",
       "textSlots": ["slot:brand-question"],
       "visibleText": ["내 취향으로 새로운 하루를 만들고 싶다면?", "Doripe."],
       "brandQuestion": "내 취향으로 새로운 하루를 만들고 싶다면?",
@@ -217,9 +219,9 @@ originality, caption, sources, layout, presentation 다섯 결과가 모두 `ok:
 
 ## 8. PNG export와 package 생성
 
-Figma 슬라이드를 순서대로 각각 1080 × 1350 PNG로 export한다. PNG 경로는 모두 달라야 하며 `exports.json`의 배열 순서가 게시 순서다.
+Figma 슬라이드를 순서대로 각각 1080 × 1350 PNG로 export한다. PNG 경로는 모두 달라야 하며 `exports.json`의 `files`, `nodeIds`, `sha256` 배열 순서가 게시 순서다. `nodeIds[i]`는 `layoutEvidence.slides[i].nodeId`와 같아야 하고 `sha256[i]`는 `files[i]`의 실제 파일 SHA-256이어야 한다. node ID도 게시물 안에서 중복될 수 없다.
 
-`finalize`는 각 파일의 PNG signature와 첫 PNG IHDR chunk를 읽어 실제 크기가 정확히 1080 × 1350인지 확인한다. 확장자만 `.png`인 파일, signature뿐인 가짜 파일, 잘못된 IHDR 또는 다른 크기는 package에 복사하지 않는다.
+`finalize`는 PNG의 모든 chunk와 CRC32를 검사하고 IDAT를 실제로 inflate한다. PNG IHDR은 1080 × 1350, 8-bit RGBA, non-interlaced여야 하며 scanline 길이가 정확해야 한다. terminal IEND가 없거나 파일 뒤에 손상 데이터가 남은 PNG는 package에 복사하지 않는다.
 
 같은 실행 날짜의 sequence 규칙은 고정이다.
 
@@ -240,6 +242,16 @@ Figma 슬라이드를 순서대로 각각 1080 × 1350 PNG로 export한다. PNG 
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/05.png",
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/06.png",
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-id/07.png"
+  ],
+  "nodeIds": ["100:1", "100:2", "100:3", "100:4", "100:5", "100:6", "100:7"],
+  "sha256": [
+    "각 01.png의 실제 64자리 SHA-256",
+    "각 02.png의 실제 64자리 SHA-256",
+    "각 03.png의 실제 64자리 SHA-256",
+    "각 04.png의 실제 64자리 SHA-256",
+    "각 05.png의 실제 64자리 SHA-256",
+    "각 06.png의 실제 64자리 SHA-256",
+    "각 07.png의 실제 64자리 SHA-256"
   ]
 }
 ```
@@ -257,11 +269,21 @@ Figma 슬라이드를 순서대로 각각 1080 × 1350 PNG로 export한다. PNG 
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/05.png",
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/06.png",
     "/tmp/doripe-instagram-content/YYYY-MM-DD/candidate-2/07.png"
+  ],
+  "nodeIds": ["200:1", "200:2", "200:3", "200:4", "200:5", "200:6", "200:7"],
+  "sha256": [
+    "각 01.png의 실제 64자리 SHA-256",
+    "각 02.png의 실제 64자리 SHA-256",
+    "각 03.png의 실제 64자리 SHA-256",
+    "각 04.png의 실제 64자리 SHA-256",
+    "각 05.png의 실제 64자리 SHA-256",
+    "각 06.png의 실제 64자리 SHA-256",
+    "각 07.png의 실제 64자리 SHA-256"
   ]
 }
 ```
 
-반드시 `exports.files.length === layoutEvidence.slideCount`여야 하고 모두 서로 다른 PNG 경로여야 한다. 개수가 다르거나 같은 경로가 중복되면 수정 후 다시 export한다.
+반드시 `exports.files.length === layoutEvidence.slideCount`이고 `nodeIds`, `sha256`도 같은 길이여야 한다. 서로 다른 PNG 경로와 서로 다른 node ID를 사용해야 한다. 개수가 다르거나 경로·node ID가 중복되거나 실제 SHA-256이 다르면 수정 후 다시 export한다.
 
 ```bash
 EXPORTS_JSON="$WORK_ROOT/<candidate-id>/exports.json"

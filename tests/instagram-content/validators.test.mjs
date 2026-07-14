@@ -28,18 +28,21 @@ const routeTemplate = templateContract.templates.find(({ id }) => id === "route"
 const validRouteSlides = [
   {
     role: "cover",
+    nodeId: "100:1",
     textSlots: ["slot:title", "slot:subtitle", "slot:credit"],
     visibleText: [validDraft.candidate.title],
     hasDoripeLogo: true,
   },
-  ...Array.from({ length: routeTemplate.minSlides - 2 }, () => ({
+  ...Array.from({ length: routeTemplate.minSlides - 2 }, (_, index) => ({
     role: "content",
+    nodeId: `100:${index + 2}`,
     textSlots: [],
     visibleText: [],
     hasDoripeLogo: true,
   })),
   {
     role: "brand_end",
+    nodeId: `100:${routeTemplate.minSlides}`,
     textSlots: ["slot:brand-question"],
     visibleText: [validDraft.brandQuestion, "Doripe."],
     brandQuestion: validDraft.brandQuestion,
@@ -76,19 +79,29 @@ const placeEventDraft = parseDraft({
   },
   brandQuestion: "이 전시 다음에 갈 장소가 궁금하다면?",
 });
+const collectionDraft = parseDraft({
+  ...structuredClone(validDraft),
+  candidate: {
+    ...structuredClone(validDraft.candidate),
+    type: "collection",
+  },
+  brandQuestion: "오늘의 취향을 더 발견하고 싶다면?",
+});
 const validSlides = [
   {
     role: "cover",
+    nodeId: "200:1",
     textSlots: ["slot:title", "slot:subtitle", "slot:credit"],
     visibleText: ["서촌의 낯선 기록 실험"],
     hasDoripeLogo: true,
   },
-  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
-  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
-  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
-  { role: "photo", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
+  { role: "photo", nodeId: "200:2", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
+  { role: "photo", nodeId: "200:3", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
+  { role: "photo", nodeId: "200:4", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
+  { role: "photo", nodeId: "200:5", textSlots: [], visibleText: [], hasDoripeLogo: true, hasPhoto: true, visibleElementKinds: ["photo", "safe_region", "doripe_logo"] },
   {
     role: "brand_end",
+    nodeId: "200:6",
     textSlots: ["slot:brand-question"],
     visibleText: ["이 전시 다음에 갈 장소가 궁금하다면?", "Doripe."],
     brandQuestion: "이 전시 다음에 갈 장소가 궁금하다면?",
@@ -205,6 +218,8 @@ test("caption blocks direct imperative calls without banning non-imperative word
     "버튼을 클릭해 보세요.",
     "지금 신청하세요.",
     "알림 신청해 주세요.",
+    "북마크해 주세요.",
+    "북마크하세요.",
     "Send this to a friend.",
     "Please save this post.",
     "Share with someone you love.",
@@ -215,6 +230,8 @@ test("caption blocks direct imperative calls without banning non-imperative word
     "Tap here.",
     "Check it out.",
     "👉 Save this post.",
+    "If this helped, save this post.",
+    "For later, share this with a friend.",
   ]) {
     assert.throws(() => validateCaption({ ...validDraft, caption }), /direct CTA/i);
   }
@@ -314,6 +331,17 @@ test("place and event photo slides may not contain text", () => {
   }), /photo.*text/i);
 });
 
+test("every slide requires a Figma node ID", () => {
+  for (const nodeId of [undefined, "100", "node:1", "1:two"]) {
+    assert.throws(() => validateSlideEvidence(validDraft, {
+      ...validLayoutEvidence,
+      slides: validRouteSlides.map((slide, index) => index === 1
+        ? { ...slide, nodeId }
+        : slide),
+    }), /node ID/i);
+  }
+});
+
 test("place and event photo slides require a photo and only the exact allowed element kinds", () => {
   for (const replacement of [
     { hasPhoto: false },
@@ -393,6 +421,38 @@ test("the brand end slide requires exactly the draft question and Doripe wordmar
       ...placeEventLayout,
       slides: [...validSlides.slice(0, -1), { ...validSlides.at(-1), visibleText }],
     }), /visible text|question|Doripe\./i);
+  }
+});
+
+test("brand questions must be deterministically relevant to the content type", () => {
+  for (const [draft, layout] of [
+    [validDraft, validLayoutEvidence],
+    [placeEventDraft, placeEventLayout],
+    [collectionDraft, {
+      ...validLayoutEvidence,
+      slides: validLayoutEvidence.slides.map((slide, index) =>
+        index === validLayoutEvidence.slides.length - 1
+          ? {
+              ...slide,
+              brandQuestion: collectionDraft.brandQuestion,
+              visibleText: [collectionDraft.brandQuestion, "Doripe."],
+            }
+          : slide),
+    }],
+  ]) {
+    assert.throws(() => validateSlideEvidence(
+      { ...draft, brandQuestion: "오늘 저녁 뭐 먹을까?" },
+      {
+        ...layout,
+        slides: layout.slides.map((slide, index) => index === layout.slides.length - 1
+          ? {
+              ...slide,
+              brandQuestion: "오늘 저녁 뭐 먹을까?",
+              visibleText: ["오늘 저녁 뭐 먹을까?", "Doripe."],
+            }
+          : slide),
+      },
+    ), /relevant|content type/i);
   }
 });
 

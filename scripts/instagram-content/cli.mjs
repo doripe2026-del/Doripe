@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { readFile, rename, rm, writeFile } from "node:fs/promises";
 import { basename, dirname, join, resolve } from "node:path";
 import {
@@ -111,6 +111,45 @@ async function loadCanonicalTemplate() {
   return parseTemplateContract(await readJson(CANONICAL_TEMPLATE_URL));
 }
 
+async function validateBoundExports(exports, layoutEvidence) {
+  if (!exports || typeof exports !== "object" || Array.isArray(exports)) {
+    throw new Error("Exports must be an object with sequence, files, nodeIds, and sha256");
+  }
+  const slideCount = layoutEvidence.slideCount;
+  for (const field of ["files", "nodeIds", "sha256"]) {
+    if (!Array.isArray(exports[field]) || exports[field].length !== slideCount) {
+      throw new Error(`Exports ${field} must be an array matching slideCount ${slideCount}`);
+    }
+  }
+  if (new Set(exports.files).size !== slideCount) {
+    throw new Error("PNG export paths must be unique for every slide");
+  }
+  if (new Set(exports.nodeIds).size !== slideCount) {
+    throw new Error("Export node IDs must be unique for every slide");
+  }
+
+  for (let index = 0; index < slideCount; index += 1) {
+    const nodeId = exports.nodeIds[index];
+    if (typeof nodeId !== "string" || !/^\d+:\d+$/.test(nodeId)) {
+      throw new Error(`Export node ID is invalid at slide ${index + 1}`);
+    }
+    if (nodeId !== layoutEvidence.slides[index].nodeId) {
+      throw new Error(`Export node ID must match layout evidence at slide ${index + 1}`);
+    }
+    if (typeof exports.sha256[index] !== "string" || !/^[a-f0-9]{64}$/.test(exports.sha256[index])) {
+      throw new Error(`Export SHA-256 digest is invalid at slide ${index + 1}`);
+    }
+  }
+
+  const actualDigests = await Promise.all(exports.files.map(async (path) =>
+    createHash("sha256").update(await readFile(path)).digest("hex")));
+  for (let index = 0; index < slideCount; index += 1) {
+    if (actualDigests[index] !== exports.sha256[index]) {
+      throw new Error(`Export SHA-256 must match the actual file at slide ${index + 1}`);
+    }
+  }
+}
+
 function printUsage(command) {
   if (COMMANDS[command]) {
     console.error(COMMANDS[command].usage);
@@ -167,18 +206,7 @@ async function main() {
   }
 
   const exports = await readJson(args[2]);
-  if (!exports || typeof exports !== "object" || Array.isArray(exports)) {
-    throw new Error("Exports must be an object with sequence and files");
-  }
-  const exportCount = Array.isArray(exports.files) ? exports.files.length : null;
-  if (exportCount !== layoutEvidence.slideCount) {
-    throw new Error(
-      `PNG export count must match validated slide count: expected ${layoutEvidence.slideCount}, received ${exportCount ?? "non-array"}`,
-    );
-  }
-  if (new Set(exports.files).size !== exportCount) {
-    throw new Error("PNG export paths must be unique for every slide");
-  }
+  await validateBoundExports(exports, layoutEvidence);
   const result = await writeProductionPackage({
     outputRoot: args[3],
     sequence: exports.sequence,

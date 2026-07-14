@@ -5,6 +5,8 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
+import { makeRgbaPng } from "./helpers/png.mjs";
 
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 const cliPath = join(repoRoot, "scripts/instagram-content/cli.mjs");
@@ -52,18 +54,21 @@ function validRouteLayoutEvidence() {
     slides: [
       {
         role: "cover",
+        nodeId: "100:1",
         textSlots: ["slot:title", "slot:subtitle", "slot:credit"],
         visibleText: [validDraft.candidate.title],
         hasDoripeLogo: true,
       },
-      ...Array.from({ length: route.minSlides - 2 }, () => ({
+      ...Array.from({ length: route.minSlides - 2 }, (_, index) => ({
         role: "content",
+        nodeId: `100:${index + 2}`,
         textSlots: [],
         visibleText: [],
         hasDoripeLogo: true,
       })),
       {
         role: "brand_end",
+        nodeId: `100:${route.minSlides}`,
         textSlots: ["slot:brand-question"],
         visibleText: [validDraft.brandQuestion, "Doripe."],
         brandQuestion: validDraft.brandQuestion,
@@ -89,18 +94,7 @@ function validRouteLayoutEvidence() {
   };
 }
 
-function pngHeader(width = 1080, height = 1350, marker = 0) {
-  const bytes = Buffer.alloc(33);
-  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(bytes, 0);
-  bytes.writeUInt32BE(13, 8);
-  bytes.write("IHDR", 12, "ascii");
-  bytes.writeUInt32BE(width, 16);
-  bytes.writeUInt32BE(height, 20);
-  bytes[24] = 8;
-  bytes[25] = 6;
-  bytes[32] = marker;
-  return bytes;
-}
+const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
 test("CLI prints usage and exits non-zero without a command", () => {
   const result = runCli([]);
@@ -303,7 +297,7 @@ test("finalize rejects an export count that differs from the validated slide cou
   const pngPath = join(directory, "slide.png");
   const exportsPath = join(directory, "exports.json");
   const outputRoot = join(directory, "packages");
-  const pngBytes = pngHeader();
+  const pngBytes = makeRgbaPng();
 
   await Promise.all([
     writeJson(draftPath, validDraft),
@@ -330,7 +324,7 @@ test("finalize rejects duplicate export paths used to satisfy the slide count", 
   const exportsPath = join(directory, "exports.json");
   const outputRoot = join(directory, "packages");
   const layoutEvidence = validRouteLayoutEvidence();
-  const pngBytes = pngHeader();
+  const pngBytes = makeRgbaPng();
 
   await Promise.all([
     writeJson(draftPath, validDraft),
@@ -339,6 +333,8 @@ test("finalize rejects duplicate export paths used to satisfy the slide count", 
     writeJson(exportsPath, {
       sequence: 1,
       files: Array(layoutEvidence.slideCount).fill(pngPath),
+      nodeIds: layoutEvidence.slides.map(({ nodeId }) => nodeId),
+      sha256: Array(layoutEvidence.slideCount).fill(sha256(pngBytes)),
     }),
   ]);
 
@@ -352,6 +348,63 @@ test("finalize rejects duplicate export paths used to satisfy the slide count", 
   await assert.rejects(access(outputRoot));
 });
 
+test("finalize binds every export to its Figma node ID and declared SHA-256", async () => {
+  const directory = await makeTempDirectory();
+  const draftPath = join(directory, "draft.json");
+  const layoutPath = join(directory, "layout-evidence.json");
+  const exportsPath = join(directory, "exports.json");
+  const layoutEvidence = validRouteLayoutEvidence();
+  const pngPaths = Array.from(
+    { length: layoutEvidence.slideCount },
+    (_, index) => join(directory, `bound-slide-${index + 1}.png`),
+  );
+  const pngBytes = pngPaths.map((_, index) => makeRgbaPng({ marker: index + 1 }));
+  const validExports = {
+    sequence: 1,
+    files: pngPaths,
+    nodeIds: layoutEvidence.slides.map(({ nodeId }) => nodeId),
+    sha256: pngBytes.map(sha256),
+  };
+
+  await Promise.all([
+    writeJson(draftPath, validDraft),
+    writeJson(layoutPath, layoutEvidence),
+    ...pngPaths.map((pngPath, index) => writeFile(pngPath, pngBytes[index])),
+  ]);
+
+  const cases = [
+    {
+      exports: { sequence: 1, files: pngPaths },
+      error: /nodeIds|sha256|required/i,
+    },
+    {
+      exports: { ...validExports, nodeIds: ["999:1", ...validExports.nodeIds.slice(1)] },
+      error: /node ID.*match/i,
+    },
+    {
+      exports: { ...validExports, nodeIds: validExports.nodeIds.map(() => "100:1") },
+      error: /node IDs.*unique/i,
+    },
+    {
+      exports: { ...validExports, sha256: ["0".repeat(64), ...validExports.sha256.slice(1)] },
+      error: /SHA-256.*match|digest/i,
+    },
+  ];
+
+  for (const [index, scenario] of cases.entries()) {
+    await writeJson(exportsPath, scenario.exports);
+    const result = runCli([
+      "finalize",
+      draftPath,
+      layoutPath,
+      exportsPath,
+      join(directory, `packages-${index + 1}`),
+    ]);
+    assert.notEqual(result.status, 0, `scenario ${index + 1} should fail`);
+    assert.match(result.stderr, scenario.error);
+  }
+});
+
 test("finalize writes a complete package when PNG exports exactly match the slide count", async () => {
   const directory = await makeTempDirectory();
   const draftPath = join(directory, "draft.json");
@@ -362,13 +415,19 @@ test("finalize writes a complete package when PNG exports exactly match the slid
     { length: validRouteLayoutEvidence().slideCount },
     (_, index) => join(directory, `slide-${index + 1}.png`),
   );
-  const pngBytes = pngPaths.map((_, index) => pngHeader(1080, 1350, index + 1));
+  const pngBytes = pngPaths.map((_, index) => makeRgbaPng({ marker: index + 1 }));
+  const layoutEvidence = validRouteLayoutEvidence();
 
   await Promise.all([
     writeJson(draftPath, validDraft),
-    writeJson(layoutPath, validRouteLayoutEvidence()),
+    writeJson(layoutPath, layoutEvidence),
     ...pngPaths.map((pngPath, index) => writeFile(pngPath, pngBytes[index])),
-    writeJson(exportsPath, { sequence: 1, files: pngPaths }),
+    writeJson(exportsPath, {
+      sequence: 1,
+      files: pngPaths,
+      nodeIds: layoutEvidence.slides.map(({ nodeId }) => nodeId),
+      sha256: pngBytes.map(sha256),
+    }),
   ]);
 
   const result = runCli(

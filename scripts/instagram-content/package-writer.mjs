@@ -3,20 +3,21 @@ import {
   lstat,
   mkdir,
   mkdtemp,
-  open,
+  readFile,
   rename,
   rm,
   stat,
   writeFile,
 } from "node:fs/promises";
 import { extname, join, resolve } from "node:path";
+import { inflateSync } from "node:zlib";
 import { parsePackageManifest } from "./contracts.mjs";
 
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 const PNG_IHDR_LENGTH = 13;
-const PNG_HEADER_BYTES = 33;
 const REQUIRED_PNG_WIDTH = 1080;
 const REQUIRED_PNG_HEIGHT = 1350;
+const REQUIRED_SCANLINE_LENGTH = 1 + REQUIRED_PNG_WIDTH * 4;
 const VALIDATION_GATES = Object.freeze([
   "originality",
   "caption",
@@ -67,53 +68,114 @@ function validateExportList(exportedPngs) {
   }
 }
 
+const CRC_TABLE = Array.from({ length: 256 }, (_, value) => {
+  let crc = value;
+  for (let bit = 0; bit < 8; bit += 1) {
+    crc = (crc & 1) !== 0 ? 0xedb88320 ^ (crc >>> 1) : crc >>> 1;
+  }
+  return crc >>> 0;
+});
+
+function crc32(bytes) {
+  let crc = 0xffffffff;
+  for (const byte of bytes) {
+    crc = CRC_TABLE[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
 async function validatePngFile(source) {
   const sourceStat = await stat(source);
   if (!sourceStat.isFile()) throw new Error(`PNG export is not a file: ${source}`);
-
-  const header = Buffer.alloc(PNG_HEADER_BYTES);
-  const handle = await open(source, "r");
-  let bytesRead;
-  try {
-    ({ bytesRead } = await handle.read(header, 0, header.length, 0));
-  } finally {
-    await handle.close();
-  }
-  if (bytesRead < PNG_SIGNATURE.length || !header.subarray(0, 8).equals(PNG_SIGNATURE)) {
+  const png = await readFile(source);
+  if (png.length < PNG_SIGNATURE.length || !png.subarray(0, 8).equals(PNG_SIGNATURE)) {
     throw new Error(`PNG signature is invalid: ${source}`);
   }
-  if (bytesRead < PNG_HEADER_BYTES) {
-    throw new Error(`PNG structure is missing a complete IHDR chunk: ${source}`);
+
+  let offset = PNG_SIGNATURE.length;
+  let ihdr = null;
+  let sawIend = false;
+  const idatChunks = [];
+
+  while (offset < png.length) {
+    if (png.length - offset < 12) {
+      throw new Error(`PNG chunk structure is truncated: ${source}`);
+    }
+    const dataLength = png.readUInt32BE(offset);
+    const chunkEnd = offset + 12 + dataLength;
+    if (chunkEnd > png.length) {
+      throw new Error(`PNG chunk data is truncated: ${source}`);
+    }
+    const typeBytes = png.subarray(offset + 4, offset + 8);
+    const type = typeBytes.toString("ascii");
+    const data = png.subarray(offset + 8, offset + 8 + dataLength);
+    const storedCrc = png.readUInt32BE(offset + 8 + dataLength);
+    if (storedCrc !== crc32(Buffer.concat([typeBytes, data]))) {
+      throw new Error(`PNG chunk CRC is invalid for ${type}: ${source}`);
+    }
+
+    if (offset === PNG_SIGNATURE.length && type !== "IHDR") {
+      throw new Error(`PNG first chunk must be IHDR: ${source}`);
+    }
+    if (type === "IHDR") {
+      if (ihdr || dataLength !== PNG_IHDR_LENGTH) {
+        throw new Error(`PNG IHDR chunk is invalid: ${source}`);
+      }
+      ihdr = Buffer.from(data);
+    } else if (type === "IDAT") {
+      if (!ihdr || sawIend) throw new Error(`PNG IDAT order is invalid: ${source}`);
+      idatChunks.push(Buffer.from(data));
+    } else if (type === "IEND") {
+      if (dataLength !== 0 || idatChunks.length === 0) {
+        throw new Error(`PNG IEND chunk is invalid: ${source}`);
+      }
+      sawIend = true;
+      offset = chunkEnd;
+      if (offset !== png.length) {
+        throw new Error(`PNG has trailing data after IEND: ${source}`);
+      }
+      break;
+    }
+    offset = chunkEnd;
   }
-  if (
-    header.readUInt32BE(8) !== PNG_IHDR_LENGTH
-    || header.toString("ascii", 12, 16) !== "IHDR"
-  ) {
-    throw new Error(`PNG first chunk must be a valid IHDR: ${source}`);
-  }
-  const bitDepth = header[24];
-  const colorType = header[25];
-  const validBitDepths = {
-    0: [1, 2, 4, 8, 16],
-    2: [8, 16],
-    3: [1, 2, 4, 8],
-    4: [8, 16],
-    6: [8, 16],
-  };
-  if (
-    !validBitDepths[colorType]?.includes(bitDepth)
-    || header[26] !== 0
-    || header[27] !== 0
-    || ![0, 1].includes(header[28])
-  ) {
-    throw new Error(`PNG IHDR fields are invalid: ${source}`);
-  }
-  const width = header.readUInt32BE(16);
-  const height = header.readUInt32BE(20);
+
+  if (!ihdr) throw new Error(`PNG structure is missing IHDR: ${source}`);
+  if (!sawIend) throw new Error(`PNG structure is missing terminal IEND: ${source}`);
+
+  const width = ihdr.readUInt32BE(0);
+  const height = ihdr.readUInt32BE(4);
   if (width !== REQUIRED_PNG_WIDTH || height !== REQUIRED_PNG_HEIGHT) {
-    throw new Error(
-      `PNG dimensions must be exactly 1080x1350: ${source} is ${width}x${height}`,
-    );
+    throw new Error(`PNG dimensions must be exactly 1080x1350: ${source} is ${width}x${height}`);
+  }
+  if (
+    ihdr[8] !== 8
+    || ihdr[9] !== 6
+    || ihdr[10] !== 0
+    || ihdr[11] !== 0
+    || ihdr[12] !== 0
+  ) {
+    throw new Error(`PNG IHDR must be 8-bit RGBA, non-interlaced: ${source}`);
+  }
+
+  const compressedImage = Buffer.concat(idatChunks);
+  let decoded;
+  try {
+    const inflated = inflateSync(compressedImage, { info: true });
+    decoded = inflated.buffer;
+    if (inflated.engine.bytesWritten !== compressedImage.length) {
+      throw new Error("compressed stream has trailing data");
+    }
+  } catch (error) {
+    throw new Error(`PNG IDAT decode failed: ${source}`, { cause: error });
+  }
+  const expectedLength = REQUIRED_SCANLINE_LENGTH * REQUIRED_PNG_HEIGHT;
+  if (decoded.length !== expectedLength) {
+    throw new Error(`PNG decoded scanline length is invalid: ${source}`);
+  }
+  for (let row = 0; row < REQUIRED_PNG_HEIGHT; row += 1) {
+    if (decoded[row * REQUIRED_SCANLINE_LENGTH] > 4) {
+      throw new Error(`PNG scanline filter is invalid at row ${row}: ${source}`);
+    }
   }
 }
 
