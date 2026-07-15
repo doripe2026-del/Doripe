@@ -615,15 +615,16 @@
       height: 28px;
     }
     .hero-title {
-      width: min(340px, calc(100vw - 40px));
-      max-width: min(340px, calc(100vw - 40px));
+      width: 100%;
+      max-width: none;
       margin-top: 18px !important;
-      font-size: 42px;
-      letter-spacing: -.9px;
+      font-size: clamp(29px, 8.6vw, 40px);
+      line-height: 1.06;
+      letter-spacing: -.6px;
     }
     .hero-sub {
-      width: min(340px, calc(100vw - 40px));
-      max-width: min(340px, calc(100vw - 40px));
+      width: 100%;
+      max-width: none;
       font-size: 16px;
       line-height: 1.65 !important;
       margin-top: 14px !important;
@@ -634,7 +635,8 @@
       padding-right: 20px !important;
     }
     main section:first-of-type {
-      max-width: 340px;
+      width: 100%;
+      max-width: 420px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -650,7 +652,7 @@
     }
     main section:first-of-type p,
     main section:first-of-type h1 {
-      max-width: min(340px, calc(100vw - 40px));
+      max-width: 100%;
     }
     main section:first-of-type .primary-cta {
       max-width: calc(100vw - 40px);
@@ -691,8 +693,9 @@
       border-radius: 31px;
     }
     .journey-title {
-      font-size: 44px;
-      letter-spacing: -.8px;
+      font-size: clamp(34px, 9.5vw, 42px);
+      line-height: 1.04;
+      letter-spacing: -.55px;
     }
     .pilot-grid,
     .company-layout {
@@ -704,15 +707,32 @@
     .pilot-form-panel {
       border-radius: 30px;
     }
-    .section-title { font-size: 46px; }
-    .cta-title { font-size: 52px; }
+    #features,
+    #product,
+    #finalCtaSection,
+    .journey-row {
+      scroll-margin-top: 94px;
+    }
+    .section-title {
+      font-size: clamp(32px, 8.7vw, 42px);
+      line-height: 1.04;
+      letter-spacing: -.55px;
+    }
+    .section-title br,
+    .cta-title br {
+      display: none;
+    }
+    .cta-title {
+      font-size: clamp(32px, 9vw, 42px);
+      line-height: 1.04;
+      letter-spacing: -.55px;
+    }
+    #mobileNotifyBar > div {
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
   }
   @media (max-width: 390px) {
-    .hero-title { font-size: 36px; }
     .hero-sub { font-size: 15px; }
-    .section-title { font-size: 40px; }
-    .journey-title { font-size: 38px; }
-    .cta-title { font-size: 44px; }
     .chat-text { font-size: 21px; }
   }
   @media (prefers-reduced-motion: reduce) {

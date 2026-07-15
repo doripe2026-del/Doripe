@@ -7,7 +7,7 @@ import { homedir, tmpdir } from "node:os";
 import { basename, join } from "node:path";
 import { createLandingPreviewServer } from "../scripts/serve-landing.mjs";
 
-const VIEWPORTS = [1440, 900, 480, 390, 320];
+const VIEWPORTS = [1440, 900, 480, 430, 390, 360, 320];
 const SCENES = ["landingMotionHero", "motionSceneDiscovery", "motionSceneNearby", "motionSceneCourse"];
 const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
@@ -221,6 +221,25 @@ try {
       const routes = [...document.querySelectorAll('.folder-route-line path')];
       const saveScene = document.querySelector('#motionSceneNearby').getBoundingClientRect();
       const c5Screen = document.querySelector('.nearby-c5-screen').getBoundingClientRect();
+      const lineCount = (selector) => {
+        const element = document.querySelector(selector);
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        return new Set([...range.getClientRects()]
+          .filter((rect) => rect.width > 1 && rect.height > 1)
+          .map((rect) => Math.round(rect.top)))
+          .size;
+      };
+      const visibleTextOverflow = [...document.querySelectorAll(
+        '.hero-title, .hero-sub, .section-title, .chat-text, .journey-title, .journey-text, .cta-title, #finalCtaSection p'
+      )]
+        .filter((element) => element.scrollWidth > element.clientWidth + 1)
+        .map((element) => ({
+          className: element.className,
+          clientWidth: element.clientWidth,
+          scrollWidth: element.scrollWidth,
+          text: element.textContent.trim(),
+        }));
       return {
         width: innerWidth,
         pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -228,6 +247,11 @@ try {
         counters,
         c5WidthRatio: round(c5Screen.width / saveScene.width),
         routeLength: round(routes.reduce((total, route) => total + route.getTotalLength(), 0)),
+        typography: {
+          heroTitleLines: lineCount('.hero-title'),
+          finalTitleLines: lineCount('.cta-title'),
+          visibleTextOverflow,
+        },
       };
     })()`);
 
@@ -238,6 +262,21 @@ try {
     );
     assert.ok(report.routeLength > 500, `folder route is missing at ${width}px`);
     assert.ok(report.c5WidthRatio >= 0.38, `C5 screen is too small to read at ${width}px (${report.c5WidthRatio})`);
+    if (width <= 480) {
+      assert.ok(
+        report.typography.heroTitleLines <= 2,
+        `hero title wraps to ${report.typography.heroTitleLines} lines at ${width}px`,
+      );
+      assert.ok(
+        report.typography.finalTitleLines <= 3,
+        `final title wraps to ${report.typography.finalTitleLines} lines at ${width}px`,
+      );
+      assert.deepEqual(
+        report.typography.visibleTextOverflow,
+        [],
+        `visible copy overflows at ${width}px`,
+      );
+    }
     for (const scene of report.scenes) {
       assert.ok(scene.clientWidth > 0, `${scene.id} collapsed at ${width}px`);
       assert.ok(
