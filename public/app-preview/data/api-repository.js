@@ -242,7 +242,7 @@ export function createApiRepository({
   async function request(path, { method = "GET", body, auth = false, idempotencyKey } = {}) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
-    const token = auth ? accessTokenProvider?.() : null;
+    const token = accessTokenProvider?.() || null;
     if (auth && !token) {
       clearTimeout(timer);
       const error = new Error("로그인이 필요한 기능입니다.");

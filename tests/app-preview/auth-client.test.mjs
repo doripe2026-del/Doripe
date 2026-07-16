@@ -708,6 +708,24 @@ test("config endpoint returns only a validated URL and public key", async () => 
   assert.match(response.headers.get("cache-control"), /no-store/);
 });
 
+test("config endpoint accepts the server-only Supabase URL variable", async () => {
+  const { default: handler } = await loadConfigHandler();
+  const previous = { ...process.env };
+  delete process.env.NEXT_PUBLIC_SUPABASE_URL;
+  process.env.SUPABASE_URL = SUPABASE_URL;
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = PUBLISHABLE_KEY;
+  const response = createResponse();
+
+  try {
+    await handler({ method: "GET" }, response);
+  } finally {
+    process.env = previous;
+  }
+
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(response.body, { supabaseUrl: SUPABASE_URL, supabaseKey: PUBLISHABLE_KEY });
+});
+
 test("config endpoint rejects secret/service keys and malformed URLs", async () => {
   const { default: handler } = await loadConfigHandler();
   const cases = [

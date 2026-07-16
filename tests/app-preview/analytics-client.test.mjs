@@ -95,6 +95,51 @@ test("anonymous session start uses the existing session and event contracts", as
   });
 });
 
+test("authenticated analytics requests attach the current bearer token", async () => {
+  const requests = [];
+  const client = createAnalyticsClient({
+    storage: memoryStorage(),
+    randomUUID: uuidFactory(IDS.anonymous, IDS.session, IDS.event1),
+    accessTokenProvider: () => "current-access-token",
+    fetchImpl: async (url, options) => {
+      requests.push({ url: String(url), options });
+      if (String(url) === "/api/v1/sessions") {
+        return jsonResponse({ data: { sessionId: IDS.session, accepted: true }, meta: {} }, 201);
+      }
+      return jsonResponse({ data: { accepted: 1, duplicates: 0, rejected: 0 }, meta: {} }, 202);
+    }
+  });
+
+  await client.startSession({ sourceScreen: "b1" });
+  await client.flush();
+
+  assert.equal(requests[0].options.headers.authorization, "Bearer current-access-token");
+  assert.equal(requests[1].options.headers.authorization, "Bearer current-access-token");
+});
+
+test("authenticated lifecycle flush uses keepalive fetch instead of an unauthenticated beacon", async () => {
+  const requests = [];
+  let beaconCalls = 0;
+  const client = createAnalyticsClient({
+    storage: memoryStorage(),
+    randomUUID: uuidFactory(IDS.anonymous, IDS.session, IDS.event1),
+    accessTokenProvider: () => "current-access-token",
+    navigatorImpl: { sendBeacon: () => { beaconCalls += 1; return true; } },
+    fetchImpl: async (url, options) => {
+      requests.push({ url: String(url), options });
+      return jsonResponse({ data: { accepted: 1, duplicates: 0, rejected: 0 }, meta: {} }, 202);
+    }
+  });
+  client.recordEvent("place_open", { sourceScreen: "place", properties: {} });
+
+  const result = await client.endSession();
+
+  assert.equal(result.ok, true);
+  assert.equal(beaconCalls, 0);
+  assert.equal(requests[0].options.keepalive, true);
+  assert.equal(requests[0].options.headers.authorization, "Bearer current-access-token");
+});
+
 test("a failed session start reuses the same idempotent body on the next call", async () => {
   let now = Date.parse("2026-07-16T01:00:00.000Z");
   const bodies = [];

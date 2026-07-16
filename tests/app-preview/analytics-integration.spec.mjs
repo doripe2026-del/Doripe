@@ -104,7 +104,7 @@ async function eventList(requests) {
   return requests.eventBatches.flatMap((batch) => batch.events);
 }
 
-test("live preview records one anonymous session, screen dwell, and a successful save", async ({ page }) => {
+test("live preview links an authenticated session while preserving anonymous attribution", async ({ page }) => {
   const requests = await installLiveApi(page);
   await page.addInitScript(() => {
     const counts = { visibilitychange: 0, pagehide: 0 };
@@ -131,7 +131,7 @@ test("live preview records one anonymous session, screen dwell, and a successful
   await expect(page.locator('[data-screen-id="b4"]')).toBeVisible();
   await expect.poll(() => requests.sessions.length).toBe(1);
   expect(requests.sessions[0].body.anonymousId).toBeTruthy();
-  expect(requests.sessions[0].headers.authorization).toBeUndefined();
+  expect(requests.sessions[0].headers.authorization).toBe("Bearer live-access-token");
 
   await page.locator('[data-action="save-place"]').click();
   await expect.poll(() => requests.mutations.length).toBe(1);

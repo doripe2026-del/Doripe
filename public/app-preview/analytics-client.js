@@ -106,6 +106,7 @@ function isRetryableStatus(status) {
 export function createAnalyticsClient({
   apiBase = "/api/v1",
   fetchImpl = globalThis.fetch?.bind(globalThis),
+  accessTokenProvider = () => null,
   navigatorImpl = globalThis.navigator,
   storage = globalThis.localStorage,
   now = Date.now,
@@ -131,6 +132,23 @@ export function createAnalyticsClient({
   let startPromise = null;
   let flushPromise = null;
   let detachLifecycle = null;
+
+  function currentAccessToken() {
+    try {
+      const token = accessTokenProvider?.();
+      return typeof token === "string" && token.length > 0 ? token : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function requestHeaders(headers = {}) {
+    const token = currentAccessToken();
+    return {
+      ...headers,
+      ...(token ? { authorization: `Bearer ${token}` } : {})
+    };
+  }
 
   async function requestWithRetry(url, options) {
     if (typeof fetchImpl !== "function") return null;
@@ -235,10 +253,10 @@ export function createAnalyticsClient({
     startPromise = (async () => {
       const response = await requestWithRetry(`${normalizedApiBase}/sessions`, {
         method: "POST",
-        headers: {
+        headers: requestHeaders({
           "Content-Type": "application/json",
           "Idempotency-Key": `session_${sessionId}`
-        },
+        }),
         body: sessionRequest.body
       });
       if (!response?.ok) return { ok: false, sessionId, anonymousId };
@@ -264,7 +282,7 @@ export function createAnalyticsClient({
       const batch = queue.slice(0, BATCH_LIMIT);
       const body = JSON.stringify({ events: batch });
 
-      if (preferBeacon && typeof navigatorImpl?.sendBeacon === "function" && typeof Blob === "function") {
+      if (preferBeacon && !currentAccessToken() && typeof navigatorImpl?.sendBeacon === "function" && typeof Blob === "function") {
         try {
           if (navigatorImpl.sendBeacon(`${normalizedApiBase}/events`, new Blob([body], { type: "application/json" }))) {
             removeBatch(batch);
@@ -277,7 +295,7 @@ export function createAnalyticsClient({
 
       const response = await requestWithRetry(`${normalizedApiBase}/events`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: requestHeaders({ "Content-Type": "application/json" }),
         body,
         keepalive: keepalive || preferBeacon
       });

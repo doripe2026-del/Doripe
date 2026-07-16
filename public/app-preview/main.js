@@ -13,12 +13,19 @@ const groups = ["A", "B", "C", "D", "E"];
 preloadServerMedia();
 const authClient = createAuthClient();
 const staticPreview = isStaticPreview();
+const hadStartupSession = Boolean(window.sessionStorage.getItem("doripe.app_preview.auth.session.v1"));
+const startupAuthResult = await authClient.initializeSession({
+  url: window.location.href,
+  replaceState: (url) => window.history.replaceState(window.history.state, "", url)
+});
 const repository = getAdapter(isStaticPreview() ? "fixture" : "api", {
   accessTokenProvider: authClient.getAccessToken
 });
 const dataStore = createAppDataStore({ repository });
 const actionSync = createActionSync({ repository, enabled: repository.mode === "api" });
-const analyticsClient = staticPreview ? null : createAnalyticsClient();
+const analyticsClient = staticPreview ? null : createAnalyticsClient({
+  accessTokenProvider: authClient.getAccessToken
+});
 let dataLoadError = null;
 try {
   await dataStore.load();
@@ -53,7 +60,7 @@ let activePointerTarget = null;
 let pendingHistoryBack = null;
 let activeShareParams = null;
 let renderGeneration = 0;
-let authStatus = "no-session";
+let authStatus = startupAuthResult.ok ? startupAuthResult.status : "no-session";
 let lastRenderedScreenId = null;
 let analyticsSession = null;
 
@@ -1005,12 +1012,6 @@ document.addEventListener("pointercancel", () => {
   activePointerTarget = null;
 });
 
-const hadStartupSession = Boolean(window.sessionStorage.getItem("doripe.app_preview.auth.session.v1"));
-const startupAuthResult = await authClient.initializeSession({
-  url: window.location.href,
-  replaceState: (url) => window.history.replaceState(window.history.state, "", url)
-});
-authStatus = startupAuthResult.ok ? startupAuthResult.status : "no-session";
 if (!startupAuthResult.ok) {
   const invalidStoredSession = hadStartupSession && startupAuthResult.code === "invalid-session";
   if (invalidStoredSession) authClient.clearSession();

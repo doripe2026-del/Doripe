@@ -175,6 +175,38 @@ test("authenticated mutations attach the current bearer token", async () => {
   assert.equal(requests[0].options.headers.authorization, "Bearer current-access-token");
 });
 
+test("public reads include optional user context when a session exists", async () => {
+  const requests = [];
+  const repository = createApiRepository({
+    fetchImpl: async (url, options) => {
+      requests.push({ url: String(url), options });
+      return jsonResponse({ data: place });
+    },
+    storage: memoryStorage(),
+    accessTokenProvider: () => "current-access-token"
+  });
+
+  await repository.getPlaceDetail(place.id);
+
+  assert.equal(requests[0].options.headers.authorization, "Bearer current-access-token");
+});
+
+test("public reads remain anonymous when no session exists", async () => {
+  const requests = [];
+  const repository = createApiRepository({
+    fetchImpl: async (url, options) => {
+      requests.push({ url: String(url), options });
+      return jsonResponse({ data: place });
+    },
+    storage: memoryStorage(),
+    accessTokenProvider: () => null
+  });
+
+  await repository.getPlaceDetail(place.id);
+
+  assert.equal(requests[0].options.headers.authorization, undefined);
+});
+
 test("create mutations send an idempotency key", async () => {
   const requests = [];
   const repository = createApiRepository({

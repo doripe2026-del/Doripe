@@ -55,7 +55,9 @@ export default function handler(request: VercelRequest, response: VercelResponse
     return response.status(405).json({ available: false });
   }
 
-  const supabaseUrl = normalizeSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
+  const supabaseUrl = normalizeSupabaseUrl(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL,
+  );
   const supabaseKey = readPublicKey();
   if (!supabaseUrl || !isPublicSupabaseKey(supabaseKey)) {
     return response.status(503).json({ available: false });
