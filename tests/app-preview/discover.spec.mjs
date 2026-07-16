@@ -410,7 +410,7 @@ test("feed filter sheet closes from its backdrop or a downward drag", async ({ p
   await openFilter.click();
   let overlay = page.locator("[data-testid=feed-filter-sheet]");
   await expect(overlay).toBeVisible();
-  await overlay.click({ position: { x: 20, y: 100 } });
+  await overlay.click({ position: { x: 20, y: 20 } });
   await expect(overlay).toHaveCount(0);
   await expect(page).toHaveURL(/screen=b1/);
 
