@@ -273,6 +273,36 @@ test("startup refreshes expired sessions, rotates tokens, and clears an invalid 
   assert.equal(sessionStorage.getItem(AUTH_SESSION_STORAGE_KEY), null);
 });
 
+test("startup removes an expired session before its refresh request settles", async () => {
+  const { AUTH_SESSION_STORAGE_KEY, createAuthClient } = await loadAuthModule();
+  const now = Date.now();
+  const sessionStorage = createMemoryStorage();
+  sessionStorage.setItem(AUTH_SESSION_STORAGE_KEY, JSON.stringify({
+    accessToken: "expired-access",
+    refreshToken: "invalid-refresh",
+    expiresAt: now - 1
+  }));
+  let releaseRefresh;
+  let markRefreshStarted;
+  const refreshStarted = new Promise((resolve) => { markRefreshStarted = resolve; });
+  const refreshResponse = new Promise((resolve) => { releaseRefresh = resolve; });
+  const { fetchImpl } = configuredFetch(async () => {
+    markRefreshStarted();
+    return refreshResponse;
+  });
+  const client = createAuthClient({ fetchImpl, sessionStorage, now: () => now });
+
+  const initializing = client.initializeSession({ url: "https://doripe.kr/app-preview/?screen=b1" });
+  await refreshStarted;
+
+  const storedWhileRefreshWasPending = sessionStorage.getItem(AUTH_SESSION_STORAGE_KEY);
+  releaseRefresh(jsonResponse({ message: "Invalid Refresh Token" }, 400));
+  assert.equal(storedWhileRefreshWasPending, null);
+  const result = await initializing;
+  assert.equal(result.ok, false);
+  assert.equal(result.code, "invalid-session");
+});
+
 test("signup returns the same neutral email-check result for pending and existing-like responses", async () => {
   const { createAuthClient } = await loadAuthModule();
   const results = [];
@@ -619,12 +649,19 @@ test("sign-out succeeds locally even when remote logout fails", async () => {
     expiresAt: Date.now() + 60_000
   }));
   localStorage.setItem(AUTH_PKCE_VERIFIER_STORAGE_KEY, "secret-verifier");
+  const { fetchImpl } = configuredFetch(() => {
+    throw new TypeError("network down");
+  });
   const client = createAuthClient({
-    fetchImpl: configuredFetch(() => jsonResponse({ message: "down" }, 503)).fetchImpl,
+    fetchImpl,
     sessionStorage: storage,
     localStorage
   });
-  const result = await client.signOut();
+  const completeRemoteSignOut = client.beginSignOut();
+  assert.equal(storage.getItem(AUTH_SESSION_STORAGE_KEY), null);
+  assert.equal(localStorage.getItem(AUTH_PKCE_VERIFIER_STORAGE_KEY), null);
+
+  const result = await completeRemoteSignOut();
   assert.equal(result.ok, true);
   assert.equal(result.status, "signed-out");
   assert.match(result.warning, /로그아웃/);

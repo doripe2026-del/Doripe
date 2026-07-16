@@ -29,6 +29,7 @@ function appendAuthFeedback(screen, state) {
   const output = document.createElement("output");
   output.className = `auth-feedback auth-feedback--${state.toast.kind}`;
   output.setAttribute("role", "status");
+  output.setAttribute("aria-label", "인증 상태");
   output.textContent = state.toast.message;
   screen.append(output);
 }

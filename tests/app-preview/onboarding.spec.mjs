@@ -343,7 +343,7 @@ test("normal login stays on the form when auth config is unavailable and clears 
   await submit.click();
 
   await expect(page).toHaveURL(/screen=a3/);
-  await expect(page.getByRole("status")).toContainText("계정 기능을 사용할 수 없어요");
+  await expect(page.getByRole("status", { name: "인증 상태" })).toContainText("계정 기능을 사용할 수 없어요");
   await expect(submit).toBeEnabled();
   await expect(page.getByLabel("비밀번호")).toHaveValue("");
   const persisted = await page.evaluate(({ password, sessionKey }) => ({
@@ -373,7 +373,7 @@ test("production host static=1 can never activate fixture authentication", async
 
   await expect(page).toHaveURL(/screen=a3/);
   expect(new URL(page.url()).searchParams.has("static")).toBe(false);
-  await expect(page.getByRole("status")).toContainText("계정 기능을 사용할 수 없어요");
+  await expect(page.getByRole("status", { name: "인증 상태" })).toContainText("계정 기능을 사용할 수 없어요");
 });
 
 test("login disables submission and navigates only after Supabase succeeds", async ({ page }) => {
@@ -423,7 +423,7 @@ test("Supabase login failure uses a safe message and does not navigate", async (
   await page.getByRole("button", { name: "로그인", exact: true }).click();
 
   await expect(page).toHaveURL(/screen=a3/);
-  await expect(page.getByRole("status")).toHaveText("이메일 또는 비밀번호를 확인해 주세요");
+  await expect(page.getByRole("status", { name: "인증 상태" })).toHaveText("이메일 또는 비밀번호를 확인해 주세요");
   await expect(page.getByText("User not found")).toHaveCount(0);
   await expect(page.getByLabel("비밀번호")).toHaveValue("");
 });
@@ -446,7 +446,7 @@ test("signup without a session stays on the form with neutral email-check feedba
   await page.getByLabel("비밀번호").fill(VALID_PASSWORD);
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await expect(page).toHaveURL(/screen=a12/);
-  await expect(page.getByRole("status")).toHaveText("이메일을 확인해 주세요");
+  await expect(page.getByRole("status", { name: "인증 상태" })).toHaveText("이메일을 확인해 주세요");
 
   await gotoScreen(page, "a5", { staticFrame: false });
   await page.getByLabel("이메일 주소").fill(LOGIN_EMAIL);
@@ -473,7 +473,7 @@ test("session-bearing signup still uses neutral verification and stores no sessi
   await page.getByLabel("비밀번호").fill(VALID_PASSWORD);
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await expect(page).toHaveURL(/screen=a12/);
-  await expect(page.getByRole("status")).toHaveText("이메일을 확인해 주세요");
+  await expect(page.getByRole("status", { name: "인증 상태" })).toHaveText("이메일을 확인해 주세요");
   expect(await page.evaluate((key) => sessionStorage.getItem(key), AUTH_SESSION_STORAGE_KEY)).toBeNull();
 });
 
@@ -505,7 +505,7 @@ test("new and known-existing signup outcomes have identical UI and navigation", 
     await page.getByRole("button", { name: "다음", exact: true }).click();
     outcomes.push({
       screen: new URL(page.url()).searchParams.get("screen"),
-      message: await page.getByRole("status").textContent(),
+      message: await page.getByRole("status", { name: "인증 상태" }).textContent(),
       session: await page.evaluate((key) => sessionStorage.getItem(key), AUTH_SESSION_STORAGE_KEY)
     });
   }

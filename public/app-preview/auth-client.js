@@ -498,6 +498,7 @@ export function createAuthClient({
     if (session.expiresAt > now() && !accessTokenIsExpired(session.accessToken, now())) {
       return { ok: true, status: session.flow === "recovery" ? "recovery-ready" : "authenticated" };
     }
+    clearSessionStorage(sessionStorage);
     const refreshed = await request("token?grant_type=refresh_token", {
       refresh_token: session.refreshToken
     }, SAFE_MESSAGES.invalidSession, { signal });
