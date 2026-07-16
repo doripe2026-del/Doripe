@@ -51,6 +51,19 @@ photo_id,storage_bucket,storage_path,place_id,source_type,permission_status,phot
 
 Storage 목록 API의 MIME metadata만 확인해서 `signature_validated=true`로 만들면 안 된다. Manifest 생성 중 object를 읽어 signature를 검사하고, 같은 byte에서 SHA-256을 계산해야 한다. 사전검사 계획은 이 크기·MIME·hash 값을 `object_validation`에 남겨 실제 반영 직전 동일 object인지 다시 확인할 수 있게 한다.
 
+### Storage manifest 생성
+
+아래 명령은 Supabase Storage를 읽기만 하며 DB 행이나 object를 변경하지 않는다. 각 object를 실제로 내려받아 signature, 실제 byte 크기, SHA-256을 계산한다. 결과 파일이 이미 있으면 덮어쓰지 않고 실패한다.
+
+```bash
+npm run manifest:place-photos -- \
+  --bucket place-photos-public \
+  --prefix <검사할 폴더> \
+  --output ./outputs/place-photo-storage-manifest.json
+```
+
+`.env.local`의 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`를 사용한다. Supabase의 `.emptyFolderPlaceholder`는 `ignored`에 기록하고 자동 제외한다. `rejected`가 한 건이라도 있으면 종료 코드 1을 반환하므로, `objects`만 보고 성공으로 오해하면 안 된다. Instagram 게시물 제작본이나 prototype asset처럼 실제 장소카드 원본이 아닌 폴더는 mapping 대상으로 사용하지 않는다.
+
 ### 반영 후 장소 동기화
 
 공개 사진이 있는 장소마다 계획 끝에 `sync_place_photos` 작업을 하나 만든다. 모든 `map_place_photo` 작업을 반영한 뒤 관리자 업로드와 같은 방식으로 승인된 `cover`·`gallery`를 `display_order` 순서로 최대 5장 읽고 다음 값을 함께 갱신해야 한다.
