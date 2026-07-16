@@ -2,7 +2,7 @@
 
 - 확인일: 2026-07-16
 - Git 브랜치: `codex/mvp-masterplan-implementation`
-- 기준 커밋: `2083442`
+- 기준 커밋: `2feea46`
 - Supabase project: `dcyjrsxnpujslbxtitqj`
 - 목적: 실제 DB 변경이나 배포 전에 현재 코드와 운영 환경의 차이를 복구 가능한 기록으로 남긴다.
 
@@ -11,7 +11,7 @@
 | 영역 | 상태 | 확인 결과 |
 | --- | --- | --- |
 | 최신 앱 코드 | 준비됨 | 최신 55개 Figma 화면을 `/app`과 `/app-preview`가 같은 소스로 사용한다. |
-| 자동 테스트 | 통과 | App unit 167, Backend 32, API contract 110, 화면·행동·픽셀 E2E 230 통과 |
+| 자동 테스트 | 통과 | App unit 167, Backend 36, API contract 110, 화면·행동·픽셀 E2E 230 통과 |
 | Git 백업 | 준비됨 | 작업 브랜치를 GitHub 원격 저장소에 push했다. |
 | Supabase 구조 | 출시 차단 | 원격 migration 9개, 저장소 migration 49개로 이력이 크게 다르다. |
 | 실제 콘텐츠 | 출시 차단 | 공개 테이블 24개 모두 0행이다. |
@@ -34,6 +34,8 @@ Playwright + visual   230 passed
 ## 원격 Supabase 관찰 결과
 
 읽기 전용 Supabase 도구로 확인했다. 원격에는 migration 9개와 공개 테이블 24개가 있다.
+
+동일한 조회 결과를 `supabase-production-schema-snapshot-2026-07-16.json`에 저장했다. `npm run check:supabase-runtime`을 실행하면 현재 API 계약과 이 스냅샷의 차이를 자동으로 다시 계산한다. 현재는 출시 차단 상태를 정확히 감지하므로 의도적으로 실패한다.
 
 현재 API가 필요하지만 원격에 없는 핵심 구조의 예:
 
