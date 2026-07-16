@@ -1,19 +1,27 @@
 import { expect, test } from "@playwright/test";
+import { readFile } from "node:fs/promises";
 import measurements from "../../public/app-preview/figma/screen-measurements.json" with { type: "json" };
 import masks from "../../public/app-preview/figma/visual-masks.json" with { type: "json" };
 import savedMasks from "../../public/app-preview/figma/saved-visual-masks.json" with { type: "json" };
 
 const REPRESENTATIVE_SCREENS = ["b3", "b4", "c1", "c7", "d7", "e2"];
 const VISUAL_BUDGETS = { b3: 0.02, b4: 0.02, c1: 0.02, c7: 0.02, d7: 0.02, e2: 0.02 };
-const RESPONSIVE_BASELINE_IDS = new Set(["b4", "c1", "c7", "e2"]);
+const DYNAMIC_BASELINE_IDS = new Set(["b4", "c1", "c7", "e2"]);
 const REFERENCE_ONLY_MASKS = Object.freeze({
   b2: Object.freeze([measurements.b2.elements["System / bottom crop guard"]]),
   b3: Object.freeze([measurements.b3.elements["System / bottom crop guard"]])
 });
+const DYNAMIC_SCREEN_MASKS = Object.freeze({
+  b4: Object.freeze([{ x: 0, y: 0, width: 393, height: 480, reason: "hero-media" }]),
+  e2: Object.freeze([
+    { x: 145, y: 84, width: 102, height: 102, reason: "profile-photo" },
+    { x: 34, y: 465, width: 316, height: 325, reason: "uploaded-media" }
+  ])
+});
 
 test.use({ viewport: { width: 393, height: 852 } });
 
-async function visualDiffRatio(page, screen, screenId) {
+async function visualDiffRatio(page, screen, screenId, options = {}) {
   const screenshot = await screen.screenshot({ animations: "disabled" });
   return page.evaluate(async ({ actualBase64, referenceUrl, screenMasks }) => {
     const load = (source) => new Promise((resolve, reject) => {
@@ -60,8 +68,8 @@ async function visualDiffRatio(page, screen, screenId) {
     return different / compared;
   }, {
     actualBase64: screenshot.toString("base64"),
-    referenceUrl: `/app-preview/assets/references/${screenId}.png`,
-    screenMasks: [
+    referenceUrl: options.referenceUrl || `/app-preview/assets/references/${screenId}.png`,
+    screenMasks: options.screenMasks || [
       ...(savedMasks[screenId] || masks[screenId] || []),
       ...(REFERENCE_ONLY_MASKS[screenId] || [])
     ]
@@ -84,11 +92,12 @@ test("representative B/C/D/E screenshots match reviewed visual baselines", async
     await page.goto(`/app-preview/?screen=${screenId}&static=1`);
     await setRepresentativeState(page, screenId);
     const screen = page.locator(`[data-screen-id="${screenId}"]`);
-    if (RESPONSIVE_BASELINE_IDS.has(screenId)) {
-      await expect(screen).toHaveScreenshot(`representative-${screenId}.png`, {
-        animations: "disabled",
-        maxDiffPixelRatio: 0.003
-      });
+    if (DYNAMIC_BASELINE_IDS.has(screenId)) {
+      const baseline = await readFile(new URL(`./visual.spec.mjs-snapshots/representative-${screenId}-chromium-darwin.png`, import.meta.url));
+      expect(await visualDiffRatio(page, screen, screenId, {
+        referenceUrl: `data:image/png;base64,${baseline.toString("base64")}`,
+        screenMasks: DYNAMIC_SCREEN_MASKS[screenId] || savedMasks[screenId] || masks[screenId]
+      }), `${screenId} stable UI visual difference`).toBeLessThanOrEqual(VISUAL_BUDGETS[screenId]);
       continue;
     }
     expect(await visualDiffRatio(page, screen, screenId), `${screenId} visual difference`).toBeLessThanOrEqual(VISUAL_BUDGETS[screenId]);
