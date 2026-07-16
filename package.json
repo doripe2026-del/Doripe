@@ -25,6 +25,7 @@
     "build:admin": "node scripts/build-admin.mjs",
     "test:instagram-content": "node --test tests/instagram-content/*.test.mjs",
     "test:backend": "node --test tests/backend/*.test.mjs",
+    "test:ops": "node --test tests/ops/*.test.mjs",
     "generate:api-types": "openapi-typescript docs/api/openapi.yaml --output src/backend/generated/openapi.d.ts",
     "check:instagram-content": "npm run test:instagram-content && node scripts/instagram-content/cli.mjs check-template docs/instagram-content/template-contract.json",
     "instagram:content": "node scripts/instagram-content/cli.mjs",

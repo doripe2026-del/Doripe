@@ -31,3 +31,6 @@ jobs:
 
       - name: Check MVP app contract
         run: npm run check:mvp-app
+
+      - name: Test deployment readiness rules
+        run: npm run test:ops

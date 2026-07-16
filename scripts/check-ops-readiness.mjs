@@ -1,4 +1,11 @@
 import { execFileSync, spawnSync } from "node:child_process";
+import {
+  assessReadinessResponse,
+  assessSupabaseEnvironmentReadiness,
+} from "./lib/vercel-env-readiness.mjs";
+
+const VERCEL_SCOPE = "team_x4ATeutcmggg4kpLhjkZoJKA";
+const PRODUCTION_URL = (process.env.DORIPE_PRODUCTION_URL ?? "https://doripe.kr").replace(/\/$/, "");
 
 function run(command, args) {
   return execFileSync(command, args, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
@@ -41,18 +48,55 @@ function checkGitHub() {
 }
 
 function checkVercel() {
-  const inspect = runCombined("npx", ["vercel", "project", "inspect", "doripe", "--scope", "team_x4ATeutcmggg4kpLhjkZoJKA"]);
+  const inspect = runCombined("npx", ["vercel", "project", "inspect", "doripe", "--scope", VERCEL_SCOPE]);
   if (!inspect.includes("prj_X7eZo91o0Aw0HcodafbBKhPnEP2k")) fail("Vercel project ID mismatch");
   if (!inspect.includes("Output Directory") || !inspect.includes("public")) fail("Vercel output directory must be public");
 
-  const protection = run("npx", ["vercel", "project", "protection", "doripe", "--format", "json", "--scope", "team_x4ATeutcmggg4kpLhjkZoJKA"]);
+  const protection = run("npx", ["vercel", "project", "protection", "doripe", "--format", "json", "--scope", VERCEL_SCOPE]);
   const jsonStart = protection.indexOf("{");
   const parsed = JSON.parse(protection.slice(jsonStart));
   if (parsed.gitForkProtection !== true) fail("Vercel git fork protection should be enabled");
+
+  const environmentOutput = run("npx", ["vercel", "env", "list", "--format", "json", "--scope", VERCEL_SCOPE]);
+  const environmentJsonStart = environmentOutput.indexOf("{");
+  const environmentVariables = JSON.parse(environmentOutput.slice(environmentJsonStart)).envs ?? [];
+  const environmentReadiness = assessSupabaseEnvironmentReadiness(environmentVariables);
+  for (const missing of environmentReadiness.missing) {
+    fail(`Vercel ${missing.environment} is missing ${missing.requirement}`);
+  }
 }
 
-checkGitHub();
-checkVercel();
+async function checkProductionReadiness() {
+  let response;
+  try {
+    response = await fetch(`${PRODUCTION_URL}/api/v1/readiness`, {
+      headers: { accept: "application/json" },
+      signal: AbortSignal.timeout(10_000),
+    });
+  } catch (error) {
+    fail(`production readiness endpoint is unreachable (${error instanceof Error ? error.name : "request error"})`);
+    return;
+  }
+
+  let body = null;
+  try {
+    body = await response.json();
+  } catch {
+    fail("production readiness endpoint did not return JSON");
+    return;
+  }
+
+  const result = assessReadinessResponse(response.status, body);
+  if (!result.ready) fail(result.reason);
+}
+
+try {
+  checkGitHub();
+  checkVercel();
+  await checkProductionReadiness();
+} catch (error) {
+  fail(error instanceof Error ? error.message : String(error));
+}
 
 if (process.exitCode) {
   process.exit(process.exitCode);
