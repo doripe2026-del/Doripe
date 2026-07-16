@@ -33,6 +33,7 @@ function emptySummary(errorCount = 0) {
     private_rows: 0,
     places: 0,
     storage_objects: 0,
+    place_synchronizations: 0,
     errors: errorCount,
   };
 }
@@ -87,8 +88,8 @@ function parseArguments(argumentsList) {
 async function readInput(path, field) {
   try {
     return await readFile(path, "utf8");
-  } catch (error) {
-    throw new PreflightError("input_read_error", field, `Could not read ${field}: ${error.message}`);
+  } catch {
+    throw new PreflightError("input_read_error", field, `Could not read ${field} file`);
   }
 }
 
@@ -100,6 +101,23 @@ async function readManifest(path, kind) {
   } catch (error) {
     throw new PreflightError("invalid_manifest", `${kind}_manifest`, error.message);
   }
+}
+
+function structuredError(error) {
+  return {
+    code: error?.code ?? "preflight_error",
+    row: null,
+    field: error?.field ?? "preflight",
+    message: error instanceof Error ? error.message : String(error),
+  };
+}
+
+function compareStructuredErrors(left, right) {
+  if (left.field < right.field) return -1;
+  if (left.field > right.field) return 1;
+  if (left.code < right.code) return -1;
+  if (left.code > right.code) return 1;
+  return left.message < right.message ? -1 : left.message > right.message ? 1 : 0;
 }
 
 async function main() {
@@ -117,10 +135,26 @@ async function main() {
     throw new PreflightError("invalid_mapping_csv", "mapping", error.message);
   }
 
-  const [storageObjects, places] = await Promise.all([
+  const manifestResults = await Promise.allSettled([
     readManifest(argumentValues.storageManifest, "storage"),
     readManifest(argumentValues.placeManifest, "place"),
   ]);
+  const manifestErrors = manifestResults
+    .filter((result) => result.status === "rejected")
+    .map((result) => structuredError(result.reason))
+    .sort(compareStructuredErrors);
+  if (manifestErrors.length) {
+    printResult({
+      valid: false,
+      summary: emptySummary(manifestErrors.length),
+      errors: manifestErrors,
+      plan: [],
+    });
+    process.exitCode = 1;
+    return;
+  }
+
+  const [storageObjects, places] = manifestResults.map((result) => result.value);
   const result = validatePlacePhotoMapping(mappingRows, { storageObjects, places });
   printResult(result);
   if (!result.valid) process.exitCode = 1;

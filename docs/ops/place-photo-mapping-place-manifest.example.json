@@ -1,0 +1,10 @@
+{
+  "places": [
+    {
+      "id": "example-place",
+      "status": "ready",
+      "qa_status": "ready",
+      "photo_qa_status": "pending"
+    }
+  ]
+}

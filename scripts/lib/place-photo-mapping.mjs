@@ -24,9 +24,14 @@ const STORAGE_BUCKETS = new Set(["place-photos-public", "place-photo-originals"]
 const PLACE_STATUSES = new Set(["draft", "ready", "inactive"]);
 const QA_STATUSES = new Set(["draft", "ready", "needs_fix"]);
 const PHOTO_QA_STATUSES = new Set(["pending", "approved", "rejected"]);
+const PUBLIC_IMAGE_MIME_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const PRIVATE_FILE_MIME_TYPES = new Set([...PUBLIC_IMAGE_MIME_TYPES, "application/pdf"]);
+const PUBLIC_IMAGE_MAX_BYTES = 10 * 1024 * 1024;
+const PRIVATE_FILE_MAX_BYTES = 50 * 1024 * 1024;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const SHA256_PATTERN = /^[0-9a-f]{64}$/i;
 const SAFE_ID_PATTERN = /^[a-z0-9][a-z0-9_-]*$/i;
-const MAX_INTEGER = 2_147_483_647;
+const MAX_DISPLAY_ORDER = 10_000;
 
 function setRowNumber(value, rowNumber) {
   Object.defineProperty(value, CSV_ROW_NUMBER, { value: rowNumber });
@@ -192,10 +197,33 @@ function storageManifestIndex(items, errors) {
   for (const item of items) {
     const bucket = String(item?.bucket ?? "");
     const path = String(item?.path ?? "");
+    const byteSize = item?.byte_size;
+    const mimeType = String(item?.mime_type ?? "");
     if (!STORAGE_BUCKETS.has(bucket) || !isSafeStoragePath(path)) {
       addError(errors, "invalid_storage_manifest_entry", null, "storage_manifest", "storage entry requires a canonical bucket and safe path");
       continue;
     }
+
+    if (!Number.isInteger(byteSize) || byteSize <= 0) {
+      addError(errors, "invalid_storage_byte_size", null, "storage_manifest", `${bucket}/${path} requires a positive integer byte_size`);
+    } else {
+      const maxBytes = bucket === "place-photos-public" ? PUBLIC_IMAGE_MAX_BYTES : PRIVATE_FILE_MAX_BYTES;
+      if (byteSize > maxBytes) {
+        addError(errors, "storage_object_too_large", null, "storage_manifest", `${bucket}/${path} exceeds the ${maxBytes} byte limit`);
+      }
+    }
+
+    const allowedMimeTypes = bucket === "place-photos-public" ? PUBLIC_IMAGE_MIME_TYPES : PRIVATE_FILE_MIME_TYPES;
+    if (!allowedMimeTypes.has(mimeType)) {
+      addError(errors, "invalid_storage_mime_type", null, "storage_manifest", `${bucket}/${path} has an unsupported mime_type`);
+    }
+    if (!SHA256_PATTERN.test(String(item?.checksum_sha256 ?? ""))) {
+      addError(errors, "invalid_storage_checksum", null, "storage_manifest", `${bucket}/${path} requires a SHA-256 checksum`);
+    }
+    if (item?.signature_validated !== true) {
+      addError(errors, "storage_signature_not_validated", null, "storage_manifest", `${bucket}/${path} requires signature_validated=true`);
+    }
+
     const key = `${bucket}\u0000${path}`;
     if (index.has(key)) {
       addError(errors, "duplicate_storage_manifest_entry", null, "storage_manifest", `storage manifest contains duplicate ${bucket}/${path}`);
@@ -239,7 +267,7 @@ function placeManifestIndex(items, errors) {
   return index;
 }
 
-function planItem(data) {
+function planItem(data, storageObject) {
   return {
     action: "map_place_photo",
     photo_id: data.photo_id.toLowerCase(),
@@ -254,6 +282,31 @@ function planItem(data) {
     credit_text: data.credit_text,
     usage_scope: data.usage_scope,
     license_note: data.license_note,
+    object_validation: {
+      byte_size: storageObject.byte_size,
+      mime_type: storageObject.mime_type,
+      checksum_sha256: storageObject.checksum_sha256.toLowerCase(),
+      signature_validated: storageObject.signature_validated,
+    },
+  };
+}
+
+function comparePublicRows(left, right) {
+  return Number(left.data.display_order) - Number(right.data.display_order)
+    || lexicalCompare(left.data.photo_id.toLowerCase(), right.data.photo_id.toLowerCase());
+}
+
+function placeSynchronizationItem(placeId, rows) {
+  const publicRows = rows.filter(({ data }) => PUBLIC_PHOTO_TYPES.has(data.photo_type)).sort(comparePublicRows);
+  if (!publicRows.length) return null;
+  const coverPhoto = publicRows[0].data;
+  return {
+    action: "sync_place_photos",
+    place_id: placeId,
+    cover_photo_id: coverPhoto.photo_id.toLowerCase(),
+    cover_image_url: { public_url_from_photo_id: coverPhoto.photo_id.toLowerCase() },
+    image_urls: publicRows.map(({ data }) => ({ public_url_from_photo_id: data.photo_id.toLowerCase() })),
+    photo_qa_status: "approved",
   };
 }
 
@@ -295,8 +348,9 @@ export function validatePlacePhotoMapping(inputRows, manifests = {}) {
     if (data.photo_type && !PHOTO_TYPES.has(data.photo_type)) {
       addError(errors, "invalid_photo_type", rowNumber, "photo_type", "photo_type is not supported");
     }
-    if (data.display_order && (!/^\d+$/.test(data.display_order) || Number(data.display_order) > MAX_INTEGER)) {
-      addError(errors, "invalid_display_order", rowNumber, "display_order", "display_order must be a non-negative integer");
+    const validDisplayOrder = /^\d+$/.test(data.display_order) && Number(data.display_order) <= MAX_DISPLAY_ORDER;
+    if (data.display_order && !validDisplayOrder) {
+      addError(errors, "invalid_display_order", rowNumber, "display_order", `display_order must be an integer from 0 to ${MAX_DISPLAY_ORDER}`);
     }
 
     for (const [field, maximum] of [["rights_holder_name", 120], ["credit_text", 200], ["usage_scope", 300], ["license_note", 1000]]) {
@@ -313,6 +367,12 @@ export function validatePlacePhotoMapping(inputRows, manifests = {}) {
     }
 
     const isPublic = PUBLIC_PHOTO_TYPES.has(data.photo_type);
+    if (data.photo_type === "cover" && validDisplayOrder && Number(data.display_order) !== 0) {
+      addError(errors, "invalid_cover_slot", rowNumber, "display_order", "cover photos require display_order 0");
+    }
+    if (data.photo_type === "gallery" && validDisplayOrder && (Number(data.display_order) < 1 || Number(data.display_order) > 4)) {
+      addError(errors, "invalid_gallery_slot", rowNumber, "display_order", "gallery photos require display_order from 1 to 4");
+    }
     if (isPublic && data.permission_status !== "approved") {
       addError(errors, "public_photo_not_approved", rowNumber, "permission_status", "public photos require approved permission");
     }
@@ -336,9 +396,8 @@ export function validatePlacePhotoMapping(inputRows, manifests = {}) {
       } else if (isPublic && (
         place.status !== "ready"
         || place.qa_status !== "ready"
-        || place.photo_qa_status !== "approved"
       )) {
-        addError(errors, "place_not_public_ready", rowNumber, "place_id", "public photos require place status=ready, qa_status=ready, and photo_qa_status=approved");
+        addError(errors, "place_not_public_ready", rowNumber, "place_id", "public photos require place status=ready and qa_status=ready");
       }
     }
   }
@@ -372,7 +431,7 @@ export function validatePlacePhotoMapping(inputRows, manifests = {}) {
     addDuplicateErrors(
       publicRows,
       errors,
-      ({ display_order: order }) => /^\d+$/.test(order) && Number(order) <= MAX_INTEGER ? Number(order) : undefined,
+      ({ display_order: order }) => /^\d+$/.test(order) && Number(order) <= MAX_DISPLAY_ORDER ? Number(order) : undefined,
       "duplicate_display_order",
       "display_order",
       `display_order for ${placeId}`,
@@ -381,6 +440,10 @@ export function validatePlacePhotoMapping(inputRows, manifests = {}) {
 
   errors.sort(compareErrors);
   const publicRows = rows.filter(({ data }) => PUBLIC_PHOTO_TYPES.has(data.photo_type));
+  const placeSynchronizations = [...rowsByPlace]
+    .map(([placeId, group]) => placeSynchronizationItem(placeId, group))
+    .filter(Boolean)
+    .sort((left, right) => lexicalCompare(left.place_id, right.place_id));
   const summary = {
     total_rows: rows.length,
     public_rows: publicRows.length,
@@ -389,9 +452,16 @@ export function validatePlacePhotoMapping(inputRows, manifests = {}) {
     storage_objects: new Set(rows.map(({ data }) => (
       data.storage_bucket && data.storage_path ? `${data.storage_bucket}\u0000${data.storage_path}` : ""
     )).filter(Boolean)).size,
+    place_synchronizations: placeSynchronizations.length,
     errors: errors.length,
   };
-  const plan = errors.length ? [] : rows.map(({ data }) => planItem(data)).sort(comparePlan);
+  const plan = errors.length ? [] : [
+    ...rows.map(({ data }) => {
+      const object = storageIndex.get(`${data.storage_bucket}\u0000${data.storage_path}`);
+      return planItem(data, object);
+    }).sort(comparePlan),
+    ...placeSynchronizations,
+  ];
   return { valid: errors.length === 0, summary, errors, plan };
 }
 

@@ -16,6 +16,19 @@ const IDS = Object.freeze({
   photo1: "11111111-1111-4111-8111-111111111111",
   photo2: "22222222-2222-4222-8222-222222222222",
 });
+const SHA256 = "a".repeat(64);
+
+function storageObject(item, overrides = {}) {
+  return {
+    bucket: item.storage_bucket,
+    path: item.storage_path,
+    byte_size: 1024,
+    mime_type: item.photo_type === "rights" ? "application/pdf" : "image/jpeg",
+    checksum_sha256: SHA256,
+    signature_validated: true,
+    ...overrides,
+  };
+}
 
 function row(overrides = {}) {
   return {
@@ -38,12 +51,12 @@ function row(overrides = {}) {
 function manifests(rows, overrides = {}) {
   const placeIds = [...new Set(rows.map((item) => item.place_id))];
   return {
-    storageObjects: rows.map((item) => ({ bucket: item.storage_bucket, path: item.storage_path })),
+    storageObjects: rows.map((item) => storageObject(item)),
     places: placeIds.map((id) => ({
       id,
       status: "ready",
       qa_status: "ready",
-      photo_qa_status: "approved",
+      photo_qa_status: "pending",
     })),
     ...overrides,
   };
@@ -165,10 +178,37 @@ test("valid mapping produces a canonical, deterministic dry-run plan", () => {
     private_rows: 0,
     places: 2,
     storage_objects: 2,
+    place_synchronizations: 2,
     errors: 0,
   });
-  assert.deepEqual(result.plan.map((item) => item.photo_id), [IDS.photo1, IDS.photo2]);
-  assert.equal(result.plan[1].display_order, 1);
+  const mappingSteps = result.plan.filter((item) => item.action === "map_place_photo");
+  const syncSteps = result.plan.filter((item) => item.action === "sync_place_photos");
+  assert.deepEqual(mappingSteps.map((item) => item.photo_id), [IDS.photo1, IDS.photo2]);
+  assert.equal(mappingSteps[1].display_order, 1);
+  assert.deepEqual(mappingSteps[0].object_validation, {
+    byte_size: 1024,
+    mime_type: "image/jpeg",
+    checksum_sha256: SHA256,
+    signature_validated: true,
+  });
+  assert.deepEqual(syncSteps, [
+    {
+      action: "sync_place_photos",
+      place_id: "example-place",
+      cover_photo_id: IDS.photo1,
+      cover_image_url: { public_url_from_photo_id: IDS.photo1 },
+      image_urls: [{ public_url_from_photo_id: IDS.photo1 }],
+      photo_qa_status: "approved",
+    },
+    {
+      action: "sync_place_photos",
+      place_id: "second-place",
+      cover_photo_id: IDS.photo2,
+      cover_image_url: { public_url_from_photo_id: IDS.photo2 },
+      image_urls: [{ public_url_from_photo_id: IDS.photo2 }],
+      photo_qa_status: "approved",
+    },
+  ]);
   assert.equal("provider_id" in result.plan[0], false);
   assert.equal("public_url" in result.plan[0], false);
   assert.equal("publish_status" in result.plan[0], false);
@@ -242,7 +282,7 @@ test("public photos require approval and usage scope, and licensed rows require 
   assert.equal(errorCodes(result).filter((code) => code === "licensed_photo_missing_license_note").length, 2);
 });
 
-test("public rows enforce five per place, one cover, and normalized display order uniqueness", () => {
+test("public rows enforce exact cover and gallery slots, count, and normalized uniqueness", () => {
   const rows = Array.from({ length: 6 }, (_, index) => row({
     photo_id: `0000000${index + 1}-0000-4000-8000-00000000000${index + 1}`,
     storage_path: `example-place/photo-${index + 1}.jpg`,
@@ -254,6 +294,22 @@ test("public rows enforce five per place, one cover, and normalized display orde
   assert.ok(errorCodes(result).includes("too_many_public_photos"));
   assert.ok(errorCodes(result).includes("multiple_covers"));
   assert.ok(errorCodes(result).includes("duplicate_display_order"));
+  assert.ok(errorCodes(result).includes("invalid_cover_slot"));
+
+  const wrongGallery = row({ photo_type: "gallery", display_order: "0" });
+  assert.ok(errorCodes(validatePlacePhotoMapping([wrongGallery], manifests([wrongGallery]))).includes("invalid_gallery_slot"));
+});
+
+test("display order is bounded at 10000 for every photo type", () => {
+  for (const photoType of ["cover", "gallery", "original", "rights"]) {
+    const item = row({
+      storage_bucket: photoType === "original" || photoType === "rights" ? "place-photo-originals" : "place-photos-public",
+      photo_type: photoType,
+      display_order: "10001",
+    });
+    const result = validatePlacePhotoMapping([item], manifests([item]));
+    assert.ok(errorCodes(result).includes("invalid_display_order"), photoType);
+  }
 });
 
 test("private rows do not consume public limits or display slots", () => {
@@ -299,23 +355,71 @@ test("duplicate object identity is the exact bucket and path pair", () => {
   assert.equal(errorCodes(distinctResult).includes("duplicate_storage_object"), false);
 });
 
-test("storage lookup is exact and public places require all three ready states", () => {
+test("storage lookup is exact and public places require status and qa readiness before synchronization", () => {
   const storageMismatch = validatePlacePhotoMapping([row()], manifests([row()], {
-    storageObjects: [{ bucket: "place-photos-public", path: "example-place/Photo-1.jpg" }],
+    storageObjects: [storageObject(row(), { path: "example-place/Photo-1.jpg" })],
   }));
   assert.ok(errorCodes(storageMismatch).includes("storage_object_not_found"));
 
-  for (const field of ["status", "qa_status", "photo_qa_status"]) {
+  for (const field of ["status", "qa_status"]) {
     const place = manifests([row()]).places[0];
-    place[field] = field === "photo_qa_status" ? "pending" : "draft";
+    place[field] = "draft";
     const result = validatePlacePhotoMapping([row()], manifests([row()], { places: [place] }));
     assert.ok(errorCodes(result).includes("place_not_public_ready"), field);
   }
+
+  for (const photoQaStatus of ["pending", "rejected", "approved"]) {
+    const place = { ...manifests([row()]).places[0], photo_qa_status: photoQaStatus };
+    const result = validatePlacePhotoMapping([row()], manifests([row()], { places: [place] }));
+    assert.equal(result.valid, true, photoQaStatus);
+    assert.equal(result.plan.at(-1).photo_qa_status, "approved");
+  }
+});
+
+test("storage manifest rejects zero-byte, oversized, MIME-invalid, and unvalidated objects", () => {
+  const invalidObjects = [
+    storageObject(row(), { path: "example-place/zero.jpg", byte_size: 0 }),
+    storageObject(row(), { path: "example-place/large.jpg", byte_size: 10 * 1024 * 1024 + 1 }),
+    storageObject(row(), { path: "example-place/type.gif", mime_type: "image/gif" }),
+    storageObject(row(), { path: "example-place/signature.jpg", signature_validated: false }),
+    storageObject(row(), { path: "example-place/hash.jpg", checksum_sha256: "not-a-sha256" }),
+  ];
+  const result = validatePlacePhotoMapping([row()], {
+    storageObjects: invalidObjects,
+    places: manifests([row()]).places,
+  });
+
+  assert.ok(errorCodes(result).includes("invalid_storage_byte_size"));
+  assert.ok(errorCodes(result).includes("storage_object_too_large"));
+  assert.ok(errorCodes(result).includes("invalid_storage_mime_type"));
+  assert.ok(errorCodes(result).includes("storage_signature_not_validated"));
+  assert.ok(errorCodes(result).includes("invalid_storage_checksum"));
+});
+
+test("private storage permits PDFs up to 50 MiB and public storage does not", () => {
+  const rights = row({
+    storage_bucket: "place-photo-originals",
+    storage_path: "example-place/rights.pdf",
+    photo_type: "rights",
+    permission_status: "pending",
+    source_type: "owner",
+    usage_scope: "",
+    license_note: "",
+  });
+  const valid = validatePlacePhotoMapping([rights], manifests([rights], {
+    storageObjects: [storageObject(rights, { byte_size: 50 * 1024 * 1024, mime_type: "application/pdf" })],
+  }));
+  assert.equal(valid.valid, true);
+
+  const publicPdf = validatePlacePhotoMapping([row()], manifests([row()], {
+    storageObjects: [storageObject(row(), { mime_type: "application/pdf" })],
+  }));
+  assert.ok(errorCodes(publicPdf).includes("invalid_storage_mime_type"));
 });
 
 test("manifest entries validate canonical storage and place contracts", () => {
   const result = validatePlacePhotoMapping([row()], {
-    storageObjects: [{ bucket: "other-bucket", path: "bad path/photo.jpg" }],
+    storageObjects: [storageObject(row(), { bucket: "other-bucket", path: "bad path/photo.jpg" })],
     places: [{ id: "bad place", status: "published", qa_status: "ok", photo_qa_status: "yes" }],
   });
 
@@ -329,7 +433,10 @@ test("plan and errors use locale-independent lexical ordering", async () => {
     row({ place_id: "A-place", storage_path: "A-place/photo.jpg" }),
   ];
   const result = validatePlacePhotoMapping(rows, manifests(rows));
-  assert.deepEqual(result.plan.map((item) => item.place_id), ["A-place", "a-place"]);
+  assert.deepEqual(
+    result.plan.filter((item) => item.action === "map_place_photo").map((item) => item.place_id),
+    ["A-place", "a-place"],
+  );
 
   const source = await readFile("scripts/lib/place-photo-mapping.mjs", "utf8");
   assert.doesNotMatch(source, /localeCompare/);
@@ -338,8 +445,8 @@ test("plan and errors use locale-independent lexical ordering", async () => {
 test("repository templates and manifests form a valid canonical preflight input", async () => {
   const [mappingText, storageText, placesText, packageText, cliSource, docsFiles] = await Promise.all([
     readFile("docs/ops/place-photo-mapping.template.csv", "utf8"),
-    readFile("docs/ops/place-photo-storage-manifest.example.json", "utf8"),
-    readFile("docs/ops/place-photo-place-manifest.example.json", "utf8"),
+    readFile("docs/ops/place-photo-mapping-storage-manifest.example.json", "utf8"),
+    readFile("docs/ops/place-photo-mapping-place-manifest.example.json", "utf8"),
     readFile("package.json", "utf8"),
     readFile("scripts/place-photo-mapping-preflight.mjs", "utf8"),
     readdir("docs/ops"),
@@ -408,5 +515,37 @@ test("CLI reports omitted required manifests as structured validation errors", a
   const output = JSON.parse(result.stdout);
   assert.ok(errorCodes(output).includes("missing_storage_manifest"));
   assert.ok(errorCodes(output).includes("missing_place_manifest"));
+  assert.deepEqual(output.plan, []);
+});
+
+test("CLI reports multiple manifest read failures in a deterministic structured order", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "doripe-photo-preflight-read-errors-"));
+  const paths = await fixtureFiles(directory);
+  const missingPaths = {
+    ...paths,
+    storagePath: join(directory, "missing-storage.json"),
+    placesPath: join(directory, "missing-places.json"),
+  };
+
+  const first = runCli(missingPaths);
+  const second = runCli(missingPaths);
+  assert.notEqual(first.status, 0);
+  assert.equal(first.stdout, second.stdout);
+  const output = JSON.parse(first.stdout);
+  assert.deepEqual(output.errors, [
+    {
+      code: "input_read_error",
+      row: null,
+      field: "place_manifest",
+      message: "Could not read place_manifest file",
+    },
+    {
+      code: "input_read_error",
+      row: null,
+      field: "storage_manifest",
+      message: "Could not read storage_manifest file",
+    },
+  ]);
+  assert.equal(output.summary.errors, 2);
   assert.deepEqual(output.plan, []);
 });
