@@ -233,7 +233,7 @@
 .route-complete-top { position: relative; height: 66px; display: flex; align-items: center; justify-content: center; }
 .route-complete-top > strong { font-size: 16px; }
 .route-complete-back,
-.route-complete-share { position: absolute; width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: transparent; }
+.route-complete-share { position: absolute; width: 44px; height: 44px; display: grid; place-items: center; border: 0; background: transparent; }
 .route-complete-back { left: 12px; }
 .route-complete-share { right: 5px; }
 .route-complete-back img,
@@ -245,7 +245,7 @@
 .route-complete-map { width: auto; height: 192px; margin: 0 24px 16px; border-radius: 14px; background: linear-gradient(135deg, #e4f5ea, #eff8f2); }
 .route-complete-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 24px 12px; }
 .route-complete-navigate,
-.route-complete-share-button { height: 42px; display: flex; align-items: center; justify-content: center; gap: 9px; border: 2px solid #08c568; border-radius: 7px; font-weight: 700; }
+.route-complete-share-button { height: 44px; display: flex; align-items: center; justify-content: center; gap: 9px; border: 2px solid #08c568; border-radius: 7px; font-weight: 700; }
 .route-complete-navigate { background: #08c568; color: #fff; }
 .route-complete-share-button { background: #fff; color: #08b95e; }
 .route-complete-navigate img,
@@ -264,7 +264,7 @@
 .route-complete-chevron { width: 18px; height: 18px; transform: rotate(180deg); opacity: .5; }
 .route-nearby { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 12px; width: auto; min-height: 89px; margin: 12px 24px 0; }
 .route-nearby h2 { position: static; margin: 0; font-size: 16px; line-height: 20px; }
-.route-nearby-more { position: static; align-self: center; border: 0; background: transparent; color: #067a42; padding: 0; font-size: 12px; font-weight: 700; line-height: 15px; }
+.route-nearby-more { position: static; min-width: 44px; height: 44px; display: flex; align-items: center; justify-content: flex-end; align-self: center; border: 0; background: transparent; color: #067a42; padding: 0; font-size: 12px; font-weight: 700; line-height: 15px; }
 .route-nearby-card { position: relative; grid-column: 1 / -1; display: block; width: 100%; height: 66px; margin: 0; border: 1px solid #e1e5e2; border-radius: 8px; background: #fff; padding: 0; text-align: left; }
 .route-nearby-card > img:first-child { position: absolute; top: 8px; left: 9px; width: 50px; height: 50px; border-radius: 7px; object-fit: cover; }
 .route-nearby-card strong { position: absolute; top: 9px; left: 79px; display: block; font-size: 15px; line-height: 19px; }
@@ -454,8 +454,8 @@
   z-index: 8;
   top: 26px;
   left: 18px;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   border: 1px solid rgb(255 255 255 / 45%);

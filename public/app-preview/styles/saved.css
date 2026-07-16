@@ -379,6 +379,24 @@
   }
 }
 
+@media (max-height: 600px) {
+  .saved-screen--c1 .saved-sheet--places {
+    top: 164px;
+    bottom: calc(var(--preview-bottom-nav-height, 56px) + var(--preview-bottom-nav-bottom, 10px));
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .saved-screen--c1 .saved-place-list {
+    bottom: auto;
+    height: auto;
+    overflow: visible;
+    padding-bottom: calc(82px + env(safe-area-inset-bottom));
+  }
+}
+
 /* Task 5: practical text and touch sizing for saved-place workflows. */
 .saved-screen,
 .saved-screen--c3,

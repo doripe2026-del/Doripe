@@ -5,6 +5,12 @@ const COMPACT_VIEWPORTS = [
   { width: 360, height: 800 }
 ];
 
+const REQUIRED_MOBILE_VIEWPORTS = [
+  { width: 320, height: 568 },
+  { width: 360, height: 800 },
+  { width: 393, height: 852 }
+];
+
 const NAV_VIEWPORTS = [
   { width: 393, height: 852 },
   ...COMPACT_VIEWPORTS
@@ -44,6 +50,160 @@ async function expectWithinViewportWidth(page, locator) {
   expect(box).not.toBeNull();
   expect(box.x).toBeGreaterThanOrEqual(0);
   expect(box.x + box.width).toBeLessThanOrEqual(page.viewportSize().width + 1);
+}
+
+async function expectBoxesNotToOverlap(first, second) {
+  const firstBox = await first.boundingBox();
+  const secondBox = await second.boundingBox();
+  expect(firstBox).not.toBeNull();
+  expect(secondBox).not.toBeNull();
+  const separated = firstBox.x + firstBox.width <= secondBox.x
+    || secondBox.x + secondBox.width <= firstBox.x
+    || firstBox.y + firstBox.height <= secondBox.y
+    || secondBox.y + secondBox.height <= firstBox.y;
+  expect(separated).toBe(true);
+}
+
+async function expectStableBox(locator) {
+  await expect.poll(async () => {
+    const first = await locator.boundingBox();
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    const second = await locator.boundingBox();
+    return Math.abs(first.x - second.x)
+      + Math.abs(first.y - second.y)
+      + Math.abs(first.width - second.width)
+      + Math.abs(first.height - second.height);
+  }).toBeLessThan(0.5);
+}
+
+for (const viewport of REQUIRED_MOBILE_VIEWPORTS) {
+  test(`B1 and B2 keep feed cards and header controls intact at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+    for (const screenId of ["b1", "b2"]) {
+      const screen = await gotoScreen(page, screenId, viewport);
+      const screenBox = await screen.boundingBox();
+      const tiles = screen.locator("[data-testid=media-tile]");
+      for (const tile of await tiles.all()) {
+        const tileBox = await tile.boundingBox();
+        expect(tileBox.x, `${screenId} tile left edge`).toBeGreaterThanOrEqual(screenBox.x);
+        expect(tileBox.x + tileBox.width, `${screenId} tile right edge`).toBeLessThanOrEqual(screenBox.x + screenBox.width + 1);
+      }
+
+      const tabs = screen.locator(".discover-tabs");
+      const filter = screen.getByRole("button", { name: /필터/ });
+      await expectBoxesNotToOverlap(tabs, filter);
+      for (const tab of await tabs.getByRole("button").all()) await expectMinimumTouchTarget(tab);
+      await expectMinimumTouchTarget(filter);
+      await expectVisibleInViewport(page, screen.getByRole("navigation", { name: "주요 메뉴" }));
+
+      if (screenId === "b1") {
+        for (const profile of await screen.locator(".discover-following-strip__profile").all()) {
+          await expectMinimumTouchTarget(profile);
+        }
+      }
+    }
+  });
+
+  test(`B4 bottom sheet stays usable at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+    const screen = await gotoScreen(page, "b4", viewport);
+    const sheet = screen.locator("[data-testid=place-sheet]");
+    const handle = sheet.getByRole("button", { name: "장소 상세 닫기" });
+    await expectWithinViewportWidth(page, sheet);
+    await expectMinimumTouchTarget(screen.getByRole("button", { name: "피드로 돌아가기" }));
+    await expectMinimumTouchTarget(screen.locator(".discover-detail-social__profile"));
+    await expectMinimumTouchTarget(handle);
+
+    const initialSheetBox = await sheet.boundingBox();
+    expect(initialSheetBox.y + initialSheetBox.height).toBeLessThanOrEqual(viewport.height + 1);
+
+    const handleBox = await handle.boundingBox();
+    await page.mouse.move(handleBox.x + handleBox.width / 2, handleBox.y + handleBox.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(handleBox.x + handleBox.width / 2, handleBox.y - 180, { steps: 8 });
+    await page.mouse.up();
+    await expect(sheet).toHaveAttribute("data-sheet-state", "expanded");
+    await expectStableBox(sheet);
+    await expect.poll(async () => {
+      const box = await sheet.boundingBox();
+      return box.y + box.height;
+    }).toBeLessThanOrEqual(viewport.height + 1);
+
+    const infoRows = await sheet.locator(".discover-info-row").all();
+    for (const row of infoRows) await expectMinimumTouchTarget(row);
+    for (let index = 1; index < infoRows.length; index += 1) {
+      await expectBoxesNotToOverlap(infoRows[index - 1], infoRows[index]);
+    }
+    const placeActions = sheet.locator(".discover-place-actions");
+    await expectBoxesNotToOverlap(infoRows.at(-1), placeActions);
+    for (const action of await placeActions.getByRole("button").all()) await expectMinimumTouchTarget(action);
+
+    await sheet.hover();
+    await page.mouse.wheel(0, 2_000);
+    await expect.poll(() => sheet.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+  });
+
+  test(`C1 saved sheet remains reachable at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+    await seedSavedPlaces(page);
+    const screen = await gotoScreen(page, "c1", viewport);
+    const sheet = screen.locator(".saved-sheet--places");
+    const list = screen.locator(".saved-place-list");
+    const nav = screen.getByRole("navigation", { name: "주요 메뉴" });
+    await expectWithinViewportWidth(page, sheet);
+    await expectWithinViewportWidth(page, screen.locator(".saved-place-row").first());
+    await expectVisibleInViewport(page, nav);
+    const recommendationsBox = await screen.locator(".saved-recommendations").boundingBox();
+    const initialNavBox = await nav.boundingBox();
+    expect(recommendationsBox.y + recommendationsBox.height).toBeLessThanOrEqual(initialNavBox.y);
+    if (viewport.height <= 600) {
+      const sheetBox = await sheet.boundingBox();
+      expect(sheetBox.y + sheetBox.height).toBeLessThanOrEqual(initialNavBox.y + 1);
+    }
+
+    const filters = screen.locator(".saved-filter-row");
+    const lastFilter = filters.getByRole("button").last();
+    await filters.hover();
+    if (await filters.evaluate((element) => element.scrollWidth > element.clientWidth)) {
+      await page.mouse.wheel(1_000, 0);
+      await expect.poll(() => filters.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+    }
+    await expectVisibleInViewport(page, lastFilter);
+    await expectMinimumTouchTarget(lastFilter);
+
+    const lastSavedItem = screen.locator(".saved-place-row").last();
+    const scrollTarget = viewport.height <= 600 ? sheet : list;
+    await expect.poll(() => scrollTarget.evaluate((element) => getComputedStyle(element).overflowY)).toMatch(/auto|scroll/);
+    await scrollTarget.hover();
+    await page.mouse.wheel(0, 2_000);
+    await expect.poll(() => scrollTarget.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+    const lastBox = await lastSavedItem.boundingBox();
+    const navBox = await nav.boundingBox();
+    expect(lastBox.y + lastBox.height).toBeLessThanOrEqual(navBox.y);
+  });
+
+  test(`D9 keeps controls, text, and navigation separated at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+    const screen = await gotoScreen(page, "d9", viewport);
+    const nav = screen.getByRole("navigation", { name: "주요 메뉴" });
+    await expectVisibleInViewport(page, nav);
+    for (const control of [
+      screen.getByRole("button", { name: "뒤로 가기" }),
+      screen.getByRole("button", { name: "코스 공유" }),
+      screen.getByRole("button", { name: "길찾기 시작" }),
+      screen.getByRole("button", { name: "공유하기" }),
+      screen.getByRole("button", { name: "추천 장소 더보기" })
+    ]) await expectMinimumTouchTarget(control);
+
+    const title = screen.locator(".route-complete-title");
+    const meta = screen.locator(".route-complete-meta");
+    await expectBoxesNotToOverlap(title, meta);
+
+    const content = screen.locator(".route-complete-scroll");
+    const nearby = screen.locator(".route-nearby-card");
+    await content.hover();
+    await page.mouse.wheel(0, 2_000);
+    await expect.poll(() => content.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+    const nearbyBox = await nearby.boundingBox();
+    const navBox = await nav.boundingBox();
+    expect(nearbyBox.y + nearbyBox.height).toBeLessThanOrEqual(navBox.y);
+  });
 }
 
 for (const viewport of NAV_VIEWPORTS) {

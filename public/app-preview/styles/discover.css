@@ -85,12 +85,12 @@
 .discover-brand strong { transform: translateX(-1px); }
 .discover-brand__mark { display: block; width: 30px; height: 30px; margin-left: 0; object-fit: contain; }
 .discover-tabs { position: absolute; top: 24px; left: 121px; display: flex; width: 146px; height: 46px; align-items: center; border-radius: 24px; background: #f4f4f4; padding: 4px; }
-.discover-tabs button { height: 38px; flex: 1; border: 0; border-radius: 20px; background: transparent; color: #8a8a8a; font-size: 13px; }
+.discover-tabs button { height: 44px; flex: 1; border: 0; border-radius: 20px; background: transparent; color: #8a8a8a; font-size: 13px; }
 .discover-tabs button.is-selected { background: #fff; color: #161616; font-weight: 700; box-shadow: 0 2px 12px rgb(0 0 0 / 12%); }
 .discover-screen--b2 .discover-tabs button:first-child { flex: 0 0 81px; margin-left: 2px; }
 .discover-screen--b1 .discover-tabs button:first-child { flex: 0 0 66px; }
 .discover-screen--b1 .discover-tabs button:last-child { flex: 0 0 72px; }
-.discover-filter-button { position: absolute; top: 27px; left: 287px; width: 93px; height: 39px; border: 1px solid #e1e1e1; border-radius: 20px; background: #fff; font-weight: 650; }
+.discover-filter-button { position: absolute; top: 25px; left: 287px; width: 93px; height: 44px; border: 1px solid #e1e1e1; border-radius: 22px; background: #fff; font-weight: 650; }
 .discover-filter-button { display: flex; align-items: center; justify-content: center; gap: 6px; }
 .discover-filter-button__icon { width: 16px; height: 16px; }
 .discover-filter-button__down { width: 14px; height: 14px; }
@@ -133,8 +133,8 @@
   to { transform: translateY(100%); }
 }
 .discover-following-strip { position: absolute; z-index: 5; top: 86px; left: 24px; display: flex; width: 345px; height: 58px; align-items: center; border: 1px solid #08cc69; border-radius: 22px; background: #f2fff7; padding: 0 18px; gap: 12px; }
-.discover-following-strip__avatars { position: absolute; top: 11px; left: 20px; display: flex; align-items: center; }
-.discover-following-strip__profile { width: 34px; height: 34px; margin-right: -14px; overflow: hidden; border: 0; border-radius: 50%; background: transparent; padding: 0; }
+.discover-following-strip__avatars { position: absolute; top: 7px; left: 20px; display: flex; align-items: center; }
+.discover-following-strip__profile { width: 44px; height: 44px; display: grid; margin-right: -24px; overflow: visible; place-items: center; border: 0; border-radius: 50%; background: transparent; padding: 0; }
 .discover-following-strip__avatars .discover-avatar { width: 34px; height: 34px; border: 2px solid #fff; }
 .discover-following-strip__more { position: absolute; top: 0; left: 80px; display: grid; width: 34px; height: 34px; place-items: center; border: 2px solid #fff; border-radius: 50%; background: #18c96e; color: #fff; font-size: 12px; font-weight: 700; }
 .discover-following-strip__list { position: absolute; inset: 0 0 0 170px; border: 0; background: transparent; }
@@ -243,7 +243,7 @@
 .discover-detail-dots { position: absolute; z-index: 7; top: 40px; left: 50%; display: flex; gap: 9px; transform: translateX(-50%); pointer-events: none; }
 .discover-detail-dots span { width: 8px; height: 8px; border-radius: 50%; background: rgb(255 255 255 / 88%); box-shadow: 0 1px 4px rgb(0 0 0 / 20%); }
 .discover-detail-dots span.is-active { background: #0dc96a; }
-.discover-detail-back { position: absolute; z-index: 8; top: 26px; left: 18px; display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid rgb(255 255 255 / 45%); border-radius: 50%; background: rgb(255 255 255 / 88%); box-shadow: 0 5px 16px rgb(0 0 0 / 15%); backdrop-filter: blur(8px); }
+.discover-detail-back { position: absolute; z-index: 8; top: 26px; left: 18px; display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid rgb(255 255 255 / 45%); border-radius: 50%; background: rgb(255 255 255 / 88%); box-shadow: 0 5px 16px rgb(0 0 0 / 15%); backdrop-filter: blur(8px); }
 .discover-detail-back .discover-back-icon { width: 24px; height: 24px; }
 .discover-detail-social {
   --detail-sheet-top: 480px;
@@ -263,7 +263,7 @@
 .discover-detail-social[data-content-type="route"][data-sheet-state="expanded"] { --detail-sheet-top: 88px; }
 .discover-screen--b10 .discover-detail-social[data-content-type="place"][data-sheet-state="expanded"] { --detail-sheet-top: 242px; }
 .discover-detail-social[data-dragging="true"] { transition: none; }
-.discover-detail-social__profile { position: absolute; bottom: 8px; left: 0; border: 0; background: transparent; padding: 0; pointer-events: auto; }
+.discover-detail-social__profile { position: absolute; bottom: 5px; left: 0; min-height: 44px; display: flex; align-items: center; border: 0; background: transparent; padding: 0; pointer-events: auto; }
 .discover-detail-social__profile-pill { display: inline-flex; height: 38px; align-items: center; gap: 7px; border: 1px solid rgb(255 255 255 / 38%); border-radius: 20px; background: rgb(28 28 28 / 52%); color: #fff; padding: 4px 9px 4px 4px; box-shadow: 0 4px 14px rgb(0 0 0 / 18%); backdrop-filter: blur(9px); }
 .discover-detail-social__profile-pill > .discover-avatar { width: 30px; height: 30px; flex: 0 0 auto; border: 1px solid #fff; }
 .discover-detail-social__profile-pill__name { max-width: 92px; overflow: hidden; font-size: 14px; font-weight: 750; line-height: 20px; text-overflow: ellipsis; white-space: nowrap; }
@@ -692,6 +692,12 @@
   .discover-brand { left: 16px; width: 82px; font-size: 15px; }
   .discover-tabs { left: 108px; width: 140px; }
   .discover-filter-button { right: 8px; left: auto; width: 84px; }
+}
+
+@media (max-width: 340px) {
+  .discover-filter-button { width: 44px; padding: 0; }
+  .discover-filter-button > span,
+  .discover-filter-button__down { display: none; }
 }
 
 @media (max-height: 700px) {
@@ -1150,6 +1156,10 @@
 
 @media (max-width: 392px) {
   .discover-screen { width: 100%; overflow-x: clip; border-radius: 0; }
+  .discover-feed-tile {
+    left: min(var(--tile-x), calc(50% + 4px));
+    width: min(var(--tile-width), calc(50% - 24px));
+  }
   .discover-place-sheet > .discover-place-summary,
   .discover-place-sheet > .discover-info-row,
   .discover-place-sheet > .discover-place-actions,
@@ -1168,6 +1178,55 @@
   .discover-comment-composer input { width: auto; flex: 1 1 auto; }
   .discover-submit-comment { flex: 0 0 48px; }
   .discover-create-route { left: 50% !important; transform: translateX(-50%); }
+}
+
+.discover-screen--b4 .discover-sheet-handle {
+  position: relative;
+  height: 44px;
+  margin-top: 0;
+  background: transparent;
+}
+
+.discover-screen--b4 .discover-sheet-handle::before {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 55px;
+  height: 4px;
+  border-radius: 3px;
+  background: #d4d4d4;
+  content: "";
+}
+
+.discover-screen--b4 .discover-place-sheet > .discover-info-row { height: 44px; }
+.discover-screen--b4 .discover-info-row[data-info-label="주소"] { top: 84px; }
+.discover-screen--b4 .discover-info-row[data-info-label="영업시간"] { top: 128px; }
+.discover-screen--b4 .discover-info-row[data-info-label="대표 메뉴"] { top: 172px; }
+.discover-screen--b4 .discover-place-actions { top: 222px; height: 44px; }
+.discover-screen--b4 .discover-outline-action,
+.discover-screen--b4 .discover-fill-action { height: 44px; }
+.discover-screen--b4 .discover-detail-comments-title { top: 278px; }
+.discover-screen--b4 .discover-detail-comment[data-comment-index="0"] { top: 306px; }
+.discover-screen--b4 .discover-detail-comment[data-comment-index="1"] { top: 354px; }
+.discover-screen--b4 .discover-detail-other-title { top: 402px; }
+.discover-screen--b4 .discover-media-strip { top: 430px; }
+.discover-screen--b4 .discover-detail-related-title { top: 630px; }
+.discover-screen--b4 .discover-related-mini { top: 658px; }
+.discover-screen--b4 .discover-create-route { top: 772px; }
+
+@media (max-width: 392px), (max-height: 800px) {
+  .discover-screen--b4 .discover-place-sheet[data-sheet-state="medium"] {
+    top: min(480px, calc(100dvh - 88px));
+    bottom: 0;
+    height: auto;
+  }
+
+  .discover-screen--b4 .discover-place-sheet[data-sheet-state="expanded"] {
+    top: min(150px, 18dvh);
+    bottom: 0;
+    height: auto;
+    min-height: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
