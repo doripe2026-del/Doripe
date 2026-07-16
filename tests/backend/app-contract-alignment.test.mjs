@@ -71,6 +71,24 @@ test("v1 analytics records external map opens instead of in-app navigation", asy
   assert.equal(names.includes("navigation_start"), false);
 });
 
+test("analytics backend accepts the documented screen dwell duration", async () => {
+  const loaded = await importTypescript("src/backend/domains/analytics.ts");
+  try {
+    assert.equal(loaded.module.analyticsProperties.safeParse({ durationMs: 1_250 }).success, true);
+    assert.equal(loaded.module.analyticsProperties.safeParse({ durationMs: -1 }).success, false);
+    assert.equal(loaded.module.analyticsProperties.safeParse({ durationMs: 86_400_001 }).success, false);
+  } finally {
+    await loaded.cleanup();
+  }
+
+  const document = JSON.parse(await readFile("docs/api/openapi.yaml", "utf8"));
+  assert.deepEqual(document.components.schemas.AnalyticsProperties.properties.durationMs, {
+    type: "integer",
+    minimum: 0,
+    maximum: 86_400_000,
+  });
+});
+
 test("OpenAPI documents hydrated saves and the place fields shown by the app", async () => {
   const openapi = await readFile("docs/api/openapi.yaml", "utf8");
   const document = JSON.parse(openapi);

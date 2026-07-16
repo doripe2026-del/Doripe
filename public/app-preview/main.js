@@ -7,15 +7,18 @@ import { courseById, createDataCatalog } from "./data/selectors.js";
 import { createActionSync } from "./data/action-sync.js";
 import { createAppDataStore } from "./data/store.js";
 import { isStaticPreview, preloadServerMedia } from "./data/server-media.js";
+import { createAnalyticsClient } from "./analytics-client.js";
 
 const groups = ["A", "B", "C", "D", "E"];
 preloadServerMedia();
 const authClient = createAuthClient();
+const staticPreview = isStaticPreview();
 const repository = getAdapter(isStaticPreview() ? "fixture" : "api", {
   accessTokenProvider: authClient.getAccessToken
 });
 const dataStore = createAppDataStore({ repository });
 const actionSync = createActionSync({ repository, enabled: repository.mode === "api" });
+const analyticsClient = staticPreview ? null : createAnalyticsClient();
 let dataLoadError = null;
 try {
   await dataStore.load();
@@ -52,6 +55,7 @@ let activeShareParams = null;
 let renderGeneration = 0;
 let authStatus = "no-session";
 let lastRenderedScreenId = null;
+let analyticsSession = null;
 
 const GUEST_MVP_ENABLED = true;
 const RECOVERY_SCREENS = new Set(["a7", "a8"]);
@@ -400,6 +404,10 @@ function renderScreen(screenId) {
   if (changedScreen && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     phoneRoot.firstElementChild?.classList.add("is-screen-entering");
   }
+  if (analyticsClient && lastRenderedScreenId !== screenId) {
+    analyticsClient.enterScreen(screenId);
+    if (lastRenderedScreenId !== null) flushAnalytics();
+  }
   lastRenderedScreenId = screenId;
   renderReviewList();
 }
@@ -625,9 +633,55 @@ function mergeStaleMutationState(result, optimisticState) {
   return merged;
 }
 
+function flushAnalytics() {
+  if (!analyticsClient || !analyticsSession) return;
+  void analyticsSession.then((session) => (session.ok ? analyticsClient.flush() : null));
+}
+
+function successfulProductEvent(input, result) {
+  if (!result.ok || result.status !== "synced") return null;
+  const { actionId, payload = {}, previousState, optimisticState } = input;
+
+  if (actionId === "save-place") {
+    const placeId = payload.placeId || payload.id;
+    const wasSaved = previousState.savedPlaceIds?.includes(placeId) === true;
+    return { name: wasSaved ? "place_unsave" : "place_save", properties: { placeId } };
+  }
+  if (actionId === "toggle-follow") {
+    const targetId = payload.userId || payload.id;
+    const wasFollowed = previousState.followedUserIds?.includes(targetId) === true;
+    return { name: wasFollowed ? "unfollow" : "follow", properties: { targetType: "profile", targetId } };
+  }
+  if (["submit-comment", "submit-course-comment"].includes(actionId)) {
+    const contentId = payload.contentId || previousState.selections?.selectedContentId;
+    return { name: "comment_create", properties: { contentId } };
+  }
+  if (actionId === "save-shared-route") {
+    const targetId = payload.routeId || payload.id;
+    const removedSave = (optimisticState.savedRoutes?.length || 0) < (previousState.savedRoutes?.length || 0);
+    return { name: removedSave ? "course_unsave" : "course_save", properties: { targetType: "course", targetId } };
+  }
+  if (actionId === "save-route") {
+    const targetId = result.state.selections?.selectedRouteId;
+    return { name: "course_complete", properties: { targetType: "course", targetId } };
+  }
+  return null;
+}
+
+function recordSuccessfulProductAction(input, result) {
+  const event = analyticsClient ? successfulProductEvent(input, result) : null;
+  if (!event) return;
+  analyticsClient.recordEvent(event.name, {
+    sourceScreen: input.previousState.currentScreenId,
+    properties: event.properties
+  });
+  flushAnalytics();
+}
+
 async function syncProductAction(input) {
   const result = await actionSync.run(input);
   if (result.status === "local") return;
+  recordSuccessfulProductAction(input, result);
 
   state.replace(mergeStaleMutationState(result, input.optimisticState));
   interactionState = state.getState();
@@ -977,4 +1031,12 @@ if (!startupAuthResult.ok) {
 } else if (startupAuthResult.status === "authenticated") {
   window.sessionStorage.removeItem(LOGOUT_GUARD_KEY);
 }
+analyticsClient?.attachLifecycle();
 renderFromUrl();
+if (analyticsClient) {
+  analyticsSession = analyticsClient.startSession({
+    entryPath: `${window.location.pathname}${window.location.search}`,
+    sourceScreen: lastRenderedScreenId || "app"
+  });
+  flushAnalytics();
+}

@@ -17,12 +17,13 @@ export const analyticsEventNames = [
   "content_upload_complete", "notification_open",
 ] as const;
 
-const safeProperties = z.object({
+export const analyticsProperties = z.object({
   appVersion: z.string().max(40).optional(),
   authorType: z.enum(["doripe", "user", "curator", "partner"]).optional(),
   contentId: z.string().uuid().optional(),
   contentType: z.enum(["place", "course"]).optional(),
   courseId: z.string().uuid().optional(),
+  durationMs: z.number().int().min(0).max(86_400_000).optional(),
   experimentId: z.string().max(80).optional(),
   filterIds: z.array(z.string().max(80)).max(20).optional(),
   placeCount: z.number().int().min(0).max(30).optional(),
@@ -42,7 +43,7 @@ const event = z.object({
   anonymousId: z.string().min(16).max(96).nullable().optional(),
   name: z.enum(analyticsEventNames),
   sourceScreen: z.string().min(1).max(80),
-  properties: safeProperties,
+  properties: analyticsProperties,
 }).strict();
 
 const eventBatch = z.object({ events: z.array(event).min(1).max(50) }).strict();
