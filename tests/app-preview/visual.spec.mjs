@@ -87,7 +87,7 @@ async function setRepresentativeState(page, screenId) {
   await page.reload();
 }
 
-test("representative B/C/D/E screenshots match reviewed visual baselines", async ({ page }) => {
+test("@visual representative B/C/D/E screenshots match reviewed visual baselines", async ({ page }) => {
   for (const screenId of REPRESENTATIVE_SCREENS) {
     await page.goto(`/app-preview/?screen=${screenId}&static=1`);
     await setRepresentativeState(page, screenId);

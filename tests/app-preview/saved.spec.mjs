@@ -393,7 +393,7 @@ test("all Flow C screens keep fixed frame geometry without horizontal overflow",
   }
 });
 
-test("Flow C screenshots match Figma or the approved responsive baseline", async ({ page }) => {
+test("@visual Flow C screenshots match Figma or the approved responsive baseline", async ({ page }) => {
   for (const screenId of FLOW_C) {
     await page.goto(`/app-preview/?screen=${screenId}&static=1`);
     await page.evaluate(({ key, state }) => {

@@ -34,3 +34,18 @@ jobs:
 
       - name: Test deployment readiness rules
         run: npm run test:ops
+
+      - name: Test app data and state
+        run: npm run test:app-preview:unit
+
+      - name: Test backend and public boundaries
+        run: npm run test:backend && npm run test:server-boundaries
+
+      - name: Check API contract
+        run: npm run check:api-contract
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Test complete MVP behavior
+        run: npm run test:app-preview:e2e:ci

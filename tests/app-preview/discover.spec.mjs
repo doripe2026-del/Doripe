@@ -1266,7 +1266,7 @@ test("B4 B5 and B6 use the explicit AI sheet positions over immutable Figma evid
   }
 });
 
-test("Flow B screenshots stay within their reviewed visual budgets", async ({ page }, testInfo) => {
+test("@visual Flow B screenshots stay within their reviewed visual budgets", async ({ page }, testInfo) => {
   test.setTimeout(120_000);
   const ratios = {};
   for (const screenId of FLOW_B_IDS) {
