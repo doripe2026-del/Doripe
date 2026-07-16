@@ -330,7 +330,7 @@ function renderEvidenceScreen(screen) {
   teardownRenderedScreen();
   renderGeneration += 1;
   phoneRoot.replaceChildren(renderedScreen);
-  if (dataLoadError && !isStaticPreview()) {
+  if (dataLoadError && !isStaticPreview() && !renderedScreen.querySelector(".auth-feedback")) {
     const feedback = document.createElement("output");
     feedback.className = "preview-data-feedback";
     feedback.setAttribute("role", "status");

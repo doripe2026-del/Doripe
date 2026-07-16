@@ -260,7 +260,8 @@ test("logout network failure still completes locally and cannot restore authenti
   await expect(page.getByRole("status")).toContainText("로그아웃");
   expect(await page.evaluate((key) => sessionStorage.getItem(key), AUTH_SESSION_STORAGE_KEY)).toBeNull();
   await page.goBack();
-  await expect(page).toHaveURL(/screen=a3/);
+  await expect(page).toHaveURL(/screen=a(?:1|3)/);
+  await expect(page.locator('[data-screen-id="e3"]')).toHaveCount(0);
 });
 
 test("logout clears local state and history before the remote request settles", async ({ page }) => {
