@@ -1,8 +1,10 @@
 {
   "places": [
     {
-      "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
-      "status": "ready"
+      "id": "example-place",
+      "status": "ready",
+      "qa_status": "ready",
+      "photo_qa_status": "approved"
     }
   ]
 }

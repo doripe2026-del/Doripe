@@ -3,33 +3,39 @@ export const MAPPING_COLUMNS = Object.freeze([
   "storage_bucket",
   "storage_path",
   "place_id",
-  "provider_id",
   "source_type",
-  "rights_status",
-  "publish_status",
+  "permission_status",
   "photo_type",
-  "sort_position",
+  "display_order",
   "rights_holder_name",
   "credit_text",
   "usage_scope",
   "license_note",
 ]);
 
-const REQUIRED_COLUMNS = Object.freeze(MAPPING_COLUMNS.slice(0, 12));
-const UUID_COLUMNS = Object.freeze(["photo_id", "place_id", "provider_id"]);
+const CSV_ROW_NUMBER = Symbol("csvRowNumber");
+const REQUIRED_COLUMNS = Object.freeze(MAPPING_COLUMNS.slice(0, 8));
 const SOURCE_TYPES = new Set(["team", "owner", "creator", "licensed", "naver"]);
-const RIGHTS_STATUSES = new Set(["pending", "approved", "rejected"]);
-const PUBLISH_STATUSES = new Set(["draft", "active", "published", "inactive"]);
-const PUBLISHABLE_STATUSES = new Set(["active", "published"]);
+const PERMISSION_STATUSES = new Set(["pending", "approved", "rejected"]);
 const PHOTO_TYPES = new Set(["cover", "gallery", "original", "rights"]);
-const PUBLISHABLE_PHOTO_TYPES = new Set(["cover", "gallery"]);
-const ACTIVE_MANIFEST_STATUSES = new Set(["active", "approved", "published", "ready"]);
-const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const BUCKET_PATTERN = /^[a-z0-9](?:[a-z0-9.-]{0,61}[a-z0-9])?$/;
+const PUBLIC_PHOTO_TYPES = new Set(["cover", "gallery"]);
+const PRIVATE_PHOTO_TYPES = new Set(["original", "rights"]);
+const STORAGE_BUCKETS = new Set(["place-photos-public", "place-photo-originals"]);
+const PLACE_STATUSES = new Set(["draft", "ready", "inactive"]);
+const QA_STATUSES = new Set(["draft", "ready", "needs_fix"]);
+const PHOTO_QA_STATUSES = new Set(["pending", "approved", "rejected"]);
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const SAFE_ID_PATTERN = /^[a-z0-9][a-z0-9_-]*$/i;
+const MAX_INTEGER = 2_147_483_647;
 
-function pushField(currentRow, field) {
+function setRowNumber(value, rowNumber) {
+  Object.defineProperty(value, CSV_ROW_NUMBER, { value: rowNumber });
+  return value;
+}
+
+function finishCsvRow(rows, currentRow, field, rowNumber) {
   currentRow.push(field);
-  return "";
+  rows.push(setRowNumber(currentRow, rowNumber));
 }
 
 export function parseCsv(text) {
@@ -40,6 +46,8 @@ export function parseCsv(text) {
   let field = "";
   let inQuotes = false;
   let justClosedQuote = false;
+  let lineNumber = 1;
+  let rowStartLine = 1;
 
   for (let index = 0; index < text.length; index += 1) {
     const character = text[index];
@@ -54,37 +62,40 @@ export function parseCsv(text) {
         }
       } else {
         field += character;
+        if (character === "\n" || (character === "\r" && text[index + 1] !== "\n")) lineNumber += 1;
       }
       continue;
     }
 
     if (character === '"') {
-      if (field || justClosedQuote) throw new Error("Malformed CSV: unexpected quote");
+      if (field || justClosedQuote) throw new Error(`Malformed CSV at row ${rowStartLine}: unexpected quote`);
       inQuotes = true;
       continue;
     }
     if (character === ",") {
-      field = pushField(currentRow, field);
+      currentRow.push(field);
+      field = "";
       justClosedQuote = false;
       continue;
     }
     if (character === "\n" || character === "\r") {
       if (character === "\r" && text[index + 1] === "\n") index += 1;
-      field = pushField(currentRow, field);
-      rows.push(currentRow);
+      finishCsvRow(rows, currentRow, field, rowStartLine);
       currentRow = [];
+      field = "";
       justClosedQuote = false;
+      lineNumber += 1;
+      rowStartLine = lineNumber;
       continue;
     }
-    if (justClosedQuote) throw new Error("Malformed CSV: unexpected character after closing quote");
+    if (justClosedQuote) {
+      throw new Error(`Malformed CSV at row ${rowStartLine}: unexpected character after closing quote`);
+    }
     field += character;
   }
 
-  if (inQuotes) throw new Error("Malformed CSV: unterminated quoted field");
-  if (field || currentRow.length || justClosedQuote) {
-    pushField(currentRow, field);
-    rows.push(currentRow);
-  }
+  if (inQuotes) throw new Error(`Malformed CSV at row ${rowStartLine}: unterminated quoted field`);
+  if (field || currentRow.length || justClosedQuote) finishCsvRow(rows, currentRow, field, rowStartLine);
   return rows;
 }
 
@@ -98,12 +109,13 @@ export function parseMappingCsv(text) {
     throw new Error(`CSV header must exactly match: ${MAPPING_COLUMNS.join(",")}`);
   }
 
-  return rows.slice(1).flatMap((values, index) => {
+  return rows.slice(1).flatMap((values) => {
     if (values.every((value) => value === "")) return [];
     if (values.length !== MAPPING_COLUMNS.length) {
-      throw new Error(`CSV row ${index + 2} must contain exactly ${MAPPING_COLUMNS.length} columns`);
+      throw new Error(`CSV row ${values[CSV_ROW_NUMBER]} must contain exactly ${MAPPING_COLUMNS.length} columns`);
     }
-    return [Object.fromEntries(MAPPING_COLUMNS.map((column, columnIndex) => [column, values[columnIndex]]))];
+    const item = Object.fromEntries(MAPPING_COLUMNS.map((column, index) => [column, values[index]]));
+    return [setRowNumber(item, values[CSV_ROW_NUMBER])];
   });
 }
 
@@ -111,28 +123,54 @@ function isSafeStoragePath(path) {
   if (!path || path !== path.trim() || path.length > 1024) return false;
   if (path.startsWith("/") || path.includes("\\") || /[\u0000-\u001f\u007f?#]/.test(path)) return false;
   if (/^[a-z][a-z0-9+.-]*:/i.test(path) || /%(?:2e|2f|5c)/i.test(path)) return false;
-  const segments = path.split("/");
-  return segments.every((segment) => segment && segment !== "." && segment !== "..");
+  return path.split("/").every((segment) => segment && segment !== "." && segment !== "..");
+}
+
+function isSafeId(value) {
+  return value.length <= 80 && SAFE_ID_PATTERN.test(value);
 }
 
 function normalizedRow(input) {
-  return Object.fromEntries(MAPPING_COLUMNS.map((column) => {
+  const result = Object.fromEntries(MAPPING_COLUMNS.map((column) => {
     const value = String(input?.[column] ?? "");
     return [column, column === "storage_bucket" || column === "storage_path" ? value : value.trim()];
   }));
+  if (input?.[CSV_ROW_NUMBER]) setRowNumber(result, input[CSV_ROW_NUMBER]);
+  return result;
 }
 
 function addError(errors, code, row, field, message) {
   errors.push({ code, row, field, message });
 }
 
-function addDuplicateErrors(rows, errors, field, code, label, normalize = (value) => value) {
+function lexicalCompare(left, right) {
+  if (left < right) return -1;
+  if (left > right) return 1;
+  return 0;
+}
+
+function compareErrors(left, right) {
+  return (left.row ?? 0) - (right.row ?? 0)
+    || lexicalCompare(left.code, right.code)
+    || lexicalCompare(left.field, right.field)
+    || lexicalCompare(left.message, right.message);
+}
+
+function comparePlan(left, right) {
+  return lexicalCompare(left.place_id, right.place_id)
+    || left.display_order - right.display_order
+    || lexicalCompare(left.storage_bucket, right.storage_bucket)
+    || lexicalCompare(left.storage_path, right.storage_path)
+    || lexicalCompare(left.photo_id, right.photo_id);
+}
+
+function addDuplicateErrors(items, errors, valueFor, code, field, label) {
   const seen = new Map();
-  for (const item of rows) {
-    const value = normalize(item.data[field]);
-    if (!value) continue;
+  for (const item of items) {
+    const value = valueFor(item.data);
+    if (value === undefined || value === "") continue;
     const firstRow = seen.get(value);
-    if (firstRow) {
+    if (firstRow !== undefined) {
       addError(errors, code, item.rowNumber, field, `${label} duplicates row ${firstRow}`);
     } else {
       seen.set(value, item.rowNumber);
@@ -140,48 +178,27 @@ function addDuplicateErrors(rows, errors, field, code, label, normalize = (value
   }
 }
 
-function manifestIndex(items, idField, errors, kind) {
-  if (items === undefined) return null;
-  if (!Array.isArray(items)) {
-    addError(errors, "invalid_manifest", null, kind, `${kind} manifest must contain an array`);
-    return new Map();
-  }
-  const index = new Map();
-  for (const item of items) {
-    const id = String(item?.[idField] ?? "").trim().toLowerCase();
-    if (!id) {
-      addError(errors, "invalid_manifest_entry", null, kind, `${kind} manifest entry is missing ${idField}`);
-      continue;
-    }
-    if (!UUID_PATTERN.test(id)) {
-      addError(errors, "invalid_manifest_uuid", null, kind, `${kind} manifest ${idField} must be a canonical UUID`);
-    }
-    if (index.has(id)) {
-      addError(errors, "duplicate_manifest_entry", null, kind, `${kind} manifest contains duplicate ${id}`);
-      continue;
-    }
-    index.set(id, item);
-  }
-  return index;
-}
-
 function storageManifestIndex(items, errors) {
-  if (items === undefined) return null;
+  if (items === undefined) {
+    addError(errors, "missing_storage_manifest", null, "storage_manifest", "storage manifest is required");
+    return null;
+  }
   if (!Array.isArray(items)) {
-    addError(errors, "invalid_manifest", null, "storage", "storage manifest must contain an array");
+    addError(errors, "invalid_storage_manifest", null, "storage_manifest", "storage manifest must contain an array");
     return new Map();
   }
+
   const index = new Map();
   for (const item of items) {
     const bucket = String(item?.bucket ?? "");
     const path = String(item?.path ?? "");
-    if (!BUCKET_PATTERN.test(bucket) || !isSafeStoragePath(path)) {
-      addError(errors, "invalid_manifest_entry", null, "storage", "storage manifest entry requires a safe bucket and path");
+    if (!STORAGE_BUCKETS.has(bucket) || !isSafeStoragePath(path)) {
+      addError(errors, "invalid_storage_manifest_entry", null, "storage_manifest", "storage entry requires a canonical bucket and safe path");
       continue;
     }
     const key = `${bucket}\u0000${path}`;
     if (index.has(key)) {
-      addError(errors, "duplicate_manifest_entry", null, "storage", `storage manifest contains duplicate ${bucket}/${path}`);
+      addError(errors, "duplicate_storage_manifest_entry", null, "storage_manifest", `storage manifest contains duplicate ${bucket}/${path}`);
       continue;
     }
     index.set(key, item);
@@ -189,33 +206,50 @@ function storageManifestIndex(items, errors) {
   return index;
 }
 
-function compareErrors(left, right) {
-  return (left.row ?? 0) - (right.row ?? 0)
-    || left.code.localeCompare(right.code)
-    || left.field.localeCompare(right.field)
-    || left.message.localeCompare(right.message);
-}
+function placeManifestIndex(items, errors) {
+  if (items === undefined) {
+    addError(errors, "missing_place_manifest", null, "place_manifest", "place manifest is required");
+    return null;
+  }
+  if (!Array.isArray(items)) {
+    addError(errors, "invalid_place_manifest", null, "place_manifest", "place manifest must contain an array");
+    return new Map();
+  }
 
-function comparePlan(left, right) {
-  return left.place_id.localeCompare(right.place_id)
-    || left.sort_position - right.sort_position
-    || left.storage_path.localeCompare(right.storage_path)
-    || left.photo_id.localeCompare(right.photo_id);
+  const index = new Map();
+  for (const item of items) {
+    const id = String(item?.id ?? "").trim();
+    const status = String(item?.status ?? "");
+    const qaStatus = String(item?.qa_status ?? "");
+    const photoQaStatus = String(item?.photo_qa_status ?? "");
+    const valid = isSafeId(id)
+      && PLACE_STATUSES.has(status)
+      && QA_STATUSES.has(qaStatus)
+      && PHOTO_QA_STATUSES.has(photoQaStatus);
+    if (!valid) {
+      addError(errors, "invalid_place_manifest_entry", null, "place_manifest", "place entry requires a safe id and canonical status fields");
+    }
+    if (!isSafeId(id)) continue;
+    if (index.has(id)) {
+      addError(errors, "duplicate_place_manifest_entry", null, "place_manifest", `place manifest contains duplicate ${id}`);
+      continue;
+    }
+    index.set(id, item);
+  }
+  return index;
 }
 
 function planItem(data) {
   return {
     action: "map_place_photo",
     photo_id: data.photo_id.toLowerCase(),
-    place_id: data.place_id.toLowerCase(),
-    provider_id: data.provider_id.toLowerCase(),
     storage_bucket: data.storage_bucket,
     storage_path: data.storage_path,
+    place_id: data.place_id,
     source_type: data.source_type,
-    rights_status: data.rights_status,
-    publish_status: data.publish_status,
+    permission_status: data.permission_status,
     photo_type: data.photo_type,
-    sort_position: Number(data.sort_position),
+    display_order: Number(data.display_order),
     rights_holder_name: data.rights_holder_name,
     credit_text: data.credit_text,
     usage_scope: data.usage_scope,
@@ -227,23 +261,27 @@ export function validatePlacePhotoMapping(inputRows, manifests = {}) {
   if (!Array.isArray(inputRows)) throw new TypeError("Mapping rows must be an array");
 
   const errors = [];
-  const rows = inputRows.map((input, index) => ({ data: normalizedRow(input), rowNumber: index + 2 }));
+  const rows = inputRows.map((input, index) => {
+    const data = normalizedRow(input);
+    return { data, rowNumber: data[CSV_ROW_NUMBER] ?? index + 2 };
+  });
   if (!rows.length) addError(errors, "empty_mapping", null, "mapping", "mapping must contain at least one data row");
+
   const storageIndex = storageManifestIndex(manifests.storageObjects, errors);
-  const placeIndex = manifestIndex(manifests.places, "id", errors, "place");
-  const providerIndex = manifestIndex(manifests.providers, "id", errors, "provider");
+  const placeIndex = placeManifestIndex(manifests.places, errors);
 
   for (const { data, rowNumber } of rows) {
     for (const field of REQUIRED_COLUMNS) {
       if (!data[field]) addError(errors, "required_field", rowNumber, field, `${field} is required`);
     }
-    for (const field of UUID_COLUMNS) {
-      if (data[field] && !UUID_PATTERN.test(data[field])) {
-        addError(errors, "invalid_uuid", rowNumber, field, `${field} must be a canonical UUID`);
-      }
+    if (data.photo_id && !UUID_PATTERN.test(data.photo_id)) {
+      addError(errors, "invalid_uuid", rowNumber, "photo_id", "photo_id must be a UUID");
     }
-    if (data.storage_bucket && !BUCKET_PATTERN.test(data.storage_bucket)) {
-      addError(errors, "unsafe_storage_bucket", rowNumber, "storage_bucket", "storage_bucket is not a safe bucket name");
+    if (data.place_id && !isSafeId(data.place_id)) {
+      addError(errors, "invalid_place_id", rowNumber, "place_id", "place_id must be a safe text ID of at most 80 characters");
+    }
+    if (data.storage_bucket && !STORAGE_BUCKETS.has(data.storage_bucket)) {
+      addError(errors, "invalid_storage_bucket", rowNumber, "storage_bucket", "storage_bucket is not canonical");
     }
     if (data.storage_path && !isSafeStoragePath(data.storage_path)) {
       addError(errors, "unsafe_storage_path", rowNumber, "storage_path", "storage_path must be a relative traversal-free object path");
@@ -251,95 +289,106 @@ export function validatePlacePhotoMapping(inputRows, manifests = {}) {
     if (data.source_type && !SOURCE_TYPES.has(data.source_type)) {
       addError(errors, "invalid_source_type", rowNumber, "source_type", "source_type is not supported");
     }
-    if (data.rights_status && !RIGHTS_STATUSES.has(data.rights_status)) {
-      addError(errors, "invalid_rights_status", rowNumber, "rights_status", "rights_status is not supported");
-    }
-    if (data.publish_status && !PUBLISH_STATUSES.has(data.publish_status)) {
-      addError(errors, "invalid_publish_status", rowNumber, "publish_status", "publish_status is not supported");
+    if (data.permission_status && !PERMISSION_STATUSES.has(data.permission_status)) {
+      addError(errors, "invalid_permission_status", rowNumber, "permission_status", "permission_status is not supported");
     }
     if (data.photo_type && !PHOTO_TYPES.has(data.photo_type)) {
       addError(errors, "invalid_photo_type", rowNumber, "photo_type", "photo_type is not supported");
     }
-    if (data.sort_position && (!/^\d+$/.test(data.sort_position) || Number(data.sort_position) > 2_147_483_647)) {
-      addError(errors, "invalid_sort_position", rowNumber, "sort_position", "sort_position must be a non-negative integer");
+    if (data.display_order && (!/^\d+$/.test(data.display_order) || Number(data.display_order) > MAX_INTEGER)) {
+      addError(errors, "invalid_display_order", rowNumber, "display_order", "display_order must be a non-negative integer");
     }
 
-    const publishable = PUBLISHABLE_STATUSES.has(data.publish_status);
-    if (publishable && data.rights_status !== "approved") {
-      addError(errors, "publish_rights_not_approved", rowNumber, "rights_status", "active or published photos require approved rights");
+    for (const [field, maximum] of [["rights_holder_name", 120], ["credit_text", 200], ["usage_scope", 300], ["license_note", 1000]]) {
+      if (data[field].length > maximum) {
+        addError(errors, "field_too_long", rowNumber, field, `${field} must be at most ${maximum} characters`);
+      }
     }
-    if (publishable && !PUBLISHABLE_PHOTO_TYPES.has(data.photo_type)) {
-      addError(errors, "publish_photo_type_not_allowed", rowNumber, "photo_type", "only cover or gallery photos may be published");
+
+    const expectedBucket = PUBLIC_PHOTO_TYPES.has(data.photo_type)
+      ? "place-photos-public"
+      : PRIVATE_PHOTO_TYPES.has(data.photo_type) ? "place-photo-originals" : null;
+    if (expectedBucket && STORAGE_BUCKETS.has(data.storage_bucket) && data.storage_bucket !== expectedBucket) {
+      addError(errors, "bucket_photo_type_mismatch", rowNumber, "storage_bucket", `${data.photo_type} photos require ${expectedBucket}`);
     }
-    if (publishable && !data.usage_scope) {
-      addError(errors, "required_publish_metadata", rowNumber, "usage_scope", "publishable photos require usage_scope");
+
+    const isPublic = PUBLIC_PHOTO_TYPES.has(data.photo_type);
+    if (isPublic && data.permission_status !== "approved") {
+      addError(errors, "public_photo_not_approved", rowNumber, "permission_status", "public photos require approved permission");
     }
-    if (publishable && data.source_type === "licensed" && !data.license_note) {
-      addError(errors, "required_license_note", rowNumber, "license_note", "published licensed photos require license_note");
+    if (isPublic && !data.usage_scope) {
+      addError(errors, "public_photo_missing_usage_scope", rowNumber, "usage_scope", "public photos require usage_scope");
+    }
+    if (data.source_type === "licensed" && !data.license_note) {
+      addError(errors, "licensed_photo_missing_license_note", rowNumber, "license_note", "licensed photos require license_note");
     }
 
     if (storageIndex && data.storage_bucket && data.storage_path) {
       const key = `${data.storage_bucket}\u0000${data.storage_path}`;
       if (!storageIndex.has(key)) {
-        addError(errors, "storage_object_not_found", rowNumber, "storage_path", "object is not present in the storage manifest");
+        addError(errors, "storage_object_not_found", rowNumber, "storage_path", "object is not present at the exact bucket and path in the storage manifest");
       }
     }
-    if (placeIndex && data.place_id) {
-      const place = placeIndex.get(data.place_id.toLowerCase());
+    if (placeIndex && data.place_id && isSafeId(data.place_id)) {
+      const place = placeIndex.get(data.place_id);
       if (!place) {
         addError(errors, "place_not_found", rowNumber, "place_id", "place_id is not present in the place manifest");
-      } else if (publishable && !ACTIVE_MANIFEST_STATUSES.has(String(place.status ?? "").toLowerCase())) {
-        addError(errors, "place_not_publishable", rowNumber, "place_id", "place manifest status is not publishable");
-      }
-    }
-    if (providerIndex && data.provider_id) {
-      const provider = providerIndex.get(data.provider_id.toLowerCase());
-      if (!provider) {
-        addError(errors, "provider_not_found", rowNumber, "provider_id", "provider_id is not present in the provider manifest");
-      } else {
-        if (publishable && !ACTIVE_MANIFEST_STATUSES.has(String(provider.status ?? "").toLowerCase())) {
-          addError(errors, "provider_not_publishable", rowNumber, "provider_id", "provider manifest status is not publishable");
-        }
-        const manifestSourceType = String(provider.source_type ?? provider.sourceType ?? "").toLowerCase();
-        if (manifestSourceType && data.source_type && manifestSourceType !== data.source_type) {
-          addError(errors, "provider_source_type_mismatch", rowNumber, "source_type", "source_type does not match the provider manifest");
-        }
+      } else if (isPublic && (
+        place.status !== "ready"
+        || place.qa_status !== "ready"
+        || place.photo_qa_status !== "approved"
+      )) {
+        addError(errors, "place_not_public_ready", rowNumber, "place_id", "public photos require place status=ready, qa_status=ready, and photo_qa_status=approved");
       }
     }
   }
 
-  addDuplicateErrors(rows, errors, "photo_id", "duplicate_photo_id", "photo_id", (value) => value.toLowerCase());
-  addDuplicateErrors(rows, errors, "storage_path", "duplicate_storage_path", "storage_path");
+  addDuplicateErrors(rows, errors, ({ photo_id: id }) => id.toLowerCase(), "duplicate_photo_id", "photo_id", "photo_id");
+  addDuplicateErrors(
+    rows,
+    errors,
+    ({ storage_bucket: bucket, storage_path: path }) => bucket && path ? `${bucket}\u0000${path}` : "",
+    "duplicate_storage_object",
+    "storage_path",
+    "storage object",
+  );
 
   const rowsByPlace = new Map();
   for (const item of rows) {
     if (!item.data.place_id) continue;
-    const key = item.data.place_id.toLowerCase();
-    const group = rowsByPlace.get(key) ?? [];
+    const group = rowsByPlace.get(item.data.place_id) ?? [];
     group.push(item);
-    rowsByPlace.set(key, group);
+    rowsByPlace.set(item.data.place_id, group);
   }
   for (const [placeId, group] of rowsByPlace) {
-    const publishableGroup = group.filter(({ data }) => PUBLISHABLE_STATUSES.has(data.publish_status));
-    if (publishableGroup.length > 5) {
-      addError(errors, "too_many_publishable_photos", null, "place_id", `${placeId} has ${publishableGroup.length} active or published photos; maximum is 5`);
+    const publicRows = group.filter(({ data }) => PUBLIC_PHOTO_TYPES.has(data.photo_type));
+    if (publicRows.length > 5) {
+      addError(errors, "too_many_public_photos", null, "place_id", `${placeId} has ${publicRows.length} public photos; maximum is 5`);
     }
-    const covers = group.filter(({ data }) => data.photo_type === "cover");
+    const covers = publicRows.filter(({ data }) => data.photo_type === "cover");
     if (covers.length > 1) {
       addError(errors, "multiple_covers", null, "photo_type", `${placeId} has ${covers.length} cover photos; maximum is 1`);
     }
-    addDuplicateErrors(group, errors, "sort_position", "duplicate_sort_position", `sort_position for ${placeId}`);
+    addDuplicateErrors(
+      publicRows,
+      errors,
+      ({ display_order: order }) => /^\d+$/.test(order) && Number(order) <= MAX_INTEGER ? Number(order) : undefined,
+      "duplicate_display_order",
+      "display_order",
+      `display_order for ${placeId}`,
+    );
   }
 
   errors.sort(compareErrors);
-  const publishableRows = rows.filter(({ data }) => PUBLISHABLE_STATUSES.has(data.publish_status));
+  const publicRows = rows.filter(({ data }) => PUBLIC_PHOTO_TYPES.has(data.photo_type));
   const summary = {
     total_rows: rows.length,
-    publishable_rows: publishableRows.length,
-    non_publishable_rows: rows.length - publishableRows.length,
-    places: new Set(rows.map(({ data }) => data.place_id.toLowerCase()).filter(Boolean)).size,
-    providers: new Set(rows.map(({ data }) => data.provider_id.toLowerCase()).filter(Boolean)).size,
-    storage_objects: new Set(rows.map(({ data }) => data.storage_path).filter(Boolean)).size,
+    public_rows: publicRows.length,
+    private_rows: rows.length - publicRows.length,
+    places: new Set(rows.map(({ data }) => data.place_id).filter(Boolean)).size,
+    storage_objects: new Set(rows.map(({ data }) => (
+      data.storage_bucket && data.storage_path ? `${data.storage_bucket}\u0000${data.storage_path}` : ""
+    )).filter(Boolean)).size,
     errors: errors.length,
   };
   const plan = errors.length ? [] : rows.map(({ data }) => planItem(data)).sort(comparePlan);
@@ -353,7 +402,7 @@ export function parseManifestJson(text, kind) {
   } catch {
     throw new Error(`${kind} manifest must be valid JSON`);
   }
-  const keys = { storage: "objects", place: "places", provider: "providers" };
+  const keys = { storage: "objects", place: "places" };
   const key = keys[kind];
   if (!key) throw new Error(`Unknown manifest kind: ${kind}`);
   const items = Array.isArray(parsed) ? parsed : parsed?.[key];

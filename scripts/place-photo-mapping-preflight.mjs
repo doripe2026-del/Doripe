@@ -14,10 +14,43 @@ Required:
   --dry-run                      Read and print a plan only; npm script supplies this
   --mapping <path>               Place photo mapping CSV
 
-Optional local cross-checks:
+Required for a valid plan:
   --storage-manifest <path>      JSON storage object manifest
-  --place-manifest <path>        JSON canonical place manifest
-  --provider-manifest <path>     JSON canonical provider manifest`;
+  --place-manifest <path>        JSON canonical place manifest`;
+
+class PreflightError extends Error {
+  constructor(code, field, message) {
+    super(message);
+    this.code = code;
+    this.field = field;
+  }
+}
+
+function emptySummary(errorCount = 0) {
+  return {
+    total_rows: 0,
+    public_rows: 0,
+    private_rows: 0,
+    places: 0,
+    storage_objects: 0,
+    errors: errorCount,
+  };
+}
+
+function printResult(result) {
+  console.log(`${JSON.stringify({ mode: "dry-run", ...result }, null, 2)}\n`);
+}
+
+function printFailure(error) {
+  const item = {
+    code: error?.code ?? "preflight_error",
+    row: null,
+    field: error?.field ?? "preflight",
+    message: error instanceof Error ? error.message : String(error),
+  };
+  printResult({ valid: false, summary: emptySummary(1), errors: [item], plan: [] });
+  process.exitCode = 1;
+}
 
 function parseArguments(argumentsList) {
   const values = {};
@@ -25,7 +58,7 @@ function parseArguments(argumentsList) {
     const argument = argumentsList[index];
     if (argument === "--help" || argument === "-h") return { help: true };
     if (argument === "--dry-run") {
-      if (values.dryRun) throw new Error("--dry-run may only be provided once");
+      if (values.dryRun) throw new PreflightError("duplicate_argument", "arguments", "--dry-run may only be provided once");
       values.dryRun = true;
       continue;
     }
@@ -33,49 +66,64 @@ function parseArguments(argumentsList) {
       "--mapping": "mapping",
       "--storage-manifest": "storageManifest",
       "--place-manifest": "placeManifest",
-      "--provider-manifest": "providerManifest",
     };
     const key = keys[argument];
-    if (!key) throw new Error(`Unknown argument: ${argument}`);
-    if (values[key]) throw new Error(`${argument} may only be provided once`);
+    if (!key) throw new PreflightError("unknown_argument", "arguments", `Unknown argument: ${argument}`);
+    if (values[key]) throw new PreflightError("duplicate_argument", "arguments", `${argument} may only be provided once`);
     const value = argumentsList[index + 1];
-    if (!value || value.startsWith("--")) throw new Error(`${argument} requires a file path`);
+    if (!value || value.startsWith("--")) {
+      throw new PreflightError("missing_argument_value", "arguments", `${argument} requires a file path`);
+    }
     values[key] = value;
     index += 1;
   }
-  if (!values.dryRun) throw new Error("--dry-run is required; this command has no write mode");
-  if (!values.mapping) throw new Error("--mapping is required");
+  if (!values.dryRun) {
+    throw new PreflightError("dry_run_required", "arguments", "--dry-run is required; this command has no write mode");
+  }
+  if (!values.mapping) throw new PreflightError("mapping_required", "arguments", "--mapping is required");
   return values;
+}
+
+async function readInput(path, field) {
+  try {
+    return await readFile(path, "utf8");
+  } catch (error) {
+    throw new PreflightError("input_read_error", field, `Could not read ${field}: ${error.message}`);
+  }
 }
 
 async function readManifest(path, kind) {
   if (!path) return undefined;
-  return parseManifestJson(await readFile(path, "utf8"), kind);
+  const text = await readInput(path, `${kind}_manifest`);
+  try {
+    return parseManifestJson(text, kind);
+  } catch (error) {
+    throw new PreflightError("invalid_manifest", `${kind}_manifest`, error.message);
+  }
 }
 
 async function main() {
-  const argumentsValues = parseArguments(process.argv.slice(2));
-  if (argumentsValues.help) {
-    console.log(USAGE);
+  const argumentValues = parseArguments(process.argv.slice(2));
+  if (argumentValues.help) {
+    printResult({ valid: true, summary: emptySummary(), errors: [], plan: [], usage: USAGE });
     return;
   }
 
-  const [mappingText, storageObjects, places, providers] = await Promise.all([
-    readFile(argumentsValues.mapping, "utf8"),
-    readManifest(argumentsValues.storageManifest, "storage"),
-    readManifest(argumentsValues.placeManifest, "place"),
-    readManifest(argumentsValues.providerManifest, "provider"),
+  const mappingText = await readInput(argumentValues.mapping, "mapping");
+  let mappingRows;
+  try {
+    mappingRows = parseMappingCsv(mappingText);
+  } catch (error) {
+    throw new PreflightError("invalid_mapping_csv", "mapping", error.message);
+  }
+
+  const [storageObjects, places] = await Promise.all([
+    readManifest(argumentValues.storageManifest, "storage"),
+    readManifest(argumentValues.placeManifest, "place"),
   ]);
-  const result = validatePlacePhotoMapping(parseMappingCsv(mappingText), {
-    storageObjects,
-    places,
-    providers,
-  });
-  console.log(`${JSON.stringify({ mode: "dry-run", ...result }, null, 2)}\n`);
+  const result = validatePlacePhotoMapping(mappingRows, { storageObjects, places });
+  printResult(result);
   if (!result.valid) process.exitCode = 1;
 }
 
-main().catch((error) => {
-  console.error(`Place photo mapping preflight failed: ${error.message}`);
-  process.exitCode = 1;
-});
+main().catch(printFailure);
