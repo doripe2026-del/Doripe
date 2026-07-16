@@ -25,11 +25,16 @@ function targetsFor(variable) {
   return variable?.target ? [variable.target] : [];
 }
 
+function hasUsableValue(variable) {
+  if (!Object.hasOwn(variable ?? {}, "value")) return true;
+  return typeof variable.value === "string" && variable.value.trim().length > 0;
+}
+
 export function assessSupabaseEnvironmentReadiness(variables) {
   const available = new Map(DEPLOYMENT_ENVIRONMENTS.map((environment) => [environment, new Set()]));
 
   for (const variable of variables ?? []) {
-    if (!variable?.key) continue;
+    if (!variable?.key || !hasUsableValue(variable)) continue;
     for (const target of targetsFor(variable)) {
       available.get(target)?.add(variable.key);
     }

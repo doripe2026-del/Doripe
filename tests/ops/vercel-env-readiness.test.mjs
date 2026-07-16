@@ -66,6 +66,20 @@ test("failure messages never expose environment variable values", () => {
   assert.equal(JSON.stringify(result).includes(secret), false);
 });
 
+test("blank values are treated as missing when the provider returns values", () => {
+  const variables = completeEnvironmentVariables().map((variable) => ({
+    ...variable,
+    value: variable.key === "SUPABASE_SERVICE_ROLE_KEY" ? "   " : "configured",
+  }));
+
+  const result = assessSupabaseEnvironmentReadiness(variables);
+
+  assert.deepEqual(result.missing, environments.map((environment) => ({
+    environment,
+    requirement: "service role key",
+  })));
+});
+
 test("production readiness requires HTTP 200 and ready true", () => {
   assert.deepEqual(assessReadinessResponse(200, { data: { ready: true } }), { ready: true, reason: null });
   assert.deepEqual(assessReadinessResponse(503, { data: { ready: false } }), {
