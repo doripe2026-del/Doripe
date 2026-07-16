@@ -2,7 +2,7 @@
 
 - 확인일: 2026-07-16
 - Git 브랜치: `codex/mvp-masterplan-implementation`
-- 기준 커밋: `2feea46`
+- 기준 커밋: `1834606`
 - Supabase project: `dcyjrsxnpujslbxtitqj`
 - 목적: 실제 DB 변경이나 배포 전에 현재 코드와 운영 환경의 차이를 복구 가능한 기록으로 남긴다.
 
@@ -11,21 +11,22 @@
 | 영역 | 상태 | 확인 결과 |
 | --- | --- | --- |
 | 최신 앱 코드 | 준비됨 | 최신 55개 Figma 화면을 `/app`과 `/app-preview`가 같은 소스로 사용한다. |
-| 자동 테스트 | 통과 | App unit 167, Backend 36, API contract 110, 화면·행동·픽셀 E2E 230 통과 |
+| 자동 테스트 | 통과 | App unit 172, Backend 39, Ops 40, API contract 110, 화면·행동·픽셀 E2E 230 통과 |
 | Git 백업 | 준비됨 | 작업 브랜치를 GitHub 원격 저장소에 push했다. |
 | Supabase 구조 | 출시 차단 | 원격 migration 9개, 저장소 migration 49개로 이력이 크게 다르다. |
 | 실제 콘텐츠 | 출시 차단 | 공개 테이블 24개 모두 0행이다. |
-| 사진 파일 | 확인 필요 | `place-photos-public` 버킷에 파일 176개가 있으나 `place_photos`는 0행이다. |
+| 사진 파일 | 확인 필요 | `place-photos-public`의 176개 object 중 실제 이미지는 174개지만 장소 사진이 아닌 제작본·시제품 사진이며, `place_photos`는 0행이다. |
 | Vercel 환경 | 출시 차단 | Preview·Development 필수 Supabase 환경변수가 없고 Production 공개 key가 없다. |
 | 운영 API | 출시 차단 | 배포된 `/api/v1/readiness`가 아직 404다. |
 
 ## 자동 검증 기록
 
 ```text
-App unit              167 passed
-Backend                32 passed
+App unit              172 passed
+Backend                39 passed
+Ops                    40 passed
+Server boundaries       8 passed
 API contract          110 passed
-Playwright CI         227 passed
 Playwright + visual   230 passed
 ```
 
@@ -52,10 +53,12 @@ Playwright + visual   230 passed
 - 공개 테이블은 현재 모두 0행이다.
 - `place-photos-public` Storage 버킷에는 176개 파일이 있다.
 - 총 용량은 153,392,247바이트이며, 정렬된 파일 이름 목록의 체크섬은 `fe2807c3a1615b657acb106a8bdaa3eb`다. 원격 변경 전후에 이 값을 비교하면 파일 누락 여부를 빠르게 감지할 수 있다.
-- 파일은 `instagram-buffer` 57개, `instagram-buffer-jpg` 57개, `prototype-unsplash-2026-07-15` 61개, 빈 폴더 표시 1개로 나뉜다.
+- 파일은 Instagram PNG 제작본 57개, Instagram JPG 제작본 57개, prototype Unsplash JPEG 60개, 빈 폴더 표시 2개로 나뉜다.
+- 실제 장소 ID를 기준으로 정리된 폴더는 없으므로 이 174개 이미지를 `place_photos`에 자동 연결하면 안 된다.
+- `manifest:place-photos` 읽기 전용 검사로 prototype 폴더의 실제 이미지 60개를 직접 내려받아 signature, 끝 구조, 용량, SHA-256을 확인했다. 60개 모두 통과했고 폴더 표시 1개만 자동 제외됐다.
 - 버킷은 공개 상태이며 이미지 형식은 JPEG, PNG, WebP, 파일 제한은 10MB다.
 - DB의 `place_photos`가 0행이라 파일과 장소의 연결 정보가 없다.
-- 파일을 삭제하거나 다시 올리기 전에 176개 객체의 경로와 출처를 별도로 내보내야 한다.
+- 파일을 삭제하거나 다시 올리기 전에 176개 객체의 경로와 출처를 별도로 내보내야 한다. 실제 장소 연결용 사진은 장소 ID·권리·제공자 정보와 함께 별도 폴더로 준비해야 한다.
 
 ## 보안 점검 결과
 
