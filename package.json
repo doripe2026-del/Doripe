@@ -13,6 +13,7 @@
     "check:supabase-runtime": "node scripts/check-supabase-runtime-drift.mjs",
     "check:ops": "node scripts/check-ops-readiness.mjs",
     "check:backend-inventory": "node scripts/check-backend-inventory.mjs",
+    "preflight:place-photos": "node scripts/place-photo-mapping-preflight.mjs --dry-run",
     "check:api-contract": "node scripts/check-api-contract.mjs && openapi-typescript docs/api/openapi.yaml --check --output src/backend/generated/openapi.d.ts",
     "dev:app-preview": "node scripts/serve-app-preview.mjs",
     "test:app-preview:unit": "node --test tests/app-preview/*.test.mjs",

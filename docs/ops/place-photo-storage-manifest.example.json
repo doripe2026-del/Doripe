@@ -1,0 +1,8 @@
+{
+  "objects": [
+    {
+      "bucket": "place-photos-public",
+      "path": "places/example/photo-1.jpg"
+    }
+  ]
+}
