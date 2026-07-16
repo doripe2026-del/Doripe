@@ -32,7 +32,12 @@ function resolvePublicFile(requestUrl) {
   }
 
   if (pathname.split("/").includes("..")) return null;
-  if (pathname === "/app-preview" || pathname === "/app-preview/") return previewIndex;
+  if (
+    pathname === "/app-preview"
+    || pathname === "/app-preview/"
+    || pathname === "/app"
+    || pathname.startsWith("/app/")
+  ) return previewIndex;
 
   const filePath = resolve(publicDirectory, `.${pathname}`);
   const pathFromPublic = relative(publicDirectory, filePath);

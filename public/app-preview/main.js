@@ -518,8 +518,14 @@ function readActionPayload(target) {
   return payload;
 }
 
-function canonicalPreviewLink(screenId, payload) {
-  const url = new URL("/app-preview/", window.location.origin);
+function currentAppEntryPath() {
+  return window.location.pathname === "/app" || window.location.pathname.startsWith("/app/")
+    ? "/app"
+    : "/app-preview/";
+}
+
+function canonicalAppLink(screenId, payload) {
+  const url = new URL("/app", window.location.origin);
   const target = interactionState.selections?.shareTarget;
   const type = target?.type || payload.type;
   const id = target?.id || payload.id;
@@ -569,7 +575,7 @@ function setEffectToast(kind, message) {
 async function runDomEffect(effect, screenId, payload) {
   if (!effect || effect === "none") return;
 
-  const link = canonicalPreviewLink(screenId, payload);
+  const link = canonicalAppLink(screenId, payload);
   if (effect === "share" && typeof navigator.share === "function") {
     try {
       await navigator.share({ title: "Doripe", url: link });
@@ -721,7 +727,7 @@ async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {
     if (operation === "sign-in") authResult = await authClient.signIn({ email, password, signal: controller.signal });
     if (operation === "sign-up") authResult = await authClient.signUp({ email, password, signal: controller.signal });
     if (operation === "reset-password") {
-      const redirectTo = new URL("/app-preview/?screen=a7", window.location.origin).href;
+      const redirectTo = new URL(`${currentAppEntryPath()}?screen=a7`, window.location.origin).href;
       authResult = await authClient.requestPasswordReset({ email, redirectTo, signal: controller.signal });
     }
     if (operation === "update-password") {

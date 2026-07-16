@@ -4,7 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Doripe Preview</title>
+    <title>Doripe</title>
+    <script>
+      document.documentElement.dataset.appSurface = location.pathname.startsWith("/app-preview")
+        ? "review"
+        : "product";
+    </script>
     <link rel="preload" href="/app-preview/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/app-preview/styles/tokens.css" />
     <link rel="stylesheet" href="/app-preview/styles/shell.css" />

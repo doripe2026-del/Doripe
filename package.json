@@ -22,7 +22,7 @@
     "check:app-preview": "node scripts/check-app-preview.mjs",
     "setup:guards": "node scripts/setup-local-guards.mjs",
     "setup:deployment-guard": "node scripts/install-deployment-shell-guard.mjs",
-    "check:mvp-app": "node scripts/check-mvp-app.mjs",
+    "check:mvp-app": "node scripts/check-mvp-app.mjs && node scripts/check-app-preview.mjs",
     "build:admin": "node scripts/build-admin.mjs",
     "test:instagram-content": "node --test tests/instagram-content/*.test.mjs",
     "test:backend": "node --test tests/backend/*.test.mjs",

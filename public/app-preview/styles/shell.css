@@ -86,6 +86,18 @@ body {
   background: #ffffff;
 }
 
+html[data-app-surface="product"] body {
+  background: #ffffff;
+}
+
+html[data-app-surface="product"] .review-shell {
+  gap: 0;
+}
+
+html[data-app-surface="product"] #review-panel {
+  display: none;
+}
+
 #review-list {
   flex: 1;
   overflow-y: auto;

@@ -9,9 +9,9 @@ This repository tracks only the code used for the Doripe web properties.
 
 ## Structure
 
-- `public/home`: `doripe.kr`, `/business`, `/company`, `/notify`, `/privacy`, `/terms`
+- `public/home`: `doripe.kr`, `/company`, `/notify`, `/privacy`, `/terms`
 - `public/admin`: `doripe.kr/admin`
-- `public/app`: `doripe.kr/app`
+- `public/app-preview`: `doripe.kr/app`의 최신 앱 소스와 `/app-preview` 검토 화면
 - `public/blog`: `doripe.kr/blog`
 - `api`: Vercel API routes
 - `src/admin-ui`: admin React source
