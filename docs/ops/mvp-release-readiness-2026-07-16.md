@@ -51,6 +51,8 @@ Playwright + visual   230 passed
 
 - 공개 테이블은 현재 모두 0행이다.
 - `place-photos-public` Storage 버킷에는 176개 파일이 있다.
+- 총 용량은 153,392,247바이트이며, 정렬된 파일 이름 목록의 체크섬은 `fe2807c3a1615b657acb106a8bdaa3eb`다. 원격 변경 전후에 이 값을 비교하면 파일 누락 여부를 빠르게 감지할 수 있다.
+- 파일은 `instagram-buffer` 57개, `instagram-buffer-jpg` 57개, `prototype-unsplash-2026-07-15` 61개, 빈 폴더 표시 1개로 나뉜다.
 - 버킷은 공개 상태이며 이미지 형식은 JPEG, PNG, WebP, 파일 제한은 10MB다.
 - DB의 `place_photos`가 0행이라 파일과 장소의 연결 정보가 없다.
 - 파일을 삭제하거나 다시 올리기 전에 176개 객체의 경로와 출처를 별도로 내보내야 한다.

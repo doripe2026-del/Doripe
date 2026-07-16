@@ -86,7 +86,17 @@
       "public": true,
       "fileSizeLimit": 10485760,
       "allowedMimeTypes": ["image/jpeg", "image/png", "image/webp"],
-      "objectCount": 176
+      "objectCount": 176,
+      "totalBytes": 153392247,
+      "orderedNameChecksum": "fe2807c3a1615b657acb106a8bdaa3eb",
+      "oldestCreatedAt": "2026-07-15T10:38:11.895582Z",
+      "newestCreatedAt": "2026-07-15T15:17:27.513343Z",
+      "pathGroups": [
+        { "path": "instagram-buffer", "objectCount": 57, "totalBytes": 101555248 },
+        { "path": "instagram-buffer-jpg", "objectCount": 57, "totalBytes": 25385676 },
+        { "path": "prototype-unsplash-2026-07-15", "objectCount": 61, "totalBytes": 26451323 },
+        { "path": "Untitled folder", "objectCount": 1, "totalBytes": 0 }
+      ]
     }
   ],
   "securityAdvisors": [
