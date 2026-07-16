@@ -4,13 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "node scripts/serve-app-preview.mjs",
     "build": "npm run typecheck",
     "vercel-build": "npm run typecheck",
     "guard:repo": "node scripts/guard-repository.mjs",
     "check:session": "node scripts/check-session-context.mjs",
     "check:supabase": "node scripts/check-supabase-migrations.mjs",
     "check:ops": "node scripts/check-ops-readiness.mjs",
+    "check:backend-inventory": "node scripts/check-backend-inventory.mjs",
+    "check:api-contract": "node scripts/check-api-contract.mjs && openapi-typescript docs/api/openapi.yaml --check --output src/backend/generated/openapi.d.ts",
     "dev:app-preview": "node scripts/serve-app-preview.mjs",
     "test:app-preview:unit": "node --test tests/app-preview/*.test.mjs",
     "test:app-preview:e2e": "playwright test -c playwright.app-preview.config.mjs",
@@ -22,6 +24,8 @@
     "check:mvp-app": "node scripts/check-mvp-app.mjs",
     "build:admin": "node scripts/build-admin.mjs",
     "test:instagram-content": "node --test tests/instagram-content/*.test.mjs",
+    "test:backend": "node --test tests/backend/*.test.mjs",
+    "generate:api-types": "openapi-typescript docs/api/openapi.yaml --output src/backend/generated/openapi.d.ts",
     "check:instagram-content": "npm run test:instagram-content && node scripts/instagram-content/cli.mjs check-template docs/instagram-content/template-contract.json",
     "instagram:content": "node scripts/instagram-content/cli.mjs",
     "typecheck": "tsc --noEmit"
@@ -42,7 +46,9 @@
     "@vercel/node": "^5.1.0",
     "@xmldom/xmldom": "^0.8.13",
     "esbuild": "^0.27.1",
+    "openapi-typescript": "^7.13.0",
     "typescript": "^5.8.2",
-    "vercel": "^54.11.1"
+    "vercel": "^54.11.1",
+    "yarn": "^1.22.22"
   }
 }

@@ -11,14 +11,22 @@ const REPOSITORY_METHODS = Object.freeze([
 ]);
 
 export function createEmptyDataSnapshot() {
-  return Object.freeze(Object.fromEntries(COLLECTION_KEYS.map((key) => [key, Object.freeze([])])));
+  return Object.freeze({
+    viewerProfileId: null,
+    ...Object.fromEntries(COLLECTION_KEYS.map((key) => [key, Object.freeze([])]))
+  });
 }
 
 export function normalizeDataSnapshot(value = {}) {
-  return Object.freeze(Object.fromEntries(COLLECTION_KEYS.map((key) => [
-    key,
-    Object.freeze(structuredClone(Array.isArray(value[key]) ? value[key] : []))
-  ])));
+  return Object.freeze({
+    viewerProfileId: typeof value.viewerProfileId === "string" && value.viewerProfileId.length > 0
+      ? value.viewerProfileId
+      : null,
+    ...Object.fromEntries(COLLECTION_KEYS.map((key) => [
+      key,
+      Object.freeze(structuredClone(Array.isArray(value[key]) ? value[key] : []))
+    ]))
+  });
 }
 
 export function assertRepositoryContract(repository) {

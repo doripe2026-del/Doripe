@@ -1,3 +1,6 @@
+import { volatilePasswordValue } from "../transitions.js";
+import { isLocalAuthFixtureLocation } from "../auth-client.js";
+
 const ASSET_ROOT = "/app-preview/assets/onboarding";
 const SCREEN_TEARDOWN_EVENT = "app-preview:screen-teardown";
 const SCREEN_NAVIGATE_EVENT = "app-preview:screen-navigate";
@@ -17,6 +20,19 @@ function createScreen(id, figmaNodeId, className) {
   return screen;
 }
 
+function isStaticReviewFrame() {
+  return isLocalAuthFixtureLocation(globalThis.location);
+}
+
+function appendAuthFeedback(screen, state) {
+  if (!state?.toast?.message) return;
+  const output = document.createElement("output");
+  output.className = `auth-feedback auth-feedback--${state.toast.kind}`;
+  output.setAttribute("role", "status");
+  output.textContent = state.toast.message;
+  screen.append(output);
+}
+
 function enableWhenInputIsValid(screen, inputSelector, buttonSelector, validator) {
   const input = screen.querySelector(inputSelector);
   const button = screen.querySelector(buttonSelector);
@@ -33,6 +49,7 @@ function passwordRuleResults(value) {
 }
 
 function storedFormValue(key, fallback) {
+  if (/password/i.test(key)) return volatilePasswordValue(key, fallback);
   try {
     const stored = JSON.parse(globalThis.localStorage?.getItem("doripe_app_preview_v1") || "null");
     return typeof stored?.form?.[key] === "string" ? stored.form[key] : fallback;
@@ -42,7 +59,7 @@ function storedFormValue(key, fallback) {
 }
 
 function loadingNeighborhoodLabel(screenId) {
-  const staticFrame = new URLSearchParams(globalThis.location?.search || "").get("static") === "1";
+  const staticFrame = isStaticReviewFrame();
   const staticFallback = screenId === "a21" ? "yeonnam" : "seongsu";
   const fallback = staticFrame ? staticFallback : "seongsu";
   return NEIGHBORHOOD_LABELS.get(storedFormValue("neighborhoodId", fallback))
@@ -56,7 +73,7 @@ function directionLabel(label) {
 }
 
 function replaceScreenAfter(screen, screenId, delay) {
-  if (new URLSearchParams(globalThis.location?.search || "").get("static") === "1") return;
+  if (isStaticReviewFrame()) return;
   let active = true;
   const handle = globalThis.setTimeout(() => {
     active = false;
@@ -74,7 +91,7 @@ function replaceScreenAfter(screen, screenId, delay) {
 }
 
 function startLoadingProgress(screen, { fillSelector, destination }) {
-  if (new URLSearchParams(globalThis.location?.search || "").get("static") === "1") return;
+  if (isStaticReviewFrame()) return;
   const fill = screen.querySelector(fillSelector);
   let value = Number(fill.getAttribute("aria-valuenow"));
   let active = true;
@@ -206,7 +223,7 @@ export function renderA1Splash() {
   return screen;
 }
 
-export function renderA3() {
+export function renderA3(state) {
   const screen = createScreen("a3", "579:929", "onboarding-a3");
   screen.innerHTML = `
     <div class="a3-brand" aria-label="Doripe">
@@ -231,10 +248,11 @@ export function renderA3() {
   `;
   screen.querySelector('[data-action="update-email"]').value = storedFormValue("email", "");
   screen.querySelector('[data-action="update-password"]').value = storedFormValue("password", "");
+  appendAuthFeedback(screen, state);
   return screen;
 }
 
-export function renderA4() {
+export function renderA4(state) {
   const screen = createScreen("a4", "579:991", "onboarding-a3 onboarding-a4");
   screen.innerHTML = `
     <div class="a3-brand" aria-label="Doripe">
@@ -259,11 +277,13 @@ export function renderA4() {
     <button class="a3-login" type="button" data-action="create-account" data-measure-key="action/primary/bg">회원가입으로 가기</button>
   `;
   screen.querySelector('[data-action="update-email"]').value = storedFormValue("email", "doripe@example.com");
-  screen.querySelector('[data-action="update-password"]').value = storedFormValue("password", "password");
+  const fixturePassword = isStaticReviewFrame() && state?.form?.reviewFixtureAuthSubmitted !== true ? "password" : "";
+  screen.querySelector('[data-action="update-password"]').value = storedFormValue("password", fixturePassword);
+  appendAuthFeedback(screen, state);
   return screen;
 }
 
-export function renderA5() {
+export function renderA5(state) {
   const screen = createScreen("a5", "579:833", "onboarding-a5");
   screen.innerHTML = `
     <button class="setup-back" type="button" data-action="go-back" data-measure-key="action/back" aria-label="뒤로 가기">
@@ -284,10 +304,11 @@ export function renderA5() {
     ".a5-next",
     (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
   );
+  appendAuthFeedback(screen, state);
   return screen;
 }
 
-export function renderA6() {
+export function renderA6(state) {
   const screen = createScreen("a6", "579:848", "onboarding-a6");
   screen.innerHTML = `
     <button class="setup-back" type="button" data-action="go-back" data-measure-key="action/back" aria-label="뒤로 가기">
@@ -302,10 +323,12 @@ export function renderA6() {
     <button class="a6-return" type="button" data-action="return-to-login" data-measure-key="action/primary">로그인으로 돌아가기</button>
     <button class="a6-resend" type="button" data-action="resend-reset-email" data-measure-key="resend">메일을 못 받았어요</button>
   `;
+  appendAuthFeedback(screen, state);
   return screen;
 }
 
 export function renderA7() {
+  const fixturePassword = isStaticReviewFrame() ? "Doripe12" : "";
   const screen = createScreen("a7", "579:702", "onboarding-a7");
   screen.innerHTML = `
     <button class="setup-back" type="button" data-action="go-back" data-measure-key="action/back" aria-label="뒤로 가기">
@@ -315,7 +338,7 @@ export function renderA7() {
     <p class="a7-subtitle" data-measure-key="screen/subtitle">다시 로그인할 비밀번호를 입력해주세요</p>
     <label class="a7-field a7-field--password">
       <span>새 비밀번호</span>
-      <input type="password" autocomplete="new-password" aria-label="새 비밀번호" value="Doripe12" data-action="update-new-password" data-measure-key="field/new-password/bg" data-persist-default="true">
+      <input type="password" autocomplete="new-password" aria-label="새 비밀번호" value="${fixturePassword}" data-action="update-new-password" data-measure-key="field/new-password/bg" data-persist-default="true">
       <img src="${ASSET_ROOT}/lock.svg" alt="" aria-hidden="true" draggable="false">
     </label>
     <ul class="a7-rules" data-measure-key="field/password-rules/container" aria-label="안전한 암호 조건">
@@ -335,8 +358,8 @@ export function renderA7() {
 }
 
 export function renderA8() {
-  const password = storedFormValue("newPassword", "Doripe12");
-  const confirmation = storedFormValue("passwordConfirmation", "Doripe13");
+  const password = storedFormValue("newPassword", isStaticReviewFrame() ? "Doripe12" : "");
+  const confirmation = storedFormValue("passwordConfirmation", isStaticReviewFrame() ? "Doripe13" : "");
   const screen = createScreen("a8", "579:1063", "onboarding-a7 onboarding-a8");
   screen.innerHTML = `
     <button class="setup-back" type="button" data-action="go-back" data-measure-key="action/back" aria-label="뒤로 가기">
@@ -440,7 +463,7 @@ export function renderA11() {
   return screen;
 }
 
-export function renderA12() {
+export function renderA12(state) {
   const screen = createScreen("a12", "579:621", "onboarding-a12");
   screen.innerHTML = `
     <button class="setup-back" type="button" data-action="go-back" data-measure-key="action/back" aria-label="뒤로 가기">
@@ -466,10 +489,12 @@ export function renderA12() {
     <button class="a12-next" type="button" data-action="continue-sign-up" data-measure-key="action/next" disabled aria-disabled="true">다음</button>
   `;
   bindSignupPassword(screen);
+  appendAuthFeedback(screen, state);
   return screen;
 }
 
-export function renderA13() {
+export function renderA13(state) {
+  const fixturePassword = isStaticReviewFrame() ? "Doripe1234" : "";
   const screen = createScreen("a13", "579:660", "onboarding-a12 onboarding-a13");
   screen.innerHTML = `
     <button class="setup-back" type="button" data-action="go-back" data-measure-key="action/back" aria-label="뒤로 가기">
@@ -483,7 +508,7 @@ export function renderA13() {
     <p class="a12-subtitle" data-measure-key="screen/subtitle">안전한 비밀번호 조건을 보호하세요.</p>
     <label class="a12-password-field">
       <span>비밀번호</span>
-      <input type="password" autocomplete="new-password" aria-label="비밀번호" value="Doripe1234" data-action="update-password" data-measure-key="field/password/bg" data-persist-default="true">
+      <input type="password" autocomplete="new-password" aria-label="비밀번호" value="${fixturePassword}" data-action="update-password" data-measure-key="field/password/bg" data-persist-default="true">
       <img src="${ASSET_ROOT}/lock.svg" alt="" aria-hidden="true" draggable="false">
     </label>
     <ul class="a12-success-rules" data-measure-key="field/password-rules/container" aria-label="안전한 암호 조건">
@@ -495,6 +520,7 @@ export function renderA13() {
     <button class="a12-next" type="button" data-action="continue-sign-up" data-measure-key="action/next" aria-disabled="false">다음</button>
   `;
   bindSignupPassword(screen);
+  appendAuthFeedback(screen, state);
   return screen;
 }
 
@@ -824,7 +850,7 @@ export function renderA22() {
     <h1 data-measure-key="screen/title">${neighborhoodLabel} 이동 중</h1>
     <p data-measure-key="screen/subtitle">취향에 맞는 장소를 준비하고 있어요.</p>
   `;
-  startLoadingProgress(screen, { fillSelector: ".a22-loading__fill", destination: "b1" });
+  startLoadingProgress(screen, { fillSelector: ".a22-loading__fill", destination: "b2" });
   return screen;
 }
 

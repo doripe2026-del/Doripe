@@ -1,4 +1,11 @@
-import { createClient } from "jsr:@supabase/supabase-js@2";
+import { createClient, type SupabaseClient } from "jsr:@supabase/supabase-js@2";
+import {
+  buildAllowedPhotoHosts,
+  mapWithConcurrency,
+  readBodyWithLimit,
+  validatePhotoUrl,
+  webhookAuthenticationConfigured,
+} from "./security.ts";
 
 type JsonRecord = Record<string, unknown>;
 
@@ -18,12 +25,14 @@ type DownloadedPhoto = {
 };
 
 const bucketId = "photo-submission-originals";
-const appPhotoBucketId = "place-photos-public";
 const defaultNeighborhoodId = "yeonnam_mangwon";
 const defaultCategoryId = "category-uncategorized";
 const defaultCategoryName = "미분류";
 const maxFileBytes = 10 * 1024 * 1024;
 const maxFilesPerSubmission = 30;
+const maxWebhookBodyBytes = 1024 * 1024;
+const photoDownloadConcurrency = 3;
+const photoDownloadTimeoutMs = 10_000;
 const allowedMimeTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 function json(data: JsonRecord, status = 200): Response {
@@ -184,20 +193,11 @@ function collectUrls(value: unknown, urls: string[] = []): string[] {
   return urls;
 }
 
-function looksLikePhotoUrl(url: string): boolean {
-  try {
-    const parsed = new URL(url);
-    return parsed.hostname === "storage.tally.so" || /\.(jpe?g|png|webp)$/i.test(parsed.pathname);
-  } catch {
-    return false;
-  }
-}
-
 function dedupe(values: string[]): string[] {
   return Array.from(new Set(values));
 }
 
-function extractPhotoUrls(fields: FlatField[], payload: JsonRecord): string[] {
+function extractPhotoUrls(fields: FlatField[], payload: JsonRecord, allowedHosts: ReadonlySet<string>): string[] {
   const photoFields = fields.filter((field) => {
     const label = labelOf(field);
     return label.includes("사진 업로드") || label.includes("file") || label.includes("upload");
@@ -205,7 +205,7 @@ function extractPhotoUrls(fields: FlatField[], payload: JsonRecord): string[] {
 
   const fromPhotoFields = photoFields.flatMap((field) => collectUrls(field.value));
   const fallback = collectUrls(payload);
-  return dedupe([...fromPhotoFields, ...fallback].filter(looksLikePhotoUrl));
+  return dedupe([...fromPhotoFields, ...fallback].filter((url) => validatePhotoUrl(url, allowedHosts) !== null));
 }
 
 function detectMime(bytes: Uint8Array): string {
@@ -270,10 +270,6 @@ function placeIdFromSubmission(sourceSubmissionId: string): string {
   return `tally-${pathSegment(sourceSubmissionId)}`.slice(0, 80).replace(/-+$/g, "");
 }
 
-function publicPhotoPath(placeId: string, photo: DownloadedPhoto): string {
-  return `${placeId}/${crypto.randomUUID()}-${cleanFileName(photo.fileName)}`;
-}
-
 async function sha256Hex(buffer: ArrayBuffer): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-256", buffer);
   return Array.from(new Uint8Array(digest))
@@ -282,25 +278,72 @@ async function sha256Hex(buffer: ArrayBuffer): Promise<string> {
 }
 
 async function downloadPhoto(url: string, index: number): Promise<DownloadedPhoto> {
-  const response = await fetch(url);
+  const allowedHosts = buildAllowedPhotoHosts(Deno.env.get("TALLY_PHOTO_ALLOWED_HOSTS") ?? "");
+  const validatedUrl = validatePhotoUrl(url, allowedHosts);
+  if (!validatedUrl) throw new Error(`Photo ${index} URL is not allowed`);
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), photoDownloadTimeoutMs);
+  let response: Response;
+  try {
+    response = await fetch(validatedUrl, {
+      redirect: "error",
+      signal: controller.signal,
+    });
+  } catch {
+    clearTimeout(timeout);
+    throw new Error(`Could not download photo ${index}`);
+  }
+
   if (!response.ok) {
+    clearTimeout(timeout);
     throw new Error(`Could not download photo ${index}: ${response.status}`);
   }
 
   const headerMimeType = response.headers.get("content-type")?.split(";")[0]?.trim().toLowerCase() ?? "";
   const contentLength = Number(response.headers.get("content-length") ?? 0);
   if (Number.isFinite(contentLength) && contentLength > maxFileBytes) {
+    clearTimeout(timeout);
     throw new Error(`Photo ${index} is larger than ${maxFileBytes} bytes`);
   }
 
-  const buffer = await response.arrayBuffer();
-  const bytes = new Uint8Array(buffer);
+  if (!response.body) {
+    clearTimeout(timeout);
+    throw new Error(`Photo ${index} has no content`);
+  }
+
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      totalBytes += value.byteLength;
+      if (totalBytes > maxFileBytes) {
+        await reader.cancel();
+        throw new Error(`Photo ${index} is larger than ${maxFileBytes} bytes`);
+      }
+      chunks.push(value);
+    }
+  } finally {
+    clearTimeout(timeout);
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(totalBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  const buffer = bytes.buffer;
   if (bytes.byteLength <= 0 || bytes.byteLength > maxFileBytes) {
     throw new Error(`Photo ${index} has an invalid file size`);
   }
 
   const detectedMimeType = detectMime(bytes);
-  const mimeType = detectedMimeType || headerMimeType;
+  const mimeType = detectedMimeType;
   if (!allowedMimeTypes.has(mimeType)) {
     throw new Error(`Photo ${index} is not a supported image type`);
   }
@@ -319,6 +362,19 @@ async function downloadPhoto(url: string, index: number): Promise<DownloadedPhot
   };
 }
 
+function sanitizedRawPayload(payload: JsonRecord, fields: FlatField[]): JsonRecord {
+  const data = getData(payload);
+  return {
+    event_id: firstText(payload.eventId, payload.id),
+    event_type: firstText(payload.eventType, payload.type),
+    form_id: firstText(data.formId, data.form_id, payload.formId, payload.form_id),
+    response_id: firstText(data.responseId, payload.responseId),
+    submission_id: firstText(data.submissionId, payload.submissionId),
+    submitted_at: firstText(data.submittedAt, data.createdAt, payload.submittedAt, payload.createdAt),
+    fields: fields.slice(0, 100).map((field) => ({ key: field.key.slice(0, 120), label: field.label.slice(0, 240) })),
+  };
+}
+
 function parseDate(value: unknown): string | null {
   const text = asText(value);
   if (!text) return null;
@@ -327,7 +383,7 @@ function parseDate(value: unknown): string | null {
   return Number.isNaN(date.getTime()) ? null : date.toISOString();
 }
 
-async function ensureDefaultCategory(supabase: ReturnType<typeof createClient>): Promise<void> {
+async function ensureDefaultCategory(supabase: SupabaseClient): Promise<void> {
   const { error } = await supabase.from("categories").upsert(
     {
       display_order: 0,
@@ -342,7 +398,7 @@ async function ensureDefaultCategory(supabase: ReturnType<typeof createClient>):
 }
 
 async function upsertCollectedPlace(
-  supabase: ReturnType<typeof createClient>,
+  supabase: SupabaseClient,
   placeId: string,
   placeName: string,
 ): Promise<void> {
@@ -386,16 +442,29 @@ Deno.serve(async (request) => {
   if (request.method === "OPTIONS") return new Response(null, { status: 204 });
   if (request.method !== "POST") return json({ ok: false, message: "Method not allowed" }, 405);
 
-  const rawBody = await request.text();
   const headerSecret = Deno.env.get("DORIPE_WEBHOOK_HEADER_SECRET") ?? "";
+  const signingSecret = Deno.env.get("TALLY_WEBHOOK_SIGNING_SECRET") ?? Deno.env.get("TALLY_WEBHOOK_SECRET") ?? "";
+  if (!webhookAuthenticationConfigured(headerSecret, signingSecret)) {
+    return json({ ok: false, message: "Webhook authentication is not configured" }, 503);
+  }
+
   if (headerSecret) {
-    const requestUrl = new URL(request.url);
     const incomingSecret =
-      request.headers.get("x-doripe-webhook-secret") ?? request.headers.get("x-tally-secret") ?? requestUrl.searchParams.get("secret") ?? "";
+      request.headers.get("x-doripe-webhook-secret") ?? request.headers.get("x-tally-secret") ?? "";
 
     if (!constantTimeEqual(incomingSecret, headerSecret)) {
       return json({ ok: false, message: "Unauthorized" }, 401);
     }
+  }
+
+  let rawBody: string;
+  try {
+    rawBody = await readBodyWithLimit(request, maxWebhookBodyBytes);
+  } catch (error) {
+    if (error instanceof Error && error.message === "PAYLOAD_TOO_LARGE") {
+      return json({ ok: false, message: "Payload too large" }, 413);
+    }
+    return json({ ok: false, message: "Invalid request body" }, 400);
   }
 
   let payload: JsonRecord;
@@ -405,7 +474,6 @@ Deno.serve(async (request) => {
     return json({ ok: false, message: "Invalid JSON payload" }, 400);
   }
 
-  const signingSecret = Deno.env.get("TALLY_WEBHOOK_SIGNING_SECRET") ?? Deno.env.get("TALLY_WEBHOOK_SECRET") ?? "";
   if (signingSecret) {
     const receivedSignature = request.headers.get("tally-signature") ?? request.headers.get("Tally-Signature") ?? "";
     const expectedRawSignature = await hmacSha256Base64(signingSecret, rawBody);
@@ -430,7 +498,8 @@ Deno.serve(async (request) => {
   const consentAccepted = isConsentAccepted(consentField?.value);
   if (!consentAccepted) return json({ ok: false, message: "Missing photo usage consent" }, 400);
 
-  const photoUrls = extractPhotoUrls(fields, payload);
+  const allowedPhotoHosts = buildAllowedPhotoHosts(Deno.env.get("TALLY_PHOTO_ALLOWED_HOSTS") ?? "");
+  const photoUrls = extractPhotoUrls(fields, payload, allowedPhotoHosts);
   if (photoUrls.length === 0) return json({ ok: false, message: "Missing photo URLs" }, 400);
   if (photoUrls.length > maxFilesPerSubmission) {
     return json({ ok: false, message: `Too many photos. Max is ${maxFilesPerSubmission}.` }, 400);
@@ -480,7 +549,7 @@ Deno.serve(async (request) => {
 
   let photos: DownloadedPhoto[];
   try {
-    photos = await Promise.all(photoUrls.map((url, index) => downloadPhoto(url, index + 1)));
+    photos = await mapWithConcurrency(photoUrls, photoDownloadConcurrency, (url, index) => downloadPhoto(url, index + 1));
   } catch (error) {
     return json({ ok: false, message: error instanceof Error ? error.message : "Could not download photos" }, 400);
   }
@@ -502,7 +571,7 @@ Deno.serve(async (request) => {
       consent_accepted: consentAccepted,
       consent_accepted_at: sourceSubmittedAt ?? new Date().toISOString(),
       consent_text_snapshot: consentTextSnapshot,
-      raw_payload: payload,
+      raw_payload: sanitizedRawPayload(payload, fields),
       source_submitted_at: sourceSubmittedAt,
     })
     .select("id")
@@ -513,7 +582,6 @@ Deno.serve(async (request) => {
   const submissionId = insertedSubmission.data.id;
   const placeId = placeIdFromSubmission(sourceSubmissionId);
   const uploadedPaths: string[] = [];
-  const uploadedPublicPaths: string[] = [];
 
   try {
     await ensureDefaultCategory(supabase);
@@ -541,42 +609,9 @@ Deno.serve(async (request) => {
           source_file_name: photo.fileName,
           storage_path: storagePath,
           submission_id: submissionId,
-        })
-        .select("id")
-        .single();
+        });
 
       if (insertedFile.error) throw new Error(insertedFile.error.message);
-
-      const appStoragePath = publicPhotoPath(placeId, photo);
-      const appUpload = await supabase.storage.from(appPhotoBucketId).upload(
-        appStoragePath,
-        new Blob([photo.buffer], { type: photo.mimeType }),
-        {
-          contentType: photo.mimeType,
-          upsert: false,
-        },
-      );
-
-      if (appUpload.error) throw new Error(appUpload.error.message);
-      uploadedPublicPaths.push(appStoragePath);
-
-      const publicUrl = supabase.storage.from(appPhotoBucketId).getPublicUrl(appStoragePath).data.publicUrl;
-      const insertedPlacePhoto = await supabase.from("place_photos").insert({
-        bucket_id: appPhotoBucketId,
-        credit_text: "",
-        display_order: index,
-        license_note: `photo_submission_file:${insertedFile.data.id}`,
-        permission_status: "pending",
-        photo_type: index === 0 ? "cover" : "gallery",
-        place_id: placeId,
-        public_url: publicUrl,
-        rights_holder_name: "Doripe",
-        source_type: "team",
-        storage_path: appStoragePath,
-        usage_scope: "Tally 저작권 양도/사용 동의 기반",
-      });
-
-      if (insertedPlacePhoto.error) throw new Error(insertedPlacePhoto.error.message);
     }
 
     const linkedSubmission = await supabase
@@ -588,9 +623,6 @@ Deno.serve(async (request) => {
   } catch (error) {
     if (uploadedPaths.length > 0) {
       await supabase.storage.from(bucketId).remove(uploadedPaths);
-    }
-    if (uploadedPublicPaths.length > 0) {
-      await supabase.storage.from(appPhotoBucketId).remove(uploadedPublicPaths);
     }
     await supabase.from("photo_submissions").delete().eq("id", submissionId);
     await supabase.from("places").delete().eq("id", placeId);

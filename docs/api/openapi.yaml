@@ -1,0 +1,749 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Doripe Backend API v1",
+    "version": "1.0.0-draft",
+    "description": "Frontend-first contract for Doripe app, public web, and operator workflows. This file is JSON-compatible YAML and contains no credentials."
+  },
+  "servers": [
+    {
+      "url": "/api/v1",
+      "description": "Same-origin Doripe API"
+    }
+  ],
+  "tags": [
+    { "name": "Auth" },
+    { "name": "System" },
+    { "name": "Discovery" },
+    { "name": "Account" },
+    { "name": "Saves" },
+    { "name": "Courses" },
+    { "name": "Social" },
+    { "name": "Content" },
+    { "name": "Media" },
+    { "name": "Support" },
+    { "name": "Analytics" },
+    { "name": "Forms" },
+    { "name": "Admin" }
+  ],
+  "paths": {
+    "/auth/config": {
+      "get": {
+        "tags": ["Auth"],
+        "operationId": "getAuthConfig",
+        "summary": "Return browser-safe Supabase Auth configuration",
+        "x-auth-class": "public",
+        "x-operator-scope": "none",
+        "x-idempotency": { "mode": "none" },
+        "x-pagination": { "mode": "none" },
+        "security": [],
+        "responses": {
+          "200": { "$ref": "#/components/responses/AuthConfig" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": ["System"],
+        "operationId": "getHealth",
+        "summary": "Return process liveness without checking dependencies",
+        "x-auth-class": "public",
+        "x-operator-scope": "none",
+        "x-idempotency": { "mode": "none" },
+        "x-pagination": { "mode": "none" },
+        "security": [],
+        "responses": {
+          "200": { "$ref": "#/components/responses/Health" }
+        }
+      }
+    },
+    "/readiness": {
+      "get": {
+        "tags": ["System"],
+        "operationId": "getReadiness",
+        "summary": "Return dependency and production-adapter readiness without secret values",
+        "x-auth-class": "public",
+        "x-operator-scope": "none",
+        "x-idempotency": { "mode": "none" },
+        "x-pagination": { "mode": "none" },
+        "security": [],
+        "responses": {
+          "200": { "$ref": "#/components/responses/Readiness" },
+          "503": { "$ref": "#/components/responses/ServiceUnavailable" }
+        }
+      }
+    },
+    "/bootstrap": {
+      "get": {
+        "tags": ["System"],
+        "operationId": "getBootstrap",
+        "summary": "Return public taxonomy, regions, feature flags, and contract versions",
+        "x-auth-class": "public",
+        "x-operator-scope": "none",
+        "x-idempotency": { "mode": "none" },
+        "x-pagination": { "mode": "none" },
+        "security": [],
+        "responses": {
+          "200": { "$ref": "#/components/responses/Bootstrap" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/feed": {
+      "get": {
+        "tags": ["Discovery"],
+        "operationId": "listFeed",
+        "summary": "List published content in deterministic cursor order",
+        "description": "scope=discover is public with optional user context. scope=following requires a valid user token. centerLat, centerLng, and radiusKm must be sent all three together; when omitted, the feed covers all Seoul.",
+        "x-auth-class": "optional_user",
+        "x-operator-scope": "none",
+        "x-idempotency": { "mode": "none" },
+        "x-pagination": { "mode": "cursor", "stableSort": ["published_at:desc", "id:desc"] },
+        "security": [{}, { "userBearer": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/Limit" },
+          { "$ref": "#/components/parameters/Cursor" },
+          { "name": "scope", "in": "query", "required": false, "schema": { "type": "string", "enum": ["discover", "following"], "default": "discover" } },
+          { "name": "regionId", "in": "query", "required": false, "schema": { "$ref": "#/components/schemas/SafeId" } },
+          { "name": "categoryId", "in": "query", "required": false, "schema": { "$ref": "#/components/schemas/SafeId" } },
+          { "name": "tagIds", "in": "query", "required": false, "schema": { "type": "array", "maxItems": 20, "items": { "$ref": "#/components/schemas/SafeId" } }, "style": "form", "explode": false },
+          { "name": "centerLat", "in": "query", "required": false, "description": "Latitude of the selected map pin. Send with centerLng and radiusKm.", "schema": { "type": "number", "minimum": -90, "maximum": 90 } },
+          { "name": "centerLng", "in": "query", "required": false, "description": "Longitude of the selected map pin. Send with centerLat and radiusKm.", "schema": { "type": "number", "minimum": -180, "maximum": 180 } },
+          { "name": "radiusKm", "in": "query", "required": false, "description": "Radius around the selected map pin in kilometers. Send with centerLat and centerLng.", "schema": { "type": "number", "exclusiveMinimum": 0, "maximum": 50 } }
+        ],
+        "responses": {
+          "200": { "$ref": "#/components/responses/ContentList" },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/places/{id}": {
+      "get": {
+        "tags": ["Discovery"], "operationId": "getPlace", "summary": "Get a published place",
+        "x-auth-class": "public", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [],
+        "parameters": [{ "$ref": "#/components/parameters/Id" }],
+        "responses": { "200": { "$ref": "#/components/responses/Place" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/places/{id}/contents": {
+      "get": {
+        "tags": ["Discovery"], "operationId": "listPlaceContents", "summary": "List published content for a place",
+        "x-auth-class": "public", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "cursor", "stableSort": ["published_at:desc", "id:desc"] }, "security": [],
+        "parameters": [{ "$ref": "#/components/parameters/Id" }, { "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Cursor" }],
+        "responses": { "200": { "$ref": "#/components/responses/ContentList" }, "400": { "$ref": "#/components/responses/BadRequest" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/places/{id}/related": {
+      "get": {
+        "tags": ["Discovery"], "operationId": "listRelatedPlaces", "summary": "List related published places",
+        "x-auth-class": "public", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "cursor", "stableSort": ["updated_at:desc", "id:desc"] }, "security": [],
+        "parameters": [{ "$ref": "#/components/parameters/Id" }, { "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Cursor" }],
+        "responses": { "200": { "$ref": "#/components/responses/PlaceList" }, "400": { "$ref": "#/components/responses/BadRequest" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/contents/{id}": {
+      "get": {
+        "tags": ["Discovery"], "operationId": "getContent", "summary": "Get published content or an owner's own draft",
+        "x-auth-class": "optional_user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [{}, { "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Id" }],
+        "responses": { "200": { "$ref": "#/components/responses/Content" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "patch": {
+        "tags": ["Content"], "operationId": "updateContent", "summary": "Update an owned draft or rejected content item",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Id" }],
+        "requestBody": { "$ref": "#/components/requestBodies/ContentUpdate" },
+        "responses": { "200": { "$ref": "#/components/responses/Content" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "403": { "$ref": "#/components/responses/Forbidden" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/profiles/{id}": {
+      "get": {
+        "tags": ["Discovery"], "operationId": "getPublicProfile", "summary": "Get a public profile without private account fields",
+        "x-auth-class": "public", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }],
+        "responses": { "200": { "$ref": "#/components/responses/Profile" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/profiles/{id}/contents": {
+      "get": {
+        "tags": ["Discovery"], "operationId": "listProfileContents", "summary": "List a profile's published content",
+        "x-auth-class": "public", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "cursor", "stableSort": ["published_at:desc", "id:desc"] }, "security": [],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }, { "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Cursor" }],
+        "responses": { "200": { "$ref": "#/components/responses/ContentList" }, "400": { "$ref": "#/components/responses/BadRequest" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/courses/{id}": {
+      "get": {
+        "tags": ["Courses"], "operationId": "getCourse", "summary": "Get a public course or an owner's private course",
+        "x-auth-class": "optional_user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [{}, { "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }],
+        "responses": { "200": { "$ref": "#/components/responses/Course" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "patch": {
+        "tags": ["Courses"], "operationId": "updateCourse", "summary": "Atomically update an owned course and complete place order",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }], "requestBody": { "$ref": "#/components/requestBodies/CourseUpdate" },
+        "responses": { "200": { "$ref": "#/components/responses/Course" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "delete": {
+        "tags": ["Courses"], "operationId": "deleteCourse", "summary": "Hide an owned course",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }],
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/shares/{slug}": {
+      "get": {
+        "tags": ["Discovery"], "operationId": "resolveShare", "summary": "Resolve a valid, nonexpired, nonrevoked public share",
+        "x-auth-class": "public", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [],
+        "parameters": [{ "$ref": "#/components/parameters/Slug" }],
+        "responses": { "200": { "$ref": "#/components/responses/Share" }, "404": { "$ref": "#/components/responses/NotFound" }, "410": { "$ref": "#/components/responses/Gone" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/me/profile": {
+      "get": {
+        "tags": ["Account"], "operationId": "getMyProfile", "summary": "Get the authenticated user's public profile",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "responses": { "200": { "$ref": "#/components/responses/Profile" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "403": { "$ref": "#/components/responses/Forbidden" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "patch": {
+        "tags": ["Account"], "operationId": "updateMyProfile", "summary": "Update nickname, introduction, or profile image",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "requestBody": { "$ref": "#/components/requestBodies/ProfileUpdate" },
+        "responses": { "200": { "$ref": "#/components/responses/Profile" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "403": { "$ref": "#/components/responses/Forbidden" }, "409": { "$ref": "#/components/responses/Conflict" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/me/account": {
+      "get": {
+        "tags": ["Account"], "operationId": "getMyAccount", "summary": "Get account, verification, and application state without tokens",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "responses": { "200": { "$ref": "#/components/responses/Account" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "403": { "$ref": "#/components/responses/Forbidden" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/me/onboarding": {
+      "put": {
+        "tags": ["Account"], "operationId": "putMyOnboarding", "summary": "Create or replace onboarding preferences",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "requestBody": { "$ref": "#/components/requestBodies/OnboardingPut" },
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "403": { "$ref": "#/components/responses/Forbidden" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/me/notifications": {
+      "get": {
+        "tags": ["Account"], "operationId": "getMyNotifications", "summary": "Get notification preferences",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "responses": { "200": { "$ref": "#/components/responses/NotificationPreferences" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "put": {
+        "tags": ["Account"], "operationId": "putMyNotifications", "summary": "Replace notification preferences",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "requestBody": { "$ref": "#/components/requestBodies/NotificationPut" },
+        "responses": { "200": { "$ref": "#/components/responses/NotificationPreferences" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/me/withdrawal": {
+      "post": {
+        "tags": ["Account"], "operationId": "requestMyWithdrawal", "summary": "Request account withdrawal without inventing retention rules",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/Withdrawal" },
+        "responses": { "202": { "$ref": "#/components/responses/Mutation" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "409": { "$ref": "#/components/responses/Conflict" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/me/saves": {
+      "get": {
+        "tags": ["Saves"], "operationId": "listMySaves", "summary": "List the authenticated user's saved places and courses",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "cursor", "stableSort": ["saved_at:desc", "target_id:desc"] }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Cursor" }, { "name": "targetType", "in": "query", "required": false, "schema": { "type": "string", "enum": ["place", "course"] } }],
+        "responses": { "200": { "$ref": "#/components/responses/SaveList" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/me/saves/{targetType}/{targetId}": {
+      "put": {
+        "tags": ["Saves"], "operationId": "putMySave", "summary": "Idempotently save a place or course",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/TargetType" }, { "$ref": "#/components/parameters/TargetId" }], "requestBody": { "$ref": "#/components/requestBodies/SavePut" },
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "delete": {
+        "tags": ["Saves"], "operationId": "deleteMySave", "summary": "Idempotently remove a saved place or course",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/TargetType" }, { "$ref": "#/components/parameters/TargetId" }],
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/courses": {
+      "get": {
+        "tags": ["Courses"], "operationId": "listMyCourses", "summary": "List owned courses",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "cursor", "stableSort": ["updated_at:desc", "id:desc"] }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Cursor" }],
+        "responses": { "200": { "$ref": "#/components/responses/CourseList" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "post": {
+        "tags": ["Courses"], "operationId": "createCourse", "summary": "Create an owned course",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/CourseCreate" },
+        "responses": { "201": { "$ref": "#/components/responses/Course" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "409": { "$ref": "#/components/responses/Conflict" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/courses/{id}/places": {
+      "post": {
+        "tags": ["Courses"], "operationId": "addCoursePlace", "summary": "Append a place to an owned course",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }, { "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/CoursePlaceCreate" },
+        "responses": { "201": { "$ref": "#/components/responses/Course" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/courses/{id}/places/{coursePlaceId}": {
+      "patch": {
+        "tags": ["Courses"], "operationId": "updateCoursePlace", "summary": "Update course-place visit metadata",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }, { "$ref": "#/components/parameters/CoursePlaceId" }], "requestBody": { "$ref": "#/components/requestBodies/CoursePlaceUpdate" },
+        "responses": { "200": { "$ref": "#/components/responses/Course" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "delete": {
+        "tags": ["Courses"], "operationId": "deleteCoursePlace", "summary": "Remove a place from an owned course",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }, { "$ref": "#/components/parameters/CoursePlaceId" }],
+        "responses": { "200": { "$ref": "#/components/responses/Course" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/courses/{id}/places/{coursePlaceId}/replace": {
+      "post": {
+        "tags": ["Courses"], "operationId": "replaceCoursePlace", "summary": "Replace a course place and record history",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }, { "$ref": "#/components/parameters/CoursePlaceId" }, { "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/CoursePlaceReplace" },
+        "responses": { "200": { "$ref": "#/components/responses/Course" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/profiles/{id}/follow": {
+      "post": {
+        "tags": ["Social"], "operationId": "followProfile", "summary": "Follow a public profile",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }],
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "delete": {
+        "tags": ["Social"], "operationId": "unfollowProfile", "summary": "Unfollow a profile",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }],
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/me/following": {
+      "get": {
+        "tags": ["Social"], "operationId": "listMyFollowing", "summary": "List profiles followed by the current user",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "cursor", "stableSort": ["created_at:desc", "id:desc"] }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Cursor" }],
+        "responses": { "200": { "$ref": "#/components/responses/ProfileList" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/contents/{id}/like": {
+      "post": {
+        "tags": ["Social"], "operationId": "likeContent", "summary": "Like published content",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Id" }],
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "delete": {
+        "tags": ["Social"], "operationId": "unlikeContent", "summary": "Remove the current user's like",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Id" }],
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/contents/{id}/comments": {
+      "get": {
+        "tags": ["Social"], "operationId": "listContentComments", "summary": "List visible comments",
+        "x-auth-class": "public", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "cursor", "stableSort": ["created_at:asc", "id:asc"] }, "security": [],
+        "parameters": [{ "$ref": "#/components/parameters/Id" }, { "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Cursor" }],
+        "responses": { "200": { "$ref": "#/components/responses/CommentList" }, "400": { "$ref": "#/components/responses/BadRequest" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "post": {
+        "tags": ["Social"], "operationId": "createComment", "summary": "Create a comment",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Id" }, { "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/CommentCreate" },
+        "responses": { "201": { "$ref": "#/components/responses/Comment" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/comments/{id}": {
+      "patch": {
+        "tags": ["Social"], "operationId": "updateComment", "summary": "Edit an owned comment",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }], "requestBody": { "$ref": "#/components/requestBodies/CommentUpdate" },
+        "responses": { "200": { "$ref": "#/components/responses/Comment" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "delete": {
+        "tags": ["Social"], "operationId": "deleteComment", "summary": "Hide an owned comment",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }],
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/comments/{id}/like": {
+      "post": {
+        "tags": ["Social"], "operationId": "likeComment", "summary": "Like a visible comment",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }],
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      },
+      "delete": {
+        "tags": ["Social"], "operationId": "unlikeComment", "summary": "Remove the current user's comment like",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }],
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/contents": {
+      "post": {
+        "tags": ["Content"], "operationId": "createContent", "summary": "Create a private content draft",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/ContentCreate" },
+        "responses": { "201": { "$ref": "#/components/responses/Content" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "409": { "$ref": "#/components/responses/Conflict" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/me/contents": {
+      "get": {
+        "tags": ["Content"], "operationId": "listMyContents", "summary": "List owned drafts, reviews, rejections, and publications",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "cursor", "stableSort": ["updated_at:desc", "id:desc"] }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Cursor" }, { "name": "status", "in": "query", "required": false, "schema": { "$ref": "#/components/schemas/ContentStatus" } }],
+        "responses": { "200": { "$ref": "#/components/responses/ContentList" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/contents/{id}/submit": {
+      "post": {
+        "tags": ["Content"], "operationId": "submitContent", "summary": "Submit a valid owned draft for review",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Id" }, { "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/ContentSubmit" },
+        "responses": { "200": { "$ref": "#/components/responses/Content" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/media/uploads": {
+      "post": {
+        "tags": ["Media"], "operationId": "createMediaUpload", "summary": "Create a pending media asset and signed upload target",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/MediaUploadCreate" },
+        "responses": { "201": { "$ref": "#/components/responses/MediaUpload" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "409": { "$ref": "#/components/responses/Conflict" }, "413": { "$ref": "#/components/responses/PayloadTooLarge" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/media/{id}/complete": {
+      "post": {
+        "tags": ["Media"], "operationId": "completeMediaUpload", "summary": "Verify uploaded object metadata and mark it uploaded",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }, { "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/MediaComplete" },
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "413": { "$ref": "#/components/responses/PayloadTooLarge" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/media/{id}": {
+      "delete": {
+        "tags": ["Media"], "operationId": "deleteMedia", "summary": "Hide or request removal of an owned media asset",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/UuidId" }],
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/inquiries": {
+      "post": {
+        "tags": ["Support"], "operationId": "createInquiry", "summary": "Submit a user inquiry",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/InquiryCreate" },
+        "responses": { "201": { "$ref": "#/components/responses/Mutation" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "409": { "$ref": "#/components/responses/Conflict" }, "413": { "$ref": "#/components/responses/PayloadTooLarge" }, "429": { "$ref": "#/components/responses/RateLimited" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/me/inquiries": {
+      "get": {
+        "tags": ["Support"], "operationId": "listMyInquiries", "summary": "List the current user's inquiry statuses",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "cursor", "stableSort": ["created_at:desc", "id:desc"] }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Cursor" }],
+        "responses": { "200": { "$ref": "#/components/responses/SupportList" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/reports": {
+      "post": {
+        "tags": ["Support"], "operationId": "createReport", "summary": "Report a user, place, or content item",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/ReportCreate" },
+        "responses": { "201": { "$ref": "#/components/responses/Mutation" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "409": { "$ref": "#/components/responses/Conflict" }, "429": { "$ref": "#/components/responses/RateLimited" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/me/reports": {
+      "get": {
+        "tags": ["Support"], "operationId": "listMyReports", "summary": "List the current user's report statuses without moderation notes",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "none" }, "x-pagination": { "mode": "cursor", "stableSort": ["created_at:desc", "id:desc"] }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Cursor" }],
+        "responses": { "200": { "$ref": "#/components/responses/SupportList" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/shares": {
+      "post": {
+        "tags": ["Support"], "operationId": "createShare", "summary": "Create a Milestone 1 share for a place or course",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/ShareCreate" },
+        "responses": { "201": { "$ref": "#/components/responses/Share" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "409": { "$ref": "#/components/responses/Conflict" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/shares/{slug}/revoke": {
+      "post": {
+        "tags": ["Support"], "operationId": "revokeShare", "summary": "Revoke an owned share",
+        "x-auth-class": "user", "x-operator-scope": "none", "x-idempotency": { "mode": "natural_resource" }, "x-pagination": { "mode": "none" }, "security": [{ "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/Slug" }], "requestBody": { "$ref": "#/components/requestBodies/ShareRevoke" },
+        "responses": { "200": { "$ref": "#/components/responses/Mutation" }, "400": { "$ref": "#/components/responses/BadRequest" }, "401": { "$ref": "#/components/responses/Unauthorized" }, "404": { "$ref": "#/components/responses/NotFound" }, "500": { "$ref": "#/components/responses/InternalError" } }
+      }
+    },
+    "/sessions": {
+      "post": {
+        "tags": ["Analytics"], "operationId": "createAnalyticsSession", "summary": "Create or resume an analytics session",
+        "x-auth-class": "optional_user", "x-operator-scope": "none", "x-idempotency": { "mode": "header_required" }, "x-pagination": { "mode": "none" }, "security": [{}, { "userBearer": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/SessionCreate" },
+        "responses": { "201": { "$ref": "#/components/responses/Session" }, "400": { "$ref": "#/components/responses/BadRequest" }, "409": { "$ref": "#/components/responses/Conflict" }, "413": { "$ref": "#/components/responses/PayloadTooLarge" }, "429": { "$ref": "#/components/responses/RateLimited" }, "503": { "$ref": "#/components/responses/ServiceUnavailable" } }
+      }
+    },
+    "/events": {
+      "post": {
+        "tags": ["Analytics"], "operationId": "createEvents", "summary": "Accept one or more allowlisted analytics events",
+        "x-auth-class": "optional_user", "x-operator-scope": "none", "x-idempotency": { "mode": "event_id" }, "x-pagination": { "mode": "none" }, "security": [{}, { "userBearer": [] }],
+        "requestBody": { "$ref": "#/components/requestBodies/EventBatch" },
+        "responses": { "202": { "$ref": "#/components/responses/EventReceipt" }, "400": { "$ref": "#/components/responses/BadRequest" }, "413": { "$ref": "#/components/responses/PayloadTooLarge" }, "422": { "$ref": "#/components/responses/Unprocessable" }, "429": { "$ref": "#/components/responses/RateLimited" }, "503": { "$ref": "#/components/responses/ServiceUnavailable" } }
+      }
+    },
+    "/forms/beta": {"post":{"tags":["Forms"],"operationId":"createBetaApplication","summary":"Submit beta application","x-auth-class":"public","x-operator-scope":"none","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","additionalProperties":false,"required":["email","regionId","consentVersion","source","deduplicationKey"],"properties":{"email":{"type":"string","format":"email","maxLength":254},"regionId":{"$ref":"#/components/schemas/SafeId"},"displayName":{"type":"string","maxLength":80},"consentVersion":{"type":"string","minLength":1,"maxLength":40},"source":{"type":"string","minLength":1,"maxLength":80},"deduplicationKey":{"type":"string","minLength":16,"maxLength":128,"pattern":"^[A-Za-z0-9._:-]+$"}}}}}},"responses":{"202":{"$ref":"#/components/responses/Mutation"},"400":{"$ref":"#/components/responses/BadRequest"},"413":{"$ref":"#/components/responses/PayloadTooLarge"},"422":{"$ref":"#/components/responses/Unprocessable"},"429":{"$ref":"#/components/responses/RateLimited"},"503":{"$ref":"#/components/responses/ServiceUnavailable"}}}},
+    "/forms/creator": {"post":{"tags":["Forms"],"operationId":"createCreatorApplication","summary":"Submit curator application","x-auth-class":"public","x-operator-scope":"none","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","additionalProperties":false,"required":["email","displayName","portfolioUrl","consentVersion","source","deduplicationKey"],"properties":{"email":{"type":"string","format":"email","maxLength":254},"displayName":{"type":"string","minLength":1,"maxLength":80},"portfolioUrl":{"type":"string","format":"uri","maxLength":1000},"introduction":{"type":"string","maxLength":2000},"consentVersion":{"type":"string","minLength":1,"maxLength":40},"source":{"type":"string","minLength":1,"maxLength":80},"deduplicationKey":{"type":"string","minLength":16,"maxLength":128,"pattern":"^[A-Za-z0-9._:-]+$"}}}}}},"responses":{"202":{"$ref":"#/components/responses/Mutation"},"400":{"$ref":"#/components/responses/BadRequest"},"413":{"$ref":"#/components/responses/PayloadTooLarge"},"422":{"$ref":"#/components/responses/Unprocessable"},"429":{"$ref":"#/components/responses/RateLimited"},"503":{"$ref":"#/components/responses/ServiceUnavailable"}}}},
+    "/forms/business": {"post":{"tags":["Forms"],"operationId":"createBusinessApplication","summary":"Submit business partnership application","x-auth-class":"public","x-operator-scope":"none","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","additionalProperties":false,"required":["organizationName","contactName","contactEmail","contactPhone","consentVersion","source","deduplicationKey"],"properties":{"organizationName":{"type":"string","minLength":1,"maxLength":160},"contactName":{"type":"string","minLength":1,"maxLength":80},"contactEmail":{"type":"string","format":"email","maxLength":254},"contactPhone":{"type":"string","pattern":"^[0-9+() -]{7,30}$"},"message":{"type":"string","maxLength":3000},"consentVersion":{"type":"string","minLength":1,"maxLength":40},"source":{"type":"string","minLength":1,"maxLength":80},"deduplicationKey":{"type":"string","minLength":16,"maxLength":128,"pattern":"^[A-Za-z0-9._:-]+$"}}}}}},"responses":{"202":{"$ref":"#/components/responses/Mutation"},"400":{"$ref":"#/components/responses/BadRequest"},"413":{"$ref":"#/components/responses/PayloadTooLarge"},"422":{"$ref":"#/components/responses/Unprocessable"},"429":{"$ref":"#/components/responses/RateLimited"},"503":{"$ref":"#/components/responses/ServiceUnavailable"}}}},
+    "/forms/notify-taste": {"post":{"tags":["Forms"],"operationId":"createTasteNotificationRequest","summary":"Request taste-product launch notification","x-auth-class":"public","x-operator-scope":"none","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","additionalProperties":false,"required":["email","tasteIds","consentVersion","source","deduplicationKey"],"properties":{"email":{"type":"string","format":"email","maxLength":254},"tasteIds":{"type":"array","minItems":1,"maxItems":20,"uniqueItems":true,"items":{"$ref":"#/components/schemas/SafeId"}},"consentVersion":{"type":"string","minLength":1,"maxLength":40},"source":{"type":"string","minLength":1,"maxLength":80},"deduplicationKey":{"type":"string","minLength":16,"maxLength":128,"pattern":"^[A-Za-z0-9._:-]+$"}}}}}},"responses":{"202":{"$ref":"#/components/responses/Mutation"},"400":{"$ref":"#/components/responses/BadRequest"},"413":{"$ref":"#/components/responses/PayloadTooLarge"},"422":{"$ref":"#/components/responses/Unprocessable"},"429":{"$ref":"#/components/responses/RateLimited"},"503":{"$ref":"#/components/responses/ServiceUnavailable"}}}},
+    "/forms/notify-event": {"post":{"tags":["Forms"],"operationId":"createEventNotificationRequest","summary":"Request event notification","x-auth-class":"public","x-operator-scope":"none","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","additionalProperties":false,"required":["email","eventCode","consentVersion","source","deduplicationKey"],"properties":{"email":{"type":"string","format":"email","maxLength":254},"eventCode":{"type":"string","minLength":1,"maxLength":80,"pattern":"^[a-z0-9_-]+$"},"consentVersion":{"type":"string","minLength":1,"maxLength":40},"source":{"type":"string","minLength":1,"maxLength":80},"deduplicationKey":{"type":"string","minLength":16,"maxLength":128,"pattern":"^[A-Za-z0-9._:-]+$"}}}}}},"responses":{"202":{"$ref":"#/components/responses/Mutation"},"400":{"$ref":"#/components/responses/BadRequest"},"413":{"$ref":"#/components/responses/PayloadTooLarge"},"422":{"$ref":"#/components/responses/Unprocessable"},"429":{"$ref":"#/components/responses/RateLimited"},"503":{"$ref":"#/components/responses/ServiceUnavailable"}}}},
+    "/admin/me": {"get":{"tags":["Admin"],"operationId":"getAdminMe","summary":"Return active operator identity and scopes","x-auth-class":"operator","x-operator-scope":"active_operator","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"responses":{"200":{"$ref":"#/components/responses/AdminMe"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/dashboard": {"get":{"tags":["Admin"],"operationId":"getAdminDashboard","summary":"Return redacted dashboard metrics","x-auth-class":"operator","x-operator-scope":"analytics:read","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"responses":{"200":{"$ref":"#/components/responses/AdminAnalytics"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/places": {"get":{"tags":["Admin"],"operationId":"listAdminPlaces","summary":"List Places","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"updated_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}},"post":{"tags":["Admin"],"operationId":"createAdminPlace","summary":"Create Place with audit reason","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/AdminPlaceCreate"},"responses":{"201":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/places/{id}": {"get":{"tags":["Admin"],"operationId":"getAdminPlace","summary":"Get Place","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"500":{"$ref":"#/components/responses/InternalError"}}},"patch":{"tags":["Admin"],"operationId":"updateAdminPlace","summary":"Atomically update detailed place fields with an audit reason","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminPlaceUpdate"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/contents": {"get":{"tags":["Admin"],"operationId":"listAdminContents","summary":"List Contents","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/contents/{id}": {"get":{"tags":["Admin"],"operationId":"getAdminContent","summary":"Get Content","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"500":{"$ref":"#/components/responses/InternalError"}}},"patch":{"tags":["Admin"],"operationId":"updateAdminContent","summary":"Update Content with audit reason","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/moderation": {"get":{"tags":["Admin"],"operationId":"listAdminModerationItems","summary":"List ModerationItems","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/moderation/{id}": {"get":{"tags":["Admin"],"operationId":"getAdminModeration","summary":"Get Moderation","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"500":{"$ref":"#/components/responses/InternalError"}}},"patch":{"tags":["Admin"],"operationId":"updateAdminModeration","summary":"Update Moderation with audit reason","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/reports": {"get":{"tags":["Admin"],"operationId":"listAdminReports","summary":"List Reports","x-auth-class":"operator","x-operator-scope":"users:moderate","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/reports/{id}": {"get":{"tags":["Admin"],"operationId":"getAdminReport","summary":"Get Report","x-auth-class":"operator","x-operator-scope":"users:moderate","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"500":{"$ref":"#/components/responses/InternalError"}}},"patch":{"tags":["Admin"],"operationId":"updateAdminReport","summary":"Update Report with audit reason","x-auth-class":"operator","x-operator-scope":"users:moderate","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/users": {"get":{"tags":["Admin"],"operationId":"listAdminUsers","summary":"List Users","x-auth-class":"operator","x-operator-scope":"users:moderate","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/users/{id}": {"get":{"tags":["Admin"],"operationId":"getAdminUser","summary":"Get User","x-auth-class":"operator","x-operator-scope":"users:moderate","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"500":{"$ref":"#/components/responses/InternalError"}}},"patch":{"tags":["Admin"],"operationId":"updateAdminUser","summary":"Update User with audit reason","x-auth-class":"operator","x-operator-scope":"users:moderate","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/curators": {"get":{"tags":["Admin"],"operationId":"listAdminCurators","summary":"List Curators","x-auth-class":"operator","x-operator-scope":"users:moderate","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/curators/{id}": {"get":{"tags":["Admin"],"operationId":"getAdminCurator","summary":"Get Curator","x-auth-class":"operator","x-operator-scope":"users:moderate","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"500":{"$ref":"#/components/responses/InternalError"}}},"patch":{"tags":["Admin"],"operationId":"updateAdminCurator","summary":"Update Curator with audit reason","x-auth-class":"operator","x-operator-scope":"users:moderate","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/categories": {"get":{"tags":["Admin"],"operationId":"listAdminCategories","summary":"List Categories","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}},"post":{"tags":["Admin"],"operationId":"createAdminCategory","summary":"Create Category with audit reason","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTaxonomyCreate"},"responses":{"201":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/categories/{id}": {"patch":{"tags":["Admin"],"operationId":"updateAdminCategory","summary":"Update Category with audit reason","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/tags": {"get":{"tags":["Admin"],"operationId":"listAdminTags","summary":"List Tags","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}},"post":{"tags":["Admin"],"operationId":"createAdminTag","summary":"Create Tag with audit reason","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTaxonomyCreate"},"responses":{"201":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/tags/{id}": {"patch":{"tags":["Admin"],"operationId":"updateAdminTag","summary":"Update Tag with audit reason","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/media": {"get":{"tags":["Admin"],"operationId":"listAdminMedia","summary":"List Media","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/media/{id}": {"get":{"tags":["Admin"],"operationId":"getAdminMedia","summary":"Get Media","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"500":{"$ref":"#/components/responses/InternalError"}}},"patch":{"tags":["Admin"],"operationId":"updateAdminMedia","summary":"Update Media with audit reason","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/imports/naver-place": {"post":{"tags":["Admin"],"operationId":"importAdminNaverPlace","summary":"Import allowlisted Naver place URL","x-auth-class":"operator","x-operator-scope":"content:write","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/AdminNaverImport"},"responses":{"201":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/intake/{kind}": {"get":{"tags":["Admin"],"operationId":"listAdminIntake","summary":"List intake records","x-auth-class":"operator","x-operator-scope":{"by-path-param":{"kind":{"beta":"analytics:read","creator":"users:moderate","business":"business:write","recommendation":"content:write","inquiry":"users:moderate","partner":"business:write","campaign":"business:write","notify-taste":"analytics:read","notify-event":"analytics:read"}}},"x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminKind"},{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/intake/{kind}/{id}": {"get":{"tags":["Admin"],"operationId":"getAdminIntake","summary":"Get intake record","x-auth-class":"operator","x-operator-scope":{"by-path-param":{"kind":{"beta":"analytics:read","creator":"users:moderate","business":"business:write","recommendation":"content:write","inquiry":"users:moderate","partner":"business:write","campaign":"business:write","notify-taste":"analytics:read","notify-event":"analytics:read"}}},"x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminKind"},{"$ref":"#/components/parameters/AdminId"}],"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"500":{"$ref":"#/components/responses/InternalError"}}},"patch":{"tags":["Admin"],"operationId":"updateAdminIntake","summary":"Update intake with audit reason","x-auth-class":"operator","x-operator-scope":{"by-path-param":{"kind":{"beta":"analytics:read","creator":"users:moderate","business":"business:write","recommendation":"content:write","inquiry":"users:moderate","partner":"business:write","campaign":"business:write","notify-taste":"analytics:read","notify-event":"analytics:read"}}},"x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminKind"},{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/organizations": {"get":{"tags":["Admin"],"operationId":"listAdminOrganizations","summary":"List business organizations","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}},"post":{"tags":["Admin"],"operationId":"createAdminOrganization","summary":"Create a business organization with audit reason","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/AdminOrganizationCreate"},"responses":{"201":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/organizations/{id}": {"get":{"tags":["Admin"],"operationId":"getAdminOrganization","summary":"Get a business organization","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"500":{"$ref":"#/components/responses/InternalError"}}},"patch":{"tags":["Admin"],"operationId":"updateAdminOrganization","summary":"Update a business organization with audit reason","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/partnerships": {"get":{"tags":["Admin"],"operationId":"listAdminPartnerships","summary":"List Partnerships","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}},"post":{"tags":["Admin"],"operationId":"createAdminPartnership","summary":"Create Partnership with audit reason","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/AdminPartnershipCreate"},"responses":{"201":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/partnerships/{id}": {"get":{"tags":["Admin"],"operationId":"getAdminPartnership","summary":"Get Partnership","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"500":{"$ref":"#/components/responses/InternalError"}}},"patch":{"tags":["Admin"],"operationId":"updateAdminPartnership","summary":"Update Partnership with audit reason","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/campaigns": {"get":{"tags":["Admin"],"operationId":"listAdminCampaigns","summary":"List Campaigns","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminList"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}},"post":{"tags":["Admin"],"operationId":"createAdminCampaign","summary":"Create Campaign with audit reason","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"header","header":"Idempotency-Key","store":"durable"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/AdminCampaignCreate"},"responses":{"201":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/campaigns/{id}": {"get":{"tags":["Admin"],"operationId":"getAdminCampaign","summary":"Get Campaign","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"500":{"$ref":"#/components/responses/InternalError"}}},"patch":{"tags":["Admin"],"operationId":"updateAdminCampaign","summary":"Update Campaign with audit reason","x-auth-class":"operator","x-operator-scope":"business:write","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/AdminId"}],"requestBody":{"$ref":"#/components/requestBodies/AdminTransition"},"responses":{"200":{"$ref":"#/components/responses/AdminRecord"},"400":{"$ref":"#/components/responses/BadRequest"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"409":{"$ref":"#/components/responses/Conflict"},"422":{"$ref":"#/components/responses/Unprocessable"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/analytics": {"get":{"tags":["Admin"],"operationId":"getAdminAnalytics","summary":"Return redacted aggregate analytics","x-auth-class":"operator","x-operator-scope":"analytics:read","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"none"},"security":[{"operatorBearer":[]}],"responses":{"200":{"$ref":"#/components/responses/AdminAnalytics"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}}},
+    "/admin/audit": {"get":{"tags":["Admin"],"operationId":"listAdminAudit","summary":"List immutable audit records","x-auth-class":"operator","x-operator-scope":"operators:manage","x-idempotency":{"mode":"none"},"x-pagination":{"mode":"cursor","stableSort":"created_at:desc,id:desc"},"security":[{"operatorBearer":[]}],"parameters":[{"$ref":"#/components/parameters/Limit"},{"$ref":"#/components/parameters/Cursor"},{"$ref":"#/components/parameters/AdminStatus"},{"$ref":"#/components/parameters/AdminQuery"}],"responses":{"200":{"$ref":"#/components/responses/AdminAudit"},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"500":{"$ref":"#/components/responses/InternalError"}}}}
+  },
+  "components": {
+    "securitySchemes": {
+      "userBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Supabase access JWT",
+        "description": "Access token obtained directly through the documented Supabase Auth flow. Refresh tokens are never sent to Doripe APIs."
+      },
+      "operatorBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Supabase access JWT",
+        "description": "The same JWT type plus an active operator_accounts record and the route's database-backed scope."
+      }
+    },
+    "parameters": {
+      "Limit": { "name": "limit", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 50, "default": 20 } },
+      "Cursor": { "name": "cursor", "in": "query", "required": false, "schema": { "type": "string", "minLength": 8, "maxLength": 2048 } },
+      "Id": { "name": "id", "in": "path", "required": true, "schema": { "$ref": "#/components/schemas/SafeId" } },
+      "UuidId": { "name": "id", "in": "path", "required": true, "schema": { "$ref": "#/components/schemas/Uuid" } },
+      "CoursePlaceId": { "name": "coursePlaceId", "in": "path", "required": true, "schema": { "$ref": "#/components/schemas/Uuid" } },
+      "Slug": { "name": "slug", "in": "path", "required": true, "schema": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,96}$" } },
+      "TargetType": { "name": "targetType", "in": "path", "required": true, "schema": { "type": "string", "enum": ["place", "course"] } },
+      "TargetId": { "name": "targetId", "in": "path", "required": true, "schema": { "$ref": "#/components/schemas/SafeId" } },
+      "IdempotencyKey": { "name": "Idempotency-Key", "in": "header", "required": true, "schema": { "type": "string", "minLength": 16, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$" } },
+      "AdminKind": { "name": "kind", "in": "path", "required": true, "schema": { "type": "string", "enum": ["beta", "creator", "business", "recommendation", "inquiry", "partner", "campaign", "notify-taste", "notify-event"] } },
+      "AdminId": { "name": "id", "in": "path", "required": true, "schema": { "$ref": "#/components/schemas/SafeId" } },
+      "AdminLimit": { "$ref": "#/components/parameters/Limit" },
+      "AdminCursor": { "$ref": "#/components/parameters/Cursor" },
+      "AdminStatus": { "name": "status", "in": "query", "required": false, "schema": { "type": "string", "minLength": 1, "maxLength": 40, "pattern": "^[a-z][a-z0-9_]*$" } },
+      "AdminQuery": { "name": "q", "in": "query", "required": false, "schema": { "type": "string", "maxLength": 80 } }
+    },
+    "schemas": {
+      "Uuid": { "type": "string", "format": "uuid" },
+      "SafeId": { "type": "string", "minLength": 1, "maxLength": 96, "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$" },
+      "Timestamp": { "type": "string", "format": "date-time" },
+      "NullableTimestamp": { "type": ["string", "null"], "format": "date-time" },
+      "ContentStatus": { "type": "string", "enum": ["draft", "submitted", "reviewing", "published", "rejected", "hidden"] },
+      "Meta": {
+        "type": "object", "additionalProperties": false, "required": ["requestId"],
+        "properties": { "requestId": { "$ref": "#/components/schemas/Uuid" }, "nextCursor": { "type": ["string", "null"], "maxLength": 2048 } }
+      },
+      "ErrorEnvelope": {
+        "type": "object", "additionalProperties": false, "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "object", "additionalProperties": false, "required": ["code", "message", "requestId", "details"],
+            "properties": {
+              "code": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "maxLength": 80 },
+              "message": { "type": "string", "minLength": 1, "maxLength": 300 },
+              "requestId": { "$ref": "#/components/schemas/Uuid" },
+              "details": {
+                "type": "object", "additionalProperties": false,
+                "properties": {
+                  "fieldErrors": { "type": "array", "maxItems": 50, "items": { "type": "object", "additionalProperties": false, "required": ["field", "code"], "properties": { "field": { "type": "string", "maxLength": 100 }, "code": { "type": "string", "maxLength": 80 } } },
+                  "retryAfterSeconds": { "type": "integer", "minimum": 1, "maximum": 86400 },
+                  "expectedVersion": { "type": "integer", "minimum": 1 }
+                }
+              }
+            }
+          }
+        }
+      }},
+      "Category": { "type": "object", "additionalProperties": false, "required": ["id", "name", "displayOrder"], "properties": { "id": { "$ref": "#/components/schemas/SafeId" }, "name": { "type": "string", "minLength": 1, "maxLength": 80 }, "displayOrder": { "type": "integer", "minimum": 0 } } },
+      "Tag": { "type": "object", "additionalProperties": false, "required": ["id", "kind", "name"], "properties": { "id": { "$ref": "#/components/schemas/SafeId" }, "kind": { "type": "string", "minLength": 1, "maxLength": 80 }, "name": { "type": "string", "minLength": 1, "maxLength": 80 } } },
+      "Region": { "type": "object", "additionalProperties": false, "required": ["id", "name", "enabled"], "properties": { "id": { "$ref": "#/components/schemas/SafeId" }, "name": { "type": "string", "minLength": 1, "maxLength": 80 }, "enabled": { "type": "boolean" } } },
+      "MediaSummary": { "type": "object", "additionalProperties": false, "required": ["id", "kind", "url", "position", "rightsStatus"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "kind": { "type": "string", "enum": ["image", "video"] }, "url": { "type": "string", "format": "uri", "maxLength": 2000 }, "thumbnailUrl": { "type": ["string", "null"], "format": "uri", "maxLength": 2000 }, "position": { "type": "integer", "minimum": 0, "maximum": 4 }, "rightsStatus": { "type": "string", "enum": ["pending", "approved"] }, "placeId": { "type": ["string", "null"], "maxLength": 96 } } },
+      "Place": { "type": "object", "additionalProperties": false, "required": ["id", "name", "shortCopy", "neighborhoodId", "address", "latitude", "longitude", "category", "tags", "moodTags", "bestFor", "timeTags", "media", "status", "updatedAt"], "properties": { "id": { "$ref": "#/components/schemas/SafeId" }, "name": { "type": "string", "minLength": 1, "maxLength": 120 }, "shortCopy": { "type": "string", "maxLength": 300 }, "neighborhoodId": { "$ref": "#/components/schemas/SafeId" }, "address": { "type": "string", "maxLength": 300 }, "nearestStation": { "type": ["string", "null"], "maxLength": 200 }, "phoneText": { "type": ["string", "null"], "maxLength": 100 }, "latitude": { "type": "number", "minimum": -90, "maximum": 90 }, "longitude": { "type": "number", "minimum": -180, "maximum": 180 }, "category": { "$ref": "#/components/schemas/Category" }, "tags": { "type": "array", "maxItems": 50, "items": { "$ref": "#/components/schemas/Tag" } }, "moodTags": { "type": "array", "maxItems": 50, "items": { "type": "string", "maxLength": 80 } }, "bestFor": { "type": "array", "maxItems": 50, "items": { "type": "string", "maxLength": 80 } }, "timeTags": { "type": "array", "maxItems": 50, "items": { "type": "string", "maxLength": 80 } }, "media": { "type": "array", "maxItems": 5, "items": { "$ref": "#/components/schemas/MediaSummary" } }, "status": { "type": "string", "enum": ["published"] }, "updatedAt": { "$ref": "#/components/schemas/Timestamp" }, "hoursText": { "type": ["string", "null"], "maxLength": 300 }, "priceLevel": { "type": ["string", "null"], "maxLength": 80 }, "representativeMenuName": { "type": ["string", "null"], "maxLength": 160 }, "representativeMenuPrice": { "type": ["string", "null"], "maxLength": 80 }, "representativeMenu": { "type": ["object", "null"], "additionalProperties": false, "properties": { "name": { "type": ["string", "null"], "maxLength": 160 }, "price": { "type": ["string", "null"], "maxLength": 80 } } }, "stayTimeMinutes": { "type": ["integer", "null"], "minimum": 0, "maximum": 1440 }, "externalMapUrl": { "type": ["string", "null"], "format": "uri", "maxLength": 1000 } } },
+      "Profile": { "type": "object", "additionalProperties": false, "required": ["id", "nickname", "introduction", "isCurator", "followedByMe"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "nickname": { "type": "string", "minLength": 1, "maxLength": 40 }, "introduction": { "type": "string", "maxLength": 500 }, "profileImageUrl": { "type": ["string", "null"], "format": "uri", "maxLength": 2000 }, "isCurator": { "type": "boolean" }, "officialBadge": { "type": "boolean" }, "followedByMe": { "type": "boolean" }, "followerCount": { "type": "integer", "minimum": 0 } } },
+      "Content": { "type": "object", "additionalProperties": false, "required": ["id", "type", "author", "caption", "placeIds", "media", "status", "version", "createdAt", "updatedAt"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "type": { "type": "string", "enum": ["place", "course"] }, "author": { "$ref": "#/components/schemas/Profile" }, "caption": { "type": "string", "maxLength": 2000 }, "placeIds": { "type": "array", "minItems": 1, "maxItems": 30, "items": { "$ref": "#/components/schemas/SafeId" } }, "courseId": { "type": ["string", "null"], "format": "uuid" }, "media": { "type": "array", "maxItems": 5, "items": { "$ref": "#/components/schemas/MediaSummary" } }, "status": { "$ref": "#/components/schemas/ContentStatus" }, "version": { "type": "integer", "minimum": 1 }, "likedByMe": { "type": "boolean" }, "likeCount": { "type": "integer", "minimum": 0 }, "commentCount": { "type": "integer", "minimum": 0 }, "createdAt": { "$ref": "#/components/schemas/Timestamp" }, "updatedAt": { "$ref": "#/components/schemas/Timestamp" }, "publishedAt": { "$ref": "#/components/schemas/NullableTimestamp" } } },
+      "CoursePlace": { "type": "object", "additionalProperties": false, "required": ["id", "placeId", "position"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "placeId": { "$ref": "#/components/schemas/SafeId" }, "position": { "type": "integer", "minimum": 0, "maximum": 99 }, "stayMinutes": { "type": ["integer", "null"], "minimum": 0, "maximum": 1440 }, "travelMinutesFromPrevious": { "type": ["integer", "null"], "minimum": 0, "maximum": 1440 }, "note": { "type": "string", "maxLength": 500 } } },
+      "Course": { "type": "object", "additionalProperties": false, "required": ["id", "ownerId", "name", "visibility", "startPlaceId", "places", "version", "totalStayMinutes", "totalTravelMinutes", "totalDurationMinutes", "updatedAt"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "ownerId": { "$ref": "#/components/schemas/Uuid" }, "name": { "type": "string", "minLength": 1, "maxLength": 120 }, "visibility": { "type": "string", "enum": ["private", "public"] }, "startPlaceId": { "$ref": "#/components/schemas/SafeId" }, "places": { "type": "array", "minItems": 2, "maxItems": 30, "items": { "$ref": "#/components/schemas/CoursePlace" } }, "version": { "type": "integer", "minimum": 1 }, "totalStayMinutes": { "type": "integer", "minimum": 0 }, "totalTravelMinutes": { "type": "integer", "minimum": 0 }, "totalDurationMinutes": { "type": "integer", "minimum": 0 }, "updatedAt": { "$ref": "#/components/schemas/Timestamp" } } },
+      "SavedPlaceTarget": { "type": "object", "additionalProperties": false, "description": "Hydrated place card target returned with a place save.", "required": ["id", "name", "address", "categoryId", "latitude", "longitude", "updatedAt"], "properties": { "id": { "$ref": "#/components/schemas/SafeId" }, "name": { "type": "string", "minLength": 1, "maxLength": 120 }, "address": { "type": "string", "maxLength": 300 }, "nearestStation": { "type": ["string", "null"], "maxLength": 200 }, "categoryId": { "$ref": "#/components/schemas/SafeId" }, "latitude": { "type": "number" }, "longitude": { "type": "number" }, "priceLevel": { "type": ["string", "null"], "maxLength": 80 }, "representativeMenuName": { "type": ["string", "null"], "maxLength": 160 }, "representativeMenuPrice": { "type": ["string", "null"], "maxLength": 80 }, "representativeMenu": { "type": ["object", "null"], "additionalProperties": false, "properties": { "name": { "type": ["string", "null"] }, "price": { "type": ["string", "null"] } } }, "stayTimeMinutes": { "type": ["integer", "null"], "minimum": 0 }, "updatedAt": { "$ref": "#/components/schemas/Timestamp" } } },
+      "SavedCourseTarget": { "type": "object", "additionalProperties": false, "required": ["id", "ownerId", "name", "visibility", "startPlaceId", "version", "placeCount", "places", "updatedAt"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "ownerId": { "$ref": "#/components/schemas/Uuid" }, "name": { "type": "string", "minLength": 1, "maxLength": 120 }, "visibility": { "type": "string", "enum": ["private", "public"] }, "startPlaceId": { "$ref": "#/components/schemas/SafeId" }, "version": { "type": "integer", "minimum": 1 }, "placeCount": { "type": "integer", "minimum": 0, "maximum": 30 }, "places": { "type": "array", "maxItems": 30, "items": { "$ref": "#/components/schemas/CoursePlace" } }, "updatedAt": { "$ref": "#/components/schemas/Timestamp" } } },
+      "Save": { "type": "object", "additionalProperties": false, "required": ["id", "targetType", "targetId", "savedAt"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "targetType": { "type": "string", "enum": ["place", "course"] }, "targetId": { "type": "string", "minLength": 1, "maxLength": 96 }, "sourceContentId": { "type": ["string", "null"], "format": "uuid" }, "sourceScreen": { "type": ["string", "null"], "maxLength": 80 }, "savedAt": { "$ref": "#/components/schemas/Timestamp" }, "target": { "oneOf": [{ "$ref": "#/components/schemas/SavedPlaceTarget" }, { "$ref": "#/components/schemas/SavedCourseTarget" }, { "type": "null" }] } } },
+      "Comment": { "type": "object", "additionalProperties": false, "required": ["id", "contentId", "author", "text", "likeCount", "version", "createdAt"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "contentId": { "$ref": "#/components/schemas/Uuid" }, "author": { "$ref": "#/components/schemas/Profile" }, "text": { "type": "string", "minLength": 1, "maxLength": 1000 }, "likeCount": { "type": "integer", "minimum": 0 }, "version": { "type": "integer", "minimum": 1 }, "createdAt": { "$ref": "#/components/schemas/Timestamp" }, "updatedAt": { "$ref": "#/components/schemas/Timestamp" } } },
+      "SupportRecord": { "type": "object", "additionalProperties": false, "required": ["id", "kind", "status", "createdAt", "updatedAt"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "kind": { "type": "string", "enum": ["inquiry", "report"] }, "status": { "type": "string", "enum": ["received", "reviewing", "resolved", "closed"] }, "targetType": { "type": ["string", "null"], "enum": ["user", "place", "content", null] }, "targetId": { "type": ["string", "null"], "maxLength": 96 }, "createdAt": { "$ref": "#/components/schemas/Timestamp" }, "updatedAt": { "$ref": "#/components/schemas/Timestamp" } } },
+      "Share": { "type": "object", "additionalProperties": false, "required": ["slug", "targetType", "targetId", "title", "url", "expiresAt"], "properties": { "slug": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,96}$" }, "targetType": { "type": "string", "enum": ["place", "content", "course"] }, "targetId": { "type": "string", "minLength": 1, "maxLength": 96 }, "title": { "type": "string", "minLength": 1, "maxLength": 200 }, "description": { "type": "string", "maxLength": 500 }, "coverImageUrl": { "type": ["string", "null"], "format": "uri", "maxLength": 2000 }, "url": { "type": "string", "format": "uri", "maxLength": 2000 }, "expiresAt": { "$ref": "#/components/schemas/Timestamp" } } },
+      "Mutation": { "type": "object", "additionalProperties": false, "required": ["id", "status", "version"], "properties": { "id": { "type": "string", "minLength": 1, "maxLength": 96 }, "status": { "type": "string", "minLength": 1, "maxLength": 40 }, "version": { "type": "integer", "minimum": 1 }, "duplicate": { "type": "boolean" } } },
+      "AdminRecord": { "type": "object", "additionalProperties": false, "required": ["id", "kind", "status", "label", "details", "version", "createdAt", "updatedAt"], "properties": { "id": { "type": "string", "minLength": 1, "maxLength": 96 }, "kind": { "type": "string", "minLength": 1, "maxLength": 40 }, "status": { "type": "string", "minLength": 1, "maxLength": 40 }, "label": { "type": "string", "maxLength": 200 }, "summary": { "type": "string", "maxLength": 1000 }, "details": { "type": "object", "description": "Operator-only selected fields for the resource detail or edit screen; field names match the canonical database contract.", "additionalProperties": true }, "version": { "type": "integer", "minimum": 1 }, "createdAt": { "$ref": "#/components/schemas/Timestamp" }, "updatedAt": { "$ref": "#/components/schemas/Timestamp" } } },
+      "AuditRecord": { "type": "object", "additionalProperties": false, "required": ["id", "operatorId", "action", "entityType", "entityId", "reason", "requestId", "createdAt"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "operatorId": { "$ref": "#/components/schemas/Uuid" }, "action": { "type": "string", "maxLength": 100 }, "entityType": { "type": "string", "maxLength": 80 }, "entityId": { "type": "string", "maxLength": 96 }, "reason": { "type": "string", "minLength": 1, "maxLength": 1000 }, "requestId": { "$ref": "#/components/schemas/Uuid" }, "createdAt": { "$ref": "#/components/schemas/Timestamp" } } },
+      "AnalyticsProperties": { "type": "object", "additionalProperties": false, "properties": { "targetType": { "type": "string", "enum": ["place", "content", "course", "profile", "share"] }, "targetId": { "type": "string", "maxLength": 96 }, "placeId": { "$ref": "#/components/schemas/SafeId" }, "contentId": { "$ref": "#/components/schemas/Uuid" }, "courseId": { "$ref": "#/components/schemas/Uuid" }, "shareChannel": { "type": "string", "enum": ["copy", "system", "message", "other"] }, "durationMs": { "type": "integer", "minimum": 0, "maximum": 86400000 }, "position": { "type": "integer", "minimum": 0, "maximum": 10000 }, "filterIds": { "type": "array", "maxItems": 20, "items": { "$ref": "#/components/schemas/SafeId" } } } },
+      "EventInput": { "type": "object", "additionalProperties": false, "required": ["eventId", "schemaVersion", "name", "occurredAt", "sessionId", "sourceScreen", "properties"], "properties": { "eventId": { "$ref": "#/components/schemas/Uuid" }, "schemaVersion": { "type": "integer", "minimum": 1, "maximum": 1000 }, "name": { "type": "string", "enum": ["session_start", "signup_complete", "login_complete", "onboarding_complete", "screen_view", "content_impression", "content_open", "place_open", "course_open", "filter_apply", "related_place_open", "place_save", "place_unsave", "course_save", "course_unsave", "saved_item_open", "course_start", "course_start_place_set", "course_place_add", "course_place_remove", "course_place_replace", "course_complete", "profile_open", "follow", "unfollow", "content_like", "content_unlike", "comment_create", "share_sheet_open", "share_link_copy", "external_map_open", "feedback_submit", "report_submit", "content_upload_complete", "notification_open"] }, "occurredAt": { "$ref": "#/components/schemas/Timestamp" }, "sessionId": { "$ref": "#/components/schemas/Uuid" }, "anonymousId": { "type": ["string", "null"], "minLength": 16, "maxLength": 96, "description": "Required when the request has no authenticated user." }, "sourceScreen": { "type": "string", "minLength": 1, "maxLength": 80 }, "properties": { "$ref": "#/components/schemas/AnalyticsProperties" } } },
+      "AuthConfigResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["supabaseUrl", "publishableKey", "enabledMethods", "allowedCallbackUrls"], "properties": { "supabaseUrl": { "type": "string", "format": "uri", "maxLength": 500 }, "publishableKey": { "type": "string", "minLength": 20, "maxLength": 4096 }, "enabledMethods": { "type": "array", "uniqueItems": true, "items": { "type": "string", "enum": ["email_password", "email_verification", "password_recovery"] } }, "allowedCallbackUrls": { "type": "array", "maxItems": 20, "items": { "type": "string", "format": "uri", "maxLength": 500 } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "HealthResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["status"], "properties": { "status": { "type": "string", "const": "ok" } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "ReadinessResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["status", "ready", "checks"], "properties": { "status": { "type": "string", "enum": ["ok", "degraded"] }, "ready": { "type": "boolean" }, "checks": { "type": "object", "additionalProperties": false, "required": ["database", "auth", "storage", "rateLimiter"], "properties": { "database": { "type": "string", "enum": ["ready", "unavailable"] }, "auth": { "type": "string", "enum": ["ready", "unavailable"] }, "storage": { "type": "string", "enum": ["ready", "unavailable", "disabled"] }, "rateLimiter": { "type": "string", "enum": ["ready", "unavailable", "not_required"] } } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "BootstrapResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["regions", "categories", "tags", "featureFlags", "contractVersions"], "properties": { "regions": { "type": "array", "items": { "$ref": "#/components/schemas/Region" } }, "categories": { "type": "array", "items": { "$ref": "#/components/schemas/Category" } }, "tags": { "type": "array", "items": { "$ref": "#/components/schemas/Tag" } }, "featureFlags": { "type": "object", "additionalProperties": false, "required": ["videoUpload", "contentShare"], "properties": { "videoUpload": { "type": "boolean" }, "contentShare": { "type": "boolean" } } }, "contractVersions": { "type": "object", "additionalProperties": false, "required": ["api", "onboarding", "notifications", "analytics"], "properties": { "api": { "type": "string", "maxLength": 20 }, "onboarding": { "type": "integer", "const": 1 }, "notifications": { "type": "integer", "const": 1 }, "analytics": { "type": "integer", "minimum": 1 } } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "PlaceResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "$ref": "#/components/schemas/Place" }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "ProfileResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "$ref": "#/components/schemas/Profile" }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "ContentResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "$ref": "#/components/schemas/Content" }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "CourseResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "$ref": "#/components/schemas/Course" }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "ShareResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "$ref": "#/components/schemas/Share" }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "MutationResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "$ref": "#/components/schemas/Mutation" }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "CommentResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "$ref": "#/components/schemas/Comment" }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "PlaceListResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["items"], "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/Place" } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "ProfileListResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["items"], "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/Profile" } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "ContentListResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["items"], "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/Content" } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "CourseListResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["items"], "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/Course" } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "SaveListResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["items"], "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/Save" } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "CommentListResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["items"], "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/Comment" } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "SupportListResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["items"], "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/SupportRecord" } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "AccountResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["id", "emailMasked", "emailVerified", "status", "curatorStatus"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "emailMasked": { "type": "string", "maxLength": 254 }, "emailVerified": { "type": "boolean" }, "status": { "type": "string", "enum": ["active", "withdrawal_requested", "withdrawn", "suspended"] }, "curatorStatus": { "type": "string", "enum": ["none", "applied", "approved", "rejected", "suspended"] } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "NotificationResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["all", "savedPlaceReminder", "courseRecommendation", "social", "marketing", "schemaVersion"], "properties": { "all": { "type": "boolean" }, "savedPlaceReminder": { "type": "boolean" }, "courseRecommendation": { "type": "boolean" }, "social": { "type": "boolean" }, "marketing": { "type": "boolean" }, "schemaVersion": { "type": "integer", "const": 1 } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "MediaUploadResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["id", "storagePath", "uploadUrl", "headers", "expiresAt", "status"], "properties": { "id": { "$ref": "#/components/schemas/Uuid" }, "storagePath": { "type": "string", "maxLength": 500 }, "uploadUrl": { "type": "string", "format": "uri", "maxLength": 2000 }, "headers": { "type": "object", "additionalProperties": false, "properties": { "contentType": { "type": "string", "maxLength": 100 } } }, "expiresAt": { "$ref": "#/components/schemas/Timestamp" }, "status": { "type": "string", "const": "pending" } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "SessionResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["sessionId", "accepted"], "properties": { "sessionId": { "$ref": "#/components/schemas/Uuid" }, "accepted": { "type": "boolean" } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "EventReceiptResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["accepted", "duplicates", "rejected"], "properties": { "accepted": { "type": "integer", "minimum": 0 }, "duplicates": { "type": "integer", "minimum": 0 }, "rejected": { "type": "integer", "minimum": 0 } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "AdminMeResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["operatorId", "active", "scopes"], "properties": { "operatorId": { "$ref": "#/components/schemas/Uuid" }, "active": { "type": "boolean" }, "scopes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "enum": ["content:write", "users:moderate", "business:write", "analytics:read", "operators:manage"] } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "AdminListResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["items"], "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/AdminRecord" } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "AdminRecordResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "$ref": "#/components/schemas/AdminRecord" }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "AdminAnalyticsResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["periodStart", "periodEnd", "metrics"], "properties": { "periodStart": { "$ref": "#/components/schemas/Timestamp" }, "periodEnd": { "$ref": "#/components/schemas/Timestamp" }, "metrics": { "type": "object", "additionalProperties": false, "required": ["activeUsers", "saves", "shares", "courseCreates"], "properties": { "activeUsers": { "type": "integer", "minimum": 0 }, "saves": { "type": "integer", "minimum": 0 }, "shares": { "type": "integer", "minimum": 0 }, "courseCreates": { "type": "integer", "minimum": 0 } } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } },
+      "AdminAuditResponse": { "type": "object", "additionalProperties": false, "required": ["data", "meta"], "properties": { "data": { "type": "object", "additionalProperties": false, "required": ["items"], "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/AuditRecord" } } } }, "meta": { "$ref": "#/components/schemas/Meta" } } }
+    },
+    "requestBodies": {
+      "ProfileUpdate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "minProperties": 1, "properties": { "nickname": { "type": "string", "minLength": 1, "maxLength": 40 }, "introduction": { "type": "string", "maxLength": 500 }, "profileImageId": { "type": ["string", "null"], "format": "uuid" }, "expectedVersion": { "type": "integer", "minimum": 1 } } } } } },
+      "OnboardingPut": { "description": "The server stores schema_version=1. Send nickname to PATCH /me/profile as well when it is the public profile name. neighborhoodIds is optional during the Seoul-wide beta.", "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["referralSource"], "properties": { "birthYear": { "type": "integer", "minimum": 1900, "maximum": 2026 }, "gender": { "type": "string", "enum": ["female", "male", "unspecified"] }, "nickname": { "type": "string", "minLength": 2, "maxLength": 40 }, "discoveryHabit": { "type": "string", "enum": ["instagram-saved", "naver-map-saved", "blog-search", "friend-recommendation", "search-as-needed", "good-fit", "unknown"] }, "neighborhoodIds": { "type": "array", "minItems": 0, "maxItems": 10, "uniqueItems": true, "default": [], "items": { "$ref": "#/components/schemas/SafeId" } }, "placeTypeTagIds": { "type": "array", "maxItems": 20, "uniqueItems": true, "default": [], "items": { "$ref": "#/components/schemas/SafeId" } }, "situationTagIds": { "type": "array", "maxItems": 20, "uniqueItems": true, "default": [], "items": { "$ref": "#/components/schemas/SafeId" } }, "referralSource": { "type": "string", "enum": ["friend", "instagram", "tiktok", "tiktok-shorts", "search", "blog-search", "community", "community-cafe", "creator", "store", "web-store", "map", "other", "unknown"] } } } } } },
+      "NotificationPut": { "description": "The server stores schema_version=1; the client does not submit that field.", "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["all", "savedPlaceReminder", "courseRecommendation", "social", "marketing"], "properties": { "all": { "type": "boolean" }, "savedPlaceReminder": { "type": "boolean" }, "courseRecommendation": { "type": "boolean" }, "social": { "type": "boolean" }, "marketing": { "type": "boolean" } } } } } },
+      "Withdrawal": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["confirmation"], "properties": { "confirmation": { "type": "string", "const": "WITHDRAW" }, "reasonCode": { "type": "string", "enum": ["not_useful", "privacy", "duplicate", "other"] } } } } } },
+      "SavePut": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "properties": { "sourceContentId": { "type": ["string", "null"], "format": "uuid" }, "sourceScreen": { "type": ["string", "null"], "maxLength": 80 } } } } } },
+      "CourseCreate": { "description": "startPlaceId is required and must also occur in placeIds.", "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["name", "visibility", "startPlaceId", "placeIds"], "properties": { "name": { "type": "string", "minLength": 1, "maxLength": 120 }, "visibility": { "type": "string", "enum": ["private", "public"] }, "startPlaceId": { "$ref": "#/components/schemas/SafeId" }, "placeIds": { "type": "array", "minItems": 2, "maxItems": 30, "uniqueItems": true, "items": { "$ref": "#/components/schemas/SafeId" } } } } } } },
+      "CourseUpdate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["expectedVersion", "placeIds"], "properties": { "name": { "type": "string", "minLength": 1, "maxLength": 120 }, "visibility": { "type": "string", "enum": ["private", "public"] }, "placeIds": { "type": "array", "minItems": 2, "maxItems": 30, "uniqueItems": true, "items": { "$ref": "#/components/schemas/SafeId" } }, "expectedVersion": { "type": "integer", "minimum": 1 } } } } } },
+      "CoursePlaceCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["placeId", "expectedVersion"], "properties": { "placeId": { "$ref": "#/components/schemas/SafeId" }, "position": { "type": "integer", "minimum": 0, "maximum": 99 }, "expectedVersion": { "type": "integer", "minimum": 1 } } } } } },
+      "CoursePlaceUpdate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["expectedVersion"], "minProperties": 2, "properties": { "stayMinutes": { "type": ["integer", "null"], "minimum": 0, "maximum": 1440 }, "note": { "type": "string", "maxLength": 500 }, "expectedVersion": { "type": "integer", "minimum": 1 } } } } } },
+      "CoursePlaceReplace": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["newPlaceId", "reason", "expectedVersion"], "properties": { "newPlaceId": { "$ref": "#/components/schemas/SafeId" }, "reason": { "type": "string", "minLength": 1, "maxLength": 500 }, "expectedVersion": { "type": "integer", "minimum": 1 } } } } } },
+      "CommentCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["text"], "properties": { "text": { "type": "string", "minLength": 1, "maxLength": 1000 } } } } } },
+      "CommentUpdate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["text", "expectedVersion"], "properties": { "text": { "type": "string", "minLength": 1, "maxLength": 1000 }, "expectedVersion": { "type": "integer", "minimum": 1 } } } } } },
+      "ContentCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["type", "caption", "placeIds"], "properties": { "type": { "type": "string", "enum": ["place", "course"] }, "caption": { "type": "string", "maxLength": 2000 }, "placeIds": { "type": "array", "minItems": 1, "maxItems": 30, "uniqueItems": true, "items": { "$ref": "#/components/schemas/SafeId" } }, "courseId": { "type": ["string", "null"], "format": "uuid" } } } } } },
+      "ContentUpdate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["expectedVersion"], "properties": { "caption": { "type": "string", "maxLength": 2000 }, "placeIds": { "type": "array", "minItems": 1, "maxItems": 30, "uniqueItems": true, "items": { "$ref": "#/components/schemas/SafeId" } }, "courseId": { "type": ["string", "null"], "format": "uuid" }, "mediaIds": { "type": "array", "maxItems": 5, "uniqueItems": true, "items": { "$ref": "#/components/schemas/Uuid" } }, "expectedVersion": { "type": "integer", "minimum": 1 } } } } } },
+      "ContentSubmit": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["expectedVersion"], "properties": { "expectedVersion": { "type": "integer", "minimum": 1 } } } } } },
+      "MediaUploadCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["kind", "mimeType", "fileName", "byteSize", "checksumSha256"], "properties": { "kind": { "type": "string", "enum": ["image", "video"] }, "mimeType": { "type": "string", "maxLength": 100 }, "fileName": { "type": "string", "minLength": 1, "maxLength": 180 }, "byteSize": { "type": "integer", "minimum": 1 }, "durationSeconds": { "type": ["number", "null"], "minimum": 0 }, "checksumSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "sourceType": { "type": "string", "enum": ["user", "curator", "partner"] } } } } } },
+      "MediaComplete": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["storagePath", "byteSize", "checksumSha256"], "properties": { "storagePath": { "type": "string", "minLength": 1, "maxLength": 500 }, "byteSize": { "type": "integer", "minimum": 1 }, "checksumSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } } } } } },
+      "InquiryCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["category", "text"], "properties": { "category": { "type": "string", "enum": ["bug", "feedback", "account", "content", "other"] }, "text": { "type": "string", "minLength": 1, "maxLength": 5000 } } } } } },
+      "ReportCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["targetType", "targetId", "reasonCode"], "properties": { "targetType": { "type": "string", "enum": ["user", "place", "content"] }, "targetId": { "type": "string", "minLength": 1, "maxLength": 96 }, "reasonCode": { "type": "string", "enum": ["spam", "abuse", "rights", "incorrect", "unsafe", "other"] }, "details": { "type": "string", "maxLength": 2000 } } } } } },
+      "ShareCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["targetType", "targetId", "regionId"], "properties": { "targetType": { "type": "string", "enum": ["place", "course"] }, "targetId": { "type": "string", "minLength": 1, "maxLength": 96 }, "regionId": { "$ref": "#/components/schemas/SafeId" } } } } } },
+      "ShareRevoke": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["reason"], "properties": { "reason": { "type": "string", "minLength": 1, "maxLength": 500 } } } } } },
+      "SessionCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["sessionId", "anonymousId", "startedAt", "entryPath"], "properties": { "sessionId": { "$ref": "#/components/schemas/Uuid" }, "anonymousId": { "type": "string", "minLength": 16, "maxLength": 96 }, "startedAt": { "$ref": "#/components/schemas/Timestamp" }, "entryPath": { "type": "string", "minLength": 1, "maxLength": 300 }, "campaignCode": { "type": ["string", "null"], "maxLength": 40 } } } } } },
+      "EventBatch": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["events"], "properties": { "events": { "type": "array", "minItems": 1, "maxItems": 50, "items": { "$ref": "#/components/schemas/EventInput" } } } } } } },
+      "AdminTransition": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["status", "reason", "expectedVersion"], "properties": { "status": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "maxLength": 40 }, "reason": { "type": "string", "minLength": 1, "maxLength": 1000 }, "expectedVersion": { "type": "integer", "minimum": 1 }, "note": { "type": "string", "maxLength": 2000 } } } } } },
+      "AdminPlaceCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["id", "name", "categoryId", "neighborhoodId", "address", "latitude", "longitude", "reason"], "properties": { "id": { "$ref": "#/components/schemas/SafeId" }, "name": { "type": "string", "minLength": 1, "maxLength": 120 }, "categoryId": { "$ref": "#/components/schemas/SafeId" }, "neighborhoodId": { "$ref": "#/components/schemas/SafeId" }, "address": { "type": "string", "maxLength": 300 }, "latitude": { "type": "number", "minimum": -90, "maximum": 90 }, "longitude": { "type": "number", "minimum": -180, "maximum": 180 }, "reason": { "type": "string", "minLength": 1, "maxLength": 1000 } } } } } },
+      "AdminPlaceUpdate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["expectedVersion", "reason"], "minProperties": 3, "properties": { "name": { "type": "string", "minLength": 1, "maxLength": 120 }, "shortCopy": { "type": "string", "maxLength": 300 }, "categoryId": { "$ref": "#/components/schemas/SafeId" }, "neighborhoodId": { "$ref": "#/components/schemas/SafeId" }, "address": { "type": "string", "maxLength": 300 }, "latitude": { "type": "number", "minimum": -90, "maximum": 90 }, "longitude": { "type": "number", "minimum": -180, "maximum": 180 }, "nearestStation": { "type": "string", "maxLength": 200 }, "hoursText": { "type": "string", "maxLength": 300 }, "phoneText": { "type": "string", "maxLength": 100 }, "moodTags": { "type": "array", "maxItems": 30, "items": { "type": "string", "minLength": 1, "maxLength": 80 } }, "bestFor": { "type": "array", "maxItems": 30, "items": { "type": "string", "minLength": 1, "maxLength": 80 } }, "timeTags": { "type": "array", "maxItems": 30, "items": { "type": "string", "minLength": 1, "maxLength": 80 } }, "priceLevel": { "type": "string", "maxLength": 80 }, "representativeMenuName": { "type": "string", "maxLength": 160 }, "representativeMenuPrice": { "type": "string", "maxLength": 80 }, "stayTimeMinutes": { "type": "integer", "minimum": 0, "maximum": 1440 }, "externalMapUrl": { "type": "string", "format": "uri", "pattern": "^https://(?:(?:[A-Za-z0-9-]+\\.)*(?:map|place)\\.naver\\.com|naver\\.me)(?:/|$)", "maxLength": 1000 }, "status": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "maxLength": 40 }, "expectedVersion": { "type": "integer", "minimum": 1 }, "reason": { "type": "string", "minLength": 1, "maxLength": 1000 } } } } } },
+      "AdminTaxonomyCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["id", "name", "reason"], "properties": { "id": { "$ref": "#/components/schemas/SafeId" }, "name": { "type": "string", "minLength": 1, "maxLength": 80 }, "kind": { "type": "string", "maxLength": 40 }, "displayOrder": { "type": "integer", "minimum": 0, "maximum": 10000 }, "reason": { "type": "string", "minLength": 1, "maxLength": 1000 } } } } } },
+      "AdminOrganizationCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["name", "reason"], "properties": { "name": { "type": "string", "minLength": 1, "maxLength": 160 }, "status": { "type": "string", "enum": ["lead", "active", "inactive"], "default": "lead" }, "reason": { "type": "string", "minLength": 1, "maxLength": 1000 } } } } } },
+      "AdminPartnershipCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["organizationId", "placeId", "status", "reason"], "properties": { "organizationId": { "$ref": "#/components/schemas/Uuid" }, "placeId": { "$ref": "#/components/schemas/SafeId" }, "status": { "type": "string", "enum": ["contact", "meeting", "pilot", "partner", "ended", "excluded"] }, "reason": { "type": "string", "minLength": 1, "maxLength": 1000 } } } } } },
+      "AdminCampaignCreate": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["advertiserId", "name", "startsAt", "endsAt", "reason"], "properties": { "advertiserId": { "$ref": "#/components/schemas/Uuid" }, "name": { "type": "string", "minLength": 1, "maxLength": 120 }, "startsAt": { "$ref": "#/components/schemas/Timestamp" }, "endsAt": { "$ref": "#/components/schemas/Timestamp" }, "reason": { "type": "string", "minLength": 1, "maxLength": 1000 } } } } } },
+      "AdminNaverImport": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["url", "reason"], "properties": { "url": { "type": "string", "format": "uri", "pattern": "^https://([^/]+\\.)?(map|place)\\.naver\\.com/|^https://naver\\.me/", "maxLength": 1000 }, "neighborhoodId": { "$ref": "#/components/schemas/SafeId" }, "categoryId": { "$ref": "#/components/schemas/SafeId" }, "reason": { "type": "string", "minLength": 1, "maxLength": 1000 } } } } } }
+    },
+    "responses": {
+      "AuthConfig": { "description": "Browser-safe auth configuration", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AuthConfigResponse" } } } },
+      "Health": { "description": "Healthy", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HealthResponse" } } } },
+      "Readiness": { "description": "Ready for traffic", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ReadinessResponse" } } } },
+      "Bootstrap": { "description": "Bootstrap data", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BootstrapResponse" } } } },
+      "Place": { "description": "Place", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PlaceResponse" } } } },
+      "PlaceList": { "description": "Place list", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PlaceListResponse" } } } },
+      "Content": { "description": "Content", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ContentResponse" } } } },
+      "ContentList": { "description": "Content list", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ContentListResponse" } } } },
+      "Profile": { "description": "Profile", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProfileResponse" } } } },
+      "ProfileList": { "description": "Profile list", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProfileListResponse" } } } },
+      "Course": { "description": "Course", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CourseResponse" } } } },
+      "CourseList": { "description": "Course list", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CourseListResponse" } } } },
+      "SaveList": { "description": "Save list", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SaveListResponse" } } } },
+      "Comment": { "description": "Comment", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CommentResponse" } } } },
+      "CommentList": { "description": "Comment list", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CommentListResponse" } } } },
+      "Account": { "description": "Private account state", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AccountResponse" } } } },
+      "NotificationPreferences": { "description": "Notification preferences", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NotificationResponse" } } } },
+      "SupportList": { "description": "Support record list", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SupportListResponse" } } } },
+      "Share": { "description": "Share", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ShareResponse" } } } },
+      "Mutation": { "description": "Mutation result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MutationResponse" } } } },
+      "MediaUpload": { "description": "Signed upload target", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MediaUploadResponse" } } } },
+      "Session": { "description": "Analytics session", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SessionResponse" } } } },
+      "EventReceipt": { "description": "Event acceptance receipt", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/EventReceiptResponse" } } } },
+      "AdminMe": { "description": "Current operator and scopes", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AdminMeResponse" } } } },
+      "AdminList": { "description": "Operator queue list", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AdminListResponse" } } } },
+      "AdminRecord": { "description": "Operator record", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AdminRecordResponse" } } } },
+      "AdminAnalytics": { "description": "Redacted aggregate analytics", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AdminAnalyticsResponse" } } } },
+      "AdminAudit": { "description": "Audit entries", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AdminAuditResponse" } } } },
+      "BadRequest": { "$ref": "#/components/responses/Error400" },
+      "Unauthorized": { "$ref": "#/components/responses/Error401" },
+      "Forbidden": { "$ref": "#/components/responses/Error403" },
+      "NotFound": { "$ref": "#/components/responses/Error404" },
+      "Conflict": { "$ref": "#/components/responses/Error409" },
+      "Gone": { "$ref": "#/components/responses/Error410" },
+      "PayloadTooLarge": { "$ref": "#/components/responses/Error413" },
+      "Unprocessable": { "$ref": "#/components/responses/Error422" },
+      "RateLimited": { "$ref": "#/components/responses/Error429" },
+      "InternalError": { "$ref": "#/components/responses/Error500" },
+      "ServiceUnavailable": { "$ref": "#/components/responses/Error503" },
+      "Error400": { "description": "Invalid request, including invalid cursor/filter pairing", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "Error401": { "description": "Missing, expired, or invalid access token", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "Error403": { "description": "Inactive account or missing operator scope", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "Error404": { "description": "Missing or deliberately hidden resource", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "Error409": { "description": "Version, duplicate, or idempotency conflict", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "Error410": { "description": "Expired or revoked public resource", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "Error413": { "description": "Request or file metadata exceeds configured hard ceiling", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "Error422": { "description": "Well-formed request violates state or domain rules", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "Error429": { "description": "Rate limited", "headers": { "Retry-After": { "schema": { "type": "integer", "minimum": 1 } } }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "Error500": { "description": "Generic internal error; raw exceptions are logged only with requestId", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "Error503": { "description": "Required production adapter or dependency is unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } }
+    },
+    "pathItems": {},
+    "examples": {}
+  }
+}

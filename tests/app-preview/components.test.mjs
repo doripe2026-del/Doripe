@@ -26,7 +26,7 @@ const svgAllowlist = new Map([
 ]);
 
 function assertLocalSvgMarkup(markup) {
-  assert.match(markup, /src="\/app-preview\/assets\/icons\/[a-z0-9-]+\.svg"/);
+  assert.match(markup, /src="\/app-preview\/assets\/[a-z0-9-]+(?:\/[a-z0-9-]+)*\.svg"/);
   assert.doesNotMatch(markup, /<svg\b|<path\b/i);
   assert.doesNotMatch(markup, /(?:src|href)="https?:\/\//i);
 }
@@ -120,6 +120,34 @@ test("icon uses a known local SVG asset and never emits inline paths", () => {
   assert.match(decorative, /alt=""/);
   assert.match(decorative, /aria-hidden="true"/);
   assert.throws(() => icon("not-an-export", { decorative: true }), /Unknown icon/);
+});
+
+test("icon helper exposes reviewed screen-specific SVG assets", () => {
+  const expectedSources = new Map([
+    ["discover-send", "/app-preview/assets/discover/send.svg"],
+    ["saved-check", "/app-preview/assets/saved/check.svg"],
+    ["saved-chevron-down", "/app-preview/assets/saved/chevron-down.svg"],
+    ["saved-chevron-right", "/app-preview/assets/saved/chevron-right.svg"],
+    ["saved-directions", "/app-preview/assets/saved/footprints.svg"],
+    ["saved-more", "/app-preview/assets/saved/more-vertical.svg"],
+    ["saved-refresh", "/app-preview/assets/saved/refresh.svg"],
+    ["saved-sliders", "/app-preview/assets/saved/sliders.svg"],
+    ["saved-sun", "/app-preview/assets/saved/sun.svg"],
+    ["route-check", "/app-preview/assets/routes/check-selected.svg"],
+    ["route-chevron-down", "/app-preview/assets/routes/chevron-down.svg"],
+    ["route-plus", "/app-preview/assets/routes/plus.svg"],
+    ["route-play", "/app-preview/assets/routes/play.svg"],
+    ["settings-check", "/app-preview/assets/settings/check.svg"],
+    ["settings-image", "/app-preview/assets/settings/image.svg"],
+    ["settings-play", "/app-preview/assets/settings/play.svg"]
+  ]);
+
+  for (const [name, source] of expectedSources) {
+    const markup = icon(name, { decorative: true, size: 18 });
+    assert.match(markup, new RegExp(`src="${source.replaceAll("/", "\\/")}"`), name);
+    assert.doesNotMatch(markup, /<svg\b|<path\b/i);
+    assert.doesNotMatch(markup, /(?:src|href)="https?:\/\//i);
+  }
 });
 
 test("all icon assets pass a parsed XML safety gate", async () => {
@@ -223,43 +251,40 @@ test("back button is an icon-only control with an accessible name and local icon
 test("bottom nav exposes selected state and labels every icon-only action", () => {
   const markup = bottomNav({
     label: "주요 메뉴",
-    items: [
-      { label: "발견", icon: "info", action: "open-discover", selected: false },
-      { label: "저장", icon: "heart", action: "open-saved", selected: false },
-      { label: "경로", icon: "map-pin", action: "open-route", selected: true },
-      { label: "설정", icon: "share", action: "open-settings", selected: false }
-    ]
+    selectedIndex: 2
   });
 
   assert.match(markup, /^<nav\b/);
   assert.match(markup, /aria-label="주요 메뉴"/);
   assert.equal((markup.match(/<button\b/g) || []).length, 4);
-  assert.equal((markup.match(/data-action="open-/g) || []).length, 4);
-  assert.equal((markup.match(/aria-label="(?:발견|저장|경로|설정)"/g) || []).length, 4);
-  assert.match(markup, /data-action="open-route"[^>]*aria-current="page"[^>]*aria-pressed="true"/);
-  assertLocalSvgMarkup(markup);
-
+  assert.equal((markup.match(/data-nav-target=/g) || []).length, 4);
+  assert.equal((markup.match(/aria-label="(?:발견|저장|코스|MY)"/g) || []).length, 4);
+  assert.match(markup, /data-nav-target="d3"[^>]*aria-current="page"/);
+  assert.doesNotMatch(markup, /data-action=/);
+  assert.doesNotMatch(markup, /<img\b|<svg\b|<path\b/i);
+  for (const iconName of ["discover", "saved", "route", "settings"]) {
+    assert.match(markup, new RegExp(`preview-bottom-nav__icon--${iconName}`));
+  }
+  assert.doesNotMatch(markup, /icons\/(?:info|map-pin|official-badge)\.svg/);
+  assert.doesNotMatch(markup, />\s*(?:발견|저장|코스|MY)\s*</);
 });
 
-test("bottom nav requires one exact boolean selection at the third measured item", () => {
-  const baseItems = [
-    { label: "발견", icon: "info", action: "open-discover", selected: false },
-    { label: "저장", icon: "heart", action: "open-saved", selected: false },
-    { label: "경로", icon: "map-pin", action: "open-route", selected: true },
-    { label: "설정", icon: "share", action: "open-settings", selected: false }
-  ];
-  const invalidSelections = [
-    [false, false, "yes", false],
-    [false, false, 1, false],
-    [false, false, null, false],
-    [null, false, true, false],
-    [true, false, true, false]
+test("bottom nav has exactly four canonical destinations and accepts any selected index", () => {
+  const destinations = [
+    ["발견", "b2"],
+    ["저장", "c1"],
+    ["코스", "d3"],
+    ["MY", "e1"]
   ];
 
-  for (const selectedValues of invalidSelections) {
-    const items = baseItems.map((item, index) => ({ ...item, selected: selectedValues[index] }));
-    assert.throws(() => bottomNav({ items }), /third measured navigation item/);
+  for (let selectedIndex = 0; selectedIndex < 4; selectedIndex += 1) {
+    const markup = bottomNav({ selectedIndex });
+    assert.equal((markup.match(/aria-current="page"/g) || []).length, 1);
+    assert.match(markup, new RegExp(`data-nav-target="${destinations[selectedIndex][1]}"[^>]*aria-current="page"`));
   }
+
+  assert.throws(() => bottomNav({ selectedIndex: -1 }), /selected index/);
+  assert.throws(() => bottomNav({ selectedIndex: 4 }), /selected index/);
 });
 
 test("chip uses button semantics for actions and exposes selected state", () => {
@@ -436,24 +461,26 @@ test("token and component CSS preserve evidence geometry and accessibility const
   assert.match(components, /\.preview-primary-button\s*\{[^}]*width:\s*321px;[^}]*height:\s*50px;/s);
   assert.match(components, /\.preview-back-button\s*\{[^}]*width:\s*32px;[^}]*height:\s*32px;/s);
   assert.match(components, /\.preview-back-button__visible\s*\{[^}]*width:\s*32px;[^}]*height:\s*32px;/s);
-  assert.match(components, /\.preview-bottom-nav\s*\{[^}]*width:\s*249px;[^}]*height:\s*54px;/s);
-  assert.doesNotMatch(components, /grid-template-columns:\s*repeat\(4,\s*1fr\)/);
-  assert.match(cssRule(components, ".preview-bottom-nav__item"), /position:\s*absolute;[\s\S]*width:\s*26px;[\s\S]*height:\s*26px;/);
-  for (const [index, expected] of [
-    [1, { left: 29, top: 15 }],
-    [2, { left: 88, top: 15 }],
-    [3, { left: 147, top: 8 }],
-    [4, { left: 206, top: 15 }]
-  ]) {
-    const rules = cssRule(components, `.preview-bottom-nav__item:nth-child(${index})`);
-    assert.match(rules, new RegExp(`left:\\s*${expected.left}px;`));
-    assert.match(rules, new RegExp(`top:\\s*${expected.top}px;`));
-  }
-  const selectedNavRules = cssRule(components, ".preview-bottom-nav__item:nth-child(3).preview-bottom-nav__item--selected");
-  assert.match(selectedNavRules, /left:\s*131px;[\s\S]*top:\s*-8px;[\s\S]*width:\s*58px;[\s\S]*height:\s*58px;[\s\S]*border-radius:\s*var\(--radius-bottom-nav-active\);/);
+  assert.match(components, /\.preview-bottom-nav\s*\{[^}]*width:\s*248px;[^}]*max-width:\s*calc\(100%\s*-\s*32px\);[^}]*height:\s*56px;/s);
+  assert.match(cssRule(components, ".preview-bottom-nav"), /display:\s*grid;[\s\S]*grid-template-columns:\s*repeat\(4,\s*1fr\);[\s\S]*align-items:\s*center;/);
+  assert.match(cssRule(components, ".preview-bottom-nav__item"), /position:\s*relative;[\s\S]*min-width:\s*44px;[\s\S]*min-height:\s*44px;/);
+  assert.doesNotMatch(components, /\.preview-bottom-nav__item:nth-child\(/);
+  const navRules = cssRule(components, ".preview-bottom-nav");
+  assert.match(navRules, /position:\s*absolute;/);
+  assert.match(navRules, /bottom:\s*[^;]+;/);
+  assert.match(navRules, /border-radius:\s*28px;/);
+  assert.match(navRules, /background:\s*rgb\(255 255 255 \/ 72%\);/);
+  assert.match(navRules, /backdrop-filter:\s*blur\(18px\);/);
+  const selectedNavRules = cssRule(components, ".preview-bottom-nav__item--selected");
+  assert.match(selectedNavRules, /color:\s*#087a42;[\s\S]*border-radius:\s*50%;[\s\S]*background:\s*#e8fff2;/i);
+  assert.doesNotMatch(components, /\.preview-bottom-nav__item--selected::before/);
+  assert.doesNotMatch(selectedNavRules, /top:|transform:|width:\s*5[8-9]px|height:\s*5[8-9]px/);
 
   assert.match(cssRule(components, ".preview-back-button::before"), /position:\s*absolute;[\s\S]*width:\s*44px;[\s\S]*height:\s*44px;[\s\S]*left:\s*50%;[\s\S]*top:\s*50%;/);
-  assert.match(cssRule(components, ".preview-bottom-nav__item::before"), /position:\s*absolute;[\s\S]*width:\s*44px;[\s\S]*height:\s*44px;[\s\S]*left:\s*50%;[\s\S]*top:\s*50%;/);
+  assert.match(cssRule(components, ".preview-bottom-nav__icon"), /width:\s*22px;[\s\S]*height:\s*22px;[\s\S]*mask-repeat:\s*no-repeat;[\s\S]*mask-position:\s*center;/);
+  for (const asset of ["discover", "saved", "route", "settings"]) {
+    assert.match(components, new RegExp(`mask-image:\\s*url\\("\\.\\.\\/assets\\/settings\\/nav-${asset}\\.svg"\\)`));
+  }
   assert.match(cssRule(components, ".preview-avatar-action"), /width:\s*24px;[\s\S]*height:\s*24px;/);
   assert.match(cssRule(components, ".preview-avatar-action::before"), /position:\s*absolute;[\s\S]*width:\s*44px;[\s\S]*height:\s*44px;[\s\S]*left:\s*50%;[\s\S]*top:\s*50%;/);
   assert.match(components, /\.preview-sheet-handle\s*\{[^}]*width:\s*55px;[^}]*height:\s*5px;[^}]*border-radius:\s*var\(--radius-sheet-handle\);/s);

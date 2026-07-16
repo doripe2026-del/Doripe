@@ -15,6 +15,7 @@
     { "source": "/blog", "destination": "/blog/index.html" },
     { "source": "/p/:shareId", "destination": "/api/share?type=place&shareId=:shareId" },
     { "source": "/r/:shareId", "destination": "/api/share?type=route&shareId=:shareId" },
+    { "source": "/shares/:shareId", "destination": "/share.html" },
     { "source": "/s/:shareId", "destination": "/share.html" },
     { "source": "/open", "destination": "/share.html" },
     { "source": "/", "destination": "/home/index.html" }

@@ -40,6 +40,15 @@ function resolvePublicFile(requestUrl) {
 }
 
 const server = createServer(async (request, response) => {
+  const requestUrl = new URL(request.url || "/", "http://127.0.0.1");
+  if (requestUrl.pathname.startsWith("/api/v1/")) {
+    const path = requestUrl.pathname.slice("/api/v1/".length);
+    requestUrl.searchParams.set("__path", path);
+    response.writeHead(307, { location: `/api/v1?${requestUrl.searchParams.toString()}` });
+    response.end();
+    return;
+  }
+
   const filePath = resolvePublicFile(request.url || "/");
   if (!filePath) return send(response, 400, "Bad request");
 

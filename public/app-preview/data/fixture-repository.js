@@ -46,6 +46,7 @@ function snapshotFromFixtures() {
   ];
 
   return normalizeDataSnapshot({
+    viewerProfileId: USERS[0]?.id || null,
     places: PLACES,
     media: MEDIA,
     profiles: USERS,

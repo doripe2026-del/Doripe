@@ -211,3 +211,15 @@ test("daily runbook saves review packages without publishing and reports shortag
     "Instagram 자동 게시 금지",
   ]);
 });
+
+test("daily runbook blocks Buffer until the user approves the Figma result and caption", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "Figma 완성본과 캡션을 사용자에게 먼저 제시한다",
+    "사용자가 명확하게 `게시` 또는 `예약`을 지시하기 전",
+    "Buffer 초안·게시·예약을 생성하지 않는다",
+    "이미지를 공개 URL로 업로드하지 않는다",
+    "승인된 Figma export 순서, 이미지와 캡션을 그대로 사용한다",
+  ]);
+});

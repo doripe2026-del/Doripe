@@ -63,6 +63,7 @@
     { "x": 100, "y": 650, "width": 220, "height": 170, "reason": "transit-data" }
   ],
   "c6": [
+    { "x": 0, "y": 0, "width": 393, "height": 386, "reason": "data-driven-route-hero" },
     { "x": 73, "y": 416, "width": 238, "height": 45, "reason": "route-data" },
     { "x": 69, "y": 518, "width": 92, "height": 92, "reason": "photo" },
     { "x": 177, "y": 535, "width": 128, "height": 71, "reason": "place-data" },

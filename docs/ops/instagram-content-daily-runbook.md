@@ -314,7 +314,61 @@ npm run instagram:content -- finalize "$DRAFT_JSON" "$LAYOUT_JSON" "$EXPORTS_JSO
 
 성공하면 최종 package는 `$OUTPUT_ROOT/YYYY-MM-DD/NN-candidate-id` 형태로 생성된다. 실제 기본 경로는 `/Users/cityboy/Desktop/Doripe/Instagram Content`다. `finalize`가 stdout에 출력한 절대 경로를 최종 경로로 사용한다. package 안의 순서별 PNG, `caption.txt`, `sources.txt`, `review.txt`, `manifest.json`을 확인한다.
 
-## 9. 30일 history 갱신
+## 9. 사용자 승인 뒤 Buffer 게시·예약 선택 단계
+
+먼저 Figma 완성본과 캡션을 사용자에게 먼저 제시한다. 사용자가 Figma의 사진, 문구, 순서, 마지막 브랜드 장, 캡션과 권리 경고를 확인할 때까지 이 단계로 넘어가지 않는다.
+
+사용자가 명확하게 `게시` 또는 `예약`을 지시하기 전에는 Buffer 초안·게시·예약을 생성하지 않는다. 이미지를 공개 URL로 업로드하지 않는다.
+
+승인 뒤에는 승인된 Figma export 순서, 이미지와 캡션을 그대로 사용한다. Buffer 전송 단계에서 다른 PNG로 바꾸거나 캡션을 다시 생성·축약하지 않는다.
+
+Buffer API는 로컬 파일 업로드가 아니라 공개 접근 가능한 이미지 URL을 받는다. 따라서 사용자 승인 뒤에만 package의 PNG를 승인된 CDN이나 임시 공개 저장소에 올리고, 게시 순서와 같은 URL 배열을 만든다.
+
+`.env.local`에는 아래 값을 둔다. 실제 토큰은 Git에 커밋하지 않는다.
+
+```bash
+BUFFER_ACCESS_TOKEN="Buffer API token"
+BUFFER_INSTAGRAM_CHANNEL_ID="Buffer Instagram channel ID"
+```
+
+연결된 채널은 아래 명령으로 확인한다.
+
+```bash
+npm run instagram:content -- buffer-channels
+```
+
+`BUFFER_INSTAGRAM_CHANNEL_ID`가 비어 있어도 Instagram 채널이 하나뿐이면 CLI가 자동으로 선택한다. 여러 Instagram 채널이 있으면 명시해야 한다.
+
+`image-urls.json` 예시는 다음과 같다.
+
+```json
+[
+  "https://cdn.example.com/01-cover.png",
+  "https://cdn.example.com/02-content.png",
+  "https://cdn.example.com/03-content.png"
+]
+```
+
+URL 개수는 package 안의 PNG 개수와 정확히 같아야 한다. 사용자가 초안을 요청했을 때만 Buffer 초안을 `saveToDraft: true`로 만든다.
+
+```bash
+PACKAGE_DIR="$OUTPUT_ROOT/YYYY-MM-DD/NN-candidate-id"
+IMAGE_URLS_JSON="$WORK_ROOT/<candidate-id>/image-urls.json"
+
+npm run instagram:content -- buffer-draft "$PACKAGE_DIR" "$IMAGE_URLS_JSON"
+```
+
+사용자가 예약을 명확히 지시했을 때만 ISO 날짜를 지정한다. 예를 들어 현재 시각 기준 1시간 뒤 UTC ISO 값을 계산해 아래처럼 실행한다.
+
+```bash
+DUE_AT="$(date -u -v+1H '+%Y-%m-%dT%H:%M:%S.000Z')"
+
+npm run instagram:content -- buffer-schedule "$PACKAGE_DIR" "$IMAGE_URLS_JSON" "$DUE_AT"
+```
+
+Buffer 전송 뒤에도 승인된 이미지 수, 순서, 캡션과 예약 시간을 API 응답으로 다시 확인한다.
+
+## 10. 30일 history 갱신
 
 `finalize`가 성공한 package만 history.json에 추가한다. 실패한 후보는 추가하지 않는다. 각 기록은 아래 두 값을 가진다.
 
@@ -327,7 +381,7 @@ npm run instagram:content -- finalize "$DRAFT_JSON" "$LAYOUT_JSON" "$EXPORTS_JSO
 
 새 기록을 추가한 뒤 실행 시각 기준 30일보다 오래된 기록을 제거한다. `$HISTORY_JSON`은 항상 유효한 JSON 배열이어야 하며 임시 파일에 완성본을 쓴 뒤 교체한다. 다음 실행의 중복 검사가 이 파일을 사용한다.
 
-## 10. 완료 보고
+## 11. 완료 보고
 
 다음 형식으로 짧게 보고한다.
 
@@ -338,5 +392,6 @@ npm run instagram:content -- finalize "$DRAFT_JSON" "$LAYOUT_JSON" "$EXPORTS_JSO
 - `not_found` 사진의 권리 경고와 개인정보 확인 결과
 - 성과 데이터 적용 여부
 - Instagram에 로그인하거나 게시하지 않았다는 확인
+- Buffer 초안을 만들었다면 draft ID
 
 후보 부족, 70점 미달, 권리 문제, 검증 실패가 있으면 그대로 기록한다. 결과 수를 맞추기 위해 후보를 조작하거나 점수 기준을 낮추지 않는다.

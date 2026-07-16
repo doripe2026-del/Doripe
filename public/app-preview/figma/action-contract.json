@@ -9,7 +9,7 @@
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "a9"
+        "destination": "a18"
       },
       "evidence": "The action/start control is visible in the A1 reference."
     },
@@ -686,7 +686,7 @@
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "a20"
+        "destination": "a19"
       },
       "evidence": "The action/choose-location control is visible in the A18 reference."
     },
@@ -806,7 +806,7 @@
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "a20"
+        "destination": "a22"
       },
       "evidence": "The action/next control is visible in the A19 reference."
     },
@@ -817,7 +817,7 @@
       "kind": "text-button",
       "effect": {
         "type": "navigate",
-        "destination": "a20"
+        "destination": "a22"
       },
       "evidence": "The action/skip control is visible in the A19 reference."
     },
@@ -1918,7 +1918,7 @@
       "kind": "button",
       "effect": {
         "type": "navigate",
-        "destination": "d1"
+        "destination": "d3"
       },
       "evidence": "The Floating route CTA / text control is visible in the B6 reference."
     },
@@ -4545,7 +4545,7 @@
       "kind": "nav-button",
       "effect": {
         "type": "navigate",
-        "destination": "d1"
+        "destination": "d3"
       },
       "evidence": "The Icon / nav route active control is visible in the D7 reference."
     },
@@ -4632,7 +4632,7 @@
       "kind": "nav-button",
       "effect": {
         "type": "navigate",
-        "destination": "d1"
+        "destination": "d3"
       },
       "evidence": "The Icon / nav route active control is visible in the D8 reference."
     },
@@ -4755,7 +4755,7 @@
       "kind": "nav-button",
       "effect": {
         "type": "navigate",
-        "destination": "d1"
+        "destination": "d3"
       },
       "evidence": "The Icon / nav route active control is visible in the D9 reference."
     },

@@ -8,6 +8,19 @@ body {
   overflow: hidden;
 }
 
+#phone-root > .is-screen-entering {
+  animation: preview-screen-enter 180ms cubic-bezier(.2, .8, .2, 1);
+}
+
+@keyframes preview-screen-enter {
+  from { opacity: .72; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #phone-root > .is-screen-entering { animation: none; }
+}
+
 body {
   background: #e8e5dc;
   color: #0e131e;
@@ -18,19 +31,43 @@ body {
   position: fixed;
   inset: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 32px;
   overflow: hidden;
+  padding-block: max(0px, calc((100vh - 852px) / 2));
 }
 
 #phone-root {
+  position: relative;
   width: 393px;
-  height: 852px;
+  height: min(852px, 100dvh);
   flex: 0 0 auto;
   overflow: hidden;
   border-radius: 24px;
   background: #ffffff;
+}
+
+.preview-data-feedback {
+  position: absolute;
+  z-index: 100;
+  top: 18px;
+  left: 50%;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  transform: translateX(-50%);
+  border-radius: 8px;
+  background: rgb(32 35 33 / 94%);
+  color: #fff;
+  padding: 10px 14px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 18%);
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.preview-bottom-nav {
+  z-index: 90;
 }
 
 .evidence-screen,
@@ -42,7 +79,8 @@ body {
 
 #review-panel {
   width: 280px;
-  height: 852px;
+  height: min(852px, 100dvh);
+  flex: 0 0 280px;
   display: flex;
   flex-direction: column;
   background: #ffffff;
@@ -112,7 +150,7 @@ body {
 
 .review-error h1 { margin: 0; font-size: 20px; }
 
-@media (max-width: 700px) {
+@media (max-width: 704px) {
   #review-panel { display: none; }
   #phone-root { width: 100vw; height: 100dvh; border-radius: 0; }
   .evidence-screen,

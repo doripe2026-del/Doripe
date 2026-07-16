@@ -77,6 +77,10 @@ test("fixtures meet deterministic inventory minimums and visible Figma tags", ()
   for (const name of visibleFigmaTagNames) {
     assert.ok(tagNames.has(name), `missing visible Figma tag: ${name}`);
   }
+
+  const curators = USERS.filter((user) => user.isCurator === true);
+  assert.ok(curators.length >= 1, "feed fixtures need at least one official curator");
+  assert.ok(curators.every((user) => user.name && user.avatarUrl), "curators remain normal users with profile data");
 });
 
 test("fixtures contain no orphan references", () => {

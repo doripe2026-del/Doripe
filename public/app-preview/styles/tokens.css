@@ -15,8 +15,8 @@
   --color-disabled-surface: #e7eee9;
   --color-disabled-text: #afb8b1;
 
-  --font-family-pretendard: "Pretendard", sans-serif;
-  --font-family-korean: "Noto Sans KR", "Pretendard", sans-serif;
+  --font-family-pretendard: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-family-korean: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   --font-size-control: 15px;
   --font-weight-control: 700;
 

@@ -8,6 +8,7 @@ import actionContract from "../../public/app-preview/figma/action-contract.json"
 import inventory from "../../public/app-preview/figma/screen-inventory.json" with { type: "json" };
 import measurements from "../../public/app-preview/figma/screen-measurements.json" with { type: "json" };
 import masks from "../../public/app-preview/figma/visual-masks.json" with { type: "json" };
+import { DISCOVER_RENDERERS } from "../../public/app-preview/screens/discover.js";
 import { validateFlowBLiveEvidence } from "../../scripts/app-preview-semantic-gates.mjs";
 
 const repositoryRoot = new URL("../../", import.meta.url);
@@ -34,6 +35,11 @@ const expectedFlowB = [
 const actionsFor = (screenId, actionId) => actionContract.actions.filter((record) => (
   record.screenId === screenId && record.actionId === actionId
 ));
+
+test("Flow B discovery renderers accept the loaded data snapshot", () => {
+  assert.equal(DISCOVER_RENDERERS.b4.length, 2);
+  assert.equal(DISCOVER_RENDERERS.b12.length, 2);
+});
 
 test("Flow B inventory contains the 13 exact live top-level screens", () => {
   assert.equal(inventory.length, 55);
@@ -97,12 +103,29 @@ test("Flow B measurements and masks cover exact frame geometry and only mask dyn
     assert.deepEqual(measurements[screenId].frame, { width: 393, height: 852 });
     assert.ok(Array.isArray(masks[screenId]));
     assert.ok(masks[screenId].every(({ reason }) => ["photo", "video", "user-generated-text"].includes(reason)), screenId);
+    if (screenId === "b4") {
+      let maskedPixels = 0;
+      for (let y = 0; y < 852; y += 1) {
+        for (let x = 0; x < 393; x += 1) {
+          if (masks[screenId].some((mask) => x >= mask.x && x < mask.x + mask.width && y >= mask.y && y < mask.y + mask.height)) maskedPixels += 1;
+        }
+      }
+      assert.ok(maskedPixels / (393 * 852) < 0.7, `${screenId} masks too much of the screen`);
+    }
     for (const mask of masks[screenId].filter(({ reason }) => reason === "user-generated-text")) {
       const measuredDynamicRegions = Object.entries(measurements[screenId].elements)
         .filter(([source]) => dynamicSource.test(source))
         .map(([, rect]) => rect);
       assert.ok(measuredDynamicRegions.some((rect) => overlaps(mask, rect)), `${screenId}/${JSON.stringify(mask)}`);
     }
+  }
+});
+
+test("visual regressions cannot hide current buttons, headings, or text with runtime masks", async () => {
+  for (const file of ["discover.spec.mjs", "saved.spec.mjs", "visual.spec.mjs"]) {
+    const source = await readFile(new URL(`tests/app-preview/${file}`, repositoryRoot), "utf8");
+    assert.doesNotMatch(source, /elementBoundingMasks|TASK5_(?:ATOMIC_)?MASK_SELECTORS/);
+    assert.doesNotMatch(source, /locator\((?:"|')button(?:"|')\).*boundingBox/s);
   }
 });
 

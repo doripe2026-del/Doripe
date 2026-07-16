@@ -9,6 +9,13 @@ import {
   parseTemplateContract,
 } from "./contracts.mjs";
 import {
+  createInstagramBufferDraft,
+  createInstagramBufferScheduledPost,
+  listBufferChannels,
+  loadBufferEnv,
+  readBufferDraftPackage,
+} from "./buffer-client.mjs";
+import {
   buildPerformanceBoosts,
   parsePerformanceCsv,
 } from "./performance.mjs";
@@ -41,6 +48,18 @@ const COMMANDS = Object.freeze({
     argumentCount: 4,
     usage:
       "Usage: cli.mjs finalize <draft.json> <layout-evidence.json> <exports.json> <output-root>",
+  },
+  "buffer-channels": {
+    argumentCount: 0,
+    usage: "Usage: cli.mjs buffer-channels",
+  },
+  "buffer-draft": {
+    argumentCount: 2,
+    usage: "Usage: cli.mjs buffer-draft <package-dir> <image-urls.json>",
+  },
+  "buffer-schedule": {
+    argumentCount: 3,
+    usage: "Usage: cli.mjs buffer-schedule <package-dir> <image-urls.json> <due-at-iso>",
   },
 });
 
@@ -173,7 +192,7 @@ function printUsage(command) {
   }
 
   console.error(
-    "Usage: cli.mjs <check-template|score|validate|finalize> ...",
+    "Usage: cli.mjs <check-template|score|validate|finalize|buffer-channels|buffer-draft|buffer-schedule> ...",
   );
 }
 
@@ -205,6 +224,42 @@ async function main() {
     const boosts = buildPerformanceBoosts(parsePerformanceCsv(performanceText));
     const selected = selectDailyCandidates(candidates, history, boosts, 2);
     await writeJsonAtomic(args[3], selected);
+    return;
+  }
+
+  if (command === "buffer-channels") {
+    const env = await loadBufferEnv();
+    const channels = await listBufferChannels({ accessToken: env.accessToken });
+    for (const channel of channels) {
+      console.log(`${channel.service}\t${channel.displayName || channel.name}\t${channel.id}`);
+    }
+    return;
+  }
+
+  if (command === "buffer-draft") {
+    const env = await loadBufferEnv();
+    const draftPackage = await readBufferDraftPackage(args[0], args[1]);
+    const post = await createInstagramBufferDraft({
+      accessToken: env.accessToken,
+      channelId: env.channelId,
+      caption: draftPackage.caption,
+      imageUrls: draftPackage.imageUrls,
+    });
+    console.log(`Created Buffer draft ${post.id} for ${draftPackage.candidateId}`);
+    return;
+  }
+
+  if (command === "buffer-schedule") {
+    const env = await loadBufferEnv();
+    const draftPackage = await readBufferDraftPackage(args[0], args[1]);
+    const post = await createInstagramBufferScheduledPost({
+      accessToken: env.accessToken,
+      channelId: env.channelId,
+      caption: draftPackage.caption,
+      imageUrls: draftPackage.imageUrls,
+      dueAt: args[2],
+    });
+    console.log(`Scheduled Buffer post ${post.id} for ${post.dueAt} (${draftPackage.candidateId})`);
     return;
   }
 

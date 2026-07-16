@@ -1,9 +1,18 @@
-import { MEDIA, PLACES, ROUTES, USERS } from "../fixtures.js";
+import { createBottomNav, icon as componentIcon } from "../components.js";
+import { mediaById, profileById, viewerProfile } from "../data/selectors.js";
+import { DEFAULT_NOTIFICATION_SETTINGS } from "../transitions.js";
 
 const SCREEN_NAVIGATE_EVENT = "app-preview:screen-navigate";
 const OVERLAY_DISMISS_EVENT = "app-preview:overlay-dismiss";
 const SELECTION_CLEAR_EVENT = "app-preview:selection-clear";
 const NODE_IDS = Object.freeze({ e1: "446:2912", e2: "446:2850", e3: "446:2952", e4: "446:2984", e5: "446:3031" });
+
+const currentProfile = (state, data) => profileById(
+  data,
+  state?.profile?.id || state?.selections?.selectedUserId
+) || viewerProfile(data) || null;
+const profileMedia = (profile, data) => data.media.filter((item) => item.userId === profile?.id);
+const profileCourses = (profile, data) => data.courses.filter((item) => item.userId === profile?.id);
 
 function element(tag, className = "", text) {
   const node = document.createElement(tag);
@@ -18,6 +27,14 @@ function icon(name, className = "") {
   image.alt = "";
   image.setAttribute("aria-hidden", "true");
   image.draggable = false;
+  return image;
+}
+
+function sharedIcon(name, className = "", size = 18) {
+  const template = document.createElement("template");
+  template.innerHTML = componentIcon(name, { decorative: true, size });
+  const image = template.content.firstElementChild;
+  if (className) image.className = `${image.className} ${className}`;
   return image;
 }
 
@@ -70,23 +87,6 @@ function toast(state) {
   return output;
 }
 
-function bottomNav() {
-  const nav = element("nav", "settings-bottom-nav");
-  nav.setAttribute("aria-label", "주요 메뉴");
-  const specs = [
-    ["발견", "b2", "nav-discover"],
-    ["저장", "c1", "nav-saved"],
-    ["코스", "d1", "nav-route"],
-    ["설정", "e1", "nav-settings"]
-  ];
-  specs.forEach(([label, target, iconName], index) => {
-    const item = navigateButton(label, target, `settings-bottom-nav__item ${index === 3 ? "is-active" : ""}`, iconName);
-    item.setAttribute("aria-current", index === 3 ? "page" : "false");
-    nav.append(item);
-  });
-  return nav;
-}
-
 function settingsRow(label, action, iconName, values = {}) {
   const row = button(label, action, "settings-row", values);
   row.append(icon(iconName, "settings-row__icon"), element("strong", "", label), icon("chevron", "settings-row__chevron"));
@@ -121,17 +121,21 @@ function renderTermsSheet() {
   return backdrop;
 }
 
-function renderMy(state) {
+function renderMy(state, data) {
   const screen = root("e1");
-  const user = USERS[0];
+  const user = currentProfile(state, data);
+  const nickname = state?.profile?.nickname || state?.form?.nickname || user?.handle || "Doripe 사용자";
+  const bio = state?.profile?.bio || state?.form?.bio || "프로필 보기";
   screen.append(element("h1", "settings-main-title", "설정"));
-  const profile = button(`${user.name} 프로필 보기`, "open-profile", "settings-profile", { userId: user.id });
+  const profile = button(`${user?.name || nickname} 프로필 보기`, "open-profile", "settings-profile", { userId: user?.id });
   const avatar = element("span", "settings-profile__avatar");
   avatar.append(icon("profile"));
   const copy = element("span", "settings-profile__copy");
-  copy.append(element("strong", "", state?.form?.nickname || user.handle), element("small", "", "프로필 보기"));
+  copy.append(element("strong", "", nickname), element("small", "", bio));
   profile.append(avatar, copy, icon("chevron", "settings-row__chevron"));
-  screen.append(profile);
+  const editProfile = navigateButton("프로필 수정", "e2", "settings-profile-edit-entry");
+  editProfile.textContent = "프로필 수정";
+  screen.append(profile, editProfile);
   const rows = element("div", "settings-rows");
   rows.append(
     settingsRow("계정", "open-account-settings", "account"),
@@ -139,7 +143,7 @@ function renderMy(state) {
     settingsRow("문의", "open-contact", "contact"),
     settingsRow("약관 및 개인정보", "open-terms", "privacy", { value: "terms" })
   );
-  screen.append(rows, bottomNav());
+  screen.append(rows, createBottomNav({ selectedIndex: 3 }));
   if (state?.selections?.settingsSection === "terms") screen.append(renderTermsSheet());
   return screen;
 }
@@ -148,35 +152,49 @@ function profileTab(state) {
   return state?.selections?.profileTab === "routes" ? "routes" : "places";
 }
 
-function renderProfilePanel(state, tab) {
+function renderProfilePanel(state, tab, profile, data) {
   const panel = element("div", "settings-profile-panel");
   panel.setAttribute("role", "tabpanel");
   if (tab === "routes") {
-    ROUTES.forEach((route) => {
+    const courses = profileCourses(profile, data);
+    courses.forEach((route) => {
       const card = element("article", "settings-profile-route");
       card.append(element("strong", "", route.name.replace("루트", "코스")), element("small", "", `${route.placeIds.length}곳 · ${route.walkingMinutes}분`));
       panel.append(card);
     });
+    if (courses.length === 0) panel.append(element("p", "settings-profile-empty", "아직 만든 코스가 없어요"));
     return panel;
   }
-  MEDIA.slice(0, 6).forEach((media, index) => {
+  const mediaItems = profileMedia(profile, data).slice(0, 6);
+  mediaItems.forEach((media, index) => {
     const card = button(`${media.alt} 편집`, "edit-media", "settings-profile-media", { mediaId: media.id });
     const image = element("img");
     image.src = media.src;
     image.alt = media.alt;
-    card.append(image, element("span", "", media.kind === "video" ? "▶" : "▧"));
+    const indicator = element("span", "settings-profile-media__indicator");
+    indicator.append(sharedIcon(media.kind === "video" ? "settings-play" : "settings-image", "settings-profile-media__indicator-icon", 14));
+    card.append(image, indicator);
     card.style.setProperty("--profile-media-index", index);
     panel.append(card);
   });
+  if (mediaItems.length === 0) panel.append(element("p", "settings-profile-empty", "아직 올린 사진이 없어요"));
   return panel;
 }
 
-function renderMediaEditor(state) {
+function renderMediaEditor(state, profile, data) {
   const backdrop = element("div", "settings-modal-backdrop");
   const dialog = element("section", "settings-media-editor");
   dialog.setAttribute("role", "dialog");
   dialog.setAttribute("aria-modal", "true");
-  const media = MEDIA.find((item) => item.id === state?.selections?.selectedMediaId) || MEDIA[0];
+  const selectedMedia = mediaById(data, state?.selections?.selectedMediaId);
+  const media = selectedMedia?.userId === profile?.id
+    ? selectedMedia
+    : profileMedia(profile, data)[0] || null;
+  if (!media) {
+    dialog.append(element("h2", "", "사진 편집"), element("p", "settings-profile-empty", "편집할 사진이 없어요"));
+    backdrop.append(dialog);
+    return backdrop;
+  }
   const image = element("img");
   image.src = media.src;
   image.alt = media.alt;
@@ -189,26 +207,34 @@ function renderMediaEditor(state) {
   return backdrop;
 }
 
-function renderProfileEdit(state) {
+function renderProfileEdit(state, data) {
   const screen = root("e2");
-  const user = USERS[0];
+  const user = currentProfile(state, data);
+  if (!user) {
+    screen.append(titleBar("프로필 수정"), element("p", "settings-profile-empty", "프로필 정보를 찾을 수 없어요"));
+    return screen;
+  }
+  const profileDraft = state?.profileDraft || {};
   screen.append(titleBar("프로필 수정"));
   const avatar = element("div", "settings-edit-avatar");
   const avatarImage = element("img");
-  avatarImage.src = mediaForUser(user).src;
+  const avatarMedia = profileMedia(user, data)[0];
+  avatarImage.src = avatarMedia?.src || user.avatarUrl || "";
   avatarImage.alt = `${user.name} 프로필`;
-  avatar.append(avatarImage, element("span", "", "▣"));
+  const editIndicator = element("span", "settings-edit-avatar__indicator");
+  editIndicator.append(sharedIcon("settings-image", "settings-edit-avatar__indicator-icon", 14));
+  avatar.append(avatarImage, editIndicator);
   screen.append(avatar);
   const form = element("div", "settings-profile-form");
   const nicknameLabel = element("label", "settings-field-label", "닉네임");
   const nickname = element("input", "settings-input");
   nickname.setAttribute("aria-label", "닉네임");
-  nickname.value = state?.form?.nickname ?? user.handle;
+  nickname.value = profileDraft.nickname ?? state?.profile?.nickname ?? state?.form?.nickname ?? user.handle;
   nickname.dataset.action = "update-nickname";
   const bioLabel = element("label", "settings-field-label", "소개");
   const bio = element("input", "settings-input");
   bio.setAttribute("aria-label", "소개");
-  bio.value = state?.form?.bio ?? user.bio;
+  bio.value = profileDraft.bio ?? state?.profile?.bio ?? state?.form?.bio ?? user.bio;
   bio.dataset.action = "update-bio";
   form.append(nicknameLabel, nickname, bioLabel, bio);
   screen.append(form);
@@ -225,27 +251,27 @@ function renderProfileEdit(state) {
   const heading = element("div", "settings-profile-heading");
   heading.append(element("h2", "", tab === "places" ? "내가 올린 사진" : "내가 만든 코스"));
   if (tab === "places") {
-    const edit = button("사진 편집", "edit-media", "settings-profile-edit", { mediaId: MEDIA[0].id });
-    edit.textContent = "편집";
-    heading.append(edit);
+    const firstMedia = profileMedia(user, data)[0];
+    if (firstMedia) {
+      const edit = button("사진 편집", "edit-media", "settings-profile-edit", { mediaId: firstMedia.id });
+      edit.textContent = "편집";
+      heading.append(edit);
+    }
   }
-  screen.append(heading, renderProfilePanel(state, tab));
+  screen.append(heading, renderProfilePanel(state, tab, user, data));
   const save = button("저장하기", "save-profile", "settings-save");
   save.textContent = "저장하기";
   screen.append(save);
-  if (state?.overlays?.includes("media-editor")) screen.append(renderMediaEditor(state));
+  if (state?.overlays?.includes("media-editor")) screen.append(renderMediaEditor(state, user, data));
   return screen;
 }
 
-function mediaForUser(user) {
-  return MEDIA.find((media) => media.userId === user.id) || MEDIA[0];
-}
-
-function passwordField(label, action, value) {
+function passwordField(label, action) {
   const wrap = element("label", "settings-account-field", label);
   const input = element("input");
   input.type = "password";
-  input.value = value || "";
+  input.autocomplete = action === "update-current-password" ? "current-password" : "new-password";
+  input.value = "";
   input.dataset.action = action;
   input.setAttribute("aria-label", label);
   wrap.append(input);
@@ -258,15 +284,19 @@ function renderAccount(state) {
   const content = element("div", "settings-account-content");
   content.append(element("h2", "", "이메일 로그인"), element("strong", "settings-account-label", "이메일"));
   const email = element("div", "settings-account-email", "dori@example.com");
-  const verified = element("span", "settings-account-verified", "✓ 인증 완료");
+  const verified = element("span", "settings-account-verified");
+  verified.append(sharedIcon("settings-check", "settings-account-verified__icon", 14), element("span", "", "인증 완료"));
   content.append(email, verified, element("h2", "settings-password-title", "비밀번호 변경"));
   content.append(
-    passwordField("현재 비밀번호", "update-current-password", state?.form?.currentPassword),
-    passwordField("새 비밀번호", "update-new-password", state?.form?.newPassword),
-    passwordField("새 비밀번호 확인", "update-password-confirmation", state?.form?.passwordConfirmation)
+    passwordField("현재 비밀번호", "update-current-password"),
+    passwordField("새 비밀번호", "update-new-password"),
+    passwordField("새 비밀번호 확인", "update-password-confirmation")
   );
   const save = button("비밀번호 저장", "save-password", "settings-account-save");
   save.textContent = "비밀번호 저장";
+  save.addEventListener("click", () => {
+    for (const input of content.querySelectorAll('input[type="password"]')) input.value = "";
+  });
   const forgot = button("비밀번호를 잊으셨나요? 재설정 메일 받기", "forgot-password", "settings-account-forgot");
   forgot.textContent = "비밀번호를 잊으셨나요? 재설정 메일 받기";
   content.append(save, forgot, element("h2", "settings-management-title", "계정 관리"));
@@ -292,7 +322,8 @@ const NOTIFICATIONS = Object.freeze([
 function notificationValue(state, key) {
   const values = state?.selections?.notifications || {};
   if (Object.hasOwn(values, key)) return values[key] === true;
-  return ["savedPlaceUpdates", "routeRecommendations"].includes(key);
+  if (key === "all") return Object.values(DEFAULT_NOTIFICATION_SETTINGS).every(Boolean);
+  return DEFAULT_NOTIFICATION_SETTINGS[key] === true;
 }
 
 function renderNotifications(state) {

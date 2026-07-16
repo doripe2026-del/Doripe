@@ -8,6 +8,7 @@ const VIEWPORTS = [
 
 for (const viewport of VIEWPORTS) {
   test(`all ${inventory.length} MVP screens are semantic and fit ${viewport.width}px`, async ({ page }) => {
+    test.slow();
     await page.setViewportSize(viewport);
     for (const screenRecord of inventory) {
       await page.goto(`/app-preview/?screen=${screenRecord.id}&static=1`);

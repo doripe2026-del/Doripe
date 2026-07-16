@@ -57,7 +57,7 @@
 - Produces: `createEmptyDataSnapshot()`, `normalizeDataSnapshot(value)`, `assertRepositoryContract(repository)`.
 - Produces: `byId(items, id)`, `placeById(data, id)`, `mediaById(data, id)`, `profileById(data, id)`, `tagById(data, id)`, `courseById(data, id)`, `contentById(data, id)`, `mediaForPlace(data, place)`, `tagsFor(data, item)`, `commentsForContent(data, contentId)`, `createDataCatalog(data)`.
 
-- [ ] **Step 1: Write the failing contract and selector tests**
+- [x] **Step 1: Write the failing contract and selector tests**
 
 ```js
 import assert from "node:assert/strict";
@@ -92,13 +92,13 @@ test("repository contract rejects missing methods", () => {
 });
 ```
 
-- [ ] **Step 2: Run the focused test and verify it fails**
+- [x] **Step 2: Run the focused test and verify it fails**
 
 Run: `node --test tests/app-preview/data-contract.test.mjs`
 
 Expected: FAIL with `ERR_MODULE_NOT_FOUND` for `data/contracts.js`.
 
-- [ ] **Step 3: Implement the snapshot contract**
+- [x] **Step 3: Implement the snapshot contract**
 
 ```js
 const COLLECTION_KEYS = Object.freeze([
@@ -134,7 +134,7 @@ export function assertRepositoryContract(repository) {
 }
 ```
 
-- [ ] **Step 4: Implement ID-based selectors**
+- [x] **Step 4: Implement ID-based selectors**
 
 ```js
 export const byId = (items, id) => items.find((item) => item.id === id) || null;
@@ -167,7 +167,7 @@ export function createDataCatalog(data) {
 }
 ```
 
-- [ ] **Step 5: Run the focused test and commit**
+- [x] **Step 5: Run the focused test and commit**
 
 Run: `node --test tests/app-preview/data-contract.test.mjs`
 
@@ -189,7 +189,7 @@ git commit -m "feat: define app preview data contract"
 - Consumes: `normalizeDataSnapshot(value)`, `assertRepositoryContract(repository)`.
 - Produces: `createFixtureRepository()`, `createFailingFixtureRepository()` and compatibility aliases from `api-adapter.js`.
 
-- [ ] **Step 1: Replace adapter tests with full contract expectations**
+- [x] **Step 1: Replace adapter tests with full contract expectations**
 
 ```js
 const repository = createFixtureRepository();
@@ -205,13 +205,13 @@ assert.ok(bootstrap.contents.some((item) => item.type === "course"));
 assert.deepEqual(await repository.getFeed(), bootstrap.contents);
 ```
 
-- [ ] **Step 2: Run the fixture test and verify it fails**
+- [x] **Step 2: Run the fixture test and verify it fails**
 
 Run: `node --test tests/app-preview/fixtures.test.mjs`
 
 Expected: FAIL because `createFixtureRepository` is not exported.
 
-- [ ] **Step 3: Implement fixture-to-domain mapping and all repository methods**
+- [x] **Step 3: Implement fixture-to-domain mapping and all repository methods**
 
 The repository must import all fixture constants, create one place content per place and one course content per course, convert fixture comments from `placeId` to `contentId`, return structured clones from reads, and return deterministic ID-based mutation results. Unknown IDs throw an error with `code = "FIXTURE_NOT_FOUND"`.
 
@@ -309,7 +309,7 @@ export {
 } from "./data/fixture-repository.js";
 ```
 
-- [ ] **Step 4: Run fixture and contract tests and commit**
+- [x] **Step 4: Run fixture and contract tests and commit**
 
 Run: `node --test tests/app-preview/data-contract.test.mjs tests/app-preview/fixtures.test.mjs`
 
@@ -333,7 +333,7 @@ git commit -m "feat: add fixture data repository"
 - Produces: `createAppDataStore({ repository })` with `load()`, `getState()`, and `getSnapshot()`.
 - Changes renderer interface from `(state)` to `(state, data)`.
 
-- [ ] **Step 1: Write failing store lifecycle tests**
+- [x] **Step 1: Write failing store lifecycle tests**
 
 ```js
 test("data store exposes loading, ready, and retryable error states", async () => {
@@ -350,13 +350,13 @@ test("data store exposes loading, ready, and retryable error states", async () =
 });
 ```
 
-- [ ] **Step 2: Run the test and verify it fails**
+- [x] **Step 2: Run the test and verify it fails**
 
 Run: `node --test tests/app-preview/data-contract.test.mjs`
 
 Expected: FAIL with missing `data/store.js`.
 
-- [ ] **Step 3: Implement the store**
+- [x] **Step 3: Implement the store**
 
 ```js
 import { createEmptyDataSnapshot, normalizeDataSnapshot } from "./contracts.js";
@@ -384,7 +384,7 @@ export function createAppDataStore({ repository }) {
 }
 ```
 
-- [ ] **Step 4: Wire bootstrap into main and renderer context**
+- [x] **Step 4: Wire bootstrap into main and renderer context**
 
 `main.js` creates the fixture repository and store before state, awaits `load()`, and passes `dataStore.getSnapshot()` to state creation, renderers, transitions, and shared-link lookup. `screen-registry.js` preserves renderer functions but documents and forwards the second `data` argument.
 
@@ -403,7 +403,7 @@ const renderedScreen = screen.render(interactionState, dataSnapshot);
 const payload = { state: interactionState, data: dataSnapshot };
 ```
 
-- [ ] **Step 5: Run unit and smoke tests and commit**
+- [x] **Step 5: Run unit and smoke tests and commit**
 
 Run: `npm run test:app-preview:unit && npm run check:app-preview`
 
@@ -427,7 +427,7 @@ git commit -m "feat: bootstrap app preview data store"
 - Consumes: `catalog.isKnownPlaceId(id)`, `catalog.isKnownCourseId(id)`, and `payload.data`.
 - Produces: persisted state normalization and transitions with no fixture import.
 
-- [ ] **Step 1: Add failing tests for injected catalog validation**
+- [x] **Step 1: Add failing tests for injected catalog validation**
 
 ```js
 const catalog = {
@@ -441,13 +441,13 @@ assert.deepEqual(state.getState().savedPlaceIds, ["place-a"]);
 
 Add a transition test that supplies a minimal normalized `data` snapshot and confirms course selection resolves by ID without importing fixture constants.
 
-- [ ] **Step 2: Run focused tests and verify they fail**
+- [x] **Step 2: Run focused tests and verify they fail**
 
 Run: `node --test tests/app-preview/state.test.mjs tests/app-preview/transitions.test.mjs`
 
 Expected: FAIL because `createPreviewState` does not accept `catalog` and transitions still use fixtures.
 
-- [ ] **Step 3: Inject the catalog into all state normalization helpers**
+- [x] **Step 3: Inject the catalog into all state normalization helpers**
 
 Use a deny-by-default catalog when none is provided:
 
@@ -467,11 +467,11 @@ export function createPreviewState({
 
 `normalizePlaceIds`, `normalizeSavedRoutes`, `normalizeRouteDraft`, `normalizePreviewState`, `savePlaceId`, and `unsavePlaceId` receive or close over the same catalog. No function imports `fixtures.js`.
 
-- [ ] **Step 4: Replace transition and shared-link fixture lookups with selectors**
+- [x] **Step 4: Replace transition and shared-link fixture lookups with selectors**
 
 Use `payload.data` with `placeById`, `courseById`, and `profileById`. Shared-link validation uses `dataCatalog`; a fixture course is now simply a course whose ID exists in the loaded snapshot. Saved local courses remain valid when their IDs exist in persisted state.
 
-- [ ] **Step 5: Run tests, confirm no fixture import, and commit**
+- [x] **Step 5: Run tests, confirm no fixture import, and commit**
 
 Run:
 
@@ -498,7 +498,7 @@ git commit -m "refactor: inject app data into preview state"
 - Consumes: renderer `(state, data)` and selectors from `data/selectors.js`.
 - Produces: B1–B13 with no fixture import and unchanged DOM geometry.
 
-- [ ] **Step 1: Add a failing runtime test using a reordered snapshot**
+- [x] **Step 1: Add a failing runtime test using a reordered snapshot**
 
 Create a snapshot whose first place and profile differ from fixture ordering, render B4 and B12, and assert the selected IDs control the title and profile. This proves renderers no longer use `PLACES[0]` or `USERS[0]` fallback by array position.
 
@@ -511,13 +511,13 @@ const b4 = DISCOVER_RENDERERS.b4({ selections: { selectedPlaceId: "place-b" } },
 assert.match(b4.textContent, /두 번째 장소/);
 ```
 
-- [ ] **Step 2: Run the focused test and verify it fails**
+- [x] **Step 2: Run the focused test and verify it fails**
 
 Run: `node --test tests/app-preview/flow-b-evidence.test.mjs`
 
 Expected: FAIL because discovery renderers accept only state and use fixture globals.
 
-- [ ] **Step 3: Replace discovery globals with context helpers**
+- [x] **Step 3: Replace discovery globals with context helpers**
 
 Change each helper to receive data explicitly:
 
@@ -530,7 +530,7 @@ const tagsForPlace = (data, place) => tagsFor(data, place);
 
 Update B1–B13 so feed entries come from `data.contents`, place detail uses `data.places`, comments use `data.comments`, related places use `data.places`, and profile grids use `data.media`. `renderHours` receives the selected place and uses its hours, falling back to an empty-state sentence rather than a fabricated schedule.
 
-- [ ] **Step 4: Run Flow B semantic, interaction, and visual tests**
+- [x] **Step 4: Run Flow B semantic, interaction, and visual tests**
 
 Run:
 
@@ -541,7 +541,7 @@ npx playwright test -c playwright.app-preview.config.mjs tests/app-preview/disco
 
 Expected: all Flow B tests PASS and approved visual thresholds remain unchanged.
 
-- [ ] **Step 5: Commit discovery migration**
+- [x] **Step 5: Commit discovery migration**
 
 ```bash
 git add public/app-preview/screens/discover.js tests/app-preview/discover.spec.mjs tests/app-preview/flow-b-evidence.test.mjs
@@ -562,7 +562,7 @@ git commit -m "refactor: render discovery from app data"
 - Consumes: renderer `(state, data)` and shared selectors.
 - Produces: C, D, and E flows with no fixture import.
 
-- [ ] **Step 1: Add failing tests for ID-based rendering**
+- [x] **Step 1: Add failing tests for ID-based rendering**
 
 For each flow, render with a snapshot containing unique names and IDs, then assert those values appear. Add an empty collection case so screens show their designed empty state instead of falling back to the first fixture.
 
@@ -571,7 +571,7 @@ await expect(gotoScreen(page, "c1")).toContainText("저장한 장소가 아직 �
 await expect(gotoScreen(page, "d1")).toContainText("저장한 장소가 필요해요");
 ```
 
-- [ ] **Step 2: Run the three focused specs and verify failure**
+- [x] **Step 2: Run the three focused specs and verify failure**
 
 Run:
 
@@ -581,7 +581,7 @@ npx playwright test -c playwright.app-preview.config.mjs tests/app-preview/saved
 
 Expected: at least one failure per flow because renderers still import fixture collections.
 
-- [ ] **Step 3: Migrate C flow**
+- [x] **Step 3: Migrate C flow**
 
 Pass `data` into every renderer and helper. Saved place IDs resolve through `placeById(data, id)`, saved course IDs resolve through `courseById(data, id)` or persisted local courses, tags resolve through `tagsFor(data, item)`, and media resolve through `mediaForPlace(data, place)`.
 
@@ -598,7 +598,7 @@ const savedPlaces = (state, data) => (state?.savedPlaceIds || [])
   .filter(Boolean);
 ```
 
-- [ ] **Step 4: Migrate D flow**
+- [x] **Step 4: Migrate D flow**
 
 Course candidates use `data.places`; author and media use shared selectors; default course IDs come from the selected course or state draft rather than `ROUTES[0]`. An empty saved-place collection produces the designed D1 empty state.
 
@@ -615,7 +615,7 @@ const preferredSavedMedia = (place, state, data) => {
 };
 ```
 
-- [ ] **Step 5: Migrate E flow**
+- [x] **Step 5: Migrate E flow**
 
 The current authenticated profile is selected by `state.profile.id` or `state.selections.selectedUserId`; its media and courses are filtered by profile ID from `data`. Empty profile media renders an empty gallery state.
 
@@ -628,7 +628,7 @@ const profileMedia = (profile, data) => data.media.filter((item) => item.userId 
 const profileCourses = (profile, data) => data.courses.filter((item) => item.userId === profile?.id);
 ```
 
-- [ ] **Step 6: Run flow tests and commit**
+- [x] **Step 6: Run flow tests and commit**
 
 Run:
 
@@ -654,7 +654,7 @@ git commit -m "refactor: render saved course and settings from app data"
 - Consumes: all Phase 1 changes.
 - Produces: a permanent architectural guard and verified fixture-mode preview.
 
-- [ ] **Step 1: Write the boundary test**
+- [x] **Step 1: Write the boundary test**
 
 ```js
 import assert from "node:assert/strict";
@@ -674,13 +674,13 @@ test("only fixture repository imports fixture collections", async () => {
 });
 ```
 
-- [ ] **Step 2: Run the boundary test and fix every reported import**
+- [x] **Step 2: Run the boundary test and fix every reported import**
 
 Run: `node --test tests/app-preview/data-boundary.test.mjs`
 
 Expected: PASS with an empty offender list.
 
-- [ ] **Step 3: Verify the complete user journey in fixture mode**
+- [x] **Step 3: Verify the complete user journey in fixture mode**
 
 The E2E journey must cover onboarding fixture entry, following feed, discovery feed, place detail, save, saved list, course creation, course save, profile, comment, and follow toggle. It must reload after save and course creation to prove persisted IDs survive catalog-based normalization.
 
@@ -688,7 +688,7 @@ Run: `npx playwright test -c playwright.app-preview.config.mjs tests/app-preview
 
 Expected: all user journey tests PASS.
 
-- [ ] **Step 4: Run all Phase 1 verification**
+- [x] **Step 4: Run all Phase 1 verification**
 
 Run:
 
@@ -701,7 +701,7 @@ git diff --check
 
 Expected: every command exits 0.
 
-- [ ] **Step 5: Record completion and commit**
+- [x] **Step 5: Record completion and commit**
 
 Mark every completed checkbox in this plan and commit the guard and test updates.
 

@@ -1,3 +1,5 @@
+import { isStaticPreview, localMediaUrl, resolvePreviewMediaSource } from "./data/server-media.js";
+
 function freezeItems(items) {
   return Object.freeze(items.map((item) => Object.freeze({
     ...item,
@@ -8,10 +10,10 @@ function freezeItems(items) {
 }
 
 export const USERS = freezeItems([
-  { id: "user-1", handle: "dori", name: "도리", bio: "연남과 망원의 좋은 장면을 모아요", avatarUrl: "/app-preview/assets/discover/avatar-figma-dori.svg" },
+  { id: "user-1", handle: "dori", name: "도리", bio: "연남과 망원의 좋은 장면을 모아요", avatarUrl: "/app/assets/creator-avatar.png", isCurator: true },
   { id: "user-2", handle: "yeon_", name: "연", bio: "연남동 장소 큐레이션", avatarUrl: "/app-preview/assets/discover/avatar-2.png" },
   { id: "user-3", handle: "minsu", name: "민수", bio: "맛집과 카페를 떠돌아요", avatarUrl: "/app-preview/assets/discover/avatar-3.png" },
-  { id: "user-4", handle: "hyejin", name: "혜진", bio: "따뜻한 공간을 좋아해요", avatarUrl: "/app-preview/assets/discover/avatar-1.png" },
+  { id: "user-4", handle: "hyejin", name: "혜진", bio: "따뜻한 공간을 좋아해요", avatarUrl: "/app-preview/assets/discover/avatar-1.png", isCurator: true },
   { id: "user-5", handle: "jia", name: "지아", bio: "일상 속 작은 여행을 기록해요", avatarUrl: "/app-preview/assets/discover/avatar-2.png" },
   { id: "user-6", handle: "sua", name: "수아", bio: "감각적인 장소를 담아요", avatarUrl: "/app-preview/assets/discover/avatar-3.png" }
 ]);
@@ -60,17 +62,21 @@ const placeSpecs = [
   { id: "place-12", name: "앤티크 커피", userId: "user-5", tagIds: ["tag-cafe-dessert", "tag-dark", "tag-walk-ten-minutes"], address: "서울 마포구 연희로 25", latitude: 37.5609, longitude: 126.9281 }
 ];
 
-const discoverAssets = ["feed-1", "feed-2", "feed-3", "feed-4", "feed-5", "feed-6"];
-
 export const MEDIA = freezeItems(placeSpecs.flatMap((place, placeIndex) => (
-  [0, 1, 2].map((offset) => {
-    const mediaNumber = placeIndex * 3 + offset + 1;
+  [0, 1, 2, 3, 4].map((offset) => {
+    const mediaIndex = placeIndex * 5 + offset;
+    const mediaId = offset < 3
+      ? `media-${placeIndex * 3 + offset + 1}`
+      : `media-extra-${placeIndex * 2 + offset - 2}`;
     return {
-      id: `media-${mediaNumber}`,
+      id: mediaId,
       placeId: place.id,
       userId: USERS[(placeIndex + offset) % USERS.length].id,
       kind: offset === 2 && placeIndex % 3 === 0 ? "video" : "photo",
-      src: `/app-preview/assets/discover/${discoverAssets[(placeIndex * 3 + offset) % discoverAssets.length]}.png`,
+      src: isStaticPreview()
+        ? localMediaUrl(placeIndex + offset)
+        : resolvePreviewMediaSource(mediaIndex),
+      fallbackSrc: localMediaUrl(placeIndex + offset),
       alt: `${place.name} ${offset + 1}`,
       createdAt: `2026-06-${String((placeIndex * 2 + offset) % 28 + 1).padStart(2, "0")}T09:00:00.000Z`
     };
@@ -79,11 +85,20 @@ export const MEDIA = freezeItems(placeSpecs.flatMap((place, placeIndex) => (
 
 export const PLACES = freezeItems(placeSpecs.map((place, placeIndex) => ({
   ...place,
-  mediaIds: [1, 2, 3].map((offset) => `media-${placeIndex * 3 + offset}`),
+  mediaIds: [
+    ...[1, 2, 3].map((offset) => `media-${placeIndex * 3 + offset}`),
+    ...[1, 2].map((offset) => `media-extra-${placeIndex * 2 + offset}`)
+  ],
   summary: `${place.name}에서 보내는 취향에 맞는 시간`,
   walkingMinutes: 4 + (placeIndex % 7),
   savedCount: 18 + placeIndex * 3
 })));
+
+const PLACE_ID_SET = new Set(PLACES.map((place) => place.id));
+
+export function isKnownPlaceId(placeId) {
+  return typeof placeId === "string" && PLACE_ID_SET.has(placeId);
+}
 
 export const COMMENTS = freezeItems([
   { id: "comment-1", placeId: "place-1", userId: "user-3", body: "공간이 정말 예쁘고 소품 하나하나 취향 저격이에요!", likeCount: 12, createdAt: "2026-07-08T10:00:00.000Z" },
@@ -99,3 +114,9 @@ export const ROUTES = freezeItems([
   { id: "route-2", name: "조용한 연남 오후", userId: "user-2", placeIds: ["place-6", "place-2", "place-12"], tagIds: ["tag-quiet", "tag-afternoon", "tag-cafe"], walkingMinutes: 32 },
   { id: "route-3", name: "친구와 맛집 산책", userId: "user-4", placeIds: ["place-3", "place-10", "place-11"], tagIds: ["tag-friends", "tag-restaurant", "tag-walk-ten-minutes"], walkingMinutes: 46 }
 ]);
+
+const ROUTE_ID_SET = new Set(ROUTES.map((route) => route.id));
+
+export function isFixtureRouteId(routeId) {
+  return typeof routeId === "string" && ROUTE_ID_SET.has(routeId);
+}

@@ -1,16 +1,52 @@
-import { MEDIA, PLACES, ROUTES, TAGS, USERS } from "../fixtures.js";
+import { createBottomNav, icon as componentIcon } from "../components.js";
+import {
+  byId,
+  courseById,
+  mediaForPlace,
+  placeById,
+  profileById,
+  tagById,
+  tagsFor as selectTagsFor
+} from "../data/selectors.js";
+import { routeDirectionsUrl } from "./routes.js";
+import { placeMatchesLocationFilter } from "../data/location-filter.js";
+
+const OVERLAY_DISMISS_EVENT = "app-preview:overlay-dismiss";
 
 const NODE_IDS = Object.freeze({
   c1: "446:1787", c2: "446:1631", c3: "446:1223",
   c4: "446:1715", c6: "446:2394", c7: "446:1474"
 });
 
-const byId = (items, id) => items.find((item) => item.id === id);
-const courseName = (route) => route.name.replaceAll("루트", "코스");
-const routeFor = (state) => byId(ROUTES, state?.selections?.selectedRouteId) || ROUTES[0];
-const placeFor = (state) => byId(PLACES, state?.selections?.selectedPlaceId) || PLACES[0];
-const tagsFor = (item) => (item?.tagIds || []).map((id) => byId(TAGS, id)).filter(Boolean);
-const mediaFor = (place, offset = 0) => byId(MEDIA, place?.mediaIds?.[offset]) || MEDIA[0];
+const courseName = (route) => route?.name?.replaceAll("루트", "코스") || "코스";
+const routeFor = (state, data) => byId(state?.savedRoutes || [], state?.selections?.selectedRouteId)
+  || courseById(data, state?.selections?.selectedRouteId)
+  || data.courses[0]
+  || null;
+const placeFor = (state, data) => placeById(data, state?.selections?.selectedPlaceId)
+  || data.places[0]
+  || null;
+const mediaFor = (data, place, offset = 0) => {
+  const items = mediaForPlace(data, place);
+  return items[offset] || items[0] || null;
+};
+const routeWalkingMinutes = (route) => route?.walkingMinutes ?? Math.max(15, (route?.placeIds?.length || 0) * 15);
+
+function savedPlaces(state, data) {
+  return (state?.savedPlaceIds || []).map((id) => placeById(data, id)).filter(Boolean);
+}
+
+function visibleSavedPlaces(state, data) {
+  const filters = ["situation", "time", "mood"]
+    .map((key) => state?.selections?.[key])
+    .filter(Boolean);
+  const places = savedPlaces(state, data).filter((place) => placeMatchesLocationFilter(place, state?.selections));
+  return filters.length === 0 ? places : places.filter((place) => filters.every((tagId) => place.tagIds.includes(tagId)));
+}
+
+function savedRoutes(state) {
+  return state?.savedRoutes || [];
+}
 
 function el(tag, className = "", text) {
   const node = document.createElement(tag);
@@ -74,11 +110,19 @@ function savedIcon(name, className = "") {
   return image;
 }
 
-function photo(place, className = "", offset = 0) {
+function sharedIcon(name, className = "", size = 18) {
+  const template = document.createElement("template");
+  template.innerHTML = componentIcon(name, { decorative: true, size });
+  const image = template.content.firstElementChild;
+  if (className) image.className = `${image.className} ${className}`;
+  return image;
+}
+
+function photo(data, place, className = "", offset = 0) {
   const image = el("img", className);
-  const media = mediaFor(place, offset);
-  image.src = media.src;
-  image.alt = media.alt;
+  const media = mediaFor(data, place, offset);
+  if (media) image.src = media.src;
+  image.alt = media?.alt || place?.name || "";
   image.width = 180;
   image.height = 180;
   return image;
@@ -107,19 +151,22 @@ function savedTabs(screenId) {
   return tabs;
 }
 
-function selectedFilterTags(state) {
+function selectedFilterTags(state, data) {
   return [
-    byId(TAGS, state?.selections?.situation) || byId(TAGS, "tag-date"),
-    byId(TAGS, state?.selections?.time) || byId(TAGS, "tag-afternoon"),
-    byId(TAGS, state?.selections?.mood) || byId(TAGS, "tag-quiet")
-  ];
+    tagById(data, state?.selections?.situation) || tagById(data, "tag-date"),
+    tagById(data, state?.selections?.time) || tagById(data, "tag-afternoon"),
+    tagById(data, state?.selections?.mood) || tagById(data, "tag-quiet")
+  ].filter(Boolean);
 }
 
-function topFilters(state, count = 5) {
-  const selected = selectedFilterTags(state);
+function topFilters(state, data, count = 5) {
+  const selected = selectedFilterTags(state, data);
   const current = state?.selections?.savedFilter;
+  const locationLabel = state?.selections?.locationMode === "pin"
+    ? `핀 주변 ${Number(state?.selections?.locationRadiusKm) || 3}km`
+    : "서울 전체";
   const specs = [
-    ["연남·망원", "tag-yeonnam", "saved:map-pin"],
+    [locationLabel, "location", "saved:map-pin"],
     ...selected.map((tag) => [tag.name, tag.id, ""]),
     ["조건 변경", "filters", "saved:sliders"]
   ].slice(0, count);
@@ -139,28 +186,30 @@ function topFilters(state, count = 5) {
   return row;
 }
 
-function compactTags(item, startIndex, limit = 2) {
+function compactTags(data, item, startIndex, limit = 2) {
   const wrap = el("div", "saved-inline-tags");
-  tagsFor(item).slice(0, limit).forEach((tag, index) => {
-    wrap.append(filterChip(tag.name, tag.id, false, `chip#${startIndex + index}`));
+  selectTagsFor(data, item).slice(0, limit).forEach((tag, index) => {
+    const staticTag = el("span", "saved-chip", tag.name);
+    staticTag.dataset.measureKey = `chip#${startIndex + index}`;
+    wrap.append(staticTag);
   });
   return wrap;
 }
 
-function recommendationCard(place, index) {
+function recommendationCard(data, place, index) {
   const card = actionRegion(`${place.name} 상세`, "open-place", { placeId: place.id, measureKey: `recommend card${index ? `#${index + 1}` : ""}` }, "saved-recommend-card");
-  card.append(photo(place, "saved-recommend-card__photo"));
+  card.append(photo(data, place, "saved-recommend-card__photo"));
   card.append(savedIcon("chevron-right", "saved-recommend-chevron"));
-  card.append(el("strong", "", place.name), el("small", "", `${tagsFor(place)[0]?.name || "장소"} · ${230 + index * 150}m`));
-  card.append(compactTags(place, 6 + index * 2));
+  card.append(el("strong", "", place.name), el("small", "", `${selectTagsFor(data, place)[0]?.name || "장소"} · ${230 + index * 150}m`));
+  card.append(compactTags(data, place, 6 + index * 2));
   return card;
 }
 
-function placeRow(place, index) {
+function placeRow(data, place, index) {
   const row = actionRegion(`${place.name} 상세`, "open-place", { placeId: place.id, measureKey: `list row${index ? `#${index + 1}` : ""}` }, "saved-place-row");
-  row.append(photo(place, "saved-place-row__photo"));
+  row.append(photo(data, place, "saved-place-row__photo"));
   const copy = el("div", "saved-place-row__copy");
-  copy.append(el("strong", "", place.name), el("small", "", `${tagsFor(place)[0]?.name || "장소"} · 도보 ${place.walkingMinutes}분`), compactTags(place, 12 + index * 2));
+  copy.append(el("strong", "", place.name), el("small", "", `${selectTagsFor(data, place)[0]?.name || "장소"} · 도보 ${place.walkingMinutes}분`), compactTags(data, place, 12 + index * 2));
   const score = el("span", "saved-place-row__score", `적합도 ${92 - index * 4}`);
   const add = button(`${place.name} 코스에 추가`, "add-place-to-route", { placeId: place.id, measureKey: `icon / add route${index ? `#${index + 1}` : ""}` }, "saved-add-route");
   add.append(savedIcon("add-course"));
@@ -168,32 +217,41 @@ function placeRow(place, index) {
   return row;
 }
 
-function renderPlaces(state) {
+function renderPlaces(state, data) {
   const screen = root("c1");
   screen.append(el("div", "saved-map saved-map--overview"));
   const sheet = el("div", "saved-sheet saved-sheet--places");
-  sheet.append(el("span", "saved-handle"), savedTabs("c1"), topFilters(state));
+  sheet.append(el("span", "saved-handle"), savedTabs("c1"), topFilters(state, data));
   const heading = el("div", "saved-section-heading");
-  heading.append(el("h1", "", "오늘 어울리는 장소 추천"), el("small", "", "거리와 분위기가 맞는 장소예요"), el("span", "", "적합도순⌄"));
+  const sort = el("span", "saved-section-sort");
+  sort.append(el("span", "", "적합도순"), sharedIcon("saved-chevron-down", "saved-section-sort__icon", 14));
+  heading.append(el("h1", "", "오늘 어울리는 장소 추천"), el("small", "", "거리와 분위기가 맞는 장소예요"), sort);
   sheet.append(heading);
+  const places = visibleSavedPlaces(state, data);
+  if (places.length === 0) {
+    sheet.append(el("p", "saved-empty-state", "저장한 장소가 아직 없어요"));
+    screen.append(sheet, createBottomNav({ selectedIndex: 1 }));
+    return screen;
+  }
   const recommends = el("div", "saved-recommendations");
-  PLACES.slice(0, 3).forEach((place, index) => recommends.append(recommendationCard(place, index)));
+  places.slice(0, 3).forEach((place, index) => recommends.append(recommendationCard(data, place, index)));
   sheet.append(recommends);
   const list = el("div", "saved-place-list");
-  [PLACES[0], PLACES[9], PLACES[7], PLACES[10], PLACES[6]].forEach((place, index) => list.append(placeRow(place, index)));
+  places.forEach((place, index) => list.append(placeRow(data, place, index)));
   sheet.append(list);
-  screen.append(sheet);
+  screen.append(sheet, createBottomNav({ selectedIndex: 1 }));
   return screen;
 }
 
-function routeCard(route, index) {
+function routeCard(data, route, index) {
   const card = el("article", "saved-route-card");
-  const place = byId(PLACES, route.placeIds[0]);
-  card.append(photo(place, "saved-route-card__photo", index % 3));
+  const walkingMinutes = routeWalkingMinutes(route);
+  const place = placeById(data, route.placeIds[0]);
+  card.append(photo(data, place, "saved-route-card__photo", index % 3));
   const copy = el("div", "saved-route-card__copy");
-  copy.append(el("strong", "", courseName(route)), el("p", "", route.placeIds.map((id) => byId(PLACES, id)?.name).filter(Boolean).join(" → ")), el("small", "", `${route.placeIds.length}곳 · 약 1시간 ${route.walkingMinutes}분 · 걷기 중심`));
+  copy.append(el("strong", "", courseName(route)), el("p", "", route.placeIds.map((id) => placeById(data, id)?.name).filter(Boolean).join(" → ")), el("small", "", `${route.placeIds.length}곳 · 약 1시간 ${walkingMinutes}분 · 걷기 중심`));
   const tags = el("div", "saved-route-tags");
-  tagsFor(route).forEach((tag) => tags.append(el("span", "", tag.name)));
+  selectTagsFor(data, route).forEach((tag) => tags.append(el("span", "", tag.name)));
   copy.append(tags);
   const actions = el("div", "saved-route-card__actions");
   const map = button(`${courseName(route)} 경로 보기`, "open-route-map", { routeId: route.id, measureKey: `button${index ? `#${index * 2 + 1}` : ""}` }, "saved-route-outline");
@@ -202,29 +260,104 @@ function routeCard(route, index) {
   detail.textContent = "상세 보기";
   actions.append(map, detail);
   copy.append(actions);
-  card.append(copy, el("span", "saved-route-more", "⋮"));
+  const more = el("span", "saved-route-more");
+  more.append(sharedIcon("saved-more", "saved-route-more__icon", 18));
+  card.append(copy, more);
   return card;
 }
 
-function renderRoutes(state) {
+function renderRoutes(state, data) {
   const screen = root("c2");
+  const routes = savedRoutes(state);
   const map = el("div", "saved-map saved-map--routes");
-  PLACES.slice(0, 6).forEach((place, index) => {
+  const places = [...new Set(routes.flatMap((route) => route.placeIds))]
+    .map((id) => placeById(data, id))
+    .filter(Boolean);
+  places.slice(0, 6).forEach((place, index) => {
     const marker = el("span", "saved-map-marker");
     marker.style.setProperty("--marker-x", `${88 + (index % 3) * 98}px`);
     marker.style.setProperty("--marker-y", `${40 + Math.floor(index / 3) * 112}px`);
-    marker.append(photo(place, "saved-map-marker__photo"), el("i", "", "●"));
+    marker.append(photo(data, place, "saved-map-marker__photo"), el("i", "", "●"));
     map.append(marker);
   });
   screen.append(map);
   const sheet = el("div", "saved-sheet saved-sheet--routes");
   const title = el("h1", "saved-visually-hidden", "저장한 코스");
-  sheet.append(title, savedTabs("c2"), topFilters(state));
+  sheet.append(title, savedTabs("c2"), topFilters(state, data));
   const list = el("div", "saved-route-list");
-  ROUTES.forEach((route, index) => list.append(routeCard(route, index)));
+  if (routes.length === 0) list.append(el("p", "saved-empty-state", "저장한 코스가 없어요"));
+  routes.forEach((route, index) => list.append(routeCard(data, route, index)));
   sheet.append(list);
-  screen.append(sheet);
+  screen.append(sheet, createBottomNav({ selectedIndex: 1 }));
+  if (state?.overlays?.includes("saved-route-map")) screen.append(renderSavedRouteMap(state, data));
   return screen;
+}
+
+function renderSavedRouteMap(state, data) {
+  const route = routeFor(state, data);
+  const places = (route?.placeIds || []).map((id) => placeById(data, id)).filter(Boolean);
+  const backdrop = el("div", "route-navigation-overlay saved-route-map-overlay");
+  backdrop.style.zIndex = "100";
+  const dialog = el("section", "route-navigation-dialog saved-route-map-dialog");
+  dialog.setAttribute("role", "dialog");
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute("aria-label", `${courseName(route)} 경로`);
+  dialog.style.maxHeight = "760px";
+  dialog.style.overflow = "auto";
+  dialog.append(el("h2", "", courseName(route)));
+
+  const map = el("div", "saved-route-map-canvas");
+  map.style.position = "relative";
+  map.style.width = "100%";
+  map.style.height = "180px";
+  map.style.background = "#f3f5ef";
+  map.style.borderRadius = "8px";
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 300 180");
+  svg.setAttribute("width", "100%");
+  svg.setAttribute("height", "180");
+  svg.dataset.routePath = "true";
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+  const points = places.map((_, index) => `${35 + index * (230 / Math.max(1, places.length - 1))},${index % 2 ? 125 : 55}`).join(" ");
+  path.setAttribute("points", points);
+  path.setAttribute("fill", "none");
+  path.setAttribute("stroke", "#f05a3c");
+  path.setAttribute("stroke-width", "5");
+  path.setAttribute("stroke-linecap", "round");
+  path.setAttribute("stroke-linejoin", "round");
+  svg.append(path);
+  map.append(svg);
+  places.forEach((place, index) => {
+    const marker = el("span", "saved-map-marker", String(index + 1));
+    marker.style.setProperty("--marker-x", `${20 + index * (230 / Math.max(1, places.length - 1))}px`);
+    marker.style.setProperty("--marker-y", `${index % 2 ? 95 : 25}px`);
+    marker.style.zIndex = "1";
+    map.append(marker);
+  });
+  dialog.append(map);
+
+  const stops = el("ol", "saved-route-map-stops");
+  places.forEach((place, index) => {
+    const stop = el("li", "saved-route-map-stop");
+    stop.dataset.routeStop = String(index + 1);
+    stop.append(el("span", "saved-route-stop__number", String(index + 1)), el("strong", "", place.name));
+    stops.append(stop);
+  });
+  dialog.append(stops);
+  const directions = el("a", "route-navigation-link", "지도 앱으로 이동");
+  directions.href = routeDirectionsUrl(places);
+  directions.target = "_blank";
+  directions.rel = "noopener noreferrer";
+  const close = button("경로 닫기", "", {}, "route-navigation-close");
+  delete close.dataset.action;
+  close.textContent = "닫기";
+  close.addEventListener("click", () => document.dispatchEvent(new CustomEvent(OVERLAY_DISMISS_EVENT, { detail: { overlayId: "saved-route-map" } })));
+  dialog.append(directions, close);
+  backdrop.append(dialog);
+  backdrop.addEventListener("click", (event) => {
+    if (event.target === backdrop) document.dispatchEvent(new CustomEvent(OVERLAY_DISMISS_EVENT, { detail: { overlayId: "saved-route-map" } }));
+  });
+  return backdrop;
 }
 
 const FILTER_GROUPS = Object.freeze([
@@ -233,20 +366,76 @@ const FILTER_GROUPS = Object.freeze([
   { title: "분위기", action: "select-mood", key: "mood", tags: ["tag-quiet", "tag-emotional", "tag-good-for-talking", "tag-sophisticated", "tag-bright", "tag-dark"] }
 ]);
 
-export function renderFilters(state) {
+export function renderFilters(state, data) {
   const screen = root("c3");
   const sheet = el("div", "saved-filter-sheet");
   sheet.append(el("span", "saved-handle"), el("h1", "", "어떤 장소를 다시 볼까요?"), el("p", "saved-filter-sheet__lead", "저장한 장소를 지금 상황에 맞게 정리해드릴게요"));
+  const locationMode = state?.selections?.locationMode === "pin" ? "pin" : "seoul";
+  const radiusKm = Number(state?.selections?.locationRadiusKm) || 3;
+  const locationPreview = button(
+    locationMode === "pin" ? `선택한 핀 ${radiusKm}km 위치 설정` : "서울 전체 위치 설정",
+    "toggle-location-picker",
+    { measureKey: "location preview" },
+    "saved-location-preview"
+  );
+  const locationCopy = el("span", "saved-location-preview__copy");
+  locationCopy.append(
+    el("strong", "", locationMode === "pin" ? `핀 주변 ${radiusKm}km` : "서울 전체"),
+    el("small", "", locationMode === "pin" ? "지도를 눌러 중심을 바꿀 수 있어요" : "지도를 눌러 원하는 근방만 볼 수 있어요")
+  );
+  locationPreview.append(savedIcon("map-pin", "saved-location-preview__pin"), locationCopy, sharedIcon("saved-chevron-down", "saved-location-preview__chevron", 18));
+  sheet.append(locationPreview);
+
+  if (state?.selections?.locationPickerOpen) {
+    const picker = el("section", "saved-location-picker");
+    picker.setAttribute("aria-label", "위치와 반경 선택");
+    const map = button("지도에서 핀 위치 선택", "set-location-pin", {
+      measureKey: "location map",
+      value: JSON.stringify(state?.selections?.locationCenter || { latitude: 37.5665, longitude: 126.9780 })
+    }, "saved-location-map");
+    const selectedCenter = state?.selections?.locationCenter;
+    if (selectedCenter) {
+      const pinX = Math.min(100, Math.max(0, ((Number(selectedCenter.longitude) - 126.764) / 0.42) * 100));
+      const pinY = Math.min(100, Math.max(0, ((37.701 - Number(selectedCenter.latitude)) / 0.274) * 100));
+      map.style.setProperty("--pin-x", `${pinX}%`);
+      map.style.setProperty("--pin-y", `${pinY}%`);
+    }
+    map.addEventListener("click", (event) => {
+      const bounds = map.getBoundingClientRect();
+      const horizontal = Math.min(1, Math.max(0, (event.clientX - bounds.left) / bounds.width));
+      const vertical = Math.min(1, Math.max(0, (event.clientY - bounds.top) / bounds.height));
+      map.value = JSON.stringify({
+        latitude: Number((37.701 - vertical * 0.274).toFixed(6)),
+        longitude: Number((126.764 + horizontal * 0.42).toFixed(6))
+      });
+    });
+    map.append(el("span", "saved-location-map__road saved-location-map__road--one"), el("span", "saved-location-map__road saved-location-map__road--two"), savedIcon("map-pin", "saved-location-map__marker"));
+    const hint = el("p", "saved-location-picker__hint", "지도에서 보고 싶은 곳을 눌러 핀을 옮겨보세요");
+    const radius = el("div", "saved-location-radius");
+    radius.append(el("strong", "", "핀 주변 범위"));
+    [1, 3, 5, 10].forEach((value) => {
+      const option = button(`${value}km 반경`, "select-location-radius", { value }, `saved-location-radius__option ${locationMode === "pin" && radiusKm === value ? "is-selected" : ""}`);
+      option.textContent = `${value}km`;
+      option.disabled = locationMode !== "pin";
+      option.setAttribute("aria-pressed", String(locationMode === "pin" && radiusKm === value));
+      radius.append(option);
+    });
+    const allSeoul = button("서울 전체 보기", "select-location-mode", { value: "seoul" }, `saved-location-all ${locationMode === "seoul" ? "is-selected" : ""}`);
+    allSeoul.append(savedIcon("map-pin", "saved-location-all__icon"), el("span", "", "서울 전체"));
+    picker.append(map, hint, radius, allSeoul);
+    sheet.append(picker);
+  }
   let sourceIndex = 0;
   for (const group of FILTER_GROUPS) {
     const fieldset = el("fieldset", "saved-filter-group");
     fieldset.append(el("legend", "", group.title));
     for (const tagId of group.tags) {
-      const tag = byId(TAGS, tagId);
+      const tag = tagById(data, tagId);
+      if (!tag) continue;
       const selected = state?.selections?.[group.key] === tagId || (!state?.selections?.[group.key] && ["tag-date", "tag-afternoon", "tag-quiet", "tag-emotional"].includes(tagId));
       const option = button(tag.name, group.action, { value: tag.id, measureKey: `button${sourceIndex ? `#${sourceIndex + 1}` : ""}` }, `saved-filter-option ${selected ? "is-selected" : ""}`);
       option.setAttribute("aria-pressed", String(selected));
-      option.append(el("span", "saved-filter-option__glyph", tag.group === "time" ? "☼" : "♡"), el("span", "", tag.name));
+      option.append(sharedIcon(tag.group === "time" ? "saved-sun" : "heart", "saved-filter-option__icon", 18), el("span", "", tag.name));
       fieldset.append(option);
       sourceIndex += 1;
     }
@@ -254,9 +443,12 @@ export function renderFilters(state) {
   }
   const summary = el("div", "saved-filter-summary");
   summary.append(el("strong", "", "추천 기준"));
-  selectedFilterTags(state).concat(byId(TAGS, state?.selections?.mood) ? [] : [byId(TAGS, "tag-emotional")]).forEach((tag) => summary.append(el("span", "", tag.name)));
+  selectedFilterTags(state, data)
+    .concat(tagById(data, state?.selections?.mood) ? [] : [tagById(data, "tag-emotional")])
+    .filter(Boolean)
+    .forEach((tag) => summary.append(el("span", "", tag.name)));
   const apply = button("저장 장소 다시 정렬하기", "apply-filters", { measureKey: "CTA" }, "saved-filter-apply");
-  apply.textContent = "✣  저장 장소 다시 정렬하기";
+  apply.append(sharedIcon("saved-sliders", "saved-filter-apply__icon", 18), el("span", "", "저장 장소 다시 정렬하기"));
   const reset = button("초기화", "reset-filters", { measureKey: "button#15" }, "saved-filter-reset");
   reset.textContent = "초기화";
   sheet.append(summary, apply, reset);
@@ -264,20 +456,24 @@ export function renderFilters(state) {
   return screen;
 }
 
-function renderPlaceMap(state) {
-  const place = placeFor(state);
+function renderPlaceMap(state, data) {
+  const place = placeFor(state, data);
   const screen = root("c4");
+  if (!place) {
+    screen.append(el("p", "saved-empty-state", "장소 정보를 찾을 수 없어요"));
+    return screen;
+  }
   const back = button("뒤로 가기", "go-back", { measureKey: "button / back floating" }, "saved-map-control saved-map-control--back");
   back.append(savedIcon("chevron-left"));
   const locate = button("내 위치 찾기", "locate-user", { measureKey: "button / locate floating" }, "saved-map-control saved-map-control--locate");
   locate.append(savedIcon("locate"));
   const toast = el("div", "saved-map-toast", "클립보드에 복사되었어요");
   const card = actionRegion(`${place.name} 장소 보기`, "open-place", { placeId: place.id, measureKey: "place card / selected saved place" }, "saved-map-place-card");
-  card.append(photo(place, "saved-map-place-card__photo"));
+  card.append(photo(data, place, "saved-map-place-card__photo"));
   const copy = el("div", "saved-map-place-card__copy");
   copy.append(el("h1", "", place.name));
   const tagRow = el("div", "saved-inline-tags");
-  tagsFor(place).slice(0, 2).forEach((tag) => tagRow.append(el("span", "saved-static-tag", tag.name)));
+  selectTagsFor(data, place).slice(0, 2).forEach((tag) => tagRow.append(el("span", "saved-static-tag", tag.name)));
   const address = el("small", "saved-map-place-card__address"); address.append(savedIcon("address-pin"), el("span", "", place.address));
   copy.append(tagRow, address);
   const close = button("장소 카드 닫기", "close-place-card", { measureKey: "button / close place card" }, "saved-map-place-card__close");
@@ -297,64 +493,102 @@ function renderPlaceMap(state) {
   return screen;
 }
 
-function visibleRoutePlaces(route, state) {
-  const placeIds = state?.routePlaceIds?.length ? state.routePlaceIds : route.placeIds;
-  const places = placeIds.map((id) => byId(PLACES, id)).filter(Boolean);
-  const replacement = byId(PLACES, state?.selections?.replacementPlaceId);
+function visibleRoutePlaces(route, state, data) {
+  const placeIds = route?.placeIds || [];
+  const places = placeIds.map((id) => placeById(data, id)).filter(Boolean);
+  const replacement = placeById(data, state?.selections?.replacementPlaceId);
   const selectedId = state?.selections?.selectedPlaceId;
   return replacement ? places.map((place) => place.id === selectedId ? replacement : place) : places;
 }
 
-function renderRouteDetail(state) {
-  const route = routeFor(state);
-  const places = visibleRoutePlaces(route, state);
-  const heroPlace = places[0] || PLACES[0];
+function renderRouteDetail(state, data) {
+  const route = routeFor(state, data);
   const screen = root("c6");
+  if (!route) {
+    screen.append(el("p", "saved-empty-state", "코스 정보를 찾을 수 없어요"));
+    return screen;
+  }
+  const walkingMinutes = routeWalkingMinutes(route);
+  const places = visibleRoutePlaces(route, state, data);
+  const heroPlace = places[0] || null;
   const hero = el("div", "saved-route-hero");
-  const heroImage = photo(heroPlace, "saved-route-hero__photo", 1);
-  heroImage.src = "/app-preview/assets/saved/c6-hero.png";
+  const heroImage = photo(data, heroPlace, "saved-route-hero__photo", 1);
   hero.append(heroImage);
   const sheet = el("div", "saved-route-detail-sheet");
   sheet.append(el("span", "saved-handle"));
   const header = el("header", "saved-route-detail-header");
   const back = button("뒤로 가기", "go-back", { measureKey: "Icon / back sheet" }, "saved-route-detail-back"); back.append(icon("back"));
-  const title = el("div", ""); title.append(el("h1", "", courseName(route)), el("small", "", `${places.length}곳 · 1시간 ${route.walkingMinutes}분 · 도보 ${Math.max(5, route.walkingMinutes - 32)}분`));
+  const title = el("div", ""); title.append(el("h1", "", courseName(route)), el("small", "", `${places.length}곳 · 1시간 ${walkingMinutes}분 · 도보 ${Math.max(5, walkingMinutes - 32)}분`));
   const shareIcon = button("코스 공유하기", "open-share", { type: "route", id: route.id, measureKey: "Icon / share-2 / header" }, "saved-route-detail-share"); shareIcon.append(icon("share"));
   header.append(back, title, shareIcon);
   const actions = el("div", "saved-route-detail-actions");
-  const navigate = button("길찾기", "start-navigation", { routeId: route.id, measureKey: "Button / navigate bg" }, "saved-route-detail-navigate"); navigate.textContent = "➤  길찾기";
-  const share = button("공유하기", "open-share", { type: "route", id: route.id, measureKey: "Button / share bg" }, "saved-route-detail-share-button"); share.textContent = "⌯  공유하기";
+  const navigate = button("길찾기", "start-navigation", { routeId: route.id, measureKey: "Button / navigate bg" }, "saved-route-detail-navigate");
+  navigate.append(sharedIcon("discover-send", "saved-route-detail-action__icon", 22), el("span", "", "길찾기"));
+  const share = button("공유하기", "open-share", { type: "route", id: route.id, measureKey: "Button / share bg" }, "saved-route-detail-share-button");
+  share.append(sharedIcon("share", "saved-route-detail-action__icon", 18), el("span", "", "공유하기"));
   actions.append(navigate, share);
   const list = el("ol", "saved-route-stops");
   places.forEach((place, index) => {
     const item = el("li", "saved-route-stop");
     item.append(el("span", "saved-route-stop__number", String(index + 1)));
     const open = button(`${place.name} 장소 보기`, "open-place", { placeId: place.id, measureKey: `Place photo crop ${index + 1}` }, "saved-route-stop__photo-button");
-    open.append(photo(place, "saved-route-stop__photo"));
+    open.append(photo(data, place, "saved-route-stop__photo"));
     const copy = el("div", "saved-route-stop__copy");
-    copy.append(el("strong", "", place.name), el("span", "saved-static-tag", tagsFor(place)[0]?.name || "장소"), el("small", "", `${tagsFor(place)[0]?.name || "장소"} · ${20 + index * 15}분`));
+    copy.append(el("strong", "", place.name), el("span", "saved-static-tag", selectTagsFor(data, place)[0]?.name || "장소"), el("small", "", `${selectTagsFor(data, place)[0]?.name || "장소"} · ${20 + index * 15}분`));
     const replace = button(`${place.name} 바꾸기`, "replace-route-place", { placeId: place.id, measureKey: `Change place bg ${index + 1}` }, "saved-route-stop__replace");
-    replace.textContent = "↻";
-    item.append(open, copy, replace, el("span", "saved-route-stop__chevron", "›"));
+    replace.append(sharedIcon("saved-refresh", "saved-route-stop__replace-icon", 18));
+    item.append(open, copy, replace, sharedIcon("saved-chevron-right", "saved-route-stop__chevron", 18));
     list.append(item);
   });
   sheet.append(header, actions, list);
   screen.append(hero, sheet);
+  if (state?.overlays?.includes("external-map")) screen.append(renderRouteDirections(places));
   return screen;
 }
 
-function candidateCard(place, index, state) {
+function renderRouteDirections(places) {
+  const backdrop = el("div", "route-navigation-overlay");
+  const dialog = el("section", "route-navigation-dialog");
+  dialog.setAttribute("role", "dialog");
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute("aria-label", "코스 길찾기");
+  dialog.append(el("h2", "", "길찾기를 시작할까요?"));
+  const intermediate = places.slice(1, -1);
+  dialog.append(el("p", "route-navigation-waypoints", intermediate.length
+    ? `남은 경유지 ${intermediate.length}곳: ${intermediate.map((place) => place.name).join(" → ")}`
+    : "남은 경유지 없이 목적지로 이동해요"));
+  const stops = el("ol", "route-navigation-stops");
+  places.forEach((place) => stops.append(el("li", "", place.name)));
+  const link = el("a", "route-navigation-link", "지도 앱으로 이동");
+  link.href = routeDirectionsUrl(places);
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  const close = button("취소", "", {}, "route-navigation-close");
+  delete close.dataset.action;
+  close.textContent = "취소";
+  close.addEventListener("click", () => document.dispatchEvent(new CustomEvent(OVERLAY_DISMISS_EVENT, { detail: { overlayId: "external-map" } })));
+  dialog.append(stops, link, close);
+  backdrop.append(dialog);
+  backdrop.addEventListener("click", (event) => {
+    if (event.target === backdrop) document.dispatchEvent(new CustomEvent(OVERLAY_DISMISS_EVENT, { detail: { overlayId: "external-map" } }));
+  });
+  return backdrop;
+}
+
+function candidateCard(data, place, index, state) {
   const selected = state?.selections?.replacementPlaceId
     ? state.selections.replacementPlaceId === place.id
     : index === 0;
   const card = el("article", `saved-candidate ${selected ? "is-selected" : ""}`);
-  card.append(photo(place, "saved-candidate__photo", 1));
-  const user = byId(USERS, place.userId) || USERS[0];
+  card.append(photo(data, place, "saved-candidate__photo", 1));
+  const user = profileById(data, place.userId);
   const userRow = el("div", "saved-candidate__user");
-  const avatar = el("img", ""); avatar.src = user.avatarUrl; avatar.alt = "";
+  const avatar = el("img", "");
+  if (user?.avatarUrl) avatar.src = user.avatarUrl;
+  avatar.alt = "";
   const likeCount = el("span", "saved-candidate__like-count");
   likeCount.append(savedIcon("heart-count"), el("span", "", String(place.savedCount)));
-  userRow.append(avatar, el("span", "", user.handle), likeCount);
+  userRow.append(avatar, el("span", "", user?.handle || ""), likeCount);
   card.append(userRow);
   if (!selected) {
     const likeIndex = index - 1;
@@ -363,7 +597,7 @@ function candidateCard(place, index, state) {
     card.append(like);
   }
   card.append(el("h2", "", place.name), el("p", "", place.summary));
-  const tagRow = el("div", "saved-candidate__tags"); tagsFor(place).slice(0, 2).forEach((tag) => tagRow.append(el("span", "", tag.name))); card.append(tagRow);
+  const tagRow = el("div", "saved-candidate__tags"); selectTagsFor(data, place).slice(0, 2).forEach((tag) => tagRow.append(el("span", "", tag.name))); card.append(tagRow);
   const foot = el("div", "saved-candidate__foot");
   const walk = el("small", ""); walk.append(savedIcon("footprints-muted"), el("span", "", `도보 ${place.walkingMinutes}분`)); foot.append(walk);
   const replace = button(`${place.name}으로 교체`, "replace-place", { placeId: place.id, value: place.id, measureKey: `button${index ? `#${index + 1}` : ""}` }, "saved-candidate__replace"); replace.append(savedIcon("refresh"), el("span", "", "교체"));
@@ -374,9 +608,13 @@ function candidateCard(place, index, state) {
   return card;
 }
 
-function renderReplace(state) {
-  const current = placeFor(state);
+function renderReplace(state, data) {
+  const current = placeFor(state, data);
   const screen = root("c7");
+  if (!current) {
+    screen.append(el("p", "saved-empty-state", "장소 정보를 찾을 수 없어요"));
+    return screen;
+  }
   const header = el("header", "saved-replace-header");
   const back = button("뒤로 가기", "go-back", { measureKey: "button / back" }, "saved-replace-back"); back.append(savedIcon("arrow-left"));
   const title = el("div", ""); title.append(el("h1", "", "비슷한 장소로 바꾸기"), el("p", "", `${current.name} 대신 갈 곳을 골라요`));
@@ -387,10 +625,21 @@ function renderReplace(state) {
   const excluded = el("div", "saved-replace-excluded");
   const excludedIcon = el("span", ""); excludedIcon.append(savedIcon("x"));
   excluded.append(excludedIcon, el("small", "", "기존 장소는 제외했어요"), el("strong", "", current.name));
-  const candidates = [PLACES[3], PLACES[1], PLACES[2], PLACES[4]];
-  const grid = el("div", "saved-candidate-grid"); candidates.forEach((place, index) => grid.append(candidateCard(place, index, state)));
+  const routePlaceIds = new Set(routeFor(state, data)?.placeIds || []);
+  const currentTags = new Set(current.tagIds || []);
+  const candidates = data.places
+    .filter((place) => place.id !== current.id && !routePlaceIds.has(place.id))
+    .map((place, index) => ({
+      place,
+      index,
+      sharedTagCount: (place.tagIds || []).filter((tagId) => currentTags.has(tagId)).length
+    }))
+    .sort((left, right) => right.sharedTagCount - left.sharedTagCount || left.index - right.index)
+    .slice(0, 4)
+    .map(({ place }) => place);
+  const grid = el("div", "saved-candidate-grid"); candidates.forEach((place, index) => grid.append(candidateCard(data, place, index, state)));
   const footer = el("footer", "saved-replace-footer");
-  footer.append(el("strong", "", `후보 ${PLACES.length}곳`));
+  footer.append(el("strong", "", `후보 ${data.places.length}곳`));
   const confirm = button("선택한 장소로 교체", "confirm-place-selection", { measureKey: "CTA" }, "saved-replace-confirm"); confirm.textContent = "선택한 장소로 교체"; footer.append(confirm);
   screen.append(header, filters, excluded, grid, footer);
   return screen;

@@ -112,6 +112,9 @@ test("CLI prints usage and exits non-zero without a command", () => {
   assert.match(result.stderr, /score/);
   assert.match(result.stderr, /validate/);
   assert.match(result.stderr, /finalize/);
+  assert.match(result.stderr, /buffer-channels/);
+  assert.match(result.stderr, /buffer-draft/);
+  assert.match(result.stderr, /buffer-schedule/);
 });
 
 test("each CLI command checks its exact argument count before reading files", () => {
@@ -120,10 +123,16 @@ test("each CLI command checks its exact argument count before reading files", ()
     { name: "score", count: 4 },
     { name: "validate", count: 3 },
     { name: "finalize", count: 4 },
+    { name: "buffer-channels", count: 0 },
+    { name: "buffer-draft", count: 2 },
+    { name: "buffer-schedule", count: 3 },
   ];
 
   for (const command of commands) {
-    for (const count of [command.count - 1, command.count + 1]) {
+    const invalidCounts = command.count === 0
+      ? [command.count + 1]
+      : [command.count - 1, command.count + 1];
+    for (const count of invalidCounts) {
       const args = Array.from({ length: count }, (_, index) => `missing-${index}`);
       const result = runCli([command.name, ...args]);
 

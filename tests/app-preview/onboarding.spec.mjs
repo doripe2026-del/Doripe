@@ -34,6 +34,10 @@ const FLOW_A = Object.freeze([
 const EXISTING_EMAIL = "doripe@example.com";
 const LOGIN_EMAIL = "dori@doripe.kr";
 const VALID_PASSWORD = "Doripe123";
+const AUTH_SESSION_STORAGE_KEY = "doripe.app_preview.auth.session.v1";
+const AUTH_PKCE_VERIFIER_STORAGE_KEY = "doripe.app_preview.auth.pkce_verifier.v1";
+const TEST_SUPABASE_URL = "https://demo-project.supabase.co";
+const TEST_PUBLISHABLE_KEY = "sb_publishable_doripe_test_key_1234567890";
 
 test.use({ viewport: { width: 393, height: 852 } });
 
@@ -41,10 +45,33 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => localStorage.clear());
 });
 
+test.afterEach(async ({ page }) => {
+  await page.unrouteAll({ behavior: "ignoreErrors" });
+});
+
 async function gotoScreen(page, screenId, { staticFrame = true } = {}) {
   const suffix = staticFrame ? "&static=1" : "";
   await page.goto(`/app-preview/?screen=${screenId}${suffix}`);
   return page.locator(`[data-screen-id="${screenId}"]`);
+}
+
+async function storeAuthenticatedPreviewSession(page) {
+  await page.goto("/app-preview/?screen=a1");
+  await page.evaluate((key) => sessionStorage.setItem(key, JSON.stringify({
+    accessToken: "preview-access-token",
+    refreshToken: "preview-refresh-token",
+    expiresAt: Date.now() + 60_000,
+    flow: "auth"
+  })), AUTH_SESSION_STORAGE_KEY);
+}
+
+async function mockAuth(page, responder) {
+  await page.route("**/api/app-auth-config", (route) => route.fulfill({
+    status: 200,
+    contentType: "application/json",
+    body: JSON.stringify({ supabaseUrl: TEST_SUPABASE_URL, supabaseKey: TEST_PUBLISHABLE_KEY })
+  }));
+  await page.route(`${TEST_SUPABASE_URL}/auth/v1/**`, responder);
 }
 
 async function compareWithReference(page, screen, screenId, testInfo) {
@@ -253,9 +280,7 @@ test("start, login, failure, and reset-password states follow the A contract", a
 });
 
 test("signup shows email format and already-used email frames", async ({ page }) => {
-  await gotoScreen(page, "a1");
-  await page.getByRole("button", { name: "시작하기" }).click();
-  await expect(page).toHaveURL(/screen=a9/);
+  await gotoScreen(page, "a9");
 
   await page.getByLabel("이메일").fill("doripe@");
   await page.getByRole("button", { name: "다음", exact: true }).click();
@@ -297,15 +322,366 @@ test("password rules and reset confirmation validate before continuing", async (
   await expect(page).toHaveURL(/screen=a3/);
 });
 
-test("A7 persists its visible password before matching confirmation is saved", async ({ page }) => {
+test("password actions never persist password values", async ({ page }) => {
   await gotoScreen(page, "a7");
   await page.getByLabel("비밀번호 확인").fill("Doripe12");
   await page.getByRole("button", { name: "저장하기", exact: true }).click();
   await expect(page).toHaveURL(/screen=a3/);
 
   const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("doripe_app_preview_v1")));
-  expect(stored.form.newPassword).toBe("Doripe12");
-  expect(stored.form.passwordConfirmation).toBe("Doripe12");
+  expect(JSON.stringify(stored)).not.toContain("Doripe12");
+  expect(stored.form.newPassword).toBeUndefined();
+  expect(stored.form.passwordConfirmation).toBeUndefined();
+});
+
+test("normal login stays on the form when auth config is unavailable and clears the submitted password", async ({ page }) => {
+  await gotoScreen(page, "a3", { staticFrame: false });
+  await page.getByLabel("이메일").fill(LOGIN_EMAIL);
+  await page.getByLabel("비밀번호").fill(VALID_PASSWORD);
+  const submit = page.getByRole("button", { name: "로그인", exact: true });
+
+  await submit.click();
+
+  await expect(page).toHaveURL(/screen=a3/);
+  await expect(page.getByRole("status")).toContainText("계정 기능을 사용할 수 없어요");
+  await expect(submit).toBeEnabled();
+  await expect(page.getByLabel("비밀번호")).toHaveValue("");
+  const persisted = await page.evaluate(({ password, sessionKey }) => ({
+    local: localStorage.getItem("doripe_app_preview_v1"),
+    history: JSON.stringify(history.state),
+    session: sessionStorage.getItem(sessionKey),
+    body: document.body.textContent,
+    password
+  }), { password: VALID_PASSWORD, sessionKey: AUTH_SESSION_STORAGE_KEY });
+  expect(persisted.local).not.toContain(VALID_PASSWORD);
+  expect(persisted.history).not.toContain(VALID_PASSWORD);
+  expect(persisted.session).toBeNull();
+  expect(persisted.body).not.toContain(persisted.password);
+});
+
+test("production host static=1 can never activate fixture authentication", async ({ page, baseURL }) => {
+  await page.route("https://preview.doripe.kr/**", async (route) => {
+    const requested = new URL(route.request().url());
+    const local = new URL(`${requested.pathname}${requested.search}`, baseURL);
+    const response = await page.request.fetch(local.href);
+    await route.fulfill({ response });
+  });
+  await page.goto("https://preview.doripe.kr/app-preview/?screen=a3&static=1");
+  await page.getByLabel("이메일").fill(LOGIN_EMAIL);
+  await page.getByLabel("비밀번호").fill(VALID_PASSWORD);
+  await page.getByRole("button", { name: "로그인", exact: true }).click();
+
+  await expect(page).toHaveURL(/screen=a3/);
+  expect(new URL(page.url()).searchParams.has("static")).toBe(false);
+  await expect(page.getByRole("status")).toContainText("계정 기능을 사용할 수 없어요");
+});
+
+test("login disables submission and navigates only after Supabase succeeds", async ({ page }) => {
+  await mockAuth(page, async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        access_token: "access-token",
+        refresh_token: "refresh-token",
+        expires_in: 3600,
+        token_type: "bearer",
+        user: { id: "user-1" }
+      })
+    });
+  });
+  await gotoScreen(page, "a3", { staticFrame: false });
+  await page.getByLabel("이메일").fill(`  ${LOGIN_EMAIL.toUpperCase()}  `);
+  await page.getByLabel("비밀번호").fill(VALID_PASSWORD);
+  const submit = page.getByRole("button", { name: "로그인", exact: true });
+
+  await submit.click({ noWaitAfter: true });
+  await expect(submit).toBeDisabled();
+  await expect(page).toHaveURL(/screen=b1/);
+
+  const persisted = await page.evaluate((sessionKey) => ({
+    local: localStorage.getItem("doripe_app_preview_v1"),
+    history: JSON.stringify(history.state),
+    session: sessionStorage.getItem(sessionKey)
+  }), AUTH_SESSION_STORAGE_KEY);
+  expect(persisted.local).not.toContain(VALID_PASSWORD);
+  expect(persisted.history).not.toContain(VALID_PASSWORD);
+  expect(JSON.parse(persisted.session)).toMatchObject({ accessToken: "access-token", refreshToken: "refresh-token" });
+});
+
+test("Supabase login failure uses a safe message and does not navigate", async ({ page }) => {
+  await mockAuth(page, (route) => route.fulfill({
+    status: 400,
+    contentType: "application/json",
+    body: JSON.stringify({ message: "User not found" })
+  }));
+  await gotoScreen(page, "a3", { staticFrame: false });
+  await page.getByLabel("이메일").fill(LOGIN_EMAIL);
+  await page.getByLabel("비밀번호").fill(VALID_PASSWORD);
+
+  await page.getByRole("button", { name: "로그인", exact: true }).click();
+
+  await expect(page).toHaveURL(/screen=a3/);
+  await expect(page.getByRole("status")).toHaveText("이메일 또는 비밀번호를 확인해 주세요");
+  await expect(page.getByText("User not found")).toHaveCount(0);
+  await expect(page.getByLabel("비밀번호")).toHaveValue("");
+});
+
+test("signup without a session stays on the form with neutral email-check feedback", async ({ page }) => {
+  const requestPaths = [];
+  await mockAuth(page, async (route) => {
+    requestPaths.push(new URL(route.request().url()).pathname);
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(route.request().url().endsWith("/signup") ? { user: { id: "pending-user" } } : {})
+    });
+  });
+
+  await gotoScreen(page, "a9", { staticFrame: false });
+  await page.getByLabel("이메일").fill("new-user@doripe.kr");
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  await expect(page).toHaveURL(/screen=a12/);
+  await page.getByLabel("비밀번호").fill(VALID_PASSWORD);
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  await expect(page).toHaveURL(/screen=a12/);
+  await expect(page.getByRole("status")).toHaveText("이메일을 확인해 주세요");
+
+  await gotoScreen(page, "a5", { staticFrame: false });
+  await page.getByLabel("이메일 주소").fill(LOGIN_EMAIL);
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  await expect(page).toHaveURL(/screen=a6/);
+  expect(requestPaths).toEqual(["/auth/v1/signup", "/auth/v1/recover"]);
+});
+
+test("session-bearing signup still uses neutral verification and stores no session", async ({ page }) => {
+  await mockAuth(page, (route) => route.fulfill({
+    status: 200,
+    contentType: "application/json",
+    body: JSON.stringify({
+      access_token: "signup-access",
+      refresh_token: "signup-refresh",
+      expires_in: 3600,
+      token_type: "bearer",
+      user: { id: "new-user" }
+    })
+  }));
+  await gotoScreen(page, "a9", { staticFrame: false });
+  await page.getByLabel("이메일").fill("new-user@doripe.kr");
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  await page.getByLabel("비밀번호").fill(VALID_PASSWORD);
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  await expect(page).toHaveURL(/screen=a12/);
+  await expect(page.getByRole("status")).toHaveText("이메일을 확인해 주세요");
+  expect(await page.evaluate((key) => sessionStorage.getItem(key), AUTH_SESSION_STORAGE_KEY)).toBeNull();
+});
+
+test("new and known-existing signup outcomes have identical UI and navigation", async ({ page }) => {
+  await mockAuth(page, async (route) => {
+    const email = route.request().postDataJSON().email;
+    await route.fulfill(email.startsWith("existing") ? {
+      status: 400,
+      contentType: "application/json",
+      body: JSON.stringify({ code: "user_already_exists", message: "User already registered" })
+    } : {
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        access_token: "discarded-access",
+        refresh_token: "discarded-refresh",
+        expires_in: 3600,
+        token_type: "bearer",
+        user: { id: "new-user" }
+      })
+    });
+  });
+  const outcomes = [];
+  for (const email of ["new-user@doripe.kr", "existing-user@doripe.kr"]) {
+    await gotoScreen(page, "a9", { staticFrame: false });
+    await page.getByLabel("이메일").fill(email);
+    await page.getByRole("button", { name: "다음", exact: true }).click();
+    await page.getByLabel("비밀번호").fill(VALID_PASSWORD);
+    await page.getByRole("button", { name: "다음", exact: true }).click();
+    outcomes.push({
+      screen: new URL(page.url()).searchParams.get("screen"),
+      message: await page.getByRole("status").textContent(),
+      session: await page.evaluate((key) => sessionStorage.getItem(key), AUTH_SESSION_STORAGE_KEY)
+    });
+  }
+  expect(outcomes[0]).toEqual(outcomes[1]);
+  expect(outcomes[0]).toEqual({ screen: "a12", message: "이메일을 확인해 주세요", session: null });
+});
+
+test("an auth result cannot navigate after its screen has been left", async ({ page }) => {
+  let releaseLogin;
+  const loginReleased = new Promise((resolve) => { releaseLogin = resolve; });
+  await mockAuth(page, async (route) => {
+    await loginReleased;
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        access_token: "late-access",
+        refresh_token: "late-refresh",
+        expires_in: 3600,
+        token_type: "bearer",
+        user: { id: "user-1" }
+      })
+    });
+  });
+  await gotoScreen(page, "a3", { staticFrame: false });
+  await page.getByLabel("이메일").fill(LOGIN_EMAIL);
+  await page.getByLabel("비밀번호").fill(VALID_PASSWORD);
+  const submit = page.getByRole("button", { name: "로그인", exact: true });
+  await submit.click({ noWaitAfter: true });
+  await expect(submit).toBeDisabled();
+
+  await page.evaluate(() => document.dispatchEvent(new CustomEvent("app-preview:screen-navigate", {
+    detail: { screenId: "a1" }
+  })));
+  await expect(page).toHaveURL(/screen=a1/);
+  releaseLogin();
+  await page.waitForTimeout(100);
+  await expect(page).toHaveURL(/screen=a1/);
+  expect(await page.evaluate((key) => sessionStorage.getItem(key), AUTH_SESSION_STORAGE_KEY)).toBeNull();
+});
+
+test("recovery URL tokens are scrubbed before a real password update returns to login", async ({ page }) => {
+  let updateRequest = null;
+  await page.route("**/api/app-auth-config", (route) => route.fulfill({
+    status: 200,
+    contentType: "application/json",
+    body: JSON.stringify({ supabaseUrl: TEST_SUPABASE_URL, supabaseKey: TEST_PUBLISHABLE_KEY })
+  }));
+  await page.route(`${TEST_SUPABASE_URL}/auth/v1/user`, async (route) => {
+    if (route.request().method() === "GET") {
+      await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ id: "user-1" }) });
+      return;
+    }
+    updateRequest = {
+      method: route.request().method(),
+      authorization: route.request().headers().authorization,
+      body: route.request().postDataJSON()
+    };
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ user: { id: "user-1" } }) });
+  });
+  await page.goto("/app-preview/?screen=a7#access_token=recovery-access&refresh_token=recovery-refresh&expires_in=600&token_type=bearer&type=recovery");
+  await expect.poll(() => new URL(page.url()).hash).toBe("");
+  await page.getByLabel("새 비밀번호", { exact: true }).fill("Updated123");
+  await page.getByLabel("비밀번호 확인").fill("Updated123");
+
+  await page.getByRole("button", { name: "저장하기" }).click();
+
+  await expect(page).toHaveURL(/screen=a3/);
+  expect(updateRequest).toEqual({
+    method: "PUT",
+    authorization: "Bearer recovery-access",
+    body: { password: "Updated123" }
+  });
+  const persisted = await page.evaluate((sessionKey) => ({
+    local: localStorage.getItem("doripe_app_preview_v1"),
+    history: JSON.stringify(history.state),
+    session: sessionStorage.getItem(sessionKey),
+    body: document.body.textContent
+  }), AUTH_SESSION_STORAGE_KEY);
+  expect(persisted.local).not.toContain("Updated123");
+  expect(persisted.history).not.toContain("Updated123");
+  expect(persisted.session).toBeNull();
+  expect(persisted.body).not.toContain("Updated123");
+});
+
+test("PKCE recovery initiated in one tab completes once in a second tab", async ({ page }) => {
+  const requests = [];
+  const context = page.context();
+  await context.route("**/api/app-auth-config", (route) => route.fulfill({
+    status: 200,
+    contentType: "application/json",
+    body: JSON.stringify({ supabaseUrl: TEST_SUPABASE_URL, supabaseKey: TEST_PUBLISHABLE_KEY })
+  }));
+  await context.route(`${TEST_SUPABASE_URL}/auth/v1/**`, async (route) => {
+    requests.push({ method: route.request().method(), url: route.request().url(), body: route.request().postDataJSON() });
+    const isExchange = route.request().url().includes("grant_type=pkce");
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(isExchange ? {
+        access_token: "pkce-access",
+        refresh_token: "pkce-refresh",
+        expires_in: 600,
+        token_type: "bearer",
+        user: { id: "user-1" }
+      } : { user: { id: "user-1" } })
+    });
+  });
+  await gotoScreen(page, "a5", { staticFrame: false });
+  await page.getByLabel("이메일 주소").fill(LOGIN_EMAIL);
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  const verifierRecord = await page.evaluate((key) => localStorage.getItem(key), AUTH_PKCE_VERIFIER_STORAGE_KEY);
+  expect(verifierRecord).not.toBeNull();
+  expect(verifierRecord).not.toMatch(/access|refresh|password/i);
+
+  const recoveryPage = await context.newPage();
+  await recoveryPage.goto("/app-preview/?screen=a7&code=secret-code");
+  await expect.poll(() => new URL(recoveryPage.url()).searchParams.has("code")).toBe(false);
+  await expect(recoveryPage.locator('[data-screen-id="a7"]')).toBeVisible();
+  expect(await recoveryPage.evaluate((key) => localStorage.getItem(key), AUTH_PKCE_VERIFIER_STORAGE_KEY)).toBeNull();
+  expect(await page.evaluate((key) => sessionStorage.getItem(key), AUTH_SESSION_STORAGE_KEY)).toBeNull();
+  await recoveryPage.getByLabel("새 비밀번호", { exact: true }).fill("Updated123");
+  await recoveryPage.getByLabel("비밀번호 확인").fill("Updated123");
+  await recoveryPage.getByRole("button", { name: "저장하기" }).click();
+  await expect(recoveryPage).toHaveURL(/screen=a3/);
+  const exchange = requests.find((request) => request.url.includes("grant_type=pkce"));
+  expect(exchange.body.auth_code).toBe("secret-code");
+  expect(exchange.body.code_verifier).toMatch(/^[A-Za-z0-9_-]{56}$/);
+  await recoveryPage.close();
+});
+
+test("guest MVP screens open without login while account-only screens stay protected", async ({ page }) => {
+  for (const screenId of ["b1", "e3", "a18", "a22"]) {
+    await page.goto(`/app-preview/?screen=${screenId}`);
+    await expect(page).toHaveURL(new RegExp(`screen=${screenId}`));
+  }
+  for (const screenId of ["a7", "a14"]) {
+    await page.goto(`/app-preview/?screen=${screenId}`);
+    await expect(page).toHaveURL(/screen=a3/);
+  }
+  await page.goto("/app-preview/?screen=a9");
+  await expect(page).toHaveURL(/screen=a9/);
+  await page.goto("/app-preview/?screen=a3");
+  await expect(page).toHaveURL(/screen=a3/);
+
+  const persistedPage = await page.context().newPage();
+  await persistedPage.addInitScript(() => localStorage.setItem("doripe_app_preview_v1", JSON.stringify({
+    currentScreenId: "e1",
+    history: ["b1"]
+  })));
+  await persistedPage.goto("/app-preview/");
+  await expect(persistedPage).toHaveURL(/screen=e1/);
+  await persistedPage.close();
+});
+
+test("invalid refresh clears startup session without blocking a guest MVP screen", async ({ page }) => {
+  await page.addInitScript((key) => sessionStorage.setItem(key, JSON.stringify({
+    accessToken: "expired-access",
+    refreshToken: "invalid-refresh",
+    expiresAt: Date.now() - 1
+  })), AUTH_SESSION_STORAGE_KEY);
+  await mockAuth(page, (route) => route.fulfill({
+    status: 400,
+    contentType: "application/json",
+    body: JSON.stringify({ message: "Invalid Refresh Token" })
+  }));
+  await page.goto("/app-preview/?screen=b1");
+  await expect(page).toHaveURL(/screen=b1/);
+  expect(await page.evaluate((key) => sessionStorage.getItem(key), AUTH_SESSION_STORAGE_KEY)).toBeNull();
+});
+
+test("start enters the guest onboarding without showing login or signup", async ({ page }) => {
+  await page.goto("/app-preview/?screen=a1");
+  await page.getByRole("button", { name: "시작하기", exact: true }).click();
+  await expect(page).toHaveURL(/screen=a18/);
+  await expect(page.locator('[data-screen-id="a18"]')).toBeVisible();
 });
 
 test("profile setup validates birth year, gender, and nickname", async ({ page }) => {
@@ -336,7 +712,6 @@ test("profile setup validates birth year, gender, and nickname", async ({ page }
 test("visible Flow A defaults persist before their continuation actions", async ({ page }) => {
   for (const [screenId, field, value] of [
     ["a9", "email", "dori@doripe.kr"],
-    ["a13", "password", "Doripe1234"],
     ["a14", "birthYear", "2000"],
     ["a15", "gender", "female"],
     ["a16", "nickname", "dori"],
@@ -363,7 +738,7 @@ test("A6 resend is an interactive contracted control", async ({ page }) => {
   await expect(page).toHaveURL(/screen=a6/);
 });
 
-test("source, habit, and neighborhood selections persist exact values", async ({ page }) => {
+test("source and habit persist while beta starts across all Seoul", async ({ page }) => {
   await gotoScreen(page, "a18");
   await page.getByRole("button", { name: "인스타 저장" }).click();
   await page.getByRole("button", { name: "모르겠어요" }).click();
@@ -371,17 +746,20 @@ test("source, habit, and neighborhood selections persist exact values", async ({
 
   await page.getByRole("button", { name: "인스타그램" }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
-  await expect(page).toHaveURL(/screen=a20/);
-  await page.getByRole("button", { name: "연남" }).click();
-  await expect(page.getByText("연남에서 시작할게요")).toBeVisible();
+  await expect(page).toHaveURL(/screen=a22/);
 
   const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("doripe_app_preview_v1")));
   expect(stored.form.habit).toBe("instagram-saved");
   expect(stored.form.source).toBe("instagram");
-  expect(stored.form.neighborhoodId).toBe("yeonnam");
+  expect(stored.selections).toMatchObject({
+    placeSource: "instagram-saved",
+    referralSource: "instagram",
+    locationMode: "seoul"
+  });
 });
 
 test("the selected neighborhood labels both completion frames", async ({ page }) => {
+  await storeAuthenticatedPreviewSession(page);
   await gotoScreen(page, "a20", { staticFrame: false });
   await page.getByRole("button", { name: "용산", exact: true }).click();
   await page.getByRole("button", { name: "시작", exact: true }).click();
@@ -392,30 +770,46 @@ test("the selected neighborhood labels both completion frames", async ({ page })
 });
 
 test("completion loading progresses monotonically and enters Flow B once", async ({ page }) => {
+  await storeAuthenticatedPreviewSession(page);
   await gotoScreen(page, "a20", { staticFrame: false });
+  await page.evaluate(() => {
+    window.__doripeProgressValues = [];
+    const observed = new WeakSet();
+    const attach = () => {
+      const fill = document.querySelector('[data-screen-id="a22"] [role="progressbar"]');
+      if (!fill || observed.has(fill)) return;
+      observed.add(fill);
+      window.__doripeProgressValues.push(Number(fill.getAttribute("aria-valuenow")));
+      const progressObserver = new MutationObserver(() => {
+        window.__doripeProgressValues.push(Number(fill.getAttribute("aria-valuenow")));
+      });
+      progressObserver.observe(fill, { attributes: true, attributeFilter: ["aria-valuenow"] });
+    };
+    const screenObserver = new MutationObserver(attach);
+    screenObserver.observe(document.body, { childList: true, subtree: true });
+    window.__doripeProgressObserver = screenObserver;
+    attach();
+  });
   await page.getByRole("button", { name: "시작" }).click();
   await expect(page).toHaveURL(/screen=a21/);
   await expect(page.locator('[data-screen-id="a21"]')).toBeVisible();
-  await expect(page).toHaveURL(/screen=a22/, { timeout: 5_000 });
-
-  const fill = page.locator('[data-screen-id="a22"] [role="progressbar"]');
-  const widths = [];
-  for (let index = 0; index < 3; index += 1) {
-    widths.push(await fill.evaluate((element) => Number(element.getAttribute("aria-valuenow"))));
-    await page.waitForTimeout(120);
-  }
-  expect(widths[1]).toBeGreaterThanOrEqual(widths[0]);
-  expect(widths[2]).toBeGreaterThanOrEqual(widths[1]);
-
-  await expect(page).toHaveURL(/screen=b1/, { timeout: 5_000 });
+  await expect(page).toHaveURL(/screen=b2/, { timeout: 10_000 });
+  const values = await page.evaluate(() => {
+    window.__doripeProgressObserver?.disconnect();
+    return window.__doripeProgressValues;
+  });
+  expect(values.length).toBeGreaterThanOrEqual(3);
+  expect(values[0]).toBe(32);
+  expect(values.at(-1)).toBe(100);
+  expect(values.every((value, index) => index === 0 || value >= values[index - 1])).toBe(true);
   await page.waitForTimeout(400);
-  await expect(page).toHaveURL(/screen=b1/);
+  await expect(page).toHaveURL(/screen=b2/);
 });
 
 test("back actions use contextual history", async ({ page }) => {
   await gotoScreen(page, "a1");
   await page.getByRole("button", { name: "시작하기" }).click();
-  await expect(page).toHaveURL(/screen=a9/);
+  await expect(page).toHaveURL(/screen=a18/);
   await page.getByRole("button", { name: "뒤로 가기" }).click();
   await expect(page).toHaveURL(/screen=a1/);
 
@@ -427,14 +821,15 @@ test("back actions use contextual history", async ({ page }) => {
 
 test("browser Back then in-app back preserve one coherent history", async ({ page }) => {
   await gotoScreen(page, "a1");
-  await page.getByRole("button", { name: "시작하기", exact: true }).click();
+  await page.getByRole("button", { name: "로그인", exact: true }).click();
+  await page.getByRole("button", { name: "새 계정 만들기", exact: true }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await expect(page).toHaveURL(/screen=a12/);
 
   await page.goBack();
   await expect(page).toHaveURL(/screen=a9/);
   await page.getByRole("button", { name: "뒤로 가기", exact: true }).click();
-  await expect(page).toHaveURL(/screen=a1/);
+  await expect(page).toHaveURL(/screen=a3/);
 
   await page.goForward();
   await expect(page).toHaveURL(/screen=a9/);
@@ -456,6 +851,7 @@ test("timed Flow A screens cancel handles during teardown", async ({ page }) => 
     };
   });
 
+  await storeAuthenticatedPreviewSession(page);
   await gotoScreen(page, "a21", { staticFrame: false });
   await page.locator('[data-action="review-navigate"][data-id="a22"]').click();
   await expect(page).toHaveURL(/screen=a22/);

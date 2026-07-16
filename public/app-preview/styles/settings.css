@@ -4,6 +4,8 @@
 .settings-screen textarea { font: inherit; }
 .settings-main-title { position: absolute; top: 60px; left: 32px; margin: 0; font-size: 24px; }
 .settings-profile { position: absolute; top: 112px; left: 32px; width: 329px; height: 85px; display: grid; grid-template-columns: 58px 1fr 18px; align-items: center; gap: 15px; border: 0; border-bottom: 1px solid #e7e1d8; background: transparent; text-align: left; }
+.settings-screen--e1 .settings-profile { width: 232px; }
+.settings-profile-edit-entry { position: absolute; z-index: 2; top: 132px; left: 275px; width: 86px; height: 44px; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #10c76f; border-radius: 8px; background: #fff; color: #10c76f; font-size: 11px; font-weight: 700; white-space: nowrap; }
 .settings-profile__avatar { width: 58px; height: 58px; display: grid; place-items: center; border-radius: 50%; background: #e5f5ee; }
 .settings-profile__avatar img { width: 25px; height: 25px; }
 .settings-profile__copy strong,
@@ -94,9 +96,138 @@
 .settings-screen input:focus-visible,
 .settings-screen textarea:focus-visible { outline: 3px solid rgb(16 199 111 / 25%); outline-offset: 2px; }
 
-@media (max-width: 392px) {
+@media (max-width: 392px), (max-height: 800px) {
   .settings-screen {
-    transform: scale(calc(100vw / 393px));
-    transform-origin: top left;
+    width: 100%;
+    height: 100dvh;
+    transform: none;
   }
+
+  .settings-screen--e2 {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+
+  .settings-screen--e3 {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .settings-screen--e3::after {
+    content: "";
+    display: block;
+    height: 900px;
+  }
+
+  .settings-profile-tabs {
+    top: 372px;
+    height: 48px;
+  }
+
+  .settings-screen--e2 .settings-back {
+    top: 38px;
+    left: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .settings-screen--e2 .settings-back::before {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #fff;
+    content: "";
+  }
+
+  .settings-screen--e2 .settings-back img {
+    position: relative;
+    z-index: 1;
+  }
+
+  .settings-screen--e2 .settings-profile-edit {
+    top: -10px;
+    right: -1px;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+  }
+
+  .settings-screen--e2 .settings-profile-edit::before {
+    position: absolute;
+    width: 43px;
+    height: 24px;
+    border: 1px solid #10c76f;
+    border-radius: 8px;
+    background: #fff;
+    content: "";
+  }
+
+  .settings-screen--e2 .settings-profile-edit {
+    isolation: isolate;
+  }
+
+  .settings-screen--e2 .settings-profile-edit::before {
+    z-index: -1;
+  }
+
+  .settings-save {
+    position: fixed;
+    bottom: env(safe-area-inset-bottom);
+    width: calc(100% - 68px);
+    height: 44px;
+  }
+}
+
+/* Task 5: readable settings text with scrollable account content. */
+.settings-screen { font-family: var(--font-family-korean); }
+.settings-back { top: 32px; left: 12px; width: 44px; height: 44px; }
+.settings-account-label,
+.settings-account-email,
+.settings-account-field,
+.settings-account-field input,
+.settings-account-save,
+.settings-account-forgot,
+.settings-logout,
+.settings-delete-account,
+.settings-contact-message { font-size: 13px; }
+.settings-account-verified,
+.settings-notification-row small { font-size: 11px; }
+.settings-account-email,
+.settings-account-field input { height: 44px; }
+.settings-account-verified { display: inline-flex; align-items: center; gap: 5px; line-height: 16px; }
+.settings-account-verified__icon { width: 14px; height: 14px; filter: invert(53%) sepia(88%) saturate(1320%) hue-rotate(104deg) brightness(91%) contrast(91%); }
+.settings-account-save,
+.settings-account-forgot,
+.settings-logout,
+.settings-delete-account { min-height: 44px; }
+.settings-account-forgot { display: flex; align-items: center; justify-content: center; }
+.settings-management-title { margin-top: 24px !important; }
+.settings-delete-account { margin-top: 12px; padding: 0 16px; }
+.settings-screen--e3 { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+.settings-account-content { padding-bottom: 32px; }
+.settings-notification-row small { line-height: 16px; }
+.settings-contact-send { min-height: 44px; font-size: 13px; }
+.settings-profile-media__indicator-icon,
+.settings-edit-avatar__indicator-icon { width: 14px; height: 14px; }
+.settings-edit-avatar__indicator-icon { filter: brightness(0) invert(1); }
+.settings-field-label { font-size: 13px; }
+.settings-input { height: 44px; font-size: 13px; }
+.settings-profile-tabs { height: 48px; }
+.settings-profile-tab { min-height: 44px; font-size: 13px; }
+.settings-profile-edit { top: -10px; width: 44px; height: 44px; }
+.settings-save { min-height: 44px; }
+.settings-profile__copy small { font-size: 11px; }
+
+@media (max-width: 392px), (max-height: 800px) {
+  .settings-screen--e3::after { display: none; }
+  .settings-screen--e3 .settings-account-content { position: relative; top: 14px; min-height: 700px; }
+  .settings-notification-list { right: 20px; left: 20px; width: auto; }
+  .settings-screen--e2 .settings-profile-heading { right: 20px; width: auto; }
+  .settings-screen--e2 .settings-profile-panel { right: 4px; width: auto; }
+  .settings-screen--e2 .settings-profile-media { min-width: 0; width: 100%; }
 }
