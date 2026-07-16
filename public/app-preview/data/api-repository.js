@@ -3,6 +3,10 @@ import { assertRepositoryContract, normalizeDataSnapshot } from "./contracts.js"
 const CACHE_KEY = "doripe.app_preview.api_snapshot.v1";
 const CACHE_VERSION = 1;
 const DEFAULT_TIMEOUT_MS = 10_000;
+const DEFAULT_READ_CACHE_TTL_MS = 30_000;
+const DEFAULT_EMPTY_READ_CACHE_TTL_MS = 3_000;
+const DEFAULT_SNAPSHOT_CACHE_TTL_MS = 60_000;
+const DEFAULT_DETAIL_CONCURRENCY = 4;
 
 const clone = (value) => structuredClone(value);
 
@@ -136,6 +140,27 @@ function mergeUnique(items, key = "id") {
   return [...map.values()];
 }
 
+function isEmptyReadResult(value) {
+  return value == null
+    || (Array.isArray(value) && value.length === 0)
+    || (Array.isArray(value?.items) && value.items.length === 0);
+}
+
+async function mapWithConcurrency(items, concurrency, mapper) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
+  async function run() {
+    while (nextIndex < items.length) {
+      const index = nextIndex;
+      nextIndex += 1;
+      results[index] = await mapper(items[index]);
+    }
+  }
+  const workers = Array.from({ length: Math.min(concurrency, items.length) }, () => run());
+  await Promise.all(workers);
+  return results;
+}
+
 function buildSnapshot({ bootstrap, feed, places, courses }) {
   const contents = (feed || []).map(toContent);
   const authorByPlace = new Map();
@@ -174,19 +199,24 @@ function buildSnapshot({ bootstrap, feed, places, courses }) {
   });
 }
 
-function readCache(storage) {
+function readCache(storage, now, ttlMs) {
   try {
     const parsed = JSON.parse(storage?.getItem?.(CACHE_KEY) || "null");
     if (parsed?.version !== CACHE_VERSION || !parsed.snapshot) return null;
+    const ageMs = now() - Number(parsed.savedAt);
+    if (!Number.isFinite(ageMs) || ageMs < 0 || ageMs > ttlMs) {
+      storage?.removeItem?.(CACHE_KEY);
+      return null;
+    }
     return normalizeDataSnapshot(parsed.snapshot);
   } catch {
     return null;
   }
 }
 
-function writeCache(storage, snapshot) {
+function writeCache(storage, snapshot, now) {
   try {
-    storage?.setItem?.(CACHE_KEY, JSON.stringify({ version: CACHE_VERSION, savedAt: Date.now(), snapshot }));
+    storage?.setItem?.(CACHE_KEY, JSON.stringify({ version: CACHE_VERSION, savedAt: now(), snapshot }));
   } catch {
     // A blocked or full cache must not prevent live data from rendering.
   }
@@ -196,10 +226,18 @@ export function createApiRepository({
   fetchImpl = globalThis.fetch?.bind(globalThis),
   storage = globalThis.localStorage,
   accessTokenProvider = () => null,
-  timeoutMs = DEFAULT_TIMEOUT_MS
+  timeoutMs = DEFAULT_TIMEOUT_MS,
+  now = Date.now,
+  readCacheTtlMs = DEFAULT_READ_CACHE_TTL_MS,
+  emptyReadCacheTtlMs = DEFAULT_EMPTY_READ_CACHE_TTL_MS,
+  snapshotCacheTtlMs = DEFAULT_SNAPSHOT_CACHE_TTL_MS,
+  detailConcurrency = DEFAULT_DETAIL_CONCURRENCY
 } = {}) {
   if (typeof fetchImpl !== "function") throw new TypeError("API repository requires fetch");
   let lastLoadSource = "none";
+  const readCacheEntries = new Map();
+  const pendingReads = new Map();
+  const detailRequestLimit = Math.max(1, Math.floor(detailConcurrency));
 
   async function request(path, { method = "GET", body, auth = false } = {}) {
     const controller = new AbortController();
@@ -230,6 +268,21 @@ export function createApiRepository({
     }
   }
 
+  async function read(path) {
+    const cached = readCacheEntries.get(path);
+    if (cached && cached.expiresAt > now()) return clone(cached.value);
+    if (cached) readCacheEntries.delete(path);
+    if (pendingReads.has(path)) return clone(await pendingReads.get(path));
+
+    const pending = request(path).then((value) => {
+      const ttlMs = isEmptyReadResult(value) ? emptyReadCacheTtlMs : readCacheTtlMs;
+      if (ttlMs > 0) readCacheEntries.set(path, { value: clone(value), expiresAt: now() + ttlMs });
+      return value;
+    }).finally(() => pendingReads.delete(path));
+    pendingReads.set(path, pending);
+    return clone(await pending);
+  }
+
   async function loadBootstrap() {
     const [bootstrap, feedPage] = await Promise.all([
       request("bootstrap"),
@@ -238,21 +291,26 @@ export function createApiRepository({
     const feed = Array.isArray(feedPage?.items) ? feedPage.items : [];
     const placeIds = [...new Set(feed.flatMap((content) => content.placeIds || []))];
     const courseIds = [...new Set(feed.map((content) => content.courseId).filter(Boolean))];
-    const [places, courses] = await Promise.all([
-      Promise.all(placeIds.map((id) => request(`places/${encodeURIComponent(id)}`))),
-      Promise.all(courseIds.map((id) => request(`courses/${encodeURIComponent(id)}`)))
-    ]);
+    const details = [
+      ...placeIds.map((id) => ({ type: "place", id })),
+      ...courseIds.map((id) => ({ type: "course", id }))
+    ];
+    const detailResults = await mapWithConcurrency(details, detailRequestLimit, ({ type, id }) => (
+      read(`${type === "place" ? "places" : "courses"}/${encodeURIComponent(id)}`)
+    ));
+    const places = detailResults.slice(0, placeIds.length);
+    const courses = detailResults.slice(placeIds.length);
     return buildSnapshot({ bootstrap, feed, places, courses });
   }
 
   async function getBootstrap() {
     try {
       const snapshot = await loadBootstrap();
-      writeCache(storage, snapshot);
+      writeCache(storage, snapshot, now);
       lastLoadSource = "network";
       return clone(snapshot);
     } catch (error) {
-      const cached = readCache(storage);
+      const cached = readCache(storage, now, snapshotCacheTtlMs);
       if (!cached) throw error;
       lastLoadSource = "cache";
       return clone(cached);
@@ -266,21 +324,21 @@ export function createApiRepository({
     getBootstrap,
     async getFeed(params = {}) {
       const query = new URLSearchParams({ scope: params.scope || "discover", limit: String(params.limit || 30) });
-      const page = await request(`feed?${query}`);
+      const page = await read(`feed?${query}`);
       return (page?.items || []).map(toContent);
     },
-    async getContentDetail(id) { return toContent(await request(`contents/${encodeURIComponent(id)}`)); },
-    async getPlaceDetail(id) { return toPlace(await request(`places/${encodeURIComponent(id)}`)).place; },
-    async getCourseDetail(id) { return toCourse(await request(`courses/${encodeURIComponent(id)}`)); },
-    async getPublicProfile(id) { return toProfile(await request(`profiles/${encodeURIComponent(id)}`)); },
+    async getContentDetail(id) { return toContent(await read(`contents/${encodeURIComponent(id)}`)); },
+    async getPlaceDetail(id) { return toPlace(await read(`places/${encodeURIComponent(id)}`)).place; },
+    async getCourseDetail(id) { return toCourse(await read(`courses/${encodeURIComponent(id)}`)); },
+    async getPublicProfile(id) { return toProfile(await read(`profiles/${encodeURIComponent(id)}`)); },
     async getSavedPlaces() {
-      const page = await request("me/saves?targetType=place&limit=100", { auth: true });
+      const page = await request("me/saves?targetType=place&limit=50", { auth: true });
       return (page?.items || [])
         .filter((item) => item.targetType === "place" && item.target)
         .map((item) => toPlace(item.target).place);
     },
     async getSavedCourses() {
-      const page = await request("me/saves?targetType=course&limit=100", { auth: true });
+      const page = await request("me/saves?targetType=course&limit=50", { auth: true });
       return (page?.items || []).filter((item) => item.targetType === "course" && item.target).map((item) => toCourse(item.target));
     },
     async savePlace(id) { return mutation(`me/saves/place/${encodeURIComponent(id)}`, "PUT", { sourceScreen: "app-preview" }); },

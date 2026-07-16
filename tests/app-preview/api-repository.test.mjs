@@ -174,3 +174,151 @@ test("authenticated mutations attach the current bearer token", async () => {
   assert.equal(requests[0].options.method, "PUT");
   assert.equal(requests[0].options.headers.authorization, "Bearer current-access-token");
 });
+
+test("bootstrap limits concurrent place and course detail requests", async () => {
+  const places = Array.from({ length: 8 }, (_, index) => ({
+    ...place,
+    id: `place-${index + 1}`,
+    media: []
+  }));
+  const feed = places.map((item, index) => ({
+    ...content,
+    id: `content-${index + 1}`,
+    placeIds: [item.id],
+    media: []
+  }));
+  let activeDetails = 0;
+  let maxActiveDetails = 0;
+  const fetchImpl = async (url) => {
+    const requestUrl = String(url);
+    if (requestUrl === "/api/v1/bootstrap") {
+      return jsonResponse({ data: {
+        regions: [], categories: [], tags: [],
+        featureFlags: {}, contractVersions: {}
+      } });
+    }
+    if (requestUrl.startsWith("/api/v1/feed?")) {
+      return jsonResponse({ data: { items: feed } });
+    }
+    const requestedPlace = places.find((item) => requestUrl.endsWith(`/places/${item.id}`));
+    if (!requestedPlace) throw new Error(`Unexpected request: ${url}`);
+    activeDetails += 1;
+    maxActiveDetails = Math.max(maxActiveDetails, activeDetails);
+    await new Promise((resolve) => setTimeout(resolve, 5));
+    activeDetails -= 1;
+    return jsonResponse({ data: requestedPlace });
+  };
+
+  const repository = createApiRepository({
+    fetchImpl,
+    storage: memoryStorage(),
+    detailConcurrency: 3
+  });
+  const snapshot = await repository.getBootstrap();
+
+  assert.equal(snapshot.places.length, places.length);
+  assert.ok(maxActiveDetails <= 3, `expected at most 3 detail requests, received ${maxActiveDetails}`);
+});
+
+test("successful public reads use memory cache only until their TTL expires", async () => {
+  let now = 1_000;
+  let requests = 0;
+  const repository = createApiRepository({
+    fetchImpl: async () => {
+      requests += 1;
+      return jsonResponse({ data: place });
+    },
+    storage: memoryStorage(),
+    now: () => now,
+    readCacheTtlMs: 100
+  });
+
+  await repository.getPlaceDetail(place.id);
+  await repository.getPlaceDetail(place.id);
+  assert.equal(requests, 1);
+
+  now += 101;
+  await repository.getPlaceDetail(place.id);
+  assert.equal(requests, 2);
+});
+
+test("empty public reads expire sooner and failed reads are never cached", async () => {
+  let now = 2_000;
+  let feedRequests = 0;
+  let placeRequests = 0;
+  const repository = createApiRepository({
+    fetchImpl: async (url) => {
+      if (String(url).startsWith("/api/v1/feed?")) {
+        feedRequests += 1;
+        return jsonResponse({ data: { items: [] } });
+      }
+      placeRequests += 1;
+      if (placeRequests === 1) return jsonResponse({ error: { code: "temporary", message: "temporary" } }, 503);
+      return jsonResponse({ data: place });
+    },
+    storage: memoryStorage(),
+    now: () => now,
+    readCacheTtlMs: 100,
+    emptyReadCacheTtlMs: 10
+  });
+
+  await repository.getFeed();
+  await repository.getFeed();
+  assert.equal(feedRequests, 1);
+
+  now += 11;
+  await repository.getFeed();
+  assert.equal(feedRequests, 2);
+
+  await assert.rejects(repository.getPlaceDetail(place.id), (error) => error.status === 503);
+  assert.equal((await repository.getPlaceDetail(place.id)).id, place.id);
+  assert.equal(placeRequests, 2);
+});
+
+test("an expired bootstrap snapshot is not used after a network failure", async () => {
+  const storage = memoryStorage();
+  let now = 3_000;
+  let online = true;
+  const repository = createApiRepository({
+    fetchImpl: async (url) => {
+      if (!online) throw new TypeError("offline");
+      if (String(url) === "/api/v1/bootstrap") {
+        return jsonResponse({ data: {
+          regions: [], categories: [], tags: [],
+          featureFlags: {}, contractVersions: {}
+        } });
+      }
+      return jsonResponse({ data: { items: [] } });
+    },
+    storage,
+    now: () => now,
+    readCacheTtlMs: 10,
+    snapshotCacheTtlMs: 100
+  });
+
+  await repository.getBootstrap();
+  online = false;
+  now += 101;
+
+  await assert.rejects(repository.getBootstrap(), /offline/);
+});
+
+test("saved place and course reads use the server maximum limit", async () => {
+  const requests = [];
+  const repository = createApiRepository({
+    fetchImpl: async (url) => {
+      requests.push(String(url));
+      return jsonResponse({ data: { items: [] } });
+    },
+    storage: memoryStorage(),
+    accessTokenProvider: () => "current-access-token"
+  });
+
+  await repository.getSavedPlaces();
+  await repository.getSavedCourses();
+
+  assert.deepEqual(requests, [
+    "/api/v1/me/saves?targetType=place&limit=50",
+    "/api/v1/me/saves?targetType=course&limit=50"
+  ]);
+});
