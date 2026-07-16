@@ -175,6 +175,51 @@ test("authenticated mutations attach the current bearer token", async () => {
   assert.equal(requests[0].options.headers.authorization, "Bearer current-access-token");
 });
 
+test("create mutations send an idempotency key", async () => {
+  const requests = [];
+  const repository = createApiRepository({
+    fetchImpl: async (url, options) => {
+      requests.push({ url: String(url), options });
+      return jsonResponse({
+        data: {
+          id: "comment-1",
+          contentId: "content-1",
+          author: { id: "profile-1", nickname: "도리" },
+          text: "댓글",
+          likeCount: 0,
+          createdAt: "2026-07-16T00:00:00.000Z"
+        }
+      }, 201);
+    },
+    storage: memoryStorage(),
+    accessTokenProvider: () => "current-access-token"
+  });
+
+  await repository.createComment("content-1", "댓글");
+
+  assert.match(requests[0].options.headers["idempotency-key"], /^[A-Za-z0-9_-]{8,80}$/u);
+});
+
+test("comment like and delete use the documented endpoints", async () => {
+  const requests = [];
+  const repository = createApiRepository({
+    fetchImpl: async (url, options) => {
+      requests.push({ url: String(url), options });
+      return jsonResponse({ data: { ok: true } });
+    },
+    storage: memoryStorage(),
+    accessTokenProvider: () => "current-access-token"
+  });
+
+  await repository.likeComment("comment-1");
+  await repository.deleteComment("comment-1");
+
+  assert.deepEqual(requests.map(({ url, options }) => [url, options.method]), [
+    ["/api/v1/comments/comment-1/like", "POST"],
+    ["/api/v1/comments/comment-1", "DELETE"]
+  ]);
+});
+
 test("bootstrap limits concurrent place and course detail requests", async () => {
   const places = Array.from({ length: 8 }, (_, index) => ({
     ...place,

@@ -239,7 +239,7 @@ export function createApiRepository({
   const pendingReads = new Map();
   const detailRequestLimit = Math.max(1, Math.floor(detailConcurrency));
 
-  async function request(path, { method = "GET", body, auth = false } = {}) {
+  async function request(path, { method = "GET", body, auth = false, idempotencyKey } = {}) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     const token = auth ? accessTokenProvider?.() : null;
@@ -255,7 +255,8 @@ export function createApiRepository({
         headers: {
           accept: "application/json",
           ...(body === undefined ? {} : { "content-type": "application/json" }),
-          ...(token ? { authorization: `Bearer ${token}` } : {})
+          ...(token ? { authorization: `Bearer ${token}` } : {}),
+          ...(idempotencyKey ? { "idempotency-key": idempotencyKey } : {})
         },
         ...(body === undefined ? {} : { body: JSON.stringify(body) }),
         signal: controller.signal
@@ -317,7 +318,14 @@ export function createApiRepository({
     }
   }
 
-  const mutation = (path, method, body) => request(path, { method, body, auth: true });
+  let mutationSequence = 0;
+  const mutation = (path, method, body) => {
+    mutationSequence += 1;
+    const randomPart = globalThis.crypto?.randomUUID?.().replaceAll("-", "")
+      || `${Date.now().toString(36)}${mutationSequence.toString(36)}`;
+    const idempotencyKey = `app_preview_${randomPart}_${mutationSequence.toString(36)}`.slice(0, 80);
+    return request(path, { method, body, auth: true, idempotencyKey });
+  };
   const repository = {
     mode: "api",
     getLastLoadSource: () => lastLoadSource,
@@ -354,6 +362,9 @@ export function createApiRepository({
       return (page?.items || []).map(toComment);
     },
     async createComment(id, body) { return toComment(await mutation(`contents/${encodeURIComponent(id)}/comments`, "POST", { text: body })); },
+    async likeComment(id) { return mutation(`comments/${encodeURIComponent(id)}/like`, "POST"); },
+    async unlikeComment(id) { return mutation(`comments/${encodeURIComponent(id)}/like`, "DELETE"); },
+    async deleteComment(id) { return mutation(`comments/${encodeURIComponent(id)}`, "DELETE"); },
     async createCourse(input) { return toCourse(await mutation("courses", "POST", input)); },
     async updateCourse(id, input) { return toCourse(await mutation(`courses/${encodeURIComponent(id)}`, "PATCH", input)); }
   };

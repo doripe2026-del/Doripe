@@ -4,6 +4,7 @@ import { clearVolatilePasswords, dispatchAction } from "./transitions.js";
 import { createAuthClient, isLocalAuthFixtureLocation } from "./auth-client.js";
 import { getAdapter } from "./api-adapter.js";
 import { courseById, createDataCatalog } from "./data/selectors.js";
+import { createActionSync } from "./data/action-sync.js";
 import { createAppDataStore } from "./data/store.js";
 import { isStaticPreview, preloadServerMedia } from "./data/server-media.js";
 
@@ -14,6 +15,7 @@ const repository = getAdapter(isStaticPreview() ? "fixture" : "api", {
   accessTokenProvider: authClient.getAccessToken
 });
 const dataStore = createAppDataStore({ repository });
+const actionSync = createActionSync({ repository, enabled: repository.mode === "api" });
 let dataLoadError = null;
 try {
   await dataStore.load();
@@ -338,6 +340,15 @@ function renderEvidenceScreen(screen) {
     feedback.textContent = "데이터를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.";
     phoneRoot.append(feedback);
   }
+  if (interactionState.toast?.message
+    && !renderedScreen.querySelector(".auth-feedback, .route-toast, .settings-toast")) {
+    const feedback = document.createElement("output");
+    feedback.className = `preview-toast preview-mutation-feedback preview-toast--${interactionState.toast.kind || "info"}`;
+    feedback.setAttribute("role", "status");
+    feedback.setAttribute("aria-live", "polite");
+    feedback.textContent = interactionState.toast.message;
+    renderedScreen.append(feedback);
+  }
   persistVisibleDefaults(renderedScreen);
   phoneRoot.dataset.previewMode = "evidence";
 }
@@ -595,6 +606,35 @@ function applyActionResult(result, { rerender, screenId, payload }) {
   void runDomEffect(result.effect, screenId, payload);
 }
 
+function mergeStaleMutationState(result, optimisticState) {
+  if (interactionState.currentScreenId === optimisticState.currentScreenId) return result.state;
+
+  const merged = { ...interactionState, toast: result.state.toast };
+  for (const key of result.changedKeys || []) {
+    if (key !== "selections") merged[key] = result.state[key];
+  }
+  if ((result.changedKeys || []).includes("selections")) {
+    const optimisticRouteId = optimisticState.selections?.selectedRouteId;
+    merged.selections = {
+      ...(interactionState.selections || {}),
+      ...(interactionState.selections?.selectedRouteId === optimisticRouteId
+        ? { selectedRouteId: result.state.selections?.selectedRouteId }
+        : {})
+    };
+  }
+  return merged;
+}
+
+async function syncProductAction(input) {
+  const result = await actionSync.run(input);
+  if (result.status === "local") return;
+
+  state.replace(mergeStaleMutationState(result, input.optimisticState));
+  interactionState = state.getState();
+  renderScreen(interactionState.currentScreenId);
+  writeScreenIdToUrl(interactionState.currentScreenId, { replace: true });
+}
+
 function authFieldValue(screen, actionId, fallback = "") {
   const input = screen?.querySelector(`[data-action="${actionId}"]`);
   return input && "value" in input ? input.value : fallback;
@@ -697,6 +737,8 @@ function dispatchTargetAction(target, { rerender = true } = {}) {
     || target.closest("[data-screen-id]")?.dataset.screenId
     || interactionState.currentScreenId;
   const payload = readActionPayload(target);
+  const pendingInput = { actionId, payload, previousState: interactionState, optimisticState: interactionState };
+  if (actionSync.isPending(pendingInput)) return;
   const operation = REMOTE_AUTH_ACTIONS.get(`${screenId}/${actionId}`);
   if (operation && payload.reviewFixtureMode !== true) {
     if (operation === "sign-out") {
@@ -706,11 +748,25 @@ function dispatchTargetAction(target, { rerender = true } = {}) {
     void dispatchRemoteAuthAction(target, screenId, actionId, operation);
     return;
   }
-  const result = dispatchAction(screenId, actionId, payload);
+  const previousState = interactionState;
+  const transitionResult = dispatchAction(screenId, actionId, payload);
+  const optimisticState = actionSync.prepare({
+    actionId,
+    payload,
+    previousState,
+    transitionState: transitionResult.state
+  });
+  const result = { ...transitionResult, state: optimisticState };
   if (screenId === "e3" && actionId === "save-password") {
     clearSubmittedPasswords(target.closest("[data-screen-id]"));
   }
   applyActionResult(result, { rerender, screenId, payload });
+  void syncProductAction({
+    actionId,
+    payload,
+    previousState,
+    optimisticState: interactionState
+  });
 }
 
 function handleReviewAction(actionId, id) {
