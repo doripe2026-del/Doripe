@@ -151,7 +151,12 @@ export const placeDetail: RouteHandler = async (_request, context) => {
   const parsedId = placeId.safeParse(context.params.id);
   if (!parsedId.success) throw new ApiError(404, "not_found", "장소를 찾을 수 없습니다.");
   const client = createBackendAuthClient();
-  const row = databaseData<PlaceRow>(await client.from("places").select(placeSelection).eq("id", parsedId.data).maybeSingle());
+  const row = databaseData<PlaceRow>(await client.from("places").select(placeSelection)
+    .eq("id", parsedId.data)
+    .eq("status", "ready")
+    .eq("qa_status", "ready")
+    .eq("photo_qa_status", "approved")
+    .maybeSingle());
   const photos = await photosForPlaces([row.id]);
   const taxonomy = await taxonomyForPlaces([row.id], [row.category_id]);
   return apiSuccess(publicPlaceOutput(

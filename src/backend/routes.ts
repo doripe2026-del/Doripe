@@ -60,6 +60,12 @@ import {
   updateContent,
 } from "./domains/contents.js";
 import {
+  bootstrap,
+  placeDetail,
+  publicProfile,
+  relatedPlaces,
+} from "./domains/discovery.js";
+import {
   addCoursePlace,
   createCourse,
   deleteCourse,
@@ -70,14 +76,6 @@ import {
   updateCourse,
   updateCoursePlace,
 } from "./domains/courses.js";
-import {
-  appCatalogBootstrap,
-  appCatalogContentDetail,
-  appCatalogFeed,
-  appCatalogPlaceDetail,
-  appCatalogProfile,
-  appCatalogRelatedPlaces,
-} from "./domains/appCatalog.js";
 import {
   createBetaApplication,
   createBusinessApplication,
@@ -118,14 +116,14 @@ export const v1Routes: RouteDefinition[] = [
   { auth: "public", handler: authConfig, method: "GET", operationId: "getAuthConfig", path: "auth/config" },
   { auth: "public", handler: health, method: "GET", operationId: "getHealth", path: "health" },
   { auth: "public", handler: readiness, method: "GET", operationId: "getReadiness", path: "readiness" },
-  { auth: "public", handler: appCatalogBootstrap, method: "GET", operationId: "getBootstrap", path: "bootstrap" },
-  { auth: "optional", handler: appCatalogFeed, method: "GET", operationId: "listFeed", path: "feed" },
-  { auth: "public", handler: appCatalogPlaceDetail, method: "GET", operationId: "getPlace", path: "places/:id" },
+  { auth: "public", handler: bootstrap, method: "GET", operationId: "getBootstrap", path: "bootstrap" },
+  { auth: "optional", handler: listFeed, method: "GET", operationId: "listFeed", path: "feed" },
+  { auth: "public", handler: placeDetail, method: "GET", operationId: "getPlace", path: "places/:id" },
   { auth: "public", handler: listPlaceContents, method: "GET", operationId: "listPlaceContents", path: "places/:id/contents" },
-  { auth: "public", handler: appCatalogRelatedPlaces, method: "GET", operationId: "listRelatedPlaces", path: "places/:id/related" },
-  { auth: "optional", handler: appCatalogContentDetail, method: "GET", operationId: "getContent", path: "contents/:id" },
+  { auth: "public", handler: relatedPlaces, method: "GET", operationId: "listRelatedPlaces", path: "places/:id/related" },
+  { auth: "optional", handler: getContent, method: "GET", operationId: "getContent", path: "contents/:id" },
   { auth: "user", handler: updateContent, method: "PATCH", operationId: "updateContent", path: "contents/:id" },
-  { auth: "public", handler: appCatalogProfile, method: "GET", operationId: "getPublicProfile", path: "profiles/:id" },
+  { auth: "public", handler: publicProfile, method: "GET", operationId: "getPublicProfile", path: "profiles/:id" },
   { auth: "public", handler: listProfileContents, method: "GET", operationId: "listProfileContents", path: "profiles/:id/contents" },
   { auth: "user", handler: getAccount, method: "GET", operationId: "getMyAccount", path: "me/account" },
   { auth: "user", handler: getProfile, method: "GET", operationId: "getMyProfile", path: "me/profile" },
