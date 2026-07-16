@@ -39,10 +39,18 @@ async function expectVisibleInViewport(page, locator) {
 }
 
 async function expectMinimumTouchTarget(locator) {
-  const box = await locator.boundingBox();
-  expect(box).not.toBeNull();
-  expect(box.width).toBeGreaterThanOrEqual(44);
-  expect(box.height).toBeGreaterThanOrEqual(44);
+  const size = await locator.evaluate((element) => {
+    const box = element.getBoundingClientRect();
+    const pseudo = getComputedStyle(element, "::after");
+    const pseudoWidth = Number.parseFloat(pseudo.width) || 0;
+    const pseudoHeight = Number.parseFloat(pseudo.height) || 0;
+    return {
+      width: Math.max(box.width, pseudoWidth),
+      height: Math.max(box.height, pseudoHeight)
+    };
+  });
+  expect(size.width).toBeGreaterThanOrEqual(44);
+  expect(size.height).toBeGreaterThanOrEqual(44);
 }
 
 async function expectWithinViewportWidth(page, locator) {

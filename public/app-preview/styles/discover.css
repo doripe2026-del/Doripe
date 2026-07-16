@@ -85,13 +85,15 @@
 .discover-brand strong { transform: translateX(-1px); }
 .discover-brand__mark { display: block; width: 30px; height: 30px; margin-left: 0; object-fit: contain; }
 .discover-tabs { position: absolute; top: 24px; left: 121px; display: flex; width: 146px; height: 46px; align-items: center; border-radius: 24px; background: #f4f4f4; padding: 4px; }
-.discover-tabs button { height: 44px; flex: 1; border: 0; border-radius: 20px; background: transparent; color: #8a8a8a; font-size: 13px; }
+.discover-tabs button { position: relative; height: 38px; flex: 1; border: 0; border-radius: 20px; background: transparent; color: #8a8a8a; font-size: 13px; }
+.discover-tabs button::after { position: absolute; top: 50%; left: 0; width: 100%; height: 44px; transform: translateY(-50%); content: ""; }
 .discover-tabs button.is-selected { background: #fff; color: #161616; font-weight: 700; box-shadow: 0 2px 12px rgb(0 0 0 / 12%); }
 .discover-screen--b2 .discover-tabs button:first-child { flex: 0 0 81px; margin-left: 2px; }
 .discover-screen--b1 .discover-tabs button:first-child { flex: 0 0 66px; }
 .discover-screen--b1 .discover-tabs button:last-child { flex: 0 0 72px; }
-.discover-filter-button { position: absolute; top: 25px; left: 287px; width: 93px; height: 44px; border: 1px solid #e1e1e1; border-radius: 22px; background: #fff; font-weight: 650; }
+.discover-filter-button { position: absolute; top: 27px; left: 287px; width: 93px; height: 39px; border: 1px solid #e1e1e1; border-radius: 20px; background: #fff; font-weight: 650; }
 .discover-filter-button { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.discover-filter-button::after { position: absolute; top: 50%; left: 0; width: 100%; height: 44px; transform: translateY(-50%); content: ""; }
 .discover-filter-button__icon { width: 16px; height: 16px; }
 .discover-filter-button__down { width: 14px; height: 14px; }
 .saved-screen--c3.discover-filter-overlay {
@@ -1198,21 +1200,20 @@
   content: "";
 }
 
-.discover-screen--b4 .discover-place-sheet > .discover-info-row { height: 44px; }
-.discover-screen--b4 .discover-info-row[data-info-label="주소"] { top: 84px; }
-.discover-screen--b4 .discover-info-row[data-info-label="영업시간"] { top: 128px; }
-.discover-screen--b4 .discover-info-row[data-info-label="대표 메뉴"] { top: 172px; }
-.discover-screen--b4 .discover-place-actions { top: 222px; height: 44px; }
+.discover-screen--b4 .discover-place-sheet > .discover-info-row { position: absolute; }
 .discover-screen--b4 .discover-outline-action,
-.discover-screen--b4 .discover-fill-action { height: 44px; }
-.discover-screen--b4 .discover-detail-comments-title { top: 278px; }
-.discover-screen--b4 .discover-detail-comment[data-comment-index="0"] { top: 306px; }
-.discover-screen--b4 .discover-detail-comment[data-comment-index="1"] { top: 354px; }
-.discover-screen--b4 .discover-detail-other-title { top: 402px; }
-.discover-screen--b4 .discover-media-strip { top: 430px; }
-.discover-screen--b4 .discover-detail-related-title { top: 630px; }
-.discover-screen--b4 .discover-related-mini { top: 658px; }
-.discover-screen--b4 .discover-create-route { top: 772px; }
+.discover-screen--b4 .discover-fill-action { position: relative; }
+.discover-screen--b4 .discover-place-sheet > .discover-info-row::after,
+.discover-screen--b4 .discover-outline-action::after,
+.discover-screen--b4 .discover-fill-action::after {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 44px;
+  transform: translateY(-50%);
+  content: "";
+}
 
 @media (max-width: 392px), (max-height: 800px) {
   .discover-screen--b4 .discover-place-sheet[data-sheet-state="medium"] {
