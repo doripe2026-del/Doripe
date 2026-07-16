@@ -21,7 +21,6 @@ function assertIncludes(source, needle, label) {
 
 const requiredFiles = [
   "public/home/index.html",
-  "public/home/business.html",
   "public/home/company.html",
   "public/home/notify.html",
   "public/home/privacy.html",
@@ -44,7 +43,6 @@ const requiredFiles = [
   "api/track.ts",
   "api/track-v2.ts",
   "api/notify-v2.ts",
-  "api/business-lead.ts",
   "api/share.ts",
   "vercel.json",
 ];
@@ -115,7 +113,7 @@ assertIncludes(share, "/app?shareType=", "share page redirects to app");
 const rewrites = vercel.rewrites ?? [];
 const sources = rewrites.map((rewrite) => rewrite.source);
 assert(sources.includes("/"), "vercel rewrite missing /");
-assert(sources.includes("/business"), "vercel rewrite missing /business");
+assert(!sources.includes("/business"), "retired /business route must stay removed");
 assert(sources.includes("/company"), "vercel rewrite missing /company");
 assert(sources.includes("/notify"), "vercel rewrite missing /notify");
 assert(sources.includes("/privacy"), "vercel rewrite missing /privacy");

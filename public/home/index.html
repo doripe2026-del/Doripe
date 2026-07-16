@@ -310,12 +310,10 @@
   }
   #features,
   #product,
-  #business,
   #company,
   #pricing {
     background: transparent;
   }
-  body.home-page #business,
   body.home-page #company {
     display: none;
   }
@@ -616,11 +614,6 @@
   .form-status.error {
     color: #c62828;
   }
-  .business-submit:disabled {
-    cursor: not-allowed;
-    opacity: .58;
-    transform: none;
-  }
   #mobileNotifyBar {
     transition: opacity .22s ease, transform .22s ease;
   }
@@ -867,7 +860,6 @@
       </a>
       <nav class="nav-links flex items-center gap-1 px-4 text-[13px] font-medium text-ink/62" aria-label="주요 섹션">
         <a href="/" class="rounded-xl px-3 py-2 transition hover:bg-white/45 hover:text-ink">Home</a>
-        <a href="/business" class="rounded-xl px-3 py-2 transition hover:bg-white/45 hover:text-ink">Business</a>
         <a href="/company" class="rounded-xl px-3 py-2 transition hover:bg-white/45 hover:text-ink">Company</a>
       </nav>
       <a href="/notify" class="liquid-button group flex items-center gap-2 rounded-[14px] px-3 py-2 text-[13px] font-semibold text-ink transition hover:bg-white/50">
@@ -1068,7 +1060,6 @@
 </div>
 
 <script>
-  if (location.hash === '#business') location.replace('/business');
   if (location.hash === '#company') location.replace('/company');
 
   const CAMPAIGN_CODES = ['dori-001','dori-002','dori-003','dori-004','dori-005','dori-006','dori-007','dori-008','dori-009','dori-010','dori-011','dori-012','dori-013','dori-014','dori-015','dori-016','dori-017','dori-018','dori-019','dori-020'];
@@ -1142,15 +1133,6 @@
   });
 
   const mobileNotifyBar = document.getElementById('mobileNotifyBar');
-  const businessSection = document.getElementById('business');
-  if (mobileNotifyBar && businessSection) {
-    const mobileBarObserver = new IntersectionObserver((entries) => {
-      const businessVisible = entries.some((entry) => entry.isIntersecting);
-      mobileNotifyBar.classList.toggle('is-hidden', businessVisible);
-    }, { threshold: 0.12 });
-    mobileBarObserver.observe(businessSection);
-  }
-
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add('show');

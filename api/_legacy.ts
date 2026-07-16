@@ -123,14 +123,3 @@ export async function ensureNotifyV2Tables() {
   await sql`alter table notify_v2_signups add column if not exists submitted_at timestamptz not null default now()`;
 }
 
-export async function ensureBusinessLeadTable() {
-  await sql`
-    create table if not exists business_leads (
-      id bigserial primary key,
-      phone text not null,
-      consent_privacy boolean not null default false,
-      submitted_at timestamptz not null default now()
-    )
-  `;
-}
-
