@@ -15,6 +15,14 @@ function joinStoragePath(prefix, name) {
   return prefix ? `${prefix}/${name}` : name;
 }
 
+export function normalizeStoragePrefix(prefix = "") {
+  const segments = String(prefix).split("/").filter(Boolean);
+  if (segments.some((segment) => segment === "." || segment === "..")) {
+    throw new Error("Storage prefix may not contain . or .. segments");
+  }
+  return segments.join("/");
+}
+
 function compareByPath(left, right) {
   return left.path < right.path ? -1 : left.path > right.path ? 1 : 0;
 }
@@ -22,6 +30,10 @@ function compareByPath(left, right) {
 function normalizedMetadataMime(item) {
   const value = item?.metadata?.mimetype ?? item?.metadata?.contentType ?? "";
   return String(value).trim().toLowerCase();
+}
+
+function normalizedUpdatedAt(item) {
+  return String(item?.updated_at ?? item?.created_at ?? "");
 }
 
 function isStoragePlaceholder(path) {
@@ -59,6 +71,25 @@ export function detectMimeType(bytes) {
   return null;
 }
 
+function hasCompleteFileStructure(bytes, mimeType) {
+  if (mimeType === "image/jpeg") {
+    return bytes.length >= 5 && bytes.at(-2) === 0xff && bytes.at(-1) === 0xd9;
+  }
+  if (mimeType === "image/png") {
+    const trailer = Buffer.from([0x49, 0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82]);
+    return bytes.length >= 20 && Buffer.from(bytes.subarray(bytes.length - 8)).equals(trailer);
+  }
+  if (mimeType === "image/webp") {
+    if (bytes.length < 12) return false;
+    return Buffer.from(bytes).readUInt32LE(4) === bytes.length - 8;
+  }
+  if (mimeType === "application/pdf") {
+    if (bytes.length < 10) return false;
+    return Buffer.from(bytes.subarray(Math.max(0, bytes.length - 1024))).includes(Buffer.from("%%EOF", "ascii"));
+  }
+  return false;
+}
+
 export function inspectStorageObject({ bucket, path, bytes, metadataMime = "" }) {
   const policy = BUCKET_POLICIES[bucket];
   if (!policy) {
@@ -74,6 +105,9 @@ export function inspectStorageObject({ bucket, path, bytes, metadataMime = "" })
   const mimeType = detectMimeType(bytes);
   if (!mimeType || !policy.mimeTypes.has(mimeType)) {
     return { valid: false, code: "invalid_signature", message: `${bucket}/${path} has an unsupported file signature` };
+  }
+  if (!hasCompleteFileStructure(bytes, mimeType)) {
+    return { valid: false, code: "invalid_structure", message: `${bucket}/${path} appears truncated or malformed` };
   }
 
   const normalizedMime = String(metadataMime).trim().toLowerCase();
@@ -109,8 +143,9 @@ async function listPage(storage, prefix, offset, pageSize) {
 }
 
 export async function listStorageFiles(storage, prefix = "", pageSize = 100) {
+  const normalizedPrefix = normalizeStoragePrefix(prefix);
   const files = [];
-  const directories = [prefix];
+  const directories = [normalizedPrefix];
 
   while (directories.length) {
     const currentPrefix = directories.shift();
@@ -119,7 +154,11 @@ export async function listStorageFiles(storage, prefix = "", pageSize = 100) {
       for (const item of page) {
         const path = joinStoragePath(currentPrefix, item.name);
         if (item.id) {
-          files.push({ path, metadataMime: normalizedMetadataMime(item) });
+          files.push({
+            path,
+            metadataMime: normalizedMetadataMime(item),
+            updatedAt: normalizedUpdatedAt(item),
+          });
         } else {
           directories.push(path);
         }
@@ -129,7 +168,21 @@ export async function listStorageFiles(storage, prefix = "", pageSize = 100) {
     directories.sort();
   }
 
-  return files.sort(compareByPath);
+  files.sort(compareByPath);
+  for (let index = 1; index < files.length; index += 1) {
+    if (files[index - 1].path === files[index].path) {
+      throw new Error(`Storage listing returned a duplicate path: ${files[index].path}`);
+    }
+  }
+  return files;
+}
+
+function sameFileSnapshot(left, right) {
+  return left.length === right.length && left.every((item, index) => (
+    item.path === right[index].path
+    && item.metadataMime === right[index].metadataMime
+    && item.updatedAt === right[index].updatedAt
+  ));
 }
 
 async function mapWithConcurrency(items, concurrency, mapper) {
@@ -154,7 +207,11 @@ export async function buildStorageManifest({ client, projectRef, bucket, prefix 
   }
 
   const storage = client.storage.from(bucket);
-  const files = await listStorageFiles(storage, prefix);
+  const normalizedPrefix = normalizeStoragePrefix(prefix);
+  const files = await listStorageFiles(storage, normalizedPrefix);
+  if (files.length === 0) {
+    throw new Error(`No Storage objects found under ${normalizedPrefix || "bucket root"}`);
+  }
   const inspected = await mapWithConcurrency(files, concurrency, async (file) => {
     if (isStoragePlaceholder(file.path)) {
       return {
@@ -176,6 +233,10 @@ export async function buildStorageManifest({ client, projectRef, bucket, prefix 
     const bytes = new Uint8Array(await data.arrayBuffer());
     return { path: file.path, ...inspectStorageObject({ bucket, path: file.path, bytes, metadataMime: file.metadataMime }) };
   });
+  const finalFiles = await listStorageFiles(storage, normalizedPrefix);
+  if (!sameFileSnapshot(files, finalFiles)) {
+    throw new Error("Storage changed during manifest generation; retry the command");
+  }
 
   const objects = inspected.filter((item) => item.valid).map((item) => item.object).sort(compareByPath);
   const ignored = inspected
@@ -191,7 +252,7 @@ export async function buildStorageManifest({ client, projectRef, bucket, prefix 
     source: {
       project_ref: projectRef,
       bucket,
-      prefix,
+      prefix: normalizedPrefix,
       read_only: true,
     },
     summary: {

@@ -9,8 +9,8 @@ const USAGE = `Usage:
   npm run manifest:place-photos -- --bucket <bucket> --output <path> [options]
 
 Required environment:
-  NEXT_PUBLIC_SUPABASE_URL
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL)
+  SUPABASE_SERVICE_ROLE_KEY
 
 Options:
   --prefix <path>       Only inspect objects under this Storage prefix
@@ -76,9 +76,9 @@ async function main() {
     return;
   }
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-  if (!url || !key) throw new CliError("missing_environment", "Supabase URL and publishable key are required");
+  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) throw new CliError("missing_environment", "Supabase URL and service role key are required");
 
   const result = await buildStorageManifest({
     client: createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } }),

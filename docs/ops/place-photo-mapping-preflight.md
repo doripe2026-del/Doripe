@@ -62,7 +62,7 @@ npm run manifest:place-photos -- \
   --output ./outputs/place-photo-storage-manifest.json
 ```
 
-`.env.local`의 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`를 사용한다. Supabase의 `.emptyFolderPlaceholder`는 `ignored`에 기록하고 자동 제외한다. `rejected`가 한 건이라도 있으면 종료 코드 1을 반환하므로, `objects`만 보고 성공으로 오해하면 안 된다. Instagram 게시물 제작본이나 prototype asset처럼 실제 장소카드 원본이 아닌 폴더는 mapping 대상으로 사용하지 않는다.
+`.env.local`의 `SUPABASE_URL` 또는 `NEXT_PUBLIC_SUPABASE_URL`과 서버 전용 `SUPABASE_SERVICE_ROLE_KEY`를 사용한다. service role key는 브라우저 코드, 문서, Git에 넣지 않는다. 공개 key는 보안 정책 적용 후 Storage 목록을 읽을 수 없으므로 이 운영 명령에 사용하지 않는다. object가 0개면 권한 또는 prefix 오류일 수 있어 실패하며, 스캔 중 목록이나 수정 시간이 달라져도 실패한다. Supabase의 `.emptyFolderPlaceholder`는 `ignored`에 기록하고 자동 제외한다. `rejected`가 한 건이라도 있으면 종료 코드 1을 반환하므로, `objects`만 보고 성공으로 오해하면 안 된다. Instagram 게시물 제작본이나 prototype asset처럼 실제 장소카드 원본이 아닌 폴더는 mapping 대상으로 사용하지 않는다.
 
 ### 반영 후 장소 동기화
 
