@@ -49,6 +49,7 @@ const analytics = read("public/app-preview/analytics-client.js");
 const share = read("api/share.ts");
 const inventory = JSON.parse(read("public/app-preview/figma/screen-inventory.json"));
 const vercel = JSON.parse(read("vercel.json"));
+const packageJson = JSON.parse(read("package.json"));
 
 assert(inventory.length === 55, "current app must keep all 55 reviewed Figma screens");
 assertIncludes(index, 'dataset.appSurface = location.pathname.startsWith("/app-preview")', "review/product surface split");
@@ -69,5 +70,7 @@ assert(rewriteBySource.get("/app/:path*") === "/app-preview/index.html", "nested
 assert(rewriteBySource.get("/app-preview") === "/app-preview/index.html", "review route must remain available");
 assert(rewriteBySource.has("/p/:shareId"), "vercel rewrite missing place shares");
 assert(rewriteBySource.has("/r/:shareId"), "vercel rewrite missing route shares");
+assert(!packageJson.scripts?.dev, "the dev script must not recursively call vercel dev");
+assert(packageJson.scripts?.["dev:vercel"] === "vercel dev", "Vercel local runtime command is missing");
 
 console.log("MVP app checks passed.");

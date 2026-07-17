@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vercel dev",
+    "dev:vercel": "vercel dev",
     "dev:landing": "node scripts/serve-landing.mjs",
     "build": "npm run build:home-css && npm run typecheck",
     "vercel-build": "npm run build:home-css && npm run typecheck",
