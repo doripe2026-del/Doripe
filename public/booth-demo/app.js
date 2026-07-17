@@ -1,4 +1,4 @@
-import { PLACES } from "./places.js";
+import { FEED_ITEMS, PLACES } from "./places.js";
 import {
   browseNearby,
   completeCourse,
@@ -11,20 +11,19 @@ import {
 const root = document.querySelector("#demo-app");
 const placeById = new Map(PLACES.map((place) => [place.id, place]));
 const INACTIVITY_MS = 60_000;
-const MAX_FEED_BATCHES = 5;
 
 let state = createInitialState();
 let inactivityTimer;
-let feedObserver;
-let feedBatchCount = 1;
+const selectedImageByPlaceId = new Map();
 
-function placeTile(place, { selectable = false, selected = false } = {}) {
+function placeTile(item, { selectable = false, selected = false } = {}) {
   const pressed = selectable ? ` aria-pressed="${selected}"` : "";
   const selectedClass = selected ? " is-selected" : "";
   return `
     <button class="place-tile touch-target${selectedClass}" type="button"
-      data-place-id="${place.id}" aria-label="${place.name} 선택"${pressed}>
-      <img src="${place.image}" alt="${place.name}" loading="eager" decoding="async">
+      data-place-id="${item.placeId ?? item.id}" data-image="${item.image}"
+      aria-label="${item.name} 선택"${pressed}>
+      <img src="${item.image}" alt="${item.name}" loading="lazy" decoding="async">
       ${selectable ? '<span class="place-tile__check" aria-hidden="true">✓</span>' : ""}
     </button>
   `;
@@ -55,8 +54,7 @@ function renderFeed() {
         </div>
       </header>
       <div class="masonry-feed" data-feed-list>
-        ${PLACES.map((place) => placeTile(place)).join("")}
-        <div class="feed-sentinel" data-feed-sentinel aria-hidden="true"></div>
+        ${FEED_ITEMS.map((item) => placeTile(item)).join("")}
       </div>
     </section>
   `;
@@ -65,16 +63,16 @@ function renderFeed() {
 function renderDetail() {
   const place = placeById.get(state.startPlaceId);
   if (!place) return renderFeed();
+  const selectedImage = selectedImageByPlaceId.get(place.id) ?? place.image;
   return `
     <section class="screen detail" data-screen="detail">
       <div class="detail__photo-wrap">
-        <img class="detail__photo" src="${place.image}" alt="${place.name}" fetchpriority="high">
+        <img class="detail__photo" src="${selectedImage}" alt="${place.name}" fetchpriority="high">
         <button class="detail__back touch-target" type="button" data-action="back-to-feed" aria-label="사진 피드로 돌아가기">←</button>
       </div>
       <div class="detail__panel">
         <p class="screen__eyebrow">첫 번째 장소</p>
         <h1>${place.name}</h1>
-        <p>${place.copy}</p>
         <button class="primary-action touch-target" type="button" data-action="browse-nearby">이 장소 주변 둘러보기</button>
       </div>
     </section>
@@ -83,7 +81,8 @@ function renderDetail() {
 
 function renderBuilder() {
   const startPlace = placeById.get(state.startPlaceId);
-  const candidates = PLACES.filter((place) => place.id !== state.startPlaceId);
+  const startImage = selectedImageByPlaceId.get(startPlace.id) ?? startPlace.image;
+  const candidates = FEED_ITEMS.filter((item) => item.placeId !== state.startPlaceId);
   const selectedCount = state.selectedPlaceIds.length;
   return `
     <section class="screen builder" data-screen="builder">
@@ -97,16 +96,16 @@ function renderBuilder() {
         </div>
       </header>
       <article class="route-seed is-lifting" aria-label="코스의 시작 장소">
-        <img src="${startPlace.image}" alt="">
+        <img src="${startImage}" alt="">
         <div class="route-seed__copy">
           <span>여기서 시작해요</span>
           <strong>${startPlace.name}</strong>
         </div>
       </article>
       <div class="masonry-feed" aria-label="주변 장소 후보">
-        ${candidates.map((place) => placeTile(place, {
+        ${candidates.map((item) => placeTile(item, {
           selectable: true,
-          selected: state.selectedPlaceIds.includes(place.id)
+          selected: state.selectedPlaceIds.includes(item.placeId)
         })).join("")}
       </div>
       ${selectedCount > 0 ? `
@@ -135,7 +134,7 @@ function renderComplete() {
           ${route.map((place, index) => `
             <li class="completion-place" style="--route-index: ${index}">
               <span class="completion-place__order">${index + 1}</span>
-              <img src="${place.image}" alt="">
+              <img src="${selectedImageByPlaceId.get(place.id) ?? place.image}" alt="">
               <strong>${place.name}</strong>
             </li>
           `).join("")}
@@ -146,35 +145,7 @@ function renderComplete() {
   `;
 }
 
-function appendFeedBatch() {
-  const list = root.querySelector("[data-feed-list]");
-  const sentinel = root.querySelector("[data-feed-sentinel]");
-  if (!list || !sentinel || feedBatchCount >= MAX_FEED_BATCHES) {
-    feedObserver?.disconnect();
-    return;
-  }
-
-  const nextPlaces = [...PLACES];
-  for (let index = nextPlaces.length - 1; index > 0; index -= 1) {
-    const swapIndex = Math.floor(Math.random() * (index + 1));
-    [nextPlaces[index], nextPlaces[swapIndex]] = [nextPlaces[swapIndex], nextPlaces[index]];
-  }
-  sentinel.insertAdjacentHTML("beforebegin", nextPlaces.map((place) => placeTile(place)).join(""));
-  feedBatchCount += 1;
-}
-
-function observeFeedContinuation() {
-  feedObserver?.disconnect();
-  const sentinel = root.querySelector("[data-feed-sentinel]");
-  if (!sentinel || !("IntersectionObserver" in window)) return;
-  feedObserver = new IntersectionObserver((entries) => {
-    if (entries.some((entry) => entry.isIntersecting)) appendFeedBatch();
-  }, { rootMargin: "0px 0px 240px" });
-  feedObserver.observe(sentinel);
-}
-
 function render() {
-  feedObserver?.disconnect();
   root.innerHTML = `<div class="demo-shell">${
     state.screen === "welcome" ? renderWelcome()
       : state.screen === "feed" ? renderFeed()
@@ -183,14 +154,13 @@ function render() {
             : renderComplete()
   }</div>`;
 
-  if (state.screen === "feed") observeFeedContinuation();
 }
 
 function armInactivityReset() {
   window.clearTimeout(inactivityTimer);
   inactivityTimer = window.setTimeout(() => {
     state = createInitialState();
-    feedBatchCount = 1;
+    selectedImageByPlaceId.clear();
     render();
     armInactivityReset();
   }, INACTIVITY_MS);
@@ -199,7 +169,6 @@ function armInactivityReset() {
 function update(nextState, { preserveScroll = false } = {}) {
   const previousScrollY = window.scrollY;
   state = nextState;
-  if (state.screen !== "feed") feedBatchCount = 1;
   render();
   window.scrollTo({ top: preserveScroll ? previousScrollY : 0, behavior: "instant" });
   armInactivityReset();
@@ -209,14 +178,31 @@ root.addEventListener("click", (event) => {
   const target = event.target.closest("[data-action], [data-place-id]");
   if (!target) return;
 
-  if (target.dataset.action === "start") update(startDiscovery(state));
-  else if (target.dataset.action === "back-to-feed") update(startDiscovery(state));
+  if (target.dataset.action === "start") {
+    selectedImageByPlaceId.clear();
+    update(startDiscovery(state));
+  }
+  else if (target.dataset.action === "back-to-feed") {
+    selectedImageByPlaceId.clear();
+    update(startDiscovery(state));
+  }
   else if (target.dataset.action === "back-to-detail") update({ ...state, screen: "detail", selectedPlaceIds: [] });
   else if (target.dataset.action === "browse-nearby") update(browseNearby(state));
   else if (target.dataset.action === "complete") update(completeCourse(state));
-  else if (target.dataset.action === "reset") update(createInitialState());
-  else if (target.dataset.placeId && state.screen === "feed") update(openPlace(state, target.dataset.placeId));
+  else if (target.dataset.action === "reset") {
+    selectedImageByPlaceId.clear();
+    update(createInitialState());
+  }
+  else if (target.dataset.placeId && state.screen === "feed") {
+    selectedImageByPlaceId.set(target.dataset.placeId, target.dataset.image);
+    update(openPlace(state, target.dataset.placeId));
+  }
   else if (target.dataset.placeId && state.screen === "builder") {
+    if (state.selectedPlaceIds.includes(target.dataset.placeId)) {
+      selectedImageByPlaceId.delete(target.dataset.placeId);
+    } else {
+      selectedImageByPlaceId.set(target.dataset.placeId, target.dataset.image);
+    }
     update(toggleAdditionalPlace(state, target.dataset.placeId), { preserveScroll: true });
   }
 });
