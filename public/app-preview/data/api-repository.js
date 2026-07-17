@@ -410,11 +410,15 @@ export function createApiRepository({
   }
 
   let mutationSequence = 0;
-  const mutation = (path, method, body) => {
+  const mutation = (path, method, body, { idempotencyKey: requestedKey } = {}) => {
     mutationSequence += 1;
     const randomPart = globalThis.crypto?.randomUUID?.().replaceAll("-", "")
       || `${Date.now().toString(36)}${mutationSequence.toString(36)}`;
-    const idempotencyKey = `app_preview_${randomPart}_${mutationSequence.toString(36)}`.slice(0, 80);
+    const generatedKey = `app_preview_${randomPart}_${mutationSequence.toString(36)}`.slice(0, 80);
+    const idempotencyKey = requestedKey || generatedKey;
+    if (!/^[A-Za-z0-9_-]{8,80}$/u.test(idempotencyKey)) {
+      throw new TypeError("Idempotency key must contain 8-80 letters, numbers, underscores, or hyphens");
+    }
     return request(path, { method, body, auth: true, idempotencyKey });
   };
   const repository = {
@@ -431,6 +435,12 @@ export function createApiRepository({
     async getCourseDetail(id) { return toCourse(await read(`courses/${encodeURIComponent(id)}`)); },
     async getPublicProfile(id) { return toProfile(await read(`profiles/${encodeURIComponent(id)}`)); },
     async getMyProfile() { return toProfile(await request("me/profile", { auth: true })); },
+    async updateMyProfile(input) {
+      return toProfile(await request("me/profile", { method: "PATCH", body: input, auth: true }));
+    },
+    async putMyOnboarding(input) {
+      return request("me/onboarding", { method: "PUT", body: input, auth: true });
+    },
     async getSavedPlaces() {
       const page = await request("me/saves?targetType=place&limit=50", { auth: true });
       return (page?.items || [])
@@ -441,10 +451,10 @@ export function createApiRepository({
       const page = await request("me/saves?targetType=course&limit=50", { auth: true });
       return (page?.items || []).filter((item) => item.targetType === "course" && item.target).map((item) => toCourse(item.target));
     },
-    async savePlace(id) { return mutation(`me/saves/place/${encodeURIComponent(id)}`, "PUT", { sourceScreen: "app-preview" }); },
-    async unsavePlace(id) { return mutation(`me/saves/place/${encodeURIComponent(id)}`, "DELETE"); },
-    async saveCourse(id) { return mutation(`me/saves/course/${encodeURIComponent(id)}`, "PUT", { sourceScreen: "app-preview" }); },
-    async unsaveCourse(id) { return mutation(`me/saves/course/${encodeURIComponent(id)}`, "DELETE"); },
+    async savePlace(id, options) { return mutation(`me/saves/place/${encodeURIComponent(id)}`, "PUT", { sourceScreen: "app-preview" }, options); },
+    async unsavePlace(id, options) { return mutation(`me/saves/place/${encodeURIComponent(id)}`, "DELETE", undefined, options); },
+    async saveCourse(id, options) { return mutation(`me/saves/course/${encodeURIComponent(id)}`, "PUT", { sourceScreen: "app-preview" }, options); },
+    async unsaveCourse(id, options) { return mutation(`me/saves/course/${encodeURIComponent(id)}`, "DELETE", undefined, options); },
     async followProfile(id) { return mutation(`profiles/${encodeURIComponent(id)}/follow`, "POST"); },
     async unfollowProfile(id) { return mutation(`profiles/${encodeURIComponent(id)}/follow`, "DELETE"); },
     async likeContent(id) { return mutation(`contents/${encodeURIComponent(id)}/like`, "POST"); },
@@ -453,11 +463,13 @@ export function createApiRepository({
       const page = await request(`contents/${encodeURIComponent(id)}/comments?limit=50`);
       return (page?.items || []).map(toComment);
     },
-    async createComment(id, body) { return toComment(await mutation(`contents/${encodeURIComponent(id)}/comments`, "POST", { text: body })); },
+    async createComment(id, body, options) {
+      return toComment(await mutation(`contents/${encodeURIComponent(id)}/comments`, "POST", { text: body }, options));
+    },
     async likeComment(id) { return mutation(`comments/${encodeURIComponent(id)}/like`, "POST"); },
     async unlikeComment(id) { return mutation(`comments/${encodeURIComponent(id)}/like`, "DELETE"); },
     async deleteComment(id) { return mutation(`comments/${encodeURIComponent(id)}`, "DELETE"); },
-    async createCourse(input) { return toCourse(await mutation("courses", "POST", input)); },
+    async createCourse(input, options) { return toCourse(await mutation("courses", "POST", input, options)); },
     async updateCourse(id, input) { return toCourse(await mutation(`courses/${encodeURIComponent(id)}`, "PATCH", input)); }
   };
 

@@ -313,6 +313,73 @@ test("create mutations send an idempotency key", async () => {
   assert.match(requests[0].options.headers["idempotency-key"], /^[A-Za-z0-9_-]{8,80}$/u);
 });
 
+test("callers can reuse a stable idempotency key while migrating guest writes", async () => {
+  const requests = [];
+  const repository = createApiRepository({
+    fetchImpl: async (url, options) => {
+      requests.push({ url: String(url), options });
+      return jsonResponse({
+        data: {
+          id: "comment-1",
+          contentId: "content-1",
+          author: { id: "profile-1", nickname: "도리" },
+          text: "댓글",
+          likeCount: 0,
+          createdAt: "2026-07-16T00:00:00.000Z"
+        }
+      }, 201);
+    },
+    storage: memoryStorage(),
+    accessTokenProvider: () => "current-access-token"
+  });
+
+  await repository.createComment("content-1", "댓글", { idempotencyKey: "guest_comment_content_1_0001" });
+
+  assert.equal(requests[0].options.headers["idempotency-key"], "guest_comment_content_1_0001");
+});
+
+test("profile and onboarding writes use their authenticated API contracts", async () => {
+  const requests = [];
+  const repository = createApiRepository({
+    fetchImpl: async (url, options) => {
+      requests.push({ url: String(url), options });
+      return String(url).endsWith("/me/profile")
+        ? jsonResponse({ data: {
+            id: "profile-1",
+            nickname: "새도리",
+            introduction: "서울을 기록해요",
+            profileImageUrl: null,
+            isCurator: false,
+            officialBadge: false,
+            followedByMe: false,
+            followerCount: 0
+          } })
+        : jsonResponse({ data: { id: "profile-1", status: "completed", version: 1 } });
+    },
+    storage: memoryStorage(),
+    accessTokenProvider: () => "current-access-token"
+  });
+
+  const profile = await repository.updateMyProfile({ nickname: "새도리", introduction: "서울을 기록해요" });
+  const onboarding = await repository.putMyOnboarding({
+    birthYear: 2000,
+    gender: "female",
+    nickname: "새도리",
+    discoveryHabit: "instagram-saved",
+    neighborhoodIds: [],
+    placeTypeTagIds: [],
+    situationTagIds: [],
+    referralSource: "instagram"
+  });
+
+  assert.equal(profile.name, "새도리");
+  assert.equal(onboarding.status, "completed");
+  assert.deepEqual(requests.map(({ url, options }) => [url, options.method]), [
+    ["/api/v1/me/profile", "PATCH"],
+    ["/api/v1/me/onboarding", "PUT"]
+  ]);
+});
+
 test("an authenticated 401 refreshes once and retries with the same idempotency key", async () => {
   const requests = [];
   let accessToken = "expired-access-token";

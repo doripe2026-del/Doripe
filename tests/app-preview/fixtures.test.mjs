@@ -165,6 +165,12 @@ test("fixture repository exposes deterministic reads, mutations, and failures", 
   });
   assert.deepEqual(await repository.createCourse({ name: "새 코스" }), { id: "saved-route-1", name: "새 코스" });
   assert.deepEqual(await repository.updateCourse("route-1", { name: "수정 코스" }), { id: "route-1", name: "수정 코스" });
+  assert.deepEqual(await repository.updateMyProfile({ nickname: "새도리" }), { id: "user-1", nickname: "새도리" });
+  assert.deepEqual(await repository.putMyOnboarding({ referralSource: "instagram" }), {
+    id: "user-1",
+    status: "completed",
+    version: 1
+  });
   await assert.rejects(
     repository.getPlaceDetail("missing"),
     (error) => error.code === "FIXTURE_NOT_FOUND" && error.resource === "place" && error.resourceId === "missing"

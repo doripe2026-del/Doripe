@@ -5,6 +5,7 @@ const COLLECTION_KEYS = Object.freeze([
 const REPOSITORY_METHODS = Object.freeze([
   "getBootstrap", "getFeed", "getContentDetail", "getPlaceDetail",
   "getCourseDetail", "getPublicProfile", "getMyProfile", "getSavedPlaces", "getSavedCourses",
+  "updateMyProfile", "putMyOnboarding",
   "savePlace", "unsavePlace", "saveCourse", "unsaveCourse",
   "followProfile", "unfollowProfile", "likeContent", "unlikeContent",
   "getComments", "createComment", "createCourse", "updateCourse"
