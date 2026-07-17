@@ -60,6 +60,9 @@ try {
 }
 setBootProgress(92);
 let dataSnapshot = dataStore.getSnapshot();
+if (authStatus === "authenticated" && !dataSnapshot.personalDataLoaded && !dataLoadError) {
+  dataLoadError = new Error("계정 데이터를 불러오지 못했어요");
+}
 let dataCatalog = createDataCatalog(dataSnapshot);
 const state = createPreviewState({ catalog: dataCatalog });
 if (dataSnapshot.personalDataLoaded) {

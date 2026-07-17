@@ -176,6 +176,49 @@ test("a returning signed-in user sees server profile, saves, and complete course
   expect(privateRequests.every((item) => item.authorization === "Bearer live-access-token")).toBe(true);
 });
 
+test("a returning signed-in user can retry when private account hydration fails", async ({ page }) => {
+  await page.addInitScript((authKey) => {
+    sessionStorage.setItem(authKey, JSON.stringify({
+      accessToken: "live-access-token",
+      refreshToken: "live-refresh-token",
+      expiresAt: Date.now() + 60_000,
+      flow: "auth"
+    }));
+  }, AUTH_SESSION_STORAGE_KEY);
+
+  await page.route("**/api/v1/**", async (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice("/api/v1/".length);
+    if (path === "bootstrap") {
+      return route.fulfill({ status: 200, json: { data: {
+        regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {}
+      }, meta: {} } });
+    }
+    if (path === "feed") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    if (path === "me/profile") {
+      return route.fulfill({ status: 503, json: { error: { code: "temporarily_unavailable", message: "retry" } } });
+    }
+    if (path === "me/saves" || path === "courses") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    if (path === "sessions") {
+      return route.fulfill({ status: 201, json: { data: { sessionId: request.postDataJSON().sessionId, accepted: true }, meta: {} } });
+    }
+    if (path === "events") {
+      return route.fulfill({ status: 202, json: { data: { accepted: 0, duplicates: 0, rejected: 0 }, meta: {} } });
+    }
+    return route.fulfill({ status: 404, json: { error: { code: "not_found", message: "not found" } } });
+  });
+
+  await page.goto("/app-preview/?screen=b1");
+  await expect(page.locator('[data-screen-id="b1"]')).toBeVisible();
+  await expect(page.locator(".preview-data-feedback")).toContainText("데이터를 불러오지 못했어요");
+  await expect(page.locator('.preview-data-feedback [data-action="app-retry-data"]')).toBeVisible();
+});
+
 test("signing in hydrates server account data without discarding guest saves", async ({ page }) => {
   const guestPlace = place(PLACE_IDS[1], 1);
   const serverPlace = place(PLACE_IDS[0], 0);
