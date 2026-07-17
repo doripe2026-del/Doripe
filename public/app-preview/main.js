@@ -6,7 +6,7 @@ import { getAdapter } from "./api-adapter.js";
 import { courseById, createDataCatalog, createUnavailableDataCatalog } from "./data/selectors.js";
 import { createActionSync } from "./data/action-sync.js";
 import { createAppDataStore } from "./data/store.js";
-import { mergeDataSnapshots, normalizeDataSnapshot } from "./data/contracts.js";
+import { createPublicDataSnapshot, mergeDataSnapshots, normalizeDataSnapshot } from "./data/contracts.js";
 import { mergePersonalSnapshotIntoState } from "./data/personal-state.js";
 import {
   clearGuestMigrationJournal,
@@ -62,7 +62,8 @@ try {
 }
 setBootProgress(92);
 let dataSnapshot = dataStore.getSnapshot();
-const initialDiscoverContentIds = Object.freeze(dataSnapshot.contents.map((content) => content.id));
+const initialPublicDataSnapshot = createPublicDataSnapshot(dataSnapshot);
+const initialDiscoverContentIds = Object.freeze(initialPublicDataSnapshot.contents.map((content) => content.id));
 personalDataReady = authStatus === "authenticated" && dataSnapshot.personalDataLoaded === true;
 if (authStatus === "authenticated" && !dataSnapshot.personalDataLoaded && !dataLoadError) {
   dataLoadError = new Error("계정 데이터를 불러오지 못했어요");
@@ -117,19 +118,16 @@ function handleUnauthorizedSession() {
   applyUnauthorizedNotice();
 }
 
-function applyUnauthorizedNotice() {
-  if (!unauthorizedNoticePending || !appRuntimeReady) return;
-  dataSnapshot = normalizeDataSnapshot({
-    ...dataSnapshot,
-    viewerProfileId: null,
-    personalDataLoaded: false,
-    savedPlaceIds: [],
-    savedCourseIds: [],
-    ownedCourseIds: [],
-    feedNextCursor: null
-  });
+function restorePublicDataSnapshot() {
+  dataSnapshot = initialPublicDataSnapshot;
   dataCatalog = createDataCatalog(dataSnapshot);
   state.setCatalog(dataCatalog);
+  discoverSeenCursors.clear();
+}
+
+function applyUnauthorizedNotice() {
+  if (!unauthorizedNoticePending || !appRuntimeReady) return;
+  restorePublicDataSnapshot();
   const current = state.getState();
   const nextState = {
     ...current,
@@ -144,6 +142,8 @@ function applyUnauthorizedNotice() {
     routeDraft: { startPlaceId: null, placeIds: [] },
     selections: {
       ...(current.selections || {}),
+      discoverFeedContentIds: initialDiscoverContentIds,
+      serverFeedFiltered: false,
       ...(current.selections?.feedStatus === "loading" ? { feedStatus: "error" } : {}),
       feedLoadingMore: false,
       ...(current.selections?.feedLoadingMore === true ? { feedLoadMoreStatus: "error" } : {})
@@ -1024,6 +1024,7 @@ function dispatchLocalFirstLogout(target, screenId, actionId) {
   clearGuestMigrationJournal();
   authStatus = "no-session";
   personalDataReady = false;
+  restorePublicDataSnapshot();
   const payload = {
     state: interactionState,
     data: dataSnapshot,
@@ -1079,20 +1080,39 @@ function feedRenderState() {
 }
 
 function updateDiscoverFeedState(nextSelections, { expectedScreenId = null, preserveFeedPosition = false } = {}) {
+  if (expectedScreenId && interactionState.currentScreenId !== expectedScreenId) return false;
   const renderedFeedState = preserveFeedPosition ? feedRenderState() : null;
   state.replace({ ...interactionState, selections: nextSelections });
   interactionState = state.getState();
-  if (!expectedScreenId || interactionState.currentScreenId === expectedScreenId) {
-    renderScreen(interactionState.currentScreenId);
-    if (renderedFeedState) {
-      const feed = phoneRoot.querySelector(".discover-feed");
-      if (feed) feed.scrollTop = renderedFeedState.scrollTop;
-      if (renderedFeedState.restoreLoadMoreFocus) {
-        feed?.querySelector(".discover-feed__load-more")?.focus({ preventScroll: true });
-      }
+  renderScreen(interactionState.currentScreenId);
+  if (renderedFeedState) {
+    const feed = phoneRoot.querySelector(".discover-feed");
+    if (feed) feed.scrollTop = renderedFeedState.scrollTop;
+    if (renderedFeedState.restoreLoadMoreFocus) {
+      feed?.querySelector(".discover-feed__load-more")?.focus({ preventScroll: true });
     }
   }
   refreshCurrentBrowserEntry();
+  return true;
+}
+
+function discoverRequestActor() {
+  return `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
+}
+
+function discoverRequestKey(screenId, selections, cursor = null) {
+  return JSON.stringify({
+    screenId,
+    actor: discoverRequestActor(),
+    params: discoverFilterParams(selections, screenId),
+    cursor
+  });
+}
+
+function isCurrentDiscoverRequest(requestId, requestKey, screenId, cursor = null) {
+  return requestId === discoverFilterRequestSequence
+    && interactionState.currentScreenId === screenId
+    && requestKey === discoverRequestKey(screenId, interactionState.selections, cursor);
 }
 
 function requestDiscoverFeed(transitionResult, screenId, payload, rerender) {
@@ -1100,6 +1120,7 @@ function requestDiscoverFeed(transitionResult, screenId, payload, rerender) {
   discoverSeenCursors.clear();
   const requestFeedScreenId = transitionResult.state.currentScreenId;
   const requestParams = discoverFilterParams(transitionResult.state.selections, requestFeedScreenId);
+  const requestKey = discoverRequestKey(requestFeedScreenId, transitionResult.state.selections);
   const loadingSelections = {
     ...(transitionResult.state.selections || {}),
     serverFeedFiltered: true,
@@ -1125,10 +1146,8 @@ function requestDiscoverFeed(transitionResult, screenId, payload, rerender) {
     return;
   }
 
-  const requestActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
   void repository.getFeedSnapshot(requestParams).then((incoming) => {
-    const currentActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
-    if (requestId !== discoverFilterRequestSequence || requestActor !== currentActor) return;
+    if (!isCurrentDiscoverRequest(requestId, requestKey, requestFeedScreenId)) return;
     dataSnapshot = mergeDataSnapshots(dataSnapshot, incoming);
     dataCatalog = createDataCatalog(dataSnapshot);
     state.setCatalog(dataCatalog);
@@ -1141,8 +1160,7 @@ function requestDiscoverFeed(transitionResult, screenId, payload, rerender) {
       feedLoadMoreStatus: incoming.feedNextCursor ? "ready" : "complete"
     }, { expectedScreenId: requestFeedScreenId });
   }).catch(() => {
-    const currentActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
-    if (requestId !== discoverFilterRequestSequence || requestActor !== currentActor) return;
+    if (!isCurrentDiscoverRequest(requestId, requestKey, requestFeedScreenId)) return;
     updateDiscoverFeedState({
       ...(interactionState.selections || {}),
       serverFeedFiltered: true,
@@ -1159,7 +1177,7 @@ function requestNextDiscoverFeed(screenId) {
   discoverSeenCursors.add(cursor);
   const requestId = ++discoverFilterRequestSequence;
   const requestFeedScreenId = interactionState.currentScreenId;
-  const requestActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
+  const requestKey = discoverRequestKey(requestFeedScreenId, interactionState.selections, cursor);
   state.replace({
     ...interactionState,
     selections: {
@@ -1182,8 +1200,7 @@ function requestNextDiscoverFeed(screenId) {
     ...discoverFilterParams(interactionState.selections, requestFeedScreenId),
     cursor
   }).then((incoming) => {
-    const currentActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
-    if (requestId !== discoverFilterRequestSequence || requestActor !== currentActor) return;
+    if (!isCurrentDiscoverRequest(requestId, requestKey, requestFeedScreenId, cursor)) return;
     const previousIds = Array.isArray(interactionState.selections?.discoverFeedContentIds)
       ? interactionState.selections.discoverFeedContentIds
       : initialDiscoverContentIds;
@@ -1202,8 +1219,8 @@ function requestNextDiscoverFeed(screenId) {
       feedStatus: nextIds.length ? "ready" : "empty"
     }, { expectedScreenId: requestFeedScreenId, preserveFeedPosition: true });
   }).catch(() => {
-    const currentActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
-    if (requestId !== discoverFilterRequestSequence || requestActor !== currentActor) return;
+    discoverSeenCursors.delete(cursor);
+    if (!isCurrentDiscoverRequest(requestId, requestKey, requestFeedScreenId, cursor)) return;
     updateDiscoverFeedState({
       ...(interactionState.selections || {}),
       feedLoadingMore: false,

@@ -175,6 +175,58 @@ test("Discover appends the next server page without replacing the current feed",
   expect(feedRequests.some((query) => query.includes("cursor=next-page"))).toBe(true);
 });
 
+test("Discover retries the same next page after a temporary failure", async ({ page }) => {
+  const firstPlace = place("31313131-3131-4131-8131-313131313131", "재시도 전 장소", "32323232-3232-4232-8232-323232323232");
+  const secondPlace = place("33333333-3333-4333-8333-333333333333", "재시도 성공 장소", "34343434-3434-4434-8434-343434343434");
+  let nextPageAttempts = 0;
+
+  await page.addInitScript(() => { delete window.IntersectionObserver; });
+  await page.route("**/api/v1/**", async (route) => {
+    const url = new URL(route.request().url());
+    if (url.pathname.endsWith("/bootstrap")) {
+      await route.fulfill({ json: { data: {
+        regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {}
+      } } });
+      return;
+    }
+    if (url.pathname.endsWith("/feed")) {
+      const cursor = url.searchParams.get("cursor");
+      if (!cursor) {
+        await route.fulfill({ json: {
+          data: { items: [content("retry-first-content", firstPlace)] },
+          meta: { nextCursor: "retry-page" }
+        } });
+        return;
+      }
+      nextPageAttempts += 1;
+      if (nextPageAttempts === 1) {
+        await route.fulfill({ status: 503, json: { error: { code: "temporary", message: "temporary" } } });
+        return;
+      }
+      await route.fulfill({ json: {
+        data: { items: [content("retry-second-content", secondPlace)] },
+        meta: { nextCursor: null }
+      } });
+      return;
+    }
+    const match = [firstPlace, secondPlace].find((item) => url.pathname.endsWith(`/places/${item.id}`));
+    if (match) {
+      await route.fulfill({ json: { data: match } });
+      return;
+    }
+    await route.fulfill({ status: 404, json: { error: { code: "not_found", message: "not found" } } });
+  });
+
+  await page.goto("/app-preview/?screen=b2");
+  const feed = page.getByTestId("discover-feed");
+  await expect(feed.locator(`[data-place-id="${firstPlace.id}"]`)).toBeVisible();
+  await page.getByRole("button", { name: "다음 피드 불러오기" }).click();
+  await expect(page.getByRole("button", { name: "다음 피드 다시 불러오기" })).toBeEnabled();
+  await page.getByRole("button", { name: "다음 피드 다시 불러오기" }).click();
+  await expect(feed.locator(`[data-place-id="${secondPlace.id}"]`)).toBeVisible();
+  expect(nextPageAttempts).toBe(2);
+});
+
 test("a signed-out Following feed never reuses Discover results", async ({ page }) => {
   const discoverPlace = place("12121212-1212-4212-8212-121212121212", "발견 피드 장소", "13131313-1313-4313-8313-131313131313");
   const feedScopes = [];
