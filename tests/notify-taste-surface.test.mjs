@@ -6,6 +6,7 @@ import test from "node:test";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const notifyPath = `${root}/public/home/notify.html`;
 const notify = readFileSync(notifyPath, "utf8");
+const productionNotify = readFileSync(`${root}/public/notify/index.html`, "utf8");
 const vercelConfig = JSON.parse(readFileSync(`${root}/vercel.json`, "utf8"));
 
 function readNotifyRounds(source) {
@@ -36,6 +37,10 @@ test("notify intro collage is built from the selected local taste photos", () =>
   const collage = [...notify.matchAll(/<img class="a[1-4]" src="([^"]+)"/g)].map((match) => match[1]);
   assert.equal(collage.length, 4);
   collage.forEach((src) => assert.match(src, /^\/img\/notify-taste\//));
+});
+
+test("the production notify route serves the same taste test as the home source", () => {
+  assert.equal(productionNotify, notify);
 });
 
 test("landing headers keep only Doripe and the notify call to action", () => {
