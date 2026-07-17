@@ -138,6 +138,10 @@ function writeJournal(storage, journal) {
   storage?.setItem(GUEST_MIGRATION_STORAGE_KEY, JSON.stringify(journal));
 }
 
+export function clearGuestMigrationJournal({ storage = globalThis.localStorage } = {}) {
+  storage?.removeItem(GUEST_MIGRATION_STORAGE_KEY);
+}
+
 export function prepareGuestMigrationJournal({ storage = globalThis.localStorage, plan } = {}) {
   if (!plan || !Array.isArray(plan.tasks)) throw new TypeError("migration plan is required");
   const previous = readJournal(storage);
@@ -191,5 +195,7 @@ export async function executeGuestMigration({ storage = globalThis.localStorage,
     writeJournal(storage, { ...journal, updatedAt: new Date().toISOString() });
   }
   const failedTaskIds = journal.tasks.filter((item) => item.status !== "done").map((item) => item.id);
-  return { journal, complete: failedTaskIds.length === 0, failedTaskIds };
+  const complete = failedTaskIds.length === 0;
+  if (complete) clearGuestMigrationJournal({ storage });
+  return { journal, complete, failedTaskIds };
 }

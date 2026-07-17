@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   GUEST_MIGRATION_STORAGE_KEY,
+  clearGuestMigrationJournal,
   createGuestMigrationPlan,
   executeGuestMigration,
   prepareGuestMigrationJournal
@@ -125,6 +126,18 @@ test("a persisted journal resumes failed work without repeating completed tasks"
   assert.equal(calls.length, firstCallCount + 1);
   assert.equal(calls.at(-1)[0], "create-comment");
 
-  const persisted = JSON.parse(storage.getItem(GUEST_MIGRATION_STORAGE_KEY));
-  assert.equal(persisted.tasks.every((task) => task.status === "done"), true);
+  assert.equal(storage.getItem(GUEST_MIGRATION_STORAGE_KEY), null);
+});
+
+test("logout cleanup removes an unfinished journal with private guest payloads", () => {
+  const storage = memoryStorage();
+  storage.setItem(GUEST_MIGRATION_STORAGE_KEY, JSON.stringify({
+    version: 1,
+    viewerId: "viewer-1",
+    tasks: [{ type: "create-comment", payload: { body: "개인 메모" } }]
+  }));
+
+  clearGuestMigrationJournal({ storage });
+
+  assert.equal(storage.getItem(GUEST_MIGRATION_STORAGE_KEY), null);
 });

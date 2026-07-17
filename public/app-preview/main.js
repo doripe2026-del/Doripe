@@ -9,6 +9,7 @@ import { createAppDataStore } from "./data/store.js";
 import { mergeDataSnapshots } from "./data/contracts.js";
 import { mergePersonalSnapshotIntoState } from "./data/personal-state.js";
 import {
+  clearGuestMigrationJournal,
   createGuestMigrationPlan,
   executeGuestMigration,
   prepareGuestMigrationJournal
@@ -913,6 +914,7 @@ async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {
 function dispatchLocalFirstLogout(target, screenId, actionId) {
   if (target.disabled || target.dataset.authSubmitting === "true") return;
   const completeRemoteLogout = authClient.beginSignOut();
+  clearGuestMigrationJournal();
   authStatus = "no-session";
   const payload = {
     state: interactionState,
