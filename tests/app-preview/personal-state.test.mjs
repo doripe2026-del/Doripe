@@ -97,3 +97,23 @@ test("owned courses return after reload even when they are not separately saved"
     placeIds: ["place-1", "place-2"]
   }]);
 });
+
+test("post-login hydration does not duplicate a migrated course with a new server ID", () => {
+  const merged = mergePersonalSnapshotIntoState({
+    savedRoutes: [{ id: "local-course", name: "같은 코스", placeIds: ["place-1", "place-2"] }]
+  }, {
+    personalDataLoaded: true,
+    viewerProfileId: "viewer-1",
+    savedPlaceIds: [],
+    savedCourseIds: [],
+    ownedCourseIds: ["server-course"],
+    profiles: [{ id: "viewer-1", name: "도리" }],
+    courses: [{ id: "server-course", name: "같은 코스", placeIds: ["place-1", "place-2"] }]
+  }, { preserveGuestData: true });
+
+  assert.deepEqual(merged.savedRoutes, [{
+    id: "server-course",
+    name: "같은 코스",
+    placeIds: ["place-1", "place-2"]
+  }]);
+});

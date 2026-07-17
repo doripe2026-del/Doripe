@@ -7,6 +7,11 @@ import { courseById, createDataCatalog } from "./data/selectors.js";
 import { createActionSync } from "./data/action-sync.js";
 import { createAppDataStore } from "./data/store.js";
 import { mergePersonalSnapshotIntoState } from "./data/personal-state.js";
+import {
+  createGuestMigrationPlan,
+  executeGuestMigration,
+  prepareGuestMigrationJournal
+} from "./data/guest-migration.js";
 import { isStaticPreview, preloadServerMedia } from "./data/server-media.js";
 import { createAnalyticsClient } from "./analytics-client.js";
 
@@ -58,7 +63,7 @@ let dataSnapshot = dataStore.getSnapshot();
 let dataCatalog = createDataCatalog(dataSnapshot);
 const state = createPreviewState({ catalog: dataCatalog });
 if (dataSnapshot.personalDataLoaded) {
-  state.replace(mergePersonalSnapshotIntoState(state.getState(), dataSnapshot));
+  await reconcileAuthenticatedState(state.getState());
 }
 const reviewList = document.querySelector("#review-list");
 const resetButton = document.querySelector("#review-reset");
@@ -741,23 +746,49 @@ function clearSubmittedPasswords(screen) {
   clearVolatilePasswords();
 }
 
-async function hydrateStateAfterAuthentication() {
-  const guestState = state.getState();
+async function reconcileAuthenticatedState(guestState, { loadFirst = false } = {}) {
   try {
-    await dataStore.load();
+    if (loadFirst) await dataStore.load();
     dataSnapshot = dataStore.getSnapshot();
+    if (!dataSnapshot.personalDataLoaded || !dataSnapshot.viewerProfileId) {
+      throw new Error("로그인은 완료됐지만 계정 데이터를 불러오지 못했어요");
+    }
+
+    const plan = createGuestMigrationPlan({
+      guestState,
+      snapshot: dataSnapshot,
+      viewerId: dataSnapshot.viewerProfileId
+    });
+    const journal = prepareGuestMigrationJournal({ storage: window.localStorage, plan });
+    const migration = await executeGuestMigration({
+      storage: window.localStorage,
+      repository,
+      journal
+    });
+    if (journal.tasks.length > 0) {
+      await dataStore.load();
+      dataSnapshot = dataStore.getSnapshot();
+    }
+
     dataCatalog = createDataCatalog(dataSnapshot);
     state.setCatalog(dataCatalog);
-    state.replace(mergePersonalSnapshotIntoState(guestState, dataSnapshot, { preserveGuestData: true }));
-    interactionState = state.getState();
-    dataLoadError = dataSnapshot.personalDataLoaded
-      ? null
-      : new Error("로그인은 완료됐지만 계정 데이터를 불러오지 못했어요");
+    state.replace(mergePersonalSnapshotIntoState(guestState, dataSnapshot, {
+      preserveGuestData: !migration.complete
+    }));
+    dataLoadError = !dataSnapshot.personalDataLoaded
+      ? new Error("로그인은 완료됐지만 계정 데이터를 불러오지 못했어요")
+      : migration.complete
+        ? null
+        : new Error("일부 비회원 데이터를 계정으로 옮기지 못했어요. 다음 접속 때 다시 시도할게요");
   } catch (error) {
     dataLoadError = error;
     state.replace(guestState);
-    interactionState = state.getState();
   }
+}
+
+async function hydrateStateAfterAuthentication() {
+  await reconcileAuthenticatedState(state.getState(), { loadFirst: true });
+  interactionState = state.getState();
 }
 
 async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {

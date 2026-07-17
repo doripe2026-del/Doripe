@@ -179,7 +179,11 @@ test("a returning signed-in user sees server profile, saves, and complete course
 test("signing in hydrates server account data without discarding guest saves", async ({ page }) => {
   const guestPlace = place(PLACE_IDS[1], 1);
   const serverPlace = place(PLACE_IDS[0], 0);
+  const migratedCourseId = "44444444-4444-4444-8444-444444444444";
   let privateRequestCount = 0;
+  let savedPlaceIds = [serverPlace.id];
+  let migratedCourse = null;
+  const migrationRequests = [];
 
   await page.addInitScript(({ storageKey, guestPlaceId }) => {
     localStorage.setItem(storageKey, JSON.stringify({
@@ -246,14 +250,43 @@ test("signing in hydrates server account data without discarding guest saves", a
     }
     if (path === "me/saves" && url.searchParams.get("targetType") === "place") {
       return route.fulfill({ status: 200, json: { data: {
-        items: [{ targetType: "place", targetId: serverPlace.id, target: null }]
+        items: savedPlaceIds.map((targetId) => ({ targetType: "place", targetId, target: null }))
       }, meta: { nextCursor: null } } });
     }
     if (path === "me/saves" && url.searchParams.get("targetType") === "course") {
       return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
     }
     if (path === "courses" && url.searchParams.get("limit") === "50") {
-      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+      return route.fulfill({ status: 200, json: {
+        data: { items: migratedCourse ? [migratedCourse] : [] }, meta: { nextCursor: null }
+      } });
+    }
+    if (path === `me/saves/place/${guestPlace.id}` && request.method() === "PUT") {
+      migrationRequests.push({ path, key: request.headers()["idempotency-key"] });
+      savedPlaceIds = [...new Set([...savedPlaceIds, guestPlace.id])];
+      return route.fulfill({ status: 200, json: { data: { targetType: "place", targetId: guestPlace.id }, meta: {} } });
+    }
+    if (path === "courses" && request.method() === "POST") {
+      migrationRequests.push({ path, key: request.headers()["idempotency-key"] });
+      const input = request.postDataJSON();
+      migratedCourse = {
+        id: migratedCourseId,
+        ownerId: PROFILE_ID,
+        name: input.name,
+        visibility: input.visibility,
+        startPlaceId: input.startPlaceId,
+        version: 1,
+        totalStayMinutes: 0,
+        totalTravelMinutes: 0,
+        totalDurationMinutes: 0,
+        updatedAt: "2026-07-17T00:00:00.000Z",
+        places: input.placeIds.map((placeId, index) => ({
+          id: `migrated-course-place-${index + 1}`,
+          placeId,
+          position: index + 1
+        }))
+      };
+      return route.fulfill({ status: 201, json: { data: migratedCourse, meta: {} } });
     }
     if (path === "sessions") {
       const body = request.postDataJSON();
@@ -272,13 +305,15 @@ test("signing in hydrates server account data without discarding guest saves", a
   await page.getByRole("button", { name: "로그인", exact: true }).click();
 
   await expect(page.locator('[data-screen-id="b1"]')).toBeVisible();
-  await expect.poll(() => privateRequestCount).toBe(1);
+  await expect.poll(() => privateRequestCount).toBe(2);
   const stored = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)), STORAGE_KEY);
   expect(stored.savedPlaceIds).toEqual([serverPlace.id, guestPlace.id]);
   expect(stored.savedRoutes).toEqual([{
-    id: "saved-route-1",
+    id: migratedCourseId,
     name: "비회원 코스",
     placeIds: [guestPlace.id, serverPlace.id]
   }]);
   expect(stored.profile.nickname).toBe("로그인 도리");
+  expect(migrationRequests).toHaveLength(2);
+  expect(migrationRequests.every((item) => /^guest_[A-Za-z0-9_-]+$/u.test(item.key))).toBe(true);
 });

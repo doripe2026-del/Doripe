@@ -6,9 +6,15 @@ function mergeUniqueIds(primary = [], secondary = []) {
 
 function mergeRoutes(serverRoutes, localRoutes) {
   const serverIds = new Set(serverRoutes.map((route) => route.id));
+  const serverSignatures = new Set(serverRoutes.map((route) => (
+    `${route.name}\u0000${(route.placeIds || []).join("\u0000")}`
+  )));
   return [
     ...serverRoutes,
-    ...localRoutes.filter((route) => !serverIds.has(route.id))
+    ...localRoutes.filter((route) => (
+      !serverIds.has(route.id)
+      && !serverSignatures.has(`${route.name}\u0000${(route.placeIds || []).join("\u0000")}`)
+    ))
   ];
 }
 
