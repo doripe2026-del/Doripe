@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { PLACES } from "../../public/booth-demo/places.js";
+import { FEED_ITEMS, PLACES } from "../../public/booth-demo/places.js";
 
 test.use({ viewport: { width: 820, height: 1180 }, hasTouch: true, isMobile: true });
 
@@ -54,26 +54,27 @@ test("builder selection toggles without duplicates", async ({ page }) => {
   await expect(page.locator(".floating-action")).toHaveCount(0);
 });
 
-test("photo feed continues with a shuffled copy of every place", async ({ page }) => {
-  test.slow();
+test("photo feed renders every supplied photo and remains scrollable", async ({ page }) => {
   await page.goto("/demo", { waitUntil: "domcontentloaded" });
   await page.getByRole("button", { name: "60초 코스 만들기" }).click();
 
   const tiles = page.locator("[data-feed-list] [data-place-id]");
-  const sentinel = page.locator("[data-feed-sentinel]");
   await expect(page.locator('[data-screen="feed"]')).toBeVisible();
-  await expect(sentinel).toHaveCount(1);
-  await sentinel.evaluate((element) => {
-    element.scrollIntoView({ block: "end" });
-  });
-  await expect.poll(() => tiles.count()).toBeGreaterThanOrEqual(PLACES.length * 2);
+  await expect(tiles).toHaveCount(FEED_ITEMS.length);
 
-  const secondBatch = await tiles.evaluateAll((items, placeCount) => (
-    items.slice(placeCount, placeCount * 2).map((item) => item.dataset.placeId)
-  ), PLACES.length);
-  const originalOrder = PLACES.map((place) => place.id);
-  expect(new Set(secondBatch)).toEqual(new Set(originalOrder));
-  expect(secondBatch).not.toEqual(originalOrder);
+  const renderedFeed = await tiles.evaluateAll((items) => items.map((item) => ({
+    placeId: item.dataset.placeId,
+    image: item.dataset.image
+  })));
+  expect(renderedFeed).toEqual(FEED_ITEMS.map((item) => ({
+    placeId: item.placeId,
+    image: item.image
+  })));
+
+  const initialScrollY = await page.evaluate(() => window.scrollY);
+  await tiles.last().scrollIntoViewIfNeeded();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(initialScrollY);
+  await expect(tiles.last()).toBeVisible();
 });
 
 test("inactivity resets the demo", async ({ page }) => {
