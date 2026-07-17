@@ -3,7 +3,7 @@ import { createPreviewState, stripSensitivePreviewData } from "./state.js";
 import { clearVolatilePasswords, dispatchAction } from "./transitions.js";
 import { createAuthClient, isLocalAuthFixtureLocation } from "./auth-client.js";
 import { getAdapter } from "./api-adapter.js";
-import { courseById, createDataCatalog } from "./data/selectors.js";
+import { courseById, createDataCatalog, createUnavailableDataCatalog } from "./data/selectors.js";
 import { createActionSync } from "./data/action-sync.js";
 import { createAppDataStore } from "./data/store.js";
 import { mergeDataSnapshots } from "./data/contracts.js";
@@ -64,7 +64,7 @@ let dataSnapshot = dataStore.getSnapshot();
 if (authStatus === "authenticated" && !dataSnapshot.personalDataLoaded && !dataLoadError) {
   dataLoadError = new Error("계정 데이터를 불러오지 못했어요");
 }
-let dataCatalog = createDataCatalog(dataSnapshot);
+let dataCatalog = dataLoadError ? createUnavailableDataCatalog() : createDataCatalog(dataSnapshot);
 const state = createPreviewState({ catalog: dataCatalog });
 if (dataSnapshot.personalDataLoaded) {
   await reconcileAuthenticatedState(state.getState());
@@ -833,6 +833,8 @@ async function reconcileAuthenticatedState(guestState, { loadFirst = false, migr
         : new Error("일부 비회원 데이터를 계정으로 옮기지 못했어요. 다음 접속 때 다시 시도할게요");
   } catch (error) {
     dataLoadError = error;
+    dataCatalog = createUnavailableDataCatalog();
+    state.setCatalog(dataCatalog);
     state.replace(guestState);
   }
 }

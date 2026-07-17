@@ -9,7 +9,7 @@ import {
   unsavePlaceId
 } from "../../public/app-preview/state.js";
 import { normalizeDataSnapshot } from "../../public/app-preview/data/contracts.js";
-import { createDataCatalog } from "../../public/app-preview/data/selectors.js";
+import { createDataCatalog, createUnavailableDataCatalog } from "../../public/app-preview/data/selectors.js";
 import { dispatchAction as dispatchTransition } from "../../public/app-preview/transitions.js";
 
 const catalog = {
@@ -87,6 +87,24 @@ test("state can adopt a refreshed catalog after authentication", () => {
 
   assert.deepEqual(state.getState().savedPlaceIds, ["place-a", "place-b"]);
   assert.deepEqual(JSON.parse(storage.getItem(PREVIEW_STORAGE_KEY)).savedPlaceIds, ["place-a", "place-b"]);
+});
+
+test("a failed bootstrap preserves saved places and routes until a real catalog is available", () => {
+  const storage = createMemoryStorage();
+  storage.setItem(PREVIEW_STORAGE_KEY, JSON.stringify({
+    ...DEFAULT_STATE,
+    savedPlaceIds: ["place-offline"],
+    savedRoutes: [{ id: "route-offline", name: "오프라인 코스", placeIds: ["place-offline", "place-two"] }],
+    routeDraft: { startPlaceId: "place-offline", placeIds: ["place-offline", "place-two"] },
+    routePlaceIds: ["place-offline", "place-two"]
+  }));
+
+  const state = createPreviewState({ storage, catalog: createUnavailableDataCatalog() });
+
+  assert.deepEqual(state.getState().savedPlaceIds, ["place-offline"]);
+  assert.deepEqual(state.getState().savedRoutes[0].placeIds, ["place-offline", "place-two"]);
+  assert.deepEqual(state.getState().routeDraft.placeIds, ["place-offline", "place-two"]);
+  assert.deepEqual(JSON.parse(storage.getItem(PREVIEW_STORAGE_KEY)).savedPlaceIds, ["place-offline"]);
 });
 
 test("normalization marks stale entity selections instead of falling back to unrelated records", () => {

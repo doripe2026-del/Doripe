@@ -35,3 +35,15 @@ export function createDataCatalog(data) {
     isKnownCourseId: (id) => courseIds.has(id)
   });
 }
+
+export function createUnavailableDataCatalog() {
+  const preservesExistingId = (id) => typeof id === "string" && id.trim().length > 0;
+  return Object.freeze({
+    isKnownPlaceId: preservesExistingId,
+    isKnownMediaId: preservesExistingId,
+    isKnownProfileId: preservesExistingId,
+    isKnownContentId: preservesExistingId,
+    isKnownCommentId: preservesExistingId,
+    isKnownCourseId: preservesExistingId
+  });
+}
