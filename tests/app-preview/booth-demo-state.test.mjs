@@ -75,4 +75,7 @@ test("booth CSS includes touch, safe area, and reduced motion rules", async () =
   assert.match(css, /env\(safe-area-inset-bottom\)/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /#10c76f/i);
+  assert.match(css, /\/app\/assets\/fonts\/PretendardVariable\.woff2/);
+  assert.doesNotMatch(css, /\/app-preview\//);
+  await access(new URL("public/app/assets/fonts/PretendardVariable.woff2", root));
 });
