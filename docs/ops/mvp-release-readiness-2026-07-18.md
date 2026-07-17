@@ -2,8 +2,8 @@
 
 - 확인일: 2026-07-18
 - Git 브랜치: `codex/mvp-masterplan-implementation`
-- 기능 기준 커밋: `8dbfdbc`
-- 최신 복구 체크포인트: `mvp-checkpoint-2026-07-18-schema-bridge-plan`
+- 기능 기준 커밋: `a35b39f`
+- 최신 복구 체크포인트: `mvp-checkpoint-2026-07-18-staging-guard`
 - 웹 MVP Supabase project: `dcyjrsxnpujslbxtitqj` (`Doripe-app`)
 - 목적: 실제 DB 변경이나 Production 배포 전에 현재 코드와 운영 환경의 차이를 복구 가능한 기록으로 남긴다.
 
@@ -12,8 +12,9 @@
 | 영역 | 상태 | 확인 결과 |
 | --- | --- | --- |
 | 최신 앱 코드 | 준비됨 | 최신 Figma 화면을 `/app`과 `/app-preview`가 같은 소스로 사용한다. |
-| 자동 테스트 | 통과 | App unit 225, Backend 43, Ops 59, API contract 110, 화면·행동 E2E 251, server boundary 8 통과 |
+| 자동 테스트 | 통과 | App unit 225, Backend 43, Ops 59, API contract 110, 화면·행동 E2E 254(시각 회귀 포함), server boundary 8 통과 |
 | Git 백업 | 준비됨 | 작업 브랜치와 복구 태그가 GitHub 원격 저장소에 있다. |
+| GitHub PR | 통과 | Draft PR #28의 build, repository guard, Vercel Preview가 성공했고 merge 상태는 `CLEAN`이다. 출시 차단 요인이 남아 있어 병합하지 않는다. |
 | Supabase 대상 | 확정 | 최신 Brain, 연결 가능한 Supabase 프로젝트, 앱 미디어 URL 모두 `dcyjrsxnpujslbxtitqj`를 가리킨다. |
 | Supabase 구조 | 출시 차단 | 원격 migration 9개, 저장소 migration 50개로 이력이 크게 다르다. |
 | 실제 콘텐츠 | 출시 차단 | 장소·사진·사용자·코스는 0행이다. 태그·동네·온보딩·화면 검수 기준 데이터만 일부 존재한다. |
