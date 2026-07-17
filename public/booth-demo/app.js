@@ -1,11 +1,11 @@
 import { FEED_ITEMS, PLACES } from "./places.js";
 import {
   browseNearby,
+  chooseAdditionalPlacePhoto,
   completeCourse,
   createInitialState,
   openPlace,
-  startDiscovery,
-  toggleAdditionalPlace
+  startDiscovery
 } from "./demo-state.js";
 
 const root = document.querySelector("#demo-app");
@@ -106,6 +106,7 @@ function renderBuilder() {
         ${candidates.map((item) => placeTile(item, {
           selectable: true,
           selected: state.selectedPlaceIds.includes(item.placeId)
+            && selectedImageByPlaceId.get(item.placeId) === item.image
         })).join("")}
       </div>
       ${selectedCount > 0 ? `
@@ -198,12 +199,18 @@ root.addEventListener("click", (event) => {
     update(openPlace(state, target.dataset.placeId));
   }
   else if (target.dataset.placeId && state.screen === "builder") {
-    if (state.selectedPlaceIds.includes(target.dataset.placeId)) {
+    const selection = chooseAdditionalPlacePhoto(
+      state,
+      target.dataset.placeId,
+      target.dataset.image,
+      selectedImageByPlaceId.get(target.dataset.placeId)
+    );
+    if (selection.image === null) {
       selectedImageByPlaceId.delete(target.dataset.placeId);
     } else {
-      selectedImageByPlaceId.set(target.dataset.placeId, target.dataset.image);
+      selectedImageByPlaceId.set(target.dataset.placeId, selection.image);
     }
-    update(toggleAdditionalPlace(state, target.dataset.placeId), { preserveScroll: true });
+    update(selection.state, { preserveScroll: true });
   }
 });
 
