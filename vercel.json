@@ -4,7 +4,7 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/company", "destination": "/home/company.html" },
-    { "source": "/notify", "destination": "/home/notify.html" },
+    { "source": "/notify", "destination": "/home/notify" },
     { "source": "/privacy", "destination": "/home/privacy.html" },
     { "source": "/terms", "destination": "/home/terms.html" },
     { "source": "/business", "destination": "/home/business.html" },
@@ -20,6 +20,12 @@
     { "source": "/", "destination": "/home/index.html" }
   ],
   "headers": [
+    {
+      "source": "/notify",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
     {
       "source": "/img/(.*)",
       "headers": [
