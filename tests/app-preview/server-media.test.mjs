@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import {
@@ -24,4 +25,9 @@ test("static review screens stay deterministic while live preview uses server me
 test("media indices wrap safely for long feeds", () => {
   assert.equal(serverMediaUrl(60), serverMediaUrl(0));
   assert.equal(localMediaUrl(6), localMediaUrl(0));
+});
+
+test("the live app does not eagerly preload prototype media from the experiment project", async () => {
+  const mainSource = await readFile(new URL("../../public/app-preview/main.js", import.meta.url), "utf8");
+  assert.equal(mainSource.includes("preloadServerMedia"), false);
 });

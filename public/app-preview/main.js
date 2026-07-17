@@ -12,11 +12,10 @@ import {
   executeGuestMigration,
   prepareGuestMigrationJournal
 } from "./data/guest-migration.js";
-import { isStaticPreview, preloadServerMedia } from "./data/server-media.js";
+import { isStaticPreview } from "./data/server-media.js";
 import { createAnalyticsClient } from "./analytics-client.js";
 
 const groups = ["A", "B", "C", "D", "E"];
-preloadServerMedia();
 const phoneRoot = document.querySelector("#phone-root");
 const bootProgress = phoneRoot.querySelector("[data-app-boot] [role='progressbar']");
 function setBootProgress(value) {
