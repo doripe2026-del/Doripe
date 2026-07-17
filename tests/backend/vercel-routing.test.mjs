@@ -16,3 +16,20 @@ test("all nested v1 API paths reach the single Vercel function with their path p
     destination: "/api/v1?__path=:path*"
   });
 });
+
+test("all public pages receive baseline browser security headers", () => {
+  const globalHeaders = vercelConfig.headers.find(
+    (entry) => entry.source === "/(.*)"
+  );
+  const headers = Object.fromEntries(
+    globalHeaders.headers.map(({ key, value }) => [key.toLowerCase(), value])
+  );
+
+  assert.equal(headers["x-content-type-options"], "nosniff");
+  assert.equal(headers["referrer-policy"], "strict-origin-when-cross-origin");
+  assert.equal(headers["x-frame-options"], "SAMEORIGIN");
+  assert.equal(
+    headers["permissions-policy"],
+    "camera=(), microphone=(), payment=(), usb=(), geolocation=(self)"
+  );
+});
