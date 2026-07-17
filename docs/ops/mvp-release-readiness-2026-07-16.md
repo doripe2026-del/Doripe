@@ -2,7 +2,8 @@
 
 - 확인일: 2026-07-17
 - Git 브랜치: `codex/mvp-masterplan-implementation`
-- 기준 커밋: `88e5e47`
+- 기능 기준 커밋: `33bf7f4`
+- 복구 체크포인트: `mvp-checkpoint-2026-07-17-final`
 - 검사한 Supabase project: `dcyjrsxnpujslbxtitqj`
 - 문서상 `doripe.kr` 운영 project: `qfvirakzxtcgoerrqumh`
 - 목적: 실제 DB 변경이나 배포 전에 현재 코드와 운영 환경의 차이를 복구 가능한 기록으로 남긴다.
@@ -12,9 +13,9 @@
 | 영역 | 상태 | 확인 결과 |
 | --- | --- | --- |
 | 최신 앱 코드 | 준비됨 | 최신 55개 Figma 화면을 `/app`과 `/app-preview`가 같은 소스로 사용한다. |
-| 자동 테스트 | 통과 | App unit 206, Backend 41, Ops 40, API contract 110, 화면·행동 E2E 238과 visual 3 통과 |
+| 자동 테스트 | 통과 | App unit 211, Backend 41, Ops 40, API contract 110, 화면·행동 E2E 238, 기기별 부스 검사 6, visual 3 통과 |
 | 부스 데모 | 통과 | `/demo`에서 시작→사진 선택→장소 상세→코스 선택→완성을 로컬과 Vercel Preview에서 검증했다. |
-| Preview 배포 | 검수 중 | 최신 Vercel Preview와 로컬 전체 검사는 통과했다. GitHub required Build는 최신 커밋에서 다시 통과해야 한다. |
+| Preview 배포 | 통과 | 최신 Vercel Preview와 로컬 전체 검사가 통과했고, GitHub required Build도 최신 커밋에서 통과했다. |
 | Git 백업 | 준비됨 | 작업 브랜치와 복구 태그를 GitHub 원격 저장소에 push했다. |
 | Supabase 대상 | 결정 필요 | 검사한 별도 앱 project와 `doripe.kr` 운영 project가 다르다. 실제 웹 MVP 대상을 먼저 하나로 확정해야 한다. |
 | Supabase 구조 | 출시 차단 | 원격 migration 9개, 저장소 migration 49개로 이력이 크게 다르다. |
@@ -26,18 +27,19 @@
 ## 자동 검증 기록
 
 ```text
-App unit              206 passed
+App unit              211 passed
 Backend                41 passed
 Ops                    40 passed
 Server boundaries       8 passed
 API contract          110 passed
 Playwright             238 passed
+Booth cross-device       6 passed
 Visual                   3 passed
 ```
 
 자동 테스트는 fixture와 API 계약을 기준으로 통과한 결과다. 실제 Supabase 데이터와 권한이 준비됐다는 뜻은 아니다.
 
-부스 데모 전용 검증은 unit 9개와 E2E 5개가 별도로 통과했다. Vercel Preview에서도 모바일 크기 브라우저로 같은 핵심 여정을 완료했다.
+부스 데모 E2E 5개와 Android Chrome, iPhone Safari, iPad Safari, 데스크톱 Chrome·Firefox·Safari 기기별 검사 6개가 통과했다. Vercel Preview에서도 핵심 화면과 경로를 다시 확인했다.
 
 `npm audit --omit=dev`는 취약점 0개다. 전체 audit에 남은 경고는 Vercel CLI를 포함한 개발·배포 도구의 간접 의존성이다. 강제 업데이트는 API 경로를 깨뜨릴 수 있어 적용하지 않았고, Vercel 54 최신 호환 버전에서 실제 Preview API까지 다시 검증했다.
 
@@ -82,7 +84,7 @@ Supabase Security Advisor가 다음을 알렸다.
 
 ## Vercel Preview 검증 결과
 
-- 검증 Preview: `https://doripe-d8sw4rosv-cityboy7648-9647s-projects.vercel.app`
+- 검증 Preview: `https://doripe-q7rozrui3-cityboy7648-9647s-projects.vercel.app`
 - `/demo`: HTTP 200, 부스 데모 핵심 여정 완료
 - `/booth-demo`: HTTP 200
 - `/app`: HTTP 200
@@ -90,7 +92,8 @@ Supabase Security Advisor가 다음을 알렸다.
 - `/api/v1/health`: HTTP 200
 - `/api/v1/readiness`: HTTP 503, API 실행은 정상이나 Supabase 연결 설정 없음
 - GitHub Draft PR: `https://github.com/doripe2026-del/Doripe/pull/28`
-- 최근 원격 복구 태그: `mvp-checkpoint-2026-07-17-8703454`
+- 최신 기능 병합 전 복구 태그: `mvp-pre-main-sync-2026-07-17-df35327`
+- 최종 원격 복구 태그: `mvp-checkpoint-2026-07-17-final`
 
 Preview URL은 임시 주소다. Production 배포 또는 `main` 병합을 뜻하지 않는다.
 
