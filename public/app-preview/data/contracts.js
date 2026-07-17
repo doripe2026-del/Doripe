@@ -3,7 +3,7 @@ const COLLECTION_KEYS = Object.freeze([
 ]);
 
 const REPOSITORY_METHODS = Object.freeze([
-  "getBootstrap", "getFeed", "getContentDetail", "getPlaceDetail",
+  "getBootstrap", "getFeed", "getFeedSnapshot", "getContentDetail", "getPlaceDetail",
   "getPlaceSnapshot", "getCourseDetail", "getCourseSnapshot", "getPublicProfile", "getMyProfile", "getSavedPlaces", "getSavedCourses",
   "updateMyProfile", "putMyOnboarding",
   "savePlace", "unsavePlace", "saveCourse", "unsaveCourse",

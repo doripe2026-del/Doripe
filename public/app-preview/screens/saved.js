@@ -19,6 +19,10 @@ const NODE_IDS = Object.freeze({
 });
 
 const courseName = (route) => route?.name?.replaceAll("루트", "코스") || "코스";
+const tagForFilterKey = (data, key) => tagById(data, key)
+  || tagById(data, `tag-${key}`)
+  || data.tags.find((tag) => tag.key === key)
+  || null;
 const routeFor = (state, data) => byId(state?.savedRoutes || [], state?.selections?.selectedRouteId)
   || courseById(data, state?.selections?.selectedRouteId)
   || data.courses[0]
@@ -153,9 +157,9 @@ function savedTabs(screenId) {
 
 function selectedFilterTags(state, data) {
   return [
-    tagById(data, state?.selections?.situation) || tagById(data, "tag-date"),
-    tagById(data, state?.selections?.time) || tagById(data, "tag-afternoon"),
-    tagById(data, state?.selections?.mood) || tagById(data, "tag-quiet")
+    tagById(data, state?.selections?.situation) || tagForFilterKey(data, "date"),
+    tagById(data, state?.selections?.time) || tagForFilterKey(data, "afternoon"),
+    tagById(data, state?.selections?.mood) || tagForFilterKey(data, "quiet")
   ].filter(Boolean);
 }
 
@@ -361,9 +365,9 @@ function renderSavedRouteMap(state, data) {
 }
 
 const FILTER_GROUPS = Object.freeze([
-  { title: "상황", action: "select-situation", key: "situation", tags: ["tag-date", "tag-friends", "tag-alone", "tag-family-group"] },
-  { title: "시간", action: "select-time", key: "time", tags: ["tag-daytime", "tag-afternoon", "tag-evening", "tag-night"] },
-  { title: "분위기", action: "select-mood", key: "mood", tags: ["tag-quiet", "tag-emotional", "tag-good-for-talking", "tag-sophisticated", "tag-bright", "tag-dark"] }
+  { title: "상황", action: "select-situation", key: "situation", tags: ["date", "friends", "alone", "family-group"] },
+  { title: "시간", action: "select-time", key: "time", tags: ["daytime", "afternoon", "evening", "night"] },
+  { title: "분위기", action: "select-mood", key: "mood", tags: ["quiet", "emotional", "good-for-talking", "sophisticated", "bright", "dark"] }
 ]);
 
 export function renderFilters(state, data) {
@@ -429,10 +433,10 @@ export function renderFilters(state, data) {
   for (const group of FILTER_GROUPS) {
     const fieldset = el("fieldset", "saved-filter-group");
     fieldset.append(el("legend", "", group.title));
-    for (const tagId of group.tags) {
-      const tag = tagById(data, tagId);
+    for (const tagKey of group.tags) {
+      const tag = tagForFilterKey(data, tagKey);
       if (!tag) continue;
-      const selected = state?.selections?.[group.key] === tagId || (!state?.selections?.[group.key] && ["tag-date", "tag-afternoon", "tag-quiet", "tag-emotional"].includes(tagId));
+      const selected = state?.selections?.[group.key] === tag.id || (!state?.selections?.[group.key] && ["date", "afternoon", "quiet", "emotional"].includes(tagKey));
       const option = button(tag.name, group.action, { value: tag.id, measureKey: `button${sourceIndex ? `#${sourceIndex + 1}` : ""}` }, `saved-filter-option ${selected ? "is-selected" : ""}`);
       option.setAttribute("aria-pressed", String(selected));
       option.append(sharedIcon(tag.group === "time" ? "saved-sun" : "heart", "saved-filter-option__icon", 18), el("span", "", tag.name));
@@ -444,7 +448,7 @@ export function renderFilters(state, data) {
   const summary = el("div", "saved-filter-summary");
   summary.append(el("strong", "", "추천 기준"));
   selectedFilterTags(state, data)
-    .concat(tagById(data, state?.selections?.mood) ? [] : [tagById(data, "tag-emotional")])
+    .concat(tagById(data, state?.selections?.mood) ? [] : [tagForFilterKey(data, "emotional")])
     .filter(Boolean)
     .forEach((tag) => summary.append(el("span", "", tag.name)));
   const apply = button("저장 장소 다시 정렬하기", "apply-filters", { measureKey: "CTA" }, "saved-filter-apply");

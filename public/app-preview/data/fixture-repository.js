@@ -1,5 +1,6 @@
 import { COMMENTS, MEDIA, PLACES, ROUTES, TAGS, USERS } from "../fixtures.js";
 import { assertRepositoryContract, normalizeDataSnapshot } from "./contracts.js";
+import { placeMatchesLocationFilter } from "./location-filter.js";
 
 const clone = (value) => structuredClone(value);
 const placeContentId = (placeId) => `content-${placeId}`;
@@ -62,10 +63,27 @@ function snapshotFromFixtures() {
 
 export function createFixtureRepository() {
   const data = snapshotFromFixtures();
+  const snapshotForFeed = (params = {}) => {
+    const tagIds = new Set(Array.isArray(params.tagIds) ? params.tagIds : []);
+    const selections = params.centerLat !== undefined && params.centerLng !== undefined && params.radiusKm !== undefined
+      ? {
+          locationMode: "pin",
+          locationCenter: { latitude: Number(params.centerLat), longitude: Number(params.centerLng) },
+          locationRadiusKm: Number(params.radiusKm)
+        }
+      : {};
+    const contents = data.contents.filter((content) => {
+      const place = content.placeId ? findOrThrow(data.places, content.placeId, "place") : null;
+      if (!place || !placeMatchesLocationFilter(place, selections)) return false;
+      return tagIds.size === 0 || [...tagIds].every((tagId) => place.tagIds.includes(tagId));
+    });
+    return normalizeDataSnapshot({ ...data, contents });
+  };
   const repository = {
     mode: "fixture",
     async getBootstrap() { return clone(data); },
     async getFeed() { return clone(data.contents); },
+    async getFeedSnapshot(params = {}) { return clone(snapshotForFeed(params)); },
     async getContentDetail(id) { return clone(findOrThrow(data.contents, id, "content")); },
     async getPlaceDetail(id) { return clone(findOrThrow(data.places, id, "place")); },
     async getPlaceSnapshot(id) {

@@ -1433,7 +1433,8 @@ export interface components {
             displayOrder: number;
         };
         Tag: {
-            id: components["schemas"]["SafeId"];
+            id: components["schemas"]["Uuid"];
+            key?: string;
             kind: string;
             name: string;
         };
@@ -2738,7 +2739,8 @@ export interface operations {
                 scope?: "discover" | "following";
                 regionId?: components["schemas"]["SafeId"];
                 categoryId?: components["schemas"]["SafeId"];
-                tagIds?: components["schemas"]["SafeId"][];
+                /** @description Published content tag UUIDs. */
+                tagIds?: components["schemas"]["Uuid"][];
                 /** @description Latitude of the selected map pin. Send with centerLng and radiusKm. */
                 centerLat?: number;
                 /** @description Longitude of the selected map pin. Send with centerLat and radiusKm. */

@@ -141,7 +141,9 @@ export const bootstrap: RouteHandler = async (_request, context) => {
     categories: databaseList<Record<string, unknown>>(categoriesResult).map((row) => ({
       id: row.id, name: row.name, displayOrder: row.display_order,
     })),
-    tags: databaseList<Record<string, unknown>>(tagsResult).map((row) => ({ id: row.id, kind: row.group_key, name: row.name })),
+    tags: databaseList<Record<string, unknown>>(tagsResult).map((row) => ({
+      id: row.id, key: row.key, kind: row.group_key, name: row.name,
+    })),
     featureFlags: { videoUpload: false, contentShare: false },
     contractVersions: { api: "v1", onboarding: 1, notifications: 1, analytics: 1 },
   }, context.requestId, { headers: { "cache-control": "public, max-age=300, stale-while-revalidate=60" } });

@@ -79,7 +79,10 @@ function toPlace(place = {}, authorId = null) {
     : null;
   const tags = [
     categoryTag,
-    ...(place.tags || []).map((tag) => ({ id: String(tag.id), name: String(tag.name), group: String(tag.kind || "general") })),
+    ...(place.tags || []).map((tag) => ({
+      id: String(tag.id), ...(typeof tag.key === "string" ? { key: tag.key } : {}),
+      name: String(tag.name), group: String(tag.kind || "general")
+    })),
     ...(place.moodTags || []).map((name) => syntheticTag(name, "mood")),
     ...(place.bestFor || []).map((name) => syntheticTag(name, "situation")),
     ...(place.timeTags || []).map((name) => syntheticTag(name, "time"))
@@ -141,9 +144,30 @@ function mergeUnique(items, key = "id") {
 }
 
 function isEmptyReadResult(value) {
-  return value == null
-    || (Array.isArray(value) && value.length === 0)
-    || (Array.isArray(value?.items) && value.items.length === 0);
+  const data = value?.data ?? value;
+  return data == null
+    || (Array.isArray(data) && data.length === 0)
+    || (Array.isArray(data?.items) && data.items.length === 0);
+}
+
+function feedPath(params = {}, cursor = null) {
+  const query = new URLSearchParams();
+  query.set("scope", params.scope === "following" ? "following" : "discover");
+  query.set("limit", String(Math.max(1, Math.min(100, Number(params.limit) || 50))));
+  const tagIds = [...new Set((Array.isArray(params.tagIds) ? params.tagIds : [])
+    .filter((id) => typeof id === "string" && id.length > 0))].sort();
+  if (tagIds.length) query.set("tagIds", tagIds.join(","));
+
+  const centerLat = Number(params.centerLat);
+  const centerLng = Number(params.centerLng);
+  const radiusKm = Number(params.radiusKm);
+  if (Number.isFinite(centerLat) && Number.isFinite(centerLng) && [1, 3, 5, 10].includes(radiusKm)) {
+    query.set("centerLat", String(centerLat));
+    query.set("centerLng", String(centerLng));
+    query.set("radiusKm", String(radiusKm));
+  }
+  if (cursor) query.set("cursor", String(cursor));
+  return `feed?${query}`;
 }
 
 async function mapWithConcurrency(items, concurrency, mapper) {
@@ -181,7 +205,8 @@ function buildSnapshot({ bootstrap, feed, places, courses }) {
     })))
   ]);
   const bootstrapTags = (bootstrap?.tags || []).map((tag) => ({
-    id: String(tag.id), name: String(tag.name), group: String(tag.kind || "general")
+    id: String(tag.id), ...(typeof tag.key === "string" ? { key: tag.key } : {}),
+    name: String(tag.name), group: String(tag.kind || "general")
   }));
   const categoryTags = (bootstrap?.categories || []).map((category) => ({
     id: String(category.id), name: String(category.name), group: "category"
@@ -291,6 +316,7 @@ export function createApiRepository({
 } = {}) {
   if (typeof fetchImpl !== "function") throw new TypeError("API repository requires fetch");
   let lastLoadSource = "none";
+  let lastBootstrap = null;
   const readCacheEntries = new Map();
   const pendingReads = new Map();
   const detailRequestLimit = Math.max(1, Math.floor(detailConcurrency));
@@ -337,20 +363,21 @@ export function createApiRepository({
     }
   }
 
-  async function read(path) {
-    if (accessTokenProvider?.()) return clone(await request(path));
+  async function read(path, { includeMeta = false } = {}) {
+    if (accessTokenProvider?.()) return clone(await request(path, { includeMeta }));
 
-    const cached = readCacheEntries.get(path);
+    const cacheKey = `${includeMeta ? "meta:" : "data:"}${path}`;
+    const cached = readCacheEntries.get(cacheKey);
     if (cached && cached.expiresAt > now()) return clone(cached.value);
-    if (cached) readCacheEntries.delete(path);
-    if (pendingReads.has(path)) return clone(await pendingReads.get(path));
+    if (cached) readCacheEntries.delete(cacheKey);
+    if (pendingReads.has(cacheKey)) return clone(await pendingReads.get(cacheKey));
 
-    const pending = request(path).then((value) => {
+    const pending = request(path, { includeMeta }).then((value) => {
       const ttlMs = isEmptyReadResult(value) ? emptyReadCacheTtlMs : readCacheTtlMs;
-      if (ttlMs > 0) readCacheEntries.set(path, { value: clone(value), expiresAt: now() + ttlMs });
+      if (ttlMs > 0) readCacheEntries.set(cacheKey, { value: clone(value), expiresAt: now() + ttlMs });
       return value;
-    }).finally(() => pendingReads.delete(path));
-    pendingReads.set(path, pending);
+    }).finally(() => pendingReads.delete(cacheKey));
+    pendingReads.set(cacheKey, pending);
     return clone(await pending);
   }
 
@@ -376,9 +403,14 @@ export function createApiRepository({
   async function loadBootstrap() {
     const [bootstrap, feedPage] = await Promise.all([
       request("bootstrap"),
-      request("feed?scope=discover&limit=50")
+      request(feedPath())
     ]);
+    lastBootstrap = clone(bootstrap);
     const feed = Array.isArray(feedPage?.items) ? feedPage.items : [];
+    return loadFeedSnapshot(bootstrap, feed);
+  }
+
+  async function loadFeedSnapshot(bootstrap, feed) {
     const placeIds = [...new Set(feed.flatMap((content) => content.placeIds || []))];
     const courseIds = [...new Set(feed.map((content) => content.courseId).filter(Boolean))];
     const details = [
@@ -391,6 +423,25 @@ export function createApiRepository({
     const places = detailResults.slice(0, placeIds.length);
     const courses = detailResults.slice(placeIds.length);
     return buildSnapshot({ bootstrap, feed, places, courses });
+  }
+
+  async function loadFilteredFeedSnapshot(params = {}) {
+    const bootstrap = lastBootstrap || await read("bootstrap");
+    if (!lastBootstrap) lastBootstrap = clone(bootstrap);
+    const items = [];
+    const seenCursors = new Set();
+    let cursor = null;
+    do {
+      const page = await read(feedPath(params, cursor), { includeMeta: true });
+      if (Array.isArray(page?.data?.items)) items.push(...page.data.items);
+      const nextCursor = typeof page?.meta?.nextCursor === "string" && page.meta.nextCursor
+        ? page.meta.nextCursor
+        : null;
+      if (nextCursor && seenCursors.has(nextCursor)) throw new Error("API pagination cursor repeated");
+      if (nextCursor) seenCursors.add(nextCursor);
+      cursor = nextCursor;
+    } while (cursor);
+    return loadFeedSnapshot(bootstrap, items);
   }
 
   async function loadPersonalData(snapshot) {
@@ -486,9 +537,11 @@ export function createApiRepository({
     getLastLoadSource: () => lastLoadSource,
     getBootstrap,
     async getFeed(params = {}) {
-      const query = new URLSearchParams({ scope: params.scope || "discover", limit: String(params.limit || 30) });
-      const page = await read(`feed?${query}`);
+      const page = await read(feedPath({ ...params, limit: params.limit || 30 }));
       return (page?.items || []).map(toContent);
+    },
+    async getFeedSnapshot(params = {}) {
+      return clone(await loadFilteredFeedSnapshot(params));
     },
     async getContentDetail(id) { return toContent(await read(`contents/${encodeURIComponent(id)}`)); },
     async getPlaceDetail(id) { return toPlace(await read(`places/${encodeURIComponent(id)}`)).place; },

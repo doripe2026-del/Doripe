@@ -63,6 +63,7 @@ try {
 }
 setBootProgress(92);
 let dataSnapshot = dataStore.getSnapshot();
+const initialDiscoverContentIds = Object.freeze(dataSnapshot.contents.map((content) => content.id));
 personalDataReady = authStatus === "authenticated" && dataSnapshot.personalDataLoaded === true;
 if (authStatus === "authenticated" && !dataSnapshot.personalDataLoaded && !dataLoadError) {
   dataLoadError = new Error("계정 데이터를 불러오지 못했어요");
@@ -102,6 +103,7 @@ let activeShareParams = null;
 let renderGeneration = 0;
 let lastRenderedScreenId = null;
 let analyticsSession = null;
+let discoverFilterRequestSequence = 0;
 
 const GUEST_MVP_ENABLED = true;
 const RECOVERY_SCREENS = new Set(["a7", "a8"]);
@@ -976,12 +978,94 @@ function dispatchLocalFirstLogout(target, screenId, actionId) {
   });
 }
 
+function discoverFilterParams(selections = {}) {
+  const tagIds = [selections.situation, selections.time, selections.mood]
+    .filter((id) => typeof id === "string" && (repository.mode === "fixture"
+      || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu.test(id)));
+  const params = { scope: "discover", tagIds };
+  const center = selections.locationCenter;
+  const radiusKm = Number(selections.locationRadiusKm);
+  if (selections.locationMode === "pin"
+    && Number.isFinite(center?.latitude)
+    && Number.isFinite(center?.longitude)
+    && [1, 3, 5, 10].includes(radiusKm)) {
+    params.centerLat = center.latitude;
+    params.centerLng = center.longitude;
+    params.radiusKm = radiusKm;
+  }
+  return params;
+}
+
+function updateDiscoverFeedState(nextSelections) {
+  state.replace({ ...interactionState, selections: nextSelections });
+  interactionState = state.getState();
+  renderScreen(interactionState.currentScreenId);
+  refreshCurrentBrowserEntry();
+}
+
+function applyDiscoverFeedFilters(screenId, actionId, payload, rerender) {
+  const transitionResult = dispatchAction(screenId, actionId, payload);
+  const requestId = ++discoverFilterRequestSequence;
+  const loadingSelections = {
+    ...(transitionResult.state.selections || {}),
+    serverFeedFiltered: true,
+    discoverFeedContentIds: [],
+    feedStatus: "loading"
+  };
+  applyActionResult({ ...transitionResult, state: { ...transitionResult.state, selections: loadingSelections } }, {
+    rerender, screenId, payload
+  });
+
+  void repository.getFeedSnapshot(discoverFilterParams(interactionState.selections)).then((incoming) => {
+    if (requestId !== discoverFilterRequestSequence) return;
+    dataSnapshot = mergeDataSnapshots(dataSnapshot, incoming);
+    dataCatalog = createDataCatalog(dataSnapshot);
+    state.setCatalog(dataCatalog);
+    updateDiscoverFeedState({
+      ...(interactionState.selections || {}),
+      serverFeedFiltered: true,
+      discoverFeedContentIds: incoming.contents.map((content) => content.id),
+      feedStatus: incoming.contents.length ? "ready" : "empty"
+    });
+  }).catch(() => {
+    if (requestId !== discoverFilterRequestSequence) return;
+    updateDiscoverFeedState({
+      ...(interactionState.selections || {}),
+      serverFeedFiltered: true,
+      feedStatus: "error"
+    });
+  });
+}
+
+function resetDiscoverFeedFilters(screenId, actionId, payload, rerender) {
+  discoverFilterRequestSequence += 1;
+  const transitionResult = dispatchAction(screenId, actionId, payload);
+  const selections = {
+    ...(transitionResult.state.selections || {}),
+    serverFeedFiltered: false,
+    discoverFeedContentIds: [...initialDiscoverContentIds],
+    feedStatus: "ready"
+  };
+  applyActionResult({ ...transitionResult, state: { ...transitionResult.state, selections } }, {
+    rerender, screenId, payload
+  });
+}
+
 function dispatchTargetAction(target, { rerender = true } = {}) {
   const actionId = target.dataset.action;
   const screenId = target.dataset.actionScreenId
     || target.closest("[data-screen-id]")?.dataset.screenId
     || interactionState.currentScreenId;
   const payload = readActionPayload(target);
+  const isDiscoverFilterOverlay = screenId === "c3" && interactionState.overlays?.includes("feed-filter-sheet");
+  if (isDiscoverFilterOverlay && actionId === "apply-filters") {
+    applyDiscoverFeedFilters(screenId, actionId, payload, rerender);
+    return;
+  }
+  if (isDiscoverFilterOverlay && actionId === "reset-filters") {
+    resetDiscoverFeedFilters(screenId, actionId, payload, rerender);
+    return;
+  }
   const pendingInput = { screenId, actionId, payload, previousState: interactionState, optimisticState: interactionState };
   if (actionSync.isPending(pendingInput)) return;
   const operation = REMOTE_AUTH_ACTIONS.get(`${screenId}/${actionId}`);

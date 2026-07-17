@@ -575,11 +575,18 @@ function masonryFeed(screenId, state, data) {
   }
   const filter = state?.selections?.feedFilter;
   const filterTagId = filter === "quiet" ? "tag-quiet" : filter === "date" ? "tag-date" : null;
+  const requestedContentIds = state?.selections?.discoverFeedContentIds;
   let visibleContents = data.contents.filter((content) => {
     if (!["place", "course"].includes(content.type)) return false;
     return Boolean(contentMedia(data, content)[0] && placeForContent(data, content));
   });
-  visibleContents = visibleContents.filter((content) => placeMatchesLocationFilter(placeForContent(data, content), state?.selections));
+  if (Array.isArray(requestedContentIds)) {
+    const contentById = new Map(visibleContents.map((content) => [content.id, content]));
+    visibleContents = requestedContentIds.map((id) => contentById.get(id)).filter(Boolean);
+  }
+  if (state?.selections?.serverFeedFiltered !== true) {
+    visibleContents = visibleContents.filter((content) => placeMatchesLocationFilter(placeForContent(data, content), state?.selections));
+  }
   visibleContents = visibleContents.filter((content) => {
     if (!filter || filter === "all" || filter === "menu") return true;
     const place = placeForContent(data, content);

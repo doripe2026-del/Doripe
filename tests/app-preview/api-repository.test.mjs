@@ -158,6 +158,85 @@ test("an empty API feed stays empty and never becomes fixture content", async ()
   assert.deepEqual(snapshot.savedCourseIds, []);
 });
 
+test("filtered feed snapshots use stable UUID query ordering and preserve bootstrap tag keys", async () => {
+  const tagDateId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+  const tagQuietId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+  const secondContent = {
+    ...content,
+    id: "99999999-9999-4999-8999-999999999999",
+    placeIds: [courseOnlyPlace.id],
+    media: courseOnlyPlace.media
+  };
+  const requests = [];
+  const filteredPath = "/api/v1/feed?scope=discover&limit=50&tagIds=aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa%2Cbbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb&centerLat=37.5&centerLng=126.9&radiusKm=3";
+  const repository = createApiRepository({
+    fetchImpl: async (url) => {
+      const requestUrl = String(url);
+      requests.push(requestUrl);
+      if (requestUrl === "/api/v1/bootstrap") {
+        return jsonResponse({ data: {
+          regions: [], categories: [], tags: [
+            { id: tagDateId, key: "date", kind: "situation", name: "데이트" },
+            { id: tagQuietId, key: "quiet", kind: "mood", name: "조용함" }
+          ], featureFlags: {}, contractVersions: {}
+        } });
+      }
+      if (requestUrl === filteredPath) {
+        return jsonResponse({ data: { items: [content] }, meta: { nextCursor: "next-page" } });
+      }
+      if (requestUrl === `${filteredPath}&cursor=next-page`) {
+        return jsonResponse({ data: { items: [secondContent] }, meta: { nextCursor: null } });
+      }
+      if (requestUrl === `/api/v1/places/${place.id}`) return jsonResponse({ data: place });
+      if (requestUrl === `/api/v1/places/${courseOnlyPlace.id}`) return jsonResponse({ data: courseOnlyPlace });
+      throw new Error(`Unexpected request: ${url}`);
+    },
+    storage: memoryStorage()
+  });
+
+  const snapshot = await repository.getFeedSnapshot({
+    tagIds: [tagQuietId, tagDateId, tagQuietId],
+    centerLat: 37.5,
+    centerLng: 126.9,
+    radiusKm: 3
+  });
+
+  assert.deepEqual(requests.slice(0, 3), ["/api/v1/bootstrap", filteredPath, `${filteredPath}&cursor=next-page`]);
+  assert.deepEqual(snapshot.contents.map((item) => item.id), [content.id, secondContent.id]);
+  assert.equal(snapshot.tags.find((tag) => tag.id === tagDateId)?.key, "date");
+});
+
+test("an empty filtered snapshot stays empty without replacing the persisted bootstrap fallback", async () => {
+  const storage = memoryStorage();
+  const repository = createApiRepository({
+    fetchImpl: async (url) => {
+      const requestUrl = String(url);
+      if (requestUrl === "/api/v1/bootstrap") {
+        return jsonResponse({ data: {
+          regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {}
+        } });
+      }
+      if (requestUrl === "/api/v1/feed?scope=discover&limit=50") {
+        return jsonResponse({ data: { items: [content] }, meta: { nextCursor: null } });
+      }
+      if (requestUrl === `/api/v1/places/${place.id}`) return jsonResponse({ data: place });
+      if (requestUrl.startsWith("/api/v1/feed?scope=discover&limit=50&tagIds=")) {
+        return jsonResponse({ data: { items: [] }, meta: { nextCursor: null } });
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    },
+    storage
+  });
+
+  await repository.getBootstrap();
+  const cachedBootstrap = storage.getItem("doripe.app_preview.api_snapshot.v1");
+  const filtered = await repository.getFeedSnapshot({ tagIds: ["aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"] });
+
+  assert.deepEqual(filtered.contents, []);
+  assert.deepEqual(filtered.places, []);
+  assert.equal(storage.getItem("doripe.app_preview.api_snapshot.v1"), cachedBootstrap);
+});
+
 test("authenticated bootstrap restores private profile and saved items without caching them publicly", async () => {
   const requests = [];
   const storage = memoryStorage();
