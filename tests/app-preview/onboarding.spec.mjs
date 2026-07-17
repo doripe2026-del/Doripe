@@ -79,6 +79,36 @@ async function mockAuth(page, responder) {
   await page.route(`${TEST_SUPABASE_URL}/auth/v1/**`, responder);
 }
 
+async function mockPrivateAccount(page, profileId = "user-1") {
+  await page.route("**/api/v1/**", async (route) => {
+    const path = new URL(route.request().url()).pathname.slice("/api/v1/".length);
+    if (path === "bootstrap") {
+      return route.fulfill({ status: 200, json: { data: {
+        regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {}
+      }, meta: {} } });
+    }
+    if (path === "feed") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    if (path === "me/profile") {
+      return route.fulfill({ status: 200, json: { data: {
+        id: profileId,
+        nickname: "도리",
+        introduction: "",
+        profileImageUrl: null,
+        isCurator: false,
+        officialBadge: false,
+        followedByMe: false,
+        followerCount: 0
+      }, meta: {} } });
+    }
+    if (path.startsWith("me/saves") || path === "courses") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    return route.fulfill({ status: 404, json: { error: { code: "not_found", message: "not found" } } });
+  });
+}
+
 async function compareWithReference(page, screen, screenId, testInfo) {
   const screenshot = await screen.screenshot({
     animations: "disabled",
@@ -383,6 +413,7 @@ test("production host static=1 can never activate fixture authentication", async
 });
 
 test("login disables submission and navigates only after Supabase succeeds", async ({ page }) => {
+  await mockPrivateAccount(page);
   await mockAuth(page, async (route) => {
     await new Promise((resolve) => setTimeout(resolve, 100));
     await route.fulfill({

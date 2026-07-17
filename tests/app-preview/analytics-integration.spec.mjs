@@ -59,7 +59,7 @@ function liveApiData() {
   return { place, content };
 }
 
-async function installLiveApi(page) {
+async function installLiveApi(page, { profileId = "11111111-1111-4111-8111-111111111111" } = {}) {
   const requests = { sessions: [], eventBatches: [], mutations: [] };
   const { place, content } = liveApiData();
 
@@ -86,6 +86,21 @@ async function installLiveApi(page) {
     }
     if (path === "feed") {
       return route.fulfill({ status: 200, json: { data: { items: [content] }, meta: { nextCursor: null } } });
+    }
+    if (path === "me/profile") {
+      return route.fulfill({ status: 200, json: { data: {
+        id: profileId,
+        nickname: "도리",
+        introduction: "서울의 좋은 장소를 모아요",
+        profileImageUrl: "/app-preview/assets/discover/avatar-1.png",
+        isCurator: false,
+        officialBadge: false,
+        followedByMe: false,
+        followerCount: 0
+      }, meta: {} } });
+    }
+    if (request.method() === "GET" && (path.startsWith("me/saves") || path === "courses")) {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
     }
     if (path === `places/${PLACE_ID}`) {
       return route.fulfill({ status: 200, json: { data: place, meta: {} } });
@@ -233,7 +248,7 @@ test("email confirmation records signup completion once and not again on reload"
 });
 
 test("successful password login records login completion", async ({ page }) => {
-  const requests = await installLiveApi(page);
+  const requests = await installLiveApi(page, { profileId: "known-user" });
   await page.route("**/api/app-auth-config", (route) => route.fulfill({
     status: 200,
     json: {

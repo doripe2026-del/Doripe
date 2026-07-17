@@ -22,6 +22,45 @@ async function mockLogout(page, onRequest = () => {}) {
     onRequest(route.request());
     await route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
   });
+  await mockPrivateAccount(page);
+}
+
+async function mockPrivateAccount(page) {
+  await page.route("**/api/v1/**", async (route) => {
+    const path = new URL(route.request().url()).pathname.slice("/api/v1/".length);
+    if (path === "bootstrap") {
+      return route.fulfill({ status: 200, json: { data: {
+        regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {}
+      }, meta: {} } });
+    }
+    if (path === "feed") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    if (path === "me/profile") {
+      return route.fulfill({ status: 200, json: { data: {
+        id: "user-1",
+        nickname: "도리",
+        introduction: "서울을 기록해요",
+        profileImageUrl: null,
+        isCurator: false,
+        officialBadge: false,
+        followedByMe: false,
+        followerCount: 0
+      }, meta: {} } });
+    }
+    if (path.startsWith("me/saves") || path === "courses") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    if (path === "sessions") {
+      const body = route.request().postDataJSON();
+      return route.fulfill({ status: 201, json: { data: { sessionId: body.sessionId, accepted: true }, meta: {} } });
+    }
+    if (path === "events") {
+      const body = route.request().postDataJSON();
+      return route.fulfill({ status: 202, json: { data: { accepted: body.events.length, duplicates: 0, rejected: 0 }, meta: {} } });
+    }
+    return route.fulfill({ status: 404, json: { error: { code: "not_found", message: "not found" } } });
+  });
 }
 
 async function storeAuthSession(page) {
@@ -260,6 +299,7 @@ test("logout network failure still completes locally and cannot restore authenti
     body: JSON.stringify({ supabaseUrl: TEST_SUPABASE_URL, supabaseKey: TEST_PUBLISHABLE_KEY })
   }));
   await page.route(`${TEST_SUPABASE_URL}/auth/v1/logout?scope=local`, (route) => route.abort("failed"));
+  await mockPrivateAccount(page);
   await storeAuthSession(page);
   await page.goto("/app-preview/?screen=e3");
 

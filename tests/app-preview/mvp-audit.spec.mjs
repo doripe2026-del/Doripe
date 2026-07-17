@@ -34,6 +34,15 @@ test.use({ viewport: { width: 393, height: 852 } });
 
 test("D1 photo menu hides a selected item and persists the choice", async ({ page }) => {
   await page.goto("/app-preview/?screen=d1&static=1");
+  await page.evaluate(() => {
+    const key = "doripe_app_preview_v1";
+    const current = JSON.parse(localStorage.getItem(key)) || {};
+    localStorage.setItem(key, JSON.stringify({
+      ...current,
+      savedPlaceIds: Array.from({ length: 10 }, (_, index) => `place-${index + 1}`)
+    }));
+  });
+  await page.reload();
   const cards = page.locator(".route-start-media");
   const initialCount = await cards.count();
   await cards.first().getByRole("button", { name: /사진 메뉴/ }).click();
