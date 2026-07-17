@@ -338,6 +338,8 @@ export function createApiRepository({
   }
 
   async function read(path) {
+    if (accessTokenProvider?.()) return clone(await request(path));
+
     const cached = readCacheEntries.get(path);
     if (cached && cached.expiresAt > now()) return clone(cached.value);
     if (cached) readCacheEntries.delete(path);

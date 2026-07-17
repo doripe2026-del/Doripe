@@ -295,6 +295,51 @@ test("public cache strips personalized feed likes and follows", async () => {
   assert.equal(publicCache.snapshot.personalDataLoaded, false);
 });
 
+test("signed-out public reads never reuse personalized in-memory feed or profile data", async () => {
+  let accessToken = "current-access-token";
+  const requests = [];
+  const personalizedAuthor = {
+    ...profile,
+    followedByMe: true
+  };
+  const personalizedContent = {
+    ...content,
+    author: personalizedAuthor,
+    likedByMe: true
+  };
+  const publicContent = {
+    ...personalizedContent,
+    author: { ...personalizedAuthor, followedByMe: false },
+    likedByMe: false
+  };
+  const repository = createApiRepository({
+    fetchImpl: async (url, options = {}) => {
+      const authenticated = Boolean(options.headers?.authorization);
+      requests.push({ url: String(url), authenticated });
+      if (String(url).startsWith("/api/v1/feed?")) {
+        return jsonResponse({ data: { items: [authenticated ? personalizedContent : publicContent] } });
+      }
+      if (String(url) === `/api/v1/profiles/${profile.id}`) {
+        return jsonResponse({ data: authenticated
+          ? personalizedAuthor
+          : { ...personalizedAuthor, followedByMe: false } });
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    },
+    storage: memoryStorage(),
+    accessTokenProvider: () => accessToken
+  });
+
+  assert.equal((await repository.getFeed())[0].likedByMe, true);
+  assert.equal((await repository.getPublicProfile(profile.id)).followedByMe, true);
+
+  accessToken = null;
+
+  assert.equal((await repository.getFeed())[0].likedByMe, false);
+  assert.equal((await repository.getPublicProfile(profile.id)).followedByMe, false);
+  assert.deepEqual(requests.map((request) => request.authenticated), [true, true, false, false]);
+});
+
 test("the last successful API snapshot is used only after a later network failure", async () => {
   const storage = memoryStorage();
   let online = true;
