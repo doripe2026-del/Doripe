@@ -35,6 +35,7 @@ const startupAuthResult = await authClient.initializeSession({
   replaceState: (url) => window.history.replaceState(window.history.state, "", url)
 });
 let authStatus = startupAuthResult.ok ? startupAuthResult.status : "no-session";
+let personalDataReady = false;
 setBootProgress(45);
 const repository = getAdapter(isStaticPreview() ? "fixture" : "api", {
   accessTokenProvider: authClient.getAccessToken,
@@ -42,13 +43,14 @@ const repository = getAdapter(isStaticPreview() ? "fixture" : "api", {
   onUnauthorized: () => {
     authClient.clearSession();
     authStatus = "no-session";
+    personalDataReady = false;
   }
 });
 const dataStore = createAppDataStore({ repository });
 const actionSync = createActionSync({
   repository,
   enabled: repository.mode === "api",
-  canSync: () => Boolean(authClient.getAccessToken())
+  canSync: () => Boolean(authClient.getAccessToken()) && personalDataReady
 });
 const analyticsClient = staticPreview ? null : createAnalyticsClient({
   accessTokenProvider: authClient.getAccessToken
@@ -61,8 +63,13 @@ try {
 }
 setBootProgress(92);
 let dataSnapshot = dataStore.getSnapshot();
+personalDataReady = authStatus === "authenticated" && dataSnapshot.personalDataLoaded === true;
 if (authStatus === "authenticated" && !dataSnapshot.personalDataLoaded && !dataLoadError) {
   dataLoadError = new Error("계정 데이터를 불러오지 못했어요");
+}
+if (authStatus === "authenticated" && !dataSnapshot.personalDataLoaded) {
+  authClient.clearSession();
+  authStatus = "no-session";
 }
 let dataCatalog = dataLoadError ? createUnavailableDataCatalog() : createDataCatalog(dataSnapshot);
 const state = createPreviewState({ catalog: dataCatalog });
@@ -821,9 +828,21 @@ async function reconcileAuthenticatedState(guestState, { loadFirst = false, migr
       dataSnapshot = dataStore.getSnapshot();
     }
 
+    const migratedCommentIds = new Set(migration.journal.tasks
+      .filter((item) => item.type === "create-comment" && item.status === "done")
+      .map((item) => item.payload?.sourceCommentId)
+      .filter(Boolean));
+    const reconciledGuestState = migratedCommentIds.size === 0
+      ? guestState
+      : {
+          ...guestState,
+          submittedComments: (guestState.submittedComments || [])
+            .filter((comment) => !migratedCommentIds.has(comment.id))
+        };
+
     dataCatalog = createDataCatalog(dataSnapshot);
     state.setCatalog(dataCatalog);
-    state.replace(mergePersonalSnapshotIntoState(guestState, dataSnapshot, {
+    state.replace(mergePersonalSnapshotIntoState(reconciledGuestState, dataSnapshot, {
       preserveGuestData: !migration.complete
     }));
     dataLoadError = !dataSnapshot.personalDataLoaded
@@ -831,17 +850,22 @@ async function reconcileAuthenticatedState(guestState, { loadFirst = false, migr
       : migration.complete
         ? null
         : new Error("일부 비회원 데이터를 계정으로 옮기지 못했어요. 다음 접속 때 다시 시도할게요");
+    personalDataReady = true;
+    return true;
   } catch (error) {
+    personalDataReady = false;
     dataLoadError = error;
     dataCatalog = createUnavailableDataCatalog();
     state.setCatalog(dataCatalog);
     state.replace(guestState);
+    return false;
   }
 }
 
 async function hydrateStateAfterAuthentication({ migrateIdentity = false } = {}) {
-  await reconcileAuthenticatedState(state.getState(), { loadFirst: true, migrateIdentity });
+  const hydrated = await reconcileAuthenticatedState(state.getState(), { loadFirst: true, migrateIdentity });
   interactionState = state.getState();
+  return hydrated;
 }
 
 async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {
@@ -898,8 +922,18 @@ async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {
   if (authResult.ok && authResult.status === "authenticated") {
     authStatus = "authenticated";
     window.sessionStorage.removeItem(LOGOUT_GUARD_KEY);
-    await hydrateStateAfterAuthentication({ migrateIdentity: operation === "sign-up" });
-    recordAuthCompletion(authResult, screenId);
+    const hydrated = await hydrateStateAfterAuthentication({ migrateIdentity: operation === "sign-up" });
+    if (hydrated) {
+      recordAuthCompletion(authResult, screenId);
+    } else {
+      authClient.clearSession();
+      authStatus = "no-session";
+      authResult = {
+        ok: false,
+        code: "account-data-unavailable",
+        message: "계정 데이터를 불러오지 못했어요. 잠시 후 다시 로그인해 주세요"
+      };
+    }
   }
   if (authResult.ok && authResult.status === "password-updated") authStatus = "no-session";
   if (target.isConnected) {
@@ -918,6 +952,7 @@ function dispatchLocalFirstLogout(target, screenId, actionId) {
   const completeRemoteLogout = authClient.beginSignOut();
   clearGuestMigrationJournal();
   authStatus = "no-session";
+  personalDataReady = false;
   const payload = {
     state: interactionState,
     data: dataSnapshot,
@@ -1187,7 +1222,7 @@ if (!startupAuthResult.ok) {
   } else if (invalidStoredSession) {
     window.sessionStorage.removeItem(LOGOUT_GUARD_KEY);
   }
-} else if (startupAuthResult.status === "authenticated") {
+} else if (authStatus === "authenticated" && personalDataReady) {
   window.sessionStorage.removeItem(LOGOUT_GUARD_KEY);
 }
 analyticsClient?.attachLifecycle();
@@ -1198,6 +1233,8 @@ if (analyticsClient) {
     entryPath: `${window.location.pathname}${window.location.search}`,
     sourceScreen: lastRenderedScreenId || "app"
   });
-  recordAuthCompletion(startupAuthResult, lastRenderedScreenId || "app");
+  if (authStatus === "authenticated" && personalDataReady) {
+    recordAuthCompletion(startupAuthResult, lastRenderedScreenId || "app");
+  }
   flushAnalytics();
 }

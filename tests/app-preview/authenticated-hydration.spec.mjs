@@ -176,7 +176,7 @@ test("a returning signed-in user sees server profile, saves, and complete course
   expect(privateRequests.every((item) => item.authorization === "Bearer live-access-token")).toBe(true);
 });
 
-test("a returning signed-in user can retry when private account hydration fails", async ({ page }) => {
+test("a returning signed-in user is safely signed out when private account hydration fails", async ({ page }) => {
   await page.addInitScript((authKey) => {
     sessionStorage.setItem(authKey, JSON.stringify({
       accessToken: "live-access-token",
@@ -216,7 +216,75 @@ test("a returning signed-in user can retry when private account hydration fails"
   await page.goto("/app-preview/?screen=b1");
   await expect(page.locator('[data-screen-id="b1"]')).toBeVisible();
   await expect(page.locator(".preview-data-feedback")).toContainText("데이터를 불러오지 못했어요");
-  await expect(page.locator('.preview-data-feedback [data-action="app-retry-data"]')).toBeVisible();
+  await expect.poll(() => page.evaluate((key) => sessionStorage.getItem(key), AUTH_SESSION_STORAGE_KEY)).toBeNull();
+});
+
+test("an interactive sign-in keeps guest data and rejects an incomplete account hydration", async ({ page }) => {
+  await page.addInitScript(({ storageKey, placeId }) => {
+    localStorage.setItem(storageKey, JSON.stringify({
+      currentScreenId: "a3",
+      history: [],
+      savedPlaceIds: [placeId]
+    }));
+  }, { storageKey: STORAGE_KEY, placeId: PLACE_IDS[0] });
+
+  await page.route("**/api/app-auth-config", (route) => route.fulfill({
+    status: 200,
+    json: { supabaseUrl: SUPABASE_URL, supabaseKey: SUPABASE_KEY }
+  }));
+  await page.route(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, (route) => route.fulfill({
+    status: 200,
+    json: {
+      access_token: "incomplete-access-token",
+      refresh_token: "incomplete-refresh-token",
+      token_type: "bearer",
+      expires_in: 3600,
+      user: { id: PROFILE_ID }
+    }
+  }));
+  await page.route("**/api/v1/**", async (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice("/api/v1/".length);
+    if (path === "bootstrap") {
+      return route.fulfill({ status: 200, json: { data: {
+        regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {}
+      }, meta: {} } });
+    }
+    if (path === "feed") {
+      return route.fulfill({ status: 200, json: {
+        data: { items: [feedContent(place(PLACE_IDS[0], 0))] },
+        meta: { nextCursor: null }
+      } });
+    }
+    if (path === `places/${PLACE_IDS[0]}`) {
+      return route.fulfill({ status: 200, json: { data: place(PLACE_IDS[0], 0), meta: {} } });
+    }
+    if (path === "me/profile") {
+      return route.fulfill({ status: 503, json: { error: { code: "temporarily_unavailable", message: "retry" } } });
+    }
+    if (path === "me/saves" || path === "courses") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    if (path === "sessions") {
+      return route.fulfill({ status: 201, json: { data: { sessionId: request.postDataJSON().sessionId, accepted: true }, meta: {} } });
+    }
+    if (path === "events") {
+      return route.fulfill({ status: 202, json: { data: { accepted: 0, duplicates: 0, rejected: 0 }, meta: {} } });
+    }
+    return route.fulfill({ status: 404, json: { error: { code: "not_found", message: "not found" } } });
+  });
+
+  await page.goto("/app-preview/?screen=a3");
+  await page.getByLabel("이메일").fill("dori@doripe.kr");
+  await page.getByLabel("비밀번호").fill("Doripe123");
+  await page.getByRole("button", { name: "로그인", exact: true }).click();
+
+  await expect(page.locator('[data-screen-id="a3"]')).toBeVisible();
+  await expect(page.locator(".auth-feedback")).toContainText("계정 데이터를 불러오지 못했어요");
+  await expect.poll(() => page.evaluate((key) => sessionStorage.getItem(key), AUTH_SESSION_STORAGE_KEY)).toBeNull();
+  const stored = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)), STORAGE_KEY);
+  expect(stored.savedPlaceIds).toEqual([PLACE_IDS[0]]);
 });
 
 test("signing in hydrates server account data without discarding guest saves or replacing account identity", async ({ page }) => {
@@ -233,6 +301,8 @@ test("signing in hydrates server account data without discarding guest saves or 
   const commentRequests = [];
 
   await page.addInitScript(({ storageKey, guestPlaceId, contentId }) => {
+    if (sessionStorage.getItem("doripe.test.guest-state-seeded") === "1") return;
+    sessionStorage.setItem("doripe.test.guest-state-seeded", "1");
     localStorage.setItem(storageKey, JSON.stringify({
       currentScreenId: "a3",
       history: [],
@@ -419,6 +489,7 @@ test("signing in hydrates server account data without discarding guest saves or 
     placeIds: [guestPlace.id, serverPlace.id]
   }]);
   expect(stored.profile.nickname).toBe("로그인 도리");
+  expect(stored.submittedComments).toEqual([]);
   expect(migrationRequests).toHaveLength(2);
   expect(migrationRequests.every((item) => /^guest_[A-Za-z0-9_-]+$/u.test(item.key))).toBe(true);
   expect(onboardingRequests).toEqual([]);
