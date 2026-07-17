@@ -26,11 +26,13 @@ production·legacy ref, 잘못된 URL, 확인 문구 누락 중 하나라도 있
 
 ## 2. 기준선 복원과 비교
 
-1. `docs/ops/backups/2026-07-18`의 DB 구조·기준 데이터를 staging에 복원한다.
-2. Storage 백업 174개 파일을 staging 전용 bucket에 복원한다.
-3. `supabase/preflight/web_mvp_bridge_baseline.sql`을 읽기 전용으로 실행한다.
-4. `npm run check:supabase-bridge-baseline`을 실행한다.
-5. 행 수, migration 9개, Storage 객체 수와 SHA-256이 기준선과 같지 않으면 중단한다.
+1. 빈 staging에 저장소 migration을 처음부터 적용해 새 환경 재구성 가능 여부를 먼저 확인한다.
+2. 이 검증은 현재 로컬에 Docker가 없어 로컬 `supabase db reset`으로 대신하지 못했다.
+3. 별도 복원용 staging에는 `docs/ops/backups/2026-07-18`의 DB 구조·기준 데이터를 복원한다.
+4. Storage 백업 174개 파일을 staging 전용 bucket에 복원한다.
+5. `supabase/preflight/web_mvp_bridge_baseline.sql`을 읽기 전용으로 실행한다.
+6. `npm run check:supabase-bridge-baseline`을 실행한다.
+7. 행 수, migration 9개, Storage 객체 수와 SHA-256이 기준선과 같지 않으면 중단한다.
 
 ## 3. bridge 작성·적용
 

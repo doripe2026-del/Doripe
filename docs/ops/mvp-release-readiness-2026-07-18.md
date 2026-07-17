@@ -2,8 +2,8 @@
 
 - 확인일: 2026-07-18
 - Git 브랜치: `codex/mvp-masterplan-implementation`
-- 기능 기준 커밋: `a35b39f`
-- 최신 복구 체크포인트: `mvp-checkpoint-2026-07-18-staging-guard`
+- 기능 기준 커밋: `4af1202`
+- 최신 복구 체크포인트: `mvp-checkpoint-2026-07-18-local-db-preflight`
 - 웹 MVP Supabase project: `dcyjrsxnpujslbxtitqj` (`Doripe-app`)
 - 목적: 실제 DB 변경이나 Production 배포 전에 현재 코드와 운영 환경의 차이를 복구 가능한 기록으로 남긴다.
 
@@ -22,6 +22,7 @@
 | 사진 파일 | 확인 필요 | 공개 Storage에 176개가 있지만 `place_photos` 연결 행이 없고 베타 장소 데이터로 확정되지 않았다. |
 | Vercel 환경 | 출시 차단 | Preview·Development 필수 Supabase 환경변수와 readiness 실서버 검증이 필요하다. |
 | 실제 기기 검수 | 출시 차단 | 실제 Supabase 데이터와 휴대폰을 함께 사용한 전체 여정 검수가 없다. |
+| 빈 DB 재구성 | 확인 필요 | Supabase CLI는 사용할 수 있지만 현재 로컬 환경에 Docker가 없어 `db reset`을 실행하지 못했다. 별도 staging 또는 Docker 환경에서 검증해야 한다. |
 
 ## 원격 Supabase 읽기 전용 관찰 결과
 
@@ -60,12 +61,13 @@ Performance Advisor는 사용되지 않은 index 36개를 INFO로 보고했다. 
 1. **부분 완료:** 원격 DB catalog·기준 데이터·앱 역할 grant·migration SQL 원문과 Storage 176개의 읽기 전용 백업을 만들었다. DB custom-format 백업은 별도 자격증명 확보 후 추가한다.
 2. 현재 9개 migration을 기준선으로 보존한다.
 3. 사용자 확인 후 별도 staging을 만들고 `npm run check:supabase-staging-target`으로 production·legacy project 오지정을 차단한다.
-4. 기존 데이터를 지우지 않는 bridge migration을 staging에 적용한다.
-5. staging에서 RLS, API, 중복 실행, 데이터 보존과 Security WARN 0건을 검증한다.
-6. Vercel Preview·Development를 승인된 Supabase 환경에 연결한다.
-7. 실제 베타 장소·사진·태그·제공자 데이터를 등록한다.
-8. 실제 데이터와 휴대폰으로 전체 사용자 여정을 반복 검수한다.
-9. 출시 차단 문제가 0개일 때만 PR을 `main`에 병합한다.
+4. 빈 staging에 migration을 처음부터 적용해 동일한 구조가 만들어지는지 검증한다.
+5. 기준선 복원본에는 기존 데이터를 지우지 않는 bridge migration을 적용한다.
+6. staging에서 RLS, API, 중복 실행, 데이터 보존과 Security WARN 0건을 검증한다.
+7. Vercel Preview·Development를 승인된 Supabase 환경에 연결한다.
+8. 실제 베타 장소·사진·태그·제공자 데이터를 등록한다.
+9. 실제 데이터와 휴대폰으로 전체 사용자 여정을 반복 검수한다.
+10. 출시 차단 문제가 0개일 때만 PR을 `main`에 병합한다.
 
 ## 이번 기록에서 하지 않은 것
 
