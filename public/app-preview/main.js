@@ -54,8 +54,8 @@ try {
   dataLoadError = error;
 }
 setBootProgress(92);
-const dataSnapshot = dataStore.getSnapshot();
-const dataCatalog = createDataCatalog(dataSnapshot);
+let dataSnapshot = dataStore.getSnapshot();
+let dataCatalog = createDataCatalog(dataSnapshot);
 const state = createPreviewState({ catalog: dataCatalog });
 if (dataSnapshot.personalDataLoaded) {
   state.replace(mergePersonalSnapshotIntoState(state.getState(), dataSnapshot));
@@ -741,6 +741,25 @@ function clearSubmittedPasswords(screen) {
   clearVolatilePasswords();
 }
 
+async function hydrateStateAfterAuthentication() {
+  const guestState = state.getState();
+  try {
+    await dataStore.load();
+    dataSnapshot = dataStore.getSnapshot();
+    dataCatalog = createDataCatalog(dataSnapshot);
+    state.setCatalog(dataCatalog);
+    state.replace(mergePersonalSnapshotIntoState(guestState, dataSnapshot, { preserveGuestData: true }));
+    interactionState = state.getState();
+    dataLoadError = dataSnapshot.personalDataLoaded
+      ? null
+      : new Error("로그인은 완료됐지만 계정 데이터를 불러오지 못했어요");
+  } catch (error) {
+    dataLoadError = error;
+    state.replace(guestState);
+    interactionState = state.getState();
+  }
+}
+
 async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {
   if (target.disabled || target.dataset.authSubmitting === "true") return;
   const screen = target.closest("[data-screen-id]");
@@ -774,28 +793,34 @@ async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {
     authResult = { ok: false, code: "network", message: "네트워크 연결을 확인하고 다시 시도해 주세요" };
   }
 
-  if (target.isConnected) {
-    target.disabled = false;
-    target.setAttribute("aria-disabled", "false");
-    target.removeAttribute("aria-busy");
-    delete target.dataset.authSubmitting;
-  }
-
   const stale = controller.signal.aborted
     || requestGeneration !== renderGeneration
     || !screen?.isConnected
     || interactionState.currentScreenId !== screenId;
   if (stale) {
     if (["sign-in", "sign-up"].includes(operation)) authClient.clearSession();
+    if (target.isConnected) {
+      target.disabled = false;
+      target.setAttribute("aria-disabled", "false");
+      target.removeAttribute("aria-busy");
+      delete target.dataset.authSubmitting;
+    }
     return;
   }
 
-  const payload = { state: interactionState, data: dataSnapshot, authResult };
   if (authResult.ok && authResult.status === "authenticated") {
     authStatus = "authenticated";
     window.sessionStorage.removeItem(LOGOUT_GUARD_KEY);
+    await hydrateStateAfterAuthentication();
   }
   if (authResult.ok && authResult.status === "password-updated") authStatus = "no-session";
+  if (target.isConnected) {
+    target.disabled = false;
+    target.setAttribute("aria-disabled", "false");
+    target.removeAttribute("aria-busy");
+    delete target.dataset.authSubmitting;
+  }
+  const payload = { state: interactionState, data: dataSnapshot, authResult };
   const result = dispatchAction(screenId, actionId, payload);
   applyActionResult(result, { rerender: true, screenId, payload });
 }

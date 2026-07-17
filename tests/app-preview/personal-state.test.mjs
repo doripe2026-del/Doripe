@@ -50,3 +50,32 @@ test("authenticated snapshots replace account-owned profile and saves with serve
   });
   assert.deepEqual(state.savedPlaceIds, ["stale-place"]);
 });
+
+test("post-login hydration preserves guest saves while adding server account data", () => {
+  const state = {
+    currentScreenId: "a3",
+    savedPlaceIds: ["guest-place", "shared-place"],
+    savedRoutes: [
+      { id: "guest-course", name: "게스트 코스", placeIds: ["guest-place", "shared-place"] },
+      { id: "server-course", name: "예전 표시", placeIds: ["shared-place", "guest-place"] }
+    ],
+    profile: { id: "guest", nickname: "게스트", bio: "" }
+  };
+  const snapshot = {
+    personalDataLoaded: true,
+    viewerProfileId: "viewer-1",
+    savedPlaceIds: ["server-place", "shared-place"],
+    savedCourseIds: ["server-course"],
+    profiles: [{ id: "viewer-1", name: "도리", bio: "서버 프로필", avatarUrl: "/dori.jpg" }],
+    courses: [{ id: "server-course", name: "서버 코스", placeIds: ["server-place", "shared-place"] }]
+  };
+
+  const merged = mergePersonalSnapshotIntoState(state, snapshot, { preserveGuestData: true });
+
+  assert.deepEqual(merged.savedPlaceIds, ["server-place", "shared-place", "guest-place"]);
+  assert.deepEqual(merged.savedRoutes, [
+    { id: "server-course", name: "서버 코스", placeIds: ["server-place", "shared-place"] },
+    { id: "guest-course", name: "게스트 코스", placeIds: ["guest-place", "shared-place"] }
+  ]);
+  assert.equal(merged.profile.id, "viewer-1");
+});

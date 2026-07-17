@@ -197,10 +197,11 @@ export function createPreviewState({
   storage = globalThis.localStorage,
   catalog = EMPTY_CATALOG
 } = {}) {
-  let currentState = loadState(storage, catalog);
+  let activeCatalog = catalog;
+  let currentState = loadState(storage, activeCatalog);
 
   function persist() {
-    currentState = clonePreviewState(currentState, catalog);
+    currentState = clonePreviewState(currentState, activeCatalog);
     storage?.setItem(PREVIEW_STORAGE_KEY, JSON.stringify(currentState));
   }
 
@@ -210,8 +211,12 @@ export function createPreviewState({
     getState() {
       return currentState;
     },
+    setCatalog(nextCatalog = EMPTY_CATALOG) {
+      activeCatalog = nextCatalog;
+      persist();
+    },
     replace(nextState) {
-      currentState = clonePreviewState(nextState, catalog);
+      currentState = clonePreviewState(nextState, activeCatalog);
       persist();
     },
     navigate(screenId, { replace = false } = {}) {

@@ -70,6 +70,25 @@ test("state accepts only place IDs supplied by its injected catalog", () => {
   assert.deepEqual(state.getState().savedPlaceIds, ["place-a"]);
 });
 
+test("state can adopt a refreshed catalog after authentication", () => {
+  const storage = createMemoryStorage();
+  const initialCatalog = {
+    isKnownPlaceId: (id) => id === "place-a",
+    isKnownCourseId: () => false
+  };
+  const refreshedCatalog = {
+    isKnownPlaceId: (id) => ["place-a", "place-b"].includes(id),
+    isKnownCourseId: () => false
+  };
+  const state = createPreviewState({ storage, catalog: initialCatalog });
+
+  state.setCatalog(refreshedCatalog);
+  state.replace({ ...state.getState(), savedPlaceIds: ["place-a", "place-b"] });
+
+  assert.deepEqual(state.getState().savedPlaceIds, ["place-a", "place-b"]);
+  assert.deepEqual(JSON.parse(storage.getItem(PREVIEW_STORAGE_KEY)).savedPlaceIds, ["place-a", "place-b"]);
+});
+
 test("normalization marks stale entity selections instead of falling back to unrelated records", () => {
   const entityData = normalizeDataSnapshot({
     places: [{ id: "place-a" }],
