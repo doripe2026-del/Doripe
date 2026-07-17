@@ -1,0 +1,1423 @@
+{
+  "source": {
+    "project_ref": "dcyjrsxnpujslbxtitqj",
+    "bucket": "place-photos-public",
+    "prefix": "",
+    "read_only": true
+  },
+  "captured_at": "2026-07-17T21:27:21.459Z",
+  "summary": {
+    "listed": 176,
+    "accepted": 174,
+    "ignored": 2,
+    "rejected": 0,
+    "total_bytes": 153392247
+  },
+  "objects": [
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/01.jpg",
+      "byte_size": 277107,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "b956fe7e89379c6abc0a7cfc307d1858bdd18d06efb79900dc9cdd7cc0057bce",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/02.jpg",
+      "byte_size": 412415,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "185b684394648f807b3162705807cee43a9fae3292b856000ab89bba4397f388",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/03.jpg",
+      "byte_size": 423481,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "d26833449102236f1015ef0f67d0210c5d84019c3f92657825f0e1a6319eb0c8",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/04.jpg",
+      "byte_size": 410774,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "96850c60969ace79ca80ed7e759eb0aa475bf3788ee587a4152d1a191d1cc9a8",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/05.jpg",
+      "byte_size": 274207,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "892e6bccd38b28aa23a95e7a1159686923b399d99d3b121962635b4058cd96d5",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/06.jpg",
+      "byte_size": 141770,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "58afbbbb2a29ce35f6eb7bb2fbd093f408c31d5360bb2b5563babda2c106a8c6",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/01.jpg",
+      "byte_size": 594421,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "bc205d866000609ef1263130be9dea96a4fcb65f5ea859eda011e84857b572a7",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/02.jpg",
+      "byte_size": 556412,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "8c9a80e700a00d5a80a401d85f4fea411c09b49210961709592a72719782a661",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/03.jpg",
+      "byte_size": 303362,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "7094bccca08fa80dc3efcab0eb83efe26216db8a7a22566d88d8bcb83c26d880",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/04.jpg",
+      "byte_size": 580737,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "9493d6f86d2da654f640fe4dac46501d648d974716578572ccf4bd18a629fc2b",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/05.jpg",
+      "byte_size": 689588,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "8cd9e5a38324233285dfec67d1913840bac1c521d3ae41d98027b3b19a2d2e66",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/06.jpg",
+      "byte_size": 140612,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "4dff6884e031113a754a8caa518095fc60653fba490657ac0a5c4ab5faf50625",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/01.jpg",
+      "byte_size": 530421,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "270eac982d9f8bfb40269e3ec879eb7566866de39417fb666d272bb0fda7e29a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/02.jpg",
+      "byte_size": 289357,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "97f67ba91da58704096961e81fd9bf2b071aa63dbf989bb9181c4f7ce6ee9641",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/03.jpg",
+      "byte_size": 479282,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "5d05861a8c0e222186b6b2471b5d28f089049c8eb18ec783e8fcc9a72aafa3b3",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/04.jpg",
+      "byte_size": 368730,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "d7fa487fe61988598e0a33a7e1b5e38803b9ca0f83d379c34a3b2733bd1125d4",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/05.jpg",
+      "byte_size": 445298,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "df837cfb59837ee408eebce213780ffded5087303627e17fe107a53cde1d5adf",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/06.jpg",
+      "byte_size": 230378,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "d30a29eb315fdb57fc0a40903906d1229965acf9f877db699a208dd887a947f3",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/01.jpg",
+      "byte_size": 336956,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "e2e26618eeaf4719fd7c92c6570f3c36695893c1ecb95c4652fe617d2ae874bc",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/02.jpg",
+      "byte_size": 327378,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "3d5cb39885d56f2779cf5bc8b75b1bbc00452d6304579c4bcffcff88b99ac867",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/03.jpg",
+      "byte_size": 506613,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "4d9a4075d76fbf55b64ed91f5d9b303f57eb4cb86444a2b735228f8832ecfc35",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/04.jpg",
+      "byte_size": 663731,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "60bbc7fbd7c424b4454fcf444d5781535f2e5f65d6f497c6908d0b43dd5194b3",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/05.jpg",
+      "byte_size": 246981,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "8625198c9428ae9480e52c724a1b20d95616cc3277a1157e0e43f9fdafe249f1",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/06.jpg",
+      "byte_size": 232249,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "74b46a041a582c3841c67550190ccd56a03b9d31ee19a4661ef55f1b7da3e90a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/01.jpg",
+      "byte_size": 888171,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "f472fea0da517e95b8c15dbad2043d5c36a8a318a9443237041fcedce55b7f7a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/02.jpg",
+      "byte_size": 710505,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "3baaeed221bc89a85e4152b72ea38b50e2c54de1e8954711bd077198e964ef8e",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/03.jpg",
+      "byte_size": 1014366,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "5f2e5339452ca4047537f922c400b753f51fa148d7683de2edaf6328ad82d4ff",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/04.jpg",
+      "byte_size": 966846,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "3854329e55089193c3c800aac3ed67eb98cbaa220b14e3a1fe2b8e00284d8f12",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/05.jpg",
+      "byte_size": 949520,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "c3392c44da33269b4807a9023180f41209cb88f45256e80e60dabc02dc75e7af",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/06.jpg",
+      "byte_size": 233570,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "7ace4fab54b2866ebe38191fa509a52e6b1c888409415f850f5b2c6542e807ac",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/01.jpg",
+      "byte_size": 521941,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "1ced8064a6bab6206e9824a62db073882336ccd793748cce588e306490edbe4d",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/02.jpg",
+      "byte_size": 500933,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "b3c14c4a4e24791aaed3a2d65dc65bee522987a6ffbdc3506786382ca6ca02e8",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/03.jpg",
+      "byte_size": 609273,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "1f0713498359b2955a9043ff3b04081825936b35a4532409b006b986642d665a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/04.jpg",
+      "byte_size": 583250,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "ba399e7f3789f01dab8fd245a4997952ed58c8b9975adc9e26f615c185a24d52",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/05.jpg",
+      "byte_size": 645046,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "f59d5667dff97212696c04525a44b6677634b44715dc5ea8b47cbec343050f61",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/06.jpg",
+      "byte_size": 139753,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "614c5c0e1da9b592cf628efbce08701a8a5cde14b513df86514703785345b648",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/01.jpg",
+      "byte_size": 348964,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "a5ca9524f49f209c504730a2d2433bf75049970207d73b60abbfafff48ce6079",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/02.jpg",
+      "byte_size": 375443,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "918c498732da6973c6311df1a1e814b08368c440a4d04a7c9970476503316c1a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/03.jpg",
+      "byte_size": 560257,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "11f5b9c3e31db6458a2dabd977809d4da8bd97709475894e3301d97804fd762f",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/04.jpg",
+      "byte_size": 318694,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "7d64a60e815c8de173a7668aa5cb819b661f2f7f0b857a73adb77a11a84c1de0",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/05.jpg",
+      "byte_size": 374872,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "565ba9dd1ae6d2ca21404a17c3252c5d4e025713907c3050bb2517ad7f62a6b6",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/06.jpg",
+      "byte_size": 330156,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "420f566e94acaf1d2cbfdfbce620845d54fcdf14834432f8fa4b6780a3fc0d5b",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/07.jpg",
+      "byte_size": 225400,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "24c94a6f16f67c23cf1a243fe331b59dc9043e4b2812003b4d8f79db910b197c",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/01.jpg",
+      "byte_size": 241305,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "8c4420e664ae001d368dd2b78559270afeddc4297e400c371d68f4bbfd9eb9c7",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/02.jpg",
+      "byte_size": 340537,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "992554f9a3a7f990c1bdca5468c11c337fe6cde1c302b84addb3624bb9154512",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/03.jpg",
+      "byte_size": 257423,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "f587f09644946f259d4571bcef8e32d72d137efffaa082f46bf3c4277aec72e0",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/04.jpg",
+      "byte_size": 470104,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "4d656d4db8bf7ce0b14b35fa46bb2d5495dc02fb4b75e07a17412161c8e86275",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/05.jpg",
+      "byte_size": 433055,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "2a15a8e5b88d1d2690e063e9993d7761c3175f01b9abb97b0da4aade432ca85b",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/06.jpg",
+      "byte_size": 225265,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "954706d7ccd2eb8631f07c86b87b6c8bab73ff075022884003d8b38904367b0a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/07.jpg",
+      "byte_size": 231701,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "a09e2a10bfcc59ffc14e222c1966652f3b946ebb225cf04d69d3cc2f9b8e71f0",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/01.jpg",
+      "byte_size": 612318,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "8cbfebd21e7a113c24e57929c34b2357cbecb14c94af710d3bfd91e96540bb2b",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/02.jpg",
+      "byte_size": 408534,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "900c892ac11bf180841e584df4f601d66bf5af3b7f91b5be92772a0fdbb5f5a9",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/03.jpg",
+      "byte_size": 366709,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "8c3aa90ec2d49d3f19512566de2e78ca87385ded4d143d609574ec0f6c5639bd",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/04.jpg",
+      "byte_size": 390494,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "ef4300285022d08046eea4adb780a12992769c3f6f8f9b3b29f3e47702291d4a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/05.jpg",
+      "byte_size": 729479,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "1e361c37195ead81c8ba3e076f925b94b01c03b88d402a73190ca2a8dff4b88a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/06.jpg",
+      "byte_size": 690788,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "aca78c16846374ee364c9b651f43376558c0ccec4f0a336439c33a86d2d0325a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/07.jpg",
+      "byte_size": 228744,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "ee391d3b7aa94484cc870d21624c8a9df45de231f638cf29919459db6f16ee28",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/01.png",
+      "byte_size": 943852,
+      "mime_type": "image/png",
+      "checksum_sha256": "78fa567b43c1985584117ec47b97ee33db878511ce38594b191e7e890015a82a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/02.png",
+      "byte_size": 1779624,
+      "mime_type": "image/png",
+      "checksum_sha256": "c1fb53e4dbd148fbd1bfd014dd1c9b7ac465b18489a957a48a1eef452664262a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/03.png",
+      "byte_size": 2129748,
+      "mime_type": "image/png",
+      "checksum_sha256": "7c7c8ed95043f9a89c3b0218866cab0abce2c3829c47bcbf5faeb36e2c0ed700",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/04.png",
+      "byte_size": 1950198,
+      "mime_type": "image/png",
+      "checksum_sha256": "2b14ecd1f355c65aade3aa7dca6967d662df2358d32209a20c46a825d68ef079",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/05.png",
+      "byte_size": 1004083,
+      "mime_type": "image/png",
+      "checksum_sha256": "e8aeeca83054411f786b69da31cb89625acb34f6f6c4a68ec6405c4576a4a450",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/06.png",
+      "byte_size": 439383,
+      "mime_type": "image/png",
+      "checksum_sha256": "db3b3c91bd135eee163a2361c6828efae6c5450420333ad9962cac3eedd92c6b",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/01.png",
+      "byte_size": 2457317,
+      "mime_type": "image/png",
+      "checksum_sha256": "6cc11fe5c46634fbba9c6c3ad18aa73c7b9b5c217d4673add07b80d65c162746",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/02.png",
+      "byte_size": 2325420,
+      "mime_type": "image/png",
+      "checksum_sha256": "8f69581b8a6def7e8144d3dc8f2ea73cf55c7ae5f223a82f94d00b5fe5cc2c93",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/03.png",
+      "byte_size": 1520726,
+      "mime_type": "image/png",
+      "checksum_sha256": "5cefb1360a7d62dbc913e1184fb2159a6fdf35db50664e7ac70109c2692039ca",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/04.png",
+      "byte_size": 2644622,
+      "mime_type": "image/png",
+      "checksum_sha256": "0be74a35b2213cf8887d35948de43374f2a1febd05b11ef5fa8beadff4b350c8",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/05.png",
+      "byte_size": 2675547,
+      "mime_type": "image/png",
+      "checksum_sha256": "6d4c1351944766f0e92413b30b01497333a87d7f6046e5a8bda4e9aeaad59c52",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/06.png",
+      "byte_size": 438558,
+      "mime_type": "image/png",
+      "checksum_sha256": "65564e716e25e5e3b08cb3d1045367edddb4222a24d571debd27f8e854165d3c",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/03-seoseoul-museum/01.png",
+      "byte_size": 2150808,
+      "mime_type": "image/png",
+      "checksum_sha256": "344c6b40602b492eb50ba8b359c59e184dc5cd52f286ec3c162e558502dc0847",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/03-seoseoul-museum/02.png",
+      "byte_size": 1540932,
+      "mime_type": "image/png",
+      "checksum_sha256": "7c8415a0c6e4d08ffe823f923cb483ef27d52aa1702475f704e67ca1edb4f6f7",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/03-seoseoul-museum/03.png",
+      "byte_size": 2496031,
+      "mime_type": "image/png",
+      "checksum_sha256": "8dbc9d6ba8171eb1045bcac0168f43557bc4e948d3c942c8cec42af1b327298e",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/03-seoseoul-museum/04.png",
+      "byte_size": 2079110,
+      "mime_type": "image/png",
+      "checksum_sha256": "f04abb9542a3b5555c76162b5573cb8b6a00732837b8fdca30a2da707b429788",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/03-seoseoul-museum/05.png",
+      "byte_size": 1900430,
+      "mime_type": "image/png",
+      "checksum_sha256": "555b3d91162f37c278a52b11ee649b1cc55506e7581d535ccd2112db2fa5944e",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/03-seoseoul-museum/06.png",
+      "byte_size": 657954,
+      "mime_type": "image/png",
+      "checksum_sha256": "a46084965f0f457b98806fdb9cba136fa10cf633e4c44956647478f4fe906295",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/01.png",
+      "byte_size": 1726285,
+      "mime_type": "image/png",
+      "checksum_sha256": "354fd213af2dbe2cd9bac8c21d73b4410533e306b0d0e97462572b1dc1f621d4",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/02.png",
+      "byte_size": 1316636,
+      "mime_type": "image/png",
+      "checksum_sha256": "33c50eb5cfea1de3b4bb2e964cd40fe77b9956188d14d6b746ea45a0278bc816",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/03.png",
+      "byte_size": 2036345,
+      "mime_type": "image/png",
+      "checksum_sha256": "8987dd218bab472c1ab21b0aae8db556fe9376115138f094e561e8f7455a7f36",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/04.png",
+      "byte_size": 2572847,
+      "mime_type": "image/png",
+      "checksum_sha256": "24c69d06c3890effec675c95d2f60e0ddec0e1a81f5dba0d58f531eddc1bdf77",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/05.png",
+      "byte_size": 1266815,
+      "mime_type": "image/png",
+      "checksum_sha256": "2a1651a6b42caaef8379c28aa5310360cfa2d0f258d28ff0cbaa34e1de88d72a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/06.png",
+      "byte_size": 657439,
+      "mime_type": "image/png",
+      "checksum_sha256": "100aecbc12c182babeab2b5a8dc2e96f3a2c5f69e1fd15d38f3903af934dc042",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/05-seoul-forest-garden/01.png",
+      "byte_size": 3237570,
+      "mime_type": "image/png",
+      "checksum_sha256": "92026e4edb808b243639d49e0574dfc8404ae6fb0ebac44626250fe963c6cc3b",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/05-seoul-forest-garden/02.png",
+      "byte_size": 2905375,
+      "mime_type": "image/png",
+      "checksum_sha256": "0cd20358594f8de9ae79954c5fd2ebdcdf5222abcea2da4cdf9ddab6f1955d6e",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/05-seoul-forest-garden/03.png",
+      "byte_size": 3596072,
+      "mime_type": "image/png",
+      "checksum_sha256": "e36855474fd9ac6df9a74a9cbf1efa6fd83ae4e842a0cb954be9bd8eb7d92c76",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/05-seoul-forest-garden/04.png",
+      "byte_size": 3514735,
+      "mime_type": "image/png",
+      "checksum_sha256": "7b1b82e4244a63692eda8f1b9f7a1b5c1f8bdf56fcfa8f2f14a1121586eb1d6c",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/05-seoul-forest-garden/05.png",
+      "byte_size": 3508229,
+      "mime_type": "image/png",
+      "checksum_sha256": "4ea0572e38a158196e6fbe7deebdba177406b7fe3cfed7647df62a7f0bef7a82",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/05-seoul-forest-garden/06.png",
+      "byte_size": 657455,
+      "mime_type": "image/png",
+      "checksum_sha256": "e8f2e4e31b9292f5cb762620a6b0f509ed5d97f7cc357057d402988542886f8a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/06-seochon-slow-day/01.png",
+      "byte_size": 2293846,
+      "mime_type": "image/png",
+      "checksum_sha256": "23d8003ebb19b139955ad0d15a58edf871f9dddac1a75c22132479ce8b5a3eea",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/06-seochon-slow-day/02.png",
+      "byte_size": 2279635,
+      "mime_type": "image/png",
+      "checksum_sha256": "e9b05229fb582b6ef916c4f5c0d881c20ea543b5ca119dfcc24484da213efef8",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/06-seochon-slow-day/03.png",
+      "byte_size": 2692793,
+      "mime_type": "image/png",
+      "checksum_sha256": "6c0abe520c5b9d152b4b06abf8b738388189797f59428b477f021d5d9cbd361e",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/06-seochon-slow-day/04.png",
+      "byte_size": 2633639,
+      "mime_type": "image/png",
+      "checksum_sha256": "f84274bf6d82ccbe142a872558cc36c2cf8d233830a5051c47656d2dbb15c0cc",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/06-seochon-slow-day/05.png",
+      "byte_size": 2684375,
+      "mime_type": "image/png",
+      "checksum_sha256": "f6ea17a872c11944877afc2b5f1421ae21aceaaa4543402751d684f5f8733f02",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/06-seochon-slow-day/06.png",
+      "byte_size": 438711,
+      "mime_type": "image/png",
+      "checksum_sha256": "75e639516e3b8916f6696300e52ad6b147773db70f0368e8cbcda6d938e0b5cb",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/01.png",
+      "byte_size": 1872040,
+      "mime_type": "image/png",
+      "checksum_sha256": "31aba0dcde1a40fa051b28982ae9763dd8a81c7efa319a491064f0f649b46acb",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/02.png",
+      "byte_size": 1919578,
+      "mime_type": "image/png",
+      "checksum_sha256": "696fc0b847b7d5c7baad30ea0b2beacfd35eec09f9643d9bc770a2a870e75eae",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/03.png",
+      "byte_size": 2340735,
+      "mime_type": "image/png",
+      "checksum_sha256": "3d42aaa8b2d269f4a587e9f0c2f3d753eedded014d2fe8efc5d9a390df5f4175",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/04.png",
+      "byte_size": 1488738,
+      "mime_type": "image/png",
+      "checksum_sha256": "40cc102d58de8465c04211b8b3fb3a8872ab90bd12ddae82b34ddaf836978349",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/05.png",
+      "byte_size": 1382608,
+      "mime_type": "image/png",
+      "checksum_sha256": "b225bf447f8cd1165e427783f4a08ac9151f3fa6d3280d872fc31dc042a4be2a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/06.png",
+      "byte_size": 1538627,
+      "mime_type": "image/png",
+      "checksum_sha256": "48debe67e5b67c6312da5a9ce3448abd19709e5e6eaeb51ac64ea153785206c9",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/07.png",
+      "byte_size": 655490,
+      "mime_type": "image/png",
+      "checksum_sha256": "e16fc109f36afef3b6495050188370ac2be0a6dfc4d900f537e210ada21f47d1",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/01.png",
+      "byte_size": 873869,
+      "mime_type": "image/png",
+      "checksum_sha256": "efa6547e660b0ea448ce2b992bf4bef7a5cb810d0463187cdaa3b248916a4a47",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/02.png",
+      "byte_size": 1556704,
+      "mime_type": "image/png",
+      "checksum_sha256": "39be211135baf2535181760c798dc4e6ce44e7002d80046916ae27ca825773bf",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/03.png",
+      "byte_size": 1287075,
+      "mime_type": "image/png",
+      "checksum_sha256": "12172011bc56a3bb5979ec6135dfeb6dd94328229bf44c7e786c178684b7e4a6",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/04.png",
+      "byte_size": 1456446,
+      "mime_type": "image/png",
+      "checksum_sha256": "24fc758417ce0abd7f7b289b036bdbadfc48c235865191b493f8deed78d23ced",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/05.png",
+      "byte_size": 2429214,
+      "mime_type": "image/png",
+      "checksum_sha256": "204e85fad8e55823fd6f25602b19efc47deac5a13178aae0228f648f3f62c03b",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/06.png",
+      "byte_size": 821681,
+      "mime_type": "image/png",
+      "checksum_sha256": "95056836bf8ca1e53779f8a755c60826150326638973635dd8fc52bc26182560",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/07.png",
+      "byte_size": 659370,
+      "mime_type": "image/png",
+      "checksum_sha256": "af0d45c2862d70b592acb5d09ec2bfb0b9ef7f25ef1adc51ddb17a1be691d500",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/09-seoul-summer-beach/01.png",
+      "byte_size": 1746019,
+      "mime_type": "image/png",
+      "checksum_sha256": "033a58df946ce5a89a4c9446c8221703df61d9373b5ca9c0a8d018109b860565",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/09-seoul-summer-beach/02.png",
+      "byte_size": 1899870,
+      "mime_type": "image/png",
+      "checksum_sha256": "b4e9c64be1b505524a48d3df07995dfabc91e19f182bcab1e12f6a52639eceb5",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/09-seoul-summer-beach/03.png",
+      "byte_size": 1379709,
+      "mime_type": "image/png",
+      "checksum_sha256": "c7a81bb6291c2830b0884074defb3ce002b82a9fa4e21f47183dbeae45799dc2",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/09-seoul-summer-beach/04.png",
+      "byte_size": 1436022,
+      "mime_type": "image/png",
+      "checksum_sha256": "0c52b7bcc26163fb9cadc097bf6c8c3f594a314ff35f8ecfaa0b3f70756a4ebb",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/09-seoul-summer-beach/05.png",
+      "byte_size": 1373492,
+      "mime_type": "image/png",
+      "checksum_sha256": "4c968ff46796739527400f7099574a67e4aa6db65a387c9f45c88c94fcbe3315",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/09-seoul-summer-beach/06.png",
+      "byte_size": 1627750,
+      "mime_type": "image/png",
+      "checksum_sha256": "eac58ce4b5f01d7f79b89adff1e68f92b2dd6531cd4503ab619ddc8f8410632b",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "instagram-buffer/2026-07-15/09-seoul-summer-beach/07.png",
+      "byte_size": 657066,
+      "mime_type": "image/png",
+      "checksum_sha256": "74c039206115eeb46e747cb744145f64c78be5dd903c4033d0389d05c2fc8f5d",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-001.jpg",
+      "byte_size": 280389,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "2c9171d95eae49ed59dc0bcac836141c1e8abdae4d42fabfec06242d4b4ecf56",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-002.jpg",
+      "byte_size": 666306,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "87df60323a639e02234aebb8a62e498030956d68b03322b69863716ce410f5a1",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-003.jpg",
+      "byte_size": 164781,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "b5c7271ac4a19564ab122e8a2f7afe4915824472bded56ee53f8de3491b341b8",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-004.jpg",
+      "byte_size": 431126,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "cb56172c165aea16ed46abf9097acdffbd807051fb16b4b7ee89c36abc99d71c",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-005.jpg",
+      "byte_size": 303044,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "4af490fc19c287d64e5cd1b48521d5e2a858cffb675ce4edbba9d743306d5591",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-006.jpg",
+      "byte_size": 475449,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "b90a82775b916e1095887f7762621a101aa1704eb6a2987be1a2c7cc0a86d81a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-007.jpg",
+      "byte_size": 99525,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "f61ce6b31d8c15a5b93e59e3d9430be3af45c62489a811d183b502ee671c0651",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-008.jpg",
+      "byte_size": 218208,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "284a3c100a0a223dadc6fdf782c411019c1ce88dfae2f1238bcf718154e9f128",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-009.jpg",
+      "byte_size": 742706,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "2739ba57f97e90c0e5ee69e4802677e3cf66035542a8667f467c13129bf96c4e",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-010.jpg",
+      "byte_size": 364924,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "95679d7b99b9e0762606bb8201aa27195caf0822226e869bc0010c9fb6afdf35",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-011.jpg",
+      "byte_size": 705518,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "1f649e6c3ed43baac5bf3b41f4030b41c8aaa91ac241fd1b1d75bfdbea98abfc",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-012.jpg",
+      "byte_size": 382215,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "71fbe8d523b986cf45dbfc94f4606fd97063d3b64fd167a798e0bdd6b761bbd0",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-013.jpg",
+      "byte_size": 806351,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "9276f3973157c65c5aaf228e4aa5f108ee55e9545f83bbf37447048b1dd81e19",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-014.jpg",
+      "byte_size": 719747,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "d9707380b188d17caa8d912e8e686576a200fedac3ec2b78d2efafa8b20d2e05",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-015.jpg",
+      "byte_size": 1057076,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "e3958aec9090659006a3421d4ef873706856c4201b445393982334fe497b8ee8",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-016.jpg",
+      "byte_size": 531678,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "0950fc32bd5b7f6ff1d0625df55730de0ffdbef588419324474d1ff36a215b04",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-017.jpg",
+      "byte_size": 384020,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "ab4a760c714396ee820c779322c7bebf9336d737e4e5b1b769563ad6e81a58c1",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-018.jpg",
+      "byte_size": 315631,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "92973e5167754595746664ecc761fe04645785aeb8cc238ade7b1da4770c6c4a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-019.jpg",
+      "byte_size": 189577,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "23db75fcc052e450badba79f321e728ab64b0d8cf7c4a70caec58f4d2cdcd1f5",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-020.jpg",
+      "byte_size": 304449,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "5622539dda78a2ad97083ca55face16669a0f1d18fef014e0677b11b82d7903c",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-021.jpg",
+      "byte_size": 480066,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "0c156a98429feb9c84ce59dd99ca21254fc18262c737dbd8ca3b6463dc948b34",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-022.jpg",
+      "byte_size": 467879,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "2aba551b9573feabc4e70352aa489a4ef398c325b5a2411e690c6c8ee46c4328",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-023.jpg",
+      "byte_size": 503573,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "d74cc6d05274590482b271b66e88c95bee7322b073f4aa46a871f357aa331391",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-024.jpg",
+      "byte_size": 535439,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "6d6a89222428867a3d48d6fa4391ddcf5c89665553561a4bb5d8469f81c5bd9b",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-025.jpg",
+      "byte_size": 443966,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "1bcc0c8eef7dcacc63470030955bbd5c050ee75329f2519ec540a7de557999df",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-026.jpg",
+      "byte_size": 890476,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "61798a8974bd868b6e1eabb6da83054702c74a5f8d7913d9a4d1fbfe212d5483",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-027.jpg",
+      "byte_size": 179952,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "4d560982bee3c66d8fda5f75492d8bbc71110c4f28d65fd619b095d793fd5f97",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-028.jpg",
+      "byte_size": 224803,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "29ffccdd7e9d03d4df2ecbb74729e1bac429b2ece13d35e1ed0724df55a0ea74",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-029.jpg",
+      "byte_size": 130387,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "2bccb60701a99b46a4d9c82ad669f4da441ea2f1256929e36911903db91204c8",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-030.jpg",
+      "byte_size": 406960,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "c23a713c7390b28761a4e2240873fd4765aea580f1b52860b9705b8d21e2b4c0",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-031.jpg",
+      "byte_size": 483447,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "b558e9523ef94bbeca05ea6cfdf032e6a2fb33f9041c3b4c05052f21c2db635a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-032.jpg",
+      "byte_size": 648456,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "3cb894c1376e660c8e118859f45b9a53a2035645dfb55cd60d9fc9687484339d",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-033.jpg",
+      "byte_size": 762434,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "48c77d5b1c22f09efe04947c26e987b252cca6a266d975d8f223c3a010da78e5",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-034.jpg",
+      "byte_size": 377724,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "78dd2d76caeede3ca1383c650b2ee546b633f4dc62589b6a287a2fb9ce8570b8",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-035.jpg",
+      "byte_size": 567126,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "65c76c0c1bc161cb7f93df645bd2a03896f2ec22832cb714dbc709e53d8b9cfa",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-036.jpg",
+      "byte_size": 241881,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "eac2c0c52b5952032e3de2b3897e09d8370bed66752fe097f324cb360d4af5fe",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-037.jpg",
+      "byte_size": 208631,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "e42ab2ebcdc191f5ae59e015fca51590cfce84f280c2191560a751c3b2dec9f8",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-038.jpg",
+      "byte_size": 199335,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "c254ce7bf120ba73c6471cb66bebaa0176da7b471e70aa408781ae1c900955a6",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-039.jpg",
+      "byte_size": 381449,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "ae6c4a6fc8289814bf2789859af191d11a98b087f45f69e4b62838053e463ce8",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-040.jpg",
+      "byte_size": 362986,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "fc544faf34abaf1974775a6b6f5510ba8dacc88cdbdb01f3743d495de0044531",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-041.jpg",
+      "byte_size": 155461,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "640653e8d4ddb6de6da5f67c077835cad55187dbb10f12ead33e19777a17e861",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-042.jpg",
+      "byte_size": 289883,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "b6799153a9816bc04f93673d8945e69e20696d8066102d751d7eb8fd3217a286",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-043.jpg",
+      "byte_size": 605720,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "a55faccbe09299234a1390791dc3783f7c44c520d8111d3e77d678dcf2452a69",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-044.jpg",
+      "byte_size": 152688,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "e9ee9cfee1aa70aaee87342006eeecea9f28f8d03497efcbed28d55ce6d3d9e3",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-045.jpg",
+      "byte_size": 227754,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "e8bf427c4cb193792b77168809f885fdedadada845fdc95b62e837a41a39ef91",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-046.jpg",
+      "byte_size": 611613,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "5bbd52d0cf87156449fe02bbd60df99d2829d7fda51900789763fba19c69a8ef",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-047.jpg",
+      "byte_size": 643313,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "b505857c5709c51259c3c7660b1e4ae63f7fa16ad782e7eb83d8a794f58125c2",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-048.jpg",
+      "byte_size": 221409,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "e650747b5ac204e9e33e5739250114f46627b2660d044bb725004ce370318511",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-049.jpg",
+      "byte_size": 834068,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "690dde11c846d2a40fe6a5994ab1bc8c6bf9c0ba62e4794c85bd1f602dea5614",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-050.jpg",
+      "byte_size": 857647,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "566ded826e3e10cdeda89e631859d8f213d4e3da9ece5ae1163e0c59537c8b41",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-051.jpg",
+      "byte_size": 408478,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "45dc6ab301d40f3ab1fb224e7efd1f91822461a265c6e6eeed5a07b1c69527c9",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-052.jpg",
+      "byte_size": 369939,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "ef68aafd0f896a28ca1b2692273b358c77e35d765c26012f3b8014d545978efa",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-053.jpg",
+      "byte_size": 452793,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "7755b0892d08c5e68366cc479c74f974ad1678bd9caae5b1ee5bab0e515a1227",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-054.jpg",
+      "byte_size": 246124,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "16c55c4c9c3315af6989906e495f0eb54c166637d7a22aac44e5fda0456c74c9",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-055.jpg",
+      "byte_size": 581790,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "ca2c35abcbdb4579319c95bdb84506d4de820de1d515bfc1807d53a5dccd983a",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-056.jpg",
+      "byte_size": 426610,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "b8d9dc6785ade091e738b15346830a0760b2389f856a3d110b169b18fcaf3244",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-057.jpg",
+      "byte_size": 900211,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "14a3bdabeb80357d32205acfea3b1c96914fda99950a2acfae718d61a7468414",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-058.jpg",
+      "byte_size": 220870,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "1b59fcb887423dd63c87166ef620b59aeab70bddea6a374e082371e1214eb1df",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-059.jpg",
+      "byte_size": 140806,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "5634661a6d5fcb9d75794f4b4af2e7298adf0a5ebadba31276dc3e125306cc7e",
+      "signature_validated": true
+    },
+    {
+      "bucket": "place-photos-public",
+      "path": "prototype-unsplash-2026-07-15/media-060.jpg",
+      "byte_size": 464456,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "a03d386119c7a00ef3eca93515db4467ab0722ec67b52cc04495cfacba5e5e47",
+      "signature_validated": true
+    }
+  ],
+  "ignored": [
+    {
+      "ignored": true,
+      "path": "Untitled folder/.emptyFolderPlaceholder",
+      "code": "storage_placeholder"
+    },
+    {
+      "ignored": true,
+      "path": "prototype-unsplash-2026-07-15/.emptyFolderPlaceholder",
+      "code": "storage_placeholder"
+    }
+  ],
+  "rejected": []
+}

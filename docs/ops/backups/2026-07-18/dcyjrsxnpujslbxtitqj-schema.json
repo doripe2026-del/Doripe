@@ -1,0 +1,3627 @@
+{
+  "projectId": "dcyjrsxnpujslbxtitqj",
+  "capturedAt": "2026-07-18T00:00:00+09:00",
+  "captureMode": "read-only pg_catalog and information_schema export",
+  "columns": [
+    {
+      "table": "app_events",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_events",
+      "column": "app_user_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_events",
+      "column": "session_id",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_events",
+      "column": "event_name",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_events",
+      "column": "screen_key",
+      "default": null,
+      "ordinal": 5,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_events",
+      "column": "target_type",
+      "default": null,
+      "ordinal": 6,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_events",
+      "column": "place_id",
+      "default": null,
+      "ordinal": 7,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_events",
+      "column": "route_id",
+      "default": null,
+      "ordinal": 8,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_events",
+      "column": "shared_link_id",
+      "default": null,
+      "ordinal": 9,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_events",
+      "column": "duration_ms",
+      "default": null,
+      "ordinal": 10,
+      "nullable": "YES",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "app_events",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 11,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "app_events",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 12,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "id",
+      "default": null,
+      "ordinal": 1,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "neighborhood_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "neighborhood_slug",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "neighborhood_name",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "place_type_tag_id",
+      "default": null,
+      "ordinal": 5,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "name",
+      "default": null,
+      "ordinal": 6,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "short_copy",
+      "default": null,
+      "ordinal": 7,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "address",
+      "default": null,
+      "ordinal": 8,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "naver_place_url",
+      "default": null,
+      "ordinal": 9,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "instagram_url",
+      "default": null,
+      "ordinal": 10,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "phone_text",
+      "default": null,
+      "ordinal": 11,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "opening_hours_text",
+      "default": null,
+      "ordinal": 12,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "representative_menu_text",
+      "default": null,
+      "ordinal": 13,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "representative_menu_price",
+      "default": null,
+      "ordinal": 14,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "map_image_url",
+      "default": null,
+      "ordinal": 15,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "cover_photo_url",
+      "default": null,
+      "ordinal": 16,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "tags",
+      "default": null,
+      "ordinal": 17,
+      "nullable": "YES",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "app_place_cards",
+      "column": "photos",
+      "default": null,
+      "ordinal": 18,
+      "nullable": "YES",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "app_sessions",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_sessions",
+      "column": "app_user_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_sessions",
+      "column": "started_at",
+      "default": "now()",
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "app_sessions",
+      "column": "last_seen_at",
+      "default": "now()",
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "app_sessions",
+      "column": "entry_path",
+      "default": null,
+      "ordinal": 5,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_sessions",
+      "column": "referrer",
+      "default": null,
+      "ordinal": 6,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_sessions",
+      "column": "user_agent",
+      "default": null,
+      "ordinal": 7,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_sessions",
+      "column": "selected_neighborhood_id",
+      "default": null,
+      "ordinal": 8,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_sessions",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 9,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "app_users",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_users",
+      "column": "first_seen_at",
+      "default": "now()",
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "app_users",
+      "column": "last_seen_at",
+      "default": "now()",
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "app_users",
+      "column": "first_referrer",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_users",
+      "column": "first_user_agent",
+      "default": null,
+      "ordinal": 5,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_users",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "app_users",
+      "column": "auth_user_id",
+      "default": "auth.uid()",
+      "ordinal": 7,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "app_users",
+      "column": "account_state",
+      "default": "'anonymous'::text",
+      "ordinal": 8,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "app_users",
+      "column": "linked_at",
+      "default": null,
+      "ordinal": 9,
+      "nullable": "YES",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "discovery_run_places",
+      "column": "run_id",
+      "default": null,
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "discovery_run_places",
+      "column": "place_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "discovery_run_places",
+      "column": "display_order",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "discovery_run_places",
+      "column": "action",
+      "default": "'pending'::text",
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "discovery_run_places",
+      "column": "acted_at",
+      "default": null,
+      "ordinal": 5,
+      "nullable": "YES",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "discovery_run_places",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "discovery_run_places",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 7,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "discovery_run_tags",
+      "column": "run_id",
+      "default": null,
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "discovery_run_tags",
+      "column": "tag_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "discovery_run_tags",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "app_user_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "session_id",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "neighborhood_id",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "status",
+      "default": "'active'::text",
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "viewed_count",
+      "default": "0",
+      "ordinal": 7,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "started_at",
+      "default": "now()",
+      "ordinal": 8,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "completed_at",
+      "default": null,
+      "ordinal": 9,
+      "nullable": "YES",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 10,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 11,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 12,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "slot_target_count",
+      "default": "4",
+      "ordinal": 13,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "filled_slot_count",
+      "default": "0",
+      "ordinal": 14,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "cards_after_slots_filled",
+      "default": "0",
+      "ordinal": 15,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "post_slot_full_card_limit",
+      "default": "3",
+      "ordinal": 16,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "skips_after_last_save",
+      "default": "0",
+      "ordinal": 17,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "post_last_save_skip_limit",
+      "default": "10",
+      "ordinal": 18,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "last_saved_at",
+      "default": null,
+      "ordinal": 19,
+      "nullable": "YES",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "discovery_runs",
+      "column": "end_reason",
+      "default": null,
+      "ordinal": 20,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "slug",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "name",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "short_name",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "status",
+      "default": "'coming_soon'::text",
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "is_visible",
+      "default": "true",
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "bool",
+      "data_type": "boolean"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "display_order",
+      "default": "0",
+      "ordinal": 7,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "map_pin_x",
+      "default": null,
+      "ordinal": 8,
+      "nullable": "YES",
+      "udt_name": "numeric",
+      "data_type": "numeric"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "map_pin_y",
+      "default": null,
+      "ordinal": 9,
+      "nullable": "YES",
+      "udt_name": "numeric",
+      "data_type": "numeric"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 10,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 11,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "neighborhoods",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 12,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "notify_taste_events",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "notify_taste_events",
+      "column": "event_name",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_events",
+      "column": "share_slug",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_events",
+      "column": "referrer_share_slug",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_events",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "notify_taste_events",
+      "column": "user_agent",
+      "default": null,
+      "ordinal": 6,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_events",
+      "column": "referrer",
+      "default": null,
+      "ordinal": 7,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_events",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 8,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "email",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "choices",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "character_key",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "character_name",
+      "default": null,
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "share_slug",
+      "default": null,
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "referrer_share_slug",
+      "default": null,
+      "ordinal": 7,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "compatibility_score",
+      "default": null,
+      "ordinal": 8,
+      "nullable": "YES",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "compatibility_summary",
+      "default": null,
+      "ordinal": 9,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "user_agent",
+      "default": null,
+      "ordinal": 10,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "referrer",
+      "default": null,
+      "ordinal": 11,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "notify_taste_results",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 12,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "onboarding_answers",
+      "column": "app_user_id",
+      "default": null,
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "onboarding_answers",
+      "column": "question_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "onboarding_answers",
+      "column": "option_id",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "onboarding_answers",
+      "column": "answered_at",
+      "default": "now()",
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "onboarding_answers",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "onboarding_options",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "onboarding_options",
+      "column": "question_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "onboarding_options",
+      "column": "label",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "onboarding_options",
+      "column": "value",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "onboarding_options",
+      "column": "status",
+      "default": "'active'::text",
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "onboarding_options",
+      "column": "display_order",
+      "default": "0",
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "onboarding_options",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 7,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "onboarding_options",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 8,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "onboarding_options",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 9,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "onboarding_questions",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "onboarding_questions",
+      "column": "key",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "onboarding_questions",
+      "column": "title",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "onboarding_questions",
+      "column": "status",
+      "default": "'active'::text",
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "onboarding_questions",
+      "column": "display_order",
+      "default": "0",
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "onboarding_questions",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "onboarding_questions",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 7,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "onboarding_questions",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 8,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "photo_providers",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "photo_providers",
+      "column": "name",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "photo_providers",
+      "column": "provider_type",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "photo_providers",
+      "column": "status",
+      "default": "'active'::text",
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "photo_providers",
+      "column": "profile_url",
+      "default": null,
+      "ordinal": 5,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "photo_providers",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "photo_providers",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 7,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "photo_providers",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 8,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "place_actions",
+      "column": "app_user_id",
+      "default": null,
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "place_actions",
+      "column": "place_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "place_actions",
+      "column": "state",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "place_actions",
+      "column": "saved_count",
+      "default": "0",
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "place_actions",
+      "column": "skipped_count",
+      "default": "0",
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "place_actions",
+      "column": "last_action_at",
+      "default": "now()",
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "place_actions",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 7,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "place_photos",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "place_photos",
+      "column": "place_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "place_photos",
+      "column": "provider_id",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "place_photos",
+      "column": "public_url",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "place_photos",
+      "column": "storage_path",
+      "default": null,
+      "ordinal": 5,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "place_photos",
+      "column": "source_url",
+      "default": null,
+      "ordinal": 6,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "place_photos",
+      "column": "alt_text",
+      "default": null,
+      "ordinal": 7,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "place_photos",
+      "column": "status",
+      "default": "'pending'::text",
+      "ordinal": 8,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "place_photos",
+      "column": "is_cover",
+      "default": "false",
+      "ordinal": 9,
+      "nullable": "NO",
+      "udt_name": "bool",
+      "data_type": "boolean"
+    },
+    {
+      "table": "place_photos",
+      "column": "display_order",
+      "default": "0",
+      "ordinal": 10,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "place_photos",
+      "column": "width",
+      "default": null,
+      "ordinal": 11,
+      "nullable": "YES",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "place_photos",
+      "column": "height",
+      "default": null,
+      "ordinal": 12,
+      "nullable": "YES",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "place_photos",
+      "column": "crop_x",
+      "default": null,
+      "ordinal": 13,
+      "nullable": "YES",
+      "udt_name": "numeric",
+      "data_type": "numeric"
+    },
+    {
+      "table": "place_photos",
+      "column": "crop_y",
+      "default": null,
+      "ordinal": 14,
+      "nullable": "YES",
+      "udt_name": "numeric",
+      "data_type": "numeric"
+    },
+    {
+      "table": "place_photos",
+      "column": "crop_zoom",
+      "default": null,
+      "ordinal": 15,
+      "nullable": "YES",
+      "udt_name": "numeric",
+      "data_type": "numeric"
+    },
+    {
+      "table": "place_photos",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 16,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "place_photos",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 17,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "place_photos",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 18,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "place_tags",
+      "column": "place_id",
+      "default": null,
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "place_tags",
+      "column": "tag_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "place_tags",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "places",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "places",
+      "column": "neighborhood_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "places",
+      "column": "place_type_tag_id",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "places",
+      "column": "name",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "short_copy",
+      "default": null,
+      "ordinal": 5,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "detail_copy",
+      "default": null,
+      "ordinal": 6,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "address",
+      "default": null,
+      "ordinal": 7,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "naver_place_url",
+      "default": null,
+      "ordinal": 8,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "instagram_url",
+      "default": null,
+      "ordinal": 9,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "phone_text",
+      "default": null,
+      "ordinal": 10,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "opening_hours_text",
+      "default": null,
+      "ordinal": 11,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "representative_menu_text",
+      "default": null,
+      "ordinal": 12,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "representative_menu_price",
+      "default": null,
+      "ordinal": 13,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "map_image_url",
+      "default": null,
+      "ordinal": 14,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "app_status",
+      "default": "'draft'::text",
+      "ordinal": 15,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "display_order",
+      "default": "0",
+      "ordinal": 16,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "places",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 17,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "places",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 18,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "places",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 19,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "places",
+      "column": "external_source",
+      "default": null,
+      "ordinal": 20,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "places",
+      "column": "external_place_id",
+      "default": null,
+      "ordinal": 21,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "route_places",
+      "column": "route_id",
+      "default": null,
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "route_places",
+      "column": "place_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "route_places",
+      "column": "display_order",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "route_places",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "routes",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "routes",
+      "column": "app_user_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "routes",
+      "column": "title",
+      "default": "'나의 루트'::text",
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "routes",
+      "column": "status",
+      "default": "'draft'::text",
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "routes",
+      "column": "is_public",
+      "default": "false",
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "bool",
+      "data_type": "boolean"
+    },
+    {
+      "table": "routes",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 7,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "routes",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 8,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "routes",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 9,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "routes",
+      "column": "route_key",
+      "default": "lower(encode(gen_random_bytes(6), 'hex'::text))",
+      "ordinal": 10,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "screen_review_screens",
+      "column": "screen_id",
+      "default": null,
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "screen_review_screens",
+      "column": "status",
+      "default": "'in_progress'::text",
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "screen_review_screens",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "screen_review_tasks",
+      "column": "id",
+      "default": null,
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "screen_review_tasks",
+      "column": "screen_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "screen_review_tasks",
+      "column": "body",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "screen_review_tasks",
+      "column": "status",
+      "default": "'queued'::text",
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "screen_review_tasks",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "screen_review_tasks",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "shared_links",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "shared_links",
+      "column": "slug",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "shared_links",
+      "column": "content_type",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "shared_links",
+      "column": "place_id",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "shared_links",
+      "column": "route_id",
+      "default": null,
+      "ordinal": 5,
+      "nullable": "YES",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "shared_links",
+      "column": "title",
+      "default": null,
+      "ordinal": 6,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "shared_links",
+      "column": "cover_image_url",
+      "default": null,
+      "ordinal": 7,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "shared_links",
+      "column": "share_message",
+      "default": null,
+      "ordinal": 8,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "shared_links",
+      "column": "is_active",
+      "default": "true",
+      "ordinal": 9,
+      "nullable": "NO",
+      "udt_name": "bool",
+      "data_type": "boolean"
+    },
+    {
+      "table": "shared_links",
+      "column": "open_count",
+      "default": "0",
+      "ordinal": 10,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "shared_links",
+      "column": "last_opened_at",
+      "default": null,
+      "ordinal": 11,
+      "nullable": "YES",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "shared_links",
+      "column": "expires_at",
+      "default": null,
+      "ordinal": 12,
+      "nullable": "YES",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "shared_links",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 13,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "shared_links",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 14,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "shared_links",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 15,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "tag_groups",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "tag_groups",
+      "column": "key",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "tag_groups",
+      "column": "label",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "tag_groups",
+      "column": "prompt",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "tag_groups",
+      "column": "status",
+      "default": "'active'::text",
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "tag_groups",
+      "column": "is_filterable",
+      "default": "true",
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "bool",
+      "data_type": "boolean"
+    },
+    {
+      "table": "tag_groups",
+      "column": "display_order",
+      "default": "0",
+      "ordinal": 7,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "tag_groups",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 8,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "tag_groups",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 9,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "tag_groups",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 10,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "tags",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "ordinal": 1,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "tags",
+      "column": "group_id",
+      "default": null,
+      "ordinal": 2,
+      "nullable": "NO",
+      "udt_name": "uuid",
+      "data_type": "uuid"
+    },
+    {
+      "table": "tags",
+      "column": "key",
+      "default": null,
+      "ordinal": 3,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "tags",
+      "column": "label",
+      "default": null,
+      "ordinal": 4,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "tags",
+      "column": "status",
+      "default": "'active'::text",
+      "ordinal": 5,
+      "nullable": "NO",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "tags",
+      "column": "is_system",
+      "default": "false",
+      "ordinal": 6,
+      "nullable": "NO",
+      "udt_name": "bool",
+      "data_type": "boolean"
+    },
+    {
+      "table": "tags",
+      "column": "color_token",
+      "default": null,
+      "ordinal": 7,
+      "nullable": "YES",
+      "udt_name": "text",
+      "data_type": "text"
+    },
+    {
+      "table": "tags",
+      "column": "display_order",
+      "default": "0",
+      "ordinal": 8,
+      "nullable": "NO",
+      "udt_name": "int4",
+      "data_type": "integer"
+    },
+    {
+      "table": "tags",
+      "column": "metadata",
+      "default": "'{}'::jsonb",
+      "ordinal": 9,
+      "nullable": "NO",
+      "udt_name": "jsonb",
+      "data_type": "jsonb"
+    },
+    {
+      "table": "tags",
+      "column": "created_at",
+      "default": "now()",
+      "ordinal": 10,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table": "tags",
+      "column": "updated_at",
+      "default": "now()",
+      "ordinal": 11,
+      "nullable": "NO",
+      "udt_name": "timestamptz",
+      "data_type": "timestamp with time zone"
+    }
+  ],
+  "indexes": [
+    {
+      "name": "app_events_pkey",
+      "table": "app_events",
+      "definition": "CREATE UNIQUE INDEX app_events_pkey ON public.app_events USING btree (id)"
+    },
+    {
+      "name": "idx_app_events_app_user_created",
+      "table": "app_events",
+      "definition": "CREATE INDEX idx_app_events_app_user_created ON public.app_events USING btree (app_user_id, created_at DESC)"
+    },
+    {
+      "name": "idx_app_events_created_name",
+      "table": "app_events",
+      "definition": "CREATE INDEX idx_app_events_created_name ON public.app_events USING btree (created_at DESC, event_name)"
+    },
+    {
+      "name": "idx_app_events_place_id",
+      "table": "app_events",
+      "definition": "CREATE INDEX idx_app_events_place_id ON public.app_events USING btree (place_id)"
+    },
+    {
+      "name": "idx_app_events_route_id",
+      "table": "app_events",
+      "definition": "CREATE INDEX idx_app_events_route_id ON public.app_events USING btree (route_id)"
+    },
+    {
+      "name": "idx_app_events_session_id",
+      "table": "app_events",
+      "definition": "CREATE INDEX idx_app_events_session_id ON public.app_events USING btree (session_id)"
+    },
+    {
+      "name": "idx_app_events_shared_link_id",
+      "table": "app_events",
+      "definition": "CREATE INDEX idx_app_events_shared_link_id ON public.app_events USING btree (shared_link_id)"
+    },
+    {
+      "name": "app_sessions_pkey",
+      "table": "app_sessions",
+      "definition": "CREATE UNIQUE INDEX app_sessions_pkey ON public.app_sessions USING btree (id)"
+    },
+    {
+      "name": "idx_app_sessions_app_user_id",
+      "table": "app_sessions",
+      "definition": "CREATE INDEX idx_app_sessions_app_user_id ON public.app_sessions USING btree (app_user_id)"
+    },
+    {
+      "name": "idx_app_sessions_selected_neighborhood_id",
+      "table": "app_sessions",
+      "definition": "CREATE INDEX idx_app_sessions_selected_neighborhood_id ON public.app_sessions USING btree (selected_neighborhood_id)"
+    },
+    {
+      "name": "app_users_pkey",
+      "table": "app_users",
+      "definition": "CREATE UNIQUE INDEX app_users_pkey ON public.app_users USING btree (id)"
+    },
+    {
+      "name": "idx_app_users_auth_user_id",
+      "table": "app_users",
+      "definition": "CREATE UNIQUE INDEX idx_app_users_auth_user_id ON public.app_users USING btree (auth_user_id)"
+    },
+    {
+      "name": "discovery_run_places_pkey",
+      "table": "discovery_run_places",
+      "definition": "CREATE UNIQUE INDEX discovery_run_places_pkey ON public.discovery_run_places USING btree (run_id, place_id)"
+    },
+    {
+      "name": "discovery_run_places_run_id_display_order_key",
+      "table": "discovery_run_places",
+      "definition": "CREATE UNIQUE INDEX discovery_run_places_run_id_display_order_key ON public.discovery_run_places USING btree (run_id, display_order)"
+    },
+    {
+      "name": "idx_discovery_run_places_place_id",
+      "table": "discovery_run_places",
+      "definition": "CREATE INDEX idx_discovery_run_places_place_id ON public.discovery_run_places USING btree (place_id, run_id)"
+    },
+    {
+      "name": "discovery_run_tags_pkey",
+      "table": "discovery_run_tags",
+      "definition": "CREATE UNIQUE INDEX discovery_run_tags_pkey ON public.discovery_run_tags USING btree (run_id, tag_id)"
+    },
+    {
+      "name": "idx_discovery_run_tags_tag_id",
+      "table": "discovery_run_tags",
+      "definition": "CREATE INDEX idx_discovery_run_tags_tag_id ON public.discovery_run_tags USING btree (tag_id, run_id)"
+    },
+    {
+      "name": "discovery_runs_pkey",
+      "table": "discovery_runs",
+      "definition": "CREATE UNIQUE INDEX discovery_runs_pkey ON public.discovery_runs USING btree (id)"
+    },
+    {
+      "name": "idx_discovery_runs_app_user_created",
+      "table": "discovery_runs",
+      "definition": "CREATE INDEX idx_discovery_runs_app_user_created ON public.discovery_runs USING btree (app_user_id, created_at DESC)"
+    },
+    {
+      "name": "idx_discovery_runs_neighborhood_id",
+      "table": "discovery_runs",
+      "definition": "CREATE INDEX idx_discovery_runs_neighborhood_id ON public.discovery_runs USING btree (neighborhood_id)"
+    },
+    {
+      "name": "idx_discovery_runs_session_id",
+      "table": "discovery_runs",
+      "definition": "CREATE INDEX idx_discovery_runs_session_id ON public.discovery_runs USING btree (session_id)"
+    },
+    {
+      "name": "idx_neighborhoods_status_order",
+      "table": "neighborhoods",
+      "definition": "CREATE INDEX idx_neighborhoods_status_order ON public.neighborhoods USING btree (status, display_order)"
+    },
+    {
+      "name": "neighborhoods_pkey",
+      "table": "neighborhoods",
+      "definition": "CREATE UNIQUE INDEX neighborhoods_pkey ON public.neighborhoods USING btree (id)"
+    },
+    {
+      "name": "neighborhoods_slug_key",
+      "table": "neighborhoods",
+      "definition": "CREATE UNIQUE INDEX neighborhoods_slug_key ON public.neighborhoods USING btree (slug)"
+    },
+    {
+      "name": "notify_taste_events_name_created_at_idx",
+      "table": "notify_taste_events",
+      "definition": "CREATE INDEX notify_taste_events_name_created_at_idx ON public.notify_taste_events USING btree (event_name, created_at DESC)"
+    },
+    {
+      "name": "notify_taste_events_pkey",
+      "table": "notify_taste_events",
+      "definition": "CREATE UNIQUE INDEX notify_taste_events_pkey ON public.notify_taste_events USING btree (id)"
+    },
+    {
+      "name": "notify_taste_events_referrer_share_slug_idx",
+      "table": "notify_taste_events",
+      "definition": "CREATE INDEX notify_taste_events_referrer_share_slug_idx ON public.notify_taste_events USING btree (referrer_share_slug)"
+    },
+    {
+      "name": "notify_taste_events_share_slug_idx",
+      "table": "notify_taste_events",
+      "definition": "CREATE INDEX notify_taste_events_share_slug_idx ON public.notify_taste_events USING btree (share_slug)"
+    },
+    {
+      "name": "notify_taste_results_created_at_idx",
+      "table": "notify_taste_results",
+      "definition": "CREATE INDEX notify_taste_results_created_at_idx ON public.notify_taste_results USING btree (created_at DESC)"
+    },
+    {
+      "name": "notify_taste_results_email_idx",
+      "table": "notify_taste_results",
+      "definition": "CREATE INDEX notify_taste_results_email_idx ON public.notify_taste_results USING btree (email)"
+    },
+    {
+      "name": "notify_taste_results_pkey",
+      "table": "notify_taste_results",
+      "definition": "CREATE UNIQUE INDEX notify_taste_results_pkey ON public.notify_taste_results USING btree (id)"
+    },
+    {
+      "name": "notify_taste_results_referrer_share_slug_idx",
+      "table": "notify_taste_results",
+      "definition": "CREATE INDEX notify_taste_results_referrer_share_slug_idx ON public.notify_taste_results USING btree (referrer_share_slug)"
+    },
+    {
+      "name": "notify_taste_results_share_slug_key",
+      "table": "notify_taste_results",
+      "definition": "CREATE UNIQUE INDEX notify_taste_results_share_slug_key ON public.notify_taste_results USING btree (share_slug)"
+    },
+    {
+      "name": "idx_onboarding_answers_option_id",
+      "table": "onboarding_answers",
+      "definition": "CREATE INDEX idx_onboarding_answers_option_id ON public.onboarding_answers USING btree (option_id)"
+    },
+    {
+      "name": "idx_onboarding_answers_question_id",
+      "table": "onboarding_answers",
+      "definition": "CREATE INDEX idx_onboarding_answers_question_id ON public.onboarding_answers USING btree (question_id)"
+    },
+    {
+      "name": "idx_onboarding_answers_question_option",
+      "table": "onboarding_answers",
+      "definition": "CREATE INDEX idx_onboarding_answers_question_option ON public.onboarding_answers USING btree (question_id, option_id)"
+    },
+    {
+      "name": "onboarding_answers_pkey",
+      "table": "onboarding_answers",
+      "definition": "CREATE UNIQUE INDEX onboarding_answers_pkey ON public.onboarding_answers USING btree (app_user_id, question_id)"
+    },
+    {
+      "name": "onboarding_options_pkey",
+      "table": "onboarding_options",
+      "definition": "CREATE UNIQUE INDEX onboarding_options_pkey ON public.onboarding_options USING btree (id)"
+    },
+    {
+      "name": "onboarding_options_question_id_id_unique",
+      "table": "onboarding_options",
+      "definition": "CREATE UNIQUE INDEX onboarding_options_question_id_id_unique ON public.onboarding_options USING btree (question_id, id)"
+    },
+    {
+      "name": "onboarding_options_question_id_value_key",
+      "table": "onboarding_options",
+      "definition": "CREATE UNIQUE INDEX onboarding_options_question_id_value_key ON public.onboarding_options USING btree (question_id, value)"
+    },
+    {
+      "name": "onboarding_questions_key_key",
+      "table": "onboarding_questions",
+      "definition": "CREATE UNIQUE INDEX onboarding_questions_key_key ON public.onboarding_questions USING btree (key)"
+    },
+    {
+      "name": "onboarding_questions_pkey",
+      "table": "onboarding_questions",
+      "definition": "CREATE UNIQUE INDEX onboarding_questions_pkey ON public.onboarding_questions USING btree (id)"
+    },
+    {
+      "name": "photo_providers_name_key",
+      "table": "photo_providers",
+      "definition": "CREATE UNIQUE INDEX photo_providers_name_key ON public.photo_providers USING btree (name)"
+    },
+    {
+      "name": "photo_providers_pkey",
+      "table": "photo_providers",
+      "definition": "CREATE UNIQUE INDEX photo_providers_pkey ON public.photo_providers USING btree (id)"
+    },
+    {
+      "name": "idx_place_actions_app_user_state",
+      "table": "place_actions",
+      "definition": "CREATE INDEX idx_place_actions_app_user_state ON public.place_actions USING btree (app_user_id, state, last_action_at DESC)"
+    },
+    {
+      "name": "idx_place_actions_place_id",
+      "table": "place_actions",
+      "definition": "CREATE INDEX idx_place_actions_place_id ON public.place_actions USING btree (place_id)"
+    },
+    {
+      "name": "place_actions_pkey",
+      "table": "place_actions",
+      "definition": "CREATE UNIQUE INDEX place_actions_pkey ON public.place_actions USING btree (app_user_id, place_id)"
+    },
+    {
+      "name": "idx_place_photos_active_cover_lookup",
+      "table": "place_photos",
+      "definition": "CREATE INDEX idx_place_photos_active_cover_lookup ON public.place_photos USING btree (place_id, is_cover DESC, display_order, created_at) WHERE (status = 'active'::text)"
+    },
+    {
+      "name": "idx_place_photos_active_order",
+      "table": "place_photos",
+      "definition": "CREATE UNIQUE INDEX idx_place_photos_active_order ON public.place_photos USING btree (place_id, display_order) WHERE (status = 'active'::text)"
+    },
+    {
+      "name": "idx_place_photos_one_active_cover",
+      "table": "place_photos",
+      "definition": "CREATE UNIQUE INDEX idx_place_photos_one_active_cover ON public.place_photos USING btree (place_id) WHERE ((status = 'active'::text) AND is_cover)"
+    },
+    {
+      "name": "idx_place_photos_place_order",
+      "table": "place_photos",
+      "definition": "CREATE INDEX idx_place_photos_place_order ON public.place_photos USING btree (place_id, status, is_cover DESC, display_order)"
+    },
+    {
+      "name": "idx_place_photos_provider_id",
+      "table": "place_photos",
+      "definition": "CREATE INDEX idx_place_photos_provider_id ON public.place_photos USING btree (provider_id)"
+    },
+    {
+      "name": "place_photos_pkey",
+      "table": "place_photos",
+      "definition": "CREATE UNIQUE INDEX place_photos_pkey ON public.place_photos USING btree (id)"
+    },
+    {
+      "name": "idx_place_tags_tag",
+      "table": "place_tags",
+      "definition": "CREATE INDEX idx_place_tags_tag ON public.place_tags USING btree (tag_id, place_id)"
+    },
+    {
+      "name": "place_tags_pkey",
+      "table": "place_tags",
+      "definition": "CREATE UNIQUE INDEX place_tags_pkey ON public.place_tags USING btree (place_id, tag_id)"
+    },
+    {
+      "name": "idx_places_external_identity",
+      "table": "places",
+      "definition": "CREATE UNIQUE INDEX idx_places_external_identity ON public.places USING btree (external_source, external_place_id) WHERE ((external_source IS NOT NULL) AND (external_place_id IS NOT NULL))"
+    },
+    {
+      "name": "idx_places_neighborhood_name_address",
+      "table": "places",
+      "definition": "CREATE UNIQUE INDEX idx_places_neighborhood_name_address ON public.places USING btree (neighborhood_id, lower(name), lower(address)) WHERE (address IS NOT NULL)"
+    },
+    {
+      "name": "idx_places_neighborhood_status_order",
+      "table": "places",
+      "definition": "CREATE INDEX idx_places_neighborhood_status_order ON public.places USING btree (neighborhood_id, app_status, display_order)"
+    },
+    {
+      "name": "idx_places_place_type_tag_id",
+      "table": "places",
+      "definition": "CREATE INDEX idx_places_place_type_tag_id ON public.places USING btree (place_type_tag_id)"
+    },
+    {
+      "name": "idx_places_published_order",
+      "table": "places",
+      "definition": "CREATE INDEX idx_places_published_order ON public.places USING btree (display_order, id) WHERE (app_status = 'published'::text)"
+    },
+    {
+      "name": "places_pkey",
+      "table": "places",
+      "definition": "CREATE UNIQUE INDEX places_pkey ON public.places USING btree (id)"
+    },
+    {
+      "name": "idx_route_places_place_id",
+      "table": "route_places",
+      "definition": "CREATE INDEX idx_route_places_place_id ON public.route_places USING btree (place_id)"
+    },
+    {
+      "name": "idx_route_places_route_order",
+      "table": "route_places",
+      "definition": "CREATE INDEX idx_route_places_route_order ON public.route_places USING btree (route_id, display_order)"
+    },
+    {
+      "name": "route_places_pkey",
+      "table": "route_places",
+      "definition": "CREATE UNIQUE INDEX route_places_pkey ON public.route_places USING btree (route_id, place_id)"
+    },
+    {
+      "name": "route_places_route_id_display_order_key",
+      "table": "route_places",
+      "definition": "CREATE UNIQUE INDEX route_places_route_id_display_order_key ON public.route_places USING btree (route_id, display_order)"
+    },
+    {
+      "name": "idx_routes_app_user_status",
+      "table": "routes",
+      "definition": "CREATE INDEX idx_routes_app_user_status ON public.routes USING btree (app_user_id, status, updated_at DESC)"
+    },
+    {
+      "name": "idx_routes_route_key",
+      "table": "routes",
+      "definition": "CREATE UNIQUE INDEX idx_routes_route_key ON public.routes USING btree (route_key)"
+    },
+    {
+      "name": "routes_pkey",
+      "table": "routes",
+      "definition": "CREATE UNIQUE INDEX routes_pkey ON public.routes USING btree (id)"
+    },
+    {
+      "name": "screen_review_screens_pkey",
+      "table": "screen_review_screens",
+      "definition": "CREATE UNIQUE INDEX screen_review_screens_pkey ON public.screen_review_screens USING btree (screen_id)"
+    },
+    {
+      "name": "idx_screen_review_tasks_screen_status",
+      "table": "screen_review_tasks",
+      "definition": "CREATE INDEX idx_screen_review_tasks_screen_status ON public.screen_review_tasks USING btree (screen_id, status, updated_at DESC)"
+    },
+    {
+      "name": "screen_review_tasks_pkey",
+      "table": "screen_review_tasks",
+      "definition": "CREATE UNIQUE INDEX screen_review_tasks_pkey ON public.screen_review_tasks USING btree (id)"
+    },
+    {
+      "name": "idx_shared_links_active_slug",
+      "table": "shared_links",
+      "definition": "CREATE INDEX idx_shared_links_active_slug ON public.shared_links USING btree (slug) WHERE is_active"
+    },
+    {
+      "name": "idx_shared_links_place_id",
+      "table": "shared_links",
+      "definition": "CREATE INDEX idx_shared_links_place_id ON public.shared_links USING btree (place_id)"
+    },
+    {
+      "name": "idx_shared_links_route_id",
+      "table": "shared_links",
+      "definition": "CREATE INDEX idx_shared_links_route_id ON public.shared_links USING btree (route_id)"
+    },
+    {
+      "name": "shared_links_pkey",
+      "table": "shared_links",
+      "definition": "CREATE UNIQUE INDEX shared_links_pkey ON public.shared_links USING btree (id)"
+    },
+    {
+      "name": "shared_links_slug_key",
+      "table": "shared_links",
+      "definition": "CREATE UNIQUE INDEX shared_links_slug_key ON public.shared_links USING btree (slug)"
+    },
+    {
+      "name": "idx_tag_groups_status_order",
+      "table": "tag_groups",
+      "definition": "CREATE INDEX idx_tag_groups_status_order ON public.tag_groups USING btree (status, display_order)"
+    },
+    {
+      "name": "tag_groups_key_key",
+      "table": "tag_groups",
+      "definition": "CREATE UNIQUE INDEX tag_groups_key_key ON public.tag_groups USING btree (key)"
+    },
+    {
+      "name": "tag_groups_pkey",
+      "table": "tag_groups",
+      "definition": "CREATE UNIQUE INDEX tag_groups_pkey ON public.tag_groups USING btree (id)"
+    },
+    {
+      "name": "idx_tags_group_status_order",
+      "table": "tags",
+      "definition": "CREATE INDEX idx_tags_group_status_order ON public.tags USING btree (group_id, status, display_order)"
+    },
+    {
+      "name": "tags_group_id_key_key",
+      "table": "tags",
+      "definition": "CREATE UNIQUE INDEX tags_group_id_key_key ON public.tags USING btree (group_id, key)"
+    },
+    {
+      "name": "tags_pkey",
+      "table": "tags",
+      "definition": "CREATE UNIQUE INDEX tags_pkey ON public.tags USING btree (id)"
+    }
+  ],
+  "triggers": [
+    {
+      "name": "trg_app_events_validate_session",
+      "event": "INSERT",
+      "table": "app_events",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_event_session_integrity()"
+    },
+    {
+      "name": "trg_discovery_run_places_updated_at",
+      "event": "UPDATE",
+      "table": "discovery_run_places",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_discovery_runs_updated_at",
+      "event": "UPDATE",
+      "table": "discovery_runs",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_discovery_runs_validate_integrity",
+      "event": "INSERT",
+      "table": "discovery_runs",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_discovery_run_integrity()"
+    },
+    {
+      "name": "trg_discovery_runs_validate_integrity",
+      "event": "UPDATE",
+      "table": "discovery_runs",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_discovery_run_integrity()"
+    },
+    {
+      "name": "trg_neighborhoods_updated_at",
+      "event": "UPDATE",
+      "table": "neighborhoods",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_onboarding_options_updated_at",
+      "event": "UPDATE",
+      "table": "onboarding_options",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_onboarding_questions_updated_at",
+      "event": "UPDATE",
+      "table": "onboarding_questions",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_photo_providers_updated_at",
+      "event": "UPDATE",
+      "table": "photo_providers",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_place_photos_updated_at",
+      "event": "UPDATE",
+      "table": "place_photos",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_place_photos_validate_integrity",
+      "event": "INSERT",
+      "table": "place_photos",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_place_photo_integrity()"
+    },
+    {
+      "name": "trg_place_photos_validate_integrity",
+      "event": "UPDATE",
+      "table": "place_photos",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_place_photo_integrity()"
+    },
+    {
+      "name": "trg_place_tags_validate_membership",
+      "event": "INSERT",
+      "table": "place_tags",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_place_tag_membership()"
+    },
+    {
+      "name": "trg_place_tags_validate_membership",
+      "event": "UPDATE",
+      "table": "place_tags",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_place_tag_membership()"
+    },
+    {
+      "name": "trg_places_updated_at",
+      "event": "UPDATE",
+      "table": "places",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_places_validate_place_type",
+      "event": "INSERT",
+      "table": "places",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_place_type_tag()"
+    },
+    {
+      "name": "trg_places_validate_place_type",
+      "event": "UPDATE",
+      "table": "places",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_place_type_tag()"
+    },
+    {
+      "name": "trg_route_places_validate_integrity",
+      "event": "INSERT",
+      "table": "route_places",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_route_place_integrity()"
+    },
+    {
+      "name": "trg_route_places_validate_integrity",
+      "event": "UPDATE",
+      "table": "route_places",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_route_place_integrity()"
+    },
+    {
+      "name": "trg_routes_updated_at",
+      "event": "UPDATE",
+      "table": "routes",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_routes_validate_saved_integrity",
+      "event": "INSERT",
+      "table": "routes",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_saved_route_integrity()"
+    },
+    {
+      "name": "trg_routes_validate_saved_integrity",
+      "event": "UPDATE",
+      "table": "routes",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_saved_route_integrity()"
+    },
+    {
+      "name": "trg_screen_review_screens_updated_at",
+      "event": "UPDATE",
+      "table": "screen_review_screens",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_screen_review_tasks_updated_at",
+      "event": "UPDATE",
+      "table": "screen_review_tasks",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_shared_links_updated_at",
+      "event": "UPDATE",
+      "table": "shared_links",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_shared_links_validate_integrity",
+      "event": "INSERT",
+      "table": "shared_links",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_shared_link_integrity()"
+    },
+    {
+      "name": "trg_shared_links_validate_integrity",
+      "event": "UPDATE",
+      "table": "shared_links",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION validate_shared_link_integrity()"
+    },
+    {
+      "name": "trg_tag_groups_updated_at",
+      "event": "UPDATE",
+      "table": "tag_groups",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "name": "trg_tags_updated_at",
+      "event": "UPDATE",
+      "table": "tags",
+      "timing": "BEFORE",
+      "statement": "EXECUTE FUNCTION set_updated_at()"
+    }
+  ],
+  "constraints": [
+    {
+      "name": "app_events_app_user_id_fkey",
+      "type": "f",
+      "table": "app_events",
+      "definition": "FOREIGN KEY (app_user_id) REFERENCES app_users(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "app_events_duration_nonnegative",
+      "type": "c",
+      "table": "app_events",
+      "definition": "CHECK (duration_ms IS NULL OR duration_ms >= 0)"
+    },
+    {
+      "name": "app_events_event_name_format",
+      "type": "c",
+      "table": "app_events",
+      "definition": "CHECK (event_name ~ '^[a-z0-9][a-z0-9_.:-]{0,119}$'::text)"
+    },
+    {
+      "name": "app_events_metadata_size",
+      "type": "c",
+      "table": "app_events",
+      "definition": "CHECK (length(metadata::text) <= 10000)"
+    },
+    {
+      "name": "app_events_pkey",
+      "type": "p",
+      "table": "app_events",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "app_events_place_id_fkey",
+      "type": "f",
+      "table": "app_events",
+      "definition": "FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "app_events_route_id_fkey",
+      "type": "f",
+      "table": "app_events",
+      "definition": "FOREIGN KEY (route_id) REFERENCES routes(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "app_events_session_id_fkey",
+      "type": "f",
+      "table": "app_events",
+      "definition": "FOREIGN KEY (session_id) REFERENCES app_sessions(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "app_events_shared_link_id_fkey",
+      "type": "f",
+      "table": "app_events",
+      "definition": "FOREIGN KEY (shared_link_id) REFERENCES shared_links(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "app_events_target_type_allowed",
+      "type": "c",
+      "table": "app_events",
+      "definition": "CHECK (target_type IS NULL OR (target_type = ANY (ARRAY['place'::text, 'route'::text, 'shared_link'::text, 'neighborhood'::text, 'tag'::text, 'onboarding'::text, 'screen'::text])))"
+    },
+    {
+      "name": "app_sessions_app_user_id_fkey",
+      "type": "f",
+      "table": "app_sessions",
+      "definition": "FOREIGN KEY (app_user_id) REFERENCES app_users(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "app_sessions_pkey",
+      "type": "p",
+      "table": "app_sessions",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "app_sessions_selected_neighborhood_id_fkey",
+      "type": "f",
+      "table": "app_sessions",
+      "definition": "FOREIGN KEY (selected_neighborhood_id) REFERENCES neighborhoods(id)"
+    },
+    {
+      "name": "app_users_account_state_check",
+      "type": "c",
+      "table": "app_users",
+      "definition": "CHECK (account_state = ANY (ARRAY['anonymous'::text, 'linked'::text, 'deleted'::text]))"
+    },
+    {
+      "name": "app_users_auth_user_id_fkey",
+      "type": "f",
+      "table": "app_users",
+      "definition": "FOREIGN KEY (auth_user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "app_users_pkey",
+      "type": "p",
+      "table": "app_users",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "discovery_run_places_action_check",
+      "type": "c",
+      "table": "discovery_run_places",
+      "definition": "CHECK (action = ANY (ARRAY['pending'::text, 'viewed'::text, 'saved'::text, 'skipped'::text]))"
+    },
+    {
+      "name": "discovery_run_places_display_order_check",
+      "type": "c",
+      "table": "discovery_run_places",
+      "definition": "CHECK (display_order >= 1)"
+    },
+    {
+      "name": "discovery_run_places_pkey",
+      "type": "p",
+      "table": "discovery_run_places",
+      "definition": "PRIMARY KEY (run_id, place_id)"
+    },
+    {
+      "name": "discovery_run_places_place_id_fkey",
+      "type": "f",
+      "table": "discovery_run_places",
+      "definition": "FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE RESTRICT"
+    },
+    {
+      "name": "discovery_run_places_run_id_display_order_key",
+      "type": "u",
+      "table": "discovery_run_places",
+      "definition": "UNIQUE (run_id, display_order)"
+    },
+    {
+      "name": "discovery_run_places_run_id_fkey",
+      "type": "f",
+      "table": "discovery_run_places",
+      "definition": "FOREIGN KEY (run_id) REFERENCES discovery_runs(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "discovery_run_tags_pkey",
+      "type": "p",
+      "table": "discovery_run_tags",
+      "definition": "PRIMARY KEY (run_id, tag_id)"
+    },
+    {
+      "name": "discovery_run_tags_run_id_fkey",
+      "type": "f",
+      "table": "discovery_run_tags",
+      "definition": "FOREIGN KEY (run_id) REFERENCES discovery_runs(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "discovery_run_tags_tag_id_fkey",
+      "type": "f",
+      "table": "discovery_run_tags",
+      "definition": "FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE RESTRICT"
+    },
+    {
+      "name": "discovery_runs_app_user_id_fkey",
+      "type": "f",
+      "table": "discovery_runs",
+      "definition": "FOREIGN KEY (app_user_id) REFERENCES app_users(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "discovery_runs_cards_after_slots_filled_check",
+      "type": "c",
+      "table": "discovery_runs",
+      "definition": "CHECK (cards_after_slots_filled >= 0)"
+    },
+    {
+      "name": "discovery_runs_check",
+      "type": "c",
+      "table": "discovery_runs",
+      "definition": "CHECK (completed_at IS NULL OR completed_at >= started_at)"
+    },
+    {
+      "name": "discovery_runs_end_reason_check",
+      "type": "c",
+      "table": "discovery_runs",
+      "definition": "CHECK (end_reason IS NULL OR (end_reason = ANY (ARRAY['slots_filled_grace_exhausted'::text, 'skip_streak_after_save'::text, 'feed_exhausted'::text, 'user_exit'::text])))"
+    },
+    {
+      "name": "discovery_runs_filled_slot_count_check",
+      "type": "c",
+      "table": "discovery_runs",
+      "definition": "CHECK (filled_slot_count >= 0 AND filled_slot_count <= slot_target_count)"
+    },
+    {
+      "name": "discovery_runs_neighborhood_id_fkey",
+      "type": "f",
+      "table": "discovery_runs",
+      "definition": "FOREIGN KEY (neighborhood_id) REFERENCES neighborhoods(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "discovery_runs_pkey",
+      "type": "p",
+      "table": "discovery_runs",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "discovery_runs_post_last_save_skip_limit_check",
+      "type": "c",
+      "table": "discovery_runs",
+      "definition": "CHECK (post_last_save_skip_limit >= 1 AND post_last_save_skip_limit <= 50)"
+    },
+    {
+      "name": "discovery_runs_post_slot_full_card_limit_check",
+      "type": "c",
+      "table": "discovery_runs",
+      "definition": "CHECK (post_slot_full_card_limit >= 0 AND post_slot_full_card_limit <= 20)"
+    },
+    {
+      "name": "discovery_runs_session_id_fkey",
+      "type": "f",
+      "table": "discovery_runs",
+      "definition": "FOREIGN KEY (session_id) REFERENCES app_sessions(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "discovery_runs_skips_after_last_save_check",
+      "type": "c",
+      "table": "discovery_runs",
+      "definition": "CHECK (skips_after_last_save >= 0)"
+    },
+    {
+      "name": "discovery_runs_slot_target_count_check",
+      "type": "c",
+      "table": "discovery_runs",
+      "definition": "CHECK (slot_target_count >= 1 AND slot_target_count <= 20)"
+    },
+    {
+      "name": "discovery_runs_status_check",
+      "type": "c",
+      "table": "discovery_runs",
+      "definition": "CHECK (status = ANY (ARRAY['active'::text, 'completed'::text, 'abandoned'::text]))"
+    },
+    {
+      "name": "discovery_runs_viewed_count_check",
+      "type": "c",
+      "table": "discovery_runs",
+      "definition": "CHECK (viewed_count >= 0)"
+    },
+    {
+      "name": "neighborhoods_display_order_nonnegative",
+      "type": "c",
+      "table": "neighborhoods",
+      "definition": "CHECK (display_order >= 0)"
+    },
+    {
+      "name": "neighborhoods_map_pin_x_range",
+      "type": "c",
+      "table": "neighborhoods",
+      "definition": "CHECK (map_pin_x IS NULL OR map_pin_x >= 0::numeric AND map_pin_x <= 100::numeric)"
+    },
+    {
+      "name": "neighborhoods_map_pin_y_range",
+      "type": "c",
+      "table": "neighborhoods",
+      "definition": "CHECK (map_pin_y IS NULL OR map_pin_y >= 0::numeric AND map_pin_y <= 100::numeric)"
+    },
+    {
+      "name": "neighborhoods_pkey",
+      "type": "p",
+      "table": "neighborhoods",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "neighborhoods_slug_key",
+      "type": "u",
+      "table": "neighborhoods",
+      "definition": "UNIQUE (slug)"
+    },
+    {
+      "name": "neighborhoods_status_check",
+      "type": "c",
+      "table": "neighborhoods",
+      "definition": "CHECK (status = ANY (ARRAY['active'::text, 'coming_soon'::text, 'hidden'::text, 'archived'::text]))"
+    },
+    {
+      "name": "notify_taste_events_metadata_object",
+      "type": "c",
+      "table": "notify_taste_events",
+      "definition": "CHECK (jsonb_typeof(metadata) = 'object'::text)"
+    },
+    {
+      "name": "notify_taste_events_name_valid",
+      "type": "c",
+      "table": "notify_taste_events",
+      "definition": "CHECK (event_name = ANY (ARRAY['page_view'::text, 'choice_complete'::text, 'email_submit'::text, 'result_view'::text, 'share_click'::text, 'compatibility_view'::text]))"
+    },
+    {
+      "name": "notify_taste_events_pkey",
+      "type": "p",
+      "table": "notify_taste_events",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "notify_taste_results_character_key_valid",
+      "type": "c",
+      "table": "notify_taste_results",
+      "definition": "CHECK (character_key = ANY (ARRAY['quiet_collector'::text, 'route_planner'::text]))"
+    },
+    {
+      "name": "notify_taste_results_choices_array",
+      "type": "c",
+      "table": "notify_taste_results",
+      "definition": "CHECK (jsonb_typeof(choices) = 'array'::text AND jsonb_array_length(choices) = 10)"
+    },
+    {
+      "name": "notify_taste_results_choices_values_valid",
+      "type": "c",
+      "table": "notify_taste_results",
+      "definition": "CHECK (NOT jsonb_path_exists(choices, '$[*]?(@ != \"A\" && @ != \"B\")'::jsonpath))"
+    },
+    {
+      "name": "notify_taste_results_email_valid",
+      "type": "c",
+      "table": "notify_taste_results",
+      "definition": "CHECK (email ~* '^[^[:space:]@]+@[^[:space:]@]+[.][^[:space:]@]+$'::text)"
+    },
+    {
+      "name": "notify_taste_results_pkey",
+      "type": "p",
+      "table": "notify_taste_results",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "notify_taste_results_referrer_share_slug_fkey",
+      "type": "f",
+      "table": "notify_taste_results",
+      "definition": "FOREIGN KEY (referrer_share_slug) REFERENCES notify_taste_results(share_slug) ON DELETE SET NULL"
+    },
+    {
+      "name": "notify_taste_results_score_valid",
+      "type": "c",
+      "table": "notify_taste_results",
+      "definition": "CHECK (compatibility_score IS NULL OR compatibility_score >= 0 AND compatibility_score <= 100)"
+    },
+    {
+      "name": "notify_taste_results_share_slug_key",
+      "type": "u",
+      "table": "notify_taste_results",
+      "definition": "UNIQUE (share_slug)"
+    },
+    {
+      "name": "onboarding_answers_app_user_id_fkey",
+      "type": "f",
+      "table": "onboarding_answers",
+      "definition": "FOREIGN KEY (app_user_id) REFERENCES app_users(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "onboarding_answers_option_id_fkey",
+      "type": "f",
+      "table": "onboarding_answers",
+      "definition": "FOREIGN KEY (option_id) REFERENCES onboarding_options(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "onboarding_answers_option_matches_question",
+      "type": "f",
+      "table": "onboarding_answers",
+      "definition": "FOREIGN KEY (question_id, option_id) REFERENCES onboarding_options(question_id, id) ON DELETE CASCADE"
+    },
+    {
+      "name": "onboarding_answers_pkey",
+      "type": "p",
+      "table": "onboarding_answers",
+      "definition": "PRIMARY KEY (app_user_id, question_id)"
+    },
+    {
+      "name": "onboarding_answers_question_id_fkey",
+      "type": "f",
+      "table": "onboarding_answers",
+      "definition": "FOREIGN KEY (question_id) REFERENCES onboarding_questions(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "onboarding_options_pkey",
+      "type": "p",
+      "table": "onboarding_options",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "onboarding_options_question_id_fkey",
+      "type": "f",
+      "table": "onboarding_options",
+      "definition": "FOREIGN KEY (question_id) REFERENCES onboarding_questions(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "onboarding_options_question_id_id_unique",
+      "type": "u",
+      "table": "onboarding_options",
+      "definition": "UNIQUE (question_id, id)"
+    },
+    {
+      "name": "onboarding_options_question_id_value_key",
+      "type": "u",
+      "table": "onboarding_options",
+      "definition": "UNIQUE (question_id, value)"
+    },
+    {
+      "name": "onboarding_options_status_check",
+      "type": "c",
+      "table": "onboarding_options",
+      "definition": "CHECK (status = ANY (ARRAY['active'::text, 'hidden'::text, 'archived'::text]))"
+    },
+    {
+      "name": "onboarding_questions_key_key",
+      "type": "u",
+      "table": "onboarding_questions",
+      "definition": "UNIQUE (key)"
+    },
+    {
+      "name": "onboarding_questions_pkey",
+      "type": "p",
+      "table": "onboarding_questions",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "onboarding_questions_status_check",
+      "type": "c",
+      "table": "onboarding_questions",
+      "definition": "CHECK (status = ANY (ARRAY['active'::text, 'hidden'::text, 'archived'::text]))"
+    },
+    {
+      "name": "photo_providers_name_key",
+      "type": "u",
+      "table": "photo_providers",
+      "definition": "UNIQUE (name)"
+    },
+    {
+      "name": "photo_providers_name_not_blank",
+      "type": "c",
+      "table": "photo_providers",
+      "definition": "CHECK (btrim(name) <> ''::text)"
+    },
+    {
+      "name": "photo_providers_pkey",
+      "type": "p",
+      "table": "photo_providers",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "photo_providers_provider_type_check",
+      "type": "c",
+      "table": "photo_providers",
+      "definition": "CHECK (provider_type = ANY (ARRAY['doripe'::text, 'naver'::text, 'store'::text, 'curator'::text, 'other'::text]))"
+    },
+    {
+      "name": "photo_providers_status_check",
+      "type": "c",
+      "table": "photo_providers",
+      "definition": "CHECK (status = ANY (ARRAY['active'::text, 'hidden'::text, 'archived'::text]))"
+    },
+    {
+      "name": "place_actions_app_user_id_fkey",
+      "type": "f",
+      "table": "place_actions",
+      "definition": "FOREIGN KEY (app_user_id) REFERENCES app_users(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "place_actions_counts_nonnegative",
+      "type": "c",
+      "table": "place_actions",
+      "definition": "CHECK (saved_count >= 0 AND skipped_count >= 0)"
+    },
+    {
+      "name": "place_actions_pkey",
+      "type": "p",
+      "table": "place_actions",
+      "definition": "PRIMARY KEY (app_user_id, place_id)"
+    },
+    {
+      "name": "place_actions_place_id_fkey",
+      "type": "f",
+      "table": "place_actions",
+      "definition": "FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "place_actions_state_check",
+      "type": "c",
+      "table": "place_actions",
+      "definition": "CHECK (state = ANY (ARRAY['saved'::text, 'skipped'::text, 'neutral'::text]))"
+    },
+    {
+      "name": "place_actions_state_count_consistency",
+      "type": "c",
+      "table": "place_actions",
+      "definition": "CHECK ((state <> 'saved'::text OR saved_count >= 1) AND (state <> 'skipped'::text OR skipped_count >= 1))"
+    },
+    {
+      "name": "place_photos_crop_zoom_positive",
+      "type": "c",
+      "table": "place_photos",
+      "definition": "CHECK (crop_zoom IS NULL OR crop_zoom > 0::numeric)"
+    },
+    {
+      "name": "place_photos_display_order_positive",
+      "type": "c",
+      "table": "place_photos",
+      "definition": "CHECK (display_order >= 1)"
+    },
+    {
+      "name": "place_photos_height_positive",
+      "type": "c",
+      "table": "place_photos",
+      "definition": "CHECK (height IS NULL OR height > 0)"
+    },
+    {
+      "name": "place_photos_pkey",
+      "type": "p",
+      "table": "place_photos",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "place_photos_place_id_fkey",
+      "type": "f",
+      "table": "place_photos",
+      "definition": "FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "place_photos_provider_id_fkey",
+      "type": "f",
+      "table": "place_photos",
+      "definition": "FOREIGN KEY (provider_id) REFERENCES photo_providers(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "place_photos_public_url_not_blank",
+      "type": "c",
+      "table": "place_photos",
+      "definition": "CHECK (btrim(public_url) <> ''::text)"
+    },
+    {
+      "name": "place_photos_status_check",
+      "type": "c",
+      "table": "place_photos",
+      "definition": "CHECK (status = ANY (ARRAY['pending'::text, 'active'::text, 'disabled'::text, 'archived'::text]))"
+    },
+    {
+      "name": "place_photos_width_positive",
+      "type": "c",
+      "table": "place_photos",
+      "definition": "CHECK (width IS NULL OR width > 0)"
+    },
+    {
+      "name": "place_tags_pkey",
+      "type": "p",
+      "table": "place_tags",
+      "definition": "PRIMARY KEY (place_id, tag_id)"
+    },
+    {
+      "name": "place_tags_place_id_fkey",
+      "type": "f",
+      "table": "place_tags",
+      "definition": "FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "place_tags_tag_id_fkey",
+      "type": "f",
+      "table": "place_tags",
+      "definition": "FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "places_app_status_check",
+      "type": "c",
+      "table": "places",
+      "definition": "CHECK (app_status = ANY (ARRAY['draft'::text, 'ready'::text, 'published'::text, 'archived'::text]))"
+    },
+    {
+      "name": "places_display_order_nonnegative",
+      "type": "c",
+      "table": "places",
+      "definition": "CHECK (display_order >= 0)"
+    },
+    {
+      "name": "places_external_pair",
+      "type": "c",
+      "table": "places",
+      "definition": "CHECK (external_source IS NULL AND external_place_id IS NULL OR external_source IS NOT NULL AND external_place_id IS NOT NULL)"
+    },
+    {
+      "name": "places_name_not_blank",
+      "type": "c",
+      "table": "places",
+      "definition": "CHECK (btrim(name) <> ''::text)"
+    },
+    {
+      "name": "places_neighborhood_id_fkey",
+      "type": "f",
+      "table": "places",
+      "definition": "FOREIGN KEY (neighborhood_id) REFERENCES neighborhoods(id)"
+    },
+    {
+      "name": "places_pkey",
+      "type": "p",
+      "table": "places",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "places_place_type_tag_id_fkey",
+      "type": "f",
+      "table": "places",
+      "definition": "FOREIGN KEY (place_type_tag_id) REFERENCES tags(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "route_places_display_order_positive",
+      "type": "c",
+      "table": "route_places",
+      "definition": "CHECK (display_order >= 1)"
+    },
+    {
+      "name": "route_places_pkey",
+      "type": "p",
+      "table": "route_places",
+      "definition": "PRIMARY KEY (route_id, place_id)"
+    },
+    {
+      "name": "route_places_place_id_fkey",
+      "type": "f",
+      "table": "route_places",
+      "definition": "FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE RESTRICT"
+    },
+    {
+      "name": "route_places_route_id_display_order_key",
+      "type": "u",
+      "table": "route_places",
+      "definition": "UNIQUE (route_id, display_order) DEFERRABLE"
+    },
+    {
+      "name": "route_places_route_id_fkey",
+      "type": "f",
+      "table": "route_places",
+      "definition": "FOREIGN KEY (route_id) REFERENCES routes(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "routes_app_user_id_fkey",
+      "type": "f",
+      "table": "routes",
+      "definition": "FOREIGN KEY (app_user_id) REFERENCES app_users(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "routes_pkey",
+      "type": "p",
+      "table": "routes",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "routes_status_check",
+      "type": "c",
+      "table": "routes",
+      "definition": "CHECK (status = ANY (ARRAY['draft'::text, 'saved'::text, 'deleted'::text]))"
+    },
+    {
+      "name": "screen_review_screens_pkey",
+      "type": "p",
+      "table": "screen_review_screens",
+      "definition": "PRIMARY KEY (screen_id)"
+    },
+    {
+      "name": "screen_review_screens_status_check",
+      "type": "c",
+      "table": "screen_review_screens",
+      "definition": "CHECK (status = ANY (ARRAY['in_progress'::text, 'done'::text]))"
+    },
+    {
+      "name": "screen_review_tasks_pkey",
+      "type": "p",
+      "table": "screen_review_tasks",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "screen_review_tasks_screen_id_fkey",
+      "type": "f",
+      "table": "screen_review_tasks",
+      "definition": "FOREIGN KEY (screen_id) REFERENCES screen_review_screens(screen_id) ON DELETE CASCADE"
+    },
+    {
+      "name": "screen_review_tasks_status_check",
+      "type": "c",
+      "table": "screen_review_tasks",
+      "definition": "CHECK (status = ANY (ARRAY['queued'::text, 'in_progress'::text, 'done'::text]))"
+    },
+    {
+      "name": "shared_links_check",
+      "type": "c",
+      "table": "shared_links",
+      "definition": "CHECK (content_type = 'place'::text AND place_id IS NOT NULL AND route_id IS NULL OR content_type = 'route'::text AND route_id IS NOT NULL AND place_id IS NULL)"
+    },
+    {
+      "name": "shared_links_content_type_check",
+      "type": "c",
+      "table": "shared_links",
+      "definition": "CHECK (content_type = ANY (ARRAY['place'::text, 'route'::text]))"
+    },
+    {
+      "name": "shared_links_expiry_after_creation",
+      "type": "c",
+      "table": "shared_links",
+      "definition": "CHECK (expires_at IS NULL OR expires_at > created_at)"
+    },
+    {
+      "name": "shared_links_open_count_nonnegative",
+      "type": "c",
+      "table": "shared_links",
+      "definition": "CHECK (open_count >= 0)"
+    },
+    {
+      "name": "shared_links_pkey",
+      "type": "p",
+      "table": "shared_links",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "shared_links_place_id_fkey",
+      "type": "f",
+      "table": "shared_links",
+      "definition": "FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "shared_links_route_id_fkey",
+      "type": "f",
+      "table": "shared_links",
+      "definition": "FOREIGN KEY (route_id) REFERENCES routes(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "shared_links_slug_format",
+      "type": "c",
+      "table": "shared_links",
+      "definition": "CHECK (slug = lower(slug) AND slug ~ '^[a-z0-9][a-z0-9_-]{5,63}$'::text)"
+    },
+    {
+      "name": "shared_links_slug_key",
+      "type": "u",
+      "table": "shared_links",
+      "definition": "UNIQUE (slug)"
+    },
+    {
+      "name": "tag_groups_display_order_nonnegative",
+      "type": "c",
+      "table": "tag_groups",
+      "definition": "CHECK (display_order >= 0)"
+    },
+    {
+      "name": "tag_groups_key_key",
+      "type": "u",
+      "table": "tag_groups",
+      "definition": "UNIQUE (key)"
+    },
+    {
+      "name": "tag_groups_pkey",
+      "type": "p",
+      "table": "tag_groups",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "tag_groups_status_check",
+      "type": "c",
+      "table": "tag_groups",
+      "definition": "CHECK (status = ANY (ARRAY['active'::text, 'hidden'::text, 'archived'::text]))"
+    },
+    {
+      "name": "tags_display_order_nonnegative",
+      "type": "c",
+      "table": "tags",
+      "definition": "CHECK (display_order >= 0)"
+    },
+    {
+      "name": "tags_group_id_fkey",
+      "type": "f",
+      "table": "tags",
+      "definition": "FOREIGN KEY (group_id) REFERENCES tag_groups(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "tags_group_id_key_key",
+      "type": "u",
+      "table": "tags",
+      "definition": "UNIQUE (group_id, key)"
+    },
+    {
+      "name": "tags_key_format",
+      "type": "c",
+      "table": "tags",
+      "definition": "CHECK (key ~ '^[a-z0-9][a-z0-9_-]{0,63}$'::text)"
+    },
+    {
+      "name": "tags_pkey",
+      "type": "p",
+      "table": "tags",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "tags_status_check",
+      "type": "c",
+      "table": "tags",
+      "definition": "CHECK (status = ANY (ARRAY['active'::text, 'hidden'::text, 'archived'::text]))"
+    }
+  ]
+}
+

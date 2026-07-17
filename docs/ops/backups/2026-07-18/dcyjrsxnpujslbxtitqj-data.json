@@ -1,0 +1,576 @@
+{
+  "projectId": "dcyjrsxnpujslbxtitqj",
+  "capturedAt": "2026-07-18T00:00:00+09:00",
+  "captureMode": "read-only Supabase MCP exact row export",
+  "tables": {
+    "tags": [
+      {
+        "id": "3fc5326c-8475-418c-9846-5c8d04351acc",
+        "key": "shop",
+        "label": "샵",
+        "status": "active",
+        "group_id": "4fc46b91-21b6-455e-bcc7-a0e2eb156bba",
+        "metadata": {},
+        "is_system": false,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "color_token": "pink",
+        "display_order": 3
+      },
+      {
+        "id": "6540585e-9ec2-4ae8-b35c-d426aafdc965",
+        "key": "alone",
+        "label": "혼자",
+        "status": "active",
+        "group_id": "0cf01454-c296-4b96-9c2f-c6cfc547cf40",
+        "metadata": {},
+        "is_system": false,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "color_token": "blue",
+        "display_order": 2
+      },
+      {
+        "id": "9e5ecc22-c965-4dfe-824a-d7b4f616947b",
+        "key": "with-meal",
+        "label": "밥 포함",
+        "status": "active",
+        "group_id": "0cf01454-c296-4b96-9c2f-c6cfc547cf40",
+        "metadata": {},
+        "is_system": false,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "color_token": "orange",
+        "display_order": 3
+      },
+      {
+        "id": "9e89b735-52fa-47a8-8343-6751cf07e164",
+        "key": "calm",
+        "label": "조용한",
+        "status": "active",
+        "group_id": "eaf5d395-a9c8-4127-b7e5-9f71ac9b58ae",
+        "metadata": {},
+        "is_system": false,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "color_token": "blue",
+        "display_order": 1
+      },
+      {
+        "id": "bad51ede-1a05-435f-a166-bdcd2ba7d1cc",
+        "key": "photo",
+        "label": "사진 좋은",
+        "status": "active",
+        "group_id": "eaf5d395-a9c8-4127-b7e5-9f71ac9b58ae",
+        "metadata": {},
+        "is_system": false,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "color_token": "pink",
+        "display_order": 2
+      },
+      {
+        "id": "d5628de7-1d2b-434a-878d-3fd61deb8c8b",
+        "key": "date",
+        "label": "데이트",
+        "status": "active",
+        "group_id": "0cf01454-c296-4b96-9c2f-c6cfc547cf40",
+        "metadata": {},
+        "is_system": false,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "color_token": "pink",
+        "display_order": 1
+      },
+      {
+        "id": "f06a5d43-54cd-4f4c-946e-ca0f68d92a7c",
+        "key": "space",
+        "label": "공간",
+        "status": "active",
+        "group_id": "4fc46b91-21b6-455e-bcc7-a0e2eb156bba",
+        "metadata": {},
+        "is_system": false,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "color_token": "blue",
+        "display_order": 4
+      },
+      {
+        "id": "f4bdd137-64ac-446e-a992-a6d07bc5c9cc",
+        "key": "uncategorized",
+        "label": "미분류",
+        "status": "hidden",
+        "group_id": "4fc46b91-21b6-455e-bcc7-a0e2eb156bba",
+        "metadata": {},
+        "is_system": true,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "color_token": "neutral",
+        "display_order": 0
+      },
+      {
+        "id": "f553885b-7451-495a-bdc8-51cb60d36653",
+        "key": "cozy",
+        "label": "따뜻한",
+        "status": "active",
+        "group_id": "eaf5d395-a9c8-4127-b7e5-9f71ac9b58ae",
+        "metadata": {},
+        "is_system": false,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "color_token": "orange",
+        "display_order": 3
+      },
+      {
+        "id": "f7ca0025-a690-4db1-9dd8-425238808926",
+        "key": "restaurant",
+        "label": "음식점",
+        "status": "active",
+        "group_id": "4fc46b91-21b6-455e-bcc7-a0e2eb156bba",
+        "metadata": {},
+        "is_system": false,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "color_token": "orange",
+        "display_order": 2
+      },
+      {
+        "id": "fa0d2e12-2ba4-448a-9968-e8d29258eae4",
+        "key": "cafe",
+        "label": "카페",
+        "status": "active",
+        "group_id": "4fc46b91-21b6-455e-bcc7-a0e2eb156bba",
+        "metadata": {},
+        "is_system": false,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "color_token": "green",
+        "display_order": 1
+      }
+    ],
+    "tag_groups": [
+      {
+        "id": "0cf01454-c296-4b96-9c2f-c6cfc547cf40",
+        "key": "situation",
+        "label": "상황",
+        "prompt": "오늘은 어떻게 보낼까요?",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "display_order": 3,
+        "is_filterable": true
+      },
+      {
+        "id": "4fc46b91-21b6-455e-bcc7-a0e2eb156bba",
+        "key": "place_type",
+        "label": "장소 유형",
+        "prompt": "어떤 장소를 볼까요?",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "display_order": 1,
+        "is_filterable": true
+      },
+      {
+        "id": "eaf5d395-a9c8-4127-b7e5-9f71ac9b58ae",
+        "key": "mood",
+        "label": "분위기",
+        "prompt": "어떤 분위기를 원해요?",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "display_order": 2,
+        "is_filterable": true
+      }
+    ],
+    "neighborhoods": [
+      {
+        "id": "4249d0f5-e060-4419-a9d5-116246b0010d",
+        "name": "용산·해방촌",
+        "slug": "yongsan-haebangchon",
+        "status": "coming_soon",
+        "metadata": {},
+        "map_pin_x": 48,
+        "map_pin_y": 62,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "is_visible": true,
+        "short_name": "해방촌",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "display_order": 3
+      },
+      {
+        "id": "786b421a-b26a-4d24-8768-7bacf325cfa3",
+        "name": "연남·망원",
+        "slug": "yeonnam-mangwon",
+        "status": "active",
+        "metadata": {},
+        "map_pin_x": 42,
+        "map_pin_y": 58,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "is_visible": true,
+        "short_name": "연남",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "display_order": 1
+      },
+      {
+        "id": "eaecd132-d04c-4ecf-af85-0794690468d6",
+        "name": "성수",
+        "slug": "seongsu",
+        "status": "coming_soon",
+        "metadata": {},
+        "map_pin_x": 66,
+        "map_pin_y": 36,
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "is_visible": true,
+        "short_name": "성수",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "display_order": 2
+      }
+    ],
+    "photo_providers": [
+      {
+        "id": "ac788beb-bf52-430d-98c1-d76b94745887",
+        "name": "Naver",
+        "status": "active",
+        "metadata": {
+          "system": true
+        },
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "profile_url": null,
+        "provider_type": "naver"
+      },
+      {
+        "id": "eeaabecb-2928-4fd5-9eed-bf69b1ad01ca",
+        "name": "Doripe",
+        "status": "active",
+        "metadata": {
+          "system": true
+        },
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "profile_url": null,
+        "provider_type": "doripe"
+      }
+    ],
+    "onboarding_options": [
+      {
+        "id": "1ed0d16c-de23-4a80-89f5-1aeb939525af",
+        "label": "친구 추천",
+        "value": "friend_reco",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "bfb0108b-dc03-4c76-a870-1d88cef79f2e",
+        "display_order": 4
+      },
+      {
+        "id": "1f914b4b-e765-4a06-a2f9-793a6444a8bf",
+        "label": "인스타그램",
+        "value": "instagram",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "624b3339-f103-4937-af24-ac7c29f08d40",
+        "display_order": 2
+      },
+      {
+        "id": "2f594a78-5fdf-46a3-9fde-048d52e22648",
+        "label": "인스타 저장",
+        "value": "instagram_save",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "bfb0108b-dc03-4c76-a870-1d88cef79f2e",
+        "display_order": 1
+      },
+      {
+        "id": "55de03c5-244b-47e7-9d64-435c6ed6383a",
+        "label": "앱스토어",
+        "value": "app_store",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "624b3339-f103-4937-af24-ac7c29f08d40",
+        "display_order": 7
+      },
+      {
+        "id": "6d5c68ff-0178-41fa-8257-8f1f62f77783",
+        "label": "블로그 검색",
+        "value": "blog_search",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "bfb0108b-dc03-4c76-a870-1d88cef79f2e",
+        "display_order": 3
+      },
+      {
+        "id": "878e0f64-ce58-4c77-8c35-79212f986638",
+        "label": "릴스/숏츠",
+        "value": "shorts",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "624b3339-f103-4937-af24-ac7c29f08d40",
+        "display_order": 3
+      },
+      {
+        "id": "8d8fdf44-9997-421c-8382-dada282cff19",
+        "label": "네이버 지도 저장",
+        "value": "naver_map_save",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "bfb0108b-dc03-4c76-a870-1d88cef79f2e",
+        "display_order": 2
+      },
+      {
+        "id": "97be1356-bd7b-4743-9f83-c32c66457d11",
+        "label": "커뮤니티/카페",
+        "value": "community",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "624b3339-f103-4937-af24-ac7c29f08d40",
+        "display_order": 5
+      },
+      {
+        "id": "b9b3afd9-643c-4554-8263-ed69be5de98a",
+        "label": "기타",
+        "value": "other",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "624b3339-f103-4937-af24-ac7c29f08d40",
+        "display_order": 8
+      },
+      {
+        "id": "bf26edd0-f962-4e05-ba70-869449ff00e1",
+        "label": "잘 못 찾는 편",
+        "value": "hard_to_find",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "bfb0108b-dc03-4c76-a870-1d88cef79f2e",
+        "display_order": 6
+      },
+      {
+        "id": "d5e4e772-3ef5-457b-ba6d-4d5ef068bd5b",
+        "label": "그때그때 검색",
+        "value": "ad_hoc_search",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "bfb0108b-dc03-4c76-a870-1d88cef79f2e",
+        "display_order": 5
+      },
+      {
+        "id": "d919dca6-031b-42b1-a1a4-6314ee16d5e9",
+        "label": "블로그/검색",
+        "value": "search",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "624b3339-f103-4937-af24-ac7c29f08d40",
+        "display_order": 4
+      },
+      {
+        "id": "db75ae73-1cd9-4d36-9733-0321bb92b4ec",
+        "label": "크리에이터",
+        "value": "creator",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "624b3339-f103-4937-af24-ac7c29f08d40",
+        "display_order": 6
+      },
+      {
+        "id": "df86e080-5b5d-47fe-a0d0-3cdfad81318c",
+        "label": "지인 추천",
+        "value": "friend",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "question_id": "624b3339-f103-4937-af24-ac7c29f08d40",
+        "display_order": 1
+      }
+    ],
+    "onboarding_questions": [
+      {
+        "id": "624b3339-f103-4937-af24-ac7c29f08d40",
+        "key": "source",
+        "title": "Doripe를 어디서 알게 됐나요?",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "display_order": 1
+      },
+      {
+        "id": "bfb0108b-dc03-4c76-a870-1d88cef79f2e",
+        "key": "discovery_habit",
+        "title": "평소 장소를 어떻게 찾나요?",
+        "status": "active",
+        "metadata": {},
+        "created_at": "2026-06-25T08:22:21.014219+00:00",
+        "updated_at": "2026-06-25T08:22:21.014219+00:00",
+        "display_order": 2
+      }
+    ],
+    "screen_review_screens": [
+      {
+        "status": "in_progress",
+        "screen_id": "A1",
+        "updated_at": "2026-06-27T08:02:24.538411+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "A2",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "A3",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "A4",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "A5",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "B1",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "B2",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "B3",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "B4",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "B5",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "B6",
+        "updated_at": "2026-06-27T10:23:37.969494+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "B7",
+        "updated_at": "2026-06-27T10:23:37.969494+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "B8",
+        "updated_at": "2026-06-27T10:23:37.969494+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "B9",
+        "updated_at": "2026-06-27T10:23:37.969494+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "C1",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "C10",
+        "updated_at": "2026-06-27T10:23:37.969494+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "C2",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "C3",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "C4",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "C5",
+        "updated_at": "2026-06-27T10:23:37.969494+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "C6",
+        "updated_at": "2026-06-27T10:23:37.969494+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "C7",
+        "updated_at": "2026-06-27T10:23:37.969494+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "C8",
+        "updated_at": "2026-06-27T10:23:37.969494+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "C9",
+        "updated_at": "2026-06-27T10:23:37.969494+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "D1",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "D2",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      },
+      {
+        "status": "in_progress",
+        "screen_id": "D3",
+        "updated_at": "2026-06-27T07:58:34.519606+00:00"
+      }
+    ]
+  }
+}
+

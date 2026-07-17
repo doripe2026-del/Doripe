@@ -16,7 +16,7 @@
 | Git 백업 | 준비됨 | 작업 브랜치와 복구 태그가 GitHub 원격 저장소에 있다. |
 | Supabase 대상 | 확정 | 최신 Brain, 연결 가능한 Supabase 프로젝트, 앱 미디어 URL 모두 `dcyjrsxnpujslbxtitqj`를 가리킨다. |
 | Supabase 구조 | 출시 차단 | 원격 migration 9개, 저장소 migration 50개로 이력이 크게 다르다. |
-| 실제 콘텐츠 | 출시 차단 | 공개 테이블 24개 모두 0행이다. |
+| 실제 콘텐츠 | 출시 차단 | 장소·사진·사용자·코스는 0행이다. 태그·동네·온보딩·화면 검수 기준 데이터만 일부 존재한다. |
 | 사진 파일 | 확인 필요 | 공개 Storage에 176개가 있지만 `place_photos` 연결 행이 없고 베타 장소 데이터로 확정되지 않았다. |
 | Vercel 환경 | 출시 차단 | Preview·Development 필수 Supabase 환경변수와 readiness 실서버 검증이 필요하다. |
 | 실제 기기 검수 | 출시 차단 | 실제 Supabase 데이터와 휴대폰을 함께 사용한 전체 여정 검수가 없다. |
@@ -27,7 +27,7 @@
 - status: `ACTIVE_HEALTHY`
 - PostgreSQL: `17.6.1.127`
 - remote migration: 9개
-- public table: 24개, 모두 0행 추정
+- public table: 24개. 정확한 행 수는 태그 11, 태그 그룹 3, 동네 3, 사진 제공자 2, 온보딩 질문 2, 선택지 14, 화면 검수 화면 27이며 나머지는 0이다.
 - public function: 10개
 - Storage: `place-photos-public`, public, 176 objects, 153,392,247 bytes
 - 상세 스냅샷: `supabase-production-schema-snapshot-2026-07-18.json`
@@ -41,11 +41,11 @@ Security Advisor:
 1. 공개 Storage의 광범위한 SELECT policy가 파일 목록을 노출할 수 있다.
 2. `notify_taste_events`, `notify_taste_results`는 RLS가 켜져 있지만 policy가 없다.
 
-Performance Advisor는 사용되지 않은 index 36개를 INFO로 보고했다. 현재 공개 테이블이 모두 비어 있어 삭제 근거로 사용하지 않는다.
+Performance Advisor는 사용되지 않은 index 36개를 INFO로 보고했다. 핵심 사용자 데이터와 장소 데이터가 비어 있어 삭제 근거로 사용하지 않는다.
 
 ## 안전한 다음 순서
 
-1. 원격 DB, migration SQL, Storage 176개의 읽기 전용 백업을 만든다.
+1. **부분 완료:** 원격 DB catalog·기준 데이터·앱 역할 grant·migration SQL 원문과 Storage 176개의 읽기 전용 백업을 만들었다. DB custom-format 백업은 별도 자격증명 확보 후 추가한다.
 2. 현재 9개 migration을 기준선으로 보존한다.
 3. 기존 데이터를 지우지 않는 bridge migration을 별도 staging에 적용한다.
 4. staging에서 RLS, API, 중복 실행, 데이터 보존을 검증한다.

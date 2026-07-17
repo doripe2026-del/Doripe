@@ -1,0 +1,1607 @@
+{
+  "projectId": "dcyjrsxnpujslbxtitqj",
+  "capturedAt": "2026-07-18T00:00:00+09:00",
+  "captureMode": "read-only storage catalog export",
+  "buckets": [
+    {
+      "id": "place-photos-public",
+      "name": "place-photos-public",
+      "public": true,
+      "created_at": "2026-07-15T10:19:38.668493+00:00",
+      "updated_at": "2026-07-15T10:19:38.668493+00:00",
+      "file_size_limit": 10485760,
+      "allowed_mime_types": [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "etag": "\"6c9df253cd5e4b761b95b41deb459afb\"",
+      "name": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/01.jpg",
+      "size": 277107,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:16:20.357064+00:00",
+      "updated_at": "2026-07-15T15:17:24.667763+00:00"
+    },
+    {
+      "etag": "\"5b7ce0aa8d75c29760883590478cb420\"",
+      "name": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/02.jpg",
+      "size": 412415,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:16:21.14363+00:00",
+      "updated_at": "2026-07-15T15:17:25.169394+00:00"
+    },
+    {
+      "etag": "\"1a8ce9b5731438e2f94130d256bbe0cc\"",
+      "name": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/03.jpg",
+      "size": 423481,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:16:21.92835+00:00",
+      "updated_at": "2026-07-15T15:17:25.080857+00:00"
+    },
+    {
+      "etag": "\"12b26398121347f2bdb69390619234e3\"",
+      "name": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/04.jpg",
+      "size": 410774,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:16:23.188077+00:00",
+      "updated_at": "2026-07-15T15:17:25.7793+00:00"
+    },
+    {
+      "etag": "\"e14c7779d9005087889e7d5ab2241fa5\"",
+      "name": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/05.jpg",
+      "size": 274207,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:16:24.171075+00:00",
+      "updated_at": "2026-07-15T15:17:25.143428+00:00"
+    },
+    {
+      "etag": "\"2fa441b5ea91bb9d2d611615b1156182\"",
+      "name": "instagram-buffer-jpg/2026-07-15/01-mangwon-half-day-course/06.jpg",
+      "size": 141770,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:16:25.028784+00:00",
+      "updated_at": "2026-07-15T15:17:25.160675+00:00"
+    },
+    {
+      "etag": "\"b8338f5457aded96c0c36c7f4ebcb6ae\"",
+      "name": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/01.jpg",
+      "size": 594421,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:26.93024+00:00",
+      "updated_at": "2026-07-15T15:17:26.93024+00:00"
+    },
+    {
+      "etag": "\"99aee934b35fd6d0757fa0f0f0b18bce\"",
+      "name": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/02.jpg",
+      "size": 556412,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:27.33904+00:00",
+      "updated_at": "2026-07-15T15:17:27.33904+00:00"
+    },
+    {
+      "etag": "\"e7fa7dc7bab84257105196ba1278e05b\"",
+      "name": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/03.jpg",
+      "size": 303362,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:27.247595+00:00",
+      "updated_at": "2026-07-15T15:17:27.247595+00:00"
+    },
+    {
+      "etag": "\"b2d6d6936d02049e42b1ac17658647de\"",
+      "name": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/04.jpg",
+      "size": 580737,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:27.513343+00:00",
+      "updated_at": "2026-07-15T15:17:27.513343+00:00"
+    },
+    {
+      "etag": "\"7432246a374f84a5dc55b519eb8f3047\"",
+      "name": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/05.jpg",
+      "size": 689588,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:27.401179+00:00",
+      "updated_at": "2026-07-15T15:17:27.401179+00:00"
+    },
+    {
+      "etag": "\"ff9e27b5b9a387e4861072ca6f553bd6\"",
+      "name": "instagram-buffer-jpg/2026-07-15/02-euljiro-evening-walk/06.jpg",
+      "size": 140612,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:27.29981+00:00",
+      "updated_at": "2026-07-15T15:17:27.29981+00:00"
+    },
+    {
+      "etag": "\"b1718829598dc158ef668eff60674e32\"",
+      "name": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/01.jpg",
+      "size": 530421,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:22.435576+00:00",
+      "updated_at": "2026-07-15T15:17:22.435576+00:00"
+    },
+    {
+      "etag": "\"d2c6e7ccb85feb637eb5fcc76ca1e2e2\"",
+      "name": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/02.jpg",
+      "size": 289357,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:23.01699+00:00",
+      "updated_at": "2026-07-15T15:17:23.01699+00:00"
+    },
+    {
+      "etag": "\"58716cbebb85d4674d0e37e8f6c451e7\"",
+      "name": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/03.jpg",
+      "size": 479282,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:22.383053+00:00",
+      "updated_at": "2026-07-15T15:17:22.383053+00:00"
+    },
+    {
+      "etag": "\"5883b7f31dd3095cb0113dbd212fd7a4\"",
+      "name": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/04.jpg",
+      "size": 368730,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:23.297259+00:00",
+      "updated_at": "2026-07-15T15:17:23.297259+00:00"
+    },
+    {
+      "etag": "\"af83924a2fe4a436213eb15e0cf0ad46\"",
+      "name": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/05.jpg",
+      "size": 445298,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:23.066492+00:00",
+      "updated_at": "2026-07-15T15:17:23.066492+00:00"
+    },
+    {
+      "etag": "\"2c8d8412f95c1fc248b7bcef08c915e8\"",
+      "name": "instagram-buffer-jpg/2026-07-15/03-seoseoul-museum/06.jpg",
+      "size": 230378,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:22.726328+00:00",
+      "updated_at": "2026-07-15T15:17:22.726328+00:00"
+    },
+    {
+      "etag": "\"3562263d4c6175f1139d45f460e457be\"",
+      "name": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/01.jpg",
+      "size": 336956,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:26.423455+00:00",
+      "updated_at": "2026-07-15T15:17:26.423455+00:00"
+    },
+    {
+      "etag": "\"daf7afc0e85cc8b5caa44bb0cd2b5b58\"",
+      "name": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/02.jpg",
+      "size": 327378,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:26.684877+00:00",
+      "updated_at": "2026-07-15T15:17:26.684877+00:00"
+    },
+    {
+      "etag": "\"632b8a49143e8cd2a895b809097e81d8\"",
+      "name": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/03.jpg",
+      "size": 506613,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:26.672714+00:00",
+      "updated_at": "2026-07-15T15:17:26.672714+00:00"
+    },
+    {
+      "etag": "\"5e1003d3a4d23c54274b654363937015\"",
+      "name": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/04.jpg",
+      "size": 663731,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:27.358038+00:00",
+      "updated_at": "2026-07-15T15:17:27.358038+00:00"
+    },
+    {
+      "etag": "\"6fdfe0e0b12e5b88e67a6fc21bba410d\"",
+      "name": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/05.jpg",
+      "size": 246981,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:26.875996+00:00",
+      "updated_at": "2026-07-15T15:17:26.875996+00:00"
+    },
+    {
+      "etag": "\"77b4a6dbd6652a29e9512f44a5d36da3\"",
+      "name": "instagram-buffer-jpg/2026-07-15/04-seoul-sunset-collection/06.jpg",
+      "size": 232249,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:26.85019+00:00",
+      "updated_at": "2026-07-15T15:17:26.85019+00:00"
+    },
+    {
+      "etag": "\"ec0f9eb80e9cc496b078c7fb91409353\"",
+      "name": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/01.jpg",
+      "size": 888171,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:23.13888+00:00",
+      "updated_at": "2026-07-15T15:17:23.13888+00:00"
+    },
+    {
+      "etag": "\"c64d05e3794a65792a6dfe0fe3e7cd8a\"",
+      "name": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/02.jpg",
+      "size": 710505,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:23.820064+00:00",
+      "updated_at": "2026-07-15T15:17:23.820064+00:00"
+    },
+    {
+      "etag": "\"14b6d565d39d5fd1d90a037fd88017b6\"",
+      "name": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/03.jpg",
+      "size": 1014366,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:23.536549+00:00",
+      "updated_at": "2026-07-15T15:17:23.536549+00:00"
+    },
+    {
+      "etag": "\"b937c878728b710a9d25d9b234a208c0\"",
+      "name": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/04.jpg",
+      "size": 966846,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:23.830151+00:00",
+      "updated_at": "2026-07-15T15:17:23.830151+00:00"
+    },
+    {
+      "etag": "\"06a211287a2d1e5fc1eb25740d51f633\"",
+      "name": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/05.jpg",
+      "size": 949520,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:24.547314+00:00",
+      "updated_at": "2026-07-15T15:17:24.547314+00:00"
+    },
+    {
+      "etag": "\"3ad39e5f34b4f7eb61e8e536b45efe11\"",
+      "name": "instagram-buffer-jpg/2026-07-15/05-seoul-forest-garden/06.jpg",
+      "size": 233570,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:23.511158+00:00",
+      "updated_at": "2026-07-15T15:17:23.511158+00:00"
+    },
+    {
+      "etag": "\"fd15d691dbda694044de2e5c17ff1dc6\"",
+      "name": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/01.jpg",
+      "size": 521941,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:21.665122+00:00",
+      "updated_at": "2026-07-15T15:17:21.665122+00:00"
+    },
+    {
+      "etag": "\"f8619c5099b362848da221cbf16667fa\"",
+      "name": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/02.jpg",
+      "size": 500933,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:21.716589+00:00",
+      "updated_at": "2026-07-15T15:17:21.716589+00:00"
+    },
+    {
+      "etag": "\"d7281a663a2d6124c8d88c551a091ed9\"",
+      "name": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/03.jpg",
+      "size": 609273,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:21.894853+00:00",
+      "updated_at": "2026-07-15T15:17:21.894853+00:00"
+    },
+    {
+      "etag": "\"defdaa74ed1b2f456277381494d8b1c9\"",
+      "name": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/04.jpg",
+      "size": 583250,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:22.897458+00:00",
+      "updated_at": "2026-07-15T15:17:22.897458+00:00"
+    },
+    {
+      "etag": "\"b1e442ae04c08fbadb5f13d858e25ba4\"",
+      "name": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/05.jpg",
+      "size": 645046,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:22.372044+00:00",
+      "updated_at": "2026-07-15T15:17:22.372044+00:00"
+    },
+    {
+      "etag": "\"635faf38b2c680283b2fcfdcb356385e\"",
+      "name": "instagram-buffer-jpg/2026-07-15/06-seochon-slow-day/06.jpg",
+      "size": 139753,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:21.968895+00:00",
+      "updated_at": "2026-07-15T15:17:21.968895+00:00"
+    },
+    {
+      "etag": "\"fdeeacb99b1ac8f09adec49951fb72c7\"",
+      "name": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/01.jpg",
+      "size": 348964,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:25.874279+00:00",
+      "updated_at": "2026-07-15T15:17:25.874279+00:00"
+    },
+    {
+      "etag": "\"cd66e7e4516cf103016fa718308b7aaa\"",
+      "name": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/02.jpg",
+      "size": 375443,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:26.206245+00:00",
+      "updated_at": "2026-07-15T15:17:26.206245+00:00"
+    },
+    {
+      "etag": "\"c7315ea17b21b2559199576b99fa007d\"",
+      "name": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/03.jpg",
+      "size": 560257,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:25.830332+00:00",
+      "updated_at": "2026-07-15T15:17:25.830332+00:00"
+    },
+    {
+      "etag": "\"43df39038bc59efaf0163d284015a5f4\"",
+      "name": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/04.jpg",
+      "size": 318694,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:26.344993+00:00",
+      "updated_at": "2026-07-15T15:17:26.344993+00:00"
+    },
+    {
+      "etag": "\"bb9e7be421053804908ba88875238b78\"",
+      "name": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/05.jpg",
+      "size": 374872,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:26.331536+00:00",
+      "updated_at": "2026-07-15T15:17:26.331536+00:00"
+    },
+    {
+      "etag": "\"3e0adce451605eb6d505979b97b00298\"",
+      "name": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/06.jpg",
+      "size": 330156,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:26.182828+00:00",
+      "updated_at": "2026-07-15T15:17:26.182828+00:00"
+    },
+    {
+      "etag": "\"673b50a273e58978224cdeb5a8b9670c\"",
+      "name": "instagram-buffer-jpg/2026-07-15/07-seoul-free-exhibitions/07.jpg",
+      "size": 225400,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:25.952792+00:00",
+      "updated_at": "2026-07-15T15:17:25.952792+00:00"
+    },
+    {
+      "etag": "\"b3174baf6953adea639246b3557ee4b4\"",
+      "name": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/01.jpg",
+      "size": 241305,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:24.104437+00:00",
+      "updated_at": "2026-07-15T15:17:24.104437+00:00"
+    },
+    {
+      "etag": "\"8d725b64365c82fae7ee5a7d9dd11db5\"",
+      "name": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/02.jpg",
+      "size": 340537,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:24.065927+00:00",
+      "updated_at": "2026-07-15T15:17:24.065927+00:00"
+    },
+    {
+      "etag": "\"d9a908288dcf0e2b001b7b11112826d2\"",
+      "name": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/03.jpg",
+      "size": 257423,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:24.058187+00:00",
+      "updated_at": "2026-07-15T15:17:24.058187+00:00"
+    },
+    {
+      "etag": "\"6f5ab0a88cdd30bfd2d2aa40ffecd66f\"",
+      "name": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/04.jpg",
+      "size": 470104,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:24.695584+00:00",
+      "updated_at": "2026-07-15T15:17:24.695584+00:00"
+    },
+    {
+      "etag": "\"9adc76b254f7e134939876fe246f1a32\"",
+      "name": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/05.jpg",
+      "size": 433055,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:24.658807+00:00",
+      "updated_at": "2026-07-15T15:17:24.658807+00:00"
+    },
+    {
+      "etag": "\"be5d517f91b7537e1c4157c536572a88\"",
+      "name": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/06.jpg",
+      "size": 225265,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:24.848643+00:00",
+      "updated_at": "2026-07-15T15:17:24.848643+00:00"
+    },
+    {
+      "etag": "\"b8cc62ee89f2cf19824684daa01d1493\"",
+      "name": "instagram-buffer-jpg/2026-07-15/08-cho-sook-jin-passing-place/07.jpg",
+      "size": 231701,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:24.6054+00:00",
+      "updated_at": "2026-07-15T15:17:24.6054+00:00"
+    },
+    {
+      "etag": "\"9ab809528949e52106dbc5e76c212462\"",
+      "name": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/01.jpg",
+      "size": 612318,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:20.998326+00:00",
+      "updated_at": "2026-07-15T15:17:20.998326+00:00"
+    },
+    {
+      "etag": "\"66098c8ac3f9f56cf2003ad4cfc18d8c\"",
+      "name": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/02.jpg",
+      "size": 408534,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:20.951468+00:00",
+      "updated_at": "2026-07-15T15:17:20.951468+00:00"
+    },
+    {
+      "etag": "\"6c4f1e3cf7c08d353fec8b8e91db8dbf\"",
+      "name": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/03.jpg",
+      "size": 366709,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:20.986829+00:00",
+      "updated_at": "2026-07-15T15:17:20.986829+00:00"
+    },
+    {
+      "etag": "\"a0f10f0ae43a8a6ccdc692a7dc28bd94\"",
+      "name": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/04.jpg",
+      "size": 390494,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:21.760519+00:00",
+      "updated_at": "2026-07-15T15:17:21.760519+00:00"
+    },
+    {
+      "etag": "\"373c169ff2cb55ccab540cbc1740e29d\"",
+      "name": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/05.jpg",
+      "size": 729479,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:20.781503+00:00",
+      "updated_at": "2026-07-15T15:17:20.781503+00:00"
+    },
+    {
+      "etag": "\"d6655096c8694181166ad90a8d499301\"",
+      "name": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/06.jpg",
+      "size": 690788,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:21.016924+00:00",
+      "updated_at": "2026-07-15T15:17:21.016924+00:00"
+    },
+    {
+      "etag": "\"8d9c4c881f068a1eb64d723f539dfd3c\"",
+      "name": "instagram-buffer-jpg/2026-07-15/09-seoul-summer-beach/07.jpg",
+      "size": 228744,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T15:17:20.549048+00:00",
+      "updated_at": "2026-07-15T15:17:20.549048+00:00"
+    },
+    {
+      "etag": "\"f74935962cbce33c1751583d261d7b91\"",
+      "name": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/01.png",
+      "size": 943852,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:52:52.473937+00:00",
+      "updated_at": "2026-07-15T14:52:52.473937+00:00"
+    },
+    {
+      "etag": "\"8ff2de460355409b418c8a5dc5f53ddc\"",
+      "name": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/02.png",
+      "size": 1779624,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:52:54.03286+00:00",
+      "updated_at": "2026-07-15T14:52:54.03286+00:00"
+    },
+    {
+      "etag": "\"b4bb045328f684c2b698e9110ed466cc\"",
+      "name": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/03.png",
+      "size": 2129748,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:52:55.668688+00:00",
+      "updated_at": "2026-07-15T14:52:55.668688+00:00"
+    },
+    {
+      "etag": "\"f8b9376acfb74cff7f81d43b575834ca\"",
+      "name": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/04.png",
+      "size": 1950198,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:52:57.164504+00:00",
+      "updated_at": "2026-07-15T14:52:57.164504+00:00"
+    },
+    {
+      "etag": "\"9467873723b633dfc8a0953fe6e5b81a\"",
+      "name": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/05.png",
+      "size": 1004083,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:52:58.110179+00:00",
+      "updated_at": "2026-07-15T14:52:58.110179+00:00"
+    },
+    {
+      "etag": "\"444b69e54c8d5fc0b4d26a89d6961f7f\"",
+      "name": "instagram-buffer/2026-07-15/01-mangwon-half-day-course/06.png",
+      "size": 439383,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:52:59.200387+00:00",
+      "updated_at": "2026-07-15T14:52:59.200387+00:00"
+    },
+    {
+      "etag": "\"c8140ea50880ab8b498d9f777327a4b3\"",
+      "name": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/01.png",
+      "size": 2457317,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:52:59.977047+00:00",
+      "updated_at": "2026-07-15T14:52:59.977047+00:00"
+    },
+    {
+      "etag": "\"1870cb736f83fe3ef7f0e16799c50acc\"",
+      "name": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/02.png",
+      "size": 2325420,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:00.79398+00:00",
+      "updated_at": "2026-07-15T14:53:00.79398+00:00"
+    },
+    {
+      "etag": "\"26d2c821c7e48d2f5b8ace8fecc79939\"",
+      "name": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/03.png",
+      "size": 1520726,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:02.19939+00:00",
+      "updated_at": "2026-07-15T14:53:02.19939+00:00"
+    },
+    {
+      "etag": "\"4c7281112a764d6c96a7029ff6d5c254\"",
+      "name": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/04.png",
+      "size": 2644622,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:02.944101+00:00",
+      "updated_at": "2026-07-15T14:53:02.944101+00:00"
+    },
+    {
+      "etag": "\"abbd85bb40541ded64a05f2a08b60af4\"",
+      "name": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/05.png",
+      "size": 2675547,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:03.696906+00:00",
+      "updated_at": "2026-07-15T14:53:03.696906+00:00"
+    },
+    {
+      "etag": "\"d93e7fe59fee5baaca6632a7221ff897\"",
+      "name": "instagram-buffer/2026-07-15/02-euljiro-evening-walk/06.png",
+      "size": 438558,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:04.533623+00:00",
+      "updated_at": "2026-07-15T14:53:04.533623+00:00"
+    },
+    {
+      "etag": "\"1b343a31eb1db39187d4c4cc59b864f1\"",
+      "name": "instagram-buffer/2026-07-15/03-seoseoul-museum/01.png",
+      "size": 2150808,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:06.031757+00:00",
+      "updated_at": "2026-07-15T14:53:06.031757+00:00"
+    },
+    {
+      "etag": "\"2e255e5aaeb23ad71ca1b23dd66419a8\"",
+      "name": "instagram-buffer/2026-07-15/03-seoseoul-museum/02.png",
+      "size": 1540932,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:07.471587+00:00",
+      "updated_at": "2026-07-15T14:53:07.471587+00:00"
+    },
+    {
+      "etag": "\"48dd266556e94b882ff7d6dee23dcf59\"",
+      "name": "instagram-buffer/2026-07-15/03-seoseoul-museum/03.png",
+      "size": 2496031,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:09.035247+00:00",
+      "updated_at": "2026-07-15T14:53:09.035247+00:00"
+    },
+    {
+      "etag": "\"6222ac3ed5b36cfa28fb28d56afd7479\"",
+      "name": "instagram-buffer/2026-07-15/03-seoseoul-museum/04.png",
+      "size": 2079110,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:10.225225+00:00",
+      "updated_at": "2026-07-15T14:53:10.225225+00:00"
+    },
+    {
+      "etag": "\"a9728a23fb455be452ebbf35952c043c\"",
+      "name": "instagram-buffer/2026-07-15/03-seoseoul-museum/05.png",
+      "size": 1900430,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:11.739171+00:00",
+      "updated_at": "2026-07-15T14:53:11.739171+00:00"
+    },
+    {
+      "etag": "\"4767e63bce55e296cc9c61e73fc205ad\"",
+      "name": "instagram-buffer/2026-07-15/03-seoseoul-museum/06.png",
+      "size": 657954,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:12.920608+00:00",
+      "updated_at": "2026-07-15T14:53:12.920608+00:00"
+    },
+    {
+      "etag": "\"66f707659c153f26756798b4673a4280\"",
+      "name": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/01.png",
+      "size": 1726285,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:14.361469+00:00",
+      "updated_at": "2026-07-15T14:53:14.361469+00:00"
+    },
+    {
+      "etag": "\"d4c9b353e3ed90ed6ab089eb94678ea1\"",
+      "name": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/02.png",
+      "size": 1316636,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:15.499291+00:00",
+      "updated_at": "2026-07-15T14:53:15.499291+00:00"
+    },
+    {
+      "etag": "\"9b6369254a20ab88aa193b405b58814f\"",
+      "name": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/03.png",
+      "size": 2036345,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:16.378878+00:00",
+      "updated_at": "2026-07-15T14:53:16.378878+00:00"
+    },
+    {
+      "etag": "\"f2102a6061370d38065e3bd67fc6781c\"",
+      "name": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/04.png",
+      "size": 2572847,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:17.625602+00:00",
+      "updated_at": "2026-07-15T14:53:17.625602+00:00"
+    },
+    {
+      "etag": "\"922485a66dcbbff8d6387b68471ecae1\"",
+      "name": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/05.png",
+      "size": 1266815,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:18.759327+00:00",
+      "updated_at": "2026-07-15T14:53:18.759327+00:00"
+    },
+    {
+      "etag": "\"1472a394490715256760147b8ebfa008\"",
+      "name": "instagram-buffer/2026-07-15/04-seoul-sunset-collection/06.png",
+      "size": 657439,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:19.232031+00:00",
+      "updated_at": "2026-07-15T14:53:19.232031+00:00"
+    },
+    {
+      "etag": "\"9530f19319b58e1a2b1b10dab6fb8ffd\"",
+      "name": "instagram-buffer/2026-07-15/05-seoul-forest-garden/01.png",
+      "size": 3237570,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:20.261571+00:00",
+      "updated_at": "2026-07-15T14:53:20.261571+00:00"
+    },
+    {
+      "etag": "\"8f355a5f0fa822334ec8f42e5138f3b2\"",
+      "name": "instagram-buffer/2026-07-15/05-seoul-forest-garden/02.png",
+      "size": 2905375,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:21.126266+00:00",
+      "updated_at": "2026-07-15T14:53:21.126266+00:00"
+    },
+    {
+      "etag": "\"42140cafa221c3f9dfdd14e38dfe9a77\"",
+      "name": "instagram-buffer/2026-07-15/05-seoul-forest-garden/03.png",
+      "size": 3596072,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:21.823503+00:00",
+      "updated_at": "2026-07-15T14:53:21.823503+00:00"
+    },
+    {
+      "etag": "\"3746469415a5ca7973c3060f96d0c384\"",
+      "name": "instagram-buffer/2026-07-15/05-seoul-forest-garden/04.png",
+      "size": 3514735,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:22.739815+00:00",
+      "updated_at": "2026-07-15T14:53:22.739815+00:00"
+    },
+    {
+      "etag": "\"dfc001ac77d411c8aaa79ca4f59f075b\"",
+      "name": "instagram-buffer/2026-07-15/05-seoul-forest-garden/05.png",
+      "size": 3508229,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:24.690559+00:00",
+      "updated_at": "2026-07-15T14:53:24.690559+00:00"
+    },
+    {
+      "etag": "\"a89e239ff322c81c22c3b1b8dbf53392\"",
+      "name": "instagram-buffer/2026-07-15/05-seoul-forest-garden/06.png",
+      "size": 657455,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:25.948291+00:00",
+      "updated_at": "2026-07-15T14:53:25.948291+00:00"
+    },
+    {
+      "etag": "\"cbecdab42458652a2865a427a90ae5a5\"",
+      "name": "instagram-buffer/2026-07-15/06-seochon-slow-day/01.png",
+      "size": 2293846,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:27.90969+00:00",
+      "updated_at": "2026-07-15T14:53:27.90969+00:00"
+    },
+    {
+      "etag": "\"def0f33a664dde4fcd248911f91a89fe\"",
+      "name": "instagram-buffer/2026-07-15/06-seochon-slow-day/02.png",
+      "size": 2279635,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:28.884759+00:00",
+      "updated_at": "2026-07-15T14:53:28.884759+00:00"
+    },
+    {
+      "etag": "\"5f796ea7616c2b2460cb399201047266\"",
+      "name": "instagram-buffer/2026-07-15/06-seochon-slow-day/03.png",
+      "size": 2692793,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:30.466983+00:00",
+      "updated_at": "2026-07-15T14:53:30.466983+00:00"
+    },
+    {
+      "etag": "\"7ebc2dfaabdc7556b6b7c0871abd0037\"",
+      "name": "instagram-buffer/2026-07-15/06-seochon-slow-day/04.png",
+      "size": 2633639,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:32.067383+00:00",
+      "updated_at": "2026-07-15T14:53:32.067383+00:00"
+    },
+    {
+      "etag": "\"54dac4d862a963ae2b4251168cf451f5\"",
+      "name": "instagram-buffer/2026-07-15/06-seochon-slow-day/05.png",
+      "size": 2684375,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:33.342894+00:00",
+      "updated_at": "2026-07-15T14:53:33.342894+00:00"
+    },
+    {
+      "etag": "\"79455e73209b1136e2b7f5522706620b\"",
+      "name": "instagram-buffer/2026-07-15/06-seochon-slow-day/06.png",
+      "size": 438711,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:33.820334+00:00",
+      "updated_at": "2026-07-15T14:53:33.820334+00:00"
+    },
+    {
+      "etag": "\"c1ada56fbff6a9711ee17fcddee223d7\"",
+      "name": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/01.png",
+      "size": 1872040,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:34.730048+00:00",
+      "updated_at": "2026-07-15T14:53:34.730048+00:00"
+    },
+    {
+      "etag": "\"db6f34ddbb2e7ae692f8c3aef5765ba1\"",
+      "name": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/02.png",
+      "size": 1919578,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:35.519147+00:00",
+      "updated_at": "2026-07-15T14:53:35.519147+00:00"
+    },
+    {
+      "etag": "\"cc9c3131859b7b169756c57a3f779699\"",
+      "name": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/03.png",
+      "size": 2340735,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:37.08082+00:00",
+      "updated_at": "2026-07-15T14:53:37.08082+00:00"
+    },
+    {
+      "etag": "\"890f38409d8edbe10f65137b703192a2\"",
+      "name": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/04.png",
+      "size": 1488738,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:38.294089+00:00",
+      "updated_at": "2026-07-15T14:53:38.294089+00:00"
+    },
+    {
+      "etag": "\"4de70a96507510971b4c048d52896915\"",
+      "name": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/05.png",
+      "size": 1382608,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:39.70031+00:00",
+      "updated_at": "2026-07-15T14:53:39.70031+00:00"
+    },
+    {
+      "etag": "\"1c75d5d627985c23355aa79b5ba65120\"",
+      "name": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/06.png",
+      "size": 1538627,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:40.814781+00:00",
+      "updated_at": "2026-07-15T14:53:40.814781+00:00"
+    },
+    {
+      "etag": "\"34e140241d6fbf11ea00863698da37c7\"",
+      "name": "instagram-buffer/2026-07-15/07-seoul-free-exhibitions/07.png",
+      "size": 655490,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:41.292834+00:00",
+      "updated_at": "2026-07-15T14:53:41.292834+00:00"
+    },
+    {
+      "etag": "\"3af797a9758b4d8d4030ade704e7ac22\"",
+      "name": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/01.png",
+      "size": 873869,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:42.245751+00:00",
+      "updated_at": "2026-07-15T14:53:42.245751+00:00"
+    },
+    {
+      "etag": "\"e40bf79ec89d74506edabda106811a0e\"",
+      "name": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/02.png",
+      "size": 1556704,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:42.933411+00:00",
+      "updated_at": "2026-07-15T14:53:42.933411+00:00"
+    },
+    {
+      "etag": "\"6a900d7712067686ed29634f625fedd1\"",
+      "name": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/03.png",
+      "size": 1287075,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:44.29643+00:00",
+      "updated_at": "2026-07-15T14:53:44.29643+00:00"
+    },
+    {
+      "etag": "\"1ccd55549fa7f3e091e6816f6e72b9ae\"",
+      "name": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/04.png",
+      "size": 1456446,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:44.922251+00:00",
+      "updated_at": "2026-07-15T14:53:44.922251+00:00"
+    },
+    {
+      "etag": "\"226b713a286849e1c00c1b0a8dcc906f\"",
+      "name": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/05.png",
+      "size": 2429214,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:45.589872+00:00",
+      "updated_at": "2026-07-15T14:53:45.589872+00:00"
+    },
+    {
+      "etag": "\"8e9b9cff644de617ad3664d09ae8679e\"",
+      "name": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/06.png",
+      "size": 821681,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:46.156854+00:00",
+      "updated_at": "2026-07-15T14:53:46.156854+00:00"
+    },
+    {
+      "etag": "\"bc31247e744d9b96792d8dfff2bb5c27\"",
+      "name": "instagram-buffer/2026-07-15/08-cho-sook-jin-passing-place/07.png",
+      "size": 659370,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:46.720309+00:00",
+      "updated_at": "2026-07-15T14:53:46.720309+00:00"
+    },
+    {
+      "etag": "\"3c4bbc15b6435c47098bbb47ab7ca5af\"",
+      "name": "instagram-buffer/2026-07-15/09-seoul-summer-beach/01.png",
+      "size": 1746019,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:47.663512+00:00",
+      "updated_at": "2026-07-15T14:53:47.663512+00:00"
+    },
+    {
+      "etag": "\"f65fc86271370baa80353f6a011cbbf5\"",
+      "name": "instagram-buffer/2026-07-15/09-seoul-summer-beach/02.png",
+      "size": 1899870,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:48.344628+00:00",
+      "updated_at": "2026-07-15T14:53:48.344628+00:00"
+    },
+    {
+      "etag": "\"9e42d0cec3a3ffd2a058ef328e79f1bf\"",
+      "name": "instagram-buffer/2026-07-15/09-seoul-summer-beach/03.png",
+      "size": 1379709,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:49.783898+00:00",
+      "updated_at": "2026-07-15T14:53:49.783898+00:00"
+    },
+    {
+      "etag": "\"c36a2d176f6ba063e8d7940c5bde25d7\"",
+      "name": "instagram-buffer/2026-07-15/09-seoul-summer-beach/04.png",
+      "size": 1436022,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:50.382203+00:00",
+      "updated_at": "2026-07-15T14:53:50.382203+00:00"
+    },
+    {
+      "etag": "\"72bfa3f5e33de6d44585e90dbdddf727\"",
+      "name": "instagram-buffer/2026-07-15/09-seoul-summer-beach/05.png",
+      "size": 1373492,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:51.005744+00:00",
+      "updated_at": "2026-07-15T14:53:51.005744+00:00"
+    },
+    {
+      "etag": "\"09ba7d3cc017f7778f2be4cb058739c6\"",
+      "name": "instagram-buffer/2026-07-15/09-seoul-summer-beach/06.png",
+      "size": 1627750,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:52.458326+00:00",
+      "updated_at": "2026-07-15T14:53:52.458326+00:00"
+    },
+    {
+      "etag": "\"db0a983415726dc7fa3a573a99bf9ef0\"",
+      "name": "instagram-buffer/2026-07-15/09-seoul-summer-beach/07.png",
+      "size": 657066,
+      "mimetype": "image/png",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T14:53:53.226737+00:00",
+      "updated_at": "2026-07-15T14:53:53.226737+00:00"
+    },
+    {
+      "etag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+      "name": "prototype-unsplash-2026-07-15/.emptyFolderPlaceholder",
+      "size": 0,
+      "mimetype": "application/octet-stream",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T10:54:56.765285+00:00",
+      "updated_at": "2026-07-15T10:54:56.765285+00:00"
+    },
+    {
+      "etag": "\"9a6909ff15535f4817a2a37f453ab59c\"",
+      "name": "prototype-unsplash-2026-07-15/media-001.jpg",
+      "size": 280389,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:30.78783+00:00",
+      "updated_at": "2026-07-15T11:25:30.78783+00:00"
+    },
+    {
+      "etag": "\"de8ba5feef49e1007c5dffb860e6a28a\"",
+      "name": "prototype-unsplash-2026-07-15/media-002.jpg",
+      "size": 666306,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:29.549382+00:00",
+      "updated_at": "2026-07-15T11:25:29.549382+00:00"
+    },
+    {
+      "etag": "\"b9a331759f961fc25268a05390966b26\"",
+      "name": "prototype-unsplash-2026-07-15/media-003.jpg",
+      "size": 164781,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:27.995613+00:00",
+      "updated_at": "2026-07-15T11:25:27.995613+00:00"
+    },
+    {
+      "etag": "\"08e146ab144c0ff0f1cab0b3c85bb5e1\"",
+      "name": "prototype-unsplash-2026-07-15/media-004.jpg",
+      "size": 431126,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:31.453126+00:00",
+      "updated_at": "2026-07-15T11:25:31.453126+00:00"
+    },
+    {
+      "etag": "\"a7d743cfb6091fab95168f84d48cce3f\"",
+      "name": "prototype-unsplash-2026-07-15/media-005.jpg",
+      "size": 303044,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:31.239341+00:00",
+      "updated_at": "2026-07-15T11:25:31.239341+00:00"
+    },
+    {
+      "etag": "\"5f99cde0c66abdcd35a2649e2bea918d\"",
+      "name": "prototype-unsplash-2026-07-15/media-006.jpg",
+      "size": 475449,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:32.089485+00:00",
+      "updated_at": "2026-07-15T11:25:32.089485+00:00"
+    },
+    {
+      "etag": "\"70919e08ca19e1361ebc99fa68b73bf4\"",
+      "name": "prototype-unsplash-2026-07-15/media-007.jpg",
+      "size": 99525,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:32.116212+00:00",
+      "updated_at": "2026-07-15T11:25:32.116212+00:00"
+    },
+    {
+      "etag": "\"843ac15736810b5b77d59d0b08e84407\"",
+      "name": "prototype-unsplash-2026-07-15/media-008.jpg",
+      "size": 218208,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:22.512512+00:00",
+      "updated_at": "2026-07-15T11:25:22.512512+00:00"
+    },
+    {
+      "etag": "\"996ccb83f3d3068e612f1786d204abd4\"",
+      "name": "prototype-unsplash-2026-07-15/media-009.jpg",
+      "size": 742706,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:22.986608+00:00",
+      "updated_at": "2026-07-15T11:25:22.986608+00:00"
+    },
+    {
+      "etag": "\"c8726c086b1be9525d49fbd8cb3dea6e\"",
+      "name": "prototype-unsplash-2026-07-15/media-010.jpg",
+      "size": 364924,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:31.689187+00:00",
+      "updated_at": "2026-07-15T11:25:31.689187+00:00"
+    },
+    {
+      "etag": "\"6152f7e36a2062d31c006bedbd75a4cb\"",
+      "name": "prototype-unsplash-2026-07-15/media-011.jpg",
+      "size": 705518,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:31.370056+00:00",
+      "updated_at": "2026-07-15T11:25:31.370056+00:00"
+    },
+    {
+      "etag": "\"3d70131727de91c544d920242be85e55\"",
+      "name": "prototype-unsplash-2026-07-15/media-012.jpg",
+      "size": 382215,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:32.694369+00:00",
+      "updated_at": "2026-07-15T11:25:32.694369+00:00"
+    },
+    {
+      "etag": "\"c2400d2dc7a609db0eee1cd96835fdce\"",
+      "name": "prototype-unsplash-2026-07-15/media-013.jpg",
+      "size": 806351,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:32.206252+00:00",
+      "updated_at": "2026-07-15T11:25:32.206252+00:00"
+    },
+    {
+      "etag": "\"0f0b139b74c4f8f01d16dd331e900fd1\"",
+      "name": "prototype-unsplash-2026-07-15/media-014.jpg",
+      "size": 719747,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:29.426131+00:00",
+      "updated_at": "2026-07-15T11:25:29.426131+00:00"
+    },
+    {
+      "etag": "\"409c3f6dbf946efc7abc2e62ea000f86\"",
+      "name": "prototype-unsplash-2026-07-15/media-015.jpg",
+      "size": 1057076,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:31.330664+00:00",
+      "updated_at": "2026-07-15T11:25:31.330664+00:00"
+    },
+    {
+      "etag": "\"445c563f151f66740ddce89a82191521\"",
+      "name": "prototype-unsplash-2026-07-15/media-016.jpg",
+      "size": 531678,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:28.737435+00:00",
+      "updated_at": "2026-07-15T11:25:28.737435+00:00"
+    },
+    {
+      "etag": "\"22471ddb29c044ff6bf69492968d7ed9\"",
+      "name": "prototype-unsplash-2026-07-15/media-017.jpg",
+      "size": 384020,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:28.717192+00:00",
+      "updated_at": "2026-07-15T11:25:28.717192+00:00"
+    },
+    {
+      "etag": "\"6a644a3a7304cb5860425e5ed1da1ff8\"",
+      "name": "prototype-unsplash-2026-07-15/media-018.jpg",
+      "size": 315631,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:22.835161+00:00",
+      "updated_at": "2026-07-15T11:25:22.835161+00:00"
+    },
+    {
+      "etag": "\"77db6eccd329d7f1316ef5f4525ad6df\"",
+      "name": "prototype-unsplash-2026-07-15/media-019.jpg",
+      "size": 189577,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:23.617612+00:00",
+      "updated_at": "2026-07-15T11:25:23.617612+00:00"
+    },
+    {
+      "etag": "\"24ed6513478a3d21c531d23e7baa2cb4\"",
+      "name": "prototype-unsplash-2026-07-15/media-020.jpg",
+      "size": 304449,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:23.599341+00:00",
+      "updated_at": "2026-07-15T11:25:23.599341+00:00"
+    },
+    {
+      "etag": "\"5d4065c48a6270343583e26938257391\"",
+      "name": "prototype-unsplash-2026-07-15/media-021.jpg",
+      "size": 480066,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:19.981725+00:00",
+      "updated_at": "2026-07-15T11:25:19.981725+00:00"
+    },
+    {
+      "etag": "\"71251ab34fafb3358e60e50b5bf7bc9d\"",
+      "name": "prototype-unsplash-2026-07-15/media-022.jpg",
+      "size": 467879,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:20.090298+00:00",
+      "updated_at": "2026-07-15T11:25:20.090298+00:00"
+    },
+    {
+      "etag": "\"4c4a6c6fd9bb4bce486e271da5b79896\"",
+      "name": "prototype-unsplash-2026-07-15/media-023.jpg",
+      "size": 503573,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:19.808595+00:00",
+      "updated_at": "2026-07-15T11:25:19.808595+00:00"
+    },
+    {
+      "etag": "\"51b63a3e059d6a11e665b7afd2b46b48\"",
+      "name": "prototype-unsplash-2026-07-15/media-024.jpg",
+      "size": 535439,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:23.284543+00:00",
+      "updated_at": "2026-07-15T11:25:23.284543+00:00"
+    },
+    {
+      "etag": "\"f7f9c78529fc76836991b148300ac224\"",
+      "name": "prototype-unsplash-2026-07-15/media-025.jpg",
+      "size": 443966,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:23.385469+00:00",
+      "updated_at": "2026-07-15T11:25:23.385469+00:00"
+    },
+    {
+      "etag": "\"f376afeba3967c356d2ee94301a83afd\"",
+      "name": "prototype-unsplash-2026-07-15/media-026.jpg",
+      "size": 890476,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:24.459406+00:00",
+      "updated_at": "2026-07-15T11:25:24.459406+00:00"
+    },
+    {
+      "etag": "\"3007bf719038c5471fa2fa96543e62d1\"",
+      "name": "prototype-unsplash-2026-07-15/media-027.jpg",
+      "size": 179952,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:23.831433+00:00",
+      "updated_at": "2026-07-15T11:25:23.831433+00:00"
+    },
+    {
+      "etag": "\"21af9e1ef7306688dbd723c0d6342bd8\"",
+      "name": "prototype-unsplash-2026-07-15/media-028.jpg",
+      "size": 224803,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:28.861824+00:00",
+      "updated_at": "2026-07-15T11:25:28.861824+00:00"
+    },
+    {
+      "etag": "\"32739ef065e76f43d8e7d15097bb705a\"",
+      "name": "prototype-unsplash-2026-07-15/media-029.jpg",
+      "size": 130387,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:29.229678+00:00",
+      "updated_at": "2026-07-15T11:25:29.229678+00:00"
+    },
+    {
+      "etag": "\"e57c48e9f273d78f6c0e3385db834162\"",
+      "name": "prototype-unsplash-2026-07-15/media-030.jpg",
+      "size": 406960,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:22.109659+00:00",
+      "updated_at": "2026-07-15T11:25:22.109659+00:00"
+    },
+    {
+      "etag": "\"7e264bc24c947b51bc03368b36a8b8cf\"",
+      "name": "prototype-unsplash-2026-07-15/media-031.jpg",
+      "size": 483447,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:24.105825+00:00",
+      "updated_at": "2026-07-15T11:25:24.105825+00:00"
+    },
+    {
+      "etag": "\"3001fb3181bdff32aaf0db63424b3793\"",
+      "name": "prototype-unsplash-2026-07-15/media-032.jpg",
+      "size": 648456,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:24.374064+00:00",
+      "updated_at": "2026-07-15T11:25:24.374064+00:00"
+    },
+    {
+      "etag": "\"fd86a0b6efe9d561f4ed7c7102bd2c72\"",
+      "name": "prototype-unsplash-2026-07-15/media-033.jpg",
+      "size": 762434,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:24.326432+00:00",
+      "updated_at": "2026-07-15T11:25:24.326432+00:00"
+    },
+    {
+      "etag": "\"48952d73f42a749bee296abb65b33913\"",
+      "name": "prototype-unsplash-2026-07-15/media-034.jpg",
+      "size": 377724,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:22.710029+00:00",
+      "updated_at": "2026-07-15T11:25:22.710029+00:00"
+    },
+    {
+      "etag": "\"2f84beaf8771ec9d1360875ebcfc255c\"",
+      "name": "prototype-unsplash-2026-07-15/media-035.jpg",
+      "size": 567126,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:20.66667+00:00",
+      "updated_at": "2026-07-15T11:25:20.66667+00:00"
+    },
+    {
+      "etag": "\"956275ba4e718ef9591c1bb9321228d5\"",
+      "name": "prototype-unsplash-2026-07-15/media-036.jpg",
+      "size": 241881,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:20.190535+00:00",
+      "updated_at": "2026-07-15T11:25:20.190535+00:00"
+    },
+    {
+      "etag": "\"35d0d1d644c85761222af0b748006230\"",
+      "name": "prototype-unsplash-2026-07-15/media-037.jpg",
+      "size": 208631,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:20.07653+00:00",
+      "updated_at": "2026-07-15T11:25:20.07653+00:00"
+    },
+    {
+      "etag": "\"169986bc27874bf5586a252e30eb29d3\"",
+      "name": "prototype-unsplash-2026-07-15/media-038.jpg",
+      "size": 199335,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:32.358564+00:00",
+      "updated_at": "2026-07-15T11:25:32.358564+00:00"
+    },
+    {
+      "etag": "\"ee54bf77bd0a13aa171ef96ff4da3d22\"",
+      "name": "prototype-unsplash-2026-07-15/media-039.jpg",
+      "size": 381449,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:31.075809+00:00",
+      "updated_at": "2026-07-15T11:25:31.075809+00:00"
+    },
+    {
+      "etag": "\"73dec26b1242d3c8d5e79c775bbadf1d\"",
+      "name": "prototype-unsplash-2026-07-15/media-040.jpg",
+      "size": 362986,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:25.380196+00:00",
+      "updated_at": "2026-07-15T11:25:25.380196+00:00"
+    },
+    {
+      "etag": "\"c4eb42fcc146f9e9350645f8f9b2fde4\"",
+      "name": "prototype-unsplash-2026-07-15/media-041.jpg",
+      "size": 155461,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:24.824788+00:00",
+      "updated_at": "2026-07-15T11:25:24.824788+00:00"
+    },
+    {
+      "etag": "\"f988be170693cd5fb337311582848a59\"",
+      "name": "prototype-unsplash-2026-07-15/media-042.jpg",
+      "size": 289883,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:25.387196+00:00",
+      "updated_at": "2026-07-15T11:25:25.387196+00:00"
+    },
+    {
+      "etag": "\"f5e10a521d92a50300accfd4c68201a4\"",
+      "name": "prototype-unsplash-2026-07-15/media-043.jpg",
+      "size": 605720,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:26.053046+00:00",
+      "updated_at": "2026-07-15T11:25:26.053046+00:00"
+    },
+    {
+      "etag": "\"b6efabfd36b2ed826084b8737d924a4f\"",
+      "name": "prototype-unsplash-2026-07-15/media-044.jpg",
+      "size": 152688,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:26.716275+00:00",
+      "updated_at": "2026-07-15T11:25:26.716275+00:00"
+    },
+    {
+      "etag": "\"fdd06624b81eb12a781d96ce42d42405\"",
+      "name": "prototype-unsplash-2026-07-15/media-045.jpg",
+      "size": 227754,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:27.481048+00:00",
+      "updated_at": "2026-07-15T11:25:27.481048+00:00"
+    },
+    {
+      "etag": "\"55fe86eeee7c2838e66dc7ba1860d3a8\"",
+      "name": "prototype-unsplash-2026-07-15/media-046.jpg",
+      "size": 611613,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:26.196809+00:00",
+      "updated_at": "2026-07-15T11:25:26.196809+00:00"
+    },
+    {
+      "etag": "\"f6d924140bff76142a2505bad1558b66\"",
+      "name": "prototype-unsplash-2026-07-15/media-047.jpg",
+      "size": 643313,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:26.657036+00:00",
+      "updated_at": "2026-07-15T11:25:26.657036+00:00"
+    },
+    {
+      "etag": "\"1a125cafaca8a7970480c2b9b0a1c1e1\"",
+      "name": "prototype-unsplash-2026-07-15/media-048.jpg",
+      "size": 221409,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:27.694217+00:00",
+      "updated_at": "2026-07-15T11:25:27.694217+00:00"
+    },
+    {
+      "etag": "\"57897db14783cfb3aa6576b7013d2531\"",
+      "name": "prototype-unsplash-2026-07-15/media-049.jpg",
+      "size": 834068,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:28.200959+00:00",
+      "updated_at": "2026-07-15T11:25:28.200959+00:00"
+    },
+    {
+      "etag": "\"1ef0a8079a20e8b0cc144ce1baebd037\"",
+      "name": "prototype-unsplash-2026-07-15/media-050.jpg",
+      "size": 857647,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:27.04766+00:00",
+      "updated_at": "2026-07-15T11:25:27.04766+00:00"
+    },
+    {
+      "etag": "\"d4c2df40bd9b5cb3270d2b2d75dbb857\"",
+      "name": "prototype-unsplash-2026-07-15/media-051.jpg",
+      "size": 408478,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:27.135928+00:00",
+      "updated_at": "2026-07-15T11:25:27.135928+00:00"
+    },
+    {
+      "etag": "\"a2e1deff756ee5c9e8a2755e5f20971b\"",
+      "name": "prototype-unsplash-2026-07-15/media-052.jpg",
+      "size": 369939,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:26.17633+00:00",
+      "updated_at": "2026-07-15T11:25:26.17633+00:00"
+    },
+    {
+      "etag": "\"372ebfeb77e73194cc163fe4e2f6b987\"",
+      "name": "prototype-unsplash-2026-07-15/media-053.jpg",
+      "size": 452793,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:26.333238+00:00",
+      "updated_at": "2026-07-15T11:25:26.333238+00:00"
+    },
+    {
+      "etag": "\"eb19169c258dbb7139f2c19619abcd38\"",
+      "name": "prototype-unsplash-2026-07-15/media-054.jpg",
+      "size": 246124,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:25.065957+00:00",
+      "updated_at": "2026-07-15T11:25:25.065957+00:00"
+    },
+    {
+      "etag": "\"e61023c610c4297a378e392e236097a2\"",
+      "name": "prototype-unsplash-2026-07-15/media-055.jpg",
+      "size": 581790,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:24.868319+00:00",
+      "updated_at": "2026-07-15T11:25:24.868319+00:00"
+    },
+    {
+      "etag": "\"f1e534e56510eea2ff5ab777d5544523\"",
+      "name": "prototype-unsplash-2026-07-15/media-056.jpg",
+      "size": 426610,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:25.265209+00:00",
+      "updated_at": "2026-07-15T11:25:25.265209+00:00"
+    },
+    {
+      "etag": "\"c9ef53b86e03f76fc578e24d91743478\"",
+      "name": "prototype-unsplash-2026-07-15/media-057.jpg",
+      "size": 900211,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:26.452373+00:00",
+      "updated_at": "2026-07-15T11:25:26.452373+00:00"
+    },
+    {
+      "etag": "\"7022336f516a185d5c975d06c0f1bf5e\"",
+      "name": "prototype-unsplash-2026-07-15/media-058.jpg",
+      "size": 220870,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:28.129683+00:00",
+      "updated_at": "2026-07-15T11:25:28.129683+00:00"
+    },
+    {
+      "etag": "\"8ddb19bd0ae458593f3bd707c077b5f7\"",
+      "name": "prototype-unsplash-2026-07-15/media-059.jpg",
+      "size": 140806,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:28.1096+00:00",
+      "updated_at": "2026-07-15T11:25:28.1096+00:00"
+    },
+    {
+      "etag": "\"0bd31489e1d13d453d24109a1d093949\"",
+      "name": "prototype-unsplash-2026-07-15/media-060.jpg",
+      "size": 464456,
+      "mimetype": "image/jpeg",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T11:25:27.216864+00:00",
+      "updated_at": "2026-07-15T11:25:27.216864+00:00"
+    },
+    {
+      "etag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+      "name": "Untitled folder/.emptyFolderPlaceholder",
+      "size": 0,
+      "mimetype": "application/octet-stream",
+      "bucket_id": "place-photos-public",
+      "created_at": "2026-07-15T10:38:11.895582+00:00",
+      "updated_at": "2026-07-15T10:38:11.895582+00:00"
+    }
+  ]
+}
+

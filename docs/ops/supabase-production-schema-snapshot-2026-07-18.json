@@ -54,31 +54,32 @@
     "validate_saved_route_integrity",
     "validate_shared_link_integrity"
   ],
-  "rowEstimates": {
+  "rowCountMode": "exact count(*) captured with read-only SQL",
+  "rowCounts": {
     "app_events": 0,
     "app_sessions": 0,
     "app_users": 0,
     "discovery_run_places": 0,
     "discovery_run_tags": 0,
     "discovery_runs": 0,
-    "neighborhoods": 0,
+    "neighborhoods": 3,
     "notify_taste_events": 0,
     "notify_taste_results": 0,
     "onboarding_answers": 0,
-    "onboarding_options": 0,
-    "onboarding_questions": 0,
-    "photo_providers": 0,
+    "onboarding_options": 14,
+    "onboarding_questions": 2,
+    "photo_providers": 2,
     "place_actions": 0,
     "place_photos": 0,
     "place_tags": 0,
     "places": 0,
     "route_places": 0,
     "routes": 0,
-    "screen_review_screens": 0,
+    "screen_review_screens": 27,
     "screen_review_tasks": 0,
     "shared_links": 0,
-    "tag_groups": 0,
-    "tags": 0
+    "tag_groups": 3,
+    "tags": 11
   },
   "storageBuckets": [
     {
