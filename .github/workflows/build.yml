@@ -23,6 +23,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Test landing motion
+        run: npm run test:landing-motion
+
+      - name: Check landing motion contracts
+        run: npm run check:landing-motion
+
       - name: Typecheck
         run: npm run typecheck
 
