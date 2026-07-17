@@ -27,6 +27,10 @@ const requiredFiles = [
   "public/home/privacy.html",
   "public/home/terms.html",
   "public/admin/index.html",
+  "public/booth-demo/index.html",
+  "public/booth-demo/app.js",
+  "public/booth-demo/demo-state.js",
+  "public/booth-demo/places.js",
   "public/app/index.html",
   "public/app/styles.css",
   "public/app/config.js",
@@ -114,7 +118,9 @@ assertIncludes(share, "/app?shareType=", "share page redirects to app");
 
 const rewrites = vercel.rewrites ?? [];
 const sources = rewrites.map((rewrite) => rewrite.source);
+const rewriteBySource = new Map(rewrites.map((rewrite) => [rewrite.source, rewrite.destination]));
 assert(sources.includes("/"), "vercel rewrite missing /");
+assert(rewriteBySource.get("/demo") === "/booth-demo", "vercel rewrite missing booth demo");
 assert(sources.includes("/business"), "vercel rewrite missing /business");
 assert(sources.includes("/company"), "vercel rewrite missing /company");
 assert(sources.includes("/notify"), "vercel rewrite missing /notify");

@@ -16,6 +16,7 @@
     { "source": "/r/:shareId", "destination": "/api/share?type=route&shareId=:shareId" },
     { "source": "/s/:shareId", "destination": "/share.html" },
     { "source": "/open", "destination": "/share.html" },
+    { "source": "/demo", "destination": "/booth-demo" },
     { "source": "/", "destination": "/home/index.html" }
   ],
   "headers": [
