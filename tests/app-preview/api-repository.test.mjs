@@ -180,6 +180,9 @@ test("authenticated bootstrap restores private profile and saved items without c
     if (requestUrl === "/api/v1/me/saves?targetType=course&limit=50") {
       return jsonResponse({ data: { items: [{ targetType: "course", targetId: course.id, target: null }] } });
     }
+    if (requestUrl === "/api/v1/courses?limit=50") {
+      return jsonResponse({ data: { items: [course] }, meta: { nextCursor: null } });
+    }
     if (requestUrl === `/api/v1/places/${place.id}`) return jsonResponse({ data: place });
     if (requestUrl === `/api/v1/places/${courseOnlyPlace.id}`) return jsonResponse({ data: courseOnlyPlace });
     if (requestUrl === `/api/v1/courses/${course.id}`) return jsonResponse({ data: course });
@@ -196,12 +199,14 @@ test("authenticated bootstrap restores private profile and saved items without c
   assert.equal(snapshot.viewerProfileId, profile.id);
   assert.deepEqual(snapshot.savedPlaceIds, [place.id]);
   assert.deepEqual(snapshot.savedCourseIds, [course.id]);
+  assert.deepEqual(snapshot.ownedCourseIds, [course.id]);
   assert.equal(snapshot.profiles.some((item) => item.id === profile.id), true);
   assert.equal(snapshot.places.some((item) => item.id === place.id), true);
   assert.equal(snapshot.places.some((item) => item.id === courseOnlyPlace.id), true);
   assert.equal(snapshot.courses.some((item) => item.id === course.id), true);
   assert.equal(requests.includes(`/api/v1/places/${courseOnlyPlace.id}`), true);
   assert.equal(requests.includes("/api/v1/me/profile"), true);
+  assert.equal(requests.includes("/api/v1/courses?limit=50"), true);
 
   const publicCache = JSON.parse(storage.getItem("doripe.app_preview.api_snapshot.v1"));
   assert.equal(publicCache.snapshot.personalDataLoaded, false);

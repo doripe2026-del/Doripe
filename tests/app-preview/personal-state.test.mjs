@@ -79,3 +79,21 @@ test("post-login hydration preserves guest saves while adding server account dat
   ]);
   assert.equal(merged.profile.id, "viewer-1");
 });
+
+test("owned courses return after reload even when they are not separately saved", () => {
+  const merged = mergePersonalSnapshotIntoState({ savedRoutes: [] }, {
+    personalDataLoaded: true,
+    viewerProfileId: "viewer-1",
+    savedPlaceIds: [],
+    savedCourseIds: [],
+    ownedCourseIds: ["owned-course"],
+    profiles: [{ id: "viewer-1", name: "도리" }],
+    courses: [{ id: "owned-course", name: "내 코스", placeIds: ["place-1", "place-2"] }]
+  });
+
+  assert.deepEqual(merged.savedRoutes, [{
+    id: "owned-course",
+    name: "내 코스",
+    placeIds: ["place-1", "place-2"]
+  }]);
+});

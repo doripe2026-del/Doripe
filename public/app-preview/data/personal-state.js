@@ -16,7 +16,10 @@ export function mergePersonalSnapshotIntoState(state = {}, snapshot = {}, { pres
   if (snapshot.personalDataLoaded !== true) return clone(state);
 
   const viewer = (snapshot.profiles || []).find((profile) => profile.id === snapshot.viewerProfileId) || null;
-  const savedCourseIds = new Set(snapshot.savedCourseIds || []);
+  const savedCourseIds = new Set([
+    ...(snapshot.savedCourseIds || []),
+    ...(snapshot.ownedCourseIds || [])
+  ]);
   const savedRoutes = (snapshot.courses || [])
     .filter((course) => savedCourseIds.has(course.id))
     .map((course) => ({

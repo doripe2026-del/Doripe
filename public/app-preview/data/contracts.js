@@ -22,6 +22,7 @@ export function createEmptyDataSnapshot() {
     personalDataLoaded: false,
     savedPlaceIds: Object.freeze([]),
     savedCourseIds: Object.freeze([]),
+    ownedCourseIds: Object.freeze([]),
     ...Object.fromEntries(COLLECTION_KEYS.map((key) => [key, Object.freeze([])]))
   });
 }
@@ -34,6 +35,7 @@ export function normalizeDataSnapshot(value = {}) {
     personalDataLoaded: value.personalDataLoaded === true,
     savedPlaceIds: normalizeIdList(value.savedPlaceIds),
     savedCourseIds: normalizeIdList(value.savedCourseIds),
+    ownedCourseIds: normalizeIdList(value.ownedCourseIds),
     ...Object.fromEntries(COLLECTION_KEYS.map((key) => [
       key,
       Object.freeze(structuredClone(Array.isArray(value[key]) ? value[key] : []))

@@ -125,6 +125,9 @@ test("a returning signed-in user sees server profile, saves, and complete course
         items: [{ targetType: "course", targetId: COURSE_ID, target: null }]
       }, meta: { nextCursor: null } } });
     }
+    if (path === "courses" && url.searchParams.get("limit") === "50") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
     if (path === `places/${PLACE_IDS[0]}`) {
       return route.fulfill({ status: 200, json: { data: place(PLACE_IDS[0], 0), meta: {} } });
     }
@@ -247,6 +250,9 @@ test("signing in hydrates server account data without discarding guest saves", a
       }, meta: { nextCursor: null } } });
     }
     if (path === "me/saves" && url.searchParams.get("targetType") === "course") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    if (path === "courses" && url.searchParams.get("limit") === "50") {
       return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
     }
     if (path === "sessions") {

@@ -192,6 +192,7 @@ function buildSnapshot({ bootstrap, feed, places, courses }) {
     personalDataLoaded: false,
     savedPlaceIds: [],
     savedCourseIds: [],
+    ownedCourseIds: [],
     places: placeResults.map((result) => result.place),
     media,
     profiles,
@@ -202,7 +203,7 @@ function buildSnapshot({ bootstrap, feed, places, courses }) {
   });
 }
 
-function mergePersonalData(snapshot, { profile, savedPlaceIds, savedCourseIds, places, courses }) {
+function mergePersonalData(snapshot, { profile, savedPlaceIds, savedCourseIds, ownedCourseIds, places, courses }) {
   const placeResults = places.map((place) => toPlace(place));
   const media = places.flatMap((place) => (place.media || []).map((item) => toMedia(item, {
     createdAt: place.updatedAt || null
@@ -213,6 +214,7 @@ function mergePersonalData(snapshot, { profile, savedPlaceIds, savedCourseIds, p
     personalDataLoaded: true,
     savedPlaceIds,
     savedCourseIds,
+    ownedCourseIds,
     places: mergeUnique([...snapshot.places, ...placeResults.map((result) => result.place)]),
     media: mergeUnique([...snapshot.media, ...media]),
     profiles: mergeUnique([...snapshot.profiles, profile]),
@@ -339,10 +341,11 @@ export function createApiRepository({
   }
 
   async function loadPersonalData(snapshot) {
-    const [profileData, placePage, coursePage] = await Promise.all([
+    const [profileData, placePage, coursePage, ownedCoursePage] = await Promise.all([
       request("me/profile", { auth: true }),
       request("me/saves?targetType=place&limit=50", { auth: true }),
-      request("me/saves?targetType=course&limit=50", { auth: true })
+      request("me/saves?targetType=course&limit=50", { auth: true }),
+      request("courses?limit=50", { auth: true })
     ]);
     const profile = toProfile(profileData);
     const savedPlaceIds = [...new Set((placePage?.items || [])
@@ -353,6 +356,8 @@ export function createApiRepository({
       .filter((item) => item.targetType === "course")
       .map((item) => item.targetId || item.target?.id)
       .filter(Boolean))];
+    const ownedCourses = Array.isArray(ownedCoursePage?.items) ? ownedCoursePage.items : [];
+    const ownedCourseIds = [...new Set(ownedCourses.map((course) => course.id).filter(Boolean))];
     const knownPlaceIds = new Set(snapshot.places.map((item) => item.id));
     const knownCourseIds = new Set(snapshot.courses.map((item) => item.id));
     const missingDetails = [
@@ -370,7 +375,8 @@ export function createApiRepository({
       ...snapshot.courses
         .filter((item) => savedCourseIds.includes(item.id))
         .flatMap((item) => item.placeIds || []),
-      ...savedCourses.flatMap((item) => (item.places || []).map((coursePlace) => coursePlace.placeId))
+      ...savedCourses.flatMap((item) => (item.places || []).map((coursePlace) => coursePlace.placeId)),
+      ...ownedCourses.flatMap((item) => (item.places || []).map((coursePlace) => coursePlace.placeId))
     ].filter(Boolean));
     const missingCoursePlaces = [...savedCoursePlaceIds]
       .filter((id) => !knownPlaceIds.has(id) && !fetchedPlaceIds.has(id));
@@ -383,8 +389,9 @@ export function createApiRepository({
       profile,
       savedPlaceIds,
       savedCourseIds,
+      ownedCourseIds,
       places: [...savedPlaces, ...coursePlaces],
-      courses: savedCourses
+      courses: [...savedCourses, ...ownedCourses]
     });
   }
 
