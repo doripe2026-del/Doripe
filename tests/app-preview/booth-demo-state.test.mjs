@@ -39,6 +39,7 @@ test("booth demo is responsive without PWA installation behavior", async () => {
   assert.match(css, /@media \(max-width: 380px\)/);
   assert.match(css, /@media \(min-width: 960px\)/);
   assert.match(css, /@media \(max-height: 620px\) and \(orientation: landscape\)/);
+  assert.doesNotMatch(css, /html,\s*\nbody\s*\{[\s\S]*?overflow-x:\s*hidden/);
   assert.doesNotMatch(html, /rel="manifest"|serviceWorker|apple-mobile-web-app/);
 });
 
