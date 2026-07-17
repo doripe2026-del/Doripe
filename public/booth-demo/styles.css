@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Doripe Pretendard";
-  src: url("/app-preview/assets/fonts/PretendardVariable.woff2") format("woff2");
+  src: url("/app/assets/fonts/PretendardVariable.woff2") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 100 900;

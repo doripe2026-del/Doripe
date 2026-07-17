@@ -196,11 +196,12 @@ function armInactivityReset() {
   }, INACTIVITY_MS);
 }
 
-function update(nextState) {
+function update(nextState, { preserveScroll = false } = {}) {
+  const previousScrollY = window.scrollY;
   state = nextState;
   if (state.screen !== "feed") feedBatchCount = 1;
   render();
-  window.scrollTo({ top: 0, behavior: "instant" });
+  window.scrollTo({ top: preserveScroll ? previousScrollY : 0, behavior: "instant" });
   armInactivityReset();
 }
 
@@ -215,7 +216,9 @@ root.addEventListener("click", (event) => {
   else if (target.dataset.action === "complete") update(completeCourse(state));
   else if (target.dataset.action === "reset") update(createInitialState());
   else if (target.dataset.placeId && state.screen === "feed") update(openPlace(state, target.dataset.placeId));
-  else if (target.dataset.placeId && state.screen === "builder") update(toggleAdditionalPlace(state, target.dataset.placeId));
+  else if (target.dataset.placeId && state.screen === "builder") {
+    update(toggleAdditionalPlace(state, target.dataset.placeId), { preserveScroll: true });
+  }
 });
 
 root.addEventListener("error", (event) => {

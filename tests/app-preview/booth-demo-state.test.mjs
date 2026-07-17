@@ -75,4 +75,17 @@ test("booth CSS includes touch, safe area, and reduced motion rules", async () =
   assert.match(css, /env\(safe-area-inset-bottom\)/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /#10c76f/i);
+  assert.match(css, /\/app\/assets\/fonts\/PretendardVariable\.woff2/);
+  assert.doesNotMatch(css, /\/app-preview\//);
+  await access(new URL("public/app/assets/fonts/PretendardVariable.woff2", root));
+});
+
+test("selecting a nearby place preserves the builder scroll position", async () => {
+  const app = await readFile(new URL("public/booth-demo/app.js", root), "utf8");
+  assert.match(app, /const previousScrollY = window\.scrollY/);
+  assert.match(app, /top: preserveScroll \? previousScrollY : 0/);
+  assert.match(
+    app,
+    /toggleAdditionalPlace\(state, target\.dataset\.placeId\),\s*\{ preserveScroll: true \}/
+  );
 });
