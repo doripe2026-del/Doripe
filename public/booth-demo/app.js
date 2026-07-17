@@ -79,6 +79,14 @@ function renderDetail() {
   `;
 }
 
+function completionAction(selectedCount) {
+  return selectedCount > 0 ? `
+    <button class="primary-action floating-action touch-target" type="button" data-action="complete">
+      ${selectedCount}곳으로 코스 완성하기
+    </button>
+  ` : "";
+}
+
 function renderBuilder() {
   const startPlace = placeById.get(state.startPlaceId);
   const startImage = selectedImageByPlaceId.get(startPlace.id) ?? startPlace.image;
@@ -109,13 +117,32 @@ function renderBuilder() {
             && selectedImageByPlaceId.get(item.placeId) === item.image
         })).join("")}
       </div>
-      ${selectedCount > 0 ? `
-        <button class="primary-action floating-action touch-target" type="button" data-action="complete">
-          ${selectedCount}곳으로 코스 완성하기
-        </button>
-      ` : ""}
+      ${completionAction(selectedCount)}
     </section>
   `;
+}
+
+function syncBuilderSelection(placeId) {
+  const builder = root.querySelector(".builder");
+  if (!builder) return;
+
+  const selectedImage = selectedImageByPlaceId.get(placeId);
+  for (const tile of builder.querySelectorAll(`[data-place-id="${placeId}"]`)) {
+    const isSelected = state.selectedPlaceIds.includes(placeId)
+      && tile.dataset.image === selectedImage;
+    tile.classList.toggle("is-selected", isSelected);
+    tile.setAttribute("aria-pressed", String(isSelected));
+  }
+
+  const selectedCount = state.selectedPlaceIds.length;
+  const currentAction = builder.querySelector('[data-action="complete"]');
+  if (selectedCount === 0) {
+    currentAction?.remove();
+  } else if (currentAction) {
+    currentAction.textContent = `${selectedCount}곳으로 코스 완성하기`;
+  } else {
+    builder.insertAdjacentHTML("beforeend", completionAction(selectedCount));
+  }
 }
 
 function renderComplete() {
@@ -210,7 +237,9 @@ root.addEventListener("click", (event) => {
     } else {
       selectedImageByPlaceId.set(target.dataset.placeId, selection.image);
     }
-    update(selection.state, { preserveScroll: true });
+    state = selection.state;
+    syncBuilderSelection(target.dataset.placeId);
+    armInactivityReset();
   }
 });
 

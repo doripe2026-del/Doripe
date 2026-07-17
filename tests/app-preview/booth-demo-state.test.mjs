@@ -111,12 +111,15 @@ test("booth CSS includes touch, safe area, and reduced motion rules", async () =
   await access(new URL("public/app/assets/fonts/PretendardVariable.woff2", root));
 });
 
-test("selecting a nearby place preserves the builder scroll position", async () => {
+test("screen transitions can preserve their scroll position", async () => {
   const app = await readFile(new URL("public/booth-demo/app.js", root), "utf8");
   assert.match(app, /const previousScrollY = window\.scrollY/);
   assert.match(app, /top: preserveScroll \? previousScrollY : 0/);
-  assert.match(
-    app,
-    /update\(selection\.state, \{ preserveScroll: true \}\)/
-  );
+});
+
+test("selecting a builder photo updates in place without replacing the full photo feed", async () => {
+  const app = await readFile(new URL("public/booth-demo/app.js", root), "utf8");
+  assert.match(app, /function syncBuilderSelection/);
+  assert.match(app, /syncBuilderSelection\(target\.dataset\.placeId\)/);
+  assert.doesNotMatch(app, /update\(selection\.state, \{ preserveScroll: true \}\)/);
 });
