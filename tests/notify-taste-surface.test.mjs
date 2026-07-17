@@ -6,6 +6,7 @@ import test from "node:test";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const notifyPath = `${root}/public/home/notify.html`;
 const notify = readFileSync(notifyPath, "utf8");
+const vercelConfig = JSON.parse(readFileSync(`${root}/vercel.json`, "utf8"));
 
 function readNotifyRounds(source) {
   const match = source.match(/const notifyRounds = (\[[\s\S]*?\n  \]);/);
@@ -54,4 +55,15 @@ test("landing headers keep only Doripe and the notify call to action", () => {
     assert.doesNotMatch(header, />Business</);
     assert.doesNotMatch(header, />Company</);
   }
+});
+
+test("notify clean URL resolves through the clean destination and always revalidates", () => {
+  const rewrite = vercelConfig.rewrites.find(({ source }) => source === "/notify");
+  assert.deepEqual(rewrite, { source: "/notify", destination: "/home/notify" });
+
+  const cacheRule = vercelConfig.headers.find(({ source }) => source === "/notify");
+  assert.ok(cacheRule, "notify must have an explicit cache rule");
+  assert.deepEqual(cacheRule.headers, [
+    { key: "Cache-Control", value: "public, max-age=0, must-revalidate" }
+  ]);
 });
