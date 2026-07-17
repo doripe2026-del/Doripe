@@ -11,7 +11,7 @@
     "build:home-css": "tailwindcss -c scripts/tailwind.home.config.cjs -i scripts/home-tailwind.css -o public/home/home.css --minify",
     "guard:repo": "node scripts/guard-repository.mjs",
     "check:session": "node scripts/check-session-context.mjs",
-    "check:supabase": "node scripts/check-supabase-migrations.mjs",
+    "check:supabase": "node scripts/check-supabase-migrations.mjs && node scripts/check-supabase-bridge-plan.mjs",
     "check:supabase-runtime": "node scripts/check-supabase-runtime-drift.mjs",
     "check:supabase-bridge-baseline": "node scripts/check-supabase-bridge-baseline.mjs",
     "check:ops": "node scripts/check-ops-readiness.mjs",

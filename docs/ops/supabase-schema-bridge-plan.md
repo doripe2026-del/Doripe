@@ -67,6 +67,8 @@
 | 9 | RLS, grant, RPC, trigger 적용 |
 | 10 | Storage 공개 목록 차단과 private bucket 보안 적용 |
 
+50개 local migration의 개별 처리는 `supabase-bridge-execution-plan.json`에 고정했다. 새 migration이 추가되거나 원격 migration이 달라졌는데 분류가 없으면 `npm run check:supabase`가 실패한다. 이 분류표도 staging 실행 권한이나 production 변경 승인을 부여하지 않는다.
+
 ## 기존 구조 처리 원칙
 
 - 제자리 확장 우선: `neighborhoods`, `places`, `place_photos`, `shared_links`
