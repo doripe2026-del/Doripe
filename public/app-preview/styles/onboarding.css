@@ -204,6 +204,12 @@
   background: #10c76f;
 }
 
+.app-boot-screen .loading-fill {
+  left: 105px;
+  width: 14.64px;
+  transition: width 220ms cubic-bezier(.2, .8, .2, 1);
+}
+
 .onboarding-a3 .a3-brand {
   position: absolute;
   top: 150px;

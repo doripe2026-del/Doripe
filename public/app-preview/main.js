@@ -11,6 +11,15 @@ import { createAnalyticsClient } from "./analytics-client.js";
 
 const groups = ["A", "B", "C", "D", "E"];
 preloadServerMedia();
+const phoneRoot = document.querySelector("#phone-root");
+const bootProgress = phoneRoot.querySelector("[data-app-boot] [role='progressbar']");
+function setBootProgress(value) {
+  if (!bootProgress?.isConnected) return;
+  const progress = Math.max(Number(bootProgress.getAttribute("aria-valuenow")) || 0, Math.min(100, value));
+  bootProgress.setAttribute("aria-valuenow", String(progress));
+  bootProgress.style.width = `${183 * progress / 100}px`;
+}
+
 const authClient = createAuthClient();
 const staticPreview = isStaticPreview();
 const hadStartupSession = Boolean(window.sessionStorage.getItem("doripe.app_preview.auth.session.v1"));
@@ -18,6 +27,7 @@ const startupAuthResult = await authClient.initializeSession({
   url: window.location.href,
   replaceState: (url) => window.history.replaceState(window.history.state, "", url)
 });
+setBootProgress(45);
 const repository = getAdapter(isStaticPreview() ? "fixture" : "api", {
   accessTokenProvider: authClient.getAccessToken
 });
@@ -32,10 +42,10 @@ try {
 } catch (error) {
   dataLoadError = error;
 }
+setBootProgress(92);
 const dataSnapshot = dataStore.getSnapshot();
 const dataCatalog = createDataCatalog(dataSnapshot);
 const state = createPreviewState({ catalog: dataCatalog });
-const phoneRoot = document.querySelector("#phone-root");
 const reviewList = document.querySelector("#review-list");
 const resetButton = document.querySelector("#review-reset");
 const BROWSER_HISTORY_KEY = "doripeAppPreview";
@@ -1039,6 +1049,7 @@ if (!startupAuthResult.ok) {
   window.sessionStorage.removeItem(LOGOUT_GUARD_KEY);
 }
 analyticsClient?.attachLifecycle();
+setBootProgress(100);
 renderFromUrl();
 if (analyticsClient) {
   analyticsSession = analyticsClient.startSession({
