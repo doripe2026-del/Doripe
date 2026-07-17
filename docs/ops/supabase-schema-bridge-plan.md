@@ -30,6 +30,14 @@
 - 완료: Storage 176개 목록과 실제 파일 174개, 폴더 표시 2개, 객체별 SHA-256
 - 남음: DB custom-format dump
 
+## 자동 baseline 잠금장치
+
+- `npm run check:supabase-bridge-baseline`은 대상 project, migration 9개, 핵심 테이블 타입과 행 수, Storage inventory와 로컬 checksum 사본을 함께 확인한다.
+- `supabase/preflight/web_mvp_bridge_baseline.sql`은 staging 또는 승인된 SQL 환경에서 같은 기준이 유지되는지 읽기 전용으로 검사한다.
+- 둘 중 하나라도 실패하면 bridge migration 작성·적용을 중단한다.
+- 통과는 "현재 백업과 동일하다"는 뜻이며 production 변경 승인을 뜻하지 않는다.
+- 확인된 핵심 타입 충돌과 안전한 전환안은 `supabase-bridge-impact-report-2026-07-18.md`에 기록했다.
+
 ## 안전한 전환 순서
 
 1. 대상 프로젝트의 테이블, 컬럼, 제약조건, RLS, 함수, trigger와 정확한 행 수를 읽기 전용으로 내보낸다.

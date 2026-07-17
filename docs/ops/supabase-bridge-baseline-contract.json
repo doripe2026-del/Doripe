@@ -1,0 +1,112 @@
+{
+  "projectId": "dcyjrsxnpujslbxtitqj",
+  "capturedAt": "2026-07-18T00:00:00+09:00",
+  "requiredRemoteMigrations": [
+    "20260626002753",
+    "20260626005454",
+    "20260626010339",
+    "20260627073734",
+    "20260705063010",
+    "20260705063049",
+    "20260705063333",
+    "20260705075436",
+    "20260715101938"
+  ],
+  "requiredTables": {
+    "neighborhoods": {
+      "rowCount": 3,
+      "columns": {
+        "id": "uuid",
+        "slug": "text",
+        "name": "text",
+        "status": "text"
+      }
+    },
+    "photo_providers": {
+      "rowCount": 2,
+      "columns": {
+        "id": "uuid",
+        "name": "text"
+      }
+    },
+    "places": {
+      "rowCount": 0,
+      "columns": {
+        "id": "uuid",
+        "neighborhood_id": "uuid",
+        "place_type_tag_id": "uuid",
+        "name": "text",
+        "app_status": "text"
+      }
+    },
+    "place_photos": {
+      "rowCount": 0,
+      "columns": {
+        "id": "uuid",
+        "place_id": "uuid",
+        "provider_id": "uuid",
+        "public_url": "text",
+        "status": "text"
+      }
+    },
+    "place_tags": {
+      "rowCount": 0,
+      "columns": {
+        "place_id": "uuid",
+        "tag_id": "uuid"
+      }
+    },
+    "shared_links": {
+      "rowCount": 0,
+      "columns": {
+        "id": "uuid",
+        "slug": "text",
+        "content_type": "text",
+        "place_id": "uuid",
+        "route_id": "uuid"
+      }
+    },
+    "tag_groups": {
+      "rowCount": 3,
+      "columns": {
+        "id": "uuid",
+        "key": "text",
+        "label": "text"
+      }
+    },
+    "tags": {
+      "rowCount": 11,
+      "columns": {
+        "id": "uuid",
+        "group_id": "uuid",
+        "key": "text",
+        "label": "text"
+      }
+    }
+  },
+  "mustRemainEmptyBeforeBridge": [
+    "app_events",
+    "app_sessions",
+    "app_users",
+    "discovery_run_places",
+    "discovery_run_tags",
+    "discovery_runs",
+    "onboarding_answers",
+    "place_actions",
+    "place_photos",
+    "place_tags",
+    "places",
+    "route_places",
+    "routes",
+    "screen_review_tasks",
+    "shared_links"
+  ],
+  "storage": {
+    "bucketId": "place-photos-public",
+    "objectCount": 176,
+    "totalBytes": 153392247,
+    "orderedNameChecksum": "fe2807c3a1615b657acb106a8bdaa3eb",
+    "downloadedFileCount": 174,
+    "downloadedFileBytes": 153392247
+  }
+}
