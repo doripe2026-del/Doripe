@@ -4,7 +4,7 @@ const COLLECTION_KEYS = Object.freeze([
 
 const REPOSITORY_METHODS = Object.freeze([
   "getBootstrap", "getFeed", "getContentDetail", "getPlaceDetail",
-  "getCourseDetail", "getPublicProfile", "getMyProfile", "getSavedPlaces", "getSavedCourses",
+  "getPlaceSnapshot", "getCourseDetail", "getCourseSnapshot", "getPublicProfile", "getMyProfile", "getSavedPlaces", "getSavedCourses",
   "updateMyProfile", "putMyOnboarding",
   "savePlace", "unsavePlace", "saveCourse", "unsaveCourse",
   "followProfile", "unfollowProfile", "likeContent", "unlikeContent",
@@ -39,6 +39,29 @@ export function normalizeDataSnapshot(value = {}) {
     ...Object.fromEntries(COLLECTION_KEYS.map((key) => [
       key,
       Object.freeze(structuredClone(Array.isArray(value[key]) ? value[key] : []))
+    ]))
+  });
+}
+
+export function mergeDataSnapshots(base = {}, extension = {}) {
+  const current = normalizeDataSnapshot(base);
+  const incoming = normalizeDataSnapshot(extension);
+  const mergeById = (left, right) => {
+    const merged = new Map(left.map((item) => [item.id, item]));
+    for (const item of right) merged.set(item.id, { ...(merged.get(item.id) || {}), ...item });
+    return [...merged.values()];
+  };
+
+  return normalizeDataSnapshot({
+    ...current,
+    viewerProfileId: current.viewerProfileId || incoming.viewerProfileId,
+    personalDataLoaded: current.personalDataLoaded || incoming.personalDataLoaded,
+    savedPlaceIds: [...current.savedPlaceIds, ...incoming.savedPlaceIds],
+    savedCourseIds: [...current.savedCourseIds, ...incoming.savedCourseIds],
+    ownedCourseIds: [...current.ownedCourseIds, ...incoming.ownedCourseIds],
+    ...Object.fromEntries(COLLECTION_KEYS.map((key) => [
+      key,
+      mergeById(current[key], incoming[key])
     ]))
   });
 }

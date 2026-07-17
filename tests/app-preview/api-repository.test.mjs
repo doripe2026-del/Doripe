@@ -372,6 +372,43 @@ test("public reads remain anonymous when no session exists", async () => {
   assert.equal(requests[0].options.headers.authorization, undefined);
 });
 
+test("place snapshots preserve detail media and taxonomy for shared deep links", async () => {
+  const repository = createApiRepository({
+    fetchImpl: async () => jsonResponse({ data: place }),
+    storage: memoryStorage()
+  });
+
+  const snapshot = await repository.getPlaceSnapshot(place.id);
+
+  assert.deepEqual(snapshot.places.map((item) => item.id), [place.id]);
+  assert.deepEqual(snapshot.media.map((item) => item.id), [place.media[0].id]);
+  assert.equal(snapshot.tags.some((item) => item.name === "데이트"), true);
+  assert.equal(snapshot.tags.some((item) => item.name === "소품/체험"), true);
+});
+
+test("course snapshots hydrate every referenced place for shared route links", async () => {
+  const requested = [];
+  const repository = createApiRepository({
+    fetchImpl: async (url) => {
+      requested.push(String(url));
+      if (String(url) === `/api/v1/courses/${course.id}`) return jsonResponse({ data: course });
+      if (String(url) === `/api/v1/profiles/${profile.id}`) return jsonResponse({ data: profile });
+      if (String(url) === `/api/v1/places/${place.id}`) return jsonResponse({ data: place });
+      if (String(url) === `/api/v1/places/${courseOnlyPlace.id}`) return jsonResponse({ data: courseOnlyPlace });
+      throw new Error(`Unexpected request: ${url}`);
+    },
+    storage: memoryStorage()
+  });
+
+  const snapshot = await repository.getCourseSnapshot(course.id);
+
+  assert.deepEqual(snapshot.courses.map((item) => item.id), [course.id]);
+  assert.deepEqual(snapshot.places.map((item) => item.id), [place.id, courseOnlyPlace.id]);
+  assert.deepEqual(snapshot.courses[0].placeIds, [place.id, courseOnlyPlace.id]);
+  assert.deepEqual(snapshot.profiles.map((item) => item.id), [profile.id]);
+  assert.equal(requested.length, 4);
+});
+
 test("create mutations send an idempotency key", async () => {
   const requests = [];
   const repository = createApiRepository({

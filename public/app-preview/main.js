@@ -6,6 +6,7 @@ import { getAdapter } from "./api-adapter.js";
 import { courseById, createDataCatalog } from "./data/selectors.js";
 import { createActionSync } from "./data/action-sync.js";
 import { createAppDataStore } from "./data/store.js";
+import { mergeDataSnapshots } from "./data/contracts.js";
 import { mergePersonalSnapshotIntoState } from "./data/personal-state.js";
 import {
   createGuestMigrationPlan,
@@ -82,7 +83,7 @@ const MEDIA_HIDE_EVENT = "app-preview:media-hide";
 const SHARE_PARAM_KEYS = Object.freeze(["type", "id", "rn", "rp"]);
 const MAX_SHARED_QUERY_LENGTH = 2048;
 const MAX_SHARED_QUERY_TOKENS = 12;
-const MAX_RAW_SHARE_LENGTHS = Object.freeze({ type: 8, id: 32, rn: 360, rp: 128 });
+const MAX_RAW_SHARE_LENGTHS = Object.freeze({ type: 8, id: 100, rn: 360, rp: 128 });
 const MAX_ROUTE_ID_DIGITS = 9;
 const MAX_ROUTE_NAME_CODE_POINTS = 30;
 const MAX_ROUTE_PLACE_COUNT = 10;
@@ -250,6 +251,35 @@ function readSharedTargetFromUrl() {
   const existingRoute = interactionState.savedRoutes?.find((route) => route.id === id);
   if (existingRoute) return { type, id, route: existingRoute, shareParams: { type, id } };
   return { errorId: id };
+}
+
+async function hydrateSharedTargetFromUrl() {
+  const rawShare = rawShareValuesFromUrl();
+  if (!rawShare || rawShare.errorId) return rawShare;
+  const { values } = rawShare;
+  const type = decodeRawShareValue(values.type);
+  const id = decodeRawShareValue(values.id);
+  if (!id || !/^[A-Za-z0-9_-]{1,100}$/u.test(id) || !["place", "route"].includes(type)) {
+    return { errorId: id || type || "shared-target" };
+  }
+  if (type === "place" && (values.rn !== undefined || values.rp !== undefined)) return { errorId: id };
+
+  const isKnown = type === "place" ? dataCatalog.isKnownPlaceId(id) : dataCatalog.isKnownCourseId(id);
+  const hasSnapshot = values.rn !== undefined || values.rp !== undefined;
+  if (isKnown || hasSnapshot || repository.mode !== "api") return null;
+
+  try {
+    const incoming = type === "place"
+      ? await repository.getPlaceSnapshot(id)
+      : await repository.getCourseSnapshot(id);
+    dataSnapshot = mergeDataSnapshots(dataSnapshot, incoming);
+    dataCatalog = createDataCatalog(dataSnapshot);
+    state.setCatalog(dataCatalog);
+    interactionState = state.getState();
+    return null;
+  } catch {
+    return { errorId: id };
+  }
 }
 
 function restoreSharedTargetFromUrl() {
@@ -493,12 +523,18 @@ function restoreBrowserNavigation(snapshot, screenId) {
   state.replace({ ...currentState, currentScreenId: screenId, history });
 }
 
-function renderFromUrl(event) {
+async function renderFromUrl(event) {
   const requestedScreenId = readScreenIdFromUrl() || state.getState().currentScreenId;
   if (getScreen(requestedScreenId) && authorizedScreenId(requestedScreenId) !== requestedScreenId) {
     replaceWithLoginState();
     renderScreen("a3");
     writeScreenIdToUrl("a3", { replace: true });
+    return;
+  }
+  const hydrationError = await hydrateSharedTargetFromUrl();
+  if (hydrationError?.errorId) {
+    stripInvalidShareParamsFromUrl();
+    renderScreen(hydrationError.errorId);
     return;
   }
   const sharedTarget = restoreSharedTargetFromUrl();
@@ -576,7 +612,7 @@ function canonicalAppLink(screenId, payload) {
   url.searchParams.set("screen", screenId);
   if (type) url.searchParams.set("type", type);
   if (id) url.searchParams.set("id", id);
-  if (type === "route" && id) {
+  if (type === "route" && /^saved-route-\d+$/u.test(id || "")) {
     const route = interactionState.savedRoutes?.find((item) => item.id === id);
     if (route) {
       url.searchParams.set("rn", route.name);
@@ -986,7 +1022,7 @@ function enforceLocalLogoutAfterRestore() {
   writeScreenIdToUrl("a3", { replace: true });
 }
 
-window.addEventListener("popstate", renderFromUrl);
+window.addEventListener("popstate", (event) => { void renderFromUrl(event); });
 window.addEventListener("pageshow", enforceLocalLogoutAfterRestore);
 document.addEventListener(SCREEN_NAVIGATE_EVENT, (event) => {
   navigate(event.detail.screenId, { replace: event.detail.replace === true });
@@ -1134,7 +1170,7 @@ if (!startupAuthResult.ok) {
 }
 analyticsClient?.attachLifecycle();
 setBootProgress(100);
-renderFromUrl();
+await renderFromUrl();
 if (analyticsClient) {
   analyticsSession = analyticsClient.startSession({
     entryPath: `${window.location.pathname}${window.location.search}`,

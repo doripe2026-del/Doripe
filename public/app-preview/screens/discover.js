@@ -243,16 +243,27 @@ function createDetailSocialOverlay({
   overlay.dataset.testid = "detail-social-overlay";
   overlay.dataset.contentType = contentType;
 
-  const profile = actionButton(
-    `${user.name} 프로필 보기`,
-    "open-profile",
-    { userId: user.id },
-    `discover-detail-social__profile ${legacyProfileClass}`.trim()
-  );
-  const profilePill = authorChip(user, "discover-detail-social__profile-pill");
-  profilePill.querySelector(".discover-detail-social__profile-pill__badge")
-    ?.classList.add("discover-detail-social__badge");
-  profile.append(profilePill);
+  const profile = element("button", `discover-detail-social__profile ${legacyProfileClass}`.trim());
+  profile.type = "button";
+  const updateProfile = (nextUser) => {
+    if (!nextUser) {
+      profile.hidden = true;
+      profile.replaceChildren();
+      delete profile.dataset.action;
+      delete profile.dataset.userId;
+      profile.removeAttribute("aria-label");
+      return;
+    }
+    profile.hidden = false;
+    profile.dataset.action = "open-profile";
+    profile.dataset.userId = nextUser.id;
+    profile.setAttribute("aria-label", `${nextUser.name} 프로필 보기`);
+    const profilePill = authorChip(nextUser, "discover-detail-social__profile-pill");
+    profilePill.querySelector(".discover-detail-social__profile-pill__badge")
+      ?.classList.add("discover-detail-social__badge");
+    profile.replaceChildren(profilePill);
+  };
+  updateProfile(user);
 
   const actions = element("div", `discover-detail-social__actions ${legacyActionsClass}`.trim());
   const like = likeAction
@@ -272,12 +283,7 @@ function createDetailSocialOverlay({
   overlay.append(profile, actions);
 
   const updateMediaContext = ({ user: nextUser, liked: nextLiked, mediaId }) => {
-    profile.dataset.userId = nextUser.id;
-    profile.setAttribute("aria-label", `${nextUser.name} 프로필 보기`);
-    const nextProfilePill = authorChip(nextUser, "discover-detail-social__profile-pill");
-    nextProfilePill.querySelector(".discover-detail-social__profile-pill__badge")
-      ?.classList.add("discover-detail-social__badge");
-    profile.replaceChildren(nextProfilePill);
+    updateProfile(nextUser);
     like.dataset.mediaId = mediaId;
     like.setAttribute("aria-pressed", String(nextLiked));
     like.setAttribute("aria-label", nextLiked ? "좋아요 취소" : "좋아요");
@@ -786,7 +792,6 @@ function renderCoursePostDetail(routeId, state, data) {
   const author = profileById(data, content?.authorProfileId)
     || profileById(data, route.userId)
     || viewerProfile(data);
-  if (!author) return unavailableScreen("b4", "작성자를 찾을 수 없어요");
   const heroPlace = placeById(data, route.placeIds[0]);
   const heroMedia = contentMedia(data, content)[0] || mediaForPlace(data, heroPlace)[0];
   if (!heroMedia) return unavailableScreen("b4", "코스 사진을 찾을 수 없어요");

@@ -203,6 +203,19 @@ function buildSnapshot({ bootstrap, feed, places, courses }) {
   });
 }
 
+function snapshotFromPlaces(places = [], { courses = [], profiles = [] } = {}) {
+  const placeResults = places.map((place) => toPlace(place));
+  return normalizeDataSnapshot({
+    places: placeResults.map((result) => result.place),
+    media: places.flatMap((place) => (place.media || []).map((item) => toMedia(item, {
+      createdAt: place.updatedAt || null
+    }))),
+    profiles,
+    tags: mergeUnique(placeResults.flatMap((result) => result.tags)),
+    courses
+  });
+}
+
 function mergePersonalData(snapshot, { profile, savedPlaceIds, savedCourseIds, ownedCourseIds, places, courses }) {
   const placeResults = places.map((place) => toPlace(place));
   const media = places.flatMap((place) => (place.media || []).map((item) => toMedia(item, {
@@ -477,7 +490,28 @@ export function createApiRepository({
     },
     async getContentDetail(id) { return toContent(await read(`contents/${encodeURIComponent(id)}`)); },
     async getPlaceDetail(id) { return toPlace(await read(`places/${encodeURIComponent(id)}`)).place; },
+    async getPlaceSnapshot(id) {
+      return snapshotFromPlaces([await read(`places/${encodeURIComponent(id)}`)]);
+    },
     async getCourseDetail(id) { return toCourse(await read(`courses/${encodeURIComponent(id)}`)); },
+    async getCourseSnapshot(id) {
+      const rawCourse = await read(`courses/${encodeURIComponent(id)}`);
+      const course = toCourse(rawCourse);
+      const [places, owner] = await Promise.all([
+        mapWithConcurrency(
+          course.placeIds,
+          detailRequestLimit,
+          (placeId) => read(`places/${encodeURIComponent(placeId)}`)
+        ),
+        course.userId
+          ? read(`profiles/${encodeURIComponent(course.userId)}`).then(toProfile).catch(() => null)
+          : Promise.resolve(null)
+      ]);
+      return snapshotFromPlaces(places, {
+        courses: [course],
+        profiles: owner ? [owner] : []
+      });
+    },
     async getPublicProfile(id) { return toProfile(await read(`profiles/${encodeURIComponent(id)}`)); },
     async getMyProfile() { return toProfile(await request("me/profile", { auth: true })); },
     async updateMyProfile(input) {

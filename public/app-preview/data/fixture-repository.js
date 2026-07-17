@@ -68,7 +68,31 @@ export function createFixtureRepository() {
     async getFeed() { return clone(data.contents); },
     async getContentDetail(id) { return clone(findOrThrow(data.contents, id, "content")); },
     async getPlaceDetail(id) { return clone(findOrThrow(data.places, id, "place")); },
+    async getPlaceSnapshot(id) {
+      const place = findOrThrow(data.places, id, "place");
+      return normalizeDataSnapshot({
+        places: [place],
+        media: data.media.filter((item) => place.mediaIds.includes(item.id)),
+        profiles: data.profiles.filter((item) => item.id === place.userId),
+        tags: data.tags.filter((item) => place.tagIds.includes(item.id)),
+        contents: data.contents.filter((item) => item.placeId === id)
+      });
+    },
     async getCourseDetail(id) { return clone(findOrThrow(data.courses, id, "course")); },
+    async getCourseSnapshot(id) {
+      const course = findOrThrow(data.courses, id, "course");
+      const places = data.places.filter((item) => course.placeIds.includes(item.id));
+      const mediaIds = new Set(places.flatMap((item) => item.mediaIds));
+      const tagIds = new Set([...course.tagIds, ...places.flatMap((item) => item.tagIds)]);
+      return normalizeDataSnapshot({
+        places,
+        media: data.media.filter((item) => mediaIds.has(item.id)),
+        profiles: data.profiles.filter((item) => item.id === course.userId),
+        tags: data.tags.filter((item) => tagIds.has(item.id)),
+        courses: [course],
+        contents: data.contents.filter((item) => item.courseId === id)
+      });
+    },
     async getPublicProfile(id) { return clone(findOrThrow(data.profiles, id, "profile")); },
     async getMyProfile() { return clone(findOrThrow(data.profiles, data.viewerProfileId, "profile")); },
     async updateMyProfile(input) { return { id: data.viewerProfileId, ...clone(input) }; },

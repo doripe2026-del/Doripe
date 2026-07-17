@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   assertRepositoryContract,
   createEmptyDataSnapshot,
+  mergeDataSnapshots,
   normalizeDataSnapshot
 } from "../../public/app-preview/data/contracts.js";
 import { createAppDataStore } from "../../public/app-preview/data/store.js";
@@ -38,6 +39,28 @@ test("selectors resolve relationships by ID", () => {
 
 test("repository contract rejects missing methods", () => {
   assert.throws(() => assertRepositoryContract({ getBootstrap() {} }), /getFeed/);
+});
+
+test("data snapshot extensions merge by canonical ID without losing personal state", () => {
+  const merged = mergeDataSnapshots({
+    viewerProfileId: "profile-1",
+    personalDataLoaded: true,
+    savedPlaceIds: ["place-1"],
+    places: [{ id: "place-1", name: "기존 이름", mediaIds: [] }]
+  }, {
+    places: [
+      { id: "place-1", name: "최신 이름", mediaIds: ["media-1"] },
+      { id: "place-2", name: "공유 장소", mediaIds: [] }
+    ],
+    media: [{ id: "media-1", placeId: "place-1", src: "/one.jpg" }]
+  });
+
+  assert.equal(merged.viewerProfileId, "profile-1");
+  assert.equal(merged.personalDataLoaded, true);
+  assert.deepEqual(merged.savedPlaceIds, ["place-1"]);
+  assert.deepEqual(merged.places.map((item) => item.id), ["place-1", "place-2"]);
+  assert.equal(merged.places[0].name, "최신 이름");
+  assert.deepEqual(merged.places[0].mediaIds, ["media-1"]);
 });
 
 test("data store exposes loading, ready, and retryable error states", async () => {
