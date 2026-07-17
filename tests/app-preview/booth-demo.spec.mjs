@@ -41,11 +41,42 @@ test("builder selection toggles without duplicates", async ({ page }) => {
   const candidate = page.locator('[data-place-id="place-02"]').first();
   await candidate.click();
   await expect(candidate).toHaveAttribute("aria-pressed", "true");
+  await expect(candidate).toHaveClass(/is-selected/);
+  await expect(candidate.locator(".place-tile__check")).toBeVisible();
   await expect(page.getByRole("button", { name: /1곳으로 코스 완성하기/ })).toBeVisible();
 
   await candidate.click();
   await expect(candidate).toHaveAttribute("aria-pressed", "false");
+  await expect(candidate).not.toHaveClass(/is-selected/);
   await expect(page.locator(".floating-action")).toHaveCount(0);
+});
+
+test("photo feed continues with a shuffled copy of every place", async ({ page }) => {
+  await page.addInitScript(() => {
+    Math.random = () => 0.5;
+  });
+  await page.goto("/demo");
+  await page.getByRole("button", { name: "60초 코스 만들기" }).click();
+
+  const tiles = page.locator("[data-feed-list] [data-place-id]");
+  if (await tiles.count() === 8) {
+    await page.locator("[data-feed-sentinel]").scrollIntoViewIfNeeded();
+  }
+  await expect.poll(() => tiles.count()).toBeGreaterThanOrEqual(16);
+
+  const secondBatch = await tiles.evaluateAll((items) => (
+    items.slice(8, 16).map((item) => item.dataset.placeId)
+  ));
+  expect(secondBatch).toEqual([
+    "place-01",
+    "place-06",
+    "place-02",
+    "place-08",
+    "place-03",
+    "place-07",
+    "place-04",
+    "place-05"
+  ]);
 });
 
 test("inactivity resets the demo", async ({ page }) => {

@@ -154,8 +154,11 @@ function appendFeedBatch() {
     return;
   }
 
-  const offset = feedBatchCount % PLACES.length;
-  const nextPlaces = [...PLACES.slice(offset), ...PLACES.slice(0, offset)];
+  const nextPlaces = [...PLACES];
+  for (let index = nextPlaces.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [nextPlaces[index], nextPlaces[swapIndex]] = [nextPlaces[swapIndex], nextPlaces[index]];
+  }
   sentinel.insertAdjacentHTML("beforebegin", nextPlaces.map((place) => placeTile(place)).join(""));
   feedBatchCount += 1;
 }
