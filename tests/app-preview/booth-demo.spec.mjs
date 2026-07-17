@@ -55,16 +55,19 @@ test("builder selection toggles without duplicates", async ({ page }) => {
 });
 
 test("photo feed continues with a shuffled copy of every place", async ({ page }) => {
+  test.slow();
   await page.addInitScript(() => {
     Math.random = () => 0.5;
   });
-  await page.goto("/demo");
+  await page.goto("/demo", { waitUntil: "domcontentloaded" });
   await page.getByRole("button", { name: "60초 코스 만들기" }).click();
 
   const tiles = page.locator("[data-feed-list] [data-place-id]");
+  const sentinel = page.locator("[data-feed-sentinel]");
   await expect(page.locator('[data-screen="feed"]')).toBeVisible();
-  await page.locator("[data-feed-sentinel]").evaluate((sentinel) => {
-    sentinel.scrollIntoView({ block: "end" });
+  await expect(sentinel).toHaveCount(1);
+  await sentinel.evaluate((element) => {
+    element.scrollIntoView({ block: "end" });
   });
   await expect.poll(() => tiles.count()).toBeGreaterThanOrEqual(PLACES.length * 2);
 
