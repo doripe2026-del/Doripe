@@ -29,6 +29,7 @@ test("welcome uses the transparent white SVG wordmark at the top", async () => {
   assert.match(app, /class="welcome__logo" src="\/booth-demo\/assets\/doripe-logo-white\.svg"/);
   assert.match(css, /\.welcome__logo\s*\{[\s\S]*position:\s*absolute;[\s\S]*top:/);
   assert.doesNotMatch(logo, /<rect[^>]+(?:fill="black"|fill="#000)/i);
+  assert.doesNotMatch(logo, /fill="black"/i);
   assert.match(logo, /fill="white"/);
 });
 
