@@ -22,6 +22,16 @@ test("booth demo uses only local runtime assets", async () => {
   assert.doesNotMatch(html, /https?:\/\//);
 });
 
+test("welcome uses the transparent white SVG wordmark at the top", async () => {
+  const app = await readFile(new URL("public/booth-demo/app.js", root), "utf8");
+  const css = await readFile(new URL("public/booth-demo/styles.css", root), "utf8");
+  const logo = await readFile(new URL("public/booth-demo/assets/doripe-logo-white.svg", root), "utf8");
+  assert.match(app, /class="welcome__logo" src="\/booth-demo\/assets\/doripe-logo-white\.svg"/);
+  assert.match(css, /\.welcome__logo\s*\{[\s\S]*position:\s*absolute;[\s\S]*top:/);
+  assert.doesNotMatch(logo, /<rect[^>]+(?:fill="black"|fill="#000)/i);
+  assert.match(logo, /fill="white"/);
+});
+
 test("visitor completes a course after selecting one nearby place", () => {
   let state = startDiscovery(createInitialState());
   state = openPlace(state, "place-100");

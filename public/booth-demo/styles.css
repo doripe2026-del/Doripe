@@ -192,14 +192,13 @@ img {
   color: #fff;
 }
 
-.welcome .brand-logo {
-  width: 174px;
-  margin-bottom: 28px;
-  padding: 10px 14px;
-  border-radius: 16px;
-  background: rgb(255 255 255 / 92%);
-  filter: none;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
+.welcome__logo {
+  position: absolute;
+  top: calc(32px + env(safe-area-inset-top));
+  left: 32px;
+  width: min(210px, 42vw);
+  height: auto;
+  object-fit: contain;
 }
 
 .welcome h1 {
