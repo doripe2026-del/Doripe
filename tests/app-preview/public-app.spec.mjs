@@ -26,3 +26,23 @@ test("public app sharing keeps the canonical public path", async ({ page }) => {
   expect(new URL(copied).searchParams.get("type")).toBe("place");
   expect(new URL(copied).searchParams.get("id")).toBe("place-1");
 });
+
+test("a failed live bootstrap offers a working retry", async ({ page }) => {
+  let bootstrapRequests = 0;
+  await page.route("**/api/v1/**", async (route) => {
+    const path = new URL(route.request().url()).pathname;
+    if (path.endsWith("/bootstrap")) bootstrapRequests += 1;
+    await route.fulfill({
+      status: 503,
+      json: { error: { code: "temporarily_unavailable", message: "temporarily unavailable" } }
+    });
+  });
+
+  await page.goto("/app?screen=b1");
+
+  const retry = page.getByRole("button", { name: "다시 시도" });
+  await expect(retry).toBeVisible();
+  const previousRequests = bootstrapRequests;
+  await retry.click();
+  await expect.poll(() => bootstrapRequests).toBeGreaterThan(previousRequests);
+});

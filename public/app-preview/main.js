@@ -354,11 +354,17 @@ function renderEvidenceScreen(screen) {
   renderGeneration += 1;
   phoneRoot.replaceChildren(renderedScreen);
   if (dataLoadError && !isStaticPreview() && !renderedScreen.querySelector(".auth-feedback")) {
-    const feedback = document.createElement("output");
+    const feedback = document.createElement("div");
     feedback.className = "preview-data-feedback";
     feedback.setAttribute("role", "status");
     feedback.setAttribute("aria-live", "polite");
-    feedback.textContent = "데이터를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.";
+    const message = document.createElement("span");
+    message.textContent = "데이터를 불러오지 못했어요.";
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.textContent = "다시 시도";
+    retry.addEventListener("click", () => window.location.reload());
+    feedback.append(message, retry);
     phoneRoot.append(feedback);
   }
   if (interactionState.toast?.message

@@ -64,6 +64,22 @@ body {
   font-size: 12px;
   line-height: 1.4;
   text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.preview-data-feedback button {
+  flex: 0 0 auto;
+  min-height: 28px;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  padding: 4px 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .preview-bottom-nav {
