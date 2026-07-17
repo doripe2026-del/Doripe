@@ -26,6 +26,12 @@ jobs:
       - name: Test landing motion
         run: npm run test:landing-motion
 
+      - name: Install cross-device browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Test booth demo across devices
+        run: npm run test:booth-devices
+
       - name: Check landing motion contracts
         run: npm run check:landing-motion
 

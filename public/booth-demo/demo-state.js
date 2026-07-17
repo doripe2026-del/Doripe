@@ -26,6 +26,21 @@ export function toggleAdditionalPlace(state, placeId) {
   return { ...state, selectedPlaceIds: selected };
 }
 
+export function chooseAdditionalPlacePhoto(state, placeId, image, activeImage) {
+  if (state.screen !== "builder" || placeId === state.startPlaceId) {
+    return { state, image: activeImage };
+  }
+
+  const isSelected = state.selectedPlaceIds.includes(placeId);
+  if (isSelected && activeImage !== image) return { state, image };
+
+  const nextState = toggleAdditionalPlace(state, placeId);
+  return {
+    state: nextState,
+    image: nextState.selectedPlaceIds.includes(placeId) ? image : null
+  };
+}
+
 export function completeCourse(state) {
   if (state.screen !== "builder" || state.selectedPlaceIds.length < 1) {
     throw new Error("At least one additional place is required");
