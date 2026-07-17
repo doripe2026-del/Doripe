@@ -187,7 +187,7 @@ function hasOptimisticChange(operation, previousState, optimisticState) {
   ));
 }
 
-export function createActionSync({ repository, enabled = true }) {
+export function createActionSync({ repository, enabled = true, canSync = () => true }) {
   const pending = new Map();
 
   return Object.freeze({
@@ -199,7 +199,9 @@ export function createActionSync({ repository, enabled = true }) {
       return key ? pending.has(key) : false;
     },
     async run(input) {
-      if (!enabled) return { ok: true, status: "local", state: input.optimisticState, changedKeys: [] };
+      if (!enabled || !canSync()) {
+        return { ok: true, status: "local", state: input.optimisticState, changedKeys: [] };
+      }
       const key = mutationKey(input);
       if (!key) return { ok: true, status: "local", state: input.optimisticState, changedKeys: [] };
       if (pending.has(key)) return pending.get(key);

@@ -125,6 +125,28 @@ test("static fixture mode keeps local state without remote mutations", async () 
   assert.equal(calls, 0);
 });
 
+test("signed-out API mode keeps guest changes locally instead of rolling them back", async () => {
+  let calls = 0;
+  const sync = createActionSync({
+    repository: { savePlace: async () => { calls += 1; } },
+    enabled: true,
+    canSync: () => false
+  });
+  const optimisticState = state({ savedPlaceIds: ["place-1"] });
+
+  const result = await sync.run({
+    actionId: "save-place",
+    payload: { placeId: "place-1" },
+    previousState: state(),
+    optimisticState
+  });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.status, "local");
+  assert.equal(result.state, optimisticState);
+  assert.equal(calls, 0);
+});
+
 test("comment actions use content and comment API contracts", async () => {
   const calls = [];
   const repository = {

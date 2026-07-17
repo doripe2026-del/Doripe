@@ -39,7 +39,11 @@ const repository = getAdapter(isStaticPreview() ? "fixture" : "api", {
   }
 });
 const dataStore = createAppDataStore({ repository });
-const actionSync = createActionSync({ repository, enabled: repository.mode === "api" });
+const actionSync = createActionSync({
+  repository,
+  enabled: repository.mode === "api",
+  canSync: () => Boolean(authClient.getAccessToken())
+});
 const analyticsClient = staticPreview ? null : createAnalyticsClient({
   accessTokenProvider: authClient.getAccessToken
 });
