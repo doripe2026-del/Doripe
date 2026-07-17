@@ -62,7 +62,7 @@ assertIncludes(share, '<meta http-equiv="refresh"', "legacy share redirect page"
 const rewrites = vercel.rewrites ?? [];
 const rewriteBySource = new Map(rewrites.map((rewrite) => [rewrite.source, rewrite.destination]));
 assert(rewriteBySource.get("/") === "/home/index.html", "vercel rewrite missing home");
-assert(rewriteBySource.get("/demo") === "/booth-demo/index.html", "vercel rewrite missing booth demo");
+assert(rewriteBySource.get("/demo") === "/booth-demo", "vercel rewrite missing booth demo");
 assert(!rewriteBySource.has("/business"), "retired /business route must stay removed");
 assert(rewriteBySource.get("/app") === "/app-preview/index.html", "public /app must serve the current app");
 assert(rewriteBySource.get("/app/:path*") === "/app-preview/index.html", "nested /app routes must serve the current app");
