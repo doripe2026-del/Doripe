@@ -1,6 +1,6 @@
 import { defineConfig } from "@playwright/test";
 
-const port = Number(process.env.APP_PREVIEW_PORT || 4173);
+const port = Number(process.env.APP_PREVIEW_PORT || 43_173);
 
 export default defineConfig({
   testDir: "./tests/app-preview",
@@ -13,6 +13,6 @@ export default defineConfig({
   webServer: {
     command: `PORT=${port} node scripts/serve-app-preview.mjs`,
     url: `http://127.0.0.1:${port}/app-preview/`,
-    reuseExistingServer: true
+    reuseExistingServer: false
   }
 });
