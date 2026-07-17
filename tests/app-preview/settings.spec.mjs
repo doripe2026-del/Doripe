@@ -199,7 +199,11 @@ test("logout clears session-like and password data before returning to login", a
     currentScreenId: "e3",
     history: ["e1"],
     form: { email: "dori@doripe.kr", password: "secret", currentPassword: "old", nickname: "도리" },
-    selections: { session: { userId: "user-1" }, authenticated: true }
+    selections: { session: { userId: "user-1" }, authenticated: true },
+    profile: { id: "user-1", nickname: "도리", bio: "서울을 기록해요" },
+    savedPlaceIds: ["place-1"],
+    savedRoutes: [{ id: "saved-route-1", name: "연남 코스", placeIds: ["place-1", "place-2"] }],
+    submittedComments: [{ id: "local-comment-1", body: "좋아요" }]
   })), STORAGE_KEY);
   await page.goto("/app-preview/?screen=e3");
   await page.getByRole("button", { name: "로그아웃" }).click();
@@ -207,7 +211,12 @@ test("logout clears session-like and password data before returning to login", a
   await expect.poll(() => authorization).toBe("Bearer access-token");
 
   const stored = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)), STORAGE_KEY);
-  expect(stored.form.nickname).toBe("도리");
+  expect(stored.form.nickname).toBeUndefined();
+  expect(stored.form.email).toBeUndefined();
+  expect(stored.profile).toBeUndefined();
+  expect(stored.savedPlaceIds).toEqual([]);
+  expect(stored.savedRoutes).toEqual([]);
+  expect(stored.submittedComments).toEqual([]);
   expect(JSON.stringify(stored)).not.toContain("secret");
   expect(stored.selections.session).toBeUndefined();
   expect(stored.selections.authenticated).toBeUndefined();

@@ -348,17 +348,46 @@ test("password changes reject a wrong current password and scrub every secret", 
   assert.match(deleted.state.toast.message, /미리보기에서는 회원 탈퇴를 처리할 수 없어요/);
 });
 
-test("logout clears session-like and password fields while preserving profile fields", () => {
+test("logout clears account-owned data while preserving anonymous discovery preferences", () => {
   const result = dispatchAction("e3", "logout", {
     state: previewState("e3", {
-      form: { nickname: "도리", password: "secret", newPassword: "new-secret" },
-      selections: { authenticated: true, session: { userId: "user-1" }, neighborhood: "yeonnam" }
+      form: {
+        email: "dori@doripe.kr",
+        nickname: "도리",
+        bio: "서울을 기록해요",
+        password: "secret",
+        newPassword: "new-secret",
+        discoverySource: "instagram"
+      },
+      selections: { authenticated: true, session: { userId: "user-1" }, neighborhood: "yeonnam" },
+      profile: { id: "user-1", nickname: "도리", bio: "서울을 기록해요" },
+      profileDraft: { id: "user-1", nickname: "새 도리", bio: "새 소개" },
+      savedPlaceIds: ["place-1"],
+      savedRoutes: [{ id: "route-1", name: "연남 코스", placeIds: ["place-1", "place-2"] }],
+      likedMediaIds: ["media-1"],
+      likedPlaceIds: ["place-1"],
+      likedCommentIds: ["comment-1"],
+      submittedComments: [{ id: "local-comment-1", body: "좋아요" }],
+      followedUserIds: ["user-1"],
+      routePlaceIds: ["place-1", "place-2"],
+      routeDraft: { startPlaceId: "place-1", placeIds: ["place-1", "place-2"] }
     })
   });
 
   assert.equal(result.nextScreenId, "a3");
-  assert.deepEqual(result.state.form, { nickname: "도리" });
+  assert.deepEqual(result.state.form, { discoverySource: "instagram" });
   assert.deepEqual(result.state.selections, { neighborhood: "yeonnam" });
+  assert.equal(result.state.profile, undefined);
+  assert.equal(result.state.profileDraft, undefined);
+  assert.deepEqual(result.state.savedPlaceIds, []);
+  assert.deepEqual(result.state.savedRoutes, []);
+  assert.deepEqual(result.state.likedMediaIds, []);
+  assert.deepEqual(result.state.likedPlaceIds, []);
+  assert.deepEqual(result.state.likedCommentIds, []);
+  assert.deepEqual(result.state.submittedComments, []);
+  assert.deepEqual(result.state.followedUserIds, []);
+  assert.deepEqual(result.state.routePlaceIds, []);
+  assert.deepEqual(result.state.routeDraft, { startPlaceId: null, placeIds: [] });
 });
 
 test("remote signup always stays on neutral email verification", () => {

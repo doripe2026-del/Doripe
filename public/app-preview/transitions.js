@@ -743,10 +743,31 @@ function saveAccountPassword(state) {
 function logout(state, payload) {
   clearSecrets();
   const nextState = scrubSensitiveState(state, { session: true });
+  const {
+    email: _email,
+    nickname: _nickname,
+    bio: _bio,
+    ...anonymousForm
+  } = nextState.form || {};
+  const loggedOutState = {
+    ...nextState,
+    form: anonymousForm,
+    savedPlaceIds: [],
+    savedRoutes: [],
+    likedMediaIds: [],
+    likedPlaceIds: [],
+    likedCommentIds: [],
+    submittedComments: [],
+    followedUserIds: [],
+    routePlaceIds: [],
+    routeDraft: { startPlaceId: null, placeIds: [] }
+  };
+  delete loggedOutState.profile;
+  delete loggedOutState.profileDraft;
   const warning = payload?.authResult?.warning;
   return {
     state: {
-      ...nextState,
+      ...loggedOutState,
       currentScreenId: "a3",
       history: [],
       sessionStatus: "logged-out",
