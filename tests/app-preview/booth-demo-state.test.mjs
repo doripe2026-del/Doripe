@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 import {
   browseNearby,
@@ -59,4 +59,20 @@ test("demo places are immutable local records", () => {
   ]);
   assert.equal(Object.isFrozen(PLACES), true);
   assert.equal(PLACES.every(Object.isFrozen), true);
+});
+
+test("all demo places use available local booth assets", async () => {
+  assert.equal(PLACES.length, 8);
+  for (const place of PLACES) {
+    assert.match(place.image, /^\/booth-demo\/assets\/place-\d{2}\.png$/);
+    await access(new URL(`../../public${place.image}`, import.meta.url));
+  }
+});
+
+test("booth CSS includes touch, safe area, and reduced motion rules", async () => {
+  const css = await readFile(new URL("public/booth-demo/styles.css", root), "utf8");
+  assert.match(css, /min-height:\s*52px/);
+  assert.match(css, /env\(safe-area-inset-bottom\)/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
+  assert.match(css, /#10c76f/i);
 });
