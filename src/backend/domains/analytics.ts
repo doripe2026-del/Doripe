@@ -61,16 +61,48 @@ function analyticsActor(userId: string | undefined, anonymousId: string | null |
   throw new ApiError(400, "anonymous_id_required", "로그인 전에는 anonymousId가 필요합니다.");
 }
 
+type AnalyticsSessionIdentity = { user_id: string | null; anonymous_id: string | null };
+type IncomingAnalyticsIdentity = { userId: string | null; anonymousId: string | null | undefined };
+
+export function analyticsSessionOwnership(
+  existing: AnalyticsSessionIdentity | null,
+  incoming: IncomingAnalyticsIdentity,
+): "new" | "same" | "claim" {
+  if (!existing) return "new";
+  if (existing.user_id) {
+    if (incoming.userId === existing.user_id) return "same";
+    throw new ApiError(409, "analytics_session_conflict", "분석 세션 소유자가 일치하지 않습니다.");
+  }
+  if (!existing.anonymous_id || existing.anonymous_id !== incoming.anonymousId) {
+    throw new ApiError(409, "analytics_session_conflict", "분석 세션 소유자가 일치하지 않습니다.");
+  }
+  return incoming.userId ? "claim" : "same";
+}
+
+async function readAnalyticsSession(client: ReturnType<typeof createBackendAdminClient>, sessionId: string) {
+  const result = await client.from("analytics_sessions")
+    .select("user_id,anonymous_id")
+    .eq("id", sessionId)
+    .maybeSingle();
+  if (result.error) throw new ApiError(503, "database_unavailable", "분석 세션을 확인하지 못했습니다.");
+  return result.data as AnalyticsSessionIdentity | null;
+}
+
 export const createSession: RouteHandler = async (request, context) => {
   const auth = await optionalUser(request);
   const body = await parseJson(request, sessionInput, 16 * 1024);
   const actor = analyticsActor(auth?.user.id, body.anonymousId);
   await consumeDevelopmentRateLimit(`session:${actor}`, { limit: 30, windowMs: 60_000 });
   const client = createBackendAdminClient();
-  const result = await client.from("analytics_sessions").upsert({
+  const existing = await readAnalyticsSession(client, body.sessionId);
+  const ownership = analyticsSessionOwnership(existing, {
+    userId: auth?.user.id ?? null,
+    anonymousId: body.anonymousId,
+  });
+  const sessionRecord = {
     id: body.sessionId,
-    user_id: auth?.user.id ?? null,
-    anonymous_id: body.anonymousId ?? null,
+    user_id: existing?.user_id ?? auth?.user.id ?? null,
+    anonymous_id: existing?.anonymous_id ?? body.anonymousId ?? null,
     domain: "app",
     source: body.campaignCode ? "campaign" : "direct",
     started_at: body.startedAt,
@@ -78,8 +110,36 @@ export const createSession: RouteHandler = async (request, context) => {
     referrer: null,
     metadata: body.campaignCode ? { campaign_code: body.campaignCode } : {},
     last_seen_at: new Date().toISOString(),
-  }, { onConflict: "id" }).select("id,started_at,last_seen_at").single();
+  };
+  let result;
+  if (!existing) {
+    result = await client.from("analytics_sessions")
+      .insert(sessionRecord)
+      .select("id,started_at,last_seen_at")
+      .single();
+    if (result.error?.code === "23505") {
+      throw new ApiError(409, "analytics_session_conflict", "이미 사용 중인 분석 세션입니다.");
+    }
+  } else {
+    let updateQuery = client.from("analytics_sessions")
+      .update({
+        ...sessionRecord,
+        user_id: ownership === "claim" ? auth?.user.id : existing.user_id,
+      })
+      .eq("id", body.sessionId);
+    updateQuery = existing.user_id
+      ? updateQuery.eq("user_id", existing.user_id)
+      : updateQuery.is("user_id", null);
+    updateQuery = existing.anonymous_id
+      ? updateQuery.eq("anonymous_id", existing.anonymous_id)
+      : updateQuery.is("anonymous_id", null);
+    result = await updateQuery.select("id,started_at,last_seen_at").maybeSingle();
+    if (!result.error && !result.data) {
+      throw new ApiError(409, "analytics_session_conflict", "분석 세션 소유자가 변경되었습니다.");
+    }
+  }
   if (result.error) throw new ApiError(503, "database_unavailable", "세션을 기록하지 못했습니다.");
+  if (!result.data) throw new ApiError(503, "database_unavailable", "세션 기록 결과를 확인하지 못했습니다.");
   return apiSuccess({ sessionId: result.data.id, accepted: true }, context.requestId, {
     status: 201,
     headers: { "cache-control": "no-store" },
@@ -94,8 +154,35 @@ export const ingestEvents: RouteHandler = async (request, context) => {
   if (body.events.some((item) => item.anonymousId !== anonymousId)) {
     throw new ApiError(400, "mixed_anonymous_ids", "한 요청에는 하나의 anonymousId만 사용할 수 있습니다.");
   }
+  const sessionId = body.events[0]?.sessionId;
+  if (body.events.some((item) => item.sessionId !== sessionId)) {
+    throw new ApiError(400, "mixed_session_ids", "한 요청에는 하나의 sessionId만 사용할 수 있습니다.");
+  }
   await consumeDevelopmentRateLimit(`events:${actor}`, { limit: 120, windowMs: 60_000 });
   const client = createBackendAdminClient();
+  const existing = await readAnalyticsSession(client, sessionId);
+  if (!existing) throw new ApiError(409, "analytics_session_missing", "분석 세션을 먼저 시작해 주세요.");
+  const ownership = analyticsSessionOwnership(existing, {
+    userId: auth?.user.id ?? null,
+    anonymousId,
+  });
+  let sessionUpdateQuery = client.from("analytics_sessions")
+    .update({
+      ...(ownership === "claim" ? { user_id: auth?.user.id } : {}),
+      last_seen_at: new Date().toISOString(),
+    })
+    .eq("id", sessionId);
+  sessionUpdateQuery = existing.user_id
+    ? sessionUpdateQuery.eq("user_id", existing.user_id)
+    : sessionUpdateQuery.is("user_id", null);
+  sessionUpdateQuery = existing.anonymous_id
+    ? sessionUpdateQuery.eq("anonymous_id", existing.anonymous_id)
+    : sessionUpdateQuery.is("anonymous_id", null);
+  const sessionUpdate = await sessionUpdateQuery.select("id").maybeSingle();
+  if (sessionUpdate.error) throw new ApiError(503, "database_unavailable", "분석 세션을 갱신하지 못했습니다.");
+  if (!sessionUpdate.data) {
+    throw new ApiError(409, "analytics_session_conflict", "분석 세션 소유자가 변경되었습니다.");
+  }
   const rows = body.events.map((item) => ({
     event_id: item.eventId,
     session_id: item.sessionId,
