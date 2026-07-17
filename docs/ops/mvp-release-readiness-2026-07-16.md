@@ -1,8 +1,8 @@
 # Doripe 웹 MVP 출시 준비 기록
 
-- 확인일: 2026-07-16
+- 확인일: 2026-07-17
 - Git 브랜치: `codex/mvp-masterplan-implementation`
-- 기준 커밋: `1834606`
+- 기준 커밋: `0b30a7c`
 - Supabase project: `dcyjrsxnpujslbxtitqj`
 - 목적: 실제 DB 변경이나 배포 전에 현재 코드와 운영 환경의 차이를 복구 가능한 기록으로 남긴다.
 
@@ -11,26 +11,30 @@
 | 영역 | 상태 | 확인 결과 |
 | --- | --- | --- |
 | 최신 앱 코드 | 준비됨 | 최신 55개 Figma 화면을 `/app`과 `/app-preview`가 같은 소스로 사용한다. |
-| 자동 테스트 | 통과 | App unit 172, Backend 39, Ops 40, API contract 110, 화면·행동·픽셀 E2E 230 통과 |
+| 자동 테스트 | 통과 | App unit 204, Backend 39, Ops 40, API contract 110, 화면·행동·픽셀 E2E 237 통과 |
+| 부스 데모 | 통과 | `/demo`에서 시작→사진 선택→장소 상세→코스 선택→완성을 로컬과 Vercel Preview에서 검증했다. |
+| Preview 배포 | 통과 | Draft PR의 Build, Repository Guard, Vercel 검사가 통과했고 `/demo`, `/app`이 HTTP 200을 반환한다. |
 | Git 백업 | 준비됨 | 작업 브랜치를 GitHub 원격 저장소에 push했다. |
 | Supabase 구조 | 출시 차단 | 원격 migration 9개, 저장소 migration 49개로 이력이 크게 다르다. |
 | 실제 콘텐츠 | 출시 차단 | 공개 테이블 24개 모두 0행이다. |
 | 사진 파일 | 확인 필요 | `place-photos-public`의 176개 object 중 실제 이미지는 174개지만 장소 사진이 아닌 제작본·시제품 사진이며, `place_photos`는 0행이다. |
 | Vercel 환경 | 출시 차단 | Preview·Development 필수 Supabase 환경변수가 없고 Production 공개 key가 없다. |
-| 운영 API | 출시 차단 | 배포된 `/api/v1/readiness`가 아직 404다. |
+| 운영 API | 출시 차단 | Preview API는 실행되지만 Supabase 환경변수가 없어 readiness가 503이다. Production `/api/v1/readiness`는 아직 404다. |
 
 ## 자동 검증 기록
 
 ```text
-App unit              172 passed
+App unit              204 passed
 Backend                39 passed
 Ops                    40 passed
 Server boundaries       8 passed
 API contract          110 passed
-Playwright + visual   230 passed
+Playwright + visual   237 passed
 ```
 
 자동 테스트는 fixture와 API 계약을 기준으로 통과한 결과다. 실제 Supabase 데이터와 권한이 준비됐다는 뜻은 아니다.
+
+부스 데모 전용 검증은 unit 7개와 E2E 5개가 별도로 통과했다. Vercel Preview에서도 모바일 크기 브라우저로 같은 핵심 여정을 완료했다.
 
 ## 원격 Supabase 관찰 결과
 
@@ -68,6 +72,19 @@ Supabase Security Advisor가 다음을 알렸다.
 2. `notify_taste_events`, `notify_taste_results`는 RLS가 켜져 있지만 policy가 없다.
 
 첫 번째 문제를 막는 로컬 migration은 존재하지만 아직 원격 적용 여부가 다르다. 두 번째는 서버 전용 접근이 의도인지 먼저 확인한 뒤 policy를 결정한다.
+
+2026-07-17 재확인 결과도 동일하다. 원격 프로젝트는 `ACTIVE_HEALTHY`지만 공개 테이블은 모두 0행이며, 로컬 runtime 계약 기준 테이블 28개와 함수 18개가 없다. 빈 테이블이라는 이유로 기존 migration을 바로 적용하지 않는다.
+
+## Vercel Preview 검증 결과
+
+- 검증 Preview: `https://doripe-hmqv6pwkd-cityboy7648-9647s-projects.vercel.app`
+- `/demo`: HTTP 200, 부스 데모 핵심 여정 완료
+- `/app`: HTTP 200
+- `/api/v1/readiness`: HTTP 503, API 실행은 정상이나 Supabase 연결 설정 없음
+- GitHub Draft PR: `https://github.com/doripe2026-del/Doripe/pull/28`
+- 복구 태그: `mvp-checkpoint-2026-07-17-0b30a7c`
+
+Preview URL은 임시 주소다. Production 배포 또는 `main` 병합을 뜻하지 않는다.
 
 ## 안전한 다음 순서
 
