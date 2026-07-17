@@ -34,8 +34,8 @@ function renderWelcome() {
   return `
     <section class="screen welcome" data-screen="welcome">
       <img class="welcome__photo" src="${featured.image}" alt="" fetchpriority="high">
+      <img class="welcome__logo" src="/booth-demo/assets/doripe-logo-white.svg" alt="Doripe">
       <div class="welcome__content">
-        <img class="brand-logo" src="/booth-demo/assets/doripe-logo.png" alt="Doripe">
         <h1>오늘의 장소,<br>사진으로 골라봐요</h1>
         <p>마음에 드는 사진 한 장에서 나만의 동네 코스를 시작해보세요.</p>
         <button class="primary-action touch-target" type="button" data-action="start">60초 코스 만들기</button>
