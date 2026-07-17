@@ -9,7 +9,7 @@ import {
 test("production snapshot exposes the current launch-blocking schema drift", async () => {
   const contract = JSON.parse(await readFile("docs/ops/backend-runtime-contract.json", "utf8"));
   const snapshot = JSON.parse(
-    await readFile("docs/ops/supabase-production-schema-snapshot-2026-07-16.json", "utf8"),
+    await readFile("docs/ops/supabase-production-schema-snapshot-2026-07-18.json", "utf8"),
   );
   const drift = compareRuntimeContract(contract, snapshot);
 

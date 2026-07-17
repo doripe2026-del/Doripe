@@ -1,23 +1,24 @@
 # Supabase 구조 전환 안전 계획
 
-이 문서는 기존 Supabase 구조를 현재 Doripe 웹 MVP 구조로 옮길 때 지켜야 할 순서를 기록한다. 실제 원격 DB를 변경하는 실행 문서가 아니라, 변경 전에 실패와 데이터 손실을 막는 체크리스트다.
+이 문서는 `Doripe-app`의 기존 Supabase 구조를 현재 Doripe 웹 MVP 구조로 옮길 때 지켜야 할 순서를 기록한다. 실제 원격 DB를 변경하는 실행 문서가 아니라, 변경 전에 실패와 데이터 손실을 막는 체크리스트다.
 
 ## 현재 결론
 
-- 저장소에는 migration 49개가 있지만 관찰한 원격 프로젝트에는 9개만 기록돼 있다.
-- 같은 이름이지만 구조가 다른 기존 테이블이 있어 49개를 그대로 적용하면 충돌할 수 있다.
+- 웹 MVP 대상은 `Doripe-app (dcyjrsxnpujslbxtitqj)`이다.
+- 저장소에는 migration 50개가 있지만 원격 프로젝트에는 9개만 기록돼 있다.
+- 같은 이름이지만 구조가 다른 기존 테이블이 있어 50개를 그대로 적용하면 충돌할 수 있다.
 - 원격 Storage에는 사진 176개가 있지만 `place_photos` 연결 행은 없다.
 - 따라서 기존 migration 일괄 적용, migration history 강제 수정, 원격 테이블 삭제를 하면 안 된다.
 
-## 먼저 확정할 것
+## 확정된 대상
 
-| 항목 | 현재 기록 | 실행 전 조건 |
+| 항목 | 현재 기준 | 실행 전 조건 |
 | --- | --- | --- |
-| `doripe.kr` 운영 프로젝트 | `qfvirakzxtcgoerrqumh` | Vercel Production 환경변수와 동일한지 확인 |
-| 별도 앱 프로젝트 | `dcyjrsxnpujslbxtitqj` | 웹 MVP의 실제 대상인지 명시적으로 결정 |
-| 현재 스냅샷 | `dcyjrsxnpujslbxtitqj` | 운영 프로젝트로 오해하지 않도록 대상 확정 |
+| 웹 MVP Supabase | `dcyjrsxnpujslbxtitqj` | 코드·Vercel 환경변수·운영 문서가 모두 동일해야 함 |
+| 이전 문서의 project | `qfvirakzxtcgoerrqumh` | legacy 기록으로만 보존하고 명시적 승인 없이 사용 금지 |
+| 현재 읽기 전용 스냅샷 | `dcyjrsxnpujslbxtitqj` | 원격 변경 전후 비교 기준으로 보존 |
 
-대상 프로젝트가 확정되기 전에는 schema나 Storage를 수정하지 않는다.
+대상은 확정됐지만 백업과 staging 검증이 끝나기 전에는 schema나 Storage를 수정하지 않는다.
 
 ## 안전한 전환 순서
 
@@ -65,7 +66,7 @@
 
 ## 완료 기준
 
-- 대상 Supabase project ref가 코드, Vercel, 운영 문서에서 일치한다.
+- 대상 project ref `dcyjrsxnpujslbxtitqj`가 코드, Vercel, 운영 문서에서 일치한다.
 - staging 복원과 bridge 적용이 성공한다.
 - 두 번째 bridge 실행이 무해하다.
 - runtime 계약의 테이블, 컬럼, 제약조건, RLS, grant, 함수가 모두 일치한다.

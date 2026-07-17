@@ -3,7 +3,7 @@ import { compareRuntimeContract, isRuntimeReady } from "./lib/supabase-runtime-d
 
 const contractPath = new URL("../docs/ops/backend-runtime-contract.json", import.meta.url);
 const snapshotPath = new URL(
-  process.argv[2] ?? "../docs/ops/supabase-production-schema-snapshot-2026-07-16.json",
+  process.argv[2] ?? "../docs/ops/supabase-production-schema-snapshot-2026-07-18.json",
   import.meta.url,
 );
 

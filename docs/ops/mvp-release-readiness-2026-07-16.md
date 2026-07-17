@@ -1,5 +1,7 @@
 # Doripe 웹 MVP 출시 준비 기록
 
+> 과거 점검 기록이다. 현재 기준은 `mvp-release-readiness-2026-07-18.md`를 사용한다.
+
 - 확인일: 2026-07-17
 - Git 브랜치: `codex/mvp-masterplan-implementation`
 - 기능 기준 커밋: `33bf7f4`
