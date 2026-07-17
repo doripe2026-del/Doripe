@@ -62,7 +62,10 @@ test("photo feed continues with a shuffled copy of every place", async ({ page }
   await page.getByRole("button", { name: "60초 코스 만들기" }).click();
 
   const tiles = page.locator("[data-feed-list] [data-place-id]");
-  await page.locator("[data-feed-sentinel]").scrollIntoViewIfNeeded();
+  await expect(page.locator('[data-screen="feed"]')).toBeVisible();
+  await page.locator("[data-feed-sentinel]").evaluate((sentinel) => {
+    sentinel.scrollIntoView({ block: "end" });
+  });
   await expect.poll(() => tiles.count()).toBeGreaterThanOrEqual(PLACES.length * 2);
 
   const secondBatch = await tiles.evaluateAll((items, placeCount) => (
