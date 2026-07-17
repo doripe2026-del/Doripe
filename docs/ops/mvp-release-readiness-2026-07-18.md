@@ -2,8 +2,8 @@
 
 - 확인일: 2026-07-18
 - Git 브랜치: `codex/mvp-masterplan-implementation`
-- 기능 기준 커밋: `4af1202`
-- 최신 복구 체크포인트: `mvp-checkpoint-2026-07-18-local-db-preflight`
+- 기능 기준: `mvp-checkpoint-2026-07-18-media-boundary`
+- 최신 복구 체크포인트: `mvp-checkpoint-2026-07-18-media-boundary`
 - 웹 MVP Supabase project: `dcyjrsxnpujslbxtitqj` (`Doripe-app`)
 - 목적: 실제 DB 변경이나 Production 배포 전에 현재 코드와 운영 환경의 차이를 복구 가능한 기록으로 남긴다.
 
@@ -12,7 +12,8 @@
 | 영역 | 상태 | 확인 결과 |
 | --- | --- | --- |
 | 최신 앱 코드 | 준비됨 | 최신 Figma 화면을 `/app`과 `/app-preview`가 같은 소스로 사용한다. |
-| 자동 테스트 | 통과 | App unit 225, Backend 43, Ops 59, API contract 110, 화면·행동 E2E 254(시각 회귀 포함), server boundary 8 통과 |
+| 자동 테스트 | 통과 | App unit 226, Backend 43, Ops 59, API contract 110, 화면·행동 E2E 254(시각 회귀 포함), server boundary 8 통과 |
+| 미디어 데이터 경계 | 통과 | API 사진이 없거나 실패해도 로컬 fixture 사진을 실제 장소 사진처럼 대신 노출하지 않는다. 실제 썸네일이 있을 때만 같은 미디어의 대체 소스로 사용한다. |
 | Git 백업 | 준비됨 | 작업 브랜치와 복구 태그가 GitHub 원격 저장소에 있다. |
 | GitHub PR | 통과 | Draft PR #28의 build, repository guard, Vercel Preview가 성공했고 merge 상태는 `CLEAN`이다. 출시 차단 요인이 남아 있어 병합하지 않는다. |
 | 의존성 보안 | 운영 코드 통과 | 실제 서비스 의존성 취약점 0건, 커밋된 비밀키 형태 0건이다. 개발용 Vercel 도구 경고는 안전한 수정 버전을 기다린다. |

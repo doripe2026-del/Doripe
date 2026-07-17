@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readdir, readFile } from "node:fs/promises";
 import test from "node:test";
 
+import { mediaSourcePlan } from "../../public/app-preview/screens/discover.js";
+
 function importSpecifiers(source) {
   const tokens = [];
 
@@ -104,4 +106,19 @@ test("only fixture repository references fixture collections", async () => {
   }
 
   assert.deepEqual(offenders, []);
+});
+
+test("API media never falls back to a local fixture photo", () => {
+  assert.deepEqual(mediaSourcePlan(null), { primarySrc: "", fallbackSrc: "" });
+  assert.deepEqual(
+    mediaSourcePlan({ src: "https://images.example/place.jpg", fallbackSrc: "https://images.example/place.jpg" }),
+    { primarySrc: "https://images.example/place.jpg", fallbackSrc: "" }
+  );
+  assert.deepEqual(
+    mediaSourcePlan({ src: "https://images.example/original.jpg", fallbackSrc: "https://images.example/thumb.jpg" }),
+    {
+      primarySrc: "https://images.example/original.jpg",
+      fallbackSrc: "https://images.example/thumb.jpg"
+    }
+  );
 });

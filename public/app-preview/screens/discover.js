@@ -141,16 +141,31 @@ function unavailableScreen(screenId, message) {
   return root;
 }
 
+export function mediaSourcePlan(media) {
+  const primarySrc = typeof media?.src === "string" ? media.src.trim() : "";
+  const candidateFallback = typeof media?.fallbackSrc === "string" ? media.fallbackSrc.trim() : "";
+  const fallbackSrc = candidateFallback && candidateFallback !== primarySrc ? candidateFallback : "";
+  return { primarySrc: primarySrc || fallbackSrc, fallbackSrc };
+}
+
 function semanticMedia(media, className = "", options = {}) {
   const frame = element("span", `discover-media ${className}`.trim());
   frame.dataset.loadState = "loading";
   if (options.testId) frame.dataset.testid = options.testId;
   if (options.mediaId) frame.dataset.mediaId = options.mediaId;
 
+  const { primarySrc, fallbackSrc } = mediaSourcePlan(media);
+  if (!primarySrc) {
+    frame.dataset.loadState = "missing";
+    const placeholder = element("span", "discover-media__placeholder", "사진 준비 중");
+    placeholder.setAttribute("role", "img");
+    placeholder.setAttribute("aria-label", media?.alt || "등록된 장소 사진 없음");
+    frame.append(placeholder);
+    return frame;
+  }
+
   const image = element("img", "discover-media__image");
-  const fallbackSrc = media?.fallbackSrc || "/app-preview/assets/discover/feed-1.jpg";
-  const primarySrc = media?.src || fallbackSrc;
-  let fallbackAttempted = primarySrc === fallbackSrc;
+  let fallbackAttempted = !fallbackSrc;
   image.src = primarySrc;
   image.alt = media?.alt || "장소 사진";
   image.decoding = "async";
@@ -175,7 +190,7 @@ function semanticMedia(media, className = "", options = {}) {
   };
   image.addEventListener("load", markLoaded);
   image.addEventListener("error", () => {
-    if (!fallbackAttempted) {
+    if (!fallbackAttempted && fallbackSrc) {
       fallbackAttempted = true;
       frame.dataset.loadState = "loading";
       image.src = fallbackSrc;
@@ -186,7 +201,7 @@ function semanticMedia(media, className = "", options = {}) {
   retry.addEventListener("click", () => {
     frame.dataset.loadState = "loading";
     retry.hidden = true;
-    fallbackAttempted = primarySrc === fallbackSrc;
+    fallbackAttempted = !fallbackSrc;
     image.src = `${primarySrc.split("?")[0]}?retry=${Date.now()}`;
     timeout = setTimeout(markFailed, 8000);
   });
