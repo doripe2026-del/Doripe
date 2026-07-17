@@ -370,7 +370,7 @@ export function createApiRepository({
     async likeContent(id) { return mutation(`contents/${encodeURIComponent(id)}/like`, "POST"); },
     async unlikeContent(id) { return mutation(`contents/${encodeURIComponent(id)}/like`, "DELETE"); },
     async getComments(id) {
-      const page = await request(`contents/${encodeURIComponent(id)}/comments?limit=100`);
+      const page = await request(`contents/${encodeURIComponent(id)}/comments?limit=50`);
       return (page?.items || []).map(toComment);
     },
     async createComment(id, body) { return toComment(await mutation(`contents/${encodeURIComponent(id)}/comments`, "POST", { text: body })); },

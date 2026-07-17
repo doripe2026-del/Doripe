@@ -456,3 +456,20 @@ test("saved place and course reads use the server maximum limit", async () => {
     "/api/v1/me/saves?targetType=course&limit=50"
   ]);
 });
+
+test("comment reads use the server maximum limit", async () => {
+  const requests = [];
+  const repository = createApiRepository({
+    fetchImpl: async (url) => {
+      requests.push(String(url));
+      return jsonResponse({ data: { items: [] } });
+    },
+    storage: memoryStorage()
+  });
+
+  await repository.getComments("content-1");
+
+  assert.deepEqual(requests, [
+    "/api/v1/contents/content-1/comments?limit=50"
+  ]);
+});
