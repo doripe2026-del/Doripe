@@ -104,8 +104,9 @@ test("course renderers use supplied place and course IDs", async ({ page }) => {
       confirmation: ROUTE_RENDERERS.d7(state, data).textContent,
       complete: complete.textContent,
       nearbyPlaceId: complete.querySelector(".route-nearby-card")?.dataset.placeId,
-      directStartPlaceId: ROUTE_RENDERERS.d1({ savedPlaceIds: [], selections: {} }, data)
-        .querySelector(".route-start-media")?.dataset.placeId
+      directStartCardCount: ROUTE_RENDERERS.d1({ savedPlaceIds: [], selections: {} }, data)
+        .querySelectorAll(".route-start-media").length,
+      directStartText: ROUTE_RENDERERS.d1({ savedPlaceIds: [], selections: {} }, data).textContent
     };
   });
 
@@ -116,12 +117,21 @@ test("course renderers use supplied place and course IDs", async ({ page }) => {
   expect(rendered.confirmation).toContain("주입 코스 장소");
   expect(rendered.complete).toContain("주입 완성 코스");
   expect(rendered.nearbyPlaceId).toBe("route-nearby-custom");
-  expect(rendered.directStartPlaceId).toBe("route-place-custom");
+  expect(rendered.directStartCardCount).toBe(0);
+  expect(rendered.directStartText).toContain("저장한 장소가 필요해요");
   expect(rendered.complete).not.toContain("연남 저녁 데이트");
 });
 
 test("D1 direct entry exposes photo controls only when place media exists", async ({ page }) => {
   await page.goto(reviewRouteUrl("d1"));
+  await page.evaluate((key) => {
+    const current = JSON.parse(localStorage.getItem(key)) || {};
+    localStorage.setItem(key, JSON.stringify({
+      ...current,
+      savedPlaceIds: Array.from({ length: 10 }, (_, index) => `place-${index + 1}`)
+    }));
+  }, STORAGE_KEY);
+  await page.reload();
 
   const cards = page.locator(".route-start-media");
   await expect(cards).toHaveCount(10);

@@ -263,9 +263,8 @@ function renderStartGallery(state, data) {
   sheet.append(handle);
   const grid = element("div", "route-start-grid");
   const saved = savedPlaces(state, data);
-  const availablePlaces = saved.length > 0 ? saved : data?.places || [];
   const hiddenMediaIds = new Set(state?.hiddenMediaIds || []);
-  const entries = availablePlaces.slice(0, 10).flatMap((place) => {
+  const entries = saved.slice(0, 10).flatMap((place) => {
     const media = mediaForPlace(data, place)[0] || null;
     return media && !hiddenMediaIds.has(media.id) ? [{ place, media }] : [];
   });
