@@ -3,6 +3,7 @@ import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 import {
   browseNearby,
+  chooseAdditionalPlacePhoto,
   completeCourse,
   createInitialState,
   openPlace,
@@ -39,6 +40,21 @@ test("selection is unique and the starting place cannot be added twice", () => {
   assert.deepEqual(toggleAdditionalPlace(builder, "place-100").selectedPlaceIds, []);
   const selected = toggleAdditionalPlace(builder, "place-101");
   assert.deepEqual(toggleAdditionalPlace(selected, "place-101").selectedPlaceIds, []);
+});
+
+test("another photo of the selected place switches the photo without deselecting the place", () => {
+  const builder = browseNearby(openPlace(startDiscovery(createInitialState()), "place-100"));
+  const first = chooseAdditionalPlacePhoto(builder, "place-111", "place-111-1.jpg", null);
+  assert.deepEqual(first.state.selectedPlaceIds, ["place-111"]);
+  assert.equal(first.image, "place-111-1.jpg");
+
+  const switched = chooseAdditionalPlacePhoto(first.state, "place-111", "place-111-2.jpg", first.image);
+  assert.deepEqual(switched.state.selectedPlaceIds, ["place-111"]);
+  assert.equal(switched.image, "place-111-2.jpg");
+
+  const deselected = chooseAdditionalPlacePhoto(switched.state, "place-111", "place-111-2.jpg", switched.image);
+  assert.deepEqual(deselected.state.selectedPlaceIds, []);
+  assert.equal(deselected.image, null);
 });
 
 test("course cannot complete without an additional place", () => {
@@ -101,6 +117,6 @@ test("selecting a nearby place preserves the builder scroll position", async () 
   assert.match(app, /top: preserveScroll \? previousScrollY : 0/);
   assert.match(
     app,
-    /toggleAdditionalPlace\(state, target\.dataset\.placeId\),\s*\{ preserveScroll: true \}/
+    /update\(selection\.state, \{ preserveScroll: true \}\)/
   );
 });
