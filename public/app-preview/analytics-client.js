@@ -124,6 +124,7 @@ export function createAnalyticsClient({
   const sessionId = randomUUID();
   const queue = [];
   const queuedEventIds = new Set();
+  const eventAccessTokens = new Map();
   let activeScreen = null;
   let pausedScreen = null;
   let started = false;
@@ -142,8 +143,8 @@ export function createAnalyticsClient({
     }
   }
 
-  function requestHeaders(headers = {}) {
-    const token = currentAccessToken();
+  function requestHeaders(headers = {}, accessTokenOverride = undefined) {
+    const token = accessTokenOverride === undefined ? currentAccessToken() : accessTokenOverride;
     return {
       ...headers,
       ...(token ? { authorization: `Bearer ${token}` } : {})
@@ -170,6 +171,7 @@ export function createAnalyticsClient({
       if (sentIds.has(queue[index].eventId)) queue.splice(index, 1);
     }
     for (const eventId of sentIds) queuedEventIds.delete(eventId);
+    for (const eventId of sentIds) eventAccessTokens.delete(eventId);
   }
 
   function recordEvent(name, {
@@ -198,10 +200,14 @@ export function createAnalyticsClient({
 
     if (queue.length >= boundedQueueLimit) {
       const dropped = queue.shift();
-      if (dropped) queuedEventIds.delete(dropped.eventId);
+      if (dropped) {
+        queuedEventIds.delete(dropped.eventId);
+        eventAccessTokens.delete(dropped.eventId);
+      }
     }
     queue.push(event);
     queuedEventIds.add(normalizedEventId);
+    eventAccessTokens.set(normalizedEventId, currentAccessToken());
     return normalizedEventId;
   }
 
@@ -279,10 +285,16 @@ export function createAnalyticsClient({
 
   async function flushQueue({ preferBeacon = false, keepalive = false } = {}) {
     while (queue.length > 0) {
-      const batch = queue.slice(0, BATCH_LIMIT);
+      const batchAccessToken = eventAccessTokens.get(queue[0].eventId) ?? null;
+      const batch = [];
+      for (const event of queue) {
+        if ((eventAccessTokens.get(event.eventId) ?? null) !== batchAccessToken) break;
+        batch.push(event);
+        if (batch.length >= BATCH_LIMIT) break;
+      }
       const body = JSON.stringify({ events: batch });
 
-      if (preferBeacon && !currentAccessToken() && typeof navigatorImpl?.sendBeacon === "function" && typeof Blob === "function") {
+      if (preferBeacon && !batchAccessToken && typeof navigatorImpl?.sendBeacon === "function" && typeof Blob === "function") {
         try {
           if (navigatorImpl.sendBeacon(`${normalizedApiBase}/events`, new Blob([body], { type: "application/json" }))) {
             removeBatch(batch);
@@ -295,7 +307,7 @@ export function createAnalyticsClient({
 
       const response = await requestWithRetry(`${normalizedApiBase}/events`, {
         method: "POST",
-        headers: requestHeaders({ "Content-Type": "application/json" }),
+        headers: requestHeaders({ "Content-Type": "application/json" }, batchAccessToken),
         body,
         keepalive: keepalive || preferBeacon
       });

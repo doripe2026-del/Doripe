@@ -117,6 +117,52 @@ test("authenticated analytics requests attach the current bearer token", async (
   assert.equal(requests[1].options.headers.authorization, "Bearer current-access-token");
 });
 
+test("an anonymous event stays anonymous when the user logs in before it is flushed", async () => {
+  const requests = [];
+  let accessToken = null;
+  const client = createAnalyticsClient({
+    storage: memoryStorage(),
+    randomUUID: uuidFactory(IDS.anonymous, IDS.session, IDS.event1),
+    accessTokenProvider: () => accessToken,
+    fetchImpl: async (url, options) => {
+      requests.push({ url: String(url), options });
+      return jsonResponse({ data: { accepted: 1, duplicates: 0, rejected: 0 }, meta: {} }, 202);
+    }
+  });
+
+  client.recordEvent("place_open", { sourceScreen: "place", properties: {} });
+  accessToken = "newly-signed-in-token";
+  await client.flush();
+
+  assert.equal(requests.length, 1);
+  assert.equal(requests[0].options.headers.authorization, undefined);
+});
+
+test("events created by different accounts are flushed with their original account tokens", async () => {
+  const requests = [];
+  let accessToken = "account-a-token";
+  const client = createAnalyticsClient({
+    storage: memoryStorage(),
+    randomUUID: uuidFactory(IDS.anonymous, IDS.session, IDS.event1, IDS.event2),
+    accessTokenProvider: () => accessToken,
+    fetchImpl: async (url, options) => {
+      requests.push({ url: String(url), options });
+      return jsonResponse({ data: { accepted: 1, duplicates: 0, rejected: 0 }, meta: {} }, 202);
+    }
+  });
+
+  client.recordEvent("place_open", { sourceScreen: "place", properties: {} });
+  accessToken = "account-b-token";
+  client.recordEvent("course_open", { sourceScreen: "course", properties: {} });
+  await client.flush();
+
+  assert.equal(requests.length, 2);
+  assert.equal(requests[0].options.headers.authorization, "Bearer account-a-token");
+  assert.equal(requests[1].options.headers.authorization, "Bearer account-b-token");
+  assert.equal(JSON.parse(requests[0].options.body).events[0].name, "place_open");
+  assert.equal(JSON.parse(requests[1].options.body).events[0].name, "course_open");
+});
+
 test("authenticated lifecycle flush uses keepalive fetch instead of an unauthenticated beacon", async () => {
   const requests = [];
   let beaconCalls = 0;
