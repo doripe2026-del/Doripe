@@ -11,7 +11,7 @@ import {
 const root = document.querySelector("#demo-app");
 const placeById = new Map(PLACES.map((place) => [place.id, place]));
 const INACTIVITY_MS = 60_000;
-const MAX_FEED_BATCHES = 2;
+const MAX_FEED_BATCHES = 5;
 
 let state = createInitialState();
 let inactivityTimer;
@@ -24,7 +24,7 @@ function placeTile(place, { selectable = false, selected = false } = {}) {
   return `
     <button class="place-tile touch-target${selectedClass}" type="button"
       data-place-id="${place.id}" aria-label="${place.name} 선택"${pressed}>
-      <img src="${place.image}" alt="${place.name}" loading="lazy" decoding="async">
+      <img src="${place.image}" alt="${place.name}" loading="eager" decoding="async">
       ${selectable ? '<span class="place-tile__check" aria-hidden="true">✓</span>' : ""}
     </button>
   `;
@@ -40,7 +40,6 @@ function renderWelcome() {
         <h1>오늘의 장소,<br>사진으로 골라봐요</h1>
         <p>마음에 드는 사진 한 장에서 나만의 동네 코스를 시작해보세요.</p>
         <button class="primary-action touch-target" type="button" data-action="start">60초 코스 만들기</button>
-        <a class="welcome__credit" href="/booth-demo/credits.html">사진 출처</a>
       </div>
     </section>
   `;

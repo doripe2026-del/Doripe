@@ -223,15 +223,6 @@ img {
   font-size: 20px;
 }
 
-.welcome__credit {
-  display: block;
-  width: max-content;
-  margin: 14px auto 0;
-  color: rgb(255 255 255 / 62%);
-  font-size: 13px;
-  text-underline-offset: 3px;
-}
-
 .feed-header,
 .builder-header {
   position: sticky;
