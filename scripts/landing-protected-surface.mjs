@@ -21,7 +21,7 @@ const EXPECTED_COPY = new Map(Object.entries({
   "save-title": "가까운 장소들을 함께 골라요.",
   "save-text": "마음에 든 장소를 고르면, 주변에서 함께 가기 좋은 식당·카페·놀거리를 취향에 맞춰 추천해요.",
   "go-kicker": "SHARE",
-  "go-title": "세 곳이 모여 하나의 하루가 돼요.",
+  "go-title": "장소들이 모여 하나의 하루가 돼요.",
   "go-text": "선택한 장소들을 하나의 코스로 묶고, 친구에게 공유해 함께 저장하고 반응할 수 있어요.",
   "final-title": "가고 싶은 한 장소를, 오늘의 코스로 이어보세요.",
   "final-sub": "Doripe 베타가 열리면 가장 먼저 알려드릴게요.",
