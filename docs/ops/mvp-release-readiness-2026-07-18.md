@@ -15,6 +15,7 @@
 | 자동 테스트 | 통과 | App unit 225, Backend 43, Ops 59, API contract 110, 화면·행동 E2E 254(시각 회귀 포함), server boundary 8 통과 |
 | Git 백업 | 준비됨 | 작업 브랜치와 복구 태그가 GitHub 원격 저장소에 있다. |
 | GitHub PR | 통과 | Draft PR #28의 build, repository guard, Vercel Preview가 성공했고 merge 상태는 `CLEAN`이다. 출시 차단 요인이 남아 있어 병합하지 않는다. |
+| 의존성 보안 | 운영 코드 통과 | 실제 서비스 의존성 취약점 0건, 커밋된 비밀키 형태 0건이다. 개발용 Vercel 도구 경고는 안전한 수정 버전을 기다린다. |
 | Supabase 대상 | 확정 | 최신 Brain, 연결 가능한 Supabase 프로젝트, 앱 미디어 URL 모두 `dcyjrsxnpujslbxtitqj`를 가리킨다. |
 | Supabase 구조 | 출시 차단 | 원격 migration 9개, 저장소 migration 50개로 이력이 크게 다르다. |
 | 실제 콘텐츠 | 출시 차단 | 장소·사진·사용자·코스는 0행이다. 태그·동네·온보딩·화면 검수 기준 데이터만 일부 존재한다. |
@@ -45,6 +46,14 @@ Security Advisor:
 Performance Advisor는 사용되지 않은 index 36개를 INFO로 보고했다. 핵심 사용자 데이터와 장소 데이터가 비어 있어 삭제 근거로 사용하지 않는다.
 
 상세 기준선은 `supabase-advisor-baseline-2026-07-18.md`에 기록했다. staging에서는 Security WARN 0건을 production 전환 조건으로 사용한다.
+
+## 의존성·비밀키 검사
+
+- `npm audit --omit=dev`: 취약점 0건
+- 커밋된 대표 Supabase token·service role key 형태: 0건
+- 개발 의존성 전체: Vercel CLI 계열 high 18, moderate 11, low 2
+
+개발 도구 경고의 자동 수정안은 큰 버전 변경 또는 현재보다 낮은 버전을 요구해 적용하지 않았다. 상세 판단은 `dependency-security-baseline-2026-07-18.md`에 기록했다.
 
 ## 안전한 다음 순서
 
