@@ -198,7 +198,10 @@ function update(nextState, { preserveScroll = false } = {}) {
   const previousScrollY = window.scrollY;
   state = nextState;
   render();
-  window.scrollTo({ top: preserveScroll ? previousScrollY : 0, behavior: "instant" });
+  const nextScrollY = preserveScroll ? previousScrollY : 0;
+  document.scrollingElement.scrollTop = nextScrollY;
+  window.scrollTo({ top: nextScrollY, behavior: "instant" });
+  window.requestAnimationFrame(() => window.scrollTo({ top: nextScrollY, behavior: "instant" }));
   armInactivityReset();
 }
 
