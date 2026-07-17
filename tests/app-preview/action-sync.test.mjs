@@ -150,8 +150,8 @@ test("signed-out API mode keeps guest changes locally instead of rolling them ba
 test("comment actions use content and comment API contracts", async () => {
   const calls = [];
   const repository = {
-    createComment: async (contentId, body) => {
-      calls.push(["create", contentId, body]);
+    createComment: async (contentId, body, options) => {
+      calls.push(["create", contentId, body, options]);
       return { id: "comment-server", contentId, body, userId: "viewer-1" };
     },
     likeComment: async (commentId) => { calls.push(["like", commentId]); }
@@ -177,7 +177,7 @@ test("comment actions use content and comment API contracts", async () => {
   });
 
   assert.deepEqual(calls, [
-    ["create", "content-1", "좋아요"],
+    ["create", "content-1", "좋아요", { idempotencyKey: "comment_local-comment-1" }],
     ["like", "comment-1"]
   ]);
   assert.equal(commentResult.state.submittedComments[0].id, "comment-server");
@@ -209,8 +209,8 @@ test("course save and create use existing repository contracts", async () => {
   const calls = [];
   const repository = {
     saveCourse: async (id) => { calls.push(["save", id]); },
-    createCourse: async (input) => {
-      calls.push(["create", input]);
+    createCourse: async (input, options) => {
+      calls.push(["create", input, options]);
       return { id: "course-server", version: 1, ...input };
     }
   };
@@ -242,10 +242,70 @@ test("course save and create use existing repository contracts", async () => {
       visibility: "private",
       startPlaceId: "place-1",
       placeIds: ["place-1", "place-2"]
-    }]
+    }, { idempotencyKey: "course_saved-route-1" }]
   ]);
   assert.equal(result.state.selections.selectedRouteId, "course-server");
   assert.equal(result.state.savedRoutes[0].id, "course-server");
+});
+
+test("comment and course retries reuse their original idempotency keys", async () => {
+  const commentKeys = [];
+  const courseKeys = [];
+  let failComment = true;
+  let failCourse = true;
+  const sync = createActionSync({
+    repository: {
+      createComment: async (_contentId, _body, options) => {
+        commentKeys.push(options.idempotencyKey);
+        if (failComment) {
+          failComment = false;
+          throw new Error("response lost");
+        }
+        return { id: "comment-server", contentId: "content-1", body: "좋아요" };
+      },
+      createCourse: async (input, options) => {
+        courseKeys.push(options.idempotencyKey);
+        if (failCourse) {
+          failCourse = false;
+          throw new Error("response lost");
+        }
+        return { id: "course-server", version: 1, ...input };
+      }
+    },
+    enabled: true
+  });
+  const previousCommentState = state({ form: { comment: "좋아요" } });
+  const optimisticCommentState = state({
+    form: { comment: "" },
+    submittedComments: [{ id: "local-comment-1", contentId: "content-1", body: "좋아요" }]
+  });
+  const previousCourseState = state({
+    routeDraft: { startPlaceId: "place-1", placeIds: ["place-1", "place-2"] },
+    form: { routeName: "새 코스" }
+  });
+  const optimisticCourseState = state({
+    currentScreenId: "d9",
+    selections: { selectedRouteId: "saved-route-1" },
+    savedRoutes: [{ id: "saved-route-1", name: "새 코스", placeIds: ["place-1", "place-2"] }]
+  });
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    await sync.run({
+      actionId: "submit-comment",
+      payload: { contentId: "content-1" },
+      previousState: previousCommentState,
+      optimisticState: optimisticCommentState
+    });
+    await sync.run({
+      actionId: "save-route",
+      payload: {},
+      previousState: previousCourseState,
+      optimisticState: optimisticCourseState
+    });
+  }
+
+  assert.deepEqual(commentKeys, ["comment_local-comment-1", "comment_local-comment-1"]);
+  assert.deepEqual(courseKeys, ["course_saved-route-1", "course_saved-route-1"]);
 });
 
 test("place and media likes roll back when no server contract exists", async () => {

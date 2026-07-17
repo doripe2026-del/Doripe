@@ -70,6 +70,11 @@ function replaceOptimisticCourse(optimisticState, course) {
   };
 }
 
+function stableMutationKey(prefix, id) {
+  const safeId = String(id || "unknown").replace(/[^A-Za-z0-9_-]/gu, "_");
+  return `${prefix}_${safeId}`.slice(0, 80);
+}
+
 function operationFor(repository, input) {
   const { screenId, actionId, payload = {}, previousState, optimisticState } = input;
 
@@ -117,9 +122,13 @@ function operationFor(repository, input) {
     const field = actionId === "submit-course-comment" ? "courseComment" : "comment";
     const contentId = payload.contentId || previousState.selections?.selectedContentId;
     const body = previousState.form?.[field]?.trim();
+    const optimisticComment = (optimisticState.submittedComments || []).find((item) => (
+      !(previousState.submittedComments || []).some((previous) => previous.id === item.id)
+    ));
+    const idempotencyKey = stableMutationKey("comment", optimisticComment?.id);
     return {
       changedKeys: ["submittedComments", "form"],
-      execute: () => requireMethod(repository, "createComment")(contentId, body),
+      execute: () => requireMethod(repository, "createComment")(contentId, body, { idempotencyKey }),
       onSuccess: (comment) => replaceOptimisticComment(optimisticState, previousState, comment)
     };
   }
@@ -147,6 +156,8 @@ function operationFor(repository, input) {
       startPlaceId: draft.startPlaceId,
       placeIds: [...(draft.placeIds || [])]
     };
+    const optimisticId = optimisticState.selections?.selectedRouteId;
+    const idempotencyKey = stableMutationKey("course", optimisticId);
     return {
       changedKeys: ["savedRoutes", "selections"],
       execute: () => isServerCourse
@@ -156,7 +167,7 @@ function operationFor(repository, input) {
             placeIds: createInput.placeIds,
             expectedVersion: existing.version
           })
-        : requireMethod(repository, "createCourse")(createInput),
+        : requireMethod(repository, "createCourse")(createInput, { idempotencyKey }),
       onSuccess: (course) => replaceOptimisticCourse(optimisticState, course)
     };
   }
