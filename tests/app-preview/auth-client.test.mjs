@@ -273,6 +273,36 @@ test("startup refreshes expired sessions, rotates tokens, and clears an invalid 
   assert.equal(sessionStorage.getItem(AUTH_SESSION_STORAGE_KEY), null);
 });
 
+test("forced session refresh is shared by concurrent unauthorized requests", async () => {
+  const { AUTH_SESSION_STORAGE_KEY, createAuthClient } = await loadAuthModule();
+  const now = Date.now();
+  const sessionStorage = createMemoryStorage();
+  sessionStorage.setItem(AUTH_SESSION_STORAGE_KEY, JSON.stringify({
+    accessToken: "server-rejected-access",
+    refreshToken: "shared-refresh-token",
+    expiresAt: now + 60_000,
+    flow: "auth"
+  }));
+  let refreshRequests = 0;
+  const { fetchImpl } = configuredFetch(async (url) => {
+    assert.match(String(url), /grant_type=refresh_token/);
+    refreshRequests += 1;
+    await new Promise((resolve) => setTimeout(resolve, 5));
+    return jsonResponse(authSession({ access_token: "rotated-access", refresh_token: "rotated-refresh" }));
+  });
+  const client = createAuthClient({ fetchImpl, sessionStorage, now: () => now });
+
+  const [first, second] = await Promise.all([
+    client.refreshSession(),
+    client.refreshSession()
+  ]);
+
+  assert.deepEqual(first, { ok: true, status: "authenticated" });
+  assert.deepEqual(second, first);
+  assert.equal(refreshRequests, 1);
+  assert.equal(client.getAccessToken(), "rotated-access");
+});
+
 test("startup removes an expired session before its refresh request settles", async () => {
   const { AUTH_SESSION_STORAGE_KEY, createAuthClient } = await loadAuthModule();
   const now = Date.now();

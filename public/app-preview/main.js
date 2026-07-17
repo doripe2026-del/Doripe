@@ -27,9 +27,15 @@ const startupAuthResult = await authClient.initializeSession({
   url: window.location.href,
   replaceState: (url) => window.history.replaceState(window.history.state, "", url)
 });
+let authStatus = startupAuthResult.ok ? startupAuthResult.status : "no-session";
 setBootProgress(45);
 const repository = getAdapter(isStaticPreview() ? "fixture" : "api", {
-  accessTokenProvider: authClient.getAccessToken
+  accessTokenProvider: authClient.getAccessToken,
+  refreshAccessToken: authClient.refreshSession,
+  onUnauthorized: () => {
+    authClient.clearSession();
+    authStatus = "no-session";
+  }
 });
 const dataStore = createAppDataStore({ repository });
 const actionSync = createActionSync({ repository, enabled: repository.mode === "api" });
@@ -70,7 +76,6 @@ let activePointerTarget = null;
 let pendingHistoryBack = null;
 let activeShareParams = null;
 let renderGeneration = 0;
-let authStatus = startupAuthResult.ok ? startupAuthResult.status : "no-session";
 let lastRenderedScreenId = null;
 let analyticsSession = null;
 
@@ -363,7 +368,7 @@ function renderEvidenceScreen(screen) {
     const retry = document.createElement("button");
     retry.type = "button";
     retry.textContent = "다시 시도";
-    retry.addEventListener("click", () => window.location.reload());
+    retry.dataset.action = "app-retry-data";
     feedback.append(message, retry);
     phoneRoot.append(feedback);
   }
@@ -881,6 +886,12 @@ function handleReviewAction(actionId, id) {
   return false;
 }
 
+function handleAppAction(actionId) {
+  if (actionId !== "app-retry-data") return false;
+  window.location.reload();
+  return true;
+}
+
 function isActionFormControl(target) {
   return target.matches("input, select, textarea");
 }
@@ -987,6 +998,7 @@ document.addEventListener("click", (event) => {
 
   const actionId = target.dataset.action;
   const id = target.getAttribute("data-id");
+  if (handleAppAction(actionId)) return;
   if (handleReviewAction(actionId, id)) return;
   if (isActionFormControl(target)) return;
   dispatchTargetAction(target);

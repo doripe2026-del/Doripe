@@ -252,6 +252,7 @@ export function createAuthClient({
   now = () => Date.now()
 } = {}) {
   let configPromise = null;
+  let refreshPromise = null;
   const boundedTimeoutMs = Number.isFinite(timeoutMs) ? Math.min(Math.max(timeoutMs, 1), 30_000) : DEFAULT_TIMEOUT_MS;
 
   async function timedFetch(url, options = {}, externalSignal) {
@@ -401,6 +402,36 @@ export function createAuthClient({
     return response.ok ? { ok: true, status: "reset-sent" } : response;
   }
 
+  async function refreshSession({ signal } = {}) {
+    if (refreshPromise) return refreshPromise;
+    const session = readStoredSession(sessionStorage);
+    if (!session) {
+      clearAuthStorage(sessionStorage, localStorage);
+      return failure("invalid-session", SAFE_MESSAGES.invalidSession);
+    }
+
+    clearSessionStorage(sessionStorage);
+    refreshPromise = (async () => {
+      const refreshed = await request("token?grant_type=refresh_token", {
+        refresh_token: session.refreshToken
+      }, SAFE_MESSAGES.invalidSession, { signal });
+      if (!refreshed.ok || !storeSession(sessionStorage, refreshed.body, now(), { flow: session.flow })) {
+        clearAuthStorage(sessionStorage, localStorage);
+        return failure("invalid-session", SAFE_MESSAGES.invalidSession);
+      }
+      return {
+        ok: true,
+        status: session.flow === "recovery" ? "recovery-ready" : "authenticated"
+      };
+    })();
+
+    try {
+      return await refreshPromise;
+    } finally {
+      refreshPromise = null;
+    }
+  }
+
   async function initializeSession({ url: rawUrl = globalThis.location?.href, replaceState, signal } = {}) {
     let callback;
     try {
@@ -498,15 +529,7 @@ export function createAuthClient({
     if (session.expiresAt > now() && !accessTokenIsExpired(session.accessToken, now())) {
       return { ok: true, status: session.flow === "recovery" ? "recovery-ready" : "authenticated" };
     }
-    clearSessionStorage(sessionStorage);
-    const refreshed = await request("token?grant_type=refresh_token", {
-      refresh_token: session.refreshToken
-    }, SAFE_MESSAGES.invalidSession, { signal });
-    if (!refreshed.ok || !storeSession(sessionStorage, refreshed.body, now(), { flow: session.flow })) {
-      clearAuthStorage(sessionStorage, localStorage);
-      return failure("invalid-session", SAFE_MESSAGES.invalidSession);
-    }
-    return { ok: true, status: session.flow === "recovery" ? "recovery-ready" : "authenticated" };
+    return refreshSession({ signal });
   }
 
   async function updatePassword({ password: rawPassword, confirmation, signal } = {}) {
@@ -564,6 +587,7 @@ export function createAuthClient({
     beginSignOut,
     signOut,
     getAccessToken,
+    refreshSession,
     clearSession: () => clearAuthStorage(sessionStorage, localStorage)
   });
 }

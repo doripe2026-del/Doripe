@@ -232,6 +232,63 @@ test("create mutations send an idempotency key", async () => {
   assert.match(requests[0].options.headers["idempotency-key"], /^[A-Za-z0-9_-]{8,80}$/u);
 });
 
+test("an authenticated 401 refreshes once and retries with the same idempotency key", async () => {
+  const requests = [];
+  let accessToken = "expired-access-token";
+  let refreshCalls = 0;
+  const repository = createApiRepository({
+    fetchImpl: async (url, options) => {
+      requests.push({ url: String(url), options });
+      if (requests.length === 1) {
+        return jsonResponse({ error: { code: "unauthorized", message: "expired" } }, 401);
+      }
+      return jsonResponse({ data: { targetType: "place", targetId: place.id, saved: true } }, 201);
+    },
+    storage: memoryStorage(),
+    accessTokenProvider: () => accessToken,
+    refreshAccessToken: async () => {
+      refreshCalls += 1;
+      accessToken = "rotated-access-token";
+      return { ok: true, status: "authenticated" };
+    }
+  });
+
+  await repository.savePlace(place.id);
+
+  assert.equal(refreshCalls, 1);
+  assert.equal(requests.length, 2);
+  assert.equal(requests[0].options.headers.authorization, "Bearer expired-access-token");
+  assert.equal(requests[1].options.headers.authorization, "Bearer rotated-access-token");
+  assert.equal(
+    requests[1].options.headers["idempotency-key"],
+    requests[0].options.headers["idempotency-key"]
+  );
+});
+
+test("a second authenticated 401 clears the rejected session without looping", async () => {
+  let accessToken = "expired-access-token";
+  let requests = 0;
+  let unauthorizedCalls = 0;
+  const repository = createApiRepository({
+    fetchImpl: async () => {
+      requests += 1;
+      return jsonResponse({ error: { code: "unauthorized", message: "rejected" } }, 401);
+    },
+    storage: memoryStorage(),
+    accessTokenProvider: () => accessToken,
+    refreshAccessToken: async () => {
+      accessToken = "also-rejected-access-token";
+      return { ok: true, status: "authenticated" };
+    },
+    onUnauthorized: () => { unauthorizedCalls += 1; }
+  });
+
+  await assert.rejects(repository.savePlace(place.id), (error) => error.status === 401);
+
+  assert.equal(requests, 2);
+  assert.equal(unauthorizedCalls, 1);
+});
+
 test("comment like and delete use the documented endpoints", async () => {
   const requests = [];
   const repository = createApiRepository({

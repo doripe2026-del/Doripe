@@ -226,6 +226,8 @@ export function createApiRepository({
   fetchImpl = globalThis.fetch?.bind(globalThis),
   storage = globalThis.localStorage,
   accessTokenProvider = () => null,
+  refreshAccessToken,
+  onUnauthorized,
   timeoutMs = DEFAULT_TIMEOUT_MS,
   now = Date.now,
   readCacheTtlMs = DEFAULT_READ_CACHE_TTL_MS,
@@ -250,20 +252,30 @@ export function createApiRepository({
       throw error;
     }
     try {
-      const response = await fetchImpl(`/api/v1/${path}`, {
-        method,
-        headers: {
-          accept: "application/json",
-          ...(body === undefined ? {} : { "content-type": "application/json" }),
-          ...(token ? { authorization: `Bearer ${token}` } : {}),
-          ...(idempotencyKey ? { "idempotency-key": idempotencyKey } : {})
-        },
-        ...(body === undefined ? {} : { body: JSON.stringify(body) }),
-        signal: controller.signal
-      });
-      const payload = await response.json().catch(() => null);
-      if (!response.ok) throw apiError(response.status, payload);
-      return payload?.data;
+      const perform = async (accessToken) => {
+        const response = await fetchImpl(`/api/v1/${path}`, {
+          method,
+          headers: {
+            accept: "application/json",
+            ...(body === undefined ? {} : { "content-type": "application/json" }),
+            ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
+            ...(idempotencyKey ? { "idempotency-key": idempotencyKey } : {})
+          },
+          ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+          signal: controller.signal
+        });
+        return { response, payload: await response.json().catch(() => null) };
+      };
+
+      let result = await perform(token);
+      if (result.response.status === 401 && token && typeof refreshAccessToken === "function") {
+        const refreshed = await refreshAccessToken();
+        const refreshedToken = refreshed?.ok ? accessTokenProvider?.() || null : null;
+        if (refreshedToken) result = await perform(refreshedToken);
+        if (!refreshedToken || result.response.status === 401) onUnauthorized?.();
+      }
+      if (!result.response.ok) throw apiError(result.response.status, result.payload);
+      return result.payload?.data;
     } finally {
       clearTimeout(timer);
     }
