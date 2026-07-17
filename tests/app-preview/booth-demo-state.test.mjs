@@ -19,6 +19,8 @@ test("booth demo uses only local runtime assets", async () => {
   assert.match(html, /src="\/booth-demo\/assets\/doripe-logo\.png"/);
   assert.match(html, /src="\/booth-demo\/app\.js"/);
   assert.doesNotMatch(html, /https?:\/\//);
+  const app = await readFile(new URL("public/booth-demo/app.js", root), "utf8");
+  assert.match(app, /href="\/booth-demo\/credits\.html"/);
 });
 
 test("visitor completes a course after selecting one nearby place", () => {
@@ -47,26 +49,32 @@ test("course cannot complete without an additional place", () => {
 });
 
 test("demo places are immutable local records", () => {
-  assert.deepEqual(PLACES, [
-    { id: "place-01", name: "레이어드 연남", copy: "빛과 디저트가 머무는 공간", image: "/booth-demo/assets/place-01.png" },
-    { id: "place-02", name: "오브젝트 연남", copy: "천천히 둘러보는 작은 취향", image: "/booth-demo/assets/place-02.png" },
-    { id: "place-03", name: "갤러리 무아", copy: "빛과 여백이 흐르는 전시 공간", image: "/booth-demo/assets/place-03.png" },
-    { id: "place-04", name: "이후북스", copy: "오래 머물고 싶은 작은 책방", image: "/booth-demo/assets/place-04.png" },
-    { id: "place-05", name: "사운드 캐비닛", copy: "좋은 음악으로 채운 늦은 오후", image: "/booth-demo/assets/place-05.png" },
-    { id: "place-06", name: "정원 식탁", copy: "초록 사이에서 즐기는 한 끼", image: "/booth-demo/assets/place-06.png" },
-    { id: "place-07", name: "크림 아틀리에", copy: "작은 디저트가 완성되는 순간", image: "/booth-demo/assets/place-07.png" },
-    { id: "place-08", name: "스튜디오 콤마", copy: "일상에 쉼표를 더하는 디자인", image: "/booth-demo/assets/place-08.png" }
+  assert.deepEqual(PLACES.map((place) => place.name), [
+    "청운문학도서관", "산촌", "윤동주문학관", "낙산공원", "아라리오뮤지엄 인 스페이스", "진아춘",
+    "무계원", "세운상가", "박노수미술관", "창경궁 대온실", "환기미술관", "이문설농탕",
+    "서울공예박물관", "창의문", "아트선재센터", "삼청동수제비", "국립현대미술관 서울", "원서동 공방길",
+    "홍난파 가옥", "진옥화할매원조닭한마리", "이상범 가옥과 화실", "윤동주 시인의 언덕", "백인제가옥", "숙정문",
+    "경교장", "서울우리소리박물관", "혜화문", "서울교육박물관", "락고재", "한양도성박물관", "정독도서관",
+    "대한민국역사박물관", "서울역사박물관", "국립민속박물관", "국립어린이과학관", "일민미술관"
   ]);
+  assert.equal(PLACES.every((place) => place.copy.length > 0), true);
   assert.equal(Object.isFrozen(PLACES), true);
   assert.equal(PLACES.every(Object.isFrozen), true);
 });
 
 test("all demo places use available local booth assets", async () => {
-  assert.equal(PLACES.length, 8);
+  assert.equal(PLACES.length, 36);
   for (const place of PLACES) {
-    assert.match(place.image, /^\/booth-demo\/assets\/place-\d{2}\.png$/);
+    assert.match(place.image, /^\/booth-demo\/assets\/place-\d{2}\.jpg$/);
     await access(new URL(`../../public${place.image}`, import.meta.url));
   }
+});
+
+test("real place photos have visible source and license credits", async () => {
+  const credits = await readFile(new URL("public/booth-demo/credits.html", root), "utf8");
+  for (const place of PLACES) assert.match(credits, new RegExp(place.name));
+  assert.equal((credits.match(/class="photo-source"/g) ?? []).length, 36);
+  assert.equal((credits.match(/commons\.wikimedia\.org\/wiki\/File:/g) ?? []).length, 36);
 });
 
 test("booth CSS includes touch, safe area, and reduced motion rules", async () => {
