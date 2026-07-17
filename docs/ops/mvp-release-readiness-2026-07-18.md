@@ -2,8 +2,8 @@
 
 - 확인일: 2026-07-18
 - Git 브랜치: `codex/mvp-masterplan-implementation`
-- 기능 기준: `mvp-checkpoint-2026-07-18-public-fixture-guard`
-- 최신 복구 체크포인트: `mvp-checkpoint-2026-07-18-public-fixture-guard`
+- 기능 기준: `mvp-checkpoint-2026-07-18-main-sync`
+- 최신 복구 체크포인트: `mvp-checkpoint-2026-07-18-main-sync`
 - 웹 MVP Supabase project: `dcyjrsxnpujslbxtitqj` (`Doripe-app`)
 - 목적: 실제 DB 변경이나 Production 배포 전에 현재 코드와 운영 환경의 차이를 복구 가능한 기록으로 남긴다.
 
