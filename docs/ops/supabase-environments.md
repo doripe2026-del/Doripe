@@ -30,6 +30,16 @@ Do not make dashboard-only schema changes and leave them undocumented.
 
 원격 프로젝트를 변경하기 전에 현재 구조와 Storage를 읽기 전용으로 기록하고, 별도 staging에서 forward-only migration을 검증한다.
 
+## Staging Safety Guard
+
+staging project를 만들고 사용자 확인을 받은 뒤 다음 검사를 먼저 실행한다.
+
+```bash
+npm run check:supabase-staging-target
+```
+
+이 검사는 staging project ref·URL·확인 문구가 모두 일치하는지 확인하고, production ref `dcyjrsxnpujslbxtitqj`와 legacy ref `qfvirakzxtcgoerrqumh`를 거부한다. 자세한 순서는 `supabase-staging-bridge-runbook.md`를 따른다.
+
 ## Local Secrets
 
 Never commit:

@@ -2,8 +2,8 @@
 
 - 확인일: 2026-07-18
 - Git 브랜치: `codex/mvp-masterplan-implementation`
-- 기능 기준 커밋: `68085a1`
-- 복구 체크포인트: `mvp-checkpoint-2026-07-18-feed-lifecycle`
+- 기능 기준 커밋: `8dbfdbc`
+- 최신 복구 체크포인트: `mvp-checkpoint-2026-07-18-schema-bridge-plan`
 - 웹 MVP Supabase project: `dcyjrsxnpujslbxtitqj` (`Doripe-app`)
 - 목적: 실제 DB 변경이나 Production 배포 전에 현재 코드와 운영 환경의 차이를 복구 가능한 기록으로 남긴다.
 
@@ -12,7 +12,7 @@
 | 영역 | 상태 | 확인 결과 |
 | --- | --- | --- |
 | 최신 앱 코드 | 준비됨 | 최신 Figma 화면을 `/app`과 `/app-preview`가 같은 소스로 사용한다. |
-| 자동 테스트 | 통과 | App unit 223, Backend 43, Ops 41, API contract 110, 화면·행동 E2E 249, server boundary 8 통과 |
+| 자동 테스트 | 통과 | App unit 225, Backend 43, Ops 59, API contract 110, 화면·행동 E2E 251, server boundary 8 통과 |
 | Git 백업 | 준비됨 | 작업 브랜치와 복구 태그가 GitHub 원격 저장소에 있다. |
 | Supabase 대상 | 확정 | 최신 Brain, 연결 가능한 Supabase 프로젝트, 앱 미디어 URL 모두 `dcyjrsxnpujslbxtitqj`를 가리킨다. |
 | Supabase 구조 | 출시 차단 | 원격 migration 9개, 저장소 migration 50개로 이력이 크게 다르다. |
@@ -38,21 +38,24 @@
 
 Security Advisor:
 
-1. 공개 Storage의 광범위한 SELECT policy가 파일 목록을 노출할 수 있다.
-2. `notify_taste_events`, `notify_taste_results`는 RLS가 켜져 있지만 policy가 없다.
+1. 공개 Storage의 광범위한 SELECT policy가 파일 목록을 노출할 수 있다. `WARN` 1건이다.
+2. `notify_taste_events`, `notify_taste_results`는 RLS가 켜져 있지만 policy가 없다. `INFO` 2건이다.
 
 Performance Advisor는 사용되지 않은 index 36개를 INFO로 보고했다. 핵심 사용자 데이터와 장소 데이터가 비어 있어 삭제 근거로 사용하지 않는다.
+
+상세 기준선은 `supabase-advisor-baseline-2026-07-18.md`에 기록했다. staging에서는 Security WARN 0건을 production 전환 조건으로 사용한다.
 
 ## 안전한 다음 순서
 
 1. **부분 완료:** 원격 DB catalog·기준 데이터·앱 역할 grant·migration SQL 원문과 Storage 176개의 읽기 전용 백업을 만들었다. DB custom-format 백업은 별도 자격증명 확보 후 추가한다.
 2. 현재 9개 migration을 기준선으로 보존한다.
-3. 기존 데이터를 지우지 않는 bridge migration을 별도 staging에 적용한다.
-4. staging에서 RLS, API, 중복 실행, 데이터 보존을 검증한다.
-5. Vercel Preview·Development를 `dcyjrsxnpujslbxtitqj`에 연결한다.
-6. 실제 베타 장소·사진·태그·제공자 데이터를 등록한다.
-7. 실제 데이터와 휴대폰으로 전체 사용자 여정을 반복 검수한다.
-8. 출시 차단 문제가 0개일 때만 PR을 `main`에 병합한다.
+3. 사용자 확인 후 별도 staging을 만들고 `npm run check:supabase-staging-target`으로 production·legacy project 오지정을 차단한다.
+4. 기존 데이터를 지우지 않는 bridge migration을 staging에 적용한다.
+5. staging에서 RLS, API, 중복 실행, 데이터 보존과 Security WARN 0건을 검증한다.
+6. Vercel Preview·Development를 승인된 Supabase 환경에 연결한다.
+7. 실제 베타 장소·사진·태그·제공자 데이터를 등록한다.
+8. 실제 데이터와 휴대폰으로 전체 사용자 여정을 반복 검수한다.
+9. 출시 차단 문제가 0개일 때만 PR을 `main`에 병합한다.
 
 ## 이번 기록에서 하지 않은 것
 

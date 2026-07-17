@@ -69,6 +69,8 @@
 
 50개 local migration의 개별 처리는 `supabase-bridge-execution-plan.json`에 고정했다. 새 migration이 추가되거나 원격 migration이 달라졌는데 분류가 없으면 `npm run check:supabase`가 실패한다. 이 분류표도 staging 실행 권한이나 production 변경 승인을 부여하지 않는다.
 
+staging 실행 전에는 `npm run check:supabase-staging-target`을 통과해야 한다. 이 검사는 production·legacy project ref와 project ref가 다른 URL을 거부한다. 실제 실행 순서는 `supabase-staging-bridge-runbook.md`, 현재 보안 기준선은 `supabase-advisor-baseline-2026-07-18.md`를 따른다.
+
 ## 기존 구조 처리 원칙
 
 - 제자리 확장 우선: `neighborhoods`, `places`, `place_photos`, `shared_links`
