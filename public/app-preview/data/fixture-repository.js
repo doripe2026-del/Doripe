@@ -70,6 +70,7 @@ export function createFixtureRepository() {
     async getPlaceDetail(id) { return clone(findOrThrow(data.places, id, "place")); },
     async getCourseDetail(id) { return clone(findOrThrow(data.courses, id, "course")); },
     async getPublicProfile(id) { return clone(findOrThrow(data.profiles, id, "profile")); },
+    async getMyProfile() { return clone(findOrThrow(data.profiles, data.viewerProfileId, "profile")); },
     async getSavedPlaces({ ids = [] } = {}) { return clone(data.places.filter((item) => ids.includes(item.id))); },
     async getSavedCourses({ ids = [] } = {}) { return clone(data.courses.filter((item) => ids.includes(item.id))); },
     async savePlace(placeId) { findOrThrow(data.places, placeId, "place"); return { placeId, saved: true }; },

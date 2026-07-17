@@ -10,10 +10,20 @@ import { createDataCatalog, mediaForPlace, placeById } from "../../public/app-pr
 
 test("normalized snapshots own cloned collections", () => {
   const places = [{ id: "place-1", mediaIds: ["media-1"], tagIds: [] }];
-  const snapshot = normalizeDataSnapshot({ places, media: [{ id: "media-1" }] });
+  const snapshot = normalizeDataSnapshot({
+    places,
+    media: [{ id: "media-1" }],
+    personalDataLoaded: true,
+    savedPlaceIds: ["place-1", "place-1", ""],
+    savedCourseIds: ["course-1", "course-1"]
+  });
   assert.notEqual(snapshot.places, places);
   assert.deepEqual(snapshot.places, places);
+  assert.equal(snapshot.personalDataLoaded, true);
+  assert.deepEqual(snapshot.savedPlaceIds, ["place-1"]);
+  assert.deepEqual(snapshot.savedCourseIds, ["course-1"]);
   assert.deepEqual(createEmptyDataSnapshot().contents, []);
+  assert.equal(createEmptyDataSnapshot().personalDataLoaded, false);
 });
 
 test("selectors resolve relationships by ID", () => {

@@ -189,6 +189,9 @@ function buildSnapshot({ bootstrap, feed, places, courses }) {
 
   return normalizeDataSnapshot({
     viewerProfileId: null,
+    personalDataLoaded: false,
+    savedPlaceIds: [],
+    savedCourseIds: [],
     places: placeResults.map((result) => result.place),
     media,
     profiles,
@@ -196,6 +199,25 @@ function buildSnapshot({ bootstrap, feed, places, courses }) {
     comments: [],
     courses: (courses || []).map(toCourse),
     contents
+  });
+}
+
+function mergePersonalData(snapshot, { profile, savedPlaceIds, savedCourseIds, places, courses }) {
+  const placeResults = places.map((place) => toPlace(place));
+  const media = places.flatMap((place) => (place.media || []).map((item) => toMedia(item, {
+    createdAt: place.updatedAt || null
+  })));
+  return normalizeDataSnapshot({
+    ...snapshot,
+    viewerProfileId: profile.id,
+    personalDataLoaded: true,
+    savedPlaceIds,
+    savedCourseIds,
+    places: mergeUnique([...snapshot.places, ...placeResults.map((result) => result.place)]),
+    media: mergeUnique([...snapshot.media, ...media]),
+    profiles: mergeUnique([...snapshot.profiles, profile]),
+    tags: mergeUnique([...snapshot.tags, ...placeResults.flatMap((result) => result.tags)]),
+    courses: mergeUnique([...snapshot.courses, ...courses.map(toCourse)])
   });
 }
 
@@ -316,17 +338,74 @@ export function createApiRepository({
     return buildSnapshot({ bootstrap, feed, places, courses });
   }
 
+  async function loadPersonalData(snapshot) {
+    const [profileData, placePage, coursePage] = await Promise.all([
+      request("me/profile", { auth: true }),
+      request("me/saves?targetType=place&limit=50", { auth: true }),
+      request("me/saves?targetType=course&limit=50", { auth: true })
+    ]);
+    const profile = toProfile(profileData);
+    const savedPlaceIds = [...new Set((placePage?.items || [])
+      .filter((item) => item.targetType === "place")
+      .map((item) => item.targetId || item.target?.id)
+      .filter(Boolean))];
+    const savedCourseIds = [...new Set((coursePage?.items || [])
+      .filter((item) => item.targetType === "course")
+      .map((item) => item.targetId || item.target?.id)
+      .filter(Boolean))];
+    const knownPlaceIds = new Set(snapshot.places.map((item) => item.id));
+    const knownCourseIds = new Set(snapshot.courses.map((item) => item.id));
+    const missingDetails = [
+      ...savedPlaceIds.filter((id) => !knownPlaceIds.has(id)).map((id) => ({ type: "place", id })),
+      ...savedCourseIds.filter((id) => !knownCourseIds.has(id)).map((id) => ({ type: "course", id }))
+    ];
+    const details = await mapWithConcurrency(missingDetails, detailRequestLimit, ({ type, id }) => (
+      read(`${type === "place" ? "places" : "courses"}/${encodeURIComponent(id)}`)
+    ));
+    const placeCount = missingDetails.filter((item) => item.type === "place").length;
+    const savedPlaces = details.slice(0, placeCount);
+    const savedCourses = details.slice(placeCount);
+    const fetchedPlaceIds = new Set(savedPlaces.map((item) => item.id));
+    const savedCoursePlaceIds = new Set([
+      ...snapshot.courses
+        .filter((item) => savedCourseIds.includes(item.id))
+        .flatMap((item) => item.placeIds || []),
+      ...savedCourses.flatMap((item) => (item.places || []).map((coursePlace) => coursePlace.placeId))
+    ].filter(Boolean));
+    const missingCoursePlaces = [...savedCoursePlaceIds]
+      .filter((id) => !knownPlaceIds.has(id) && !fetchedPlaceIds.has(id));
+    const coursePlaces = await mapWithConcurrency(
+      missingCoursePlaces,
+      detailRequestLimit,
+      (id) => read(`places/${encodeURIComponent(id)}`)
+    );
+    return mergePersonalData(snapshot, {
+      profile,
+      savedPlaceIds,
+      savedCourseIds,
+      places: [...savedPlaces, ...coursePlaces],
+      courses: savedCourses
+    });
+  }
+
   async function getBootstrap() {
+    let snapshot;
     try {
-      const snapshot = await loadBootstrap();
+      snapshot = await loadBootstrap();
       writeCache(storage, snapshot, now);
       lastLoadSource = "network";
-      return clone(snapshot);
     } catch (error) {
       const cached = readCache(storage, now, snapshotCacheTtlMs);
       if (!cached) throw error;
       lastLoadSource = "cache";
-      return clone(cached);
+      snapshot = cached;
+    }
+
+    if (!accessTokenProvider?.()) return clone(snapshot);
+    try {
+      return clone(await loadPersonalData(snapshot));
+    } catch {
+      return clone(snapshot);
     }
   }
 
@@ -351,6 +430,7 @@ export function createApiRepository({
     async getPlaceDetail(id) { return toPlace(await read(`places/${encodeURIComponent(id)}`)).place; },
     async getCourseDetail(id) { return toCourse(await read(`courses/${encodeURIComponent(id)}`)); },
     async getPublicProfile(id) { return toProfile(await read(`profiles/${encodeURIComponent(id)}`)); },
+    async getMyProfile() { return toProfile(await request("me/profile", { auth: true })); },
     async getSavedPlaces() {
       const page = await request("me/saves?targetType=place&limit=50", { auth: true });
       return (page?.items || [])

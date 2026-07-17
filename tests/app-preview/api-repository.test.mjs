@@ -75,6 +75,31 @@ const content = {
   publishedAt: "2026-07-15T00:00:00.000Z"
 };
 
+const courseOnlyPlace = {
+  ...place,
+  id: "77777777-7777-4777-8777-777777777777",
+  name: "포멜로빈",
+  media: [{
+    ...place.media[0],
+    id: "88888888-8888-4888-8888-888888888888",
+    placeId: "77777777-7777-4777-8777-777777777777",
+    url: "https://images.example/pomelobin.jpg"
+  }]
+};
+
+const course = {
+  id: "66666666-6666-4666-8666-666666666666",
+  ownerId: profile.id,
+  name: "연남 산책 코스",
+  visibility: "private",
+  version: 1,
+  totalTravelMinutes: 25,
+  places: [
+    { id: "course-place-1", placeId: place.id, position: 1 },
+    { id: "course-place-2", placeId: courseOnlyPlace.id, position: 2 }
+  ]
+};
+
 test("API bootstrap is translated into the flat preview data contract", async () => {
   const requests = [];
   const fetchImpl = async (url, options = {}) => {
@@ -128,6 +153,62 @@ test("an empty API feed stays empty and never becomes fixture content", async ()
   assert.deepEqual(snapshot.places, []);
   assert.deepEqual(snapshot.contents, []);
   assert.deepEqual(snapshot.media, []);
+  assert.equal(snapshot.personalDataLoaded, false);
+  assert.deepEqual(snapshot.savedPlaceIds, []);
+  assert.deepEqual(snapshot.savedCourseIds, []);
+});
+
+test("authenticated bootstrap restores private profile and saved items without caching them publicly", async () => {
+  const requests = [];
+  const storage = memoryStorage();
+  const fetchImpl = async (url) => {
+    const requestUrl = String(url);
+    requests.push(requestUrl);
+    if (requestUrl === "/api/v1/bootstrap") {
+      return jsonResponse({ data: {
+        regions: [], categories: [place.category], tags: place.tags,
+        featureFlags: {}, contractVersions: {}
+      } });
+    }
+    if (requestUrl.startsWith("/api/v1/feed?")) {
+      return jsonResponse({ data: { items: [] }, meta: { nextCursor: null } });
+    }
+    if (requestUrl === "/api/v1/me/profile") return jsonResponse({ data: profile });
+    if (requestUrl === "/api/v1/me/saves?targetType=place&limit=50") {
+      return jsonResponse({ data: { items: [{ targetType: "place", targetId: place.id, target: null }] } });
+    }
+    if (requestUrl === "/api/v1/me/saves?targetType=course&limit=50") {
+      return jsonResponse({ data: { items: [{ targetType: "course", targetId: course.id, target: null }] } });
+    }
+    if (requestUrl === `/api/v1/places/${place.id}`) return jsonResponse({ data: place });
+    if (requestUrl === `/api/v1/places/${courseOnlyPlace.id}`) return jsonResponse({ data: courseOnlyPlace });
+    if (requestUrl === `/api/v1/courses/${course.id}`) return jsonResponse({ data: course });
+    throw new Error(`Unexpected request: ${url}`);
+  };
+
+  const snapshot = await createApiRepository({
+    fetchImpl,
+    storage,
+    accessTokenProvider: () => "current-access-token"
+  }).getBootstrap();
+
+  assert.equal(snapshot.personalDataLoaded, true);
+  assert.equal(snapshot.viewerProfileId, profile.id);
+  assert.deepEqual(snapshot.savedPlaceIds, [place.id]);
+  assert.deepEqual(snapshot.savedCourseIds, [course.id]);
+  assert.equal(snapshot.profiles.some((item) => item.id === profile.id), true);
+  assert.equal(snapshot.places.some((item) => item.id === place.id), true);
+  assert.equal(snapshot.places.some((item) => item.id === courseOnlyPlace.id), true);
+  assert.equal(snapshot.courses.some((item) => item.id === course.id), true);
+  assert.equal(requests.includes(`/api/v1/places/${courseOnlyPlace.id}`), true);
+  assert.equal(requests.includes("/api/v1/me/profile"), true);
+
+  const publicCache = JSON.parse(storage.getItem("doripe.app_preview.api_snapshot.v1"));
+  assert.equal(publicCache.snapshot.personalDataLoaded, false);
+  assert.equal(publicCache.snapshot.viewerProfileId, null);
+  assert.deepEqual(publicCache.snapshot.savedPlaceIds, []);
+  assert.deepEqual(publicCache.snapshot.savedCourseIds, []);
+  assert.deepEqual(publicCache.snapshot.profiles, []);
 });
 
 test("the last successful API snapshot is used only after a later network failure", async () => {

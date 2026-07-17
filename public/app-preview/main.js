@@ -6,6 +6,7 @@ import { getAdapter } from "./api-adapter.js";
 import { courseById, createDataCatalog } from "./data/selectors.js";
 import { createActionSync } from "./data/action-sync.js";
 import { createAppDataStore } from "./data/store.js";
+import { mergePersonalSnapshotIntoState } from "./data/personal-state.js";
 import { isStaticPreview, preloadServerMedia } from "./data/server-media.js";
 import { createAnalyticsClient } from "./analytics-client.js";
 
@@ -52,6 +53,9 @@ setBootProgress(92);
 const dataSnapshot = dataStore.getSnapshot();
 const dataCatalog = createDataCatalog(dataSnapshot);
 const state = createPreviewState({ catalog: dataCatalog });
+if (dataSnapshot.personalDataLoaded) {
+  state.replace(mergePersonalSnapshotIntoState(state.getState(), dataSnapshot));
+}
 const reviewList = document.querySelector("#review-list");
 const resetButton = document.querySelector("#review-reset");
 const BROWSER_HISTORY_KEY = "doripeAppPreview";
