@@ -238,9 +238,26 @@ function readCache(storage, now, ttlMs) {
   }
 }
 
+function publicCacheSnapshot(snapshot) {
+  return normalizeDataSnapshot({
+    ...clone(snapshot),
+    viewerProfileId: null,
+    personalDataLoaded: false,
+    savedPlaceIds: [],
+    savedCourseIds: [],
+    ownedCourseIds: [],
+    profiles: (snapshot.profiles || []).map((profile) => ({ ...profile, followedByMe: false })),
+    contents: (snapshot.contents || []).map((content) => ({ ...content, likedByMe: false }))
+  });
+}
+
 function writeCache(storage, snapshot, now) {
   try {
-    storage?.setItem?.(CACHE_KEY, JSON.stringify({ version: CACHE_VERSION, savedAt: now(), snapshot }));
+    storage?.setItem?.(CACHE_KEY, JSON.stringify({
+      version: CACHE_VERSION,
+      savedAt: now(),
+      snapshot: publicCacheSnapshot(snapshot)
+    }));
   } catch {
     // A blocked or full cache must not prevent live data from rendering.
   }
@@ -265,7 +282,7 @@ export function createApiRepository({
   const pendingReads = new Map();
   const detailRequestLimit = Math.max(1, Math.floor(detailConcurrency));
 
-  async function request(path, { method = "GET", body, auth = false, idempotencyKey } = {}) {
+  async function request(path, { method = "GET", body, auth = false, idempotencyKey, includeMeta = false } = {}) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     const token = accessTokenProvider?.() || null;
@@ -299,7 +316,9 @@ export function createApiRepository({
         if (!refreshedToken || result.response.status === 401) onUnauthorized?.();
       }
       if (!result.response.ok) throw apiError(result.response.status, result.payload);
-      return result.payload?.data;
+      return includeMeta
+        ? { data: result.payload?.data, meta: result.payload?.meta || {} }
+        : result.payload?.data;
     } finally {
       clearTimeout(timer);
     }
@@ -318,6 +337,25 @@ export function createApiRepository({
     }).finally(() => pendingReads.delete(path));
     pendingReads.set(path, pending);
     return clone(await pending);
+  }
+
+  async function readAllPages(path, { auth = false } = {}) {
+    const items = [];
+    const seenCursors = new Set();
+    let cursor = null;
+    do {
+      const separator = path.includes("?") ? "&" : "?";
+      const pagePath = cursor ? `${path}${separator}cursor=${encodeURIComponent(cursor)}` : path;
+      const envelope = await request(pagePath, { auth, includeMeta: true });
+      if (Array.isArray(envelope?.data?.items)) items.push(...envelope.data.items);
+      const nextCursor = typeof envelope?.meta?.nextCursor === "string" && envelope.meta.nextCursor
+        ? envelope.meta.nextCursor
+        : null;
+      if (nextCursor && seenCursors.has(nextCursor)) throw new Error("API pagination cursor repeated");
+      if (nextCursor) seenCursors.add(nextCursor);
+      cursor = nextCursor;
+    } while (cursor);
+    return { items };
   }
 
   async function loadBootstrap() {
@@ -343,9 +381,9 @@ export function createApiRepository({
   async function loadPersonalData(snapshot) {
     const [profileData, placePage, coursePage, ownedCoursePage] = await Promise.all([
       request("me/profile", { auth: true }),
-      request("me/saves?targetType=place&limit=50", { auth: true }),
-      request("me/saves?targetType=course&limit=50", { auth: true }),
-      request("courses?limit=50", { auth: true })
+      readAllPages("me/saves?targetType=place&limit=50", { auth: true }),
+      readAllPages("me/saves?targetType=course&limit=50", { auth: true }),
+      readAllPages("courses?limit=50", { auth: true })
     ]);
     const profile = toProfile(profileData);
     const savedPlaceIds = [...new Set((placePage?.items || [])

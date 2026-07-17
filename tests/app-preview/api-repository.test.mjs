@@ -216,6 +216,85 @@ test("authenticated bootstrap restores private profile and saved items without c
   assert.deepEqual(publicCache.snapshot.profiles, []);
 });
 
+test("authenticated bootstrap follows every cursor page for owned courses", async () => {
+  const requests = [];
+  const firstCourse = { ...course, id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", places: [] };
+  const secondCourse = { ...course, id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", places: [] };
+  const fetchImpl = async (url) => {
+    const requestUrl = String(url);
+    requests.push(requestUrl);
+    if (requestUrl === "/api/v1/bootstrap") {
+      return jsonResponse({ data: { regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {} } });
+    }
+    if (requestUrl.startsWith("/api/v1/feed?")) {
+      return jsonResponse({ data: { items: [] }, meta: { nextCursor: null } });
+    }
+    if (requestUrl === "/api/v1/me/profile") return jsonResponse({ data: profile });
+    if (requestUrl.startsWith("/api/v1/me/saves?")) {
+      return jsonResponse({ data: { items: [] }, meta: { nextCursor: null } });
+    }
+    if (requestUrl === "/api/v1/courses?limit=50") {
+      return jsonResponse({ data: { items: [firstCourse] }, meta: { nextCursor: "owned-next" } });
+    }
+    if (requestUrl === "/api/v1/courses?limit=50&cursor=owned-next") {
+      return jsonResponse({ data: { items: [secondCourse] }, meta: { nextCursor: null } });
+    }
+    throw new Error(`Unexpected request: ${url}`);
+  };
+
+  const snapshot = await createApiRepository({
+    fetchImpl,
+    storage: memoryStorage(),
+    accessTokenProvider: () => "current-access-token"
+  }).getBootstrap();
+
+  assert.deepEqual(snapshot.ownedCourseIds, [firstCourse.id, secondCourse.id]);
+  assert.equal(snapshot.courses.some((item) => item.id === secondCourse.id), true);
+  assert.equal(requests.includes("/api/v1/courses?limit=50&cursor=owned-next"), true);
+});
+
+test("public cache strips personalized feed likes and follows", async () => {
+  const storage = memoryStorage();
+  const author = {
+    ...profile,
+    id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+    followedByMe: true
+  };
+  const personalizedContent = { ...content, author, likedByMe: true };
+  const fetchImpl = async (url) => {
+    const requestUrl = String(url);
+    if (requestUrl === "/api/v1/bootstrap") {
+      return jsonResponse({ data: { regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {} } });
+    }
+    if (requestUrl.startsWith("/api/v1/feed?")) {
+      return jsonResponse({ data: { items: [personalizedContent] }, meta: { nextCursor: null } });
+    }
+    if (requestUrl === `/api/v1/places/${place.id}`) return jsonResponse({ data: place });
+    if (requestUrl === "/api/v1/me/profile") return jsonResponse({ data: profile });
+    if (requestUrl.startsWith("/api/v1/me/saves?")) {
+      return jsonResponse({ data: { items: [] }, meta: { nextCursor: null } });
+    }
+    if (requestUrl === "/api/v1/courses?limit=50") {
+      return jsonResponse({ data: { items: [] }, meta: { nextCursor: null } });
+    }
+    throw new Error(`Unexpected request: ${url}`);
+  };
+
+  const snapshot = await createApiRepository({
+    fetchImpl,
+    storage,
+    accessTokenProvider: () => "current-access-token"
+  }).getBootstrap();
+  assert.equal(snapshot.contents[0].likedByMe, true);
+  assert.equal(snapshot.profiles.find((item) => item.id === author.id).followedByMe, true);
+
+  const publicCache = JSON.parse(storage.getItem("doripe.app_preview.api_snapshot.v1"));
+  assert.equal(publicCache.snapshot.contents[0].likedByMe, false);
+  assert.equal(publicCache.snapshot.profiles.find((item) => item.id === author.id).followedByMe, false);
+  assert.equal(publicCache.snapshot.viewerProfileId, null);
+  assert.equal(publicCache.snapshot.personalDataLoaded, false);
+});
+
 test("the last successful API snapshot is used only after a later network failure", async () => {
   const storage = memoryStorage();
   let online = true;

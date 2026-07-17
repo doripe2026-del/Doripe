@@ -183,21 +183,40 @@ test("signing in hydrates server account data without discarding guest saves", a
   let privateRequestCount = 0;
   let savedPlaceIds = [serverPlace.id];
   let migratedCourse = null;
+  let profileNickname = "로그인 도리";
   const migrationRequests = [];
+  const onboardingRequests = [];
+  const profileUpdateRequests = [];
+  const commentRequests = [];
 
-  await page.addInitScript(({ storageKey, guestPlaceId }) => {
+  await page.addInitScript(({ storageKey, guestPlaceId, contentId }) => {
     localStorage.setItem(storageKey, JSON.stringify({
       currentScreenId: "a3",
       history: [],
-      form: {},
+      form: {
+        birthYear: "2000",
+        gender: "female",
+        nickname: "게스트 도리",
+        habit: "instagram-saved",
+        source: "instagram"
+      },
       savedPlaceIds: [guestPlaceId],
       savedRoutes: [{
         id: "saved-route-1",
         name: "비회원 코스",
         placeIds: [guestPlaceId, "22222222-2222-4222-8222-222222222222"]
+      }],
+      submittedComments: [{
+        id: "local-comment-1",
+        contentId,
+        body: "로그인 뒤에도 남겨 주세요"
       }]
     }));
-  }, { storageKey: STORAGE_KEY, guestPlaceId: guestPlace.id });
+  }, {
+    storageKey: STORAGE_KEY,
+    guestPlaceId: guestPlace.id,
+    contentId: feedContent(guestPlace).id
+  });
 
   await page.route("**/api/app-auth-config", (route) => route.fulfill({
     status: 200,
@@ -235,17 +254,40 @@ test("signing in hydrates server account data without discarding guest saves", a
     if (path === `places/${serverPlace.id}`) {
       return route.fulfill({ status: 200, json: { data: serverPlace, meta: {} } });
     }
-    if (path === "me/profile") {
+    if (path === "me/profile" && request.method() === "GET") {
       privateRequestCount += 1;
       return route.fulfill({ status: 200, json: { data: {
         id: PROFILE_ID,
-        nickname: "로그인 도리",
+        nickname: profileNickname,
         introduction: "서버 계정",
         profileImageUrl: "/app-preview/assets/discover/avatar-1.png",
         isCurator: false,
         officialBadge: false,
         followedByMe: false,
         followerCount: 0
+      }, meta: {} } });
+    }
+    if (path === "me/profile" && request.method() === "PATCH") {
+      const input = request.postDataJSON();
+      profileUpdateRequests.push(input);
+      profileNickname = input.nickname;
+      return route.fulfill({ status: 200, json: { data: {
+        id: PROFILE_ID,
+        nickname: profileNickname,
+        introduction: "서버 계정",
+        profileImageUrl: "/app-preview/assets/discover/avatar-1.png",
+        isCurator: false,
+        officialBadge: false,
+        followedByMe: false,
+        followerCount: 0
+      }, meta: {} } });
+    }
+    if (path === "me/onboarding" && request.method() === "PUT") {
+      onboardingRequests.push(request.postDataJSON());
+      return route.fulfill({ status: 200, json: { data: {
+        id: PROFILE_ID,
+        status: "completed",
+        version: 1
       }, meta: {} } });
     }
     if (path === "me/saves" && url.searchParams.get("targetType") === "place") {
@@ -288,6 +330,26 @@ test("signing in hydrates server account data without discarding guest saves", a
       };
       return route.fulfill({ status: 201, json: { data: migratedCourse, meta: {} } });
     }
+    if (path === `contents/${feedContent(guestPlace).id}/comments` && request.method() === "POST") {
+      const input = request.postDataJSON();
+      commentRequests.push({
+        input,
+        key: request.headers()["idempotency-key"]
+      });
+      return route.fulfill({ status: 201, json: { data: {
+        id: "77777777-7777-4777-8777-777777777777",
+        contentId: feedContent(guestPlace).id,
+        text: input.text,
+        author: {
+          id: PROFILE_ID,
+          nickname: profileNickname,
+          introduction: "서버 계정",
+          profileImageUrl: "/app-preview/assets/discover/avatar-1.png"
+        },
+        likeCount: 0,
+        createdAt: "2026-07-17T00:00:00.000Z"
+      }, meta: {} } });
+    }
     if (path === "sessions") {
       const body = request.postDataJSON();
       return route.fulfill({ status: 201, json: { data: { sessionId: body.sessionId, accepted: true }, meta: {} } });
@@ -313,7 +375,28 @@ test("signing in hydrates server account data without discarding guest saves", a
     name: "비회원 코스",
     placeIds: [guestPlace.id, serverPlace.id]
   }]);
-  expect(stored.profile.nickname).toBe("로그인 도리");
+  expect(stored.profile.nickname).toBe("게스트 도리");
   expect(migrationRequests).toHaveLength(2);
   expect(migrationRequests.every((item) => /^guest_[A-Za-z0-9_-]+$/u.test(item.key))).toBe(true);
+  expect(onboardingRequests).toEqual([{
+    birthYear: 2000,
+    gender: "female",
+    nickname: "게스트 도리",
+    discoveryHabit: "instagram-saved",
+    neighborhoodIds: [],
+    placeTypeTagIds: [],
+    situationTagIds: [],
+    referralSource: "instagram"
+  }]);
+  expect(profileUpdateRequests).toEqual([{ nickname: "게스트 도리" }]);
+  expect(commentRequests).toHaveLength(1);
+  expect(commentRequests[0].input).toEqual({ text: "로그인 뒤에도 남겨 주세요" });
+  expect(commentRequests[0].key).toMatch(/^guest_[A-Za-z0-9_-]+$/u);
+
+  await page.reload();
+  await expect(page.locator('[data-screen-id="b1"]')).toBeVisible();
+  expect(migrationRequests).toHaveLength(2);
+  expect(onboardingRequests).toHaveLength(1);
+  expect(profileUpdateRequests).toHaveLength(1);
+  expect(commentRequests).toHaveLength(1);
 });

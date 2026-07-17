@@ -357,6 +357,10 @@ test("logout clears account-owned data while preserving anonymous discovery pref
         bio: "서울을 기록해요",
         password: "secret",
         newPassword: "new-secret",
+        birthYear: "2000",
+        gender: "female",
+        habit: "instagram-saved",
+        source: "instagram",
         discoverySource: "instagram"
       },
       selections: { authenticated: true, session: { userId: "user-1" }, neighborhood: "yeonnam" },

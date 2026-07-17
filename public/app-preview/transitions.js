@@ -747,6 +747,10 @@ function logout(state, payload) {
     email: _email,
     nickname: _nickname,
     bio: _bio,
+    birthYear: _birthYear,
+    gender: _gender,
+    habit: _habit,
+    source: _source,
     ...anonymousForm
   } = nextState.form || {};
   const loggedOutState = {
