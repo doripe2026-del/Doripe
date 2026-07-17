@@ -39,6 +39,7 @@ test("booth demo is responsive without PWA installation behavior", async () => {
   assert.match(css, /@media \(max-width: 380px\)/);
   assert.match(css, /@media \(min-width: 960px\)/);
   assert.match(css, /@media \(max-height: 620px\) and \(orientation: landscape\)/);
+  assert.match(css, /min-height:\s*100dvh/);
   assert.doesNotMatch(css, /html,\s*\nbody\s*\{[\s\S]*?overflow-x:\s*hidden/);
   assert.doesNotMatch(html, /rel="manifest"|serviceWorker|apple-mobile-web-app/);
 });
@@ -135,7 +136,8 @@ test("booth CSS includes touch, safe area, and reduced motion rules", async () =
 test("screen transitions can preserve their scroll position", async () => {
   const app = await readFile(new URL("public/booth-demo/app.js", root), "utf8");
   assert.match(app, /const previousScrollY = window\.scrollY/);
-  assert.match(app, /top: preserveScroll \? previousScrollY : 0/);
+  assert.match(app, /const nextScrollY = preserveScroll \? previousScrollY : 0/);
+  assert.match(app, /requestAnimationFrame\(\(\) => window\.scrollTo/);
 });
 
 test("selecting a builder photo updates in place without replacing the full photo feed", async () => {
