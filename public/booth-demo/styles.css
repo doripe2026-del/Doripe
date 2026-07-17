@@ -410,6 +410,7 @@ img {
 .detail__panel .primary-action {
   width: 100%;
   min-height: 64px;
+  margin-top: 26px;
   font-size: 19px;
 }
 

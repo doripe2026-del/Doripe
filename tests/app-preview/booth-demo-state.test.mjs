@@ -9,7 +9,7 @@ import {
   startDiscovery,
   toggleAdditionalPlace
 } from "../../public/booth-demo/demo-state.js";
-import { PLACES } from "../../public/booth-demo/places.js";
+import { FEED_ITEMS, PLACES } from "../../public/booth-demo/places.js";
 
 const root = new URL("../../", import.meta.url);
 
@@ -23,50 +23,65 @@ test("booth demo uses only local runtime assets", async () => {
 
 test("visitor completes a course after selecting one nearby place", () => {
   let state = startDiscovery(createInitialState());
-  state = openPlace(state, "place-01");
+  state = openPlace(state, "place-100");
   state = browseNearby(state);
   assert.equal(state.screen, "builder");
-  assert.equal(state.startPlaceId, "place-01");
+  assert.equal(state.startPlaceId, "place-100");
   assert.deepEqual(state.selectedPlaceIds, []);
 
-  state = toggleAdditionalPlace(state, "place-02");
-  assert.deepEqual(state.selectedPlaceIds, ["place-02"]);
+  state = toggleAdditionalPlace(state, "place-101");
+  assert.deepEqual(state.selectedPlaceIds, ["place-101"]);
   assert.equal(completeCourse(state).screen, "complete");
 });
 
 test("selection is unique and the starting place cannot be added twice", () => {
-  const builder = browseNearby(openPlace(startDiscovery(createInitialState()), "place-01"));
-  assert.deepEqual(toggleAdditionalPlace(builder, "place-01").selectedPlaceIds, []);
-  const selected = toggleAdditionalPlace(builder, "place-02");
-  assert.deepEqual(toggleAdditionalPlace(selected, "place-02").selectedPlaceIds, []);
+  const builder = browseNearby(openPlace(startDiscovery(createInitialState()), "place-100"));
+  assert.deepEqual(toggleAdditionalPlace(builder, "place-100").selectedPlaceIds, []);
+  const selected = toggleAdditionalPlace(builder, "place-101");
+  assert.deepEqual(toggleAdditionalPlace(selected, "place-101").selectedPlaceIds, []);
 });
 
 test("course cannot complete without an additional place", () => {
-  const builder = browseNearby(openPlace(startDiscovery(createInitialState()), "place-01"));
+  const builder = browseNearby(openPlace(startDiscovery(createInitialState()), "place-100"));
   assert.throws(() => completeCourse(builder), /additional place/i);
 });
 
 test("demo places are immutable local records", () => {
-  assert.deepEqual(PLACES, [
-    { id: "place-01", name: "레이어드 연남", copy: "빛과 디저트가 머무는 공간", image: "/booth-demo/assets/place-01.png" },
-    { id: "place-02", name: "오브젝트 연남", copy: "천천히 둘러보는 작은 취향", image: "/booth-demo/assets/place-02.png" },
-    { id: "place-03", name: "갤러리 무아", copy: "빛과 여백이 흐르는 전시 공간", image: "/booth-demo/assets/place-03.png" },
-    { id: "place-04", name: "이후북스", copy: "오래 머물고 싶은 작은 책방", image: "/booth-demo/assets/place-04.png" },
-    { id: "place-05", name: "사운드 캐비닛", copy: "좋은 음악으로 채운 늦은 오후", image: "/booth-demo/assets/place-05.png" },
-    { id: "place-06", name: "정원 식탁", copy: "초록 사이에서 즐기는 한 끼", image: "/booth-demo/assets/place-06.png" },
-    { id: "place-07", name: "크림 아틀리에", copy: "작은 디저트가 완성되는 순간", image: "/booth-demo/assets/place-07.png" },
-    { id: "place-08", name: "스튜디오 콤마", copy: "일상에 쉼표를 더하는 디자인", image: "/booth-demo/assets/place-08.png" }
+  assert.equal(PLACES.length, 101);
+  assert.equal(FEED_ITEMS.length, 507);
+  assert.deepEqual(PLACES.slice(0, 3).map(({ id, name }) => ({ id, name })), [
+    { id: "place-100", name: "무계획" },
+    { id: "place-101", name: "아오이토리" },
+    { id: "place-102", name: "필리커피" }
   ]);
+  assert.deepEqual(
+    PLACES.slice(-3).map(({ id, name }) => ({ id, name })),
+    [
+      { id: "place-198", name: "연남 초야" },
+      { id: "place-199", name: "한월 홍대" },
+      { id: "place-200", name: "망원공명" }
+    ]
+  );
   assert.equal(Object.isFrozen(PLACES), true);
   assert.equal(PLACES.every(Object.isFrozen), true);
+  assert.equal(PLACES.every((place) => Object.isFrozen(place.images)), true);
+  assert.equal(Object.isFrozen(FEED_ITEMS), true);
+  assert.equal(FEED_ITEMS.every(Object.isFrozen), true);
 });
 
-test("all demo places use available local booth assets", async () => {
-  assert.equal(PLACES.length, 8);
-  for (const place of PLACES) {
-    assert.match(place.image, /^\/booth-demo\/assets\/place-\d{2}\.png$/);
-    await access(new URL(`../../public${place.image}`, import.meta.url));
+test("all supplied photos use unique local booth assets", async () => {
+  assert.equal(new Set(FEED_ITEMS.map((item) => item.image)).size, 507);
+  for (const item of FEED_ITEMS) {
+    assert.match(item.image, /^\/booth-demo\/assets\/places\/place-\d{3}-\d+\.jpg$/);
+    await access(new URL(`../../public${item.image}`, import.meta.url));
   }
+});
+
+test("feed renders every supplied photo with lazy loading", async () => {
+  const app = await readFile(new URL("public/booth-demo/app.js", root), "utf8");
+  assert.match(app, /FEED_ITEMS\.map\(\(item\) => placeTile\(item\)\)/);
+  assert.match(app, /loading="lazy"/);
+  assert.doesNotMatch(app, /place\.copy/);
 });
 
 test("booth CSS includes touch, safe area, and reduced motion rules", async () => {
