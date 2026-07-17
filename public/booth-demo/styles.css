@@ -113,6 +113,18 @@ img {
   object-fit: contain;
 }
 
+.brand-logo--compact {
+  width: 132px;
+}
+
+.asset-preload {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .touch-target {
   min-width: 52px;
   min-height: 52px;
@@ -183,7 +195,11 @@ img {
 .welcome .brand-logo {
   width: 174px;
   margin-bottom: 28px;
-  filter: brightness(0) invert(1);
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 92%);
+  filter: none;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
 }
 
 .welcome h1 {
@@ -231,6 +247,28 @@ img {
   margin: 0;
   font-size: clamp(26px, 4vw, 36px);
   line-height: 1.15;
+}
+
+.feed-header__hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.icon-action {
+  display: grid;
+  min-width: 52px;
+  min-height: 52px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  font-size: 25px;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
 }
 
 .masonry-feed {
@@ -532,12 +570,13 @@ img {
 }
 
 .image-fallback {
+  min-height: 220px;
   background: linear-gradient(135deg, #dceee4, #c8dfd1);
 }
 
 @keyframes screen-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes photo-reveal {
@@ -575,6 +614,7 @@ img {
   .detail__panel { width: calc(100% - 20px); padding: 22px 18px; }
   .route-seed { grid-template-columns: 92px minmax(0, 1fr); }
   .route-seed img { width: 92px; height: 100px; }
+  .feed-header__hint { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
