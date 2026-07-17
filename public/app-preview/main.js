@@ -6,7 +6,7 @@ import { getAdapter } from "./api-adapter.js";
 import { courseById, createDataCatalog, createUnavailableDataCatalog } from "./data/selectors.js";
 import { createActionSync } from "./data/action-sync.js";
 import { createAppDataStore } from "./data/store.js";
-import { mergeDataSnapshots } from "./data/contracts.js";
+import { mergeDataSnapshots, normalizeDataSnapshot } from "./data/contracts.js";
 import { mergePersonalSnapshotIntoState } from "./data/personal-state.js";
 import {
   clearGuestMigrationJournal,
@@ -36,15 +36,14 @@ const startupAuthResult = await authClient.initializeSession({
 });
 let authStatus = startupAuthResult.ok ? startupAuthResult.status : "no-session";
 let personalDataReady = false;
+let discoverFilterRequestSequence = 0;
+let appRuntimeReady = false;
+let unauthorizedNoticePending = false;
 setBootProgress(45);
 const repository = getAdapter(isStaticPreview() ? "fixture" : "api", {
   accessTokenProvider: authClient.getAccessToken,
   refreshAccessToken: authClient.refreshSession,
-  onUnauthorized: () => {
-    authClient.clearSession();
-    authStatus = "no-session";
-    personalDataReady = false;
-  }
+  onUnauthorized: handleUnauthorizedSession
 });
 const dataStore = createAppDataStore({ repository });
 const actionSync = createActionSync({
@@ -103,7 +102,65 @@ let activeShareParams = null;
 let renderGeneration = 0;
 let lastRenderedScreenId = null;
 let analyticsSession = null;
-let discoverFilterRequestSequence = 0;
+const discoverSeenCursors = new Set();
+function invalidateDiscoverFilterRequests() {
+  discoverFilterRequestSequence += 1;
+}
+
+function handleUnauthorizedSession() {
+  invalidateDiscoverFilterRequests();
+  authClient.clearSession();
+  authStatus = "no-session";
+  personalDataReady = false;
+  unauthorizedNoticePending = true;
+  if (!appRuntimeReady) return;
+  applyUnauthorizedNotice();
+}
+
+function applyUnauthorizedNotice() {
+  if (!unauthorizedNoticePending || !appRuntimeReady) return;
+  dataSnapshot = normalizeDataSnapshot({
+    ...dataSnapshot,
+    viewerProfileId: null,
+    personalDataLoaded: false,
+    savedPlaceIds: [],
+    savedCourseIds: [],
+    ownedCourseIds: [],
+    feedNextCursor: null
+  });
+  dataCatalog = createDataCatalog(dataSnapshot);
+  state.setCatalog(dataCatalog);
+  const current = state.getState();
+  const nextState = {
+    ...current,
+    savedPlaceIds: [],
+    savedRoutes: [],
+    likedMediaIds: [],
+    likedPlaceIds: [],
+    likedCommentIds: [],
+    submittedComments: [],
+    followedUserIds: [],
+    routePlaceIds: [],
+    routeDraft: { startPlaceId: null, placeIds: [] },
+    selections: {
+      ...(current.selections || {}),
+      ...(current.selections?.feedStatus === "loading" ? { feedStatus: "error" } : {}),
+      feedLoadingMore: false,
+      ...(current.selections?.feedLoadingMore === true ? { feedLoadMoreStatus: "error" } : {})
+    },
+    toast: { kind: "error", message: "로그인이 만료되었어요. 다시 로그인해 주세요." }
+  };
+  delete nextState.profile;
+  delete nextState.profileDraft;
+  state.replace(nextState);
+  interactionState = state.getState();
+  unauthorizedNoticePending = false;
+  queueMicrotask(() => {
+    if (!appRuntimeReady) return;
+    renderScreen(interactionState.currentScreenId);
+    refreshCurrentBrowserEntry();
+  });
+}
 
 const GUEST_MVP_ENABLED = true;
 const RECOVERY_SCREENS = new Set(["a7", "a8"]);
@@ -365,6 +422,9 @@ function refreshCurrentBrowserEntry() {
 function teardownRenderedScreen() {
   for (const rendered of phoneRoot.children) {
     rendered.dispatchEvent(new Event(SCREEN_TEARDOWN_EVENT));
+    for (const descendant of rendered.querySelectorAll("*")) {
+      descendant.dispatchEvent(new Event(SCREEN_TEARDOWN_EVENT));
+    }
   }
 }
 
@@ -583,8 +643,15 @@ async function renderFromUrl(event) {
     state.navigate(selectedScreenId, { replace: true });
   }
   interactionState = state.getState();
-  renderScreen(selectedScreenId);
   writeScreenIdToUrl(selectedScreenId, { replace: true });
+  if (!staticPreview && selectedScreenId === "b1") {
+    requestDiscoverFeed({ state: interactionState, effect: "none" }, selectedScreenId, {
+      state: interactionState,
+      data: dataSnapshot
+    }, true);
+    return;
+  }
+  renderScreen(selectedScreenId);
 }
 
 function readActionPayload(target) {
@@ -872,6 +939,7 @@ async function hydrateStateAfterAuthentication({ migrateIdentity = false } = {})
 
 async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {
   if (target.disabled || target.dataset.authSubmitting === "true") return;
+  if (["sign-in", "sign-up", "update-password"].includes(operation)) invalidateDiscoverFilterRequests();
   const screen = target.closest("[data-screen-id]");
   const email = authFieldValue(screen, "update-email", interactionState.form?.email || "");
   const password = authFieldValue(screen, "update-password");
@@ -951,6 +1019,7 @@ async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {
 
 function dispatchLocalFirstLogout(target, screenId, actionId) {
   if (target.disabled || target.dataset.authSubmitting === "true") return;
+  invalidateDiscoverFilterRequests();
   const completeRemoteLogout = authClient.beginSignOut();
   clearGuestMigrationJournal();
   authStatus = "no-session";
@@ -978,11 +1047,15 @@ function dispatchLocalFirstLogout(target, screenId, actionId) {
   });
 }
 
-function discoverFilterParams(selections = {}) {
+function feedScopeForScreen(screenId = interactionState.currentScreenId) {
+  return screenId === "b1" ? "following" : "discover";
+}
+
+function discoverFilterParams(selections = {}, screenId = interactionState.currentScreenId) {
   const tagIds = [selections.situation, selections.time, selections.mood]
     .filter((id) => typeof id === "string" && (repository.mode === "fixture"
       || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu.test(id)));
-  const params = { scope: "discover", tagIds };
+  const params = { scope: feedScopeForScreen(screenId), tagIds };
   const center = selections.locationCenter;
   const radiusKm = Number(selections.locationRadiusKm);
   if (selections.locationMode === "pin"
@@ -996,28 +1069,66 @@ function discoverFilterParams(selections = {}) {
   return params;
 }
 
-function updateDiscoverFeedState(nextSelections) {
+function feedRenderState() {
+  const feed = phoneRoot.querySelector(".discover-feed");
+  const loadMore = feed?.querySelector(".discover-feed__load-more");
+  return {
+    scrollTop: feed?.scrollTop || 0,
+    restoreLoadMoreFocus: document.activeElement === loadMore
+  };
+}
+
+function updateDiscoverFeedState(nextSelections, { expectedScreenId = null, preserveFeedPosition = false } = {}) {
+  const renderedFeedState = preserveFeedPosition ? feedRenderState() : null;
   state.replace({ ...interactionState, selections: nextSelections });
   interactionState = state.getState();
-  renderScreen(interactionState.currentScreenId);
+  if (!expectedScreenId || interactionState.currentScreenId === expectedScreenId) {
+    renderScreen(interactionState.currentScreenId);
+    if (renderedFeedState) {
+      const feed = phoneRoot.querySelector(".discover-feed");
+      if (feed) feed.scrollTop = renderedFeedState.scrollTop;
+      if (renderedFeedState.restoreLoadMoreFocus) {
+        feed?.querySelector(".discover-feed__load-more")?.focus({ preventScroll: true });
+      }
+    }
+  }
   refreshCurrentBrowserEntry();
 }
 
-function applyDiscoverFeedFilters(screenId, actionId, payload, rerender) {
-  const transitionResult = dispatchAction(screenId, actionId, payload);
+function requestDiscoverFeed(transitionResult, screenId, payload, rerender) {
   const requestId = ++discoverFilterRequestSequence;
+  discoverSeenCursors.clear();
+  const requestFeedScreenId = transitionResult.state.currentScreenId;
+  const requestParams = discoverFilterParams(transitionResult.state.selections, requestFeedScreenId);
   const loadingSelections = {
     ...(transitionResult.state.selections || {}),
     serverFeedFiltered: true,
     discoverFeedContentIds: [],
-    feedStatus: "loading"
+    feedStatus: "loading",
+    feedLoadingMore: false,
+    feedLoadMoreStatus: "idle"
   };
   applyActionResult({ ...transitionResult, state: { ...transitionResult.state, selections: loadingSelections } }, {
     rerender, screenId, payload
   });
 
-  void repository.getFeedSnapshot(discoverFilterParams(interactionState.selections)).then((incoming) => {
-    if (requestId !== discoverFilterRequestSequence) return;
+  if (requestParams.scope === "following" && !authClient.getAccessToken()) {
+    dataSnapshot = mergeDataSnapshots(dataSnapshot, { feedNextCursor: null });
+    updateDiscoverFeedState({
+      ...(interactionState.selections || {}),
+      serverFeedFiltered: true,
+      discoverFeedContentIds: [],
+      feedStatus: "empty",
+      feedLoadingMore: false,
+      feedLoadMoreStatus: "complete"
+    }, { expectedScreenId: requestFeedScreenId });
+    return;
+  }
+
+  const requestActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
+  void repository.getFeedSnapshot(requestParams).then((incoming) => {
+    const currentActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
+    if (requestId !== discoverFilterRequestSequence || requestActor !== currentActor) return;
     dataSnapshot = mergeDataSnapshots(dataSnapshot, incoming);
     dataCatalog = createDataCatalog(dataSnapshot);
     state.setCatalog(dataCatalog);
@@ -1025,30 +1136,96 @@ function applyDiscoverFeedFilters(screenId, actionId, payload, rerender) {
       ...(interactionState.selections || {}),
       serverFeedFiltered: true,
       discoverFeedContentIds: incoming.contents.map((content) => content.id),
-      feedStatus: incoming.contents.length ? "ready" : "empty"
-    });
+      feedStatus: incoming.contents.length ? "ready" : "empty",
+      feedLoadingMore: false,
+      feedLoadMoreStatus: incoming.feedNextCursor ? "ready" : "complete"
+    }, { expectedScreenId: requestFeedScreenId });
   }).catch(() => {
-    if (requestId !== discoverFilterRequestSequence) return;
+    const currentActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
+    if (requestId !== discoverFilterRequestSequence || requestActor !== currentActor) return;
     updateDiscoverFeedState({
       ...(interactionState.selections || {}),
       serverFeedFiltered: true,
-      feedStatus: "error"
-    });
+      feedStatus: "error",
+      feedLoadingMore: false,
+      feedLoadMoreStatus: "idle"
+    }, { expectedScreenId: requestFeedScreenId });
   });
 }
 
-function resetDiscoverFeedFilters(screenId, actionId, payload, rerender) {
-  discoverFilterRequestSequence += 1;
-  const transitionResult = dispatchAction(screenId, actionId, payload);
-  const selections = {
-    ...(transitionResult.state.selections || {}),
-    serverFeedFiltered: false,
-    discoverFeedContentIds: [...initialDiscoverContentIds],
-    feedStatus: "ready"
-  };
-  applyActionResult({ ...transitionResult, state: { ...transitionResult.state, selections } }, {
-    rerender, screenId, payload
+function requestNextDiscoverFeed(screenId) {
+  const cursor = dataSnapshot.feedNextCursor;
+  if (!cursor || discoverSeenCursors.has(cursor) || interactionState.selections?.feedLoadingMore === true) return;
+  discoverSeenCursors.add(cursor);
+  const requestId = ++discoverFilterRequestSequence;
+  const requestFeedScreenId = interactionState.currentScreenId;
+  const requestActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
+  state.replace({
+    ...interactionState,
+    selections: {
+      ...(interactionState.selections || {}),
+      feedLoadingMore: true,
+      feedLoadMoreStatus: "loading"
+    }
   });
+  interactionState = state.getState();
+  const feed = phoneRoot.querySelector(".discover-feed");
+  const loadMore = feed?.querySelector(".discover-feed__load-more");
+  if (feed) feed.setAttribute("aria-busy", "true");
+  if (loadMore) {
+    loadMore.disabled = true;
+    loadMore.textContent = "더 불러오는 중…";
+  }
+  refreshCurrentBrowserEntry();
+
+  void repository.getFeedSnapshot({
+    ...discoverFilterParams(interactionState.selections, requestFeedScreenId),
+    cursor
+  }).then((incoming) => {
+    const currentActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
+    if (requestId !== discoverFilterRequestSequence || requestActor !== currentActor) return;
+    const previousIds = Array.isArray(interactionState.selections?.discoverFeedContentIds)
+      ? interactionState.selections.discoverFeedContentIds
+      : initialDiscoverContentIds;
+    const nextIds = [...new Set([...previousIds, ...incoming.contents.map((content) => content.id)])];
+    const nextCursor = incoming.feedNextCursor && !discoverSeenCursors.has(incoming.feedNextCursor)
+      ? incoming.feedNextCursor
+      : null;
+    dataSnapshot = mergeDataSnapshots(dataSnapshot, { ...incoming, feedNextCursor: nextCursor });
+    dataCatalog = createDataCatalog(dataSnapshot);
+    state.setCatalog(dataCatalog);
+    updateDiscoverFeedState({
+      ...(interactionState.selections || {}),
+      discoverFeedContentIds: nextIds,
+      feedLoadingMore: false,
+      feedLoadMoreStatus: nextCursor ? "ready" : "complete",
+      feedStatus: nextIds.length ? "ready" : "empty"
+    }, { expectedScreenId: requestFeedScreenId, preserveFeedPosition: true });
+  }).catch(() => {
+    const currentActor = `${authClient.getAccessToken() ? "account" : "guest"}:${dataSnapshot.viewerProfileId || ""}`;
+    if (requestId !== discoverFilterRequestSequence || requestActor !== currentActor) return;
+    updateDiscoverFeedState({
+      ...(interactionState.selections || {}),
+      feedLoadingMore: false,
+      feedLoadMoreStatus: "error"
+    }, { expectedScreenId: requestFeedScreenId, preserveFeedPosition: true });
+  });
+}
+
+function applyDiscoverFeedFilters(screenId, actionId, payload, rerender) {
+  requestDiscoverFeed(dispatchAction(screenId, actionId, payload), screenId, payload, rerender);
+}
+
+function retryDiscoverFeed(screenId) {
+  requestDiscoverFeed({ state: { ...interactionState, toast: null }, effect: "none" }, screenId, {
+    state: interactionState,
+    data: dataSnapshot
+  }, true);
+}
+
+function resetDiscoverFeedFilters(screenId, actionId, payload, rerender) {
+  const transitionResult = dispatchAction(screenId, actionId, payload);
+  requestDiscoverFeed(transitionResult, screenId, payload, rerender);
 }
 
 function dispatchTargetAction(target, { rerender = true } = {}) {
@@ -1064,6 +1241,12 @@ function dispatchTargetAction(target, { rerender = true } = {}) {
   }
   if (isDiscoverFilterOverlay && actionId === "reset-filters") {
     resetDiscoverFeedFilters(screenId, actionId, payload, rerender);
+    return;
+  }
+  const switchesFeedScope = (screenId === "b1" && actionId === "show-discover")
+    || (screenId === "b2" && actionId === "show-following");
+  if (switchesFeedScope) {
+    requestDiscoverFeed(dispatchAction(screenId, actionId, payload), screenId, payload, rerender);
     return;
   }
   const pendingInput = { screenId, actionId, payload, previousState: interactionState, optimisticState: interactionState };
@@ -1170,6 +1353,14 @@ document.addEventListener(SCREEN_NAVIGATE_EVENT, (event) => {
 });
 document.addEventListener(FEED_STATUS_EVENT, (event) => {
   const feedStatus = event.detail?.status;
+  if (feedStatus === "retry") {
+    retryDiscoverFeed(interactionState.currentScreenId);
+    return;
+  }
+  if (feedStatus === "next-page") {
+    requestNextDiscoverFeed(interactionState.currentScreenId);
+    return;
+  }
   if (!["ready", "loading", "error", "empty"].includes(feedStatus)) return;
   state.replace({
     ...interactionState,
@@ -1311,6 +1502,8 @@ if (!startupAuthResult.ok) {
 }
 analyticsClient?.attachLifecycle();
 setBootProgress(100);
+appRuntimeReady = true;
+applyUnauthorizedNotice();
 await renderFromUrl();
 if (analyticsClient) {
   analyticsSession = analyticsClient.startSession({

@@ -558,6 +558,7 @@ function masonryFeed(screenId, state, data) {
   feed.dataset.testid = "discover-feed";
   feed.dataset.layout = screenId;
   const feedStatus = state?.selections?.feedStatus || "ready";
+  feed.setAttribute("aria-busy", String(feedStatus === "loading" || state?.selections?.feedLoadingMore === true));
   if (feedStatus !== "ready") {
     feed.dataset.feedStatus = feedStatus;
     if (feedStatus === "loading") {
@@ -613,19 +614,52 @@ function masonryFeed(screenId, state, data) {
     feed.append(tile);
   });
   const spacer = element("span", "discover-feed__spacer");
-  spacer.style.setProperty("--feed-end", `${Math.max(...rects.map((rect) => rect[1] + rect[3])) + 16}px`);
+  const feedEnd = Math.max(...rects.map((rect) => rect[1] + rect[3]));
+  spacer.style.setProperty("--feed-end", `${feedEnd + 16}px`);
   feed.append(spacer);
+  const canLoadMore = typeof data.feedNextCursor === "string" && data.feedNextCursor.length > 0;
+  const loadMoreStatus = state?.selections?.feedLoadMoreStatus;
+  if (canLoadMore || loadMoreStatus === "error") {
+    const more = localButton(
+      loadMoreStatus === "error" ? "다음 피드 다시 불러오기" : "다음 피드 불러오기",
+      "discover-feed__load-more"
+    );
+    more.style.setProperty("--feed-end", `${feedEnd + 20}px`);
+    more.textContent = loadMoreStatus === "error"
+      ? "더 보기 다시 시도"
+      : state?.selections?.feedLoadingMore === true
+        ? "더 불러오는 중…"
+        : "더 불러오기";
+    more.disabled = state?.selections?.feedLoadingMore === true;
+    more.setAttribute("aria-busy", String(state?.selections?.feedLoadingMore === true));
+    spacer.style.height = "76px";
+    const requestNextPage = () => {
+      if (more.disabled) return;
+      document.dispatchEvent(new CustomEvent(FEED_STATUS_EVENT, { detail: { status: "next-page" } }));
+    };
+    more.addEventListener("click", requestNextPage);
+    feed.append(more);
+    if (canLoadMore && loadMoreStatus !== "error" && "IntersectionObserver" in globalThis) {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) requestNextPage();
+      }, { root: feed, rootMargin: "160px 0px" });
+      observer.observe(more);
+      feed.addEventListener("app-preview:screen-teardown", () => observer.disconnect(), { once: true });
+    }
+  }
   return feed;
 }
 
 function feedStatusMessage(message, retryable = false) {
   const status = element("div", "discover-feed-status");
+  status.setAttribute("role", "status");
+  status.setAttribute("aria-live", "polite");
   status.append(element("p", "", message));
   if (retryable) {
     const retry = localButton("피드 다시 시도", "discover-feed-status__retry");
     retry.textContent = "다시 시도";
     retry.addEventListener("click", () => {
-      document.dispatchEvent(new CustomEvent(FEED_STATUS_EVENT, { detail: { status: "ready" } }));
+      document.dispatchEvent(new CustomEvent(FEED_STATUS_EVENT, { detail: { status: "retry" } }));
     });
     status.append(retry);
   }

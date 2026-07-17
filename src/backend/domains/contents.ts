@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { optionalUser, requireUser, type UserContext } from "../core/auth.js";
@@ -6,6 +6,7 @@ import { decodeCursor, encodeCursor, parseLimit } from "../core/cursor.js";
 import { databaseData, databaseList } from "../core/database.js";
 import { ApiError, validationError } from "../core/errors.js";
 import { executeIdempotent } from "../core/idempotency.js";
+import { consumeDevelopmentRateLimit } from "../core/rateLimit.js";
 import { parseJson } from "../core/request.js";
 import { apiSuccess } from "../core/response.js";
 import { publicAvatarUrls } from "../core/profile-avatar.js";
@@ -313,28 +314,59 @@ async function contentListResponse(
   });
 }
 
-async function filteredPlaceIds(client: SupabaseClient, input: z.infer<typeof feedQuerySchema>): Promise<string[] | null> {
+function hasFeedFilters(input: z.infer<typeof feedQuerySchema>): boolean {
   const hasRadiusFilter = input.centerLat !== undefined && input.centerLng !== undefined && input.radiusKm !== undefined;
-  if (!input.regionId && !input.categoryId && !input.tagIds && !hasRadiusFilter) return null;
-  let places = client.from("places").select("id,lat,lng").eq("status", "ready").eq("qa_status", "ready").eq("photo_qa_status", "approved").limit(2000);
-  if (input.regionId) places = places.eq("region_id", input.regionId);
-  if (input.categoryId) places = places.eq("category_id", input.categoryId);
-  const placeRows = databaseList<PlaceCoordinateRow>(await places);
-  let ids = hasRadiusFilter
-    ? placeIdsWithinRadius(placeRows, {
-      centerLat: input.centerLat!,
-      centerLng: input.centerLng!,
-      radiusKm: input.radiusKm!,
-    })
-    : placeRows.map((item) => item.id);
-  if (input.tagIds) {
-    const parsedTags = z.array(uuid).min(1).max(20).safeParse(input.tagIds.split(",").filter(Boolean));
-    if (!parsedTags.success) throw validationError(parsedTags.error);
-    const tagged = databaseList<{ place_id: string }>(await client.from("place_tags").select("place_id").in("tag_id", parsedTags.data).limit(5000));
-    const taggedIds = new Set(tagged.map((item) => item.place_id));
-    ids = ids.filter((id) => taggedIds.has(id));
-  }
-  return ids;
+  return Boolean(input.regionId || input.categoryId || input.tagIds || hasRadiusFilter);
+}
+
+function feedRateLimitActor(request: Request, userId?: string): string {
+  if (userId) return `user:${userId}`;
+  const forwarded = request.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim()
+    || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const address = request.headers.get("cf-connecting-ip")?.trim()
+    || request.headers.get("x-real-ip")?.trim()
+    || forwarded
+    || "unknown";
+  const userAgent = request.headers.get("user-agent")?.slice(0, 300) ?? "";
+  return `anonymous:${createHash("sha256").update(`${address}|${userAgent}`).digest("hex")}`;
+}
+
+async function filteredContentListResponse(
+  context: RouteContext,
+  client: SupabaseClient,
+  input: z.infer<typeof feedQuerySchema>,
+  viewerId?: string,
+) {
+  const tagIds = input.tagIds
+    ? [...new Set(input.tagIds.split(",").filter(Boolean))]
+    : [];
+  const parsedTags = z.array(uuid).max(20).safeParse(tagIds);
+  if (!parsedTags.success) throw validationError(parsedTags.error);
+  const limit = parseLimit(context.url);
+  const cursor = decodeCursor(context.url.searchParams.get("cursor"), context.url.searchParams);
+  const rows = databaseList<ContentRow>(await client.rpc("filter_feed_contents", {
+    p_scope: input.scope,
+    p_region_id: input.regionId ?? null,
+    p_category_id: input.categoryId ?? null,
+    p_tag_ids: parsedTags.data.length ? parsedTags.data : null,
+    p_center_lat: input.centerLat ?? null,
+    p_center_lng: input.centerLng ?? null,
+    p_radius_km: input.radiusKm ?? null,
+    p_cursor_published_at: cursor?.value ?? null,
+    p_cursor_id: cursor?.id ?? null,
+    p_limit: limit + 1,
+  }));
+  const hasMore = rows.length > limit;
+  const page = rows.slice(0, limit);
+  const last = page.at(-1);
+  return apiSuccess({ items: await hydrateContents(client, page, viewerId) }, context.requestId, {
+    meta: {
+      nextCursor: hasMore && last?.published_at
+        ? encodeCursor(last.published_at, last.id, context.url.searchParams)
+        : null,
+    },
+    headers: { "cache-control": viewerId ? "private, no-store" : "public, max-age=30, stale-while-revalidate=60" },
+  });
 }
 
 export const listFeed: RouteHandler = async (request, context) => {
@@ -343,22 +375,15 @@ export const listFeed: RouteHandler = async (request, context) => {
   if (!parsed.success) throw validationError(parsed.error);
   const auth = await optionalUser(request);
   if (parsed.data.scope === "following" && !auth) throw new ApiError(401, "unauthenticated", "로그인이 필요합니다.");
+  await consumeDevelopmentRateLimit(`feed:${feedRateLimitActor(request, auth?.user.id)}`, {
+    limit: 120,
+    windowMs: 60_000,
+  });
   const client = auth?.userClient ?? createBackendAuthClient();
-  let query = client.from("contents").select(contentSelection).eq("status", "published");
-  if (parsed.data.scope === "following" && auth) {
-    const following = databaseList<{ followed_user_id: string }>(await auth.userClient.from("profile_follows")
-      .select("followed_user_id").eq("follower_user_id", auth.user.id).limit(2000));
-    if (!following.length) return apiSuccess({ items: [] }, context.requestId, { meta: { nextCursor: null } });
-    query = query.in("author_id", following.map((item) => item.followed_user_id));
+  if (parsed.data.scope === "following" || hasFeedFilters(parsed.data)) {
+    return filteredContentListResponse(context, client, parsed.data, auth?.user.id);
   }
-  const placeIds = await filteredPlaceIds(client, parsed.data);
-  if (placeIds) {
-    if (!placeIds.length) return apiSuccess({ items: [] }, context.requestId, { meta: { nextCursor: null } });
-    const linked = databaseList<{ content_id: string }>(await client.from("content_places").select("content_id").in("place_id", placeIds).limit(5000));
-    const contentIds = [...new Set(linked.map((item) => item.content_id))];
-    if (!contentIds.length) return apiSuccess({ items: [] }, context.requestId, { meta: { nextCursor: null } });
-    query = query.in("id", contentIds);
-  }
+  const query = client.from("contents").select(contentSelection).eq("status", "published");
   return contentListResponse(context, client, query, "published_at", auth?.user.id);
 };
 

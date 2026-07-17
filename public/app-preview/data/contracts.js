@@ -20,6 +20,7 @@ export function createEmptyDataSnapshot() {
   return Object.freeze({
     viewerProfileId: null,
     personalDataLoaded: false,
+    feedNextCursor: null,
     savedPlaceIds: Object.freeze([]),
     savedCourseIds: Object.freeze([]),
     ownedCourseIds: Object.freeze([]),
@@ -33,6 +34,9 @@ export function normalizeDataSnapshot(value = {}) {
       ? value.viewerProfileId
       : null,
     personalDataLoaded: value.personalDataLoaded === true,
+    feedNextCursor: typeof value.feedNextCursor === "string" && value.feedNextCursor.length > 0
+      ? value.feedNextCursor
+      : null,
     savedPlaceIds: normalizeIdList(value.savedPlaceIds),
     savedCourseIds: normalizeIdList(value.savedCourseIds),
     ownedCourseIds: normalizeIdList(value.ownedCourseIds),
@@ -44,6 +48,7 @@ export function normalizeDataSnapshot(value = {}) {
 }
 
 export function mergeDataSnapshots(base = {}, extension = {}) {
+  const replacesFeedCursor = Object.prototype.hasOwnProperty.call(extension, "feedNextCursor");
   const current = normalizeDataSnapshot(base);
   const incoming = normalizeDataSnapshot(extension);
   const mergeById = (left, right) => {
@@ -56,6 +61,7 @@ export function mergeDataSnapshots(base = {}, extension = {}) {
     ...current,
     viewerProfileId: current.viewerProfileId || incoming.viewerProfileId,
     personalDataLoaded: current.personalDataLoaded || incoming.personalDataLoaded,
+    feedNextCursor: replacesFeedCursor ? incoming.feedNextCursor : current.feedNextCursor,
     savedPlaceIds: [...current.savedPlaceIds, ...incoming.savedPlaceIds],
     savedCourseIds: [...current.savedCourseIds, ...incoming.savedCourseIds],
     ownedCourseIds: [...current.ownedCourseIds, ...incoming.ownedCourseIds],

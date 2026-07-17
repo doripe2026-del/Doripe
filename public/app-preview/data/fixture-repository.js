@@ -77,7 +77,7 @@ export function createFixtureRepository() {
       if (!place || !placeMatchesLocationFilter(place, selections)) return false;
       return tagIds.size === 0 || [...tagIds].every((tagId) => place.tagIds.includes(tagId));
     });
-    return normalizeDataSnapshot({ ...data, contents });
+    return normalizeDataSnapshot({ ...data, contents, feedNextCursor: null });
   };
   const repository = {
     mode: "fixture",

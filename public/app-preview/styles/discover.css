@@ -219,6 +219,8 @@
 .discover-feed-author__badge .preview-icon { width: 16px; height: 16px; }
 .discover-feed-type-label { position: absolute; z-index: 2; top: 8px; right: 8px; min-width: 40px; height: 26px; border-radius: 13px; background: rgb(255 255 255 / 90%); color: #08a957; padding: 4px 9px; font-size: 13px; font-weight: 800; line-height: 18px; text-align: center; box-shadow: 0 3px 9px rgb(0 0 0 / 12%); pointer-events: none; }
 .discover-feed__spacer { position: absolute; top: var(--feed-end); left: 0; width: 1px; height: 1px; }
+.discover-feed__load-more { position: absolute; top: var(--feed-end); left: 50%; min-width: 144px; min-height: 44px; border: 0; border-radius: 22px; background: rgb(255 255 255 / 88%); color: #647069; padding: 0 16px; font-size: 13px; font-weight: 700; transform: translateX(-50%); box-shadow: 0 4px 14px rgb(25 46 34 / 10%); }
+.discover-feed__load-more:disabled { opacity: .72; }
 .discover-scroll-top-visual { position: absolute; z-index: 9; top: 751px; left: 320px; display: block; width: 73px; height: 86px; pointer-events: none; }
 .discover-scroll-top { position: absolute; z-index: 10; top: 766px; left: 335px; width: 56px; height: 56px; border: 0; border-radius: 50%; background: transparent; }
 

@@ -68,6 +68,20 @@ test("feed radius filter uses geographic distance and ignores places without coo
   }
 });
 
+test("feed filters run inside Postgres and require every selected tag on one place", async () => {
+  const [domain, migration] = await Promise.all([
+    readFile("src/backend/domains/contents.ts", "utf8"),
+    readFile("supabase/migrations/20260718090000_filter_feed_contents.sql", "utf8"),
+  ]);
+
+  assert.match(domain, /client\.rpc\("filter_feed_contents"/);
+  assert.doesNotMatch(domain, /limit\(20_000\)/);
+  assert.match(migration, /count\(distinct pt\.tag_id\)/i);
+  assert.match(migration, /= cardinality\(p_tag_ids\)/i);
+  assert.match(migration, /asin\(sqrt\(least\(1\.0, greatest\(0\.0,/i);
+  assert.match(migration, /limit least\(greatest\(coalesce\(p_limit, 1\), 1\), 51\)/i);
+});
+
 test("OpenAPI documents optional all-or-none pin radius parameters", async () => {
   const document = JSON.parse(await readFile("docs/api/openapi.yaml", "utf8"));
   const feed = document.paths["/feed"].get;

@@ -161,14 +161,15 @@ test("an empty API feed stays empty and never becomes fixture content", async ()
 test("filtered feed snapshots use stable UUID query ordering and preserve bootstrap tag keys", async () => {
   const tagDateId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
   const tagQuietId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
-  const secondContent = {
+  const nextContent = {
     ...content,
     id: "99999999-9999-4999-8999-999999999999",
     placeIds: [courseOnlyPlace.id],
     media: courseOnlyPlace.media
   };
   const requests = [];
-  const filteredPath = "/api/v1/feed?scope=discover&limit=50&tagIds=aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa%2Cbbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb&centerLat=37.5&centerLng=126.9&radiusKm=3";
+  const filteredPath = "/api/v1/feed?scope=discover&limit=50&tagIds=aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa%2Cbbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb&centerLat=37.5&centerLng=126.9&radiusKm=2.5";
+  const nextPagePath = `${filteredPath}&cursor=next-page`;
   const repository = createApiRepository({
     fetchImpl: async (url) => {
       const requestUrl = String(url);
@@ -184,8 +185,8 @@ test("filtered feed snapshots use stable UUID query ordering and preserve bootst
       if (requestUrl === filteredPath) {
         return jsonResponse({ data: { items: [content] }, meta: { nextCursor: "next-page" } });
       }
-      if (requestUrl === `${filteredPath}&cursor=next-page`) {
-        return jsonResponse({ data: { items: [secondContent] }, meta: { nextCursor: null } });
+      if (requestUrl === nextPagePath) {
+        return jsonResponse({ data: { items: [nextContent] }, meta: { nextCursor: null } });
       }
       if (requestUrl === `/api/v1/places/${place.id}`) return jsonResponse({ data: place });
       if (requestUrl === `/api/v1/places/${courseOnlyPlace.id}`) return jsonResponse({ data: courseOnlyPlace });
@@ -198,12 +199,26 @@ test("filtered feed snapshots use stable UUID query ordering and preserve bootst
     tagIds: [tagQuietId, tagDateId, tagQuietId],
     centerLat: 37.5,
     centerLng: 126.9,
-    radiusKm: 3
+    radiusKm: 2.5,
+    limit: 99
   });
 
-  assert.deepEqual(requests.slice(0, 3), ["/api/v1/bootstrap", filteredPath, `${filteredPath}&cursor=next-page`]);
-  assert.deepEqual(snapshot.contents.map((item) => item.id), [content.id, secondContent.id]);
+  assert.deepEqual(requests.slice(0, 2), ["/api/v1/bootstrap", filteredPath]);
+  assert.deepEqual(snapshot.contents.map((item) => item.id), [content.id]);
   assert.equal(snapshot.tags.find((tag) => tag.id === tagDateId)?.key, "date");
+  assert.equal(snapshot.feedNextCursor, "next-page");
+
+  const nextPage = await repository.getFeedSnapshot({
+    tagIds: [tagDateId, tagQuietId],
+    centerLat: 37.5,
+    centerLng: 126.9,
+    radiusKm: 2.5,
+    cursor: snapshot.feedNextCursor
+  });
+
+  assert.equal(requests.includes(nextPagePath), true);
+  assert.deepEqual(nextPage.contents.map((item) => item.id), [nextContent.id]);
+  assert.equal(nextPage.feedNextCursor, null);
 });
 
 test("an empty filtered snapshot stays empty without replacing the persisted bootstrap fallback", async () => {
@@ -235,6 +250,34 @@ test("an empty filtered snapshot stays empty without replacing the persisted boo
   assert.deepEqual(filtered.contents, []);
   assert.deepEqual(filtered.places, []);
   assert.equal(storage.getItem("doripe.app_preview.api_snapshot.v1"), cachedBootstrap);
+});
+
+test("feed snapshots forward the requested Discover or Following scope", async () => {
+  const requests = [];
+  const repository = createApiRepository({
+    fetchImpl: async (url) => {
+      const requestUrl = String(url);
+      requests.push(requestUrl);
+      if (requestUrl === "/api/v1/bootstrap") {
+        return jsonResponse({ data: {
+          regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {}
+        } });
+      }
+      if (requestUrl === "/api/v1/feed?scope=discover&limit=50") {
+        return jsonResponse({ data: { items: [] }, meta: { nextCursor: null } });
+      }
+      if (requestUrl === "/api/v1/feed?scope=following&limit=50") {
+        return jsonResponse({ data: { items: [] }, meta: { nextCursor: null } });
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    },
+    storage: memoryStorage()
+  });
+
+  await repository.getBootstrap();
+  await repository.getFeedSnapshot({ scope: "following" });
+
+  assert.equal(requests.includes("/api/v1/feed?scope=following&limit=50"), true);
 });
 
 test("authenticated bootstrap restores private profile and saved items without caching them publicly", async () => {

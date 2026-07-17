@@ -153,7 +153,7 @@ function isEmptyReadResult(value) {
 function feedPath(params = {}, cursor = null) {
   const query = new URLSearchParams();
   query.set("scope", params.scope === "following" ? "following" : "discover");
-  query.set("limit", String(Math.max(1, Math.min(100, Number(params.limit) || 50))));
+  query.set("limit", String(Math.max(1, Math.min(50, Number(params.limit) || 50))));
   const tagIds = [...new Set((Array.isArray(params.tagIds) ? params.tagIds : [])
     .filter((id) => typeof id === "string" && id.length > 0))].sort();
   if (tagIds.length) query.set("tagIds", tagIds.join(","));
@@ -161,7 +161,7 @@ function feedPath(params = {}, cursor = null) {
   const centerLat = Number(params.centerLat);
   const centerLng = Number(params.centerLng);
   const radiusKm = Number(params.radiusKm);
-  if (Number.isFinite(centerLat) && Number.isFinite(centerLng) && [1, 3, 5, 10].includes(radiusKm)) {
+  if (Number.isFinite(centerLat) && Number.isFinite(centerLng) && radiusKm > 0 && radiusKm <= 50) {
     query.set("centerLat", String(centerLat));
     query.set("centerLng", String(centerLng));
     query.set("radiusKm", String(radiusKm));
@@ -403,14 +403,14 @@ export function createApiRepository({
   async function loadBootstrap() {
     const [bootstrap, feedPage] = await Promise.all([
       request("bootstrap"),
-      request(feedPath())
+      request(feedPath(), { includeMeta: true })
     ]);
     lastBootstrap = clone(bootstrap);
-    const feed = Array.isArray(feedPage?.items) ? feedPage.items : [];
-    return loadFeedSnapshot(bootstrap, feed);
+    const feed = Array.isArray(feedPage?.data?.items) ? feedPage.data.items : [];
+    return loadFeedSnapshot(bootstrap, feed, feedPage?.meta?.nextCursor || null);
   }
 
-  async function loadFeedSnapshot(bootstrap, feed) {
+  async function loadFeedSnapshot(bootstrap, feed, feedNextCursor = null) {
     const placeIds = [...new Set(feed.flatMap((content) => content.placeIds || []))];
     const courseIds = [...new Set(feed.map((content) => content.courseId).filter(Boolean))];
     const details = [
@@ -422,26 +422,18 @@ export function createApiRepository({
     ));
     const places = detailResults.slice(0, placeIds.length);
     const courses = detailResults.slice(placeIds.length);
-    return buildSnapshot({ bootstrap, feed, places, courses });
+    return normalizeDataSnapshot({
+      ...buildSnapshot({ bootstrap, feed, places, courses }),
+      feedNextCursor
+    });
   }
 
   async function loadFilteredFeedSnapshot(params = {}) {
     const bootstrap = lastBootstrap || await read("bootstrap");
     if (!lastBootstrap) lastBootstrap = clone(bootstrap);
-    const items = [];
-    const seenCursors = new Set();
-    let cursor = null;
-    do {
-      const page = await read(feedPath(params, cursor), { includeMeta: true });
-      if (Array.isArray(page?.data?.items)) items.push(...page.data.items);
-      const nextCursor = typeof page?.meta?.nextCursor === "string" && page.meta.nextCursor
-        ? page.meta.nextCursor
-        : null;
-      if (nextCursor && seenCursors.has(nextCursor)) throw new Error("API pagination cursor repeated");
-      if (nextCursor) seenCursors.add(nextCursor);
-      cursor = nextCursor;
-    } while (cursor);
-    return loadFeedSnapshot(bootstrap, items);
+    const page = await read(feedPath(params, params.cursor || null), { includeMeta: true });
+    const items = Array.isArray(page?.data?.items) ? page.data.items : [];
+    return loadFeedSnapshot(bootstrap, items, page?.meta?.nextCursor || null);
   }
 
   async function loadPersonalData(snapshot) {
