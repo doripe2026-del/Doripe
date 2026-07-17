@@ -1,22 +1,52 @@
 import { expect, test } from "@playwright/test";
 
 test("the public app route serves the current app without review controls", async ({ page }) => {
-  await page.goto("/app?screen=b1&static=1");
+  await page.goto("/app?screen=a1&static=1");
 
-  await expect(page.locator('[data-screen-id="b1"]')).toBeVisible();
+  await expect(page.locator('[data-screen-id="a1"]')).toBeVisible();
   await expect(page.locator("#review-panel")).toBeHidden();
   await expect(page.locator("html")).toHaveAttribute("data-app-surface", "product");
   expect(new URL(page.url()).pathname).toBe("/app");
 });
 
 test("public app sharing keeps the canonical public path", async ({ page }) => {
+  const placeId = "22222222-2222-4222-8222-222222222222";
+  const mediaId = "44444444-4444-4444-8444-444444444444";
+  await page.route("**/api/v1/**", async (route) => {
+    const url = new URL(route.request().url());
+    if (url.pathname.endsWith("/bootstrap")) {
+      await route.fulfill({ json: { data: { regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {} } } });
+      return;
+    }
+    if (url.pathname.endsWith("/feed")) {
+      await route.fulfill({ json: { data: { items: [] }, meta: { nextCursor: null } } });
+      return;
+    }
+    if (url.pathname.endsWith(`/places/${placeId}`)) {
+      await route.fulfill({ json: { data: {
+        id: placeId,
+        name: "공유할 장소",
+        shortCopy: "공개 앱 경로를 확인해요",
+        address: "서울 마포구 테스트로 1",
+        nearestStation: "홍대입구역",
+        latitude: 37.56,
+        longitude: 126.92,
+        category: { id: "category-cafe", name: "카페" },
+        tags: [],
+        media: [{ id: mediaId, kind: "image", url: "https://images.example/shared.jpg", placeId }],
+        status: "published"
+      } } });
+      return;
+    }
+    await route.fulfill({ status: 404, json: { error: { code: "not_found", message: "not found" } } });
+  });
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "clipboard", {
       configurable: true,
       value: { writeText: async (value) => window.sessionStorage.setItem("copied-link", value) }
     });
   });
-  await page.goto("/app?screen=b4&type=place&id=place-1&static=1");
+  await page.goto(`/app?screen=b4&type=place&id=${placeId}&static=1`);
 
   await page.getByRole("button", { name: "공유하기" }).click();
   const copied = await page.evaluate(() => window.sessionStorage.getItem("copied-link"));
@@ -24,7 +54,7 @@ test("public app sharing keeps the canonical public path", async ({ page }) => {
   expect(new URL(copied).pathname).toBe("/app");
   expect(new URL(copied).searchParams.get("screen")).toBe("b4");
   expect(new URL(copied).searchParams.get("type")).toBe("place");
-  expect(new URL(copied).searchParams.get("id")).toBe("place-1");
+  expect(new URL(copied).searchParams.get("id")).toBe(placeId);
 });
 
 test("a live shared place outside the initial feed is hydrated from its public detail", async ({ page }) => {

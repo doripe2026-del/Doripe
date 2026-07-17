@@ -129,6 +129,7 @@ test("a first user can discover, save, build, reopen, share, and leave a course"
   recipientUrl.protocol = "http:";
   recipientUrl.hostname = "localhost";
   recipientUrl.port = String(process.env.APP_PREVIEW_PORT || 4173);
+  recipientUrl.pathname = "/app-preview/";
   recipientUrl.searchParams.set("static", "1");
   await recipient.goto(recipientUrl.toString());
   await expect(recipient.getByRole("heading", { name: "연남 저녁 산책" })).toBeVisible();

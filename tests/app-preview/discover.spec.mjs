@@ -552,6 +552,7 @@ test("a user-shared course supports comments, native sharing, and quiet saving",
   const recipientContext = await browser.newContext();
   const recipient = await recipientContext.newPage();
   const recipientUrl = new URL(sharedUrl);
+  recipientUrl.pathname = "/app-preview/";
   recipientUrl.searchParams.set("static", "1");
   await recipient.goto(recipientUrl.toString());
   await expect(recipient.locator('[data-testid="course-detail"]')).toBeVisible();

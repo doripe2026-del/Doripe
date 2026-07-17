@@ -781,6 +781,7 @@ test("a dynamic route share URL deterministically restores the exact route witho
   recipientUrl.protocol = "http:";
   recipientUrl.hostname = "localhost";
   recipientUrl.port = String(process.env.APP_PREVIEW_PORT || 4173);
+  recipientUrl.pathname = "/app-preview/";
   recipientUrl.searchParams.set("static", "1");
   await recipient.goto(recipientUrl.toString());
   await expect(recipient.getByRole("heading", { name: "친구와 세 곳" })).toBeVisible();

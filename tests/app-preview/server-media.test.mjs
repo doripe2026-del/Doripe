@@ -17,9 +17,11 @@ test("server media exposes the complete 60-photo prototype library", () => {
 });
 
 test("static review screens stay deterministic while live preview uses server media", () => {
-  assert.equal(isStaticPreview({ search: "?screen=b1&static=1" }), true);
-  assert.equal(resolvePreviewMediaSource(7, { search: "?static=1" }), localMediaUrl(7));
-  assert.equal(resolvePreviewMediaSource(7, { search: "?screen=b1" }), serverMediaUrl(7));
+  assert.equal(isStaticPreview({ pathname: "/app-preview/", search: "?screen=b1&static=1" }), true);
+  assert.equal(isStaticPreview({ pathname: "/app", search: "?screen=b1&static=1" }), false);
+  assert.equal(resolvePreviewMediaSource(7, { pathname: "/app-preview/", search: "?static=1" }), localMediaUrl(7));
+  assert.equal(resolvePreviewMediaSource(7, { pathname: "/app", search: "?static=1" }), serverMediaUrl(7));
+  assert.equal(resolvePreviewMediaSource(7, { pathname: "/app-preview/", search: "?screen=b1" }), serverMediaUrl(7));
 });
 
 test("media indices wrap safely for long feeds", () => {

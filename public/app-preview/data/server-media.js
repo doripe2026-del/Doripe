@@ -10,7 +10,9 @@ function normalizeIndex(index, count) {
 
 export function isStaticPreview(locationLike = globalThis.location) {
   if (!locationLike) return true;
-  return new URLSearchParams(locationLike.search || "").get("static") === "1";
+  const pathname = String(locationLike.pathname || "/app-preview/");
+  const reviewPath = pathname === "/app-preview" || pathname.startsWith("/app-preview/");
+  return reviewPath && new URLSearchParams(locationLike.search || "").get("static") === "1";
 }
 
 export function serverMediaUrl(index) {
