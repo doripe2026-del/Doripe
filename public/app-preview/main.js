@@ -723,6 +723,13 @@ function flushAnalytics() {
   void analyticsSession.then((session) => (session.ok ? analyticsClient.flush() : null));
 }
 
+function recordAuthCompletion(authResult, sourceScreen) {
+  const eventName = authResult?.authEvent;
+  if (!analyticsClient || !["signup_complete", "login_complete"].includes(eventName)) return;
+  analyticsClient.recordEvent(eventName, { sourceScreen, properties: {} });
+  flushAnalytics();
+}
+
 function successfulProductEvent(input, result) {
   if (!result.ok || result.status !== "synced") return null;
   const { screenId, actionId, payload = {}, previousState, optimisticState } = input;
@@ -889,6 +896,7 @@ async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {
     authStatus = "authenticated";
     window.sessionStorage.removeItem(LOGOUT_GUARD_KEY);
     await hydrateStateAfterAuthentication({ migrateIdentity: operation === "sign-up" });
+    recordAuthCompletion(authResult, screenId);
   }
   if (authResult.ok && authResult.status === "password-updated") authStatus = "no-session";
   if (target.isConnected) {
@@ -1186,5 +1194,6 @@ if (analyticsClient) {
     entryPath: `${window.location.pathname}${window.location.search}`,
     sourceScreen: lastRenderedScreenId || "app"
   });
+  recordAuthCompletion(startupAuthResult, lastRenderedScreenId || "app");
   flushAnalytics();
 }

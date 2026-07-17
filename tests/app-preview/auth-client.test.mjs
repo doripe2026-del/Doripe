@@ -67,7 +67,7 @@ test("sign-in sends a bounded normalized request and stores only session tokens"
 
   const result = await client.signIn({ email: "  DORI@DORIPE.KR  ", password: "Doripe123" });
 
-  assert.deepEqual(result, { ok: true, status: "authenticated" });
+  assert.deepEqual(result, { ok: true, status: "authenticated", authEvent: "login_complete" });
   assert.equal(requests[1].url, `${SUPABASE_URL}/auth/v1/token?grant_type=password`);
   assert.equal(requests[1].options.method, "POST");
   assert.equal(requests[1].options.headers.apikey, PUBLISHABLE_KEY);
@@ -226,7 +226,7 @@ test("email confirmation callback creates an authenticated signup session", asyn
     replaceState(url) { replacedUrl = url; }
   });
 
-  assert.deepEqual(result, { ok: true, status: "authenticated" });
+  assert.deepEqual(result, { ok: true, status: "authenticated", authEvent: "signup_complete" });
   assert.deepEqual({ ...JSON.parse(sessionStorage.getItem(AUTH_SESSION_STORAGE_KEY)), expiresAt: 0 }, {
     accessToken: "signup-access",
     refreshToken: "signup-refresh",

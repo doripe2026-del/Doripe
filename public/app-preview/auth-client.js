@@ -337,7 +337,7 @@ export function createAuthClient({
     const response = await request("token?grant_type=password", { email, password }, SAFE_MESSAGES.invalidCredentials, { signal });
     if (!response.ok) return response;
     if (!storeSession(sessionStorage, response.body, now())) return failure("auth-failed", SAFE_MESSAGES.invalidCredentials);
-    return { ok: true, status: "authenticated" };
+    return { ok: true, status: "authenticated", authEvent: "login_complete" };
   }
 
   async function signUp({ email: rawEmail, password: rawPassword, redirectTo: rawRedirectTo, signal } = {}) {
@@ -517,7 +517,9 @@ export function createAuthClient({
         clearAuthStorage(sessionStorage, localStorage);
         return failure("invalid-recovery", SAFE_MESSAGES.recoveryMissing);
       }
-      return { ok: true, status: flow === "recovery" ? "recovery-ready" : "authenticated" };
+      return flow === "recovery"
+        ? { ok: true, status: "recovery-ready" }
+        : { ok: true, status: "authenticated", authEvent: "signup_complete" };
     }
 
     const hadStoredValue = Boolean(sessionStorage?.getItem?.(AUTH_SESSION_STORAGE_KEY));

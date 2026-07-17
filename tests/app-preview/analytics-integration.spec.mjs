@@ -170,3 +170,92 @@ test("static preview sends no analytics for rendering, navigation, or local acti
 
   expect(analyticsRequests).toEqual([]);
 });
+
+test("email confirmation records signup completion once and not again on reload", async ({ page }) => {
+  const eventNames = [];
+  await page.route("**/api/app-auth-config", (route) => route.fulfill({
+    status: 200,
+    json: {
+      supabaseUrl: "https://doripe-test.supabase.co",
+      supabaseKey: `sb_publishable_${"a".repeat(32)}`
+    }
+  }));
+  await page.route("https://doripe-test.supabase.co/auth/v1/user", (route) => route.fulfill({
+    status: 200,
+    json: { id: "new-user", email: "new@doripe.kr" }
+  }));
+  await page.route("**/api/v1/**", async (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice("/api/v1/".length);
+    if (path === "sessions") {
+      const body = request.postDataJSON();
+      return route.fulfill({ status: 201, json: { data: { sessionId: body.sessionId, accepted: true }, meta: {} } });
+    }
+    if (path === "events") {
+      const body = request.postDataJSON();
+      eventNames.push(...body.events.map((event) => event.name));
+      return route.fulfill({ status: 202, json: { data: { accepted: body.events.length, duplicates: 0, rejected: 0 }, meta: {} } });
+    }
+    if (path === "bootstrap") {
+      return route.fulfill({ status: 200, json: { data: {
+        regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {}
+      }, meta: {} } });
+    }
+    if (path === "feed") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    if (path === "me/profile") {
+      return route.fulfill({ status: 200, json: { data: {
+        id: "11111111-1111-4111-8111-111111111111",
+        nickname: "새 사용자",
+        introduction: "",
+        profileImageUrl: null,
+        isCurator: false,
+        officialBadge: false,
+        followedByMe: false,
+        followerCount: 0
+      }, meta: {} } });
+    }
+    if (path.startsWith("me/saves") || path.startsWith("courses")) {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    return route.fulfill({ status: 404, json: { error: { code: "not_found", message: "not found" } } });
+  });
+
+  await page.goto("/app-preview/?screen=a14#access_token=signup-access&refresh_token=signup-refresh&expires_in=600&token_type=bearer&type=signup");
+  await expect(page.locator('[data-screen-id="a14"]')).toBeVisible();
+  await expect.poll(() => eventNames.filter((name) => name === "signup_complete")).toHaveLength(1);
+
+  await page.reload();
+  await expect(page.locator('[data-screen-id="a14"]')).toBeVisible();
+  await page.waitForTimeout(150);
+  expect(eventNames.filter((name) => name === "signup_complete")).toHaveLength(1);
+});
+
+test("successful password login records login completion", async ({ page }) => {
+  const requests = await installLiveApi(page);
+  await page.route("**/api/app-auth-config", (route) => route.fulfill({
+    status: 200,
+    json: {
+      supabaseUrl: "https://doripe-test.supabase.co",
+      supabaseKey: `sb_publishable_${"b".repeat(32)}`
+    }
+  }));
+  await page.route("https://doripe-test.supabase.co/auth/v1/token?grant_type=password", (route) => route.fulfill({
+    status: 200,
+    json: {
+      access_token: "login-access",
+      refresh_token: "login-refresh",
+      expires_in: 600,
+      token_type: "bearer",
+      user: { id: "known-user", email: "known@doripe.kr" }
+    }
+  }));
+
+  await page.goto("/app-preview/?screen=a3");
+  await page.locator('[data-action="update-email"]').fill("known@doripe.kr");
+  await page.locator('[data-action="update-password"]').fill("Knownpass123");
+  await page.locator('[data-action="submit-login"]').click();
+
+  await expect.poll(async () => (await eventList(requests)).filter((event) => event.name === "login_complete")).toHaveLength(1);
+});
