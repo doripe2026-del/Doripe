@@ -25,6 +25,14 @@ test("visitor can complete the booth flow without viewport overflow", async ({ p
   await page.locator(".place-tile").first().click();
   await expect(page.locator('[data-screen="detail"]')).toBeVisible();
   await expectNoHorizontalOverflow(page);
+  const detailLayout = await page.evaluate(() => ({
+    isMobileLayout: window.innerWidth < 960,
+    photoBottom: document.querySelector(".detail__photo-wrap")!.getBoundingClientRect().bottom,
+    panelTop: document.querySelector(".detail__panel")!.getBoundingClientRect().top
+  }));
+  if (detailLayout.isMobileLayout) {
+    expect(detailLayout.panelTop).toBeGreaterThanOrEqual(detailLayout.photoBottom - 1);
+  }
 
   await page.locator('[data-action="browse-nearby"]').click();
   await expect(page.locator('[data-screen="builder"]')).toBeVisible();
@@ -35,6 +43,12 @@ test("visitor can complete the booth flow without viewport overflow", async ({ p
   await page.locator('[data-action="complete"]').click();
   await expect(page.locator('[data-screen="complete"]')).toBeVisible();
   await expectNoHorizontalOverflow(page);
+  const routeAlignment = await page.evaluate(() => {
+    const screen = document.querySelector(".completion")!.getBoundingClientRect();
+    const route = document.querySelector(".completion__route")!.getBoundingClientRect();
+    return Math.abs((screen.left + screen.right) / 2 - (route.left + route.right) / 2);
+  });
+  expect(routeAlignment).toBeLessThanOrEqual(1);
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
   await page.locator('[data-action="reset"]').click();
   await expect(page.locator('[data-screen="welcome"]')).toBeVisible();
