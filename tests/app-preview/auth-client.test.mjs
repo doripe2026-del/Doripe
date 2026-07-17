@@ -19,6 +19,19 @@ function createMemoryStorage() {
   };
 }
 
+function createEventTarget() {
+  const listeners = new Map();
+  return {
+    addEventListener(type, listener) {
+      const items = listeners.get(type) || [];
+      listeners.set(type, [...items, listener]);
+    },
+    dispatch(type, event) {
+      for (const listener of listeners.get(type) || []) listener(event);
+    }
+  };
+}
+
 function authSession(overrides = {}) {
   return {
     access_token: "access-token",
@@ -702,6 +715,40 @@ test("sign-out succeeds locally even when remote logout fails", async () => {
   assert.match(result.warning, /로그아웃/);
   assert.equal(storage.getItem(AUTH_SESSION_STORAGE_KEY), null);
   assert.equal(localStorage.getItem(AUTH_PKCE_VERIFIER_STORAGE_KEY), null);
+});
+
+test("a logout signal clears another tab before it can reuse the session", async () => {
+  const {
+    AUTH_LOGOUT_SIGNAL_STORAGE_KEY,
+    AUTH_SESSION_STORAGE_KEY,
+    createAuthClient
+  } = await loadAuthModule();
+  const eventTarget = createEventTarget();
+  const sessionStorage = createMemoryStorage();
+  const localStorage = createMemoryStorage();
+  let remoteSignOuts = 0;
+  sessionStorage.setItem(AUTH_SESSION_STORAGE_KEY, JSON.stringify({
+    accessToken: "other-tab-access",
+    refreshToken: "other-tab-refresh",
+    expiresAt: Date.now() + 60_000,
+    flow: "auth"
+  }));
+  const client = createAuthClient({
+    fetchImpl: configuredFetch(() => jsonResponse({})).fetchImpl,
+    sessionStorage,
+    localStorage,
+    eventTarget,
+    onRemoteSignOut: () => { remoteSignOuts += 1; }
+  });
+
+  eventTarget.dispatch("storage", {
+    key: AUTH_LOGOUT_SIGNAL_STORAGE_KEY,
+    newValue: String(Date.now())
+  });
+
+  assert.equal(client.getAccessToken(), null);
+  assert.equal(sessionStorage.getItem(AUTH_SESSION_STORAGE_KEY), null);
+  assert.equal(remoteSignOuts, 1);
 });
 
 async function loadConfigHandler() {

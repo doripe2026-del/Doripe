@@ -1,5 +1,6 @@
 export const AUTH_SESSION_STORAGE_KEY = "doripe.app_preview.auth.session.v1";
 export const AUTH_PKCE_VERIFIER_STORAGE_KEY = "doripe.app_preview.auth.pkce_verifier.v1";
+export const AUTH_LOGOUT_SIGNAL_STORAGE_KEY = "doripe.app_preview.auth.logout_signal.v1";
 
 const CONFIG_ENDPOINT = "/api/app-auth-config";
 const MAX_EMAIL_LENGTH = 254;
@@ -164,6 +165,15 @@ function clearAuthStorage(sessionStorage, localStorage) {
   clearPkceVerifier(localStorage);
 }
 
+function broadcastSignOut(storage, nowValue) {
+  try {
+    storage?.setItem(AUTH_LOGOUT_SIGNAL_STORAGE_KEY, String(nowValue));
+    storage?.removeItem(AUTH_LOGOUT_SIGNAL_STORAGE_KEY);
+  } catch {
+    // A blocked local storage area cannot coordinate tabs, but local logout still succeeds.
+  }
+}
+
 function normalizeSessionResponse(body, nowValue, { requireUser = true } = {}) {
   const accessToken = body?.access_token;
   const refreshToken = body?.refresh_token;
@@ -248,12 +258,19 @@ export function createAuthClient({
   localStorage = globalThis.window?.localStorage,
   configEndpoint = CONFIG_ENDPOINT,
   cryptoImpl = globalThis.crypto,
+  eventTarget = globalThis.window,
+  onRemoteSignOut = () => globalThis.location?.reload?.(),
   timeoutMs = DEFAULT_TIMEOUT_MS,
   now = () => Date.now()
 } = {}) {
   let configPromise = null;
   let refreshPromise = null;
   const boundedTimeoutMs = Number.isFinite(timeoutMs) ? Math.min(Math.max(timeoutMs, 1), 30_000) : DEFAULT_TIMEOUT_MS;
+  eventTarget?.addEventListener?.("storage", (event) => {
+    if (event?.key !== AUTH_LOGOUT_SIGNAL_STORAGE_KEY || event?.newValue == null) return;
+    clearAuthStorage(sessionStorage, localStorage);
+    onRemoteSignOut();
+  });
 
   async function timedFetch(url, options = {}, externalSignal) {
     const controller = new AbortController();
@@ -558,6 +575,7 @@ export function createAuthClient({
   function beginSignOut() {
     const session = readStoredSession(sessionStorage);
     clearAuthStorage(sessionStorage, localStorage);
+    broadcastSignOut(localStorage, now());
     let completed = false;
     return async ({ signal } = {}) => {
       if (completed || !session) return { ok: true, status: "signed-out" };
