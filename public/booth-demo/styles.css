@@ -392,7 +392,7 @@ img {
 .detail__panel {
   position: relative;
   width: min(calc(100% - 32px), 720px);
-  margin: -42px auto 0;
+  margin: 0 auto;
   padding: 28px;
   border-radius: var(--radius-panel);
   background: var(--paper-raised);
@@ -527,7 +527,9 @@ img {
   display: grid;
   width: min(100%, 680px);
   margin: 34px auto;
+  padding: 0;
   gap: 14px;
+  list-style: none;
 }
 
 .completion-place {
