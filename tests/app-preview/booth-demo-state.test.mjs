@@ -19,7 +19,20 @@ test("booth demo uses only local runtime assets", async () => {
   assert.match(html, /id="demo-app"/);
   assert.match(html, /src="\/booth-demo\/assets\/doripe-logo\.png"/);
   assert.match(html, /src="\/booth-demo\/app\.js"/);
-  assert.doesNotMatch(html, /https?:\/\//);
+  assert.doesNotMatch(html, /<(?:script|img)[^>]+src="https?:\/\//);
+  assert.doesNotMatch(html, /<link[^>]+rel="stylesheet"[^>]+href="https?:\/\//);
+});
+
+test("home and booth links use the current social preview image", async () => {
+  const home = await readFile(new URL("public/home/index.html", root), "utf8");
+  const booth = await readFile(new URL("public/booth-demo/index.html", root), "utf8");
+  await access(new URL("public/og-doripe-2026.png", root));
+  for (const html of [home, booth]) {
+    assert.match(html, /property="og:image" content="https:\/\/doripe\.kr\/og-doripe-2026\.png"/);
+    assert.match(html, /name="twitter:image" content="https:\/\/doripe\.kr\/og-doripe-2026\.png"/);
+    assert.match(html, /property="og:image:width" content="1200"/);
+    assert.match(html, /property="og:image:height" content="630"/);
+  }
 });
 
 test("welcome uses the transparent white SVG wordmark at the top", async () => {

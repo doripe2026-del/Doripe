@@ -19,7 +19,7 @@ test("visitor can complete the booth flow without viewport overflow", async ({ p
   await page.locator('[data-action="start"]').click();
   await expect(page.locator('[data-screen="feed"]')).toBeVisible();
   await expectNoHorizontalOverflow(page);
-  await page.evaluate(() => window.scrollBy(0, 800));
+  await page.locator(".place-tile").nth(20).scrollIntoViewIfNeeded();
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
 
   await page.locator(".place-tile").first().click();
