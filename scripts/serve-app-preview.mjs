@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const publicDirectory = resolve(fileURLToPath(new URL("../public", import.meta.url)));
 const previewIndex = resolve(publicDirectory, "app-preview/index.html");
+const boothDemoIndex = resolve(publicDirectory, "booth-demo/index.html");
 const contentTypes = {
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
@@ -32,6 +33,7 @@ function resolvePublicFile(requestUrl) {
   }
 
   if (pathname.split("/").includes("..")) return null;
+  if (pathname === "/demo" || pathname === "/demo/") return boothDemoIndex;
   if (
     pathname === "/app-preview"
     || pathname === "/app-preview/"
