@@ -158,6 +158,43 @@ test("an empty API feed stays empty and never becomes fixture content", async ()
   assert.deepEqual(snapshot.savedCourseIds, []);
 });
 
+test("a failed feed detail omits only that item instead of failing the whole page", async () => {
+  const unavailablePlace = {
+    ...place,
+    id: "99999999-9999-4999-8999-999999999999",
+    name: "일시적으로 unavailable 장소",
+    media: [{ ...place.media[0], id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", placeId: "99999999-9999-4999-8999-999999999999" }]
+  };
+  const unavailableContent = {
+    ...content,
+    id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+    placeIds: [unavailablePlace.id],
+    media: unavailablePlace.media
+  };
+  const fetchImpl = async (url) => {
+    const requestUrl = String(url);
+    if (requestUrl === "/api/v1/bootstrap") {
+      return jsonResponse({ data: {
+        regions: [], categories: [place.category], tags: place.tags,
+        featureFlags: {}, contractVersions: {}
+      } });
+    }
+    if (requestUrl.startsWith("/api/v1/feed?")) {
+      return jsonResponse({ data: { items: [content, unavailableContent] }, meta: { nextCursor: null } });
+    }
+    if (requestUrl === `/api/v1/places/${place.id}`) return jsonResponse({ data: place });
+    if (requestUrl === `/api/v1/places/${unavailablePlace.id}`) {
+      return jsonResponse({ error: { code: "temporary", message: "temporary" } }, 503);
+    }
+    throw new Error(`Unexpected request: ${url}`);
+  };
+
+  const snapshot = await createApiRepository({ fetchImpl, storage: memoryStorage() }).getBootstrap();
+
+  assert.deepEqual(snapshot.contents.map((item) => item.id), [content.id]);
+  assert.deepEqual(snapshot.places.map((item) => item.id), [place.id]);
+});
+
 test("filtered feed snapshots use stable UUID query ordering and preserve bootstrap tag keys", async () => {
   const tagDateId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
   const tagQuietId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";

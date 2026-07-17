@@ -1164,6 +1164,12 @@ test("profiles and following list use dynamic users and toggle follow state", as
   await expect(page).toHaveURL(/screen=b4/);
 });
 
+test("the Following strip derives its overflow count from actual followed profiles", async ({ page }) => {
+  await gotoScreen(page, "b1");
+  await expect(page.locator(".discover-following-strip__profile")).toHaveCount(4);
+  await expect(page.locator(".discover-following-strip__more")).toHaveText("+2");
+});
+
 test("B3 switches completely to a newly selected place", async ({ page }) => {
   await gotoScreen(page, "b11");
   await page.locator("[data-testid=related-place]").first().click();

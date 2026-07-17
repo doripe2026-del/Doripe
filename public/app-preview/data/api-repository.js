@@ -417,13 +417,46 @@ export function createApiRepository({
       ...placeIds.map((id) => ({ type: "place", id })),
       ...courseIds.map((id) => ({ type: "course", id }))
     ];
-    const detailResults = await mapWithConcurrency(details, detailRequestLimit, ({ type, id }) => (
-      read(`${type === "place" ? "places" : "courses"}/${encodeURIComponent(id)}`)
+    const detailResults = await mapWithConcurrency(details, detailRequestLimit, async ({ type, id }) => {
+      try {
+        return {
+          status: "fulfilled",
+          type,
+          id,
+          value: await read(`${type === "place" ? "places" : "courses"}/${encodeURIComponent(id)}`)
+        };
+      } catch (reason) {
+        return { status: "rejected", type, id, reason };
+      }
+    });
+    const authenticationFailure = detailResults.find((result) => (
+      result.status === "rejected" && result.reason?.status === 401
     ));
-    const places = detailResults.slice(0, placeIds.length);
-    const courses = detailResults.slice(placeIds.length);
+    if (authenticationFailure) throw authenticationFailure.reason;
+
+    const fulfilled = detailResults.filter((result) => result.status === "fulfilled");
+    if (details.length > 0 && fulfilled.length === 0) {
+      throw detailResults.find((result) => result.status === "rejected")?.reason
+        || new Error("Feed details are unavailable");
+    }
+    const availablePlaceIds = new Set(fulfilled
+      .filter((result) => result.type === "place")
+      .map((result) => result.id));
+    const availableCourseIds = new Set(fulfilled
+      .filter((result) => result.type === "course")
+      .map((result) => result.id));
+    const availableFeed = feed.filter((content) => content.type === "course"
+      ? availableCourseIds.has(content.courseId)
+      : (content.placeIds || []).length > 0
+        && (content.placeIds || []).every((id) => availablePlaceIds.has(id)));
+    const places = fulfilled
+      .filter((result) => result.type === "place")
+      .map((result) => result.value);
+    const courses = fulfilled
+      .filter((result) => result.type === "course")
+      .map((result) => result.value);
     return normalizeDataSnapshot({
-      ...buildSnapshot({ bootstrap, feed, places, courses }),
+      ...buildSnapshot({ bootstrap, feed: availableFeed, places, courses }),
       feedNextCursor
     });
   }

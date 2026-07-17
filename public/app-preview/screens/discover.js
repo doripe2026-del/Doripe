@@ -666,15 +666,26 @@ function feedStatusMessage(message, retryable = false) {
   return status;
 }
 
-function followingStrip(data) {
+function followingStrip(state, data) {
   const strip = element("div", "discover-following-strip");
   const avatars = element("span", "discover-following-strip__avatars");
-  data.profiles.slice(0, 4).forEach((user) => {
+  const profileById = new Map(data.profiles.map((profile) => [profile.id, profile]));
+  const feedAuthorIds = (state?.selections?.discoverFeedContentIds || [])
+    .map((contentId) => data.contents.find((content) => content.id === contentId)?.authorProfileId)
+    .filter(Boolean);
+  const followedIds = [...new Set([
+    ...feedAuthorIds,
+    ...data.profiles.filter((profile) => profile.followedByMe).map((profile) => profile.id),
+    ...(state?.followedUserIds || [])
+  ])];
+  const followedProfiles = followedIds.map((id) => profileById.get(id)).filter(Boolean);
+  followedProfiles.slice(0, 4).forEach((user) => {
     const profile = actionButton(`${user.handle} 프로필 보기`, "open-profile", { userId: user.id }, "discover-following-strip__profile");
     profile.append(avatarImage(user));
     avatars.append(profile);
   });
-  avatars.append(element("span", "discover-following-strip__more", "+8"));
+  const overflowCount = Math.max(0, followedProfiles.length - 4);
+  if (overflowCount > 0) avatars.append(element("span", "discover-following-strip__more", `+${overflowCount}`));
   const list = actionButton("팔로잉 목록 보기", "open-following-list", {}, "discover-following-strip__list");
   list.append(element("strong", "", "팔로잉 목록 보기"), iconAsset("back", "discover-following-strip__arrow"));
   strip.append(avatars, list);
@@ -961,7 +972,7 @@ function renderFeed(screenId, state, data) {
   const root = screenRoot(screenId, "discover-feed-screen");
   root.dataset.measureKey = screenId === "b1" ? "Header / top bar" : "Feed / masonry grid";
   root.append(feedHeader(screenId, state));
-  if (screenId === "b1") root.append(followingStrip(data));
+  if (screenId === "b1") root.append(followingStrip(state, data));
   root.append(masonryFeed(screenId, state, data));
   if (screenId === "b1") {
     const topVisual = element("img", "discover-scroll-top-visual");
