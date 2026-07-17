@@ -1,0 +1,21 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 86 86" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="hero-action/like">
+<g id="hero-action/like/bg" filter="url(#filter0_d_0_8)">
+<circle cx="43" cy="35" r="25" fill="var(--fill-0, white)"/>
+</g>
+<g id="hero-action/like/icon">
+<path id="Vector" d="M51.84 27.61C51.3292 27.099 50.7228 26.6936 50.0554 26.4171C49.3879 26.1405 48.6725 25.9982 47.95 25.9982C47.2275 25.9982 46.5121 26.1405 45.8446 26.4171C45.1772 26.6936 44.5708 27.099 44.06 27.61L43 28.67L41.94 27.61C40.9083 26.5783 39.509 25.9987 38.05 25.9987C36.591 25.9987 35.1917 26.5783 34.16 27.61C33.1283 28.6417 32.5487 30.041 32.5487 31.5C32.5487 32.959 33.1283 34.3583 34.16 35.39L43 44.23L51.84 35.39C52.351 34.8792 52.7564 34.2728 53.0329 33.6054C53.3095 32.9379 53.4518 32.2225 53.4518 31.5C53.4518 30.7775 53.3095 30.0621 53.0329 29.3946C52.7564 28.7272 52.351 28.1208 51.84 27.61Z" stroke="var(--stroke-0, #0DC76B)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_0_8" x="0" y="0" width="86" height="86" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="8"/>
+<feGaussianBlur stdDeviation="9"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.16 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_8"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_8" result="shape"/>
+</filter>
+</defs>
+</svg>

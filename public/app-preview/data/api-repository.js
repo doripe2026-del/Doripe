@@ -1,0 +1,636 @@
+import { assertRepositoryContract, normalizeDataSnapshot } from "./contracts.js";
+
+const CACHE_KEY = "doripe.app_preview.api_snapshot.v1";
+const CACHE_VERSION = 1;
+const DEFAULT_TIMEOUT_MS = 10_000;
+const DEFAULT_READ_CACHE_TTL_MS = 30_000;
+const DEFAULT_EMPTY_READ_CACHE_TTL_MS = 3_000;
+const DEFAULT_SNAPSHOT_CACHE_TTL_MS = 60_000;
+const DEFAULT_DETAIL_CONCURRENCY = 4;
+
+const clone = (value) => structuredClone(value);
+
+function apiError(status, body) {
+  const error = new Error(body?.error?.message || `API request failed (${status})`);
+  error.code = body?.error?.code || "API_REQUEST_FAILED";
+  error.status = status;
+  return error;
+}
+
+function stableTextId(prefix, value) {
+  return `${prefix}-${String(value || "unknown")
+    .normalize("NFKC")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9가-힣]+/gu, "-")
+    .replace(/^-+|-+$/gu, "") || "unknown"}`;
+}
+
+function toProfile(profile = {}) {
+  return {
+    id: String(profile.id || ""),
+    handle: String(profile.nickname || ""),
+    name: String(profile.nickname || ""),
+    bio: String(profile.introduction || ""),
+    avatarUrl: profile.profileImageUrl || "",
+    isCurator: Boolean(profile.isCurator),
+    officialBadge: Boolean(profile.officialBadge),
+    followedByMe: Boolean(profile.followedByMe),
+    followerCount: Number(profile.followerCount || 0)
+  };
+}
+
+function toMedia(media = {}, { userId = null, createdAt = null } = {}) {
+  return {
+    id: String(media.id || ""),
+    placeId: media.placeId || null,
+    userId,
+    kind: media.kind === "video" ? "video" : "photo",
+    src: media.url || media.thumbnailUrl || "",
+    fallbackSrc: media.thumbnailUrl || media.url || "",
+    alt: "",
+    createdAt
+  };
+}
+
+function toContent(content = {}) {
+  return {
+    id: String(content.id || ""),
+    type: content.type === "course" ? "course" : "place",
+    authorProfileId: content.author?.id || null,
+    placeId: content.type === "place" ? content.placeIds?.[0] || null : null,
+    courseId: content.type === "course" ? content.courseId || null : null,
+    mediaIds: (content.media || []).map((item) => item.id).filter(Boolean),
+    tagIds: [],
+    caption: String(content.caption || ""),
+    likedByMe: Boolean(content.likedByMe),
+    likeCount: Number(content.likeCount || 0),
+    commentCount: Number(content.commentCount || 0)
+  };
+}
+
+function syntheticTag(name, group) {
+  return { id: stableTextId(`tag-${group}`, name), name: String(name), group };
+}
+
+function toPlace(place = {}, authorId = null) {
+  const categoryTag = place.category?.name
+    ? { id: String(place.category.id), name: String(place.category.name), group: "category" }
+    : null;
+  const tags = [
+    categoryTag,
+    ...(place.tags || []).map((tag) => ({
+      id: String(tag.id), ...(typeof tag.key === "string" ? { key: tag.key } : {}),
+      name: String(tag.name), group: String(tag.kind || "general")
+    })),
+    ...(place.moodTags || []).map((name) => syntheticTag(name, "mood")),
+    ...(place.bestFor || []).map((name) => syntheticTag(name, "situation")),
+    ...(place.timeTags || []).map((name) => syntheticTag(name, "time"))
+  ].filter(Boolean);
+  return {
+    place: {
+      id: String(place.id || ""),
+      name: String(place.name || ""),
+      userId: authorId,
+      tagIds: [...new Set(tags.map((tag) => tag.id))],
+      mediaIds: (place.media || []).map((item) => item.id).filter(Boolean),
+      address: String(place.address || ""),
+      nearestStation: place.nearestStation || null,
+      latitude: Number(place.latitude || 0),
+      longitude: Number(place.longitude || 0),
+      summary: String(place.shortCopy || ""),
+      walkingMinutes: null,
+      savedCount: 0,
+      hoursText: place.hoursText || null,
+      representativeMenuName: place.representativeMenuName || place.representativeMenu?.name || null,
+      representativeMenuPrice: place.representativeMenuPrice || place.representativeMenu?.price || null,
+      externalMapUrl: place.externalMapUrl || null
+    },
+    tags
+  };
+}
+
+function toCourse(course = {}) {
+  return {
+    id: String(course.id || ""),
+    name: String(course.name || ""),
+    userId: course.ownerId || null,
+    placeIds: (course.places || []).map((item) => item.placeId).filter(Boolean),
+    tagIds: [],
+    walkingMinutes: Number(course.totalTravelMinutes || 0),
+    visibility: course.visibility || "private",
+    version: Number(course.version || 1)
+  };
+}
+
+function toComment(comment = {}) {
+  return {
+    id: String(comment.id || ""),
+    contentId: comment.contentId || null,
+    placeId: null,
+    userId: comment.author?.id || null,
+    body: String(comment.text || ""),
+    likeCount: Number(comment.likeCount || 0),
+    createdAt: comment.createdAt || null
+  };
+}
+
+function mergeUnique(items, key = "id") {
+  const map = new Map();
+  for (const item of items) {
+    if (item?.[key]) map.set(item[key], { ...(map.get(item[key]) || {}), ...item });
+  }
+  return [...map.values()];
+}
+
+function isEmptyReadResult(value) {
+  const data = value?.data ?? value;
+  return data == null
+    || (Array.isArray(data) && data.length === 0)
+    || (Array.isArray(data?.items) && data.items.length === 0);
+}
+
+function feedPath(params = {}, cursor = null) {
+  const query = new URLSearchParams();
+  query.set("scope", params.scope === "following" ? "following" : "discover");
+  query.set("limit", String(Math.max(1, Math.min(50, Number(params.limit) || 50))));
+  const tagIds = [...new Set((Array.isArray(params.tagIds) ? params.tagIds : [])
+    .filter((id) => typeof id === "string" && id.length > 0))].sort();
+  if (tagIds.length) query.set("tagIds", tagIds.join(","));
+
+  const centerLat = Number(params.centerLat);
+  const centerLng = Number(params.centerLng);
+  const radiusKm = Number(params.radiusKm);
+  if (Number.isFinite(centerLat) && Number.isFinite(centerLng) && radiusKm > 0 && radiusKm <= 50) {
+    query.set("centerLat", String(centerLat));
+    query.set("centerLng", String(centerLng));
+    query.set("radiusKm", String(radiusKm));
+  }
+  if (cursor) query.set("cursor", String(cursor));
+  return `feed?${query}`;
+}
+
+async function mapWithConcurrency(items, concurrency, mapper) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
+  async function run() {
+    while (nextIndex < items.length) {
+      const index = nextIndex;
+      nextIndex += 1;
+      results[index] = await mapper(items[index]);
+    }
+  }
+  const workers = Array.from({ length: Math.min(concurrency, items.length) }, () => run());
+  await Promise.all(workers);
+  return results;
+}
+
+function buildSnapshot({ bootstrap, feed, places, courses }) {
+  const contents = (feed || []).map(toContent);
+  const authorByPlace = new Map();
+  for (const content of feed || []) {
+    if (content.type !== "place") continue;
+    for (const placeId of content.placeIds || []) authorByPlace.set(placeId, content.author?.id || null);
+  }
+  const placeResults = (places || []).map((place) => toPlace(place, authorByPlace.get(place.id) || null));
+  const profiles = mergeUnique((feed || []).map((content) => toProfile(content.author)));
+  const media = mergeUnique([
+    ...(feed || []).flatMap((content) => (content.media || []).map((item) => toMedia(item, {
+      userId: content.author?.id || null,
+      createdAt: content.createdAt || null
+    }))),
+    ...(places || []).flatMap((place) => (place.media || []).map((item) => toMedia(item, {
+      userId: authorByPlace.get(place.id) || null,
+      createdAt: place.updatedAt || null
+    })))
+  ]);
+  const bootstrapTags = (bootstrap?.tags || []).map((tag) => ({
+    id: String(tag.id), ...(typeof tag.key === "string" ? { key: tag.key } : {}),
+    name: String(tag.name), group: String(tag.kind || "general")
+  }));
+  const categoryTags = (bootstrap?.categories || []).map((category) => ({
+    id: String(category.id), name: String(category.name), group: "category"
+  }));
+
+  return normalizeDataSnapshot({
+    viewerProfileId: null,
+    personalDataLoaded: false,
+    savedPlaceIds: [],
+    savedCourseIds: [],
+    ownedCourseIds: [],
+    places: placeResults.map((result) => result.place),
+    media,
+    profiles,
+    tags: mergeUnique([...bootstrapTags, ...categoryTags, ...placeResults.flatMap((result) => result.tags)]),
+    comments: [],
+    courses: (courses || []).map(toCourse),
+    contents
+  });
+}
+
+function snapshotFromPlaces(places = [], { courses = [], profiles = [] } = {}) {
+  const placeResults = places.map((place) => toPlace(place));
+  return normalizeDataSnapshot({
+    places: placeResults.map((result) => result.place),
+    media: places.flatMap((place) => (place.media || []).map((item) => toMedia(item, {
+      createdAt: place.updatedAt || null
+    }))),
+    profiles,
+    tags: mergeUnique(placeResults.flatMap((result) => result.tags)),
+    courses
+  });
+}
+
+function mergePersonalData(snapshot, { profile, savedPlaceIds, savedCourseIds, ownedCourseIds, places, courses }) {
+  const placeResults = places.map((place) => toPlace(place));
+  const media = places.flatMap((place) => (place.media || []).map((item) => toMedia(item, {
+    createdAt: place.updatedAt || null
+  })));
+  return normalizeDataSnapshot({
+    ...snapshot,
+    viewerProfileId: profile.id,
+    personalDataLoaded: true,
+    savedPlaceIds,
+    savedCourseIds,
+    ownedCourseIds,
+    places: mergeUnique([...snapshot.places, ...placeResults.map((result) => result.place)]),
+    media: mergeUnique([...snapshot.media, ...media]),
+    profiles: mergeUnique([...snapshot.profiles, profile]),
+    tags: mergeUnique([...snapshot.tags, ...placeResults.flatMap((result) => result.tags)]),
+    courses: mergeUnique([...snapshot.courses, ...courses.map(toCourse)])
+  });
+}
+
+function readCache(storage, now, ttlMs) {
+  try {
+    const parsed = JSON.parse(storage?.getItem?.(CACHE_KEY) || "null");
+    if (parsed?.version !== CACHE_VERSION || !parsed.snapshot) return null;
+    const ageMs = now() - Number(parsed.savedAt);
+    if (!Number.isFinite(ageMs) || ageMs < 0 || ageMs > ttlMs) {
+      storage?.removeItem?.(CACHE_KEY);
+      return null;
+    }
+    return normalizeDataSnapshot(parsed.snapshot);
+  } catch {
+    return null;
+  }
+}
+
+function publicCacheSnapshot(snapshot) {
+  return normalizeDataSnapshot({
+    ...clone(snapshot),
+    viewerProfileId: null,
+    personalDataLoaded: false,
+    savedPlaceIds: [],
+    savedCourseIds: [],
+    ownedCourseIds: [],
+    profiles: (snapshot.profiles || []).map((profile) => ({ ...profile, followedByMe: false })),
+    contents: (snapshot.contents || []).map((content) => ({ ...content, likedByMe: false }))
+  });
+}
+
+function writeCache(storage, snapshot, now) {
+  try {
+    storage?.setItem?.(CACHE_KEY, JSON.stringify({
+      version: CACHE_VERSION,
+      savedAt: now(),
+      snapshot: publicCacheSnapshot(snapshot)
+    }));
+  } catch {
+    // A blocked or full cache must not prevent live data from rendering.
+  }
+}
+
+export function createApiRepository({
+  fetchImpl = globalThis.fetch?.bind(globalThis),
+  storage = globalThis.localStorage,
+  accessTokenProvider = () => null,
+  refreshAccessToken,
+  onUnauthorized,
+  timeoutMs = DEFAULT_TIMEOUT_MS,
+  now = Date.now,
+  readCacheTtlMs = DEFAULT_READ_CACHE_TTL_MS,
+  emptyReadCacheTtlMs = DEFAULT_EMPTY_READ_CACHE_TTL_MS,
+  snapshotCacheTtlMs = DEFAULT_SNAPSHOT_CACHE_TTL_MS,
+  detailConcurrency = DEFAULT_DETAIL_CONCURRENCY
+} = {}) {
+  if (typeof fetchImpl !== "function") throw new TypeError("API repository requires fetch");
+  let lastLoadSource = "none";
+  let lastBootstrap = null;
+  const readCacheEntries = new Map();
+  const pendingReads = new Map();
+  const detailRequestLimit = Math.max(1, Math.floor(detailConcurrency));
+
+  async function request(path, { method = "GET", body, auth = false, idempotencyKey, includeMeta = false } = {}) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    const token = accessTokenProvider?.() || null;
+    if (auth && !token) {
+      clearTimeout(timer);
+      const error = new Error("로그인이 필요한 기능입니다.");
+      error.code = "AUTH_REQUIRED";
+      throw error;
+    }
+    try {
+      const perform = async (accessToken) => {
+        const response = await fetchImpl(`/api/v1/${path}`, {
+          method,
+          headers: {
+            accept: "application/json",
+            ...(body === undefined ? {} : { "content-type": "application/json" }),
+            ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
+            ...(idempotencyKey ? { "idempotency-key": idempotencyKey } : {})
+          },
+          ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+          signal: controller.signal
+        });
+        return { response, payload: await response.json().catch(() => null) };
+      };
+
+      let result = await perform(token);
+      if (result.response.status === 401 && token && typeof refreshAccessToken === "function") {
+        const refreshed = await refreshAccessToken();
+        const refreshedToken = refreshed?.ok ? accessTokenProvider?.() || null : null;
+        if (refreshedToken) result = await perform(refreshedToken);
+        if (!refreshedToken || result.response.status === 401) onUnauthorized?.();
+      }
+      if (!result.response.ok) throw apiError(result.response.status, result.payload);
+      return includeMeta
+        ? { data: result.payload?.data, meta: result.payload?.meta || {} }
+        : result.payload?.data;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  async function read(path, { includeMeta = false } = {}) {
+    if (accessTokenProvider?.()) return clone(await request(path, { includeMeta }));
+
+    const cacheKey = `${includeMeta ? "meta:" : "data:"}${path}`;
+    const cached = readCacheEntries.get(cacheKey);
+    if (cached && cached.expiresAt > now()) return clone(cached.value);
+    if (cached) readCacheEntries.delete(cacheKey);
+    if (pendingReads.has(cacheKey)) return clone(await pendingReads.get(cacheKey));
+
+    const pending = request(path, { includeMeta }).then((value) => {
+      const ttlMs = isEmptyReadResult(value) ? emptyReadCacheTtlMs : readCacheTtlMs;
+      if (ttlMs > 0) readCacheEntries.set(cacheKey, { value: clone(value), expiresAt: now() + ttlMs });
+      return value;
+    }).finally(() => pendingReads.delete(cacheKey));
+    pendingReads.set(cacheKey, pending);
+    return clone(await pending);
+  }
+
+  async function readAllPages(path, { auth = false } = {}) {
+    const items = [];
+    const seenCursors = new Set();
+    let cursor = null;
+    do {
+      const separator = path.includes("?") ? "&" : "?";
+      const pagePath = cursor ? `${path}${separator}cursor=${encodeURIComponent(cursor)}` : path;
+      const envelope = await request(pagePath, { auth, includeMeta: true });
+      if (Array.isArray(envelope?.data?.items)) items.push(...envelope.data.items);
+      const nextCursor = typeof envelope?.meta?.nextCursor === "string" && envelope.meta.nextCursor
+        ? envelope.meta.nextCursor
+        : null;
+      if (nextCursor && seenCursors.has(nextCursor)) throw new Error("API pagination cursor repeated");
+      if (nextCursor) seenCursors.add(nextCursor);
+      cursor = nextCursor;
+    } while (cursor);
+    return { items };
+  }
+
+  async function loadBootstrap() {
+    const [bootstrap, feedPage] = await Promise.all([
+      request("bootstrap"),
+      request(feedPath(), { includeMeta: true })
+    ]);
+    lastBootstrap = clone(bootstrap);
+    const feed = Array.isArray(feedPage?.data?.items) ? feedPage.data.items : [];
+    return loadFeedSnapshot(bootstrap, feed, feedPage?.meta?.nextCursor || null);
+  }
+
+  async function loadFeedSnapshot(bootstrap, feed, feedNextCursor = null) {
+    const placeIds = [...new Set(feed.flatMap((content) => content.placeIds || []))];
+    const courseIds = [...new Set(feed.map((content) => content.courseId).filter(Boolean))];
+    const details = [
+      ...placeIds.map((id) => ({ type: "place", id })),
+      ...courseIds.map((id) => ({ type: "course", id }))
+    ];
+    const detailResults = await mapWithConcurrency(details, detailRequestLimit, async ({ type, id }) => {
+      try {
+        return {
+          status: "fulfilled",
+          type,
+          id,
+          value: await read(`${type === "place" ? "places" : "courses"}/${encodeURIComponent(id)}`)
+        };
+      } catch (reason) {
+        return { status: "rejected", type, id, reason };
+      }
+    });
+    const authenticationFailure = detailResults.find((result) => (
+      result.status === "rejected" && result.reason?.status === 401
+    ));
+    if (authenticationFailure) throw authenticationFailure.reason;
+
+    const fulfilled = detailResults.filter((result) => result.status === "fulfilled");
+    if (details.length > 0 && fulfilled.length === 0) {
+      throw detailResults.find((result) => result.status === "rejected")?.reason
+        || new Error("Feed details are unavailable");
+    }
+    const availablePlaceIds = new Set(fulfilled
+      .filter((result) => result.type === "place")
+      .map((result) => result.id));
+    const availableCourseIds = new Set(fulfilled
+      .filter((result) => result.type === "course")
+      .map((result) => result.id));
+    const availableFeed = feed.filter((content) => content.type === "course"
+      ? availableCourseIds.has(content.courseId)
+      : (content.placeIds || []).length > 0
+        && (content.placeIds || []).every((id) => availablePlaceIds.has(id)));
+    const places = fulfilled
+      .filter((result) => result.type === "place")
+      .map((result) => result.value);
+    const courses = fulfilled
+      .filter((result) => result.type === "course")
+      .map((result) => result.value);
+    return normalizeDataSnapshot({
+      ...buildSnapshot({ bootstrap, feed: availableFeed, places, courses }),
+      feedNextCursor
+    });
+  }
+
+  async function loadFilteredFeedSnapshot(params = {}) {
+    const bootstrap = lastBootstrap || await read("bootstrap");
+    if (!lastBootstrap) lastBootstrap = clone(bootstrap);
+    const page = await read(feedPath(params, params.cursor || null), { includeMeta: true });
+    const items = Array.isArray(page?.data?.items) ? page.data.items : [];
+    return loadFeedSnapshot(bootstrap, items, page?.meta?.nextCursor || null);
+  }
+
+  async function loadPersonalData(snapshot) {
+    const [profileData, placePage, coursePage, ownedCoursePage] = await Promise.all([
+      request("me/profile", { auth: true }),
+      readAllPages("me/saves?targetType=place&limit=50", { auth: true }),
+      readAllPages("me/saves?targetType=course&limit=50", { auth: true }),
+      readAllPages("courses?limit=50", { auth: true })
+    ]);
+    const profile = toProfile(profileData);
+    const savedPlaceIds = [...new Set((placePage?.items || [])
+      .filter((item) => item.targetType === "place")
+      .map((item) => item.targetId || item.target?.id)
+      .filter(Boolean))];
+    const savedCourseIds = [...new Set((coursePage?.items || [])
+      .filter((item) => item.targetType === "course")
+      .map((item) => item.targetId || item.target?.id)
+      .filter(Boolean))];
+    const ownedCourses = Array.isArray(ownedCoursePage?.items) ? ownedCoursePage.items : [];
+    const ownedCourseIds = [...new Set(ownedCourses.map((course) => course.id).filter(Boolean))];
+    const knownPlaceIds = new Set(snapshot.places.map((item) => item.id));
+    const knownCourseIds = new Set(snapshot.courses.map((item) => item.id));
+    const missingDetails = [
+      ...savedPlaceIds.filter((id) => !knownPlaceIds.has(id)).map((id) => ({ type: "place", id })),
+      ...savedCourseIds.filter((id) => !knownCourseIds.has(id)).map((id) => ({ type: "course", id }))
+    ];
+    const details = await mapWithConcurrency(missingDetails, detailRequestLimit, ({ type, id }) => (
+      read(`${type === "place" ? "places" : "courses"}/${encodeURIComponent(id)}`)
+    ));
+    const placeCount = missingDetails.filter((item) => item.type === "place").length;
+    const savedPlaces = details.slice(0, placeCount);
+    const savedCourses = details.slice(placeCount);
+    const fetchedPlaceIds = new Set(savedPlaces.map((item) => item.id));
+    const savedCoursePlaceIds = new Set([
+      ...snapshot.courses
+        .filter((item) => savedCourseIds.includes(item.id))
+        .flatMap((item) => item.placeIds || []),
+      ...savedCourses.flatMap((item) => (item.places || []).map((coursePlace) => coursePlace.placeId)),
+      ...ownedCourses.flatMap((item) => (item.places || []).map((coursePlace) => coursePlace.placeId))
+    ].filter(Boolean));
+    const missingCoursePlaces = [...savedCoursePlaceIds]
+      .filter((id) => !knownPlaceIds.has(id) && !fetchedPlaceIds.has(id));
+    const coursePlaces = await mapWithConcurrency(
+      missingCoursePlaces,
+      detailRequestLimit,
+      (id) => read(`places/${encodeURIComponent(id)}`)
+    );
+    return mergePersonalData(snapshot, {
+      profile,
+      savedPlaceIds,
+      savedCourseIds,
+      ownedCourseIds,
+      places: [...savedPlaces, ...coursePlaces],
+      courses: [...savedCourses, ...ownedCourses]
+    });
+  }
+
+  async function getBootstrap() {
+    let snapshot;
+    try {
+      snapshot = await loadBootstrap();
+      writeCache(storage, snapshot, now);
+      lastLoadSource = "network";
+    } catch (error) {
+      const cached = readCache(storage, now, snapshotCacheTtlMs);
+      if (!cached) throw error;
+      lastLoadSource = "cache";
+      snapshot = cached;
+    }
+
+    if (!accessTokenProvider?.()) return clone(snapshot);
+    try {
+      return clone(await loadPersonalData(snapshot));
+    } catch {
+      return clone(snapshot);
+    }
+  }
+
+  let mutationSequence = 0;
+  const mutation = (path, method, body, { idempotencyKey: requestedKey } = {}) => {
+    mutationSequence += 1;
+    const randomPart = globalThis.crypto?.randomUUID?.().replaceAll("-", "")
+      || `${Date.now().toString(36)}${mutationSequence.toString(36)}`;
+    const generatedKey = `app_preview_${randomPart}_${mutationSequence.toString(36)}`.slice(0, 80);
+    const idempotencyKey = requestedKey || generatedKey;
+    if (!/^[A-Za-z0-9_-]{8,80}$/u.test(idempotencyKey)) {
+      throw new TypeError("Idempotency key must contain 8-80 letters, numbers, underscores, or hyphens");
+    }
+    return request(path, { method, body, auth: true, idempotencyKey });
+  };
+  const repository = {
+    mode: "api",
+    getLastLoadSource: () => lastLoadSource,
+    getBootstrap,
+    async getFeed(params = {}) {
+      const page = await read(feedPath({ ...params, limit: params.limit || 30 }));
+      return (page?.items || []).map(toContent);
+    },
+    async getFeedSnapshot(params = {}) {
+      return clone(await loadFilteredFeedSnapshot(params));
+    },
+    async getContentDetail(id) { return toContent(await read(`contents/${encodeURIComponent(id)}`)); },
+    async getPlaceDetail(id) { return toPlace(await read(`places/${encodeURIComponent(id)}`)).place; },
+    async getPlaceSnapshot(id) {
+      return snapshotFromPlaces([await read(`places/${encodeURIComponent(id)}`)]);
+    },
+    async getCourseDetail(id) { return toCourse(await read(`courses/${encodeURIComponent(id)}`)); },
+    async getCourseSnapshot(id) {
+      const rawCourse = await read(`courses/${encodeURIComponent(id)}`);
+      const course = toCourse(rawCourse);
+      const [places, owner] = await Promise.all([
+        mapWithConcurrency(
+          course.placeIds,
+          detailRequestLimit,
+          (placeId) => read(`places/${encodeURIComponent(placeId)}`)
+        ),
+        course.userId
+          ? read(`profiles/${encodeURIComponent(course.userId)}`).then(toProfile).catch(() => null)
+          : Promise.resolve(null)
+      ]);
+      return snapshotFromPlaces(places, {
+        courses: [course],
+        profiles: owner ? [owner] : []
+      });
+    },
+    async getPublicProfile(id) { return toProfile(await read(`profiles/${encodeURIComponent(id)}`)); },
+    async getMyProfile() { return toProfile(await request("me/profile", { auth: true })); },
+    async updateMyProfile(input) {
+      return toProfile(await request("me/profile", { method: "PATCH", body: input, auth: true }));
+    },
+    async putMyOnboarding(input) {
+      return request("me/onboarding", { method: "PUT", body: input, auth: true });
+    },
+    async getSavedPlaces() {
+      const page = await readAllPages("me/saves?targetType=place&limit=50", { auth: true });
+      return (page?.items || [])
+        .filter((item) => item.targetType === "place" && item.target)
+        .map((item) => toPlace(item.target).place);
+    },
+    async getSavedCourses() {
+      const page = await readAllPages("me/saves?targetType=course&limit=50", { auth: true });
+      return (page?.items || []).filter((item) => item.targetType === "course" && item.target).map((item) => toCourse(item.target));
+    },
+    async savePlace(id, options) { return mutation(`me/saves/place/${encodeURIComponent(id)}`, "PUT", { sourceScreen: "app-preview" }, options); },
+    async unsavePlace(id, options) { return mutation(`me/saves/place/${encodeURIComponent(id)}`, "DELETE", undefined, options); },
+    async saveCourse(id, options) { return mutation(`me/saves/course/${encodeURIComponent(id)}`, "PUT", { sourceScreen: "app-preview" }, options); },
+    async unsaveCourse(id, options) { return mutation(`me/saves/course/${encodeURIComponent(id)}`, "DELETE", undefined, options); },
+    async followProfile(id) { return mutation(`profiles/${encodeURIComponent(id)}/follow`, "POST"); },
+    async unfollowProfile(id) { return mutation(`profiles/${encodeURIComponent(id)}/follow`, "DELETE"); },
+    async likeContent(id) { return mutation(`contents/${encodeURIComponent(id)}/like`, "POST"); },
+    async unlikeContent(id) { return mutation(`contents/${encodeURIComponent(id)}/like`, "DELETE"); },
+    async getComments(id) {
+      const page = await request(`contents/${encodeURIComponent(id)}/comments?limit=50`);
+      return (page?.items || []).map(toComment);
+    },
+    async createComment(id, body, options) {
+      return toComment(await mutation(`contents/${encodeURIComponent(id)}/comments`, "POST", { text: body }, options));
+    },
+    async likeComment(id) { return mutation(`comments/${encodeURIComponent(id)}/like`, "POST"); },
+    async unlikeComment(id) { return mutation(`comments/${encodeURIComponent(id)}/like`, "DELETE"); },
+    async deleteComment(id) { return mutation(`comments/${encodeURIComponent(id)}`, "DELETE"); },
+    async createCourse(input, options) { return toCourse(await mutation("courses", "POST", input, options)); },
+    async updateCourse(id, input) { return toCourse(await mutation(`courses/${encodeURIComponent(id)}`, "PATCH", input)); }
+  };
+
+  return Object.freeze(assertRepositoryContract(repository));
+}

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Doripe</title>
+    <script>
+      document.documentElement.dataset.appSurface = location.pathname.startsWith("/app-preview")
+        ? "review"
+        : "product";
+    </script>
+    <link rel="preload" href="/app-preview/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/app-preview/styles/tokens.css" />
+    <link rel="stylesheet" href="/app-preview/styles/shell.css" />
+    <link rel="stylesheet" href="/app-preview/styles/components.css" />
+    <link rel="stylesheet" href="/app-preview/styles/onboarding.css" />
+    <link rel="stylesheet" href="/app-preview/styles/discover.css" />
+    <link rel="stylesheet" href="/app-preview/styles/saved.css" />
+    <link rel="stylesheet" href="/app-preview/styles/routes.css" />
+    <link rel="stylesheet" href="/app-preview/styles/settings.css" />
+  </head>
+  <body>
+    <main class="review-shell">
+      <section id="phone-root" aria-label="Doripe app preview">
+        <section class="onboarding-screen onboarding-a1-splash app-boot-screen" data-app-boot role="status" aria-label="Doripe 시작 중">
+          <h1 class="loading-logo-title" aria-label="Doripe"></h1>
+          <img class="loading-logo" src="/app-preview/assets/onboarding/doripe-mark.png" alt="" draggable="false">
+          <div class="loading-track" aria-hidden="true"></div>
+          <div class="loading-fill" role="progressbar" aria-label="Doripe 시작 중" aria-valuemin="0" aria-valuemax="100" aria-valuenow="8"></div>
+        </section>
+      </section>
+      <aside id="review-panel" aria-label="Review controls">
+        <div id="review-list"></div>
+        <button id="review-reset" type="button">Reset</button>
+      </aside>
+    </main>
+    <script type="module" src="/app-preview/main.js"></script>
+  </body>
+</html>

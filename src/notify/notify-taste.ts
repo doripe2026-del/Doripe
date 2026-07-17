@@ -156,15 +156,17 @@ export const NOTIFY_TASTE_ROUNDS: Array<Record<Choice, OptionScore>> = [
   },
 ];
 
-function requireEnv(name: string) {
-  const value = process.env[name];
-  if (!value) throw new Error(`${name} is not configured.`);
-  return value;
+function requireEnv(...names: string[]) {
+  for (const name of names) {
+    const value = process.env[name]?.trim();
+    if (value) return value;
+  }
+  throw new Error(`${names.join(" or ")} is not configured.`);
 }
 
 export function createNotifySupabaseClient() {
   return createClient(
-    requireEnv("NEXT_PUBLIC_SUPABASE_URL"),
+    requireEnv("SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL"),
     requireEnv("SUPABASE_SERVICE_ROLE_KEY"),
     {
       auth: {

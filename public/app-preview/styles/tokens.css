@@ -1,0 +1,33 @@
+@font-face {
+  font-family: "Pretendard";
+  src: url("/app-preview/assets/fonts/PretendardVariable.woff2") format("woff2-variations");
+  font-style: normal;
+  font-weight: 45 920;
+  font-display: swap;
+}
+
+:root {
+  --color-primary: #10c76f;
+  --color-route-primary: #0ac75c;
+  --color-surface: #ffffff;
+  --color-text: #141414;
+  --color-muted: #7a7a7a;
+  --color-disabled-surface: #e7eee9;
+  --color-disabled-text: #afb8b1;
+
+  --font-family-pretendard: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-family-korean: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-size-control: 15px;
+  --font-weight-control: 700;
+
+  --space-screen-inline: 36px;
+  --space-chip-inline: 10px;
+
+  --radius-control: 13px;
+  --radius-chip: 15px;
+  --radius-bottom-nav: 27px;
+  --radius-bottom-nav-active: 29px;
+  --radius-sheet-handle: 3px;
+
+  --shadow-floating: 0 8px 24px rgb(0 0 0 / 13%);
+}

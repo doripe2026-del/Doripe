@@ -1,0 +1,166 @@
+{
+  "projectId": "dcyjrsxnpujslbxtitqj",
+  "baselineContract": "docs/ops/supabase-bridge-baseline-contract.json",
+  "productionExecutionAuthorized": false,
+  "stagingExecutionAuthorized": false,
+  "bridgeAuthoringAuthorized": true,
+  "phases": [
+    {
+      "id": "replace_with_compatibility_bridge",
+      "order": 10,
+      "action": "do_not_replay",
+      "requiredGate": "A forward-only compatibility bridge has passed twice in staging.",
+      "reason": "These migrations assume the legacy text-ID foundation, while production has overlapping UUID tables.",
+      "migrations": [
+        "20260525015510_doripe_backend_init.sql",
+        "20260525133942_restrict_place_photo_public_reads.sql",
+        "20260525134019_seed_active_regions.sql",
+        "20260525152333_harden_user_writable_tables.sql",
+        "20260607090000_saved_routes_for_shared_links.sql",
+        "20260607103000_shared_links.sql",
+        "20260611120000_app_web_mvp_events.sql",
+        "20260614093000_place_card_details_and_naver_source.sql",
+        "20260618052000_place_photo_crop_settings.sql"
+      ]
+    },
+    {
+      "id": "defer_legacy_non_mvp_surfaces",
+      "order": 20,
+      "action": "defer",
+      "requiredGate": "A current product requirement explicitly restores the legacy creator or submission surface.",
+      "reason": "These tables are not required by the checked-in web MVP runtime contract.",
+      "migrations": [
+        "20260529093000_creator_portal.sql",
+        "20260529112000_creator_email_auth.sql",
+        "20260529113500_creator_payout_settings.sql",
+        "20260604050000_photo_submissions.sql"
+      ]
+    },
+    {
+      "id": "remote_equivalent_do_not_replay",
+      "order": 30,
+      "action": "do_not_replay",
+      "requiredGate": "The captured remote SQL remains equivalent to the local migration.",
+      "reason": "Equivalent schema changes are already recorded under different remote migration versions.",
+      "migrations": [
+        "20260704000100_notify_taste_match.sql",
+        "20260705062342_notify_taste_service_role_grants.sql",
+        "20260705063222_notify_taste_revoke_public_grants.sql",
+        "20260705075326_notify_taste_data_api_exposure.sql",
+        "20260715190000_ensure_place_photos_public_bucket.sql"
+      ]
+    },
+    {
+      "id": "staging_data_review",
+      "order": 40,
+      "action": "staging_only",
+      "requiredGate": "Before/after row counts and deterministic mappings are approved in staging.",
+      "reason": "These migrations update, delete, or backfill data and therefore require explicit staging evidence.",
+      "migrations": [
+        "20260705090000_notify_taste_six_characters.sql",
+        "20260707122730_notify_taste_unique_email_latest.sql",
+        "20260714090200_identity_backfill.sql",
+        "20260714090800_saved_places_backfill.sql",
+        "20260714091200_shares_backfill.sql",
+        "20260714092050_place_region_backfill.sql"
+      ]
+    },
+    {
+      "id": "post_bridge_schema",
+      "order": 50,
+      "action": "staging_after_bridge",
+      "requiredGate": "The canonical compatibility foundation exists in staging.",
+      "reason": "These create or expand canonical web MVP tables after overlapping legacy names are resolved.",
+      "migrations": [
+        "20260714090000_media_storage_expand.sql",
+        "20260714090100_identity_foundation.sql",
+        "20260714090400_place_taxonomy_foundation.sql",
+        "20260714090700_courses_saves_foundation.sql",
+        "20260714091100_analytics_idempotency_shares_foundation.sql",
+        "20260714091500_durable_rate_limits.sql",
+        "20260714092000_content_social_support_media_foundation.sql",
+        "20260714094000_forms_support_business_admin.sql",
+        "20260714101100_comment_likes.sql"
+      ]
+    },
+    {
+      "id": "post_bridge_security_and_rpc",
+      "order": 60,
+      "action": "staging_after_bridge",
+      "requiredGate": "Schema and approved backfills pass before access-control changes are applied.",
+      "reason": "RLS, grants, triggers, RPCs, and public-read hardening depend on the canonical schema.",
+      "migrations": [
+        "20260714090300_identity_rls_and_rpc.sql",
+        "20260714090500_place_taxonomy_constraints_rls.sql",
+        "20260714090900_courses_saves_constraints_rls_rpc.sql",
+        "20260714091300_analytics_idempotency_shares_constraints_rls.sql",
+        "20260714091600_core_updated_at_triggers.sql",
+        "20260714091900_course_place_mutation_rpcs.sql",
+        "20260714092100_content_social_support_media_rls_rpc.sql",
+        "20260714094200_operator_atomic_mutations.sql",
+        "20260714094300_profile_avatar_media.sql",
+        "20260714101000_operator_intake_scope_alignment.sql",
+        "20260714101200_operator_place_detail_update.sql",
+        "20260716015253_harden_screen_review_public_writes.sql",
+        "20260716015713_prevent_public_place_photo_listing.sql",
+        "20260718090000_filter_feed_contents.sql"
+      ]
+    },
+    {
+      "id": "post_bridge_constraint_validation",
+      "order": 70,
+      "action": "staging_after_bridge",
+      "requiredGate": "All rows satisfy the previously added not-valid constraints.",
+      "reason": "Constraint validation must run last so it cannot block the compatibility backfill midway.",
+      "migrations": [
+        "20260714090600_place_taxonomy_validate_constraints.sql",
+        "20260714091000_courses_saves_validate_constraints.sql",
+        "20260714091400_analytics_shares_validate_constraints.sql"
+      ]
+    }
+  ],
+  "equivalentRemoteMappings": [
+    {
+      "local": "20260704000100_notify_taste_match.sql",
+      "remoteVersion": "20260705063010"
+    },
+    {
+      "local": "20260705062342_notify_taste_service_role_grants.sql",
+      "remoteVersion": "20260705063049"
+    },
+    {
+      "local": "20260705063222_notify_taste_revoke_public_grants.sql",
+      "remoteVersion": "20260705063333"
+    },
+    {
+      "local": "20260705075326_notify_taste_data_api_exposure.sql",
+      "remoteVersion": "20260705075436"
+    },
+    {
+      "local": "20260715190000_ensure_place_photos_public_bucket.sql",
+      "remoteVersion": "20260715101938"
+    }
+  ],
+  "preservedRemoteOnlyMigrations": [
+    {
+      "version": "20260626002753",
+      "name": "rename_visitors_to_app_users",
+      "reason": "Preserve the current anonymous-user lineage until the identity bridge is verified."
+    },
+    {
+      "version": "20260626005454",
+      "name": "replace_discovery_card_limit_rules",
+      "reason": "Preserve the production discovery termination rules and their existing data shape."
+    },
+    {
+      "version": "20260626010339",
+      "name": "clarify_discovery_run_comment",
+      "reason": "Metadata for the preserved discovery model."
+    },
+    {
+      "version": "20260627073734",
+      "name": "screen_review_tables",
+      "reason": "Existing review data remains available while public writes are hardened later."
+    }
+  ]
+}

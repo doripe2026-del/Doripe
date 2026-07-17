@@ -1,0 +1,689 @@
+{
+  "projectId": "dcyjrsxnpujslbxtitqj",
+  "capturedAt": "2026-07-18T00:00:00+09:00",
+  "captureMode": "read-only pg_catalog security export",
+  "rls": [
+    {
+      "table": "app_events",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "app_sessions",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "app_users",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "discovery_run_places",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "discovery_run_tags",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "discovery_runs",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "neighborhoods",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "notify_taste_events",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "notify_taste_results",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "onboarding_answers",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "onboarding_options",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "onboarding_questions",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "photo_providers",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "place_actions",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "place_photos",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "place_tags",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "places",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "route_places",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "routes",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "screen_review_screens",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "screen_review_tasks",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "shared_links",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "tag_groups",
+      "forced": false,
+      "enabled": true
+    },
+    {
+      "table": "tags",
+      "forced": false,
+      "enabled": true
+    }
+  ],
+  "policies": [
+    {
+      "name": "users insert own app events",
+      "check": "((event_name ~ '^[a-z0-9][a-z0-9_.:-]{0,119}$'::text) AND ((duration_ms IS NULL) OR (duration_ms >= 0)) AND (EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = app_events.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid))))) AND ((session_id IS NULL) OR (EXISTS ( SELECT 1\n   FROM app_sessions s\n  WHERE ((s.id = app_events.session_id) AND (s.app_user_id = app_events.app_user_id))))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "app_events",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users insert own sessions",
+      "check": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = app_sessions.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "app_sessions",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users read own sessions",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "app_sessions",
+      "using": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = app_sessions.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users update own sessions",
+      "check": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = app_sessions.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "app_sessions",
+      "using": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = app_sessions.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "command": "UPDATE",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users insert own app user",
+      "check": "(auth_user_id = ( SELECT auth.uid() AS uid))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "app_users",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users read own app user",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "app_users",
+      "using": "(auth_user_id = ( SELECT auth.uid() AS uid))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users update own app user",
+      "check": "(auth_user_id = ( SELECT auth.uid() AS uid))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "app_users",
+      "using": "(auth_user_id = ( SELECT auth.uid() AS uid))",
+      "command": "UPDATE",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users manage own discovery run places",
+      "check": "(EXISTS ( SELECT 1\n   FROM (discovery_runs dr\n     JOIN app_users u ON ((u.id = dr.app_user_id)))\n  WHERE ((dr.id = discovery_run_places.run_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "discovery_run_places",
+      "using": "(EXISTS ( SELECT 1\n   FROM (discovery_runs dr\n     JOIN app_users u ON ((u.id = dr.app_user_id)))\n  WHERE ((dr.id = discovery_run_places.run_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "command": "ALL",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users manage own discovery run tags",
+      "check": "(EXISTS ( SELECT 1\n   FROM (discovery_runs dr\n     JOIN app_users u ON ((u.id = dr.app_user_id)))\n  WHERE ((dr.id = discovery_run_tags.run_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "discovery_run_tags",
+      "using": "(EXISTS ( SELECT 1\n   FROM (discovery_runs dr\n     JOIN app_users u ON ((u.id = dr.app_user_id)))\n  WHERE ((dr.id = discovery_run_tags.run_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "command": "ALL",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users manage own discovery runs",
+      "check": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = discovery_runs.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "discovery_runs",
+      "using": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = discovery_runs.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "command": "ALL",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public read visible neighborhoods",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "neighborhoods",
+      "using": "(is_visible AND (status = ANY (ARRAY['active'::text, 'coming_soon'::text])))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users manage own onboarding answers",
+      "check": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = onboarding_answers.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "onboarding_answers",
+      "using": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = onboarding_answers.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "command": "ALL",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public read active onboarding options",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "onboarding_options",
+      "using": "(status = 'active'::text)",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public read active onboarding questions",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "onboarding_questions",
+      "using": "(status = 'active'::text)",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public read active photo providers",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "photo_providers",
+      "using": "(status = 'active'::text)",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users manage own place actions",
+      "check": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = place_actions.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "place_actions",
+      "using": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = place_actions.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "command": "ALL",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public read active published place photos",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "place_photos",
+      "using": "((status = 'active'::text) AND (EXISTS ( SELECT 1\n   FROM places p\n  WHERE ((p.id = place_photos.place_id) AND (p.app_status = 'published'::text)))))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public read published place tags",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "place_tags",
+      "using": "(EXISTS ( SELECT 1\n   FROM places p\n  WHERE ((p.id = place_tags.place_id) AND (p.app_status = 'published'::text))))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public read published places",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "places",
+      "using": "(app_status = 'published'::text)",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "anon read shared route places",
+      "check": null,
+      "roles": [
+        "anon"
+      ],
+      "table": "route_places",
+      "using": "(EXISTS ( SELECT 1\n   FROM routes r\n  WHERE ((r.id = route_places.route_id) AND r.is_public AND (r.status = 'saved'::text))))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users delete own route places",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "route_places",
+      "using": "(EXISTS ( SELECT 1\n   FROM (routes r\n     JOIN app_users u ON ((u.id = r.app_user_id)))\n  WHERE ((r.id = route_places.route_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "command": "DELETE",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users insert own route places",
+      "check": "(EXISTS ( SELECT 1\n   FROM (routes r\n     JOIN app_users u ON ((u.id = r.app_user_id)))\n  WHERE ((r.id = route_places.route_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "route_places",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users read own or shared route places",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "route_places",
+      "using": "((EXISTS ( SELECT 1\n   FROM routes r\n  WHERE ((r.id = route_places.route_id) AND r.is_public AND (r.status = 'saved'::text)))) OR (EXISTS ( SELECT 1\n   FROM (routes r\n     JOIN app_users u ON ((u.id = r.app_user_id)))\n  WHERE ((r.id = route_places.route_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid))))))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users update own route places",
+      "check": "(EXISTS ( SELECT 1\n   FROM (routes r\n     JOIN app_users u ON ((u.id = r.app_user_id)))\n  WHERE ((r.id = route_places.route_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "route_places",
+      "using": "(EXISTS ( SELECT 1\n   FROM (routes r\n     JOIN app_users u ON ((u.id = r.app_user_id)))\n  WHERE ((r.id = route_places.route_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "command": "UPDATE",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "anon read shared routes",
+      "check": null,
+      "roles": [
+        "anon"
+      ],
+      "table": "routes",
+      "using": "(is_public AND (status = 'saved'::text))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users delete own routes",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "routes",
+      "using": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = routes.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "command": "DELETE",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users insert own routes",
+      "check": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = routes.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "routes",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users read own or shared routes",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "routes",
+      "using": "((is_public AND (status = 'saved'::text)) OR (EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = routes.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid))))))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users update own routes",
+      "check": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = routes.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "routes",
+      "using": "(EXISTS ( SELECT 1\n   FROM app_users u\n  WHERE ((u.id = routes.app_user_id) AND (u.auth_user_id = ( SELECT auth.uid() AS uid)))))",
+      "command": "UPDATE",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "screen review insert screens",
+      "check": "((screen_id <> ''::text) AND (status = ANY (ARRAY['in_progress'::text, 'done'::text])))",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "screen_review_screens",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "screen review read screens",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "screen_review_screens",
+      "using": "true",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "screen review update screens",
+      "check": "((screen_id <> ''::text) AND (status = ANY (ARRAY['in_progress'::text, 'done'::text])))",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "screen_review_screens",
+      "using": "(screen_id <> ''::text)",
+      "command": "UPDATE",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "screen review delete tasks",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "screen_review_tasks",
+      "using": "(screen_id <> ''::text)",
+      "command": "DELETE",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "screen review insert tasks",
+      "check": "((screen_id <> ''::text) AND (body <> ''::text) AND (status = ANY (ARRAY['queued'::text, 'in_progress'::text, 'done'::text])))",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "screen_review_tasks",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "screen review read tasks",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "screen_review_tasks",
+      "using": "true",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "screen review update tasks",
+      "check": "((screen_id <> ''::text) AND (body <> ''::text) AND (status = ANY (ARRAY['queued'::text, 'in_progress'::text, 'done'::text])))",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "screen_review_tasks",
+      "using": "(screen_id <> ''::text)",
+      "command": "UPDATE",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public read active shared links",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "shared_links",
+      "using": "(is_active AND ((expires_at IS NULL) OR (expires_at > now())))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "users insert valid shared links",
+      "check": "(is_active AND (slug = lower(slug)) AND (slug ~ '^[a-z0-9][a-z0-9_-]{5,63}$'::text) AND (((content_type = 'place'::text) AND (place_id IS NOT NULL) AND (route_id IS NULL) AND (EXISTS ( SELECT 1\n   FROM places p\n  WHERE ((p.id = shared_links.place_id) AND (p.app_status = 'published'::text))))) OR ((content_type = 'route'::text) AND (route_id IS NOT NULL) AND (place_id IS NULL) AND (EXISTS ( SELECT 1\n   FROM (routes r\n     JOIN app_users u ON ((u.id = r.app_user_id)))\n  WHERE ((r.id = shared_links.route_id) AND (r.status = 'saved'::text) AND r.is_public AND (u.auth_user_id = ( SELECT auth.uid() AS uid))))))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "shared_links",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public read active tag groups",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "tag_groups",
+      "using": "(status = 'active'::text)",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public read active tags",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "tags",
+      "using": "(status = 'active'::text)",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    }
+  ],
+  "functions": [
+    {
+      "name": "require_tag_group",
+      "config": [
+        "search_path=public, pg_temp"
+      ],
+      "result": "boolean",
+      "definition": "CREATE OR REPLACE FUNCTION public.require_tag_group(p_tag_id uuid, p_group_key text)\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO 'public', 'pg_temp'\nAS $function$\n  select exists (\n    select 1\n    from public.tags t\n    join public.tag_groups tg on tg.id = t.group_id\n    where t.id = p_tag_id\n      and tg.key = p_group_key\n      and t.status <> 'archived'\n      and tg.status <> 'archived'\n  );\n$function$\n",
+      "security_definer": true,
+      "identity_arguments": "p_tag_id uuid, p_group_key text"
+    },
+    {
+      "name": "set_updated_at",
+      "config": [
+        "search_path=public, pg_temp"
+      ],
+      "result": "trigger",
+      "definition": "CREATE OR REPLACE FUNCTION public.set_updated_at()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'public', 'pg_temp'\nAS $function$\nbegin\n  new.updated_at = now();\n  return new;\nend;\n$function$\n",
+      "security_definer": false,
+      "identity_arguments": ""
+    },
+    {
+      "name": "validate_discovery_run_integrity",
+      "config": [
+        "search_path=public, pg_temp"
+      ],
+      "result": "trigger",
+      "definition": "CREATE OR REPLACE FUNCTION public.validate_discovery_run_integrity()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'public', 'pg_temp'\nAS $function$\ndeclare\n  session_app_user_id uuid;\nbegin\n  if new.session_id is not null then\n    select s.app_user_id\n    into session_app_user_id\n    from public.app_sessions s\n    where s.id = new.session_id;\n\n    if session_app_user_id is null then\n      raise exception 'discovery_runs.session_id is invalid';\n    end if;\n\n    if new.app_user_id <> session_app_user_id then\n      raise exception 'discovery_runs.app_user_id must match app_sessions.app_user_id';\n    end if;\n  end if;\n\n  return new;\nend;\n$function$\n",
+      "security_definer": false,
+      "identity_arguments": ""
+    },
+    {
+      "name": "validate_event_session_integrity",
+      "config": [
+        "search_path=public, pg_temp"
+      ],
+      "result": "trigger",
+      "definition": "CREATE OR REPLACE FUNCTION public.validate_event_session_integrity()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'public', 'pg_temp'\nAS $function$\ndeclare\n  session_app_user_id uuid;\nbegin\n  if new.session_id is not null then\n    select s.app_user_id\n    into session_app_user_id\n    from public.app_sessions s\n    where s.id = new.session_id;\n\n    if session_app_user_id is null then\n      raise exception 'app_events.session_id is invalid';\n    end if;\n\n    if new.app_user_id is null then\n      new.app_user_id := session_app_user_id;\n    elsif new.app_user_id <> session_app_user_id then\n      raise exception 'app_events.app_user_id must match app_sessions.app_user_id';\n    end if;\n  end if;\n\n  return new;\nend;\n$function$\n",
+      "security_definer": false,
+      "identity_arguments": ""
+    },
+    {
+      "name": "validate_place_photo_integrity",
+      "config": [
+        "search_path=public, pg_temp"
+      ],
+      "result": "trigger",
+      "definition": "CREATE OR REPLACE FUNCTION public.validate_place_photo_integrity()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public', 'pg_temp'\nAS $function$\ndeclare\n  active_count integer;\nbegin\n  if new.is_cover and new.status <> 'active' then\n    raise exception 'cover photo must be active';\n  end if;\n\n  if new.status = 'active' and new.provider_id is null then\n    raise exception 'active photo must have a provider';\n  end if;\n\n  if new.status = 'active' then\n    select count(*)\n    into active_count\n    from public.place_photos ph\n    where ph.place_id = new.place_id\n      and ph.status = 'active'\n      and ph.id <> coalesce(new.id, '00000000-0000-0000-0000-000000000000'::uuid);\n\n    if active_count >= 5 then\n      raise exception 'a place can have at most 5 active photos';\n    end if;\n  end if;\n\n  return new;\nend;\n$function$\n",
+      "security_definer": true,
+      "identity_arguments": ""
+    },
+    {
+      "name": "validate_place_tag_membership",
+      "config": [
+        "search_path=public, pg_temp"
+      ],
+      "result": "trigger",
+      "definition": "CREATE OR REPLACE FUNCTION public.validate_place_tag_membership()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public', 'pg_temp'\nAS $function$\nbegin\n  if public.require_tag_group(new.tag_id, 'place_type') then\n    raise exception 'place_type tags belong in places.place_type_tag_id, not place_tags';\n  end if;\n\n  return new;\nend;\n$function$\n",
+      "security_definer": true,
+      "identity_arguments": ""
+    },
+    {
+      "name": "validate_place_type_tag",
+      "config": [
+        "search_path=public, pg_temp"
+      ],
+      "result": "trigger",
+      "definition": "CREATE OR REPLACE FUNCTION public.validate_place_type_tag()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public', 'pg_temp'\nAS $function$\nbegin\n  if new.place_type_tag_id is null then\n    raise exception 'places.place_type_tag_id is required';\n  end if;\n\n  if not public.require_tag_group(new.place_type_tag_id, 'place_type') then\n    raise exception 'places.place_type_tag_id must reference a place_type tag';\n  end if;\n\n  return new;\nend;\n$function$\n",
+      "security_definer": true,
+      "identity_arguments": ""
+    },
+    {
+      "name": "validate_route_place_integrity",
+      "config": [
+        "search_path=public, pg_temp"
+      ],
+      "result": "trigger",
+      "definition": "CREATE OR REPLACE FUNCTION public.validate_route_place_integrity()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public', 'pg_temp'\nAS $function$\nbegin\n  if not exists (\n    select 1\n    from public.places p\n    where p.id = new.place_id\n      and p.app_status in ('ready', 'published')\n  ) then\n    raise exception 'route place must reference a ready or published place';\n  end if;\n\n  return new;\nend;\n$function$\n",
+      "security_definer": true,
+      "identity_arguments": ""
+    },
+    {
+      "name": "validate_saved_route_integrity",
+      "config": [
+        "search_path=public, pg_temp"
+      ],
+      "result": "trigger",
+      "definition": "CREATE OR REPLACE FUNCTION public.validate_saved_route_integrity()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public', 'pg_temp'\nAS $function$\ndeclare\n  place_count integer;\nbegin\n  if new.status = 'saved' then\n    if new.title is null or btrim(new.title) = '' then\n      raise exception 'saved route title is required';\n    end if;\n\n    select count(*)\n    into place_count\n    from public.route_places rp\n    where rp.route_id = new.id;\n\n    if place_count < 2 then\n      raise exception 'saved route must have at least 2 places';\n    end if;\n  end if;\n\n  return new;\nend;\n$function$\n",
+      "security_definer": true,
+      "identity_arguments": ""
+    },
+    {
+      "name": "validate_shared_link_integrity",
+      "config": [
+        "search_path=public, pg_temp"
+      ],
+      "result": "trigger",
+      "definition": "CREATE OR REPLACE FUNCTION public.validate_shared_link_integrity()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public', 'pg_temp'\nAS $function$\nbegin\n  if new.content_type = 'place' then\n    if not exists (\n      select 1\n      from public.places p\n      where p.id = new.place_id\n        and p.app_status = 'published'\n    ) then\n      raise exception 'place share link must reference a published place';\n    end if;\n  elsif new.content_type = 'route' then\n    if not exists (\n      select 1\n      from public.routes r\n      where r.id = new.route_id\n        and r.status = 'saved'\n        and r.is_public = true\n    ) then\n      raise exception 'route share link must reference a public saved route';\n    end if;\n  end if;\n\n  return new;\nend;\n$function$\n",
+      "security_definer": true,
+      "identity_arguments": ""
+    }
+  ]
+}
+

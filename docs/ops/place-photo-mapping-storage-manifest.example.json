@@ -1,0 +1,12 @@
+{
+  "objects": [
+    {
+      "bucket": "place-photos-public",
+      "path": "example-place/photo-1.jpg",
+      "byte_size": 1024,
+      "mime_type": "image/jpeg",
+      "checksum_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "signature_validated": true
+    }
+  ]
+}

@@ -183,12 +183,10 @@
   }
   #features,
   #product,
-  #business,
   #company,
   #finalCtaSection {
     background: transparent;
   }
-  body.home-page #business,
   body.home-page #company {
     display: none;
   }
@@ -488,11 +486,6 @@
   }
   .form-status.error {
     color: #c62828;
-  }
-  .business-submit:disabled {
-    cursor: not-allowed;
-    opacity: .58;
-    transform: none;
   }
   #mobileNotifyBar {
     transition: opacity .22s ease, transform .22s ease;
@@ -1283,7 +1276,6 @@
 </div>
 
 <script>
-  if (location.hash === '#business') location.replace('/business');
   if (location.hash === '#company') location.replace('/company');
 
   const CAMPAIGN_CODES = ['dori-001','dori-002','dori-003','dori-004','dori-005','dori-006','dori-007','dori-008','dori-009','dori-010','dori-011','dori-012','dori-013','dori-014','dori-015','dori-016','dori-017','dori-018','dori-019','dori-020'];

@@ -13,6 +13,7 @@ const allowedTopLevel = new Set([
   "docs",
   "package-lock.json",
   "package.json",
+  "playwright.app-preview.config.mjs",
   "public",
   "scripts",
   "src",

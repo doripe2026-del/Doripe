@@ -1,0 +1,233 @@
+.settings-screen { position: relative; width: 393px; height: 852px; overflow: hidden; border-radius: 24px; background: #fffdf8; color: #141414; font-family: "Pretendard", sans-serif; }
+.settings-screen button,
+.settings-screen input,
+.settings-screen textarea { font: inherit; }
+.settings-main-title { position: absolute; top: 60px; left: 32px; margin: 0; font-size: 24px; }
+.settings-profile { position: absolute; top: 112px; left: 32px; width: 329px; height: 85px; display: grid; grid-template-columns: 58px 1fr 18px; align-items: center; gap: 15px; border: 0; border-bottom: 1px solid #e7e1d8; background: transparent; text-align: left; }
+.settings-screen--e1 .settings-profile { width: 232px; }
+.settings-profile-edit-entry { position: absolute; z-index: 2; top: 132px; left: 275px; width: 86px; height: 44px; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #10c76f; border-radius: 8px; background: #fff; color: #10c76f; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.settings-profile__avatar { width: 58px; height: 58px; display: grid; place-items: center; border-radius: 50%; background: #e5f5ee; }
+.settings-profile__avatar img { width: 25px; height: 25px; }
+.settings-profile__copy strong,
+.settings-profile__copy small { display: block; }
+.settings-profile__copy strong { font-size: 16px; }
+.settings-profile__copy small { margin-top: 5px; color: #7a7a7a; font-size: 10px; }
+.settings-row__chevron { width: 18px; height: 18px; opacity: .8; }
+.settings-rows { position: absolute; top: 207px; left: 32px; width: 329px; }
+.settings-row { position: relative; width: 329px; height: 61px; display: grid; grid-template-columns: 20px 1fr 18px; align-items: center; gap: 16px; border: 0; border-bottom: 1px solid #e7e1d8; background: transparent; text-align: left; }
+.settings-row__icon { width: 20px; height: 20px; }
+.settings-row strong { font-size: 13px; }
+.settings-bottom-nav { position: absolute; bottom: 7px; left: 72px; width: 249px; height: 54px; display: flex; align-items: center; justify-content: space-around; border-radius: 27px; background: rgb(255 255 255 / 92%); box-shadow: 0 8px 24px rgb(0 0 0 / 13%); }
+.settings-bottom-nav__item { width: 46px; height: 46px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; }
+.settings-bottom-nav__item img { width: 26px; height: 26px; }
+.settings-bottom-nav__item.is-active { width: 58px; height: 58px; background: rgb(219 255 232 / 95%); }
+.settings-titlebar { position: relative; height: 84px; display: flex; align-items: center; justify-content: center; }
+.settings-titlebar h1 { margin: 0; font-size: 14px; }
+.settings-back { position: absolute; top: 44px; left: 18px; width: 32px; height: 32px; display: grid; place-items: center; border: 0; border-radius: 50%; background: #fff; }
+.settings-back img { width: 24px; height: 24px; }
+.settings-toast { position: absolute; z-index: 20; top: 82px; left: 50%; max-width: 330px; transform: translateX(-50%); border-radius: 18px; background: #222; color: #fff; padding: 9px 14px; font-size: 11px; white-space: nowrap; }
+.settings-toast--error { background: #d84444; }
+
+.settings-modal-backdrop { position: absolute; inset: 0; z-index: 30; display: grid; align-items: end; background: rgb(0 0 0 / 30%); }
+.settings-terms-sheet,
+.settings-media-editor { border-radius: 24px 24px 0 0; background: #fff; padding: 26px 24px 34px; }
+.settings-terms-sheet h2,
+.settings-media-editor h2 { margin: 0 0 18px; font-size: 20px; }
+.settings-terms-sheet a { display: block; border-bottom: 1px solid #eee; color: #222; padding: 15px 0; text-decoration: none; }
+.settings-terms-sheet button,
+.settings-media-editor button { width: 100%; height: 46px; margin-top: 16px; border: 0; border-radius: 8px; background: #10c76f; color: #fff; font-weight: 700; }
+
+.settings-edit-avatar { position: absolute; top: 84px; left: 145px; width: 102px; height: 102px; }
+.settings-edit-avatar > img { width: 102px; height: 102px; border-radius: 50%; object-fit: cover; }
+.settings-edit-avatar span { position: absolute; right: 3px; bottom: 0; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; background: #10c76f; color: #fff; font-size: 12px; }
+.settings-profile-form { position: absolute; top: 212px; left: 34px; width: 319px; }
+.settings-field-label { display: block; margin-bottom: 8px; font-size: 11px; font-weight: 700; }
+.settings-input { width: 319px; height: 39px; margin-bottom: 13px; border: 1px solid #e7e1d8; border-radius: 8px; background: #fff; padding: 0 12px; font-size: 11px; }
+.settings-profile-tabs { position: absolute; top: 379px; left: 34px; width: 325px; height: 34px; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #ddebe4; border-radius: 17px; background: #fff; padding: 1px; }
+.settings-profile-tab { display: flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 15px; background: transparent; color: #777; font-size: 11px; font-weight: 700; }
+.settings-profile-tab img { width: 16px; height: 16px; }
+.settings-profile-tab.is-active { border: 1px solid #10c76f; color: #10c76f; }
+.settings-profile-heading { position: absolute; top: 430px; left: 34px; width: 327px; height: 24px; }
+.settings-profile-heading h2 { margin: 0; font-size: 14px; }
+.settings-profile-edit { position: absolute; top: 0; right: 0; width: 43px; height: 24px; border: 1px solid #10c76f; border-radius: 8px; background: #fff; color: #10c76f; font-size: 13px; }
+.settings-profile-panel { position: absolute; top: 465px; left: 34px; width: 325px; height: 313px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 14px; overflow-y: auto; scrollbar-width: none; }
+.settings-profile-panel::-webkit-scrollbar { display: none; }
+.settings-profile-media { position: relative; min-height: 100px; overflow: hidden; border: 0; border-radius: 10px; background: #eee; padding: 0; }
+.settings-profile-media:nth-child(3n + 1) { min-height: 140px; }
+.settings-profile-media img { width: 100%; height: 100%; object-fit: cover; }
+.settings-profile-media span { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; background: rgb(255 255 255 / 92%); color: #777; font-size: 10px; }
+.settings-profile-route { grid-column: 1 / -1; min-height: 74px; display: flex; flex-direction: column; justify-content: center; border: 1px solid #e7e1d8; border-radius: 10px; background: #fff; padding: 14px; }
+.settings-profile-route strong { font-size: 14px; }
+.settings-profile-route small { margin-top: 6px; color: #7a7a7a; font-size: 10px; }
+.settings-save { position: absolute; z-index: 4; bottom: 20px; left: 34px; width: 325px; height: 42px; border: 0; border-radius: 8px; background: #10c76f; color: #fff; font-size: 13px; font-weight: 700; }
+.settings-media-editor { text-align: center; }
+.settings-media-editor img { width: 100%; max-height: 260px; border-radius: 12px; object-fit: cover; }
+.settings-media-editor p { color: #7a7a7a; font-size: 12px; }
+
+.settings-account-content { position: absolute; top: 98px; left: 32px; width: 329px; }
+.settings-account-content h2 { margin: 0 0 9px; font-size: 14px; }
+.settings-account-label { display: block; margin-bottom: 7px; font-size: 11px; }
+.settings-account-email { height: 39px; border: 1px solid #e7e1d8; border-radius: 8px; background: #fff; padding: 11px 12px; font-size: 11px; }
+.settings-account-verified { display: inline-block; margin: 10px 0 30px; border-radius: 11px; background: #e3fff0; color: #0bb85e; padding: 4px 9px; font-size: 8px; }
+.settings-password-title { margin-bottom: 10px !important; }
+.settings-account-field { display: block; margin-bottom: 13px; font-size: 11px; font-weight: 700; }
+.settings-account-field input { width: 329px; height: 39px; display: block; margin-top: 8px; border: 1px solid #e7e1d8; border-radius: 8px; padding: 0 12px; }
+.settings-account-save { width: 329px; height: 40px; margin-top: 5px; border: 0; border-radius: 8px; background: #10c76f; color: #fff; font-size: 12px; font-weight: 700; }
+.settings-account-forgot { display: block; width: 100%; margin-top: 8px; border: 0; background: transparent; color: #10b95f; font-size: 8px; }
+.settings-management-title { margin-top: 37px !important; }
+.settings-logout { width: 329px; height: 36px; border: 1px solid #10c76f; border-radius: 8px; background: #fff; color: #10b95f; font-size: 11px; }
+.settings-delete-account { display: block; margin: 20px auto 0; border: 0; background: transparent; color: #ff5a65; font-size: 8px; }
+
+.settings-notification-list { position: absolute; top: 86px; left: 32px; width: 329px; }
+.settings-notification-row { position: relative; height: 82px; display: grid; grid-template-columns: 30px 1fr 43px; grid-template-rows: 24px 20px; column-gap: 14px; align-content: center; border-bottom: 1px solid #e7e1d8; }
+.settings-notification-row > img { grid-row: 1 / 3; align-self: center; width: 22px; height: 22px; }
+.settings-notification-row strong { align-self: end; font-size: 13px; }
+.settings-notification-row small { color: #7a7a7a; font-size: 8px; }
+.settings-toggle { position: relative; grid-column: 3; grid-row: 1 / 3; align-self: center; width: 43px; height: 24px; appearance: none; border: 0; border-radius: 12px; background: #e1e1e1; transition: background 160ms ease; }
+.settings-toggle::after { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 12%); content: ""; transition: transform 160ms ease; }
+.settings-toggle:checked { background: #10c76f; }
+.settings-toggle:checked::after { transform: translateX(19px); }
+.settings-contact-message { position: absolute; top: 92px; left: 32px; width: 329px; height: 216px; resize: none; border: 1px solid #e7e1d8; border-radius: 8px; background: #fff; padding: 15px 12px; font-size: 11px; }
+.settings-contact-counter { position: absolute; top: 286px; right: 41px; color: #a1a6a3; font-size: 8px; }
+.settings-contact-send { position: absolute; top: 336px; left: 32px; width: 329px; height: 43px; border: 0; border-radius: 8px; background: #10c76f; color: #fff; font-size: 13px; font-weight: 700; }
+
+.settings-screen button:active { transform: scale(.98); }
+.settings-screen button:focus-visible,
+.settings-screen input:focus-visible,
+.settings-screen textarea:focus-visible { outline: 3px solid rgb(16 199 111 / 25%); outline-offset: 2px; }
+
+@media (max-width: 392px), (max-height: 800px) {
+  .settings-screen {
+    width: 100%;
+    height: 100dvh;
+    transform: none;
+  }
+
+  .settings-screen--e2 {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+
+  .settings-screen--e3 {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .settings-screen--e3::after {
+    content: "";
+    display: block;
+    height: 900px;
+  }
+
+  .settings-profile-tabs {
+    top: 372px;
+    height: 48px;
+  }
+
+  .settings-screen--e2 .settings-back {
+    top: 38px;
+    left: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .settings-screen--e2 .settings-back::before {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #fff;
+    content: "";
+  }
+
+  .settings-screen--e2 .settings-back img {
+    position: relative;
+    z-index: 1;
+  }
+
+  .settings-screen--e2 .settings-profile-edit {
+    top: -10px;
+    right: -1px;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+  }
+
+  .settings-screen--e2 .settings-profile-edit::before {
+    position: absolute;
+    width: 43px;
+    height: 24px;
+    border: 1px solid #10c76f;
+    border-radius: 8px;
+    background: #fff;
+    content: "";
+  }
+
+  .settings-screen--e2 .settings-profile-edit {
+    isolation: isolate;
+  }
+
+  .settings-screen--e2 .settings-profile-edit::before {
+    z-index: -1;
+  }
+
+  .settings-save {
+    position: fixed;
+    bottom: env(safe-area-inset-bottom);
+    width: calc(100% - 68px);
+    height: 44px;
+  }
+}
+
+/* Task 5: readable settings text with scrollable account content. */
+.settings-screen { font-family: var(--font-family-korean); }
+.settings-back { top: 32px; left: 12px; width: 44px; height: 44px; }
+.settings-account-label,
+.settings-account-email,
+.settings-account-field,
+.settings-account-field input,
+.settings-account-save,
+.settings-account-forgot,
+.settings-logout,
+.settings-delete-account,
+.settings-contact-message { font-size: 13px; }
+.settings-account-verified,
+.settings-notification-row small { font-size: 11px; }
+.settings-account-email,
+.settings-account-field input { height: 44px; }
+.settings-account-verified { display: inline-flex; align-items: center; gap: 5px; line-height: 16px; }
+.settings-account-verified__icon { width: 14px; height: 14px; filter: invert(53%) sepia(88%) saturate(1320%) hue-rotate(104deg) brightness(91%) contrast(91%); }
+.settings-account-save,
+.settings-account-forgot,
+.settings-logout,
+.settings-delete-account { min-height: 44px; }
+.settings-account-forgot { display: flex; align-items: center; justify-content: center; }
+.settings-management-title { margin-top: 24px !important; }
+.settings-delete-account { margin-top: 12px; padding: 0 16px; }
+.settings-screen--e3 { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+.settings-account-content { padding-bottom: 32px; }
+.settings-notification-row small { line-height: 16px; }
+.settings-contact-send { min-height: 44px; font-size: 13px; }
+.settings-profile-media__indicator-icon,
+.settings-edit-avatar__indicator-icon { width: 14px; height: 14px; }
+.settings-edit-avatar__indicator-icon { filter: brightness(0) invert(1); }
+.settings-field-label { font-size: 13px; }
+.settings-input { height: 44px; font-size: 13px; }
+.settings-profile-tabs { height: 48px; }
+.settings-profile-tab { min-height: 44px; font-size: 13px; }
+.settings-profile-edit { top: -10px; width: 44px; height: 44px; }
+.settings-save { min-height: 44px; }
+.settings-profile__copy small { font-size: 11px; }
+
+@media (max-width: 392px), (max-height: 800px) {
+  .settings-screen--e3::after { display: none; }
+  .settings-screen--e3 .settings-account-content { position: relative; top: 14px; min-height: 700px; }
+  .settings-notification-list { right: 20px; left: 20px; width: auto; }
+  .settings-screen--e2 .settings-profile-heading { right: 20px; width: auto; }
+  .settings-screen--e2 .settings-profile-panel { right: 4px; width: auto; }
+  .settings-screen--e2 .settings-profile-media { min-width: 0; width: 100%; }
+}

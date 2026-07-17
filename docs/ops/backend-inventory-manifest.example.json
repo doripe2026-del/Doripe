@@ -1,0 +1,16 @@
+{
+  "capturedAt": null,
+  "environment": "not_observed",
+  "migrationHistory": "not_observed",
+  "publicTables": "not_observed",
+  "rls": "not_observed",
+  "policies": "not_observed",
+  "grants": "not_observed",
+  "storageBuckets": "not_observed",
+  "rowEstimates": "not_observed",
+  "storageObjectCounts": "not_observed",
+  "notes": [
+    "Repository migration files do not prove remote application.",
+    "Replace not_observed only with captured read-only evidence."
+  ]
+}

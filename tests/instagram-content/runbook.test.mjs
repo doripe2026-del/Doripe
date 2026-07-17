@@ -1,0 +1,225 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+import { fileURLToPath } from "node:url";
+
+const runbookPath = fileURLToPath(
+  new URL("../../docs/ops/instagram-content-daily-runbook.md", import.meta.url),
+);
+
+async function readRunbook() {
+  return readFile(runbookPath, "utf8");
+}
+
+function requirePhrases(text, phrases) {
+  for (const phrase of phrases) {
+    assert.ok(text.includes(phrase), `missing runbook phrase: ${phrase}`);
+  }
+}
+
+test("daily runbook starts from the required Brain and repository contracts", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "매일 08:00 Asia/Seoul",
+    "Doripe 브레인.md",
+    "01. 브랜드와 핵심 메시지.md",
+    "04. 콘텐츠 운영.md",
+    "03. 콘텐츠 권리 기준.md",
+    "docs/instagram-content/template-contract.json",
+    "30일 history.json",
+    "performance.csv",
+  ]);
+});
+
+test("daily runbook enforces Seoul-only shareable research and a six-candidate minimum", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "서울만",
+    "공식 출처 우선",
+    "확인 시각",
+    "countryCode: \"KR\"",
+    "cityCode: \"SEOUL\"",
+    "domesticEvidenceSourceId",
+    "officialAddress",
+    "placeTypes",
+    "editorialAngle",
+    "shareThesis",
+    "유명 장소",
+    "고정 카테고리 쿼터를 두지 않는다",
+    "최소 6개",
+    "sendPotential: 25",
+    "saveValue: 15",
+    "brandFit: 15",
+    "timeliness: 10",
+    "photoQuality: 10",
+    "originalityPotential: 10",
+    "factCompleteness: 10",
+    "reusePermission: 5",
+    "매일 최대 2개",
+    "sends_per_reach",
+    "editorial_angle",
+  ]);
+});
+
+test("daily runbook bans generated images and records photo rights", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "실제 웹 사진만",
+    "AI 이미지 금지",
+    "imagegen을 호출하지 않는다",
+    "rightsStatus: \"confirmed\"",
+    "rightsStatus: \"restricted\"",
+    "rightsStatus: \"not_found\"",
+    "권리 경고",
+    "원본 사진을 Git에 커밋하지 않는다",
+  ]);
+});
+
+test("daily runbook defines the bright local editorial photo bar", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "밝은 로컬 에디토리얼",
+    "장소 50% · 사람 25% · 음식·디테일 25%",
+    "감도 점수 70점 이상",
+    "짧은 변 1080px 이상",
+    "최소 3개의 shotType",
+    "어둡거나 흐린 사진",
+    "자연스러운 뒷모습",
+  ]);
+});
+
+test("daily runbook defines copy and editorial quality gates", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "구체적인 hook",
+    "60자 이내의 질문",
+    "자연스러운 장소 키워드",
+    "factSourceIds",
+    "최소 2개의 editorialElements",
+    "원본성 검수",
+    "비팔로워 도달",
+  ]);
+});
+
+test("daily runbook documents the CTA-free carousel presentation contract", async () => {
+  const runbook = await readRunbook();
+
+  for (const phrase of [
+    "brandQuestion",
+    "brand_end",
+    "사진과 Doripe 심볼만",
+    "직접 CTA를 넣지 않는다",
+    "hasPhoneMockup",
+  ]) {
+    assert.match(runbook, new RegExp(phrase));
+  }
+});
+
+test("daily runbook locks Figma roots, slot edits, and visual correction order", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "INSTAGRAM FEED V2 / SHAREABLE DISCOVERY",
+    "PLACE_EVENT: 77:26",
+    "COLLECTION: 77:47",
+    "ROUTE: 77:74",
+    "Figma connector",
+    "slot:* 레이어만",
+    "사용하지 않는 선택 슬라이드는 숨긴다",
+    "스크린샷",
+    "문구를 먼저 줄인다",
+    "해당 텍스트만",
+    "90%",
+    "단어 중간 줄바꿈",
+    "34px",
+  ]);
+});
+
+test("daily runbook locks the actual Discover capture and Desktop icon", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "public/app-preview/assets/references/b2.png",
+    "actual_discover_capture",
+    "393 × 852",
+    "/Users/cityboy/Desktop/Doripe Assets/icon removed.png",
+    "Figma에서 다시 그리지 않는다",
+    "모든 콘텐츠에 같은 앱 화면",
+  ]);
+});
+
+test("daily runbook requires complete canonical layout evidence and matching exports", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "expectedTemplate",
+    "templateId",
+    "rootNodeId",
+    "slideCount",
+    "nodeId",
+    "editable",
+    "overflows",
+    "midWordBreak",
+    "baseFontSize",
+    "fontSize",
+    "모든 slot을 정확히 한 번",
+    "1080 × 1350",
+    "exports.files.length === layoutEvidence.slideCount",
+    "서로 다른 PNG 경로",
+    "nodeIds",
+    "sha256",
+    "실제 파일 SHA-256",
+    "draft version은 2",
+    "PNG IHDR",
+    "첫 번째 선택 게시물: sequence 1",
+    "두 번째 선택 게시물: sequence 2",
+    "같은 날짜에 sequence를 중복 사용하지 않는다",
+  ]);
+});
+
+test("daily runbook uses every actual CLI interface", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "npm run instagram:content -- check-template docs/instagram-content/template-contract.json",
+    "npm run instagram:content -- score \"$CANDIDATES_JSON\" \"$HISTORY_JSON\" \"$PERFORMANCE_CSV\" \"$SELECTED_JSON\"",
+    "npm run instagram:content -- validate \"$DRAFT_JSON\" \"$LAYOUT_JSON\" \"$VALIDATION_JSON\"",
+    "npm run instagram:content -- finalize \"$DRAFT_JSON\" \"$LAYOUT_JSON\" \"$EXPORTS_JSON\" \"$OUTPUT_ROOT\"",
+  ]);
+});
+
+test("daily runbook saves review packages without publishing and reports shortages", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "/Users/cityboy/Desktop/Doripe/Instagram Content",
+    "$OUTPUT_ROOT/YYYY-MM-DD/NN-candidate-id",
+    "성공한 package만 history.json에 추가",
+    "createdAt",
+    "placeIds",
+    "30일보다 오래된 기록",
+    "두 package 경로",
+    "1개 또는 0개",
+    "부족 사유",
+    "점수 기준을 낮추지 않는다",
+    "Instagram 로그인 금지",
+    "Instagram 자동 게시 금지",
+  ]);
+});
+
+test("daily runbook blocks Buffer until the user approves the Figma result and caption", async () => {
+  const text = await readRunbook();
+
+  requirePhrases(text, [
+    "Figma 완성본과 캡션을 사용자에게 먼저 제시한다",
+    "사용자가 명확하게 `게시` 또는 `예약`을 지시하기 전",
+    "Buffer 초안·게시·예약을 생성하지 않는다",
+    "이미지를 공개 URL로 업로드하지 않는다",
+    "승인된 Figma export 순서, 이미지와 캡션을 그대로 사용한다",
+  ]);
+});

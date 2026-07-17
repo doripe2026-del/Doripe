@@ -131,7 +131,7 @@
   const ANDROID_STORE_URL = "https://play.google.com/store/apps/details?id=com.doripe.app";
   const IOS_STORE_URL = "https://apps.apple.com/kr/search?term=doripe";
 
-  const pathMatch = /^\/s\/([^/?#]+)/.exec(location.pathname);
+  const pathMatch = /^\/(?:s|shares)\/([^/?#]+)/.exec(location.pathname);
   const params = new URLSearchParams(location.search);
   const shareId = pathMatch ? decodeURIComponent(pathMatch[1]) : (params.get("doripe_share_id") || params.get("share_id") || "");
   const appUrl = shareId

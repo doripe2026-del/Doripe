@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "fileKey": "TfZAtv9JUy508otim4P23w",
+  "rootNodeId": "446:33",
+  "capturedAt": "2026-07-11T15:21:01Z",
+  "capture": {
+    "designContextTool": "get_design_context",
+    "screenshotTool": "get_screenshot",
+    "readOnly": true,
+    "contentsOnly": true,
+    "maxDimension": 852
+  },
+  "notes": [
+    "All 13 exact top-level Flow B nodes were read with live design context and screenshot tools.",
+    "Node 446:1018 is nested inside B8 and is excluded.",
+    "The current top-level Flow sections contain 55 screens: A 22, B 13, C 6, D 9, and E 5; stale historical C/D/E entries are excluded.",
+    "B1 has asymmetric outer shadow bounds; its native 465x924 screenshot was cropped at x=36, y=24 to the exact 393x852 frame bounds."
+  ],
+  "screens": [
+    {
+      "id": "b1",
+      "nodeId": "446:507",
+      "reference": "/app-preview/assets/references/b1.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "ee0d9078f70a026ff04eceea7b68b365c56e2ff43deb5b6d38d134057cad292c",
+      "sourceScreenshot": {
+        "width": 465,
+        "height": 924,
+        "maxDimension": 924,
+        "sha256": "4d22503f6fd2a45bce0c0acb22e1da87edf655c6d5134b0015f4e7cc0391e022"
+      },
+      "normalization": {
+        "type": "crop-to-frame-bounds",
+        "insetTop": 24,
+        "insetRight": 36,
+        "insetBottom": 48,
+        "insetLeft": 36
+      }
+    },
+    {
+      "id": "b2",
+      "nodeId": "446:596",
+      "reference": "/app-preview/assets/references/b2.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "0a1ede7e8b24ab705c4f71a50dab92cfccc8b57a49f8b46451d28da036d4e250"
+    },
+    {
+      "id": "b3",
+      "nodeId": "446:646",
+      "reference": "/app-preview/assets/references/b3.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "e3abf86c602686066003720ec4e40f8fb76b0d29dc77a55a2943105779df5cd0"
+    },
+    {
+      "id": "b4",
+      "nodeId": "446:682",
+      "reference": "/app-preview/assets/references/b4.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "8277641e18a27de4ce331a6fe6154dbe52195d8f46c3a1435bd8c788c538d8e6"
+    },
+    {
+      "id": "b5",
+      "nodeId": "446:818",
+      "reference": "/app-preview/assets/references/b5.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "b7a0f53de5cd6b0f84f3684033e6de784d2c4d9ee79980c586b66d143aab7a42"
+    },
+    {
+      "id": "b6",
+      "nodeId": "446:876",
+      "reference": "/app-preview/assets/references/b6.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "7479ffec1660a4862b2a64cbb3e89100d6a08be2add60d0c97e967197ccd2059"
+    },
+    {
+      "id": "b7",
+      "nodeId": "446:1000",
+      "reference": "/app-preview/assets/references/b7.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "f7ee9f9530ac8c0cd01e927a4a1b6209078e4cd8736a6c0cadbc4e09143de0a6"
+    },
+    {
+      "id": "b8",
+      "nodeId": "446:1017",
+      "reference": "/app-preview/assets/references/b8.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "b059e67c2a2b3993e5d9aef59dd35b55be0ba8342f12835aab429219fd93ab12"
+    },
+    {
+      "id": "b9",
+      "nodeId": "446:1070",
+      "reference": "/app-preview/assets/references/b9.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "af647c1392062bef432be1f45779faa16cde9f7e8a8d86f714007e75d28e1fba"
+    },
+    {
+      "id": "b10",
+      "nodeId": "446:1106",
+      "reference": "/app-preview/assets/references/b10.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "9f7e5625515995658fc358822fb1de65810d2553219bd91e4e38003be0c603b4"
+    },
+    {
+      "id": "b11",
+      "nodeId": "446:2667",
+      "reference": "/app-preview/assets/references/b11.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "5a99277869321fa1987fc18a5ee32a539472195a4487fcb86dcb0b72307c1403"
+    },
+    {
+      "id": "b12",
+      "nodeId": "446:2792",
+      "reference": "/app-preview/assets/references/b12.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "b635bf068828fdce8931f7b000317fa44fb5c5722715a7e1d70a2a423d75bd3a"
+    },
+    {
+      "id": "b13",
+      "nodeId": "446:3042",
+      "reference": "/app-preview/assets/references/b13.png",
+      "width": 393,
+      "height": 852,
+      "designContextRead": true,
+      "liveScreenshotSha256": "8c079aca402c7aaaeb1383e17978a8787518a60d2824a0d0fd814f0e29f45916"
+    }
+  ]
+}

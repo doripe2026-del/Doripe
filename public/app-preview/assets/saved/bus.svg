@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon / bus">
+<path id="Vector" d="M12 3H6C4.75736 3 3.75 4.00736 3.75 5.25V10.5C3.75 11.7426 4.75736 12.75 6 12.75H12C13.2426 12.75 14.25 11.7426 14.25 10.5V5.25C14.25 4.00736 13.2426 3 12 3Z" fill="var(--fill-0, #10C86B)"/>
+<path id="Vector_2" d="M6 6H12" stroke="var(--stroke-0, white)" stroke-width="2" stroke-linecap="round"/>
+<path id="Vector_3" d="M6.75 11.55C7.3299 11.55 7.8 11.0799 7.8 10.5C7.8 9.9201 7.3299 9.45 6.75 9.45C6.1701 9.45 5.7 9.9201 5.7 10.5C5.7 11.0799 6.1701 11.55 6.75 11.55Z" fill="var(--fill-0, white)"/>
+<path id="Vector_4" d="M11.25 11.55C11.8299 11.55 12.3 11.0799 12.3 10.5C12.3 9.9201 11.8299 9.45 11.25 9.45C10.6701 9.45 10.2 9.9201 10.2 10.5C10.2 11.0799 10.6701 11.55 11.25 11.55Z" fill="var(--fill-0, white)"/>
+<path id="Vector_5" d="M6 15V12.75M12 15V12.75" stroke="var(--stroke-0, #10C86B)" stroke-width="2" stroke-linecap="round"/>
+</g>
+</svg>
