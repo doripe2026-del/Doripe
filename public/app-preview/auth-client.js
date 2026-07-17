@@ -340,11 +340,14 @@ export function createAuthClient({
     return { ok: true, status: "authenticated" };
   }
 
-  async function signUp({ email: rawEmail, password: rawPassword, signal } = {}) {
+  async function signUp({ email: rawEmail, password: rawPassword, redirectTo: rawRedirectTo, signal } = {}) {
     const email = normalizeAuthEmail(rawEmail);
     const password = normalizePassword(rawPassword);
     if (!email || !password) return failure("invalid-input", SAFE_MESSAGES.invalidCredentials);
-    const response = await request("signup", { email, password }, SAFE_MESSAGES.signupFailed, {
+    const redirectTo = rawRedirectTo === undefined ? null : normalizeRedirectUrl(rawRedirectTo);
+    if (rawRedirectTo !== undefined && !redirectTo) return failure("invalid-input", SAFE_MESSAGES.signupFailed);
+    const redirectQuery = redirectTo ? `?redirect_to=${encodeURIComponent(redirectTo)}` : "";
+    const response = await request(`signup${redirectQuery}`, { email, password }, SAFE_MESSAGES.signupFailed, {
       signal,
       includeFailureDetails: true
     });

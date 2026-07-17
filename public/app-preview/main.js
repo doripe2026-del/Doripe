@@ -725,7 +725,11 @@ function flushAnalytics() {
 
 function successfulProductEvent(input, result) {
   if (!result.ok || result.status !== "synced") return null;
-  const { actionId, payload = {}, previousState, optimisticState } = input;
+  const { screenId, actionId, payload = {}, previousState, optimisticState } = input;
+
+  if (screenId === "a19" && ["continue-sign-up", "skip-question"].includes(actionId)) {
+    return { name: "onboarding_complete", properties: {} };
+  }
 
   if (actionId === "save-place") {
     const placeId = payload.placeId || payload.id;
@@ -850,7 +854,10 @@ async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {
   let authResult;
   try {
     if (operation === "sign-in") authResult = await authClient.signIn({ email, password, signal: controller.signal });
-    if (operation === "sign-up") authResult = await authClient.signUp({ email, password, signal: controller.signal });
+    if (operation === "sign-up") {
+      const redirectTo = new URL(`${currentAppEntryPath()}?screen=a14`, window.location.origin).href;
+      authResult = await authClient.signUp({ email, password, redirectTo, signal: controller.signal });
+    }
     if (operation === "reset-password") {
       const redirectTo = new URL(`${currentAppEntryPath()}?screen=a7`, window.location.origin).href;
       authResult = await authClient.requestPasswordReset({ email, redirectTo, signal: controller.signal });
@@ -928,7 +935,7 @@ function dispatchTargetAction(target, { rerender = true } = {}) {
     || target.closest("[data-screen-id]")?.dataset.screenId
     || interactionState.currentScreenId;
   const payload = readActionPayload(target);
-  const pendingInput = { actionId, payload, previousState: interactionState, optimisticState: interactionState };
+  const pendingInput = { screenId, actionId, payload, previousState: interactionState, optimisticState: interactionState };
   if (actionSync.isPending(pendingInput)) return;
   const operation = REMOTE_AUTH_ACTIONS.get(`${screenId}/${actionId}`);
   if (operation && payload.reviewFixtureMode !== true) {
@@ -942,6 +949,7 @@ function dispatchTargetAction(target, { rerender = true } = {}) {
   const previousState = interactionState;
   const transitionResult = dispatchAction(screenId, actionId, payload);
   const optimisticState = actionSync.prepare({
+    screenId,
     actionId,
     payload,
     previousState,
@@ -953,6 +961,7 @@ function dispatchTargetAction(target, { rerender = true } = {}) {
   }
   applyActionResult(result, { rerender, screenId, payload });
   void syncProductAction({
+    screenId,
     actionId,
     payload,
     previousState,

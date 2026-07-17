@@ -436,12 +436,15 @@ test("Supabase login failure uses a safe message and does not navigate", async (
 
 test("signup without a session stays on the form with neutral email-check feedback", async ({ page }) => {
   const requestPaths = [];
+  const signupRequests = [];
   await mockAuth(page, async (route) => {
-    requestPaths.push(new URL(route.request().url()).pathname);
+    const requestUrl = new URL(route.request().url());
+    requestPaths.push(requestUrl.pathname);
+    if (requestUrl.pathname.endsWith("/signup")) signupRequests.push(requestUrl);
     await route.fulfill({
       status: 200,
       contentType: "application/json",
-      body: JSON.stringify(route.request().url().endsWith("/signup") ? { user: { id: "pending-user" } } : {})
+      body: JSON.stringify(requestUrl.pathname.endsWith("/signup") ? { user: { id: "pending-user" } } : {})
     });
   });
 
@@ -459,6 +462,10 @@ test("signup without a session stays on the form with neutral email-check feedba
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await expect(page).toHaveURL(/screen=a6/);
   expect(requestPaths).toEqual(["/auth/v1/signup", "/auth/v1/recover"]);
+  expect(signupRequests).toHaveLength(1);
+  const signupRedirect = new URL(signupRequests[0].searchParams.get("redirect_to"));
+  expect(signupRedirect.origin).toBe(new URL(page.url()).origin);
+  expect(`${signupRedirect.pathname}${signupRedirect.search}`).toBe("/app-preview/?screen=a14");
 });
 
 test("session-bearing signup still uses neutral verification and stores no session", async ({ page }) => {

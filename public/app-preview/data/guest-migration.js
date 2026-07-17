@@ -54,7 +54,7 @@ function routesMatch(left, right) {
     && left.placeIds.every((placeId, index) => placeId === right.placeIds[index]);
 }
 
-function onboardingPayload(form = {}) {
+export function createOnboardingPayload(form = {}) {
   const payload = {
     neighborhoodIds: [],
     placeTypeTagIds: [],
@@ -113,7 +113,7 @@ export function createGuestMigrationPlan({ guestState = {}, snapshot = {}, viewe
 
   if (migrateIdentity) {
     const form = guestState.form || {};
-    if (hasOnboardingData(form)) tasks.push(task("put-onboarding", onboardingPayload(form)));
+    if (hasOnboardingData(form)) tasks.push(task("put-onboarding", createOnboardingPayload(form)));
     const nickname = typeof form.nickname === "string" ? form.nickname.trim() : "";
     const viewer = (snapshot.profiles || []).find((profile) => profile.id === viewerId);
     const currentNickname = viewer?.name || viewer?.handle || "";

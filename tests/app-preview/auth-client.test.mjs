@@ -120,13 +120,18 @@ test("sign-up and password reset use the Supabase Auth endpoints without persist
   const sessionStorage = createMemoryStorage();
   const localStorage = createMemoryStorage();
   const { fetchImpl, requests } = configuredFetch((url) => (
-    String(url).endsWith("/signup")
+    new URL(String(url)).pathname.endsWith("/signup")
       ? jsonResponse({ user: { id: "pending-user" }, session: null })
       : jsonResponse({})
   ));
   const client = createAuthClient({ fetchImpl, sessionStorage, localStorage });
 
-  const signup = await client.signUp({ email: "new@doripe.kr", password: "Newpass123" });
+  const signupRedirectTo = "https://doripe.kr/app-preview/?screen=a14";
+  const signup = await client.signUp({
+    email: "new@doripe.kr",
+    password: "Newpass123",
+    redirectTo: signupRedirectTo
+  });
   const reset = await client.requestPasswordReset({
     email: "NEW@DORIPE.KR",
     redirectTo: "https://doripe.kr/app-preview/?screen=a7"
@@ -138,7 +143,7 @@ test("sign-up and password reset use the Supabase Auth endpoints without persist
     message: "이메일을 확인해 주세요"
   });
   assert.deepEqual(reset, { ok: true, status: "reset-sent" });
-  assert.equal(requests[1].url, `${SUPABASE_URL}/auth/v1/signup`);
+  assert.equal(requests[1].url, `${SUPABASE_URL}/auth/v1/signup?redirect_to=${encodeURIComponent(signupRedirectTo)}`);
   assert.equal(requests[2].url, `${SUPABASE_URL}/auth/v1/recover?redirect_to=${encodeURIComponent("https://doripe.kr/app-preview/?screen=a7")}`);
   const resetBody = JSON.parse(requests[2].options.body);
   assert.equal(resetBody.email, "new@doripe.kr");

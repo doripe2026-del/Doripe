@@ -264,3 +264,46 @@ test("place and media likes roll back when no server contract exists", async () 
   assert.deepEqual(result.state.likedMediaIds, []);
   assert.match(result.state.toast.message, /지원하지 않아요/u);
 });
+
+test("authenticated onboarding completion stores the profile and onboarding answers", async () => {
+  const calls = [];
+  const repository = {
+    updateMyProfile: async (input) => { calls.push(["profile", input]); },
+    putMyOnboarding: async (input) => { calls.push(["onboarding", input]); }
+  };
+  const sync = createActionSync({ repository, enabled: true });
+  const previousState = state({
+    currentScreenId: "a19",
+    form: {
+      birthYear: "2000",
+      gender: "male",
+      nickname: "새도리",
+      habit: "instagram-saved",
+      source: "instagram"
+    }
+  });
+  const optimisticState = { ...previousState, currentScreenId: "a22" };
+
+  const result = await sync.run({
+    screenId: "a19",
+    actionId: "continue-sign-up",
+    payload: {},
+    previousState,
+    optimisticState
+  });
+
+  assert.equal(result.status, "synced");
+  assert.deepEqual(calls, [
+    ["profile", { nickname: "새도리" }],
+    ["onboarding", {
+      birthYear: 2000,
+      gender: "male",
+      nickname: "새도리",
+      discoveryHabit: "instagram-saved",
+      neighborhoodIds: [],
+      placeTypeTagIds: [],
+      situationTagIds: [],
+      referralSource: "instagram"
+    }]
+  ]);
+});

@@ -1,3 +1,5 @@
+import { createOnboardingPayload } from "./guest-migration.js";
+
 const MUTATION_ERROR_MESSAGE = "변경사항을 저장하지 못했어요. 다시 시도해 주세요.";
 const UNSUPPORTED_LIKE_MESSAGE = "이 좋아요는 아직 서버 저장을 지원하지 않아요.";
 
@@ -15,7 +17,10 @@ function routesMatch(first, second) {
     && first.placeIds.every((placeId, index) => placeId === second.placeIds[index]);
 }
 
-function mutationKey({ actionId, payload = {}, previousState = {} }) {
+function mutationKey({ screenId, actionId, payload = {}, previousState = {} }) {
+  if (screenId === "a19" && ["continue-sign-up", "skip-question"].includes(actionId)) {
+    return "onboarding-complete";
+  }
   if (actionId === "save-place") return `place-save:${payload.placeId || payload.id || "unknown"}`;
   if (actionId === "toggle-follow") return `profile-follow:${payload.userId || payload.id || "unknown"}`;
   if (actionId === "toggle-comment-like") return `comment-like:${payload.commentId || payload.id || "unknown"}`;
@@ -66,7 +71,20 @@ function replaceOptimisticCourse(optimisticState, course) {
 }
 
 function operationFor(repository, input) {
-  const { actionId, payload = {}, previousState, optimisticState } = input;
+  const { screenId, actionId, payload = {}, previousState, optimisticState } = input;
+
+  if (screenId === "a19" && ["continue-sign-up", "skip-question"].includes(actionId)) {
+    const onboarding = createOnboardingPayload(previousState.form);
+    const nickname = onboarding.nickname;
+    return {
+      changedKeys: [],
+      force: true,
+      execute: async () => {
+        if (nickname) await requireMethod(repository, "updateMyProfile")({ nickname });
+        return requireMethod(repository, "putMyOnboarding")(onboarding);
+      }
+    };
+  }
 
   if (actionId === "save-place") {
     const id = payload.placeId || payload.id;
@@ -182,6 +200,7 @@ function prepareCommentState({ actionId, payload = {}, previousState, transition
 }
 
 function hasOptimisticChange(operation, previousState, optimisticState) {
+  if (operation.force) return true;
   return operation.changedKeys.some((key) => (
     JSON.stringify(previousState[key]) !== JSON.stringify(optimisticState[key])
   ));

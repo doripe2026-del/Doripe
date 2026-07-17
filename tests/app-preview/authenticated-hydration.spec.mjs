@@ -434,3 +434,102 @@ test("signing in hydrates server account data without discarding guest saves or 
   expect(profileUpdateRequests).toHaveLength(0);
   expect(commentRequests).toHaveLength(1);
 });
+
+test("an authenticated new user stores profile setup and onboarding answers on completion", async ({ page }) => {
+  const profileUpdates = [];
+  const onboardingUpdates = [];
+  const eventNames = [];
+  await page.addInitScript(({ storageKey, authKey }) => {
+    localStorage.setItem(storageKey, JSON.stringify({
+      currentScreenId: "a19",
+      history: [],
+      form: {
+        birthYear: "2000",
+        gender: "female",
+        nickname: "새도리",
+        habit: "instagram-saved",
+        source: "instagram"
+      }
+    }));
+    sessionStorage.setItem(authKey, JSON.stringify({
+      accessToken: "new-user-access-token",
+      refreshToken: "new-user-refresh-token",
+      expiresAt: Date.now() + 60_000,
+      flow: "auth"
+    }));
+  }, { storageKey: STORAGE_KEY, authKey: AUTH_SESSION_STORAGE_KEY });
+
+  await page.route("**/api/v1/**", async (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice("/api/v1/".length);
+    if (path === "bootstrap") {
+      return route.fulfill({ status: 200, json: { data: {
+        regions: [], categories: [], tags: [], featureFlags: {}, contractVersions: {}
+      }, meta: {} } });
+    }
+    if (path === "feed") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    if (path === "me/profile" && request.method() === "GET") {
+      return route.fulfill({ status: 200, json: { data: {
+        id: PROFILE_ID,
+        nickname: "가입 대기 사용자",
+        introduction: "",
+        profileImageUrl: null,
+        isCurator: false,
+        officialBadge: false,
+        followedByMe: false,
+        followerCount: 0
+      }, meta: {} } });
+    }
+    if (path === "me/profile" && request.method() === "PATCH") {
+      profileUpdates.push(request.postDataJSON());
+      return route.fulfill({ status: 200, json: { data: {
+        id: PROFILE_ID,
+        nickname: request.postDataJSON().nickname,
+        introduction: "",
+        profileImageUrl: null,
+        isCurator: false,
+        officialBadge: false,
+        followedByMe: false,
+        followerCount: 0
+      }, meta: {} } });
+    }
+    if (path === "me/onboarding" && request.method() === "PUT") {
+      onboardingUpdates.push(request.postDataJSON());
+      return route.fulfill({ status: 200, json: { data: {
+        id: PROFILE_ID, status: "completed", version: 1
+      }, meta: {} } });
+    }
+    if (path === "me/saves" || path === "courses") {
+      return route.fulfill({ status: 200, json: { data: { items: [] }, meta: { nextCursor: null } } });
+    }
+    if (path === "sessions") {
+      const body = request.postDataJSON();
+      return route.fulfill({ status: 201, json: { data: { sessionId: body.sessionId, accepted: true }, meta: {} } });
+    }
+    if (path === "events") {
+      const body = request.postDataJSON();
+      eventNames.push(...body.events.map((event) => event.name));
+      return route.fulfill({ status: 202, json: { data: { accepted: body.events.length, duplicates: 0, rejected: 0 }, meta: {} } });
+    }
+    return route.fulfill({ status: 404, json: { error: { code: "not_found", message: "not found" } } });
+  });
+
+  await page.goto("/app-preview/?screen=a19");
+  await page.getByRole("button", { name: "다음", exact: true }).click();
+  await expect(page).toHaveURL(/screen=a22/);
+  await expect.poll(() => profileUpdates).toEqual([{ nickname: "새도리" }]);
+  await expect.poll(() => onboardingUpdates).toEqual([{
+    birthYear: 2000,
+    gender: "female",
+    nickname: "새도리",
+    discoveryHabit: "instagram-saved",
+    neighborhoodIds: [],
+    placeTypeTagIds: [],
+    situationTagIds: [],
+    referralSource: "instagram"
+  }]);
+  await expect.poll(() => eventNames).toContain("onboarding_complete");
+});
