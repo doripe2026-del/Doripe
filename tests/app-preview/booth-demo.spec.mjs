@@ -56,9 +56,6 @@ test("builder selection toggles without duplicates", async ({ page }) => {
 
 test("photo feed continues with a shuffled copy of every place", async ({ page }) => {
   test.slow();
-  await page.addInitScript(() => {
-    Math.random = () => 0.5;
-  });
   await page.goto("/demo", { waitUntil: "domcontentloaded" });
   await page.getByRole("button", { name: "60초 코스 만들기" }).click();
 
