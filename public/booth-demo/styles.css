@@ -33,6 +33,7 @@ html,
 body {
   min-height: 100%;
   margin: 0;
+  overflow-x: hidden;
   overscroll-behavior: none;
 }
 
@@ -616,6 +617,59 @@ img {
   .route-seed { grid-template-columns: 92px minmax(0, 1fr); }
   .route-seed img { width: 92px; height: 100px; }
   .feed-header__hint { display: none; }
+}
+
+@media (max-width: 380px) {
+  .welcome__logo { top: calc(22px + env(safe-area-inset-top)); left: 20px; width: 168px; }
+  .welcome__content { padding: 28px 20px calc(24px + env(safe-area-inset-bottom)); }
+  .welcome h1 { font-size: clamp(34px, 11vw, 42px); }
+  .welcome p { margin-block: 14px 22px; font-size: 16px; }
+  .welcome .primary-action { min-height: 56px; font-size: 17px; }
+  .builder-header h1 { font-size: 24px; }
+  .completion-place { grid-template-columns: 38px 68px minmax(0, 1fr); }
+  .completion-place img { width: 60px; height: 60px; }
+}
+
+@media (min-width: 960px) {
+  .demo-shell { width: min(100%, 1280px); }
+  .feed-header__row,
+  .builder-header__row,
+  .masonry-feed { width: min(calc(100% - 64px), 1160px); }
+  .masonry-feed { columns: 3; column-gap: 16px; }
+  .place-tile { margin-bottom: 16px; }
+  .route-seed { width: min(calc(100% - 64px), 1124px); }
+  .floating-action {
+    right: max(32px, calc((100vw - 1180px) / 2));
+    left: max(32px, calc((100vw - 1180px) / 2));
+  }
+  .welcome__content { width: min(720px, 64vw); padding: 56px 64px calc(56px + env(safe-area-inset-bottom)); }
+  .welcome__logo { left: 64px; width: 230px; }
+  .detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(360px, .65fr);
+    align-items: center;
+    padding-bottom: 0;
+  }
+  .detail__photo-wrap { height: 100svh; min-height: 640px; }
+  .detail__panel { width: min(calc(100% - 56px), 480px); margin: 0 auto; box-shadow: none; }
+}
+
+@media (min-width: 1280px) {
+  .masonry-feed { columns: 4; }
+}
+
+@media (max-height: 620px) and (orientation: landscape) {
+  .welcome__logo { top: calc(18px + env(safe-area-inset-top)); width: 150px; }
+  .welcome__content { width: min(620px, 68vw); padding-block: 24px; }
+  .welcome h1 { font-size: clamp(32px, 6vw, 52px); }
+  .welcome p { margin-block: 10px 18px; font-size: 16px; }
+  .welcome .primary-action { min-height: 54px; font-size: 17px; }
+  .detail__photo-wrap { min-height: 100svh; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .place-tile:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgb(20 55 37 / 16%); }
+  .primary-action:hover { background: var(--green-deep); }
 }
 
 @media (prefers-reduced-motion: reduce) {

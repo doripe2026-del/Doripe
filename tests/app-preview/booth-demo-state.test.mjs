@@ -33,6 +33,15 @@ test("welcome uses the transparent white SVG wordmark at the top", async () => {
   assert.match(logo, /fill="white"/);
 });
 
+test("booth demo is responsive without PWA installation behavior", async () => {
+  const html = await readFile(new URL("public/booth-demo/index.html", root), "utf8");
+  const css = await readFile(new URL("public/booth-demo/styles.css", root), "utf8");
+  assert.match(css, /@media \(max-width: 380px\)/);
+  assert.match(css, /@media \(min-width: 960px\)/);
+  assert.match(css, /@media \(max-height: 620px\) and \(orientation: landscape\)/);
+  assert.doesNotMatch(html, /rel="manifest"|serviceWorker|apple-mobile-web-app/);
+});
+
 test("visitor completes a course after selecting one nearby place", () => {
   let state = startDiscovery(createInitialState());
   state = openPlace(state, "place-100");
