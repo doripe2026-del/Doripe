@@ -487,13 +487,13 @@ export function createApiRepository({
       return request("me/onboarding", { method: "PUT", body: input, auth: true });
     },
     async getSavedPlaces() {
-      const page = await request("me/saves?targetType=place&limit=50", { auth: true });
+      const page = await readAllPages("me/saves?targetType=place&limit=50", { auth: true });
       return (page?.items || [])
         .filter((item) => item.targetType === "place" && item.target)
         .map((item) => toPlace(item.target).place);
     },
     async getSavedCourses() {
-      const page = await request("me/saves?targetType=course&limit=50", { auth: true });
+      const page = await readAllPages("me/saves?targetType=course&limit=50", { auth: true });
       return (page?.items || []).filter((item) => item.targetType === "course" && item.target).map((item) => toCourse(item.target));
     },
     async savePlace(id, options) { return mutation(`me/saves/place/${encodeURIComponent(id)}`, "PUT", { sourceScreen: "app-preview" }, options); },

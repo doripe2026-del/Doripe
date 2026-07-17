@@ -669,24 +669,46 @@ test("an expired bootstrap snapshot is not used after a network failure", async 
   await assert.rejects(repository.getBootstrap(), /offline/);
 });
 
-test("saved place and course reads use the server maximum limit", async () => {
+test("saved place and course reads follow every server page", async () => {
   const requests = [];
   const repository = createApiRepository({
     fetchImpl: async (url) => {
       requests.push(String(url));
+      if (String(url) === "/api/v1/me/saves?targetType=place&limit=50") {
+        return jsonResponse({
+          data: { items: [{ targetType: "place", target: place }] },
+          meta: { nextCursor: "next-place-page" }
+        });
+      }
+      if (String(url).includes("cursor=next-place-page")) {
+        return jsonResponse({ data: { items: [{ targetType: "place", target: courseOnlyPlace }] } });
+      }
+      if (String(url) === "/api/v1/me/saves?targetType=course&limit=50") {
+        return jsonResponse({
+          data: { items: [{ targetType: "course", target: course }] },
+          meta: { nextCursor: "next-course-page" }
+        });
+      }
+      if (String(url).includes("cursor=next-course-page")) {
+        return jsonResponse({ data: { items: [{ targetType: "course", target: { ...course, id: "course-page-2" } }] } });
+      }
       return jsonResponse({ data: { items: [] } });
     },
     storage: memoryStorage(),
     accessTokenProvider: () => "current-access-token"
   });
 
-  await repository.getSavedPlaces();
-  await repository.getSavedCourses();
+  const places = await repository.getSavedPlaces();
+  const courses = await repository.getSavedCourses();
 
   assert.deepEqual(requests, [
     "/api/v1/me/saves?targetType=place&limit=50",
-    "/api/v1/me/saves?targetType=course&limit=50"
+    "/api/v1/me/saves?targetType=place&limit=50&cursor=next-place-page",
+    "/api/v1/me/saves?targetType=course&limit=50",
+    "/api/v1/me/saves?targetType=course&limit=50&cursor=next-course-page"
   ]);
+  assert.deepEqual(places.map((item) => item.id), [place.id, courseOnlyPlace.id]);
+  assert.deepEqual(courses.map((item) => item.id), [course.id, "course-page-2"]);
 });
 
 test("comment reads use the server maximum limit", async () => {
