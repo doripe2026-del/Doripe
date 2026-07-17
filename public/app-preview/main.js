@@ -784,7 +784,7 @@ function clearSubmittedPasswords(screen) {
   clearVolatilePasswords();
 }
 
-async function reconcileAuthenticatedState(guestState, { loadFirst = false } = {}) {
+async function reconcileAuthenticatedState(guestState, { loadFirst = false, migrateIdentity = false } = {}) {
   try {
     if (loadFirst) await dataStore.load();
     dataSnapshot = dataStore.getSnapshot();
@@ -795,7 +795,8 @@ async function reconcileAuthenticatedState(guestState, { loadFirst = false } = {
     const plan = createGuestMigrationPlan({
       guestState,
       snapshot: dataSnapshot,
-      viewerId: dataSnapshot.viewerProfileId
+      viewerId: dataSnapshot.viewerProfileId,
+      migrateIdentity
     });
     const journal = prepareGuestMigrationJournal({ storage: window.localStorage, plan });
     const migration = await executeGuestMigration({
@@ -824,8 +825,8 @@ async function reconcileAuthenticatedState(guestState, { loadFirst = false } = {
   }
 }
 
-async function hydrateStateAfterAuthentication() {
-  await reconcileAuthenticatedState(state.getState(), { loadFirst: true });
+async function hydrateStateAfterAuthentication({ migrateIdentity = false } = {}) {
+  await reconcileAuthenticatedState(state.getState(), { loadFirst: true, migrateIdentity });
   interactionState = state.getState();
 }
 
@@ -880,7 +881,7 @@ async function dispatchRemoteAuthAction(target, screenId, actionId, operation) {
   if (authResult.ok && authResult.status === "authenticated") {
     authStatus = "authenticated";
     window.sessionStorage.removeItem(LOGOUT_GUARD_KEY);
-    await hydrateStateAfterAuthentication();
+    await hydrateStateAfterAuthentication({ migrateIdentity: operation === "sign-up" });
   }
   if (authResult.ok && authResult.status === "password-updated") authStatus = "no-session";
   if (target.isConnected) {

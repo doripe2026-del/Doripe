@@ -42,15 +42,13 @@ const guestState = {
   }
 };
 
-test("guest migration plans only missing saves and separates existing from new courses", () => {
+test("guest migration plans only missing saves and preserves existing account identity by default", () => {
   const plan = createGuestMigrationPlan({ guestState, snapshot, viewerId: "viewer-1" });
   assert.deepEqual(plan.tasks.map((task) => task.type), [
     "save-place",
     "save-course",
     "create-course",
-    "create-comment",
-    "put-onboarding",
-    "update-profile"
+    "create-comment"
   ]);
   assert.deepEqual(plan.tasks[1].payload, { courseId: "course-existing" });
   assert.deepEqual(plan.tasks[2].payload, {
@@ -59,6 +57,23 @@ test("guest migration plans only missing saves and separates existing from new c
     startPlaceId: "place-2",
     placeIds: ["place-2", "place-3"]
   });
+});
+
+test("new account migration can include guest onboarding and profile identity", () => {
+  const plan = createGuestMigrationPlan({
+    guestState,
+    snapshot,
+    viewerId: "viewer-1",
+    migrateIdentity: true
+  });
+  assert.deepEqual(plan.tasks.map((task) => task.type), [
+    "save-place",
+    "save-course",
+    "create-course",
+    "create-comment",
+    "put-onboarding",
+    "update-profile"
+  ]);
   assert.deepEqual(plan.tasks[4].payload, {
     birthYear: 2000,
     gender: "female",

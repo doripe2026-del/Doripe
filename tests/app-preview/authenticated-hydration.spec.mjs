@@ -219,7 +219,7 @@ test("a returning signed-in user can retry when private account hydration fails"
   await expect(page.locator('.preview-data-feedback [data-action="app-retry-data"]')).toBeVisible();
 });
 
-test("signing in hydrates server account data without discarding guest saves", async ({ page }) => {
+test("signing in hydrates server account data without discarding guest saves or replacing account identity", async ({ page }) => {
   const guestPlace = place(PLACE_IDS[1], 1);
   const serverPlace = place(PLACE_IDS[0], 0);
   const migratedCourseId = "44444444-4444-4444-8444-444444444444";
@@ -418,20 +418,11 @@ test("signing in hydrates server account data without discarding guest saves", a
     name: "비회원 코스",
     placeIds: [guestPlace.id, serverPlace.id]
   }]);
-  expect(stored.profile.nickname).toBe("게스트 도리");
+  expect(stored.profile.nickname).toBe("로그인 도리");
   expect(migrationRequests).toHaveLength(2);
   expect(migrationRequests.every((item) => /^guest_[A-Za-z0-9_-]+$/u.test(item.key))).toBe(true);
-  expect(onboardingRequests).toEqual([{
-    birthYear: 2000,
-    gender: "female",
-    nickname: "게스트 도리",
-    discoveryHabit: "instagram-saved",
-    neighborhoodIds: [],
-    placeTypeTagIds: [],
-    situationTagIds: [],
-    referralSource: "instagram"
-  }]);
-  expect(profileUpdateRequests).toEqual([{ nickname: "게스트 도리" }]);
+  expect(onboardingRequests).toEqual([]);
+  expect(profileUpdateRequests).toEqual([]);
   expect(commentRequests).toHaveLength(1);
   expect(commentRequests[0].input).toEqual({ text: "로그인 뒤에도 남겨 주세요" });
   expect(commentRequests[0].key).toMatch(/^guest_[A-Za-z0-9_-]+$/u);
@@ -439,7 +430,7 @@ test("signing in hydrates server account data without discarding guest saves", a
   await page.reload();
   await expect(page.locator('[data-screen-id="b1"]')).toBeVisible();
   expect(migrationRequests).toHaveLength(2);
-  expect(onboardingRequests).toHaveLength(1);
-  expect(profileUpdateRequests).toHaveLength(1);
+  expect(onboardingRequests).toHaveLength(0);
+  expect(profileUpdateRequests).toHaveLength(0);
   expect(commentRequests).toHaveLength(1);
 });

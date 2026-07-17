@@ -78,7 +78,7 @@ function hasOnboardingData(form = {}) {
   });
 }
 
-export function createGuestMigrationPlan({ guestState = {}, snapshot = {}, viewerId } = {}) {
+export function createGuestMigrationPlan({ guestState = {}, snapshot = {}, viewerId, migrateIdentity = false } = {}) {
   if (typeof viewerId !== "string" || !viewerId) throw new TypeError("viewerId is required");
   const tasks = [];
   const savedPlaceIds = new Set(snapshot.savedPlaceIds || []);
@@ -111,13 +111,15 @@ export function createGuestMigrationPlan({ guestState = {}, snapshot = {}, viewe
     if (contentId && body) tasks.push(task("create-comment", { contentId, body, sourceCommentId }));
   }
 
-  const form = guestState.form || {};
-  if (hasOnboardingData(form)) tasks.push(task("put-onboarding", onboardingPayload(form)));
-  const nickname = typeof form.nickname === "string" ? form.nickname.trim() : "";
-  const viewer = (snapshot.profiles || []).find((profile) => profile.id === viewerId);
-  const currentNickname = viewer?.name || viewer?.handle || "";
-  if (nickname.length >= 2 && nickname.length <= 40 && nickname !== currentNickname) {
-    tasks.push(task("update-profile", { nickname }));
+  if (migrateIdentity) {
+    const form = guestState.form || {};
+    if (hasOnboardingData(form)) tasks.push(task("put-onboarding", onboardingPayload(form)));
+    const nickname = typeof form.nickname === "string" ? form.nickname.trim() : "";
+    const viewer = (snapshot.profiles || []).find((profile) => profile.id === viewerId);
+    const currentNickname = viewer?.name || viewer?.handle || "";
+    if (nickname.length >= 2 && nickname.length <= 40 && nickname !== currentNickname) {
+      tasks.push(task("update-profile", { nickname }));
+    }
   }
 
   return { version: JOURNAL_VERSION, viewerId, tasks, createdAt: new Date().toISOString() };
